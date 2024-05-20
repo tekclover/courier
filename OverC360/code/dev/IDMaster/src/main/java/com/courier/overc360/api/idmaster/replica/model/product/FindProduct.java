@@ -1,0 +1,14 @@
+package com.courier.overc360.api.idmaster.replica.model.product;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class FindProduct {
+
+    private List<String> languageId;
+    private List<String> companyId;
+    private List<String> subProductId;
+    private List<String> productId;
+}
