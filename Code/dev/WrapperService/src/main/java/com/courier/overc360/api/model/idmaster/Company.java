@@ -28,9 +28,9 @@ public class Company {
 
     private String cityName;
 
-    private String regionId;
+    private String provinceId;
 
-    private String regionName;
+    private String provinceName;
 
     private String countryId;
 

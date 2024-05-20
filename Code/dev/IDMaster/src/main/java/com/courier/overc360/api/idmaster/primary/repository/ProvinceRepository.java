@@ -22,7 +22,7 @@ public interface ProvinceRepository extends JpaRepository<Province, String>, Jpa
             "tp.province_name provinceDesc \n" +
             "From tblprovince tp \n" +
             "Where \n" +
-            "tp.province_id (:provinceId) and \n" +
+            "tp.province_id IN (:provinceId) and \n" +
             "tp.is_deleted = 0", nativeQuery = true)
     IKeyValuePair getProvinceDescription(@Param(value = "provinceId") String provinceId);
 

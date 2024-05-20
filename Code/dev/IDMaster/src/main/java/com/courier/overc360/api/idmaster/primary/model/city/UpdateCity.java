@@ -1,25 +1,13 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.city;
 
 import lombok.Data;
 
 @Data
-public class UpdateCompany {
+public class UpdateCity {
 
-    private String companyName;
+    private String cityName;
 
-    private String addressLine1;
-
-    private String addressLine2;
-
-    private String addressLine3;
-
-    private String addressLine4;
-
-    private String cityId;
-
-    private String provinceName;
-
-    private String countryId;
+    private String remark;
 
     private Long deletionIndicator;
 
@@ -44,3 +32,4 @@ public class UpdateCompany {
     private String referenceField10;
 
 }
+

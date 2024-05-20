@@ -2,6 +2,7 @@ package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.idmaster.primary.repository.CityRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.replica.model.company.FindCompany;
 import com.courier.overc360.api.idmaster.replica.model.company.ReplicaCompany;
@@ -38,6 +39,9 @@ public class CompanyService {
 
     @Autowired
     private LanguageRepository languageRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Autowired
     private NumberRangeService numberRangeService;
@@ -94,19 +98,45 @@ public class CompanyService {
             Optional<Company> duplicateCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addCompany.getCompanyId(), addCompany.getLanguageId(), 0L);
 
+            String cityDesc = null;
+            String countryDesc = null;
+            String provinceDesc = null;
+
+            if(addCompany.getCityId() != null) {
+                cityDesc = cityRepository.getCityDesc(addCompany.getCityId());
+            }
+            if (addCompany.getCountryId() != null) {
+                countryDesc = cityRepository.getCountryDesc(addCompany.getCountryId());
+            }
+            if(addCompany.getProvinceId() != null) {
+                provinceDesc = cityRepository.getProvinceDesc(addCompany.getProvinceId());
+            }
+
             if (dbLanguage.isEmpty()) {
                 throw new BadRequestException("LanguageId - " + addCompany.getLanguageId() + " doesn't exists");
             } else if (duplicateCompany.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with given values : companyId - " + addCompany.getCompanyId());
             } else {
                 log.info("new Company --> " + addCompany);
+//                IKeyValuePair iKeyValuePair = languageRepository.getDescription(addCompany.getLanguageId());
                 Company newCompany = new Company();
                 BeanUtils.copyProperties(addCompany, newCompany, CommonUtils.getNullPropertyNames(addCompany));
                 if (addCompany.getCompanyId() == null || addCompany.getCompanyId().isBlank()) {
+//                    Long NUM_RAN_CODE = 1L;
                     String NUM_RAN_OBJ = "COMPANY";
+//                    String LANG_ID = "EN";
                     String C_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for C_ID : " + C_ID);
                     newCompany.setCompanyId(C_ID);
+                }
+                if(cityDesc != null && !cityDesc.isEmpty()){
+                    newCompany.setCityName(cityDesc);
+                }
+                if(countryDesc != null && !countryDesc.isEmpty()) {
+                    newCompany.setCountryName(countryDesc);
+                }
+                if(provinceDesc != null && !provinceDesc.isEmpty()) {
+                    newCompany.setProvinceName(provinceDesc);
                 }
                 newCompany.setLanguageDescription(dbLanguage.get().getLanguageDescription());
                 newCompany.setDeletionIndicator(0L);

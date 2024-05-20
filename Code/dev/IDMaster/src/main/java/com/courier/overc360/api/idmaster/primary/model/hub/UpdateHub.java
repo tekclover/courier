@@ -1,17 +1,13 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.hub;
 
 import lombok.Data;
 
 @Data
-public class AddCompany {
+public class UpdateHub {
 
-    private String languageId;
+    private String hubName;
 
-    private String companyId;
-
-    private String companyName;
-
-    private String provinceName;
+    private String hubCategory;
 
     private String addressLine1;
 
@@ -21,11 +17,13 @@ public class AddCompany {
 
     private String addressLine4;
 
-    private String cityId;
+    private String latitude;
 
-    private String provinceId;
+    private String longitude;
 
-    private String countryId;
+    private String remark;
+
+    private Long deletionIndicator;
 
     private String referenceField1;
 

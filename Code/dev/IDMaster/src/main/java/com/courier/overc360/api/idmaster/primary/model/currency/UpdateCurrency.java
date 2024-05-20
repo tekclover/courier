@@ -1,25 +1,11 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.currency;
 
 import lombok.Data;
 
 @Data
-public class UpdateCompany {
+public class UpdateCurrency {
 
-    private String companyName;
-
-    private String addressLine1;
-
-    private String addressLine2;
-
-    private String addressLine3;
-
-    private String addressLine4;
-
-    private String cityId;
-
-    private String provinceName;
-
-    private String countryId;
+    private String currencyDescription;
 
     private Long deletionIndicator;
 
@@ -44,3 +30,4 @@ public class UpdateCompany {
     private String referenceField10;
 
 }
+

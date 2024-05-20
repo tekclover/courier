@@ -1,27 +1,19 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.currency;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
-public class UpdateCompany {
+public class AddCurrency {
 
-    private String companyName;
+    @NotBlank(message = "Currency Id is mandatory")
+    private String currencyId;
 
-    private String addressLine1;
+    @NotBlank(message = "Currency Description is mandatory")
+    private String currencyDescription;
 
-    private String addressLine2;
-
-    private String addressLine3;
-
-    private String addressLine4;
-
-    private String cityId;
-
-    private String provinceName;
-
-    private String countryId;
-
-    private Long deletionIndicator;
+    private String statusId;
 
     private String referenceField1;
 
