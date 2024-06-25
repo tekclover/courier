@@ -1,0 +1,3 @@
+"logId","logDate","errorMessage","languageId","companyId","refDocNumber","method","referenceField1","referenceField2","referenceField3","referenceField4","referenceField5","createdBy"
+"null","2024-05-10 10:13:59","exception.controller.com.courier.overc360.api.idmaster.BadRequestException: SubProductId - string, companyId - 23 and languageId - EN doesn't exists","EN","23",,"Exception thrown in createProduct","string",,,,,"Admin"
+"null","2024-05-10 10:14:27","exception.controller.com.courier.overc360.api.idmaster.BadRequestException: Record not found for given NumberRangeCode - 3","EN","23",,"Exception thrown in createProduct","subProd-2",,,,,"Admin"
