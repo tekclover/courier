@@ -84,7 +84,7 @@
                                     <p class="mb-0 headerText">Destination</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText w-75 text-dark" [ngClass]="rowData.countryOfSupply ? 'chip' : ''">{{rowData.countryOfSupply}}</p>
+                                    <p class="mb-0 valueText w-75 text-dark" [ngClass]="rowData.destinationDetails.country ? 'chip' : ''">{{rowData.destinationDetails.country}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Flight No</p>
@@ -109,7 +109,7 @@
                                     <p class="mb-0 headerText">ETA</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText  chip w-75 text-dark">{{rowData.flightArrivalTime}}</p>
+                                    <p class="mb-0 valueText w-75 text-dark" [ngClass]="rowData.flightArrivalTime ? 'chip' : ''">{{rowData.flightArrivalTime}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
