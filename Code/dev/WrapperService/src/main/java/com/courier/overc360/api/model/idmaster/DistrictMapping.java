@@ -2,9 +2,10 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class DistrictMapping {
-
 
     private String districtName;
 
@@ -49,6 +50,14 @@ public class DistrictMapping {
     private String referenceField9;
 
     private String referenceField10;
+
+    private String createdBy;
+
+    private Date createdOn;
+
+    private String updatedBy;
+
+    private Date updatedOn;
 
 }
 
