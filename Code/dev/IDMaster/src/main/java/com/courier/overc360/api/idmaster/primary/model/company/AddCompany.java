@@ -30,6 +30,11 @@ public class AddCompany {
 
     private String countryId;
 
+    private String districtId;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;

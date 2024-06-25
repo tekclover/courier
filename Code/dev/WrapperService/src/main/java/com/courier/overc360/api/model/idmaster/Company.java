@@ -2,7 +2,6 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 @Data
@@ -35,6 +34,10 @@ public class Company {
     private String countryId;
 
     private String countryName;
+
+    private String districtId;
+
+    private String districtName;
 
     private String statusId;
 

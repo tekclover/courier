@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.serviceType.AddServiceType;
@@ -11,9 +10,12 @@ import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ServiceTypeRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.serviceType.FindServiceType;
 import com.courier.overc360.api.idmaster.replica.model.serviceType.ReplicaServiceType;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaServiceTypeRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaServiceTypeSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,24 +36,30 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ServiceTypeService {
+
     @Autowired
-    ServiceTypeRepository serviceTypeRepository;
+    private ReplicaStatusRepository replicaStatusRepository;
+
     @Autowired
-    CompanyRepository companyRepository;
+    private ReplicaCompanyRepository replicaCompanyRepository;
+
     @Autowired
-    NumberRangeService numberRangeService;
+    private ServiceTypeRepository serviceTypeRepository;
+
     @Autowired
-    ReplicaServiceTypeRepository replicaServiceTypeRepository;
+    private CompanyRepository companyRepository;
+
+    @Autowired
+    private NumberRangeService numberRangeService;
+
+    @Autowired
+    private ReplicaServiceTypeRepository replicaServiceTypeRepository;
+
     @Autowired
     private ErrorLogRepository errorLogRepository;
+
     @Autowired
     private ErrorLogService errorLogService;
-
-
-
-
-
-
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
@@ -76,7 +84,7 @@ public class ServiceTypeService {
     /**
      * Create Service Type
      *
-     * @param newServiceType
+     * @param addServiceType
      * @param loginUserID
      * @return
      * @throws IllegalAccessException
@@ -85,44 +93,49 @@ public class ServiceTypeService {
      * @throws CsvException
      */
     @Transactional
-    public ServiceType createServiceType(AddServiceType newServiceType, String loginUserID)
+    public ServiceType createServiceType(AddServiceType addServiceType, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Optional<ServiceType> duplicateServiceType = serviceTypeRepository.findByCompanyIdAndLanguageIdAndServiceTypeIdAndDeletionIndicator(
-                    newServiceType.getCompanyId(), newServiceType.getLanguageId(), newServiceType.getServiceTypeId(), 0L);
+                    addServiceType.getCompanyId(), addServiceType.getLanguageId(), addServiceType.getServiceTypeId(), 0L);
 
             Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
-                    newServiceType.getCompanyId(), newServiceType.getLanguageId(), 0L);
+                    addServiceType.getCompanyId(), addServiceType.getLanguageId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("The given values- CompanyId: " + newServiceType.getCompanyId() + "LanguageId" + newServiceType.getLanguageId() + "  doesn't exists");
+                throw new BadRequestException("The given values : CompanyId - " + addServiceType.getCompanyId()
+                        + " and LanguageId - " + addServiceType.getLanguageId() + "  doesn't exists");
             } else if (duplicateServiceType.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values : serviceTypeId - " + newServiceType.getServiceTypeId());
+                throw new BadRequestException("Record is getting Duplicated with the given values : serviceTypeId - " + addServiceType.getServiceTypeId());
             } else {
-                log.info("newCompanyId : " + newServiceType);
-                IKeyValuePair iKeyValuePair = companyRepository.getDescription(newServiceType.getLanguageId(), newServiceType.getCompanyId());
-                ServiceType dbServicetype = new ServiceType();
-                BeanUtils.copyProperties(newServiceType, dbServicetype, CommonUtils.getNullPropertyNames(newServiceType));
-                if (newServiceType.getServiceTypeId() == null || newServiceType.getServiceTypeId().isBlank()) {
+                log.info("new ServiceType --> " + addServiceType);
+                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addServiceType.getLanguageId(), addServiceType.getCompanyId());
+                ServiceType newServiceType = new ServiceType();
+                BeanUtils.copyProperties(addServiceType, newServiceType, CommonUtils.getNullPropertyNames(addServiceType));
+                if (addServiceType.getServiceTypeId() == null || addServiceType.getServiceTypeId().isBlank()) {
                     String NUM_RAN_OBJ = "SERVICETYPE";
                     String SERVICE_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for SERVICE_TYPE_ID : " + SERVICE_TYPE_ID);
-                    dbServicetype.setServiceTypeId(SERVICE_TYPE_ID);
+                    newServiceType.setServiceTypeId(SERVICE_TYPE_ID);
                 }
                 if (iKeyValuePair != null) {
-                    dbServicetype.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    dbServicetype.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newServiceType.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newServiceType.setCompanyName(iKeyValuePair.getCompanyDesc());
                 }
-                dbServicetype.setDeletionIndicator(0L);
-                dbServicetype.setCreatedBy(loginUserID);
-                dbServicetype.setUpdatedBy(loginUserID);
-                dbServicetype.setCreatedOn(new Date());
-                dbServicetype.setUpdatedOn(new Date());
-                return serviceTypeRepository.save(dbServicetype);
+                String statusDesc = replicaStatusRepository.getStatusDescription(addServiceType.getStatusId());
+                if (statusDesc != null) {
+                    newServiceType.setStatusDescription(statusDesc);
+                }
+                newServiceType.setDeletionIndicator(0L);
+                newServiceType.setCreatedBy(loginUserID);
+                newServiceType.setUpdatedBy(loginUserID);
+                newServiceType.setCreatedOn(new Date());
+                newServiceType.setUpdatedOn(new Date());
+                return serviceTypeRepository.save(newServiceType);
             }
         } catch (Exception e) {
             // Error Log
-            createServiceTypeLog2(newServiceType, e.toString());
+            createServiceTypeLog2(addServiceType, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -149,6 +162,12 @@ public class ServiceTypeService {
         try {
             ServiceType dbServicetype = getServiceType(companyId, languageId, serviceTypeId);
             BeanUtils.copyProperties(updateServiceType, dbServicetype, CommonUtils.getNullPropertyNames(updateServiceType));
+            if (updateServiceType.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateServiceType.getStatusId());
+                if (statusDesc != null) {
+                    dbServicetype.setStatusDescription(statusDesc);
+                }
+            }
             dbServicetype.setUpdatedBy(loginUserID);
             dbServicetype.setUpdatedOn(new Date());
             return serviceTypeRepository.save(dbServicetype);
@@ -173,6 +192,7 @@ public class ServiceTypeService {
         if (dbServicetype != null) {
             dbServicetype.setDeletionIndicator(1L);
             dbServicetype.setUpdatedBy(loginUserID);
+            dbServicetype.setUpdatedOn(new Date());
             serviceTypeRepository.save(dbServicetype);
         } else {
             // Error Log
@@ -222,7 +242,7 @@ public class ServiceTypeService {
 
         ReplicaServiceTypeSpecification spec = new ReplicaServiceTypeSpecification(findServiceType);
         List<ReplicaServiceType> results = replicaServiceTypeRepository.findAll(spec);
-        log.info("results: " + results);
+        log.info("found ServiceTypes --> " + results);
         return results;
     }
 
@@ -238,7 +258,7 @@ public class ServiceTypeService {
         errorLog.setMethod("Exception thrown in updateServiceType");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -267,7 +287,7 @@ public class ServiceTypeService {
         errorLog.setMethod("Exception thrown in createServiceType");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

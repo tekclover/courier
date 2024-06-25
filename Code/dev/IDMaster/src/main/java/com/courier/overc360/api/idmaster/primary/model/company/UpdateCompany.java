@@ -5,6 +5,14 @@ import lombok.Data;
 @Data
 public class UpdateCompany {
 
+    private String countryId;
+
+    private String provinceId;
+
+    private String cityId;
+
+    private String districtId;
+
     private String companyName;
 
     private String addressLine1;
@@ -14,6 +22,8 @@ public class UpdateCompany {
     private String addressLine3;
 
     private String addressLine4;
+
+    private String statusId;
 
     private Long deletionIndicator;
 

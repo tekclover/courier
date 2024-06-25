@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbluser")
+
 public class User {
 
     public enum Role {USER, ADMIN, USER_MANAGER}
@@ -21,36 +22,36 @@ public class User {
     @JsonIgnore
     @Column(name = "uid")
     private Long id;
-    
+
     @Column(name = "username")
     private String username;
-    
+
     @Column(name = "email")
     private String email;
-    
+
     @Column(name = "firstname")
     private String firstname;
-    
+
     @Column(name = "lastname")
     private String lastname;
-    
+
     @Column(name = "company")
     private String company;
-    
+
     @JsonIgnore
     @Column(name = "password")
     private String password;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
-    
+
     @Column(name = "city")
     private String city;
-    
+
     @Column(name = "state")
     private String state;
-    
+
     @Column(name = "country")
     private String country;
 }

@@ -1,45 +1,64 @@
 package com.courier.overc360.api.model.user;
 
-import java.util.Date;
-
 import lombok.Data;
 
-import javax.persistence.Column;
+import java.util.Date;
 
 @Data
+
 public class UserManagement {
 
-	private String userId;
-	private String languageId;
-	private String companyCode;
-	private String plantId;
-	private String warehouseId;
-	private Long userRoleId;
-	private Long userTypeId;
-	private String userName;
-	private String firstName;
-	private String lastName;
-	private String password;
-	private Long statusId;
-	private Long dateFormatId;
-	private Long currencyDecimal;
-	private String timeZone;
-	private String emailId;
-	private Long deletionIndicator = 0L;
-	private String createdBy;
-	private Date createdOn = new Date();
-	private String updatedBy;
-	private Date updatedOn = new Date();
+    private String userId;
 
-	private Boolean portalLoggedIn;
-	private Boolean hhtLoggedIn;
-	private Boolean createHhtUser;
-	private String companyIdAndDescription;
+    private String languageId;
 
-	private String plantIdAndDescription;
+    private String companyId;
 
-	private String warehouseIdAndDescription;
+    private Long userRoleId;
 
-	private String userRoleIdAndDescription;
-	private String userTypeIdAndDescription;
+    private String languageIdAndDescription;
+
+    private String companyIdAndDescription;
+
+    private String userRoleIdAndDescription;
+
+    private String userTypeIdAndDescription;
+
+    private Long userTypeId;
+
+    private String password;
+
+    private String userName;
+
+    private String firstName;
+
+    private String lastName;
+
+    private Long statusId;
+
+    private Long dateFormatId;
+
+    private Long currencyDecimal;
+
+    private Boolean createHhtUser;
+
+    private String timeZone;
+
+    private Boolean portalLoggedIn;
+
+    private Boolean hhtLoggedIn;
+
+    private Boolean resetPassword;
+
+    private String emailId;
+
+    private Long deletionIndicator;
+
+    private String createdBy;
+
+    private Date createdOn;
+
+    private String updatedBy;
+
+    private Date updatedOn;
 }

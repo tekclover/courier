@@ -1,21 +1,24 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.idmaster.primary.repository.CityRepository;
-import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
-import com.courier.overc360.api.idmaster.replica.model.company.FindCompany;
-import com.courier.overc360.api.idmaster.replica.model.company.ReplicaCompany;
-import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
-import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCompanySpecification;
-import com.opencsv.exceptions.CsvException;
 import com.courier.overc360.api.idmaster.primary.model.company.AddCompany;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.company.UpdateCompany;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.language.Language;
 import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
+import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.LanguageRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
+import com.courier.overc360.api.idmaster.replica.model.company.FindCompany;
+import com.courier.overc360.api.idmaster.replica.model.company.ReplicaCompany;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCityRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaLanguageRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
+import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCompanySpecification;
+import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +38,19 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     @Autowired
+    private ReplicaLanguageRepository replicaLanguageRepository;
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
+    private ReplicaCityRepository replicaCityRepository;
+
+    @Autowired
     private CompanyRepository companyRepository;
 
     @Autowired
     private LanguageRepository languageRepository;
-
-    @Autowired
-    private CityRepository cityRepository;
 
     @Autowired
     private NumberRangeService numberRangeService;
@@ -101,15 +110,19 @@ public class CompanyService {
             String cityDesc = null;
             String countryDesc = null;
             String provinceDesc = null;
+            String districtDesc = null;
 
-            if(addCompany.getCityId() != null) {
-                cityDesc = cityRepository.getCityDesc(addCompany.getCityId());
+            if (addCompany.getCityId() != null) {
+                cityDesc = replicaCityRepository.getCityDesc(addCompany.getCityId());
             }
             if (addCompany.getCountryId() != null) {
-                countryDesc = cityRepository.getCountryDesc(addCompany.getCountryId());
+                countryDesc = replicaCityRepository.getCountryDesc(addCompany.getCountryId());
             }
-            if(addCompany.getProvinceId() != null) {
-                provinceDesc = cityRepository.getProvinceDesc(addCompany.getProvinceId());
+            if (addCompany.getProvinceId() != null) {
+                provinceDesc = replicaCityRepository.getProvinceDesc(addCompany.getProvinceId());
+            }
+            if (addCompany.getDistrictId() != null) {
+                districtDesc = replicaCityRepository.getDistrictDesc(addCompany.getDistrictId());
             }
 
             if (dbLanguage.isEmpty()) {
@@ -118,27 +131,34 @@ public class CompanyService {
                 throw new BadRequestException("Record is getting Duplicated with given values : companyId - " + addCompany.getCompanyId());
             } else {
                 log.info("new Company --> " + addCompany);
-//                IKeyValuePair iKeyValuePair = languageRepository.getDescription(addCompany.getLanguageId());
                 Company newCompany = new Company();
+                IKeyValuePair iKeyValuePair = replicaLanguageRepository.getDescription(addCompany.getLanguageId());
                 BeanUtils.copyProperties(addCompany, newCompany, CommonUtils.getNullPropertyNames(addCompany));
                 if (addCompany.getCompanyId() == null || addCompany.getCompanyId().isBlank()) {
-//                    Long NUM_RAN_CODE = 1L;
                     String NUM_RAN_OBJ = "COMPANY";
-//                    String LANG_ID = "EN";
                     String C_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for C_ID : " + C_ID);
                     newCompany.setCompanyId(C_ID);
                 }
-                if(cityDesc != null && !cityDesc.isEmpty()){
-                    newCompany.setCityName(cityDesc);
+                if (cityDesc != null && !cityDesc.isEmpty()) {
+                    newCompany.setCityName(addCompany.getCityId() + cityDesc);
                 }
-                if(countryDesc != null && !countryDesc.isEmpty()) {
-                    newCompany.setCountryName(countryDesc);
+                if (countryDesc != null && !countryDesc.isEmpty()) {
+                    newCompany.setCountryName(addCompany.getCountryId() + countryDesc);
                 }
-                if(provinceDesc != null && !provinceDesc.isEmpty()) {
-                    newCompany.setProvinceName(provinceDesc);
+                if (provinceDesc != null && !provinceDesc.isEmpty()) {
+                    newCompany.setProvinceName(addCompany.getProvinceId() + provinceDesc);
                 }
-                newCompany.setLanguageDescription(dbLanguage.get().getLanguageDescription());
+                if (districtDesc != null && !districtDesc.isEmpty()) {
+                    newCompany.setDistrictName(addCompany.getDistrictId() + districtDesc);
+                }
+                if (iKeyValuePair != null) {
+                    newCompany.setLanguageDescription(iKeyValuePair.getLangDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addCompany.getStatusId());
+                if (statusDesc != null) {
+                    newCompany.setStatusDescription(statusDesc);
+                }
                 newCompany.setDeletionIndicator(0L);
                 newCompany.setCreatedBy(loginUserID);
                 newCompany.setCreatedOn(new Date());
@@ -172,7 +192,73 @@ public class CompanyService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Company dbCompany = getCompany(companyId, languageId);
+//            if (updateCompany.getCompanyName() != null) {
+//                if (updateCompany.getCompanyName().isBlank()) {
+//                    throw new BadRequestException("Company Name cannot be blank");
+//                }
+//                boolean isCompanyNameChanged = !dbCompany.getCompanyName().equalsIgnoreCase(updateCompany.getCompanyName());
+//                if (isCompanyNameChanged) {
+//                    String oldCompanyDesc = dbCompany.getCompanyName();
+//                    BeanUtils.copyProperties(updateCompany, dbCompany, CommonUtils.getNullPropertyNames(updateCompany));
+//                    String cityDesc = null;
+//                    String countryDesc = null;
+//                    String provinceDesc = null;
+//                    String districtDesc = null;
+//
+//                    if (updateCompany.getCityId() != null) {
+//                        cityDesc = cityRepository.getCityDesc(updateCompany.getCityId());
+//                        dbCompany.setCityName(cityDesc);
+//                    }
+//                    if (updateCompany.getCountryId() != null) {
+//                        countryDesc = cityRepository.getCountryDesc(updateCompany.getCountryId());
+//                        dbCompany.setCountryName(countryDesc);
+//                    }
+//                    if (updateCompany.getProvinceId() != null) {
+//                        provinceDesc = cityRepository.getProvinceDesc(updateCompany.getProvinceId());
+//                        dbCompany.setProvinceName(provinceDesc);
+//                    }
+//                    if (updateCompany.getDistrictId() != null) {
+//                        districtDesc = cityRepository.getDistrictDesc(updateCompany.getDistrictId());
+//                        dbCompany.setDistrictName(districtDesc);
+//                    }
+//                    dbCompany.setUpdatedBy(loginUserID);
+//                    dbCompany.setUpdatedOn(new Date());
+//                    Company updatedCompany = companyRepository.save(dbCompany);
+//
+//                    // Update Company Name in all Masters Tables
+//                    companyRepository.companyDescUpdateProc(languageId, companyId, oldCompanyDesc, updateCompany.getCompanyName());
+//                    return updatedCompany;
+//                }
+//            }
             BeanUtils.copyProperties(updateCompany, dbCompany, CommonUtils.getNullPropertyNames(updateCompany));
+
+            String cityDesc = null;
+            String countryDesc = null;
+            String provinceDesc = null;
+            String districtDesc = null;
+
+            if (updateCompany.getCityId() != null) {
+                cityDesc = replicaCityRepository.getCityDesc(updateCompany.getCityId());
+                dbCompany.setCityName(updateCompany.getCityId() + cityDesc);
+            }
+            if (updateCompany.getCountryId() != null) {
+                countryDesc = replicaCityRepository.getCountryDesc(updateCompany.getCountryId());
+                dbCompany.setCountryName(updateCompany.getCountryId() + countryDesc);
+            }
+            if (updateCompany.getProvinceId() != null) {
+                provinceDesc = replicaCityRepository.getProvinceDesc(updateCompany.getProvinceId());
+                dbCompany.setProvinceName(updateCompany.getProvinceId() + provinceDesc);
+            }
+            if (updateCompany.getDistrictId() != null) {
+                districtDesc = replicaCityRepository.getDistrictDesc(updateCompany.getDistrictId());
+                dbCompany.setDistrictName(updateCompany.getDistrictId() + districtDesc);
+            }
+            if (updateCompany.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateCompany.getStatusId());
+                if (statusDesc != null) {
+                    dbCompany.setStatusDescription(statusDesc);
+                }
+            }
             dbCompany.setUpdatedBy(loginUserID);
             dbCompany.setUpdatedOn(new Date());
             return companyRepository.save(dbCompany);
@@ -192,16 +278,28 @@ public class CompanyService {
      * @param loginUserID
      */
     public void deleteCompany(String companyId, String languageId, String loginUserID) {
+
         Company dbCompany = getCompany(companyId, languageId);
+
+        Long companyCount = replicaCompanyRepository.getCompanyCount(languageId, companyId);
+        if (companyCount != null) {
+            if (companyCount > 0) {
+                String errMsg = "Records present in associated tables with companyId - " + companyId;
+                createCompanyLog1(languageId, companyId, errMsg);
+                throw new BadRequestException(errMsg);
+            }
+        }
+
         if (dbCompany != null) {
             dbCompany.setDeletionIndicator(1L);
             dbCompany.setUpdatedBy(loginUserID);
             dbCompany.setUpdatedOn(new Date());
             companyRepository.save(dbCompany);
         } else {
+            String errMsg = "Error in deleting CompanyId - " + companyId;
             // Error Log
-            createCompanyLog1(languageId, companyId, "Error in deleting CompanyId - " + companyId);
-            throw new BadRequestException("Error in deleting CompanyId - " + companyId);
+            createCompanyLog1(languageId, companyId, errMsg);
+            throw new BadRequestException(errMsg);
         }
     }
 
@@ -264,7 +362,7 @@ public class CompanyService {
         errorLog.setMethod("Exception thrown in updateCompany");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -293,7 +391,7 @@ public class CompanyService {
         errorLog.setMethod("Exception thrown in createCompany");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

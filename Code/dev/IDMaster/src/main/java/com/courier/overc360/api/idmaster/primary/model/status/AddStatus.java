@@ -13,6 +13,7 @@ public class AddStatus {
 //    @NotBlank(message = "Status Id is mandatory")
     private String statusId;
 
+    @NotBlank(message = "Status Description is mandatory")
     private String statusDescription;
 
     private String referenceField1;

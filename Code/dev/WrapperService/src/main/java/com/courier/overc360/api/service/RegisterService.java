@@ -23,7 +23,7 @@ public class RegisterService {
 	private RegisterRepository registerRepository;
 
 	@Autowired
-	private CommonService commonService;
+	private AuthTokenService authTokenService;
 
 	@Autowired
     PropertiesConfig propertiesConfig;
@@ -75,7 +75,7 @@ public class RegisterService {
 	}
 
 	public AuthToken getAuthToken(@Valid AuthTokenRequest authTokenRequest) {
-		return commonService.generateOAuthToken(authTokenRequest.getApiName(),
+		return authTokenService.generateOAuthToken(authTokenRequest.getApiName(),
 				authTokenRequest.getClientId(), 
 				authTokenRequest.getClientSecretKey(),
 				authTokenRequest.getGrantType(),

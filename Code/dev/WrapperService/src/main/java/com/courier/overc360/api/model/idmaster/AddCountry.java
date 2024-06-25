@@ -13,6 +13,8 @@ public class AddCountry {
 
     private String countryName;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

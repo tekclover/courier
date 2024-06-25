@@ -15,6 +15,8 @@ public class AddProduct {
 
     private String productName;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

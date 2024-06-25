@@ -20,6 +20,7 @@ public class AddRateParameter {
 
     private String remark;
 
+    @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 
     private String statusDescription;

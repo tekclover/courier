@@ -2,26 +2,20 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class AddRoleAccess {
 
 	private String languageId;
-	private String companyCodeId;
-	private String plantId;
-	private String warehouseId;
-//
-//	private Long userRoleId = 0L;
+
+	private String companyId;
+
+	private Long userRoleId;
 
 	private Long menuId;
-	private Long roleId;
-	private String menuName;
-	private String subMenuName;
+
 	private Long subMenuId;
-	private String companyIdAndDescription;
-	private String plantIdAndDescription;
-	private String warehouseIdAndDescription;
+
+	private String moduleId;
 
 	private Long authorizationObjectId;
 
@@ -30,10 +24,6 @@ public class AddRoleAccess {
 	private String userRoleName;
 
 	private String description;
-
-	private Long statusId;
-
-	private String moduleId;
 
 	private String referenceField1;
 
@@ -62,9 +52,8 @@ public class AddRoleAccess {
 	private Boolean edit;
 
 	private Boolean view;
+
 	private Boolean delete;
-	private String createdBy;
-	private Date createdOn = new Date();
-	private String updatedBy;
-	private Date updatedOn = new Date();
+
 }
+

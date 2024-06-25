@@ -18,6 +18,9 @@ public class AddCountry {
     @NotBlank(message = "Country Name is mandatory")
     private String countryName;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

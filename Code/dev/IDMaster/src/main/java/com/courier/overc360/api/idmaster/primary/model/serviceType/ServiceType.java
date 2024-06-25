@@ -4,8 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -20,6 +26,7 @@ import java.util.Date;
 )
 @IdClass(ServiceTypeCompositeKey.class)
 public class ServiceType {
+
     @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
     private String languageId;
@@ -32,13 +39,13 @@ public class ServiceType {
     @Column(name = "SERVICE_TYPE_ID", columnDefinition = "nvarchar(50)")
     private String serviceTypeId;
 
-    @Column(name = "LANG_NAME", columnDefinition = "nvarchar(50)")
+    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
-    @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
+    @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
-    @Column(name = "SERVICE_TYPE_TEXT", columnDefinition = "nvarchar(50)")
+    @Column(name = "SERVICE_TYPE_TEXT", columnDefinition = "nvarchar(100)")
     private String serviceTypeText;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
@@ -89,9 +96,9 @@ public class ServiceType {
     @Column(name = "CTD_ON")
     private Date createdOn = new Date();
 
-    @Column(name = "UTD_ON")
-    private Date updatedOn = new Date();
-
     @Column(name = "UTD_BY", columnDefinition = "nvarchar(50)")
     private String updatedBy;
+
+    @Column(name = "UTD_ON")
+    private Date updatedOn = new Date();
 }

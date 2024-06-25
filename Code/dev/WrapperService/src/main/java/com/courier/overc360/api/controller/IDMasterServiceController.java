@@ -1,6 +1,13 @@
 package com.courier.overc360.api.controller;
 
+import com.courier.overc360.api.exception.BadRequestException;
+import com.courier.overc360.api.exception.CustomErrorResponse;
+import com.courier.overc360.api.model.idmaster.Module;
 import com.courier.overc360.api.model.idmaster.*;
+import com.courier.overc360.api.model.user.AddUserManagement;
+import com.courier.overc360.api.model.user.FindUserManagement;
+import com.courier.overc360.api.model.user.UpdateUserManagement;
+import com.courier.overc360.api.model.user.UserManagement;
 import com.courier.overc360.api.service.IDMasterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,11 +21,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/wms-idmaster-service")
+@RequestMapping("/overc-idmaster-service")
 @Api(tags = {"IDMaster Service"}, value = "IDMaster Service Operations") // label for swagger
 @SwaggerDefinition(tags = {@Tag(name = "User", description = "Operations related to IDMaster Service")})
 public class IDMasterServiceController {
@@ -26,28 +36,6 @@ public class IDMasterServiceController {
     @Autowired
     IDMasterService idmasterService;
 
-
-    /* --------------------------------LOGIN-------------------------------------------------------------------------------------*/
-
-//	@ApiOperation(response = Optional.class, value = "Login User") // label for swagger
-//	@RequestMapping(value = "/login", method = RequestMethod.GET, produces = "application/json")
-//	public ResponseEntity<?> loginUser(@RequestParam String name, @RequestParam String password,
-//									   @RequestParam String authToken, @RequestParam(required = false) String version) {
-//		try {
-//			UserManagement loggedUser = idmasterService.validateUserID(name, password, authToken, version);
-//			log.info("LoginUser::: " + loggedUser);
-//			log.info("version::: " + version);
-//			return new ResponseEntity<>(loggedUser, HttpStatus.OK);
-//		} catch (BadRequestException e) {
-//			log.error("Invalid user");
-//			String str = "Either UserId is invalid or Password does not match.";
-//			CustomErrorResponse error = new CustomErrorResponse();
-//			error.setTimestamp(LocalDateTime.now());
-//			error.setError(str);
-//			error.setStatus(HttpStatus.BAD_REQUEST.value());
-//			return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-//		}
-//	}
 
     //==============================================NumberRange========================================================
     // Get All NumberRangeCode Details
@@ -81,8 +69,8 @@ public class IDMasterServiceController {
     @PatchMapping("/numberRange/{numberRangeCode}")
     public ResponseEntity<?> patchNumberRange(@PathVariable Long numberRangeCode, @RequestParam String languageId,
                                               @RequestParam String loginUserID, @RequestBody UpdateNumberRange updateNumberRange,
-                                              @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
-        NumberRange updatedNumberRange = idmasterService.updateNumberRange(languageId, numberRangeCode, loginUserID, updateNumberRange, authToken);
+                                              @RequestParam String numberRangeObject, @RequestParam String authToken) {
+        NumberRange updatedNumberRange = idmasterService.updateNumberRange(languageId, numberRangeCode, loginUserID, numberRangeObject, updateNumberRange, authToken);
         return new ResponseEntity<>(updatedNumberRange, HttpStatus.OK);
     }
 
@@ -435,7 +423,7 @@ public class IDMasterServiceController {
 
     // Find ConsignmentType
     @ApiOperation(response = ConsignmentType[].class, value = "Find ConsignmentType")//label for swagger
-    @PostMapping("/consignmentType/findConsignmentType")
+    @PostMapping("/consignmentType/find")
     public ConsignmentType[] findConsignmentType(@RequestBody FindConsignmentType findConsignmentType,
                                                  @RequestParam String authToken) throws Exception {
         return idmasterService.findConsignmentType(findConsignmentType, authToken);
@@ -610,8 +598,8 @@ public class IDMasterServiceController {
     @ApiOperation(response = City.class, value = "Get City") // label for swagger
     @GetMapping("/city/{cityId}")
     public ResponseEntity<?> getCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId,
-                                     @RequestParam String countryId, @RequestParam String partnerId, @RequestParam String authToken) {
-        City city = idmasterService.getCity(languageId, companyId, countryId, partnerId, cityId, authToken);
+                                     @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String districtId, @RequestParam String authToken) {
+        City city = idmasterService.getCity(languageId, companyId, countryId, provinceId, districtId, cityId, authToken);
         return new ResponseEntity<>(city, HttpStatus.OK);
     }
 
@@ -627,9 +615,9 @@ public class IDMasterServiceController {
     @ApiOperation(response = City.class, value = "Update City") // label for swagger
     @PatchMapping("/city/{cityId}")
     public ResponseEntity<?> updateCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId,
-                                        @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String loginUserID,
+                                        @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String districtId, @RequestParam String loginUserID,
                                         @RequestBody UpdateCity updateCity, @RequestParam String authToken) {
-        City city = idmasterService.updateCity(languageId, companyId, countryId, provinceId, cityId, updateCity, loginUserID, authToken);
+        City city = idmasterService.updateCity(languageId, companyId, countryId, provinceId, districtId, cityId, updateCity, loginUserID, authToken);
         return new ResponseEntity<>(city, HttpStatus.OK);
     }
 
@@ -637,8 +625,8 @@ public class IDMasterServiceController {
     @ApiOperation(response = City.class, value = "Delete City") // label for swagger
     @DeleteMapping("/city/{cityId}")
     public ResponseEntity<?> deleteCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String countryId,
-                                        @RequestParam String provinceId, @RequestParam String loginUserID, @RequestParam String authToken) {
-        idmasterService.deleteCity(languageId, companyId, countryId, provinceId, cityId, loginUserID, authToken);
+                                        @RequestParam String provinceId, @RequestParam String districtId, @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteCity(languageId, companyId, countryId, provinceId, districtId, cityId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -754,6 +742,59 @@ public class IDMasterServiceController {
     public ResponseEntity<?> findStatus(@RequestBody FindStatus findStatus, @RequestParam String authToken) throws Exception {
         Status[] statusList = idmasterService.findStatus(findStatus, authToken);
         return new ResponseEntity<>(statusList, HttpStatus.OK);
+    }
+
+    //===============================================Rate==========================================================
+    // Get All Rates
+    @ApiOperation(response = Rate[].class, value = "Get all Rate Details") // label for swagger
+    @GetMapping("/rate")
+    public ResponseEntity<?> getAllRateDetails(@RequestParam String authToken) {
+        Rate[] ratesList = idmasterService.getAllRateDetails(authToken);
+        return new ResponseEntity<>(ratesList, HttpStatus.OK);
+    }
+
+    // Get Rate
+    @ApiOperation(response = Rate.class, value = "Get a Rate") // label for swagger
+    @GetMapping("/rate/{partnerId}")
+    public ResponseEntity<?> getRate(@RequestParam String rateParameterId, @RequestParam String languageId, @RequestParam String companyId, @PathVariable String partnerId, @RequestParam String authToken) {
+        Rate dbRate = idmasterService.getRate(languageId, companyId, partnerId, rateParameterId, authToken);
+        return new ResponseEntity<>(dbRate, HttpStatus.OK);
+    }
+
+    // Create Rate
+    @ApiOperation(response = Rate.class, value = "Create new Rate") // label for swagger
+    @PostMapping("/rate")
+    public ResponseEntity<?> postRate(@Valid @RequestBody AddRate addRate, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Rate newRate = idmasterService.createRate(addRate, loginUserID, authToken);
+        return new ResponseEntity<>(newRate, HttpStatus.OK);
+    }
+
+    // Update Rate
+    @ApiOperation(response = Rate.class, value = "Update Rate") // label for swagger
+    @PatchMapping("/rate/{partnerId}")
+    public ResponseEntity<?> patchRate(@RequestParam String rateParameterId, @RequestParam String languageId, @RequestParam String companyId, @PathVariable String partnerId, @RequestParam String loginUserID,
+                                       @RequestBody UpdateRate updateRate, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Rate updatedRate = idmasterService.updateRate(languageId, companyId, partnerId, rateParameterId, updateRate, loginUserID, authToken);
+        return new ResponseEntity<>(updatedRate, HttpStatus.OK);
+    }
+
+    // Delete Rate
+    @ApiOperation(response = Rate.class, value = "Delete Rate") // label for swagger
+    @DeleteMapping("/rate/{partnerId}")
+    public ResponseEntity<?> deleteRate(@RequestParam String rateParameterId, @RequestParam String languageId, @RequestParam String companyId, @PathVariable String partnerId,
+                                        @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteRate(languageId, companyId, partnerId, rateParameterId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Rate
+    @ApiOperation(response = Rate[].class, value = "Find Rate")
+    @PostMapping("/rate/find")
+    public ResponseEntity<?> findRate(@Valid @RequestBody FindRate findRate, @RequestParam String authToken) throws Exception {
+        Rate[] rateList = idmasterService.findRate(findRate, authToken);
+        return new ResponseEntity<>(rateList, HttpStatus.OK);
     }
 
     //===============================================Currency==========================================================
@@ -912,56 +953,57 @@ public class IDMasterServiceController {
         return idmasterService.findCustomers(findCustomer, authToken);
     }
 
-    //==================================================Shipper========================================================
-    // Get all Shipper Details
-    @ApiOperation(response = Shipper.class, value = "Get All Shipper Details") // label for swagger
-    @GetMapping("/shipper")
-    public ResponseEntity<?> getAllShipperDetails(@RequestParam String authToken) {
-        Shipper[] shippers = idmasterService.getAllShippers(authToken);
-        return new ResponseEntity<>(shippers, HttpStatus.OK);
+    //==================================================Consignor========================================================
+    // Get all Consignor Details
+    @ApiOperation(response = Consignor.class, value = "Get All Consignor Details") // label for swagger
+    @GetMapping("/consignor")
+    public ResponseEntity<?> getAllConsignorDetails(@RequestParam String authToken) {
+        Consignor[] consignors = idmasterService.getAllConsignors(authToken);
+        return new ResponseEntity<>(consignors, HttpStatus.OK);
     }
 
-    // Get a Shipper
-    @ApiOperation(response = Shipper.class, value = "Get Shipper") // label for swagger
-    @GetMapping("/shipper/{shipperId}")
-    public ResponseEntity<?> getShipper(@PathVariable String shipperId, @RequestParam String companyId, @RequestParam String subProductId,
-                                        @RequestParam String productId, @RequestParam String customerId, @RequestParam String languageId, @RequestParam String authToken) {
-        Shipper shipper = idmasterService.getShipper(languageId, companyId, subProductId, productId, customerId, shipperId, authToken);
-        return new ResponseEntity<>(shipper, HttpStatus.OK);
+    // Get a Consignor
+    @ApiOperation(response = Consignor.class, value = "Get Consignor") // label for swagger
+    @GetMapping("/consignor/{consignorId}")
+    public ResponseEntity<?> getConsignor(@PathVariable String consignorId, @RequestParam String companyId, @RequestParam String subProductId,
+                                          @RequestParam String productId, @RequestParam String customerId, @RequestParam String languageId, @RequestParam String authToken) {
+        Consignor consignor = idmasterService.getConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, authToken);
+        return new ResponseEntity<>(consignor, HttpStatus.OK);
     }
 
-    // Create Shipper
-    @ApiOperation(response = Shipper.class, value = "Create new Shipper") // label for swagger
-    @PostMapping("/shipper")
-    public ResponseEntity<?> postShipper(@RequestBody AddShipper addShipper, @RequestParam String loginUserID, @RequestParam String authToken) {
-        Shipper shipper = idmasterService.createShipper(addShipper, loginUserID, authToken);
-        return new ResponseEntity<>(shipper, HttpStatus.OK);
+    // Create Consignor
+    @ApiOperation(response = Consignor.class, value = "Create new Consignor") // label for swagger
+    @PostMapping("/consignor")
+    public ResponseEntity<?> postConsignor(@RequestBody AddConsignor addConsignor, @RequestParam String loginUserID, @RequestParam String authToken) {
+        Consignor consignor = idmasterService.createShipper(addConsignor, loginUserID, authToken);
+        return new ResponseEntity<>(consignor, HttpStatus.OK);
     }
 
-    // Update Shipper
-    @ApiOperation(response = Shipper.class, value = "Update Shipper") // label for swagger
-    @PatchMapping("/shipper/{shipperId}")
-    public ResponseEntity<?> patchShipper(@PathVariable String shipperId, @RequestParam String languageId, @RequestParam String companyId,
-                                          @RequestParam String subProductId, @RequestParam String loginUserID, @RequestBody UpdateShipper updateShipper,
-                                          @RequestParam String productId, @RequestParam String customerId, @RequestParam String authToken) {
-        Shipper shipper = idmasterService.updateShipper(languageId, companyId, subProductId, productId, customerId, shipperId, updateShipper, loginUserID, authToken);
-        return new ResponseEntity<>(shipper, HttpStatus.OK);
+    // Update Consignor
+    @ApiOperation(response = Consignor.class, value = "Update Consignor") // label for swagger
+    @PatchMapping("/consignor/{consignorId}")
+    public ResponseEntity<?> patchConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId,
+                                            @RequestParam String subProductId, @RequestParam String loginUserID, @RequestBody UpdateConsignor updateConsignor,
+                                            @RequestParam String productId, @RequestParam String customerId, @RequestParam String authToken) {
+        Consignor consignor = idmasterService.updateShipper(languageId, companyId, subProductId, productId, customerId, consignorId, updateConsignor, loginUserID, authToken);
+        return new ResponseEntity<>(consignor, HttpStatus.OK);
     }
 
-    // Delete Shipper
-    @ApiOperation(response = Shipper.class, value = "Delete Shipper") // label for swagger
-    @DeleteMapping("/shipper/{shipperId}")
-    public ResponseEntity<?> deleteShipper(@PathVariable String shipperId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String subProductId,
-                                           @RequestParam String productId, @RequestParam String customerId, @RequestParam String loginUserID, @RequestParam String authToken) {
-        idmasterService.deleteShipper(languageId, companyId, subProductId, productId, customerId, shipperId, loginUserID, authToken);
+    // Delete Consignor
+    @ApiOperation(response = Consignor.class, value = "Delete Consignor") // label for swagger
+    @DeleteMapping("/consignor/{consignorId}")
+    public ResponseEntity<?> deleteShipper(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId,
+                                           @RequestParam String subProductId, @RequestParam String productId, @RequestParam String customerId,
+                                           @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find Shipper
-    @ApiOperation(response = Shipper[].class, value = "Find Shipper") //label for swagger
-    @PostMapping("/shipper/find")
-    public Shipper[] findShippers(@RequestBody FindShipper findShipper, @RequestParam String authToken) throws Exception {
-        return idmasterService.findShippers(findShipper, authToken);
+    // Find Consignor
+    @ApiOperation(response = Consignor[].class, value = "Find Consignor") //label for swagger
+    @PostMapping("/consignor/find")
+    public Consignor[] findShippers(@RequestBody FindConsignor findConsignor, @RequestParam String authToken) throws Exception {
+        return idmasterService.findConsignors(findConsignor, authToken);
     }
 
     //===============================================PartnerHubMapping=================================================
@@ -1031,7 +1073,7 @@ public class IDMasterServiceController {
 
     // Get HSCode
     @ApiOperation(response = HSCode.class, value = "Get HSCode") // label for swagger
-    @GetMapping("/loadType/{hsCode}")
+    @GetMapping("/hsCode/{hsCode}")
     public ResponseEntity<?> getHSCode(@PathVariable String hsCode, @RequestParam String companyId,
                                        @RequestParam String languageId, @RequestParam String authToken) {
         HSCode dbHsCode = idmasterService.getHSCode(languageId, companyId, hsCode, authToken);
@@ -1138,9 +1180,9 @@ public class IDMasterServiceController {
 
     // Get CountryMapping
     @ApiOperation(response = CountryMapping.class, value = "Get a CountryMapping") // label for swagger
-    @GetMapping("/countryMapping/{countryId}")
-    public ResponseEntity<?> getCountryMapping(@PathVariable String countryId, @RequestParam String partnerId, @RequestParam String companyId,
-                                                @RequestParam String languageId, @RequestParam String authToken) {
+    @GetMapping("/countryMapping/{partnerId}")
+    public ResponseEntity<?> getCountryMapping(@PathVariable String partnerId, @RequestParam String countryId, @RequestParam String companyId,
+                                               @RequestParam String languageId, @RequestParam String authToken) {
         CountryMapping countryMapping = idmasterService.getCountryMapping(languageId, companyId, countryId, partnerId, authToken);
         return new ResponseEntity<>(countryMapping, HttpStatus.OK);
     }
@@ -1156,9 +1198,9 @@ public class IDMasterServiceController {
 
     // Update CountryMapping
     @ApiOperation(response = Country.class, value = "Update CountryMapping") // label for swagger
-    @PatchMapping("/countryMapping/{countryId}")
-    public ResponseEntity<?> patchCountryMapping(@PathVariable String countryId, @RequestParam String partnerId, @RequestParam String languageId, @RequestParam String companyId,
-                                                  @RequestParam String loginUserID, @RequestBody UpdateCountryMapping updateCountryMapping, @RequestParam String authToken)
+    @PatchMapping("/countryMapping/{partnerId}")
+    public ResponseEntity<?> patchCountryMapping(@PathVariable String partnerId, @RequestParam String countryId, @RequestParam String languageId, @RequestParam String companyId,
+                                                 @RequestParam String loginUserID, @RequestBody UpdateCountryMapping updateCountryMapping, @RequestParam String authToken)
             throws IllegalAccessException, InvocationTargetException {
         CountryMapping countryMapping = idmasterService.updateCountryMapping(languageId, companyId, countryId, partnerId, updateCountryMapping, loginUserID, authToken);
         return new ResponseEntity<>(countryMapping, HttpStatus.OK);
@@ -1166,9 +1208,9 @@ public class IDMasterServiceController {
 
     // Delete CountryMapping
     @ApiOperation(response = CountryMapping.class, value = "Delete CountryMapping") // label for swagger
-    @DeleteMapping("/countryMapping/{countryId}")
-    public ResponseEntity<?> deleteCountryMapping(@PathVariable String countryId, @RequestParam String partnerId, @RequestParam String languageId,
-                                                   @RequestParam String companyId, @RequestParam String loginUserID, @RequestParam String authToken) {
+    @DeleteMapping("/countryMapping/{partnerId}")
+    public ResponseEntity<?> deleteCountryMapping(@PathVariable String partnerId, @RequestParam String countryId, @RequestParam String languageId,
+                                                  @RequestParam String companyId, @RequestParam String loginUserID, @RequestParam String authToken) {
         idmasterService.deleteCountryMapping(languageId, companyId, countryId, partnerId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -1193,10 +1235,10 @@ public class IDMasterServiceController {
 
     // Get Iata
     @ApiOperation(response = Iata.class, value = "Get a Iata") // label for swagger
-    @GetMapping("/iata/{iataKd}")
-    public ResponseEntity<?> getIata(@PathVariable String iataKd, @RequestParam String companyId, @RequestParam String languageId, @RequestParam String origin, @RequestParam String originCode,
+    @GetMapping("/iata/{originCode}")
+    public ResponseEntity<?> getIata(@PathVariable String originCode, @RequestParam String companyId, @RequestParam String languageId, @RequestParam String origin,
                                      @RequestParam String authToken) {
-        Iata dbIata = idmasterService.getIata(iataKd, companyId, languageId, origin, originCode, authToken);
+        Iata dbIata = idmasterService.getIata(companyId, languageId, origin, originCode, authToken);
         return new ResponseEntity<>(dbIata, HttpStatus.OK);
     }
 
@@ -1211,20 +1253,20 @@ public class IDMasterServiceController {
 
     // Update Iata
     @ApiOperation(response = Iata.class, value = "Update Iata") // label for swagger
-    @PatchMapping("/iata/{iataKd}")
-    public ResponseEntity<?> patchIata(@PathVariable String iataKd, @RequestParam String companyId, @RequestParam String languageId,@RequestParam String origin, @RequestParam String originCode, @RequestParam String loginUserID,
+    @PatchMapping("/iata/{originCode}")
+    public ResponseEntity<?> patchIata(@PathVariable String originCode, @RequestParam String companyId, @RequestParam String languageId, @RequestParam String origin, @RequestParam String loginUserID,
                                        @RequestBody UpdateIata updateIata, @RequestParam String authToken)
             throws IllegalAccessException, InvocationTargetException {
-        Iata updatedIata = idmasterService.updateIata(companyId, iataKd, languageId, origin, originCode, updateIata, loginUserID, authToken);
+        Iata updatedIata = idmasterService.updateIata(companyId, languageId, origin, originCode, updateIata, loginUserID, authToken);
         return new ResponseEntity<>(updatedIata, HttpStatus.OK);
     }
 
     // Delete Iata
     @ApiOperation(response = Iata.class, value = "Delete Iata") // label for swagger
-    @DeleteMapping("/iata/{iataKd}")
-    public ResponseEntity<?> deleteIata(@PathVariable String iataKd, @RequestParam String companyId, @RequestParam String languageId, @RequestParam String origin, @RequestParam String originCode,
+    @DeleteMapping("/iata/{originCode}")
+    public ResponseEntity<?> deleteIata(@PathVariable String originCode, @RequestParam String companyId, @RequestParam String languageId, @RequestParam String origin,
                                         @RequestParam String loginUserID, @RequestParam String authToken) {
-        idmasterService.deleteIata(companyId, iataKd, origin, originCode, languageId, loginUserID, authToken);
+        idmasterService.deleteIata(companyId, origin, originCode, languageId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -1234,6 +1276,763 @@ public class IDMasterServiceController {
     public ResponseEntity<?> findRateParameter(@RequestBody FindIata findIata, @RequestParam String authToken) throws Exception {
         Iata[] iataList = idmasterService.findIata(findIata, authToken);
         return new ResponseEntity<>(iataList, HttpStatus.OK);
+    }
+
+    //================================================CityMapping==================================================
+    // Get All CityMapping Details
+    @ApiOperation(response = CityMapping[].class, value = "Get all CityMapping Details") // label for swagger
+    @GetMapping("/cityMapping")
+    public ResponseEntity<?> getAllCityMappingDetails(@RequestParam String authToken) {
+        CityMapping[] cityMappings = idmasterService.getAllCityMappings(authToken);
+        return new ResponseEntity<>(cityMappings, HttpStatus.OK);
+    }
+
+    // Get CityMapping
+    @ApiOperation(response = CityMapping.class, value = "Get a CityMapping") // label for swagger
+    @GetMapping("/cityMapping/{partnerId}")
+    public ResponseEntity<?> getCityMapping(@PathVariable String partnerId, @RequestParam String cityId, @RequestParam String companyId,
+                                            @RequestParam String languageId, @RequestParam String authToken) {
+        CityMapping cityMapping = idmasterService.getCityMapping(languageId, companyId, cityId, partnerId, authToken);
+        return new ResponseEntity<>(cityMapping, HttpStatus.OK);
+    }
+
+    // Create new CityMapping
+    @ApiOperation(response = CityMapping.class, value = "Create new CityMapping") // label for swagger
+    @PostMapping("/cityMapping")
+    public ResponseEntity<?> postCityMapping(@RequestBody AddCityMapping addCityMapping, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        CityMapping cityMapping = idmasterService.createCityMapping(addCityMapping, loginUserID, authToken);
+        return new ResponseEntity<>(cityMapping, HttpStatus.OK);
+    }
+
+    // Update CityMapping
+    @ApiOperation(response = City.class, value = "Update CityMapping") // label for swagger
+    @PatchMapping("/cityMapping/{partnerId}")
+    public ResponseEntity<?> patchCityMapping(@PathVariable String partnerId, @RequestParam String cityId, @RequestParam String languageId, @RequestParam String companyId,
+                                              @RequestParam String loginUserID, @RequestBody UpdateCityMapping updateCityMapping, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        CityMapping cityMapping = idmasterService.updateCityMapping(languageId, companyId, cityId, partnerId, updateCityMapping, loginUserID, authToken);
+        return new ResponseEntity<>(cityMapping, HttpStatus.OK);
+    }
+
+    // Delete CityMapping
+    @ApiOperation(response = CityMapping.class, value = "Delete CityMapping") // label for swagger
+    @DeleteMapping("/cityMapping/{partnerId}")
+    public ResponseEntity<?> deletecityMapping(@PathVariable String partnerId, @RequestParam String cityId, @RequestParam String languageId,
+                                               @RequestParam String companyId, @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteCityMapping(languageId, companyId, cityId, partnerId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find CityMapping
+    @ApiOperation(response = CityMapping[].class, value = "Find CityMapping") // label for swagger
+    @PostMapping("/cityMapping/find")
+    public ResponseEntity<?> findCityMapping(@RequestBody FindCityMapping findCityMapping, @RequestParam String authToken) throws Exception {
+        CityMapping[] cityMappings = idmasterService.findCityMappings(findCityMapping, authToken);
+        return new ResponseEntity<>(cityMappings, HttpStatus.OK);
+    }
+
+    //---------------------------------------------------Menu----------------------------------------------------------
+    // Get All Menu Details
+    @ApiOperation(response = Menu.class, value = "Get all Menu details") // label for swagger
+    @GetMapping("/menu")
+    public ResponseEntity<?> getAllMenus(@RequestParam String authToken) {
+        Menu[] menuList = idmasterService.getAllMenus(authToken);
+        return new ResponseEntity<>(menuList, HttpStatus.OK);
+    }
+
+    // Get a Menu
+    @ApiOperation(response = Menu.class, value = "Get a Menu") // label for swagger
+    @GetMapping("/menu/{menuId}")
+    public ResponseEntity<?> getMenu(@PathVariable Long menuId, @RequestParam Long subMenuId, @RequestParam Long authorizationObjectId,
+                                     @RequestParam String companyId, @RequestParam String languageId, @RequestParam String authToken) {
+        Menu dbMenu = idmasterService.getMenu(menuId, subMenuId, authorizationObjectId, companyId, languageId, authToken);
+        return new ResponseEntity<>(dbMenu, HttpStatus.OK);
+    }
+
+    // Create new Menu
+    @ApiOperation(response = Menu.class, value = "Create Menu") // label for swagger
+    @PostMapping("/menu")
+    public ResponseEntity<?> postMenu(@Valid @RequestBody AddMenu addMenu, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Menu menu = idmasterService.createMenu(addMenu, loginUserID, authToken);
+        return new ResponseEntity<>(menu, HttpStatus.OK);
+    }
+
+    // Create Menu Bulk
+    @ApiOperation(response = Menu.class, value = "Create Multiple Menus") // label for swagger
+    @PostMapping("/menu/bulk")
+    public ResponseEntity<?> postMenuBulk(@Valid @RequestBody List<AddMenu> addMenuList, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Menu[] menuBulk = idmasterService.createMenuBulk(addMenuList, loginUserID, authToken);
+        return new ResponseEntity<>(menuBulk, HttpStatus.OK);
+    }
+
+    // Update Menu
+    @ApiOperation(response = Menu.class, value = "Update Menu") // label for swagger
+    @PatchMapping("/menu/{menuId}")
+    public ResponseEntity<?> patchMenu(@PathVariable Long menuId, @RequestParam Long subMenuId, @RequestParam Long authorizationObjectId,
+                                       @RequestParam String companyId, @RequestParam String languageId, @RequestParam String loginUserID,
+                                       @RequestBody UpdateMenu updateMenu, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Menu menu = idmasterService.updateMenu(menuId, subMenuId, authorizationObjectId, companyId, languageId, loginUserID, updateMenu, authToken);
+        return new ResponseEntity<>(menu, HttpStatus.OK);
+    }
+
+    // Delete Menu
+    @ApiOperation(response = Menu.class, value = "Delete Menu") // label for swagger
+    @DeleteMapping("/menu/{menuId}")
+    public ResponseEntity<?> deleteMenu(@PathVariable Long menuId, @RequestParam Long subMenuId,
+                                        @RequestParam Long authorizationObjectId, @RequestParam String companyId, @RequestParam String languageId,
+                                        @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteMenu(menuId, subMenuId, authorizationObjectId, companyId, languageId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Menus
+    @ApiOperation(response = Menu[].class, value = "Find Menu") //label for swagger
+    @PostMapping("/menu/find")
+    public Menu[] findMenu(@RequestBody FindMenu findMenu, @RequestParam String authToken) throws Exception {
+        return idmasterService.findMenus(findMenu, authToken);
+    }
+
+
+    //===============================================District==========================================================
+    // Get All District
+    @ApiOperation(response = District[].class, value = "Get all District Details") // label for swagger
+    @GetMapping("/district")
+    public ResponseEntity<?> getAllDistrict(@RequestParam String authToken) {
+        District[] districtList = idmasterService.getAllDistrict(authToken);
+        return new ResponseEntity<>(districtList, HttpStatus.OK);
+    }
+
+    // Get District
+    @ApiOperation(response = District.class, value = "Get a District") // label for swagger
+    @GetMapping("/district/{districtId}")
+    public ResponseEntity<?> getDistrict(@RequestParam String languageId, @RequestParam String companyId, @RequestParam String countryId, @PathVariable String districtId, @RequestParam String provinceId, @RequestParam String authToken) {
+        District dbDistrict = idmasterService.getDistrict(languageId, companyId, countryId, provinceId, districtId, authToken);
+        return new ResponseEntity<>(dbDistrict, HttpStatus.OK);
+    }
+
+    // Create District
+    @ApiOperation(response = District.class, value = "Create new District") // label for swagger
+    @PostMapping("/district")
+    public ResponseEntity<?> postDistrict(@Valid @RequestBody AddDistrict addDistrict, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        District newDistrict = idmasterService.createDistrict(addDistrict, loginUserID, authToken);
+        return new ResponseEntity<>(newDistrict, HttpStatus.OK);
+    }
+
+    // Update District
+    @ApiOperation(response = District.class, value = "Update District") // label for swagger
+    @PatchMapping("/district/{districtId}")
+    public ResponseEntity<?> patchDistrict(@RequestParam String languageId, @RequestParam String companyId, @RequestParam String countryId, @PathVariable String districtId, @RequestParam String provinceId, @RequestParam String loginUserID,
+                                           @RequestBody UpdateDistrict updateDistrict, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        District updatedDistrict = idmasterService.updateDistrict(languageId, companyId, countryId, provinceId, districtId, updateDistrict, loginUserID, authToken);
+        return new ResponseEntity<>(updatedDistrict, HttpStatus.OK);
+    }
+
+    // Delete District
+    @ApiOperation(response = District.class, value = "Delete District") // label for swagger
+    @DeleteMapping("/district/{districtId}")
+    public ResponseEntity<?> deleteDistrict(@RequestParam String languageId, @RequestParam String companyId, @RequestParam String countryId, @PathVariable String districtId, @RequestParam String provinceId,
+                                            @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteDistrict(languageId, companyId, countryId, provinceId, districtId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find District
+    @ApiOperation(response = District[].class, value = "Find District")
+    @PostMapping("/district/find")
+    public ResponseEntity<?> findDistrict(@Valid @RequestBody FindDistrict findDistrict, @RequestParam String authToken) throws Exception {
+        District[] districtList = idmasterService.findDistrict(findDistrict, authToken);
+        return new ResponseEntity<>(districtList, HttpStatus.OK);
+    }
+
+
+    //===========================================DistrictMapping=======================================================//
+
+    // Get All DistrictMapping Details
+    @ApiOperation(response = DistrictMapping[].class, value = "Get all DistrictMapping Details") // label for swagger
+    @GetMapping("/districtMapping")
+    public ResponseEntity<?> getAllDistrictMappingDetails(@RequestParam String authToken) {
+        DistrictMapping[] districtMappings = idmasterService.getAllDistrictMappings(authToken);
+        return new ResponseEntity<>(districtMappings, HttpStatus.OK);
+    }
+
+    // Get DistrictMapping
+    @ApiOperation(response = DistrictMapping.class, value = "Get a DistrictMapping") // label for swagger
+    @GetMapping("/districtMapping/{partnerId}")
+    public ResponseEntity<?> getDistrictMapping(@PathVariable String partnerId, @RequestParam String languageId,
+                                                @RequestParam String companyId, @RequestParam String districtId, @RequestParam String authToken) {
+        DistrictMapping districtMapping = idmasterService.getDistrictMapping(languageId, companyId, partnerId, districtId, authToken);
+        return new ResponseEntity<>(districtMapping, HttpStatus.OK);
+    }
+
+    // Create new DistrictMapping
+    @ApiOperation(response = DistrictMapping.class, value = "Create new DistrictMapping") // label for swagger
+    @PostMapping("/districtMapping")
+    public ResponseEntity<?> postDistrictMapping(@RequestBody AddDistrictMapping addDistrictMapping, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        DistrictMapping districtMapping = idmasterService.createDistrictMapping(addDistrictMapping, loginUserID, authToken);
+        return new ResponseEntity<>(districtMapping, HttpStatus.OK);
+    }
+
+    // Update DistrictMapping
+    @ApiOperation(response = District.class, value = "Update DistrictMapping") // label for swagger
+    @PatchMapping("/districtMapping/{partnerId}")
+    public ResponseEntity<?> patchDistrictMapping(@PathVariable String partnerId, @RequestParam String languageId,
+                                                  @RequestParam String companyId, @RequestParam String districtId,
+                                                  @RequestParam String loginUserID, @RequestBody UpdateDistrictMapping updateDistrictMapping, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        DistrictMapping districtMapping = idmasterService.updateDistrictMapping(languageId, companyId, partnerId, districtId, updateDistrictMapping, loginUserID, authToken);
+        return new ResponseEntity<>(districtMapping, HttpStatus.OK);
+    }
+
+    // Delete DistrictMapping
+    @ApiOperation(response = DistrictMapping.class, value = "Delete DistrictMapping") // label for swagger
+    @DeleteMapping("/districtMapping/{partnerId}")
+    public ResponseEntity<?> deleteDistrictMapping(@PathVariable String partnerId, @RequestParam String languageId,
+                                                   @RequestParam String companyId, @RequestParam String districtId,
+                                                   @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteDistrictMapping(languageId, companyId, partnerId, districtId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find DistrictMapping
+    @ApiOperation(response = DistrictMapping[].class, value = "Find DistrictMapping") // label for swagger
+    @PostMapping("/districtMapping/find")
+    public ResponseEntity<?> findDistrictMapping(@RequestBody FindDistrictMapping findDistrictMapping, @RequestParam String authToken) throws Exception {
+        DistrictMapping[] districtMappings = idmasterService.findDistrictMappings(findDistrictMapping, authToken);
+        return new ResponseEntity<>(districtMappings, HttpStatus.OK);
+    }
+
+
+    //===============================================CurrencyExchangeRate==========================================================
+
+    // Get All CurrencyExchangeRate Details
+    @ApiOperation(response = CurrencyExchangeRate[].class, value = "Get all CurrencyExchangeRate details")
+    // label for swagger
+    @GetMapping("/currencyExchangeRate")
+    public ResponseEntity<?> getAllCurrencyExchangeRate(@RequestParam String authToken) {
+        CurrencyExchangeRate[] currencyExchangeRate = idmasterService.getAllCurrencyExchangeRate(authToken);
+        return new ResponseEntity<>(currencyExchangeRate, HttpStatus.OK);
+    }
+
+    // Get CurrencyExchangeRate
+    @ApiOperation(response = CurrencyExchangeRate.class, value = "Get a CurrencyExchangeRate") // label for swagger
+    @GetMapping("/currencyExchangeRate/{fromCurrencyId}")
+    public ResponseEntity<?> getCurrencyExchangeRate(@PathVariable String fromCurrencyId, @RequestParam String languageId,
+                                                     @RequestParam String companyId, @RequestParam String toCurrencyId, @RequestParam String authToken) {
+        CurrencyExchangeRate dbCurrencyExchangeRate = idmasterService.getCurrencyExchangeRate
+                (languageId, companyId, fromCurrencyId, toCurrencyId, authToken);
+        return new ResponseEntity<>(dbCurrencyExchangeRate, HttpStatus.OK);
+    }
+
+    // Create CurrencyExchangeRate
+    @ApiOperation(response = CurrencyExchangeRate.class, value = "Create new CurrencyExchangeRate") // label for swagger
+    @PostMapping("/currencyExchangeRate")
+    public ResponseEntity<?> postCurrencyExchangeRate(@RequestBody AddCurrencyExchangeRate addCurrencyExchangeRate, @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        CurrencyExchangeRate createdCurrencyExchangeRate = idmasterService.createCurrencyExchangeRate
+                (addCurrencyExchangeRate, loginUserID, authToken);
+        return new ResponseEntity<>(createdCurrencyExchangeRate, HttpStatus.OK);
+    }
+
+    // Update CurrencyExchangeRate
+    @ApiOperation(response = CurrencyExchangeRate.class, value = "Update CurrencyExchangeRate") // label for swagger
+    @PatchMapping("/currencyExchangeRate/{fromCurrencyId}")
+    public ResponseEntity<?> patchCurrencyExchangeRate(@PathVariable String fromCurrencyId, @RequestParam String languageId,
+                                                       @RequestParam String companyId, @RequestParam String toCurrencyId,
+                                                       @RequestParam String loginUserID, @RequestBody UpdateCurrencyExchangeRate updateCurrencyExchangeRate,
+                                                       @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
+        CurrencyExchangeRate updatedCurrencyExchangeRate = idmasterService.updateCurrencyExchangeRate
+                (languageId, companyId, fromCurrencyId, toCurrencyId, updateCurrencyExchangeRate, loginUserID, authToken);
+        return new ResponseEntity<>(updatedCurrencyExchangeRate, HttpStatus.OK);
+    }
+
+    // Delete CurrencyExchangeRate
+    @ApiOperation(response = CurrencyExchangeRate.class, value = "Delete CurrencyExchangeRate") // label for swagger
+    @DeleteMapping("/currencyExchangeRate/{fromCurrencyId}")
+    public ResponseEntity<?> deleteCurrencyExchangeRate(@PathVariable String fromCurrencyId, @RequestParam String languageId,
+                                                        @RequestParam String companyId, @RequestParam String toCurrencyId,
+                                                        @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteCurrencyExchangeRate(languageId, companyId, fromCurrencyId, toCurrencyId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find CurrencyExchangeRate
+    @ApiOperation(response = CurrencyExchangeRate[].class, value = "Find CurrencyExchangeRate")//label for swagger
+    @PostMapping("/currencyExchangeRate/find")
+    public CurrencyExchangeRate[] findCurrencyExchangeRate(@RequestBody FindCurrencyExchangeRate findCurrencyExchangeRate,
+                                                           @RequestParam String authToken) throws Exception {
+        return idmasterService.findCurrencyExchangeRate(findCurrencyExchangeRate, authToken);
+    }
+
+    //===================================================Event==========================================================
+    // Get all Event Details
+    @ApiOperation(response = Event.class, value = "Get All Event Details") // label for swagger
+    @GetMapping("/event")
+    public ResponseEntity<?> getAllEventDetails(@RequestParam String authToken) {
+        Event[] event = idmasterService.getAllEvents(authToken);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    // Get Event
+    @ApiOperation(response = Event.class, value = "Get Event") // label for swagger
+    @GetMapping("/event/{eventCode}")
+    public ResponseEntity<?> getEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId,
+                                      @RequestParam String statusCode, @RequestParam String authToken) {
+        Event event = idmasterService.getEvent(languageId, companyId, statusCode, eventCode, authToken);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    // Create Event
+    @ApiOperation(response = Event.class, value = "Create new Event") // label for swagger
+    @PostMapping("/event")
+    public ResponseEntity<?> createEvent(@RequestBody AddEvent addEvent, @RequestParam String loginUserID, @RequestParam String authToken) {
+        Event event = idmasterService.createEvent(addEvent, loginUserID, authToken);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    // Update Event
+    @ApiOperation(response = Event.class, value = "Update Event") // label for swagger
+    @PatchMapping("/event/{eventCode}")
+    public ResponseEntity<?> updateEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId,
+                                         @RequestParam String statusCode, @RequestParam String loginUserID,
+                                         @RequestBody UpdateEvent updateEvent, @RequestParam String authToken) {
+        Event event = idmasterService.updateEvent(languageId, companyId, statusCode, eventCode, updateEvent, loginUserID, authToken);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    // Delete Event
+    @ApiOperation(response = Event.class, value = "Delete Event") // label for swagger
+    @DeleteMapping("/event/{eventCode}")
+    public ResponseEntity<?> deleteEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String statusCode,
+                                         @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteEvent(languageId, companyId, statusCode, eventCode, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Event
+    @ApiOperation(response = Event[].class, value = "Find Event") //label for swagger
+    @PostMapping("/event/find")
+    public Event[] findEvent(@RequestBody FindEvent findEvent, @RequestParam String authToken) throws Exception {
+        return idmasterService.findEvent(findEvent, authToken);
+    }
+
+    //==============================================OpStatus====================================================
+    // Get All OpStatus Details
+    @ApiOperation(response = OpStatus[].class, value = "Get all OpStatus details") // label for swagger
+    @GetMapping("/opStatus")
+    public ResponseEntity<?> getOpStatuses(@RequestParam String authToken) {
+        OpStatus[] opStatuses = idmasterService.getOpStatuses(authToken);
+        return new ResponseEntity<>(opStatuses, HttpStatus.OK);
+    }
+
+    // Get OpStatus
+    @ApiOperation(response = OpStatus.class, value = "Get OpStatus") // label for swagger
+    @GetMapping("/opStatus/{statusCode}")
+    public ResponseEntity<?> getOpStatus(@PathVariable String statusCode, @RequestParam String languageId,
+                                         @RequestParam String companyId, @RequestParam String authToken) {
+        OpStatus dbOpStatus = idmasterService.getOpStatus(companyId, languageId, statusCode, authToken);
+        return new ResponseEntity<>(dbOpStatus, HttpStatus.OK);
+    }
+
+    // Create new OpStatus
+    @ApiOperation(response = OpStatus.class, value = "Create new OpStatus") // label for swagger
+    @PostMapping("/opStatus")
+    public ResponseEntity<?> postOpStatus(@RequestBody AddOpStatus newOpStatus,
+                                          @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        OpStatus createOpStatus = idmasterService.createOpStatus(newOpStatus, loginUserID, authToken);
+        return new ResponseEntity<>(createOpStatus, HttpStatus.OK);
+    }
+
+    // Update OpStatus
+    @ApiOperation(response = OpStatus.class, value = "Update OpStatus") // label for swagger
+    @PatchMapping("/opStatus/{statusCode}")
+    public ResponseEntity<?> updateOpStatus(@PathVariable String statusCode, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String loginUserID,
+                                            @RequestBody UpdateOpStatus updateOpStatus, @RequestParam String authToken) {
+        OpStatus updatedOpStatus = idmasterService.updateOpStatus(companyId, languageId, statusCode, loginUserID, updateOpStatus, authToken);
+        return new ResponseEntity<>(updatedOpStatus, HttpStatus.OK);
+    }
+
+    // Delete OpStatus
+    @ApiOperation(response = OpStatus.class, value = "Delete OpStatus") // label for swagger
+    @DeleteMapping("/opStatus/{statusCode}")
+    public ResponseEntity<?> deleteOpStatus(@PathVariable String statusCode, @RequestParam String languageId, @RequestParam String companyId,
+                                            @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteOpStatus(companyId, languageId, statusCode, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find OpStatus
+    @ApiOperation(response = OpStatus[].class, value = "Find OpStatus")//label for swagger
+    @PostMapping("/opStatus/find")
+    public OpStatus[] findOpStatus(@RequestBody FindOpStatus findOpStatus, @RequestParam String authToken)
+            throws Exception {
+        return idmasterService.findOpStatus(findOpStatus, authToken);
+    }
+
+    //---------------------------------------------------Module----------------------------------------------------------
+    // Get All Module Details
+    @ApiOperation(response = Module.class, value = "Get all Module details") // label for swagger
+    @GetMapping("/module")
+    public ResponseEntity<?> getAllModule(@RequestParam String authToken) {
+        Module[] modules = idmasterService.getAllModule(authToken);
+        return new ResponseEntity<>(modules, HttpStatus.OK);
+    }
+
+    // Get ModuleList
+    @ApiOperation(response = Module.class, value = "Get ModuleList") // label for swagger
+    @GetMapping("/module/modulelist/{moduleId}")
+    public ResponseEntity<?> getModuleList(@PathVariable String moduleId, @RequestParam String companyId,
+                                           @RequestParam String languageId, @RequestParam String authToken) {
+        Module[] dbModule = idmasterService.getModuleList(companyId, languageId, moduleId, authToken);
+        return new ResponseEntity<>(dbModule, HttpStatus.OK);
+    }
+
+    // Get a Module
+    @ApiOperation(response = Module.class, value = "Get a Module") // label for swagger
+    @GetMapping("/module/{moduleId}")
+    public ResponseEntity<?> getModule(@PathVariable String moduleId, @RequestParam Long subMenuId, @RequestParam Long menuId,
+                                       @RequestParam String companyId, @RequestParam String languageId, @RequestParam String authToken) {
+        Module dbModule = idmasterService.getModule(menuId, companyId, languageId, moduleId, subMenuId, authToken);
+        return new ResponseEntity<>(dbModule, HttpStatus.OK);
+    }
+
+    // Create Module
+    @ApiOperation(response = Module.class, value = "Create Module") // label for swagger
+    @PostMapping("/module/bulk")
+    public ResponseEntity<?> postModule(@Valid @RequestBody List<AddModule> addModule, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Module[] module = idmasterService.createModule(addModule, loginUserID, authToken);
+        return new ResponseEntity<>(module, HttpStatus.OK);
+    }
+
+    // Update Module
+    @ApiOperation(response = Module.class, value = "Update Module") // label for swagger
+    @PatchMapping("/module/{moduleId}")
+    public ResponseEntity<?> patchModule(@PathVariable String moduleId, @RequestParam String companyId, @RequestParam String languageId,
+                                         @RequestParam String loginUserID, @RequestBody List<UpdateModule> updateModule, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Module[] module = idmasterService.updateModule(moduleId, companyId, languageId, loginUserID, updateModule, authToken);
+        return new ResponseEntity<>(module, HttpStatus.OK);
+    }
+
+    // Delete Module
+    @ApiOperation(response = Module.class, value = "Delete Module") // label for swagger
+    @DeleteMapping("/module/{moduleId}")
+    public ResponseEntity<?> deleteModule(@PathVariable String moduleId,
+                                          @RequestParam String companyId, @RequestParam String languageId,
+                                          @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteModule(moduleId, companyId, languageId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Modules
+    @ApiOperation(response = Module[].class, value = "Find Module") //label for swagger
+    @PostMapping("/module/find")
+    public Module[] findModule(@RequestBody FindModule findModule, @RequestParam String authToken) throws Exception {
+        return idmasterService.findModule(findModule, authToken);
+    }
+
+    //==================================================SpecialApproval====================================================
+    // Get All SpecialApproval Details
+    @ApiOperation(response = SpecialApproval[].class, value = "Get all SpecialApproval details") // label for swagger
+    @GetMapping("/specialApproval")
+    public ResponseEntity<?> getAllSpecialApproval(@RequestParam String authToken) {
+        SpecialApproval[] specialApprovals = idmasterService.getAllSpecialApproval(authToken);
+        return new ResponseEntity<>(specialApprovals, HttpStatus.OK);
+    }
+
+    // Get SpecialApproval
+    @ApiOperation(response = SpecialApproval.class, value = "Get SpecialApproval") // label for swagger
+    @GetMapping("/specialApproval/{specialApprovalId}")
+    public ResponseEntity<?> getSpecialApproval(@PathVariable String specialApprovalId, @RequestParam String languageId,
+                                                @RequestParam String companyId, @RequestParam String authToken) {
+        SpecialApproval dbSpecialApproval = idmasterService.getSpecialApproval(companyId, languageId, specialApprovalId, authToken);
+        return new ResponseEntity<>(dbSpecialApproval, HttpStatus.OK);
+    }
+
+
+    // Create new SpecialApproval
+    @ApiOperation(response = SpecialApproval.class, value = "Create new SpecialApproval") // label for swagger
+    @PostMapping("/specialApproval")
+    public ResponseEntity<?> postSpecialApproval(@RequestBody AddSpecialApproval addSpecialApproval,
+                                                 @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        SpecialApproval createSpecialApproval = idmasterService.createSpecialApproval(addSpecialApproval, loginUserID, authToken);
+        return new ResponseEntity<>(createSpecialApproval, HttpStatus.OK);
+    }
+
+    // Update SpecialApproval
+    @ApiOperation(response = SpecialApproval.class, value = "Update SpecialApproval") // label for swagger
+    @PatchMapping("/specialApproval/{specialApprovalId}")
+    public ResponseEntity<?> updateSpecialApproval(@PathVariable String specialApprovalId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String loginUserID,
+                                                   @RequestBody UpdateSpecialApproval updateSpecialApproval, @RequestParam String authToken) {
+        SpecialApproval updatedSpecialApproval = idmasterService.updateSpecialApproval(companyId, languageId, specialApprovalId, loginUserID, updateSpecialApproval, authToken);
+        return new ResponseEntity<>(updatedSpecialApproval, HttpStatus.OK);
+    }
+
+    // Delete SpecialApproval
+    @ApiOperation(response = SpecialApproval.class, value = "Delete SpecialApproval") // label for swagger
+    @DeleteMapping("/specialApproval/{specialApprovalId}")
+    public ResponseEntity<?> deleteSpecialApproval(@PathVariable String specialApprovalId, @RequestParam String languageId, @RequestParam String companyId,
+                                                   @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteSpecialApproval(companyId, languageId, specialApprovalId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find SpecialApproval
+    @ApiOperation(response = SpecialApproval[].class, value = "Find SpecialApproval")//label for swagger
+    @PostMapping("/specialApproval/find")
+    public SpecialApproval[] findSpecialApproval(@RequestBody FindSpecialApproval findSpecialApproval,
+                                                 @RequestParam String authToken) throws Exception {
+        return idmasterService.findSpecialApproval(findSpecialApproval, authToken);
+    }
+
+    //==================================================RoleAccess ====================================================
+
+    // Get All RoleAccess Details
+    @ApiOperation(response = RoleAccess[].class, value = "Get all RoleAccess details") // label for swagger
+    @GetMapping("/roleAccess")
+    public ResponseEntity<?> getAllRoleAccess(@RequestParam String authToken) {
+        RoleAccess[] roleAccess = idmasterService.getAllRoleAccess(authToken);
+        return new ResponseEntity<>(roleAccess, HttpStatus.OK);
+    }
+
+    // Get RoleAccess
+    @ApiOperation(response = RoleAccess.class, value = "Get RoleAccess") // label for swagger
+    @GetMapping("/roleAccess/{roleId}")
+    public ResponseEntity<?> getRoleAccess(@PathVariable Long roleId, @RequestParam Long menuId, @RequestParam String companyId,
+                                           @RequestParam String languageId, @RequestParam Long subMenuId, @RequestParam String authToken) {
+        RoleAccess roleAccesses = idmasterService.getRoleAccess(companyId, languageId, roleId, menuId, subMenuId, authToken);
+        return new ResponseEntity<>(roleAccesses, HttpStatus.OK);
+    }
+
+
+    // Create new RoleAccess
+    @ApiOperation(response = RoleAccess.class, value = "Create new RoleAccess") // label for swagger
+    @PostMapping("/roleAccess")
+    public ResponseEntity<?> postRoleAccess(@Valid @RequestBody List<AddRoleAccess> newRoleAccess,
+                                            @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        RoleAccess[] createRoleAccess = idmasterService.createRoleAccess(newRoleAccess, loginUserID, authToken);
+        return new ResponseEntity<>(createRoleAccess, HttpStatus.OK);
+    }
+
+    // Update RoleAccess
+    @ApiOperation(response = RoleAccess.class, value = "Update RoleAccess") // label for swagger
+    @PatchMapping("/roleAccess/{roleId}")
+    public ResponseEntity<?> updateRoleAccess(@PathVariable Long roleId,
+                                              @RequestParam Long menuId, @RequestParam String companyId, @RequestParam String languageId, @RequestParam Long subMenuId,
+                                              @RequestBody UpdateRoleAccess updateRoleAccess, @RequestParam String loginUserID, @RequestParam String authToken) {
+        RoleAccess updatedRoleAccess = idmasterService.updateRoleAccess(companyId, languageId, roleId, menuId, subMenuId, loginUserID, updateRoleAccess, authToken);
+        return new ResponseEntity<>(updatedRoleAccess, HttpStatus.OK);
+    }
+
+    // Delete RoleAccess
+    @ApiOperation(response = RoleAccess.class, value = "Delete RoleAccess") // label for swagger
+    @DeleteMapping("/roleAccess/{roleId}")
+    public ResponseEntity<?> deleteRoleAccess(@PathVariable Long roleId, @RequestParam String companyId,
+                                              @RequestParam String languageId, @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteRoleAccess(languageId, companyId, roleId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find RoleAccess
+    @ApiOperation(response = RoleAccess[].class, value = "Find RoleAccess")//label for swagger
+    @PostMapping("/roleAccess/find")
+    public RoleAccess[] findRoleAccess(@RequestBody FindRoleAccess findRoleAccess, @RequestParam String authToken) throws Exception {
+        return idmasterService.findRoleAccess(findRoleAccess, authToken);
+    }
+
+    //==================================================UserType====================================================
+    // Get All UserType Details
+    @ApiOperation(response = UserType[].class, value = "Get all UserType details") // label for swagger
+    @GetMapping("/userType")
+    public ResponseEntity<?> getAllUserType(@RequestParam String authToken) {
+        UserType[] userTypes = idmasterService.getAllUserType(authToken);
+        return new ResponseEntity<>(userTypes, HttpStatus.OK);
+    }
+
+    // Get UserType
+    @ApiOperation(response = UserType.class, value = "Get UserType") // label for swagger
+    @GetMapping("/userType/{userTypeId}")
+    public ResponseEntity<?> getUserType(@PathVariable Long userTypeId, @RequestParam String languageId,
+                                         @RequestParam String companyId, @RequestParam String authToken) {
+        UserType dbUserType = idmasterService.getUserType(userTypeId, companyId, languageId, authToken);
+        return new ResponseEntity<>(dbUserType, HttpStatus.OK);
+    }
+
+    // Create UserType
+    @ApiOperation(response = UserType.class, value = "Create new UserType") // label for swagger
+    @PostMapping("/userType")
+    public ResponseEntity<?> postUserType(@RequestBody AddUserType addUserType,
+                                          @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        UserType createUserType = idmasterService.createUserType(addUserType, loginUserID, authToken);
+        return new ResponseEntity<>(createUserType, HttpStatus.OK);
+    }
+
+    // Update UserType
+    @ApiOperation(response = UserType.class, value = "Update UserType") // label for swagger
+    @PatchMapping("/userType/{userTypeId}")
+    public ResponseEntity<?> updateUserType(@PathVariable Long userTypeId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String loginUserID,
+                                            @RequestBody UpdateUserType updateUserType, @RequestParam String authToken) {
+        UserType updatedUserType = idmasterService.updateUserType(companyId, languageId, userTypeId, loginUserID, updateUserType, authToken);
+        return new ResponseEntity<>(updatedUserType, HttpStatus.OK);
+    }
+
+    // Delete UserType
+    @ApiOperation(response = UserType.class, value = "Delete UserType") // label for swagger
+    @DeleteMapping("/userType/{userTypeId}")
+    public ResponseEntity<?> deleteUserType(@PathVariable Long userTypeId, @RequestParam String languageId, @RequestParam String companyId,
+                                            @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteUserType(companyId, languageId, userTypeId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find UserType
+    @ApiOperation(response = UserType[].class, value = "Find UserType")//label for swagger
+    @PostMapping("/userType/find")
+    public UserType[] findUserType(@RequestBody FindUserType findUserType,
+                                   @RequestParam String authToken) throws Exception {
+        return idmasterService.findUserType(findUserType, authToken);
+    }
+
+    /* --------------------------------User Management-------------------------------------------------------------------------------------*/
+    // Login - Validate User
+    @ApiOperation(response = Optional.class, value = "Login User") // label for swagger
+    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> loginUser(@RequestParam String userID, @RequestParam String password,
+                                       @RequestParam String authToken, @RequestParam(required = false) String version) {
+        try {
+            UserManagement loggedUser = idmasterService.validateUserID(userID, password, authToken, version);
+            log.info("LoginUser::: " + loggedUser);
+            log.info("version::: " + version);
+            return new ResponseEntity<>(loggedUser, HttpStatus.OK);
+        } catch (BadRequestException e) {
+            log.error("Invalid user");
+            String errMsg = "Either UserId is invalid or Password does not match.";
+            CustomErrorResponse error = new CustomErrorResponse();
+            error.setTimestamp(LocalDateTime.now());
+            error.setError(errMsg);
+            error.setStatus(HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @ApiOperation(response = UserManagement.class, value = "Get all UserManagement details") // label for swagger
+    @GetMapping("/usermanagement")
+    public ResponseEntity<?> getAllUserManagementDetails(@RequestParam String authToken) {
+        UserManagement[] userManagementList = idmasterService.getAllUserManagements(authToken);
+        return new ResponseEntity<>(userManagementList, HttpStatus.OK);
+    }
+
+    @ApiOperation(response = UserManagement.class, value = "Get a UserManagement") // label for swagger
+    @GetMapping("/usermanagement/{userId}")
+    public ResponseEntity<?> getUserManagement(@PathVariable String userId, @RequestParam String companyId, @RequestParam String languageId,
+                                               @RequestParam String authToken) {
+        UserManagement dbUserManagement = idmasterService.getUserManagement(userId, companyId, languageId, authToken);
+        return new ResponseEntity<>(dbUserManagement, HttpStatus.OK);
+    }
+
+    @ApiOperation(response = UserManagement.class, value = "Create UserManagement") // label for swagger
+    @PostMapping("/usermanagement")
+    public ResponseEntity<?> postUserManagement(@Valid @RequestBody AddUserManagement addUserManagement,
+                                                @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        UserManagement createdUserManagement = idmasterService.createUserManagement(addUserManagement, loginUserID, authToken);
+        return new ResponseEntity<>(createdUserManagement, HttpStatus.OK);
+    }
+
+    @ApiOperation(response = UserManagement.class, value = "Update UserManagement") // label for swagger
+    @PatchMapping("/usermanagement/{userId}")
+    public ResponseEntity<?> patchUserManagement(@PathVariable String userId, @RequestParam String companyId, @RequestParam String languageId,
+                                                 @RequestParam String loginUserID, @RequestParam String authToken, @Valid @RequestBody UpdateUserManagement updateUserManagement)
+            throws IllegalAccessException, InvocationTargetException {
+        UserManagement updatedUserManagement =
+                idmasterService.updateUserManagement(userId, loginUserID, companyId, languageId, updateUserManagement, authToken);
+        return new ResponseEntity<>(updatedUserManagement, HttpStatus.OK);
+    }
+
+    @ApiOperation(response = UserManagement.class, value = "Delete UserManagement") // label for swagger
+    @DeleteMapping("/usermanagement/{userId}")
+    public ResponseEntity<?> deleteUserManagement(@PathVariable String userId, @RequestParam String companyId, @RequestParam String languageId,
+                                                  @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteUserManagement(userId, companyId, languageId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //FIND
+    @ApiOperation(response = UserManagement[].class, value = "Find UserManagement")//label for swagger
+    @PostMapping("/usermanagement/find")
+    public UserManagement[] findUserManagement(@RequestBody FindUserManagement findUserManagement, @RequestParam String authToken) throws Exception {
+        return idmasterService.findUserManagement(findUserManagement, authToken);
+    }
+
+
+    //==================================================Notification===================================================
+    // Get All Notification Details
+
+    @ApiOperation(response = Notification[].class, value = "Get all Notification details")
+    @GetMapping("/notification")
+    public ResponseEntity<?> getAllNotification(@RequestParam String authToken) {
+        Notification[] notifications = idmasterService.getAllNotification(authToken);
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
+    }
+
+    // Get Notification
+    @ApiOperation(response = Notification.class, value = "Get Notification") // label for swagger
+    @GetMapping("/notification/{notificationId}")
+    public ResponseEntity<?> getNotification(@PathVariable String notificationId, @RequestParam String languageId,
+                                             @RequestParam String companyId, @RequestParam String authToken) {
+        Notification dbNotification = idmasterService.getNotification
+                (languageId, companyId, notificationId, authToken);
+        return new ResponseEntity<>(dbNotification, HttpStatus.OK);
+    }
+
+    // Create Notification
+    @ApiOperation(response = Notification.class, value = "Create new Notification") // label for swagger
+    @PostMapping("/notification")
+    public ResponseEntity<?> postNotification(@RequestBody AddNotification addNotification, @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Notification createdNotification = idmasterService.createNotification
+                (addNotification, loginUserID, authToken);
+        return new ResponseEntity<>(createdNotification, HttpStatus.OK);
+    }
+
+    // Update Notification
+    @ApiOperation(response = Notification.class, value = "Update Notification") // label for swagger
+    @PatchMapping("/notification/{notificationId}")
+    public ResponseEntity<?> patchNotification(@PathVariable String notificationId, @RequestParam String languageId, @RequestParam String companyId,
+                                               @RequestBody UpdateNotification updateNotification, @RequestParam String loginUserID,
+                                               @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
+        Notification updatedNotification = idmasterService.updateNotification
+                (languageId, companyId, notificationId, updateNotification, loginUserID, authToken);
+        return new ResponseEntity<>(updatedNotification, HttpStatus.OK);
+    }
+
+    // Delete Notification
+    @ApiOperation(response = Notification.class, value = "Delete Notification") // label for swagger
+    @DeleteMapping("/notification/{notificationId}")
+    public ResponseEntity<?> deleteNotification(@PathVariable String notificationId, @RequestParam String languageId,
+                                                @RequestParam String companyId, @RequestParam String loginUserID,
+                                                @RequestParam String authToken) {
+        idmasterService.deleteNotification(languageId, companyId, notificationId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Notification
+    @ApiOperation(response = Notification[].class, value = "Find Notification")
+    @PostMapping("/notification/find")
+    public ResponseEntity<?> findNotification(@Valid @RequestBody FindNotification findNotification, @RequestParam String authToken) throws Exception {
+        Notification[] notificationList = idmasterService.findNotification(findNotification, authToken);
+        return new ResponseEntity<>(notificationList, HttpStatus.OK);
     }
 
 }

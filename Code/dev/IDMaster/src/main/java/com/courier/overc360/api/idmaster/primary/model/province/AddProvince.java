@@ -21,6 +21,9 @@ public class AddProvince {
     @NotBlank(message = "Province Name is mandatory")
     private String provinceName;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;
@@ -42,4 +45,5 @@ public class AddProvince {
     private String referenceField9;
 
     private String referenceField10;
+
 }

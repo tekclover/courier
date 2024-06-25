@@ -9,4 +9,5 @@ public class FindReplicaStatus {
 
     private List<String> languageId;
     private List<String> statusId;
+
 }

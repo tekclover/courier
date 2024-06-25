@@ -1,7 +1,5 @@
 package com.courier.overc360.api.idmaster.service;
 
-import com.courier.overc360.api.idmaster.replica.model.language.ReplicaLanguage;
-import com.courier.overc360.api.idmaster.replica.repository.ReplicaLanguageRepository;
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
 import com.courier.overc360.api.idmaster.primary.model.language.AddLanguage;
 import com.courier.overc360.api.idmaster.primary.model.language.Language;
@@ -9,6 +7,8 @@ import com.courier.overc360.api.idmaster.primary.model.language.UpdateLanguage;
 import com.courier.overc360.api.idmaster.primary.repository.LanguageRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.language.FindLanguage;
+import com.courier.overc360.api.idmaster.replica.model.language.ReplicaLanguage;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaLanguageRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaLanguageSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -46,7 +46,7 @@ public class LanguageService {
         Optional<Language> dbLanguageId =
                 languageRepository.findByLanguageIdAndDeletionIndicator(languageId, 0L);
         if (dbLanguageId.isEmpty()) {
-            throw new BadRequestException("Language with Id - " + languageId + " doesn't exists");
+            throw new BadRequestException("LanguageId - " + languageId + " doesn't exists");
         }
         return dbLanguageId.get();
     }
@@ -100,6 +100,23 @@ public class LanguageService {
             throws IllegalAccessException, InvocationTargetException {
         try {
             Language dbLanguage = getLanguage(languageId);
+//            if (updateLanguage.getLanguageDescription() != null) {
+//                if (updateLanguage.getLanguageDescription().isBlank()) {
+//                    throw new BadRequestException("Language Description cannot be blank");
+//                }
+//                boolean isLangDescChanged = !dbLanguage.getLanguageDescription().equalsIgnoreCase(updateLanguage.getLanguageDescription());
+//                if (isLangDescChanged) {
+//                    String oldLanguageDesc = dbLanguage.getLanguageDescription();
+//                    BeanUtils.copyProperties(updateLanguage, dbLanguage, CommonUtils.getNullPropertyNames(updateLanguage));
+//                    dbLanguage.setUpdatedBy(loginUserID);
+//                    dbLanguage.setUpdatedOn(new Date());
+//                    Language updatedLanguage = languageRepository.save(dbLanguage);
+//
+//                    // Update Language Desc in all Masters Tables
+//                    languageRepository.languageDescUpdateProc(languageId, oldLanguageDesc, updateLanguage.getLanguageDescription());
+//                    return updatedLanguage;
+//                }
+//            }
             BeanUtils.copyProperties(updateLanguage, dbLanguage, CommonUtils.getNullPropertyNames(updateLanguage));
             dbLanguage.setUpdatedBy(loginUserID);
             dbLanguage.setUpdatedOn(new Date());
@@ -117,18 +134,27 @@ public class LanguageService {
      * @param loginUserID
      */
     public void deleteLanguage(String languageId, String loginUserID) {
+
         Language dbLanguage = getLanguage(languageId);
+
+        Long languageCount = languageRepository.getLanguageCount(languageId);
+        if (languageCount != null) {
+            if (languageCount > 0) {
+                throw new BadRequestException("Records present in associated tables with languageId - " + languageId);
+            }
+        }
+
         if (dbLanguage != null) {
             dbLanguage.setDeletionIndicator(1L);
             dbLanguage.setUpdatedBy(loginUserID);
             dbLanguage.setUpdatedOn(new Date());
             languageRepository.save(dbLanguage);
         } else {
-            throw new BadRequestException("Error in deleting Language with Id - " + languageId);
+            throw new BadRequestException("Error in deleting LanguageId - " + languageId);
         }
     }
 
-    /*=================================================REPLICA=============================================================*/
+    /*=================================================REPLICA=======================================================*/
 
     /**
      * Get All Language Details
@@ -137,7 +163,7 @@ public class LanguageService {
      */
     public List<ReplicaLanguage> getAllLanguageIds() {
         List<ReplicaLanguage> languageList = replicaLanguageRepository.findAll();
-        languageList = languageList.stream().filter(n -> n.getDeletionIndicator() == 0).collect(Collectors.toList());
+        languageList = languageList.stream().filter(i -> i.getDeletionIndicator() == 0).collect(Collectors.toList());
         return languageList;
     }
 
@@ -148,12 +174,12 @@ public class LanguageService {
      * @return
      */
     public ReplicaLanguage getReplicaLanguage(String languageId) {
-        Optional<ReplicaLanguage> dbLanguageId =
+        Optional<ReplicaLanguage> dbLanguage =
                 replicaLanguageRepository.findByLanguageIdAndDeletionIndicator(languageId, 0L);
-        if (dbLanguageId.isEmpty()) {
-            throw new BadRequestException("Language with Id - " + languageId + " doesn't exists");
+        if (dbLanguage.isEmpty()) {
+            throw new BadRequestException("LanguageId - " + languageId + " doesn't exists");
         }
-        return dbLanguageId.get();
+        return dbLanguage.get();
     }
 
 

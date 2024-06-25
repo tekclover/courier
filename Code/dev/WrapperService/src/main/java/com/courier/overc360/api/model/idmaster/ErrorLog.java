@@ -31,6 +31,16 @@ public class ErrorLog {
 
     private String referenceField5;
 
+    private String referenceField6;
+
+    private String referenceField7;
+
+    private String referenceField8;
+
+    private String referenceField9;
+
+    private String referenceField10;
+
     private String createdBy;
 
 }

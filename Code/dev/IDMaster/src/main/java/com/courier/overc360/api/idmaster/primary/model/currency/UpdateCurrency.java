@@ -7,6 +7,8 @@ public class UpdateCurrency {
 
     private String currencyDescription;
 
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String referenceField1;

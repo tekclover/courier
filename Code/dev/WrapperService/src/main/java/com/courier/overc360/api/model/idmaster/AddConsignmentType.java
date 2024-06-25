@@ -13,6 +13,8 @@ public class AddConsignmentType {
 
     private String consignmentTypeText;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

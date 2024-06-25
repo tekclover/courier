@@ -1,10 +1,11 @@
 package com.courier.overc360.api.controller;
 
 import com.courier.overc360.api.batch.scheduler.BatchJobScheduler;
-import com.courier.overc360.api.config.PropertiesConfig;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.auth.AuthTokenRequest;
+import com.courier.overc360.api.model.dto.PDFMerger;
 import com.courier.overc360.api.service.CommonService;
+import com.courier.overc360.api.service.FileStorageService;
 import com.courier.overc360.api.service.RegisterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,14 +13,19 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Slf4j
@@ -33,52 +39,13 @@ public class WrapperServiceController {
     BatchJobScheduler batchJobScheduler;
 
     @Autowired
-    CommonService commonService;
-
-//	@Autowired
-//	ReportService reportService;
-
-    @Autowired
     RegisterService registerService;
 
     @Autowired
-    PropertiesConfig propertiesConfig;
+    FileStorageService fileStorageService;
 
-//    @ApiOperation(response = Optional.class, value = "TestAXAPI") // label for swagger
-//    @PostMapping("/testAXAPI")
-//    public ResponseEntity<?> testAXAPI() {
-//        commonService.generateAXOAuthToken();
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//
-//    /**
-//     * This endpoint is for registering thrd party clients to get the Client ID and Secret Key
-//     *
-//     * @param clientName
-//     * @return
-//     */
-//    @ApiOperation(response = Optional.class, value = "Register Client") // label for swagger
-//    @PostMapping("/register-app-client")
-//    public ResponseEntity<?> registerClient(String clientName) {
-//        // Generate Unique ID for each client
-//        // Store Client Unique ID and send Client Secret ID along with RegistrationID
-//        NewUser registeredUser = registerService.registerNewUser(clientName);
-//        return new ResponseEntity<>(registeredUser, HttpStatus.OK);
-//    }
-//
-//    @ApiOperation(response = Optional.class, value = "Get Client Secret Key") // label for swagger
-//    @RequestMapping(value = "/client-secret-key", method = RequestMethod.POST, produces = "application/json")
-//    public ResponseEntity<?> getClientSecretKey(@Valid @RequestBody RegisteredUser registeredUser) {
-//        try {
-//            String secretKey = registerService.validateRegisteredUser(registeredUser);
-//            Map<String, String> responseMap = Collections.singletonMap("client-secret-key", secretKey);
-//            return new ResponseEntity<>(responseMap, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>("Error on getting Client Secret key: " + e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @Autowired
+    CommonService commonService;
 
     @ApiOperation(response = Optional.class, value = "OAuth Token") // label for swagger
     @PostMapping("/auth-token")
@@ -88,7 +55,7 @@ public class WrapperServiceController {
     }
 
     //========================================ErrorLog==================================================
-    @ApiOperation(response = Optional.class, value = "Error Log - Write to db") // label for swagger
+    @ApiOperation(response = Optional.class, value = "ErrorLogs - Write to DB") // label for swagger
     @PostMapping("/errorLog/toDB")
     public ResponseEntity<String> errorLogToDataBase() throws Exception {
         try {
@@ -97,6 +64,71 @@ public class WrapperServiceController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to write in db : " + e.getMessage());
         }
+    }
+
+    /*========================================PDF===============================================================*/
+
+    @ApiOperation(response = Optional.class, value = "PDF Extract content") // label for swagger
+    @PostMapping("/pdf/extract")
+    public ResponseEntity<?> extractPdf(@RequestParam("file") MultipartFile file, @RequestParam String filePath) throws Exception {
+
+        try {
+            String response = fileStorageService.storeFile(file, filePath);
+            String fileWithPath = filePath + "/" + response;
+            commonService.extractPdf(fileWithPath);
+//            return ResponseEntity.ok(response + " - Extracted Successfully");
+            return new ResponseEntity <> (response + " - Extracted Successfully", HttpStatus.OK) ;
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to Extract PDF" + e.getMessage());
+        }
+    }
+
+    @ApiOperation(response = Optional.class, value = "PDF Merge") // label for swagger
+    @PostMapping("/pdf/merge")
+    public ResponseEntity<byte[]> mergePdf(@RequestBody PDFMerger pdfMerger) throws Exception {
+
+        try {
+            byte[] mergePdf = commonService.mergePdf(pdfMerger);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"merged.pdf\"")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(mergePdf);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(("Failed to Merge PDF" + e.getMessage()).getBytes());
+        }
+    }
+
+    @ApiOperation(response = Optional.class, value = "PDF Download") // label for swagger
+    @PostMapping("/pdf/download")
+    public ResponseEntity<?> downloadPdf(@RequestParam String sourceUrl, @RequestParam String destinationDir, @RequestParam String documentName) throws Exception {
+
+        try {
+            String response = commonService.downloadPdf(sourceUrl, destinationDir, documentName);
+            return new ResponseEntity <> (response, HttpStatus.OK) ;
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(("Failed to download PDF" + e.getMessage()));
+        }
+    }
+
+    @ApiOperation(response = Optional.class, value = "Document Storage Download") // label for swagger
+    @GetMapping("/doc-storage/download")
+    public ResponseEntity<?> docStorageDownload(@RequestParam String location, @RequestParam String fileName)
+            throws Exception {
+        String filePath = fileStorageService.getQualifiedFilePath (location, fileName);
+        File file = new File (filePath);
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 
 }

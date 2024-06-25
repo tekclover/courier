@@ -5,7 +5,11 @@ import com.courier.overc360.api.idmaster.replica.model.currency.ReplicaCurrency;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,10 @@ public class ReplicaCurrencySpecification implements Specification<ReplicaCurren
         if (findCurrency.getCurrencyId() != null && !findCurrency.getCurrencyId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("currencyId");
             predicates.add(group.in(findCurrency.getCurrencyId()));
+        }
+        if (findCurrency.getStatusId() != null && !findCurrency.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findCurrency.getStatusId()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));

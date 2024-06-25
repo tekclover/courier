@@ -7,6 +7,8 @@ public class UpdateProvince {
 
     private String provinceName;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

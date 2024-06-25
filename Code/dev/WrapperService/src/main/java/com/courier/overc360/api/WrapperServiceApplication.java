@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class WrapperServiceApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        //TimeZone.setDefault(TimeZone.getTimeZone("GMT+3"));
+//        TimeZone.setDefault(TimeZone.getTimeZone("GMT+3"));
         SpringApplication.run(WrapperServiceApplication.class, args);
     }
 }

@@ -1,16 +1,17 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.idmaster.primary.model.currency.Currency;
 import com.courier.overc360.api.idmaster.primary.model.currency.AddCurrency;
+import com.courier.overc360.api.idmaster.primary.model.currency.Currency;
 import com.courier.overc360.api.idmaster.primary.model.currency.UpdateCurrency;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.repository.CurrencyRepository;
-import com.courier.overc360.api.idmaster.replica.model.currency.FindCurrency;
-import com.courier.overc360.api.idmaster.replica.repository.ReplicaCurrencyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.currency.FindCurrency;
 import com.courier.overc360.api.idmaster.replica.model.currency.ReplicaCurrency;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCurrencyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCurrencySpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +34,13 @@ import java.util.stream.Collectors;
 public class CurrencyService {
 
     @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
     private CurrencyRepository currencyRepository;
 
     @Autowired
     private ReplicaCurrencyRepository replicaCurrencyRepository;
-
 
     @Autowired
     private ErrorLogRepository errorLogRepository;
@@ -48,9 +51,8 @@ public class CurrencyService {
     @Autowired
     private NumberRangeService numberRangeService;
 
+    /*--------------------------------------------------------PRIMARY------------------------------------------------*/
 
-
-    /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
     /**
      * Get Currency
      *
@@ -77,7 +79,7 @@ public class CurrencyService {
      */
     @Transactional
     public Currency createCurrency(AddCurrency addCurrency, String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Optional<Currency> duplicateCurrency = currencyRepository.findByCurrencyIdAndDeletionIndicator(
                     addCurrency.getCurrencyId(), 0L);
@@ -94,6 +96,10 @@ public class CurrencyService {
                     log.info("next Value from NumberRange for CURRENCY_ID : " + CURRENCY_ID);
                     addCurrency.setCurrencyId(CURRENCY_ID);
                 }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addCurrency.getStatusId());
+                if (statusDesc != null) {
+                    newCurrency.setStatusDescription(statusDesc);
+                }
                 newCurrency.setDeletionIndicator(0L);
                 newCurrency.setCreatedBy(loginUserID);
                 newCurrency.setCreatedOn(new Date());
@@ -102,6 +108,8 @@ public class CurrencyService {
                 return currencyRepository.save(newCurrency);
             }
         } catch (Exception e) {
+            // Error Log
+            createCurrencyLog2(addCurrency, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -119,14 +127,22 @@ public class CurrencyService {
      */
     @Transactional
     public Currency updateCurrency(String currencyId, UpdateCurrency updateCurrency, String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Currency dbCurrency = getCurrency(currencyId);
             BeanUtils.copyProperties(updateCurrency, dbCurrency, CommonUtils.getNullPropertyNames(updateCurrency));
+            if (updateCurrency.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateCurrency.getStatusId());
+                if (statusDesc != null) {
+                    dbCurrency.setStatusDescription(statusDesc);
+                }
+            }
             dbCurrency.setUpdatedBy(loginUserID);
             dbCurrency.setUpdatedOn(new Date());
             return currencyRepository.save(dbCurrency);
         } catch (Exception e) {
+            // Error Log
+            createCurrencyLog(currencyId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -147,6 +163,8 @@ public class CurrencyService {
             dbCurrency.setUpdatedOn(new Date());
             currencyRepository.save(dbCurrency);
         } else {
+            // Error Log
+            createCurrencyLog1(currencyId, "Error in deleting CurrencyId - " + currencyId);
             throw new BadRequestException("Error in deleting CurrencyId - " + currencyId);
         }
     }
@@ -174,6 +192,8 @@ public class CurrencyService {
 
         Optional<ReplicaCurrency> dbCurrency = replicaCurrencyRepository.findByCurrencyIdAndDeletionIndicator(currencyId, 0L);
         if (dbCurrency.isEmpty()) {
+            // Error Log
+            createCurrencyLog1(currencyId, "CurrencyId - " + currencyId + " doesn't exists");
             throw new BadRequestException("CurrencyId - " + currencyId + " doesn't exists");
         }
         return dbCurrency.get();
@@ -193,6 +213,7 @@ public class CurrencyService {
         log.info("found Currencies --> " + results);
         return results;
     }
+
     //=============================================Country_ErrorLog====================================================
     private void createCurrencyLog(String currencyId, String error) throws IOException, CsvException {
 
@@ -203,7 +224,7 @@ public class CurrencyService {
         errorLog.setMethod("Exception thrown in updateCurrency");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -228,7 +249,7 @@ public class CurrencyService {
         errorLog.setMethod("Exception thrown in createCurrency");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

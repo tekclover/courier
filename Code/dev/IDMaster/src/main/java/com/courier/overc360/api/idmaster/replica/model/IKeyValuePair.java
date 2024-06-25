@@ -14,12 +14,25 @@ public interface IKeyValuePair {
 
     String getCountryDesc();
 
+    String getDistrictDesc();
+
     String getProvinceDesc();
+
+    String getRateParameterDesc();
+
 
     String getCityDesc();
 
     String getHubDesc();
 
     String getStatusDesc();
+
+    String getMenuDesc();
+
+    String getSubMenuDesc();
+
+    String getUserTypeDesc();
+
+    String getUserRoleDesc();
 
 }

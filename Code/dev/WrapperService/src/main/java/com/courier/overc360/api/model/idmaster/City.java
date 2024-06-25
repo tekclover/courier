@@ -23,6 +23,10 @@ public class City {
 
     private String provinceName;
 
+    private String districtId;
+
+    private String districtName;
+
     private String cityId;
 
     private String cityName;

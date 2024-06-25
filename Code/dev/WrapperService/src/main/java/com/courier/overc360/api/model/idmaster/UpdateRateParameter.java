@@ -7,6 +7,8 @@ public class UpdateRateParameter {
 
     private String rateParameterDescription;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

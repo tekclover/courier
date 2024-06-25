@@ -51,7 +51,7 @@ public class ReplicaSubProduct {
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
     private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")

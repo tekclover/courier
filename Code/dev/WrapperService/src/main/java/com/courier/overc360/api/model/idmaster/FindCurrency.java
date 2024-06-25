@@ -8,5 +8,6 @@ import java.util.List;
 public class FindCurrency {
 
     private List<String> currencyId;
+    private List<String> statusId;
 
 }

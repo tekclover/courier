@@ -5,8 +5,6 @@ import lombok.Data;
 @Data
 public class UpdateNumberRange {
 
-    private String languageId;
-
     private Long numberRangeCode;
 
     private String numberRangeObject;

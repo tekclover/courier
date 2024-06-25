@@ -2,40 +2,58 @@ package com.courier.overc360.api.idmaster.primary.model.user;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
 public class AddUserManagement {
 
+    @NotBlank(message = "UserId is mandatory")
     private String userId;
+
+    @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
-    private String companyCode;
-    private String companyIdAndDescription;
-    private String plantIdAndDescription;
-    private String warehouseIdAndDescription;
-    private String userRoleIdAndDescription;
-    private String userTypeIdAndDescription;
-    private String plantId;
-    private String warehouseId;
+
+    @NotBlank(message = "CompanyId is mandatory")
+    private String companyId;
+
     private Long userRoleId;
+
     private Long userTypeId;
+
     private String password;
+
     private String userName;
+
     private String firstName;
+
     private String lastName;
+
     private Long statusId;
+
     private Boolean createHhtUser;
-    //	private Boolean isLoggedIn;
+
     private Boolean portalLoggedIn;
+
     private Boolean hhtLoggedIn;
+
     private Boolean resetPassword;
+
     private Long dateFormatId;
+
     private Long currencyDecimal;
+
     private String timeZone;
+
     private String emailId;
-    private Long deletionIndicator = 0L;
+
+    private Long deletionIndicator;
+
     private String createdBy;
-    private Date createdOn = new Date();
+
+    private Date createdOn;
+
     private String updatedBy;
-    private Date updatedOn = new Date();
+
+    private Date updatedOn;
 }

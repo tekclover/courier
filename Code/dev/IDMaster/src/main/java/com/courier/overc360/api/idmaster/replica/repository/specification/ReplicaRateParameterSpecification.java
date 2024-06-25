@@ -5,7 +5,11 @@ import com.courier.overc360.api.idmaster.replica.model.rateparameter.ReplicaRate
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +38,10 @@ public class ReplicaRateParameterSpecification implements Specification<ReplicaR
         if (findRateParameter.getCompanyId() != null && !findRateParameter.getCompanyId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("companyId");
             predicates.add(group.in(findRateParameter.getCompanyId()));
+        }
+        if (findRateParameter.getStatusId() != null && !findRateParameter.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findRateParameter.getStatusId()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));

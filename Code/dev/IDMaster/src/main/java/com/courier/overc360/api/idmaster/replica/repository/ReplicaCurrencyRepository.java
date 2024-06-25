@@ -12,9 +12,7 @@ import java.util.Optional;
 @Transactional
 public interface ReplicaCurrencyRepository extends JpaRepository<ReplicaCurrency, String>, JpaSpecificationExecutor<ReplicaCurrency> {
 
-    Optional<ReplicaCurrency> findByCurrencyIdAndDeletionIndicator(
-            String currencyId, Long deletionIndicator);
-
+    Optional<ReplicaCurrency> findByCurrencyIdAndDeletionIndicator(String currencyId, Long deletionIndicator);
 
 }
 

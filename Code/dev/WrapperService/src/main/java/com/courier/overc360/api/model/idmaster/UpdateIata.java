@@ -9,6 +9,8 @@ public class UpdateIata {
 
     private String remark;
 
+    private String iataKd;
+
     private Long deletionIndicator;
 
     private String referenceField1;

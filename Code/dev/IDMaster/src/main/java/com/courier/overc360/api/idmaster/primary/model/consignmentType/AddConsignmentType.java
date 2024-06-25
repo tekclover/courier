@@ -18,6 +18,9 @@ public class AddConsignmentType {
     @NotBlank(message = "ConsignmentTypeText is mandatory")
     private String consignmentTypeText;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

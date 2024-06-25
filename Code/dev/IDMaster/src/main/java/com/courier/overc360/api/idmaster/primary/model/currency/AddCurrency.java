@@ -7,12 +7,12 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddCurrency {
 
-    @NotBlank(message = "Currency Id is mandatory")
     private String currencyId;
 
     @NotBlank(message = "Currency Description is mandatory")
     private String currencyDescription;
 
+    @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 
     private String referenceField1;

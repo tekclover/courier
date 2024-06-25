@@ -1,11 +1,9 @@
 package com.courier.overc360.api.model.idmaster;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.Date;
+
 @Data
 
 public class CountryMapping {
@@ -22,7 +20,7 @@ public class CountryMapping {
 
     private String companyName;
 
-    private String partnerDescription;
+    private String partnerType;
 
     private String partnerName;
 
@@ -34,7 +32,7 @@ public class CountryMapping {
 
     private String remark;
 
-    private Long deletionIndicator = 0L;
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -58,9 +56,9 @@ public class CountryMapping {
 
     private String createdBy;
 
-    private Date createdOn = new Date();
+    private Date createdOn;
 
     private String updatedBy;
 
-    private Date updatedOn = new Date();
+    private Date updatedOn;
 }

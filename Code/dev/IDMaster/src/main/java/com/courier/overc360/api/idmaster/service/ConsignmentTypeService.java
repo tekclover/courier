@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.consignmentType.AddConsignmentType;
 import com.courier.overc360.api.idmaster.primary.model.consignmentType.ConsignmentType;
@@ -11,9 +10,12 @@ import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ConsignmentTypeRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.consignmentType.FindConsignmentType;
 import com.courier.overc360.api.idmaster.replica.model.consignmentType.ReplicaConsignmentType;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaConsignmentTypeRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaConsignmentTypeSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,17 +37,27 @@ import java.util.stream.Collectors;
 @Service
 public class ConsignmentTypeService {
 
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
-    ConsignmentTypeRepository consignmentTypeRepository;
+    private ReplicaCompanyRepository replicaCompanyRepository;
+
     @Autowired
-    CompanyRepository companyRepository;
+    private ConsignmentTypeRepository consignmentTypeRepository;
+
     @Autowired
-    NumberRangeService numberRangeService;
+    private CompanyRepository companyRepository;
+
     @Autowired
-    ReplicaConsignmentTypeRepository replicaConsignmentTypeRepository;
+    private NumberRangeService numberRangeService;
+
+    @Autowired
+    private ReplicaConsignmentTypeRepository replicaConsignmentTypeRepository;
+
     @Autowired
     private ErrorLogRepository errorLogRepository;
+
     @Autowired
     private ErrorLogService errorLogService;
 
@@ -73,7 +85,7 @@ public class ConsignmentTypeService {
     /**
      * Create ConsignmentType
      *
-     * @param newConsignmentType
+     * @param addConsignmentType
      * @param loginUserID
      * @return
      * @throws IllegalAccessException
@@ -82,44 +94,49 @@ public class ConsignmentTypeService {
      * @throws CsvException
      */
     @Transactional
-    public ConsignmentType createConsignmentType(AddConsignmentType newConsignmentType, String loginUserID)
+    public ConsignmentType createConsignmentType(AddConsignmentType addConsignmentType, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Optional<ConsignmentType> duplicateConsignmentType = consignmentTypeRepository.findByCompanyIdAndLanguageIdAndConsignmentTypeIdAndDeletionIndicator(
-                    newConsignmentType.getCompanyId(), newConsignmentType.getLanguageId(), newConsignmentType.getConsignmentTypeId(), 0L);
+                    addConsignmentType.getCompanyId(), addConsignmentType.getLanguageId(), addConsignmentType.getConsignmentTypeId(), 0L);
 
             Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
-                    newConsignmentType.getCompanyId(), newConsignmentType.getLanguageId(), 0L);
+                    addConsignmentType.getCompanyId(), addConsignmentType.getLanguageId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("The given values- CompanyId: " + newConsignmentType.getCompanyId() + "LanguageId" + newConsignmentType.getLanguageId() + "  doesn't exists");
+                throw new BadRequestException("The given values : CompanyId - " + addConsignmentType.getCompanyId()
+                        + " and LanguageId - " + addConsignmentType.getLanguageId() + " doesn't exists");
             } else if (duplicateConsignmentType.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values : ConsignmentTypeId - " + newConsignmentType.getConsignmentTypeId());
+                throw new BadRequestException("Record is getting Duplicated with the given values : consignmentTypeId - " + addConsignmentType.getConsignmentTypeId());
             } else {
-                log.info("newCompanyId : " + newConsignmentType);
-                IKeyValuePair iKeyValuePair = companyRepository.getDescription(newConsignmentType.getLanguageId(), newConsignmentType.getCompanyId());
-                ConsignmentType dbConsignmentType = new ConsignmentType();
-                BeanUtils.copyProperties(newConsignmentType, dbConsignmentType, CommonUtils.getNullPropertyNames(newConsignmentType));
-                if (newConsignmentType.getConsignmentTypeId() == null || newConsignmentType.getConsignmentTypeId().isBlank()) {
+                log.info("new ConsignmentType --> " + addConsignmentType);
+                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addConsignmentType.getLanguageId(), addConsignmentType.getCompanyId());
+                ConsignmentType newConsignmentType = new ConsignmentType();
+                BeanUtils.copyProperties(addConsignmentType, newConsignmentType, CommonUtils.getNullPropertyNames(addConsignmentType));
+                if (addConsignmentType.getConsignmentTypeId() == null || addConsignmentType.getConsignmentTypeId().isBlank()) {
                     String NUM_RAN_OBJ = "CONSIGNMENTTYPE";
                     String CONSIGNMENT_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for CONSIGNMENT_TYPE_ID : " + CONSIGNMENT_TYPE_ID);
-                    dbConsignmentType.setConsignmentTypeId(CONSIGNMENT_TYPE_ID);
+                    newConsignmentType.setConsignmentTypeId(CONSIGNMENT_TYPE_ID);
                 }
                 if (iKeyValuePair != null) {
-                    dbConsignmentType.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    dbConsignmentType.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newConsignmentType.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newConsignmentType.setCompanyName(iKeyValuePair.getCompanyDesc());
                 }
-                dbConsignmentType.setDeletionIndicator(0L);
-                dbConsignmentType.setCreatedBy(loginUserID);
-                dbConsignmentType.setUpdatedBy(loginUserID);
-                dbConsignmentType.setCreatedOn(new Date());
-                dbConsignmentType.setUpdatedOn(new Date());
-                return consignmentTypeRepository.save(dbConsignmentType);
+                String statusDesc = replicaStatusRepository.getStatusDescription(addConsignmentType.getStatusId());
+                if (statusDesc != null) {
+                    newConsignmentType.setStatusDescription(statusDesc);
+                }
+                newConsignmentType.setDeletionIndicator(0L);
+                newConsignmentType.setCreatedBy(loginUserID);
+                newConsignmentType.setUpdatedBy(loginUserID);
+                newConsignmentType.setCreatedOn(new Date());
+                newConsignmentType.setUpdatedOn(new Date());
+                return consignmentTypeRepository.save(newConsignmentType);
             }
         } catch (Exception e) {
             // Error Log
-            createConsignmentTypeLog2(newConsignmentType, e.toString());
+            createConsignmentTypeLog2(addConsignmentType, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -146,6 +163,12 @@ public class ConsignmentTypeService {
         try {
             ConsignmentType dbConsignmentType = getConsignmentType(companyId, languageId, consignmentTypeId);
             BeanUtils.copyProperties(updateConsignmentType, dbConsignmentType, CommonUtils.getNullPropertyNames(updateConsignmentType));
+            if (updateConsignmentType.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignmentType.getStatusId());
+                if (statusDesc != null) {
+                    dbConsignmentType.setStatusDescription(statusDesc);
+                }
+            }
             dbConsignmentType.setUpdatedBy(loginUserID);
             dbConsignmentType.setUpdatedOn(new Date());
             return consignmentTypeRepository.save(dbConsignmentType);
@@ -170,6 +193,7 @@ public class ConsignmentTypeService {
         if (dbConsignmentType != null) {
             dbConsignmentType.setDeletionIndicator(1L);
             dbConsignmentType.setUpdatedBy(loginUserID);
+            dbConsignmentType.setUpdatedOn(new Date());
             consignmentTypeRepository.save(dbConsignmentType);
         } else {
             // Error Log
@@ -235,7 +259,7 @@ public class ConsignmentTypeService {
         errorLog.setMethod("Exception thrown in updateConsignmentType");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -264,7 +288,7 @@ public class ConsignmentTypeService {
         errorLog.setMethod("Exception thrown in createConsignmentType");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

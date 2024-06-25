@@ -15,6 +15,8 @@ public class AddProvince {
 
     private String provinceName;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

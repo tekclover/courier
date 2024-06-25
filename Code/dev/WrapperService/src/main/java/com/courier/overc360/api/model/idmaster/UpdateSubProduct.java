@@ -9,6 +9,8 @@ public class UpdateSubProduct {
 
     private String remark;
 
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String referenceField1;

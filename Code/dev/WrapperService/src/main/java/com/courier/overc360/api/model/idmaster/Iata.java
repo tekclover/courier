@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.idmaster;
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
 public class Iata {
 

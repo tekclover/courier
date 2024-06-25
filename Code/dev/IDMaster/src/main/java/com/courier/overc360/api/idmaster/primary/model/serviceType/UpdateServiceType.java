@@ -4,9 +4,12 @@ import lombok.Data;
 
 @Data
 public class UpdateServiceType {
+
     private String serviceTypeText;
 
     private String remark;
+
+    private String statusId;
 
     private String referenceField1;
 

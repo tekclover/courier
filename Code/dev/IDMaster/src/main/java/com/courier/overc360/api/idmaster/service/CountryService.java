@@ -1,22 +1,23 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.country.AddCountry;
-import com.courier.overc360.api.idmaster.primary.model.country.UpdateCountry;
-import com.courier.overc360.api.idmaster.primary.repository.CountryRepository;
-import com.courier.overc360.api.idmaster.replica.model.country.FindCountry;
 import com.courier.overc360.api.idmaster.primary.model.country.Country;
+import com.courier.overc360.api.idmaster.primary.model.country.UpdateCountry;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
-import com.courier.overc360.api.idmaster.replica.repository.ReplicaCountryRepository;
+import com.courier.overc360.api.idmaster.primary.repository.CountryRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
+import com.courier.overc360.api.idmaster.replica.model.country.FindCountry;
 import com.courier.overc360.api.idmaster.replica.model.country.ReplicaCountry;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCountryRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCountrySpecification;
 import com.opencsv.exceptions.CsvException;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class CountryService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
+    private ReplicaCompanyRepository replicaCompanyRepository;
 
     @Autowired
     private CountryRepository countryRepository;
@@ -55,6 +62,7 @@ public class CountryService {
 
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
+
     /**
      * Get Country
      *
@@ -102,18 +110,22 @@ public class CountryService {
                 throw new BadRequestException("Record is getting Duplicated with the given values : countryId - " + addCountry.getCountryId());
             } else {
                 log.info("new Country --> " + addCountry);
-                IKeyValuePair iKeyValuePair = companyRepository.getDescription(addCountry.getLanguageId(), addCountry.getCompanyId());
+                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addCountry.getLanguageId(), addCountry.getCompanyId());
                 Country newCountry = new Country();
                 BeanUtils.copyProperties(addCountry, newCountry, CommonUtils.getNullPropertyNames(addCountry));
                 if (addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
                     String NUM_RAN_OBJ = "COUNTRY";
-                    String COUNTRY_ID = numberRangeService.getNextNumberRange( NUM_RAN_OBJ);
+                    String COUNTRY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for COUNTRY_ID : " + COUNTRY_ID);
                     newCountry.setCountryId(COUNTRY_ID);
                 }
                 if (iKeyValuePair != null) {
                     newCountry.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newCountry.setCompanyName(iKeyValuePair.getCompanyDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addCountry.getStatusId());
+                if (statusDesc != null) {
+                    newCountry.setStatusDescription(statusDesc);
                 }
                 newCountry.setDeletionIndicator(0L);
                 newCountry.setCreatedBy(loginUserID);
@@ -149,7 +161,30 @@ public class CountryService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Country dbCountry = getCountry(languageId, companyId, countryId);
+//            if (updateCountry.getCountryName() != null) {
+//                if (updateCountry.getCountryName().isBlank()) {
+//                    throw new BadRequestException("Country Name cannot be blank");
+//                }
+//                boolean isCountryNameChanged = !dbCountry.getCountryName().equalsIgnoreCase(updateCountry.getCountryName());
+//                if (isCountryNameChanged) {
+//                    String oldCountryDesc = dbCountry.getCountryName();
+//                    BeanUtils.copyProperties(updateCountry, dbCountry, CommonUtils.getNullPropertyNames(updateCountry));
+//                    dbCountry.setUpdatedBy(loginUserID);
+//                    dbCountry.setUpdatedOn(new Date());
+//                    Country updatedCountry = countryRepository.save(dbCountry);
+//
+//                    // Updating Country Name in Province, District, City, Hub, CountryMapping and DistrictMapping tables
+//                    countryRepository.countryDescUpdateProc(languageId, companyId, countryId, oldCountryDesc, updateCountry.getCountryName());
+//                    return updatedCountry;
+//                }
+//            }
             BeanUtils.copyProperties(updateCountry, dbCountry, CommonUtils.getNullPropertyNames(updateCountry));
+            if (updateCountry.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateCountry.getStatusId());
+                if (statusDesc != null) {
+                    dbCountry.setStatusDescription(statusDesc);
+                }
+            }
             dbCountry.setUpdatedBy(loginUserID);
             dbCountry.setUpdatedOn(new Date());
             return countryRepository.save(dbCountry);
@@ -244,7 +279,7 @@ public class CountryService {
         errorLog.setMethod("Exception thrown in updateCountry");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -273,7 +308,7 @@ public class CountryService {
         errorLog.setMethod("Exception thrown in createCountry");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

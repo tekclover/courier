@@ -10,4 +10,6 @@ public class FindConsignmentType {
     private List<String> companyId;
     private List<String> languageId;
     private List<String> consignmentTypeId;
+    private List<String> statusId;
+
 }
