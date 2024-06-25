@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/main/master/master-routing.module.ts", "src/app/main/master/master.module.ts"],
+  "sourcesContent": ["import { NgModule } from '@angular/core';\r\nimport { RouterModule, Routes } from '@angular/router';\r\n\r\nconst routes: Routes = [];\r\n\r\n@NgModule({\r\n  imports: [RouterModule.forChild(routes)],\r\n  exports: [RouterModule]\r\n})\r\nexport class MasterRoutingModule { }\r\n", "import { NgModule } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\n\r\nimport { MasterRoutingModule } from './master-routing.module';\r\nimport { SharedModule } from '../../shared/shared.module';\r\n\r\n\r\n@NgModule({\r\n  declarations: [],\r\n  imports: [\r\n    CommonModule,\r\n    MasterRoutingModule,\r\n    SharedModule\r\n  ]\r\n})\r\nexport class MasterModule { }\r\n"],
+  "mappings": ";;;;;;;;;AAGA,IAAM,SAAiB,CAAA;AAMjB,IAAO,uBAAP,MAAO,qBAAmB;;;mBAAnB,sBAAmB;AAAA;oFAAnB,qBAAmB,CAAA;wFAHpB,aAAa,SAAS,MAAM,GAC5B,YAAY,EAAA,CAAA;AAElB,IAAO,sBAAP;;;ACMA,IAAO,gBAAP,MAAO,cAAY;;;mBAAZ,eAAY;AAAA;6EAAZ,cAAY,CAAA;;EALrB;EACA;EACA;AAAY,EAAA,CAAA;AAGV,IAAO,eAAP;",
+  "names": []
+}

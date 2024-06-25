@@ -1,0 +1,23 @@
+<div class="bgBlack text-white">
+    <p-pickList
+        [source]="sourceProducts" 
+        [target]="targetProducts" 
+        sourceHeader="Available Columns"
+        targetHeader="Shown Columns" 
+        [dragdrop]="true" 
+        [responsive]="true">
+            <ng-template let-product pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">
+                            {{ product.field }}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+    </p-pickList>
+    <div class="d-flex justify-content-center align-items-center py-2">
+        <button mat-dialog-close type="button" class="btn mr-2 cancelButton">Cancel</button>
+        <button type="button" class="btn ml-2 saveButton">Yes</button>
+    </div>
+</div>
