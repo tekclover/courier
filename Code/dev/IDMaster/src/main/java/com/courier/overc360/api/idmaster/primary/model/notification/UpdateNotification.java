@@ -13,6 +13,8 @@ public class UpdateNotification {
 
     private String serviceTypeId;
 
+    private String statusId;
+
     private String userRole;
 
     private String userName;
