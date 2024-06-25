@@ -1,21 +1,23 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
+import com.courier.overc360.api.idmaster.primary.model.company.Company;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.idmaster.primary.model.rateparameter.AddRateParameter;
 import com.courier.overc360.api.idmaster.primary.model.rateparameter.RateParameter;
+import com.courier.overc360.api.idmaster.primary.model.rateparameter.UpdateRateParameter;
+import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
+import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
+import com.courier.overc360.api.idmaster.primary.repository.RateParameterRepository;
+import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
+import com.courier.overc360.api.idmaster.replica.model.rateparameter.FindRateParameter;
 import com.courier.overc360.api.idmaster.replica.model.rateparameter.ReplicaRateParameter;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaRateParameterRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaRateParameterSpecification;
 import com.opencsv.exceptions.CsvException;
-import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
-import com.courier.overc360.api.idmaster.primary.model.rateparameter.AddRateParameter;
-import com.courier.overc360.api.idmaster.primary.model.rateparameter.UpdateRateParameter;
-import com.courier.overc360.api.idmaster.primary.repository.RateParameterRepository;
-import com.courier.overc360.api.idmaster.replica.model.rateparameter.FindRateParameter;
-import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
-import com.courier.overc360.api.idmaster.replica.repository.ReplicaRateParameterRepository;
-import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
-import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class RateParameterService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
+    private ReplicaCompanyRepository replicaCompanyRepository;
 
     @Autowired
     private RateParameterRepository rateParameterRepository;
@@ -55,6 +63,7 @@ public class RateParameterService {
 
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
+
     /**
      * Get RateParameter
      *
@@ -93,16 +102,16 @@ public class RateParameterService {
                     addRateParameter.getLanguageId(), addRateParameter.getCompanyId(), addRateParameter.getRateParameterId(), 0L);
 
             Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
-                    addRateParameter.getCompanyId(), addRateParameter.getLanguageId(),0L);
+                    addRateParameter.getCompanyId(), addRateParameter.getLanguageId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("CompanyId - " + addRateParameter.getCompanyId() + " , LanguageId - " + addRateParameter.getLanguageId() +" doesn't exists");
+                throw new BadRequestException("CompanyId - " + addRateParameter.getCompanyId() + " , LanguageId - " + addRateParameter.getLanguageId() + " doesn't exists");
             } else if (duplicateRateParameter.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : rateParameterId - " + addRateParameter.getRateParameterId());
             } else {
                 log.info("new RateParameter --> " + addRateParameter);
                 RateParameter newRateParameter = new RateParameter();
-                IKeyValuePair iKeyValuePair = companyRepository.getDescription(addRateParameter.getLanguageId(), addRateParameter.getCompanyId());
+                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addRateParameter.getLanguageId(), addRateParameter.getCompanyId());
                 BeanUtils.copyProperties(addRateParameter, newRateParameter, CommonUtils.getNullPropertyNames(addRateParameter));
                 if (addRateParameter.getRateParameterId() == null || addRateParameter.getRateParameterId().isBlank()) {
                     String NUM_RAN_OBJ = "RATEPARAMETER";
@@ -113,6 +122,10 @@ public class RateParameterService {
                 if (iKeyValuePair != null) {
                     newRateParameter.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newRateParameter.setCompanyName(iKeyValuePair.getCompanyDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addRateParameter.getStatusId());
+                if (statusDesc != null) {
+                    newRateParameter.setStatusDescription(statusDesc);
                 }
                 newRateParameter.setDeletionIndicator(0L);
                 newRateParameter.setCreatedBy(loginUserID);
@@ -147,6 +160,12 @@ public class RateParameterService {
         try {
             RateParameter dbRateParameter = getRateParameter(rateParameterId, companyId, languageId);
             BeanUtils.copyProperties(updateRateParameter, dbRateParameter, CommonUtils.getNullPropertyNames(updateRateParameter));
+            if (updateRateParameter.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateRateParameter.getStatusId());
+                if (statusDesc != null) {
+                    dbRateParameter.setStatusDescription(statusDesc);
+                }
+            }
             dbRateParameter.setUpdatedBy(loginUserID);
             dbRateParameter.setUpdatedOn(new Date());
             return rateParameterRepository.save(dbRateParameter);
@@ -226,7 +245,7 @@ public class RateParameterService {
 
         ReplicaRateParameterSpecification spec = new ReplicaRateParameterSpecification(findRateParameter);
         List<ReplicaRateParameter> results = replicaRateParameterRepository.findAll(spec);
-        log.info("found RateParameter --> " + results);
+        log.info("found RateParameters --> " + results);
         return results;
     }
 
@@ -242,7 +261,7 @@ public class RateParameterService {
         errorLog.setErrorMessage(error);
         errorLog.setMethod("Exception thrown in updateRateParameter");
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -271,7 +290,7 @@ public class RateParameterService {
         errorLog.setErrorMessage(error);
         errorLog.setMethod("Exception thrown in createRateParameter");
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

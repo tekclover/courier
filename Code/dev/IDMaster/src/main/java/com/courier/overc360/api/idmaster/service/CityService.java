@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.city.AddCity;
 import com.courier.overc360.api.idmaster.primary.model.city.City;
 import com.courier.overc360.api.idmaster.primary.model.city.UpdateCity;
@@ -11,9 +10,11 @@ import com.courier.overc360.api.idmaster.primary.repository.CityRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.city.FindCity;
 import com.courier.overc360.api.idmaster.replica.model.city.ReplicaCity;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCityRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCitySpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +36,14 @@ import java.util.stream.Collectors;
 public class CityService {
 
     @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
     private CityRepository cityRepository;
+
     @Autowired
     private ReplicaCityRepository replicaCityRepository;
+
     @Autowired
     private ProvinceRepository provinceRepository;
 
@@ -60,15 +66,20 @@ public class CityService {
      * @param companyId
      * @param countryId
      * @param provinceId
+     * @param districtId
      * @param cityId
      * @return
      */
-    public City getCity(String languageId, String companyId, String countryId, String provinceId, String cityId) {
+    public City getCity(String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId) {
 
-        Optional<City> dbCity = cityRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndCityIdAndDeletionIndicator(
-                languageId, companyId, countryId, provinceId, cityId, 0L);
+        Optional<City> dbCity = cityRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndCityIdAndDeletionIndicator(
+                languageId, companyId, countryId, provinceId, districtId, cityId, 0L);
         if (dbCity.isEmpty()) {
-            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", CountryId: " + countryId + ", ProvinceId: " + provinceId + " and CityId: " + cityId + " and doesn't exists");
+            // Error Log
+            createCityLog1(languageId, companyId, countryId, provinceId, districtId, cityId, "The given values - LanguageId: " + languageId
+                    + ", CompanyId: " + companyId + ", CountryId: " + countryId + ", ProvinceId: " + provinceId + ",DistrictId: " + districtId + " and CityId: " + cityId + " and doesn't exists");
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", CountryId: "
+                    + countryId + ", ProvinceId: " + provinceId + ", DistrictId: " + districtId + " and CityId: " + cityId + " and doesn't exists");
         }
         return dbCity.get();
     }
@@ -88,8 +99,8 @@ public class CityService {
     public City createCity(AddCity addCity, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<City> duplicateCity = cityRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndCityIdAndDeletionIndicator(
-                    addCity.getLanguageId(), addCity.getCompanyId(), addCity.getCountryId(), addCity.getProvinceId(), addCity.getCityId(), 0L);
+            Optional<City> duplicateCity = cityRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndCityIdAndDeletionIndicator(
+                    addCity.getLanguageId(), addCity.getCompanyId(), addCity.getCountryId(), addCity.getProvinceId(), addCity.getDistrictId(), addCity.getCityId(), 0L);
 
             Optional<Province> dbProvince = provinceRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
                     addCity.getLanguageId(), addCity.getCompanyId(), addCity.getCountryId(), addCity.getProvinceId(), 0L);
@@ -101,13 +112,13 @@ public class CityService {
                 throw new BadRequestException("Record is getting Duplicated with the given values : cityId - " + addCity.getCityId());
             } else {
                 log.info("new City --> " + addCity);
-                IKeyValuePair iKeyValuePair = cityRepository.getDescription(addCity.getLanguageId(), addCity.getCompanyId(),
-                        addCity.getCountryId(), addCity.getProvinceId());
+                IKeyValuePair iKeyValuePair = replicaCityRepository.getDescription(addCity.getLanguageId(), addCity.getCompanyId(),
+                        addCity.getCountryId(), addCity.getProvinceId(), addCity.getDistrictId());
                 City newCity = new City();
                 BeanUtils.copyProperties(addCity, newCity, CommonUtils.getNullPropertyNames(addCity));
                 if (addCity.getCityId() == null || addCity.getCityId().isBlank()) {
                     String NUM_RAN_OBJ = "CITY";
-                    String CITY_ID = numberRangeService.getNextNumberRange( NUM_RAN_OBJ);
+                    String CITY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for CITY_ID : " + CITY_ID);
                     newCity.setCityId(CITY_ID);
                 }
@@ -116,6 +127,11 @@ public class CityService {
                     newCity.setCompanyName(iKeyValuePair.getCompanyDesc());
                     newCity.setCountryName(iKeyValuePair.getCountryDesc());
                     newCity.setProvinceName(iKeyValuePair.getProvinceDesc());
+                    newCity.setDistrictName(iKeyValuePair.getDistrictDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addCity.getStatusId());
+                if (statusDesc != null) {
+                    newCity.setStatusDescription(statusDesc);
                 }
                 newCity.setDeletionIndicator(0L);
                 newCity.setCreatedBy(loginUserID);
@@ -139,6 +155,7 @@ public class CityService {
      * @param companyId
      * @param countryId
      * @param provinceId
+     * @param districtId
      * @param cityId
      * @param loginUserID
      * @param updateCity
@@ -149,17 +166,40 @@ public class CityService {
      * @throws CsvException
      */
     @Transactional
-    public City updateCity(String languageId, String companyId, String countryId, String provinceId, String cityId, String loginUserID, UpdateCity updateCity)
+    public City updateCity(String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId, String loginUserID, UpdateCity updateCity)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            City dbCity = getCity(languageId, companyId, countryId, provinceId, cityId);
+            City dbCity = getCity(languageId, companyId, countryId, provinceId, districtId, cityId);
+//            if (updateCity.getCityName() != null) {
+//                if (updateCity.getCityName().isBlank()) {
+//                    throw new BadRequestException("City Name cannot be blank");
+//                }
+//                boolean isCityNameChanged = !dbCity.getCityName().equalsIgnoreCase(updateCity.getCityName());
+//                if (isCityNameChanged) {
+//                    String oldCityDesc = dbCity.getCityName();
+//                    BeanUtils.copyProperties(updateCity, dbCity, CommonUtils.getNullPropertyNames(updateCity));
+//                    dbCity.setUpdatedBy(loginUserID);
+//                    dbCity.setUpdatedOn(new Date());
+//                    City updatedCity = cityRepository.save(dbCity);
+//
+//                    // Updating CityName in CityMapping table
+//                    cityRepository.cityDescUpdateProc(languageId, companyId, cityId, oldCityDesc, updateCity.getCityName());
+//                    return updatedCity;
+//                }
+//            }
             BeanUtils.copyProperties(updateCity, dbCity, CommonUtils.getNullPropertyNames(updateCity));
+            if (updateCity.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateCity.getStatusId());
+                if (statusDesc != null) {
+                    dbCity.setStatusDescription(statusDesc);
+                }
+            }
             dbCity.setUpdatedBy(loginUserID);
             dbCity.setUpdatedOn(new Date());
             return cityRepository.save(dbCity);
         } catch (Exception e) {
             // Error Log
-            createCityLog(languageId, companyId, countryId, provinceId, cityId, e.toString());
+            createCityLog(languageId, companyId, countryId, provinceId, districtId, cityId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -173,12 +213,13 @@ public class CityService {
      * @param companyId
      * @param countryId
      * @param provinceId
+     * @param districtId
      * @param cityId
      * @param loginUserID
      */
-    public void deleteCity(String languageId, String companyId, String countryId, String provinceId, String cityId, String loginUserID) {
+    public void deleteCity(String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId, String loginUserID) {
 
-        City dbCity = getCity(languageId, companyId, countryId, provinceId, cityId);
+        City dbCity = getCity(languageId, companyId, countryId, provinceId, districtId, cityId);
         if (dbCity != null) {
             dbCity.setDeletionIndicator(1L);
             dbCity.setUpdatedBy(loginUserID);
@@ -186,7 +227,7 @@ public class CityService {
             cityRepository.save(dbCity);
         } else {
             // Error Log
-            createCityLog1(languageId, companyId, countryId, provinceId, cityId, "Error in deleting CityId - " + cityId);
+            createCityLog1(languageId, companyId, countryId, provinceId, districtId, cityId, "Error in deleting CityId - " + cityId);
             throw new BadRequestException("Error in deleting CityId - " + cityId);
         }
     }
@@ -212,15 +253,20 @@ public class CityService {
      * @param companyId
      * @param countryId
      * @param provinceId
+     * @param districtId
      * @param cityId
      * @return
      */
-    public ReplicaCity replicaGetCity(String languageId, String companyId, String countryId, String provinceId, String cityId) {
+    public ReplicaCity replicaGetCity(String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId) {
 
-        Optional<ReplicaCity> dbCity = replicaCityRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndCityIdAndDeletionIndicator(
-                languageId, companyId, countryId, provinceId, cityId, 0L);
+        Optional<ReplicaCity> dbCity = replicaCityRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndCityIdAndDeletionIndicator(
+                languageId, companyId, countryId, provinceId, districtId, cityId, 0L);
         if (dbCity.isEmpty()) {
-            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", CountryId: " + countryId + ", ProvinceId: " + provinceId + " and CityId: " + cityId + " and doesn't exists");
+            // Error Log
+            createCityLog1(languageId, companyId, countryId, provinceId, districtId, cityId, "The given values - LanguageId: " + languageId
+                    + ", CompanyId: " + companyId + ", CountryId: " + countryId + ", ProvinceId: " + provinceId + ", DistrictId: " + districtId + " and CityId: " + cityId + " and doesn't exists");
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", CountryId: "
+                    + countryId + ", ProvinceId: " + provinceId + ", DistrictId: " + districtId + " and CityId: " + cityId + " and doesn't exists");
         }
         return dbCity.get();
     }
@@ -240,9 +286,8 @@ public class CityService {
     }
 
 
-
     //=============================================City_ErrorLog=======================================================
-    private void createCityLog(String languageId, String companyId, String countryId, String provinceId, String cityId,
+    private void createCityLog(String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId,
                                String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
@@ -253,15 +298,17 @@ public class CityService {
         errorLog.setRefDocNumber(cityId);
         errorLog.setReferenceField1(countryId);
         errorLog.setReferenceField2(provinceId);
+        errorLog.setReferenceField3(districtId);
         errorLog.setMethod("Exception thrown in updateCity");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createCityLog1(String languageId, String companyId, String countryId, String provinceId, String cityId, String error) {
+    private void createCityLog1(String languageId, String companyId, String countryId, String provinceId,
+                                String districtId, String cityId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
@@ -270,6 +317,7 @@ public class CityService {
         errorLog.setRefDocNumber(cityId);
         errorLog.setReferenceField1(countryId);
         errorLog.setReferenceField2(provinceId);
+        errorLog.setReferenceField3(districtId);
         errorLog.setMethod("Exception thrown in getCity");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
@@ -286,10 +334,11 @@ public class CityService {
         errorLog.setRefDocNumber(addCity.getCityId());
         errorLog.setReferenceField1(addCity.getCountryId());
         errorLog.setReferenceField2(addCity.getProvinceId());
+        errorLog.setReferenceField3(addCity.getDistrictId());
         errorLog.setMethod("Exception thrown in createCity");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

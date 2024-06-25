@@ -53,7 +53,7 @@ public class AuthTokenService {
 	 * @param oauthPassword
 	 * @return
 	 */
-	private AuthToken generateOAuthToken(String apiUrl, String clientId, String clientSecretKey, String grantType,
+	public AuthToken generateOAuthToken(String apiUrl, String clientId, String clientSecretKey, String grantType,
 			String oauthUserName, String oauthPassword) {
 		// Client Id and Client Secret Key to be sent as part of header for
 		// authentication
@@ -70,20 +70,15 @@ public class AuthTokenService {
 		log.info("------------@@@@@@@@@@@@@@------------> " + accessTokenUrl);
 		
 		// AuthToken URL dynamically
-		if (apiUrl.equalsIgnoreCase("crmmt-masters-service")) {
-			accessTokenUrl = propertiesConfig.getMastersAccessTokenUrl();
-			log.info("------------###########------------> " + accessTokenUrl);
-		} else if (apiUrl.equalsIgnoreCase("overc-idmaster-service")) {
+		if (apiUrl.equalsIgnoreCase("overc-idmaster-service")) {
 			accessTokenUrl = propertiesConfig.getIdmasterAccessTokenUrl();
-		} else if (apiUrl.equalsIgnoreCase("crmmt-transaction-service")) {
-			accessTokenUrl = propertiesConfig.getTransactionAccessTokenUrl();
-		}else if (apiUrl.equalsIgnoreCase("mnr-spark-service")){
-			accessTokenUrl = propertiesConfig.getSparkAccessTokenUrl();
-		} else if (apiUrl.equalsIgnoreCase("wms-connector-service")) {
-			accessTokenUrl = propertiesConfig.getConnectorAccessTokenUrl();
-		} else {
-			log.info("The givem URL is not available. Quiting.");
-			throw new BadRequestException("The givem URL is not available. Quiting");
+		} else if (apiUrl.equalsIgnoreCase("overc-midmile-service")) {
+			accessTokenUrl = propertiesConfig.getMidMileAccessTokenUrl();
+		} else if (apiUrl.equalsIgnoreCase("overc-common-service")) {
+			accessTokenUrl = propertiesConfig.getCommonAccessTokenUrl();
+		}else {
+			log.info("The given URL is not available. Quiting.");
+			throw new BadRequestException("The given URL is not available. Quiting");
 		}
 
 		log.info("Access token url: " + accessTokenUrl);
@@ -131,7 +126,7 @@ public class AuthTokenService {
 	public AuthToken getMastersServiceAuthToken() {
 		// Generate AuthToken for MastersService
 		AuthTokenRequest authTokenRequest = new AuthTokenRequest();
-		authTokenRequest.setApiName("overc-masters-service");
+		authTokenRequest.setApiName("overc-midmile-service");
 		authTokenRequest.setClientId(propertiesConfig.getClientId());
 		authTokenRequest.setClientSecretKey(propertiesConfig.getClientSecretKey());
 		authTokenRequest.setGrantType(propertiesConfig.getGrantType());
@@ -168,6 +163,18 @@ public class AuthTokenService {
 	public AuthToken getConnectorServiceAuthToken() {
 		AuthTokenRequest authTokenRequest = new AuthTokenRequest();
 		authTokenRequest.setApiName("wms-connector-service");
+		authTokenRequest.setClientId(propertiesConfig.getClientId());
+		authTokenRequest.setClientSecretKey(propertiesConfig.getClientSecretKey());
+		authTokenRequest.setGrantType(propertiesConfig.getGrantType());
+		authTokenRequest.setOauthUserName(propertiesConfig.getUsername());
+		authTokenRequest.setOauthPassword(propertiesConfig.getPassword());
+		return getAuthToken(authTokenRequest);
+	}
+
+	public AuthToken getCommonServiceAuthToken() {
+		// Generate AuthToken for CommonService
+		AuthTokenRequest authTokenRequest = new AuthTokenRequest();
+		authTokenRequest.setApiName("overc-common-service");
 		authTokenRequest.setClientId(propertiesConfig.getClientId());
 		authTokenRequest.setClientSecretKey(propertiesConfig.getClientSecretKey());
 		authTokenRequest.setGrantType(propertiesConfig.getGrantType());

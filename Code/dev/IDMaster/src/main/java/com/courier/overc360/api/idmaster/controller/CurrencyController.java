@@ -1,11 +1,12 @@
 package com.courier.overc360.api.idmaster.controller;
 
-import com.courier.overc360.api.idmaster.replica.model.currency.ReplicaCurrency;
-import com.courier.overc360.api.idmaster.service.CurrencyService;
 import com.courier.overc360.api.idmaster.primary.model.currency.AddCurrency;
 import com.courier.overc360.api.idmaster.primary.model.currency.Currency;
 import com.courier.overc360.api.idmaster.primary.model.currency.UpdateCurrency;
 import com.courier.overc360.api.idmaster.replica.model.currency.FindCurrency;
+import com.courier.overc360.api.idmaster.replica.model.currency.ReplicaCurrency;
+import com.courier.overc360.api.idmaster.service.CurrencyService;
+import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class CurrencyController {
     @ApiOperation(response = Currency.class, value = "Create new Currency") // label for swagger
     @PostMapping("")
     public ResponseEntity<?> postCurrency(@Valid @RequestBody AddCurrency addCurrency, @RequestParam String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Currency newCurrency = currencyService.createCurrency(addCurrency, loginUserID);
         return new ResponseEntity<>(newCurrency, HttpStatus.OK);
     }
@@ -48,7 +50,7 @@ public class CurrencyController {
     @PatchMapping("/{currencyId}")
     public ResponseEntity<?> patchCurrency(@PathVariable String currencyId, @RequestParam String loginUserID,
                                            @RequestBody UpdateCurrency updateCurrency)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Currency updatedCurrency = currencyService.updateCurrency(currencyId, updateCurrency, loginUserID);
         return new ResponseEntity<>(updatedCurrency, HttpStatus.OK);
     }
@@ -61,7 +63,7 @@ public class CurrencyController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-  /*-----------------------------------------------REPLICA---------------------------------------------------*/
+    /*-----------------------------------------------REPLICA---------------------------------------------------*/
     // Get All Currency Details
     @ApiOperation(response = ReplicaCurrency.class, value = "Get all Currency Details") // label for swagger
     @GetMapping("")

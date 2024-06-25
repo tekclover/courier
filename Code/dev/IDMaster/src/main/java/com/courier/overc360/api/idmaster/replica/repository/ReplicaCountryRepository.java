@@ -1,6 +1,6 @@
 package com.courier.overc360.api.idmaster.replica.repository;
 
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.country.ReplicaCountry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,16 +20,16 @@ public interface ReplicaCountryRepository extends JpaRepository<ReplicaCountry, 
 
     // Get Description
     @Query(value = "Select \n" +
-            "tl.lang_text langDesc, \n" +
-            "tcm.c_name companyDesc, \n" +
-            "tcn.country_name countryDesc \n" +
+            "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +
+            "CONCAT (tcm.C_ID, ' - ', tcm.C_NAME) As companyDesc, \n" +
+            "CONCAT (tcn.COUNTRY_ID, ' - ', tcn.COUNTRY_NAME) As countryDesc \n" +
             "From tbllanguage tl \n" +
-            "Join tblcompany tcm on tcm.lang_id = tl.lang_id \n" +
-            "Join tblcountry tcn on tcn.lang_id = tl.lang_id and tcn.c_id = tcm.c_id \n" +
+            "Join tblcompany tcm on tl.LANG_ID=tcm.LANG_ID \n" +
+            "Join tblcountry tcn on tcn.LANG_ID=tl.LANG_ID and tcn.C_ID=tcm.C_ID \n" +
             "Where \n" +
-            "tl.lang_id IN (:languageId) and \n" +
-            "tcm.c_id IN (:companyId) and \n" +
-            "tcn.country_id IN (:countryId) and \n" +
+            "tl.LANG_ID IN (:languageId) and \n" +
+            "tcm.C_ID IN (:companyId) and \n" +
+            "tcn.COUNTRY_ID IN (:countryId) and \n" +
             "tl.is_deleted = 0 and \n" +
             "tcm.is_deleted = 0 and \n" +
             "tcn.is_deleted = 0", nativeQuery = true)

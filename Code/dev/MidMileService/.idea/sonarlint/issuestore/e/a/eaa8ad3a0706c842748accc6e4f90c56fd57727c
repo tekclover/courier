@@ -1,0 +1,31 @@
+
+‡	java:S112€"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚ÒéüÿÿÿÿJ$5bf3d659-3b7d-4f45-9de8-a9bc13de5866
+‡	java:S112¤"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚ÒéüÿÿÿÿJ$edf99b83-24d3-438d-8123-9330ee764dc7
+
+java:S1192I"NDefine a constant instead of duplicating this literal ", PartnerId: " 3 times.(Ã’ù”ÿÿÿÿÿJ$0c04339f-c29c-45c8-a7e7-d38f0e44a736
+
+java:S1192I"LDefine a constant instead of duplicating this literal ", PieceId: " 3 times.(Ã’ù”ÿÿÿÿÿJ$db5abceb-86dc-43cf-ab05-57b2a5dabf9b
+ƒ
+java:S1192‡"FDefine a constant instead of duplicating this literal "Admin" 3 times.(Áƒ¶êJ$96b42407-747f-4f10-a5f6-a12a4ca50fd3
+–
+java:S1192I"UDefine a constant instead of duplicating this literal ", MasterAirwayBill: " 3 times.(Ã’ù”ÿÿÿÿÿJ$428e48e0-11fb-41b0-92ef-c0df34607338
+
+java:S1192I"NDefine a constant instead of duplicating this literal ", CompanyId: " 3 times.(Ã’ù”ÿÿÿÿÿJ$1c311fce-f83b-4333-9bd4-3eba62f308e6
+¡
+java:S1192H"`Define a constant instead of duplicating this literal "The given values - LanguageId: " 3 times.(ò†¯‘şÿÿÿÿJ$36fdeb6e-336f-4c15-9925-8f0c213da04b
+‘	java:S117l"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÊãÇÖüÿÿÿÿJ$bcb39a36-2366-4e6d-8612-dda90907db87
+Œ	java:S117m"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ßÌ¡ÖJ$6ebcf199-1001-4e1b-bd5c-8c04221df0fe
+~
+java:S6813""BRemove this field injection and use constructor injection instead.(êæÄŞJ$24edf454-b94f-404d-ac5f-387aea351d7f
+~
+java:S6813%"BRemove this field injection and use constructor injection instead.(êæÄŞJ$5ec2a5ea-2ef8-489b-a6cd-fa25f067e757
+~
+java:S6813("BRemove this field injection and use constructor injection instead.(êæÄŞJ$7e9f4cf4-59de-43f5-b399-b4b1e6b89743
+~
+java:S6813+"BRemove this field injection and use constructor injection instead.(êæÄŞJ$e50ec82c-462c-4872-b5a3-853cb3967598
+~
+java:S6813."BRemove this field injection and use constructor injection instead.(êæÄŞJ$d5140e36-590c-4aad-8107-a599d627def7
+x	java:S107–"<Method has 9 parameters, which is greater than 7 authorized.(³“¼˜J$9c57f024-6c3e-47dc-bfc8-e645d34bfae8
+x	java:S107´"<Method has 8 parameters, which is greater than 7 authorized.(š™îºJ$6d48f3be-2124-44ed-9ae5-216e38ee6aee
+}	java:S107÷"<Method has 8 parameters, which is greater than 7 authorized.(Ñ½µ‘ùÿÿÿÿJ$2843f27e-eb9b-4a27-8b3f-17d6ad222064
+x	java:S107"<Method has 8 parameters, which is greater than 7 authorized.(ƒ¦¦™J$3acfda11-a4de-40a9-a89b-8ca8466953c0

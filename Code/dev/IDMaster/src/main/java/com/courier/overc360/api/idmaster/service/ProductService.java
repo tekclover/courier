@@ -1,7 +1,7 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.product.AddProduct;
 import com.courier.overc360.api.idmaster.primary.model.product.Product;
 import com.courier.overc360.api.idmaster.primary.model.product.UpdateProduct;
@@ -10,9 +10,12 @@ import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ProductRepository;
 import com.courier.overc360.api.idmaster.primary.repository.SubProductRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.product.FindProduct;
 import com.courier.overc360.api.idmaster.replica.model.product.ReplicaProduct;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaProductRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaSubProductRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaProductSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +36,12 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ProductService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
+    private ReplicaSubProductRepository replicaSubProductRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -54,7 +64,6 @@ public class ProductService {
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
     /**
-     *
      * Get Product
      *
      * @param languageId
@@ -69,14 +78,13 @@ public class ProductService {
                 languageId, companyId, subProductId, productId, 0L);
         if (dbProduct.isEmpty()) {
             // Error Log
-            // createProductLog1(languageId, companyId, subProductId, productId, "ProductId - " + productId + " and given values doesn't exists");
+            createProductLog1(languageId, companyId, subProductId, productId, "ProductId - " + productId + " and given values doesn't exists");
             throw new BadRequestException("ProductId - " + productId + " and given values doesn't exists");
         }
         return dbProduct.get();
     }
 
     /**
-     *
      * Create Product
      *
      * @param addProduct
@@ -104,10 +112,11 @@ public class ProductService {
                 throw new BadRequestException("Record is getting Duplicated with the given values");
             } else {
                 log.info("new Product --> " + addProduct);
-                IKeyValuePair iKeyValuePair = subProductRepository.getDescription(addProduct.getLanguageId(), addProduct.getCompanyId(), addProduct.getSubProductId());
+                IKeyValuePair iKeyValuePair = replicaSubProductRepository.getDescription(addProduct.getLanguageId(),
+                        addProduct.getCompanyId(), addProduct.getSubProductId());
                 Product newProduct = new Product();
                 BeanUtils.copyProperties(addProduct, newProduct, CommonUtils.getNullPropertyNames(addProduct));
-                if (addProduct.getProductId() == null) {
+                if (addProduct.getProductId() == null || addProduct.getProductId().isBlank()) {
                     String NUM_RAN_OBJ = "PRODUCT";
                     String PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for PRODUCT_ID : " + PRODUCT_ID);
@@ -118,6 +127,10 @@ public class ProductService {
                     newProduct.setCompanyName(iKeyValuePair.getCompanyDesc());
                     newProduct.setSubProductName(iKeyValuePair.getSubProductDesc());
                 }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addProduct.getStatusId());
+                if (statusDesc != null) {
+                    newProduct.setStatusDescription(statusDesc);
+                }
                 newProduct.setDeletionIndicator(0L);
                 newProduct.setCreatedBy(loginUserID);
                 newProduct.setCreatedOn(new Date());
@@ -127,14 +140,13 @@ public class ProductService {
             }
         } catch (Exception e) {
             // Error Log
-            // createProductLog2(addProduct, e.toString());
+            createProductLog2(addProduct, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
     /**
-     *
      * Update Product
      *
      * @param languageId
@@ -154,19 +166,42 @@ public class ProductService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Product dbProduct = getProduct(languageId, companyId, subProductId, productId);
+
+//            if (updateProduct.getProductName() != null) {
+//                if (updateProduct.getProductName().isBlank()) {
+//                    throw new BadRequestException("Product Name cannot be blank");
+//                }
+//                boolean isProductNameChanged = !dbProduct.getProductName().equalsIgnoreCase(updateProduct.getProductName());
+//                if (isProductNameChanged) {
+//                    String oldProductDesc = dbProduct.getProductName();
+//                    BeanUtils.copyProperties(updateProduct, dbProduct, CommonUtils.getNullPropertyNames(updateProduct));
+//                    dbProduct.setUpdatedBy(loginUserID);
+//                    dbProduct.setUpdatedOn(new Date());
+//                    Product updatedProduct = productRepository.save(dbProduct);
+//
+//                    // Updating productName in Consignor & Customer Tables using Stored Procedure
+//                    productRepository.productDescUpdateProc(languageId, companyId, subProductId, productId, oldProductDesc, updateProduct.getProductName());
+//                    return updatedProduct;
+//                }
+//            }
             BeanUtils.copyProperties(updateProduct, dbProduct, CommonUtils.getNullPropertyNames(updateProduct));
+            if (updateProduct.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateProduct.getStatusId());
+                if (statusDesc != null) {
+                    dbProduct.setStatusDescription(statusDesc);
+                }
+            }
             dbProduct.setUpdatedBy(loginUserID);
             dbProduct.setUpdatedOn(new Date());
             return productRepository.save(dbProduct);
         } catch (Exception e) {
             // Error Log
-            // createProductLog(languageId, companyId, subProductId, productId, e.toString());
+            createProductLog(languageId, companyId, subProductId, productId, e.toString());
             throw new RuntimeException(e);
         }
     }
 
     /**
-     *
      * Delete Product
      *
      * @param languageId
@@ -177,6 +212,13 @@ public class ProductService {
      */
     public void deleteProduct(String languageId, String companyId, String subProductId, String productId, String loginUserID) {
 
+//        List<Customer> customerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
+//                languageId, companyId, subProductId, productId, 0L);
+//        if (!customerList.isEmpty()) {
+//            // Error Log
+//            createProductLog1(languageId, companyId, subProductId, productId, "Records present in Customer table with productId - " + productId);
+//            throw new BadRequestException("Records present in Customer table with productId - " + productId);
+//        }
         Product dbProduct = getProduct(languageId, companyId, subProductId, productId);
         if (dbProduct != null) {
             dbProduct.setDeletionIndicator(1L);
@@ -185,15 +227,14 @@ public class ProductService {
             productRepository.save(dbProduct);
         } else {
             // Error Log
-            // createProductLog1(languageId, companyId, subProductId, productId, "Error in deleting ProductId - " + productId);
+            createProductLog1(languageId, companyId, subProductId, productId, "Error in deleting ProductId - " + productId);
             throw new BadRequestException("Error in deleting ProductId - " + productId);
         }
     }
 
-    /*======================================================REPLICA=====================================================*/
+    /*================================================REPLICA========================================================*/
 
     /**
-     *
      * Get All Product Details
      *
      * @return
@@ -205,7 +246,6 @@ public class ProductService {
     }
 
     /**
-     *
      * Get Product
      *
      * @param languageId
@@ -220,7 +260,7 @@ public class ProductService {
                 languageId, companyId, subProductId, productId, 0L);
         if (dbProduct.isEmpty()) {
             // Error Log
-            // createProductLog1(languageId, companyId, subProductId, productId, "ProductId - " + productId + " and given values doesn't exists");
+            createProductLog1(languageId, companyId, subProductId, productId, "ProductId - " + productId + " and given values doesn't exists");
             throw new BadRequestException("ProductId - " + productId + " and given values doesn't exists");
         }
         return dbProduct.get();
@@ -229,8 +269,57 @@ public class ProductService {
     public List<ReplicaProduct> findProduct(FindProduct findProduct) throws ParseException {
         ReplicaProductSpecification spec = new ReplicaProductSpecification(findProduct);
         List<ReplicaProduct> results = replicaProductRepository.findAll(spec);
-        log.info("found Replica Product --> " + results);
+        log.info("found Products --> " + results);
         return results;
+    }
+
+    //=============================================Product_ErrorLog====================================================
+    private void createProductLog(String languageId, String companyId, String subProductId, String productId, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(productId);
+        errorLog.setMethod("Exception thrown in updateProduct");
+        errorLog.setReferenceField1(subProductId);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+        errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createProductLog1(String languageId, String companyId, String subProductId, String productId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(productId);
+        errorLog.setMethod("Exception thrown in getProduct");
+        errorLog.setReferenceField1(subProductId);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createProductLog2(AddProduct addProduct, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(addProduct.getLanguageId());
+        errorLog.setCompanyId(addProduct.getCompanyId());
+        errorLog.setRefDocNumber(addProduct.getProductId());
+        errorLog.setMethod("Exception thrown in createProduct");
+        errorLog.setReferenceField1(addProduct.getSubProductId());
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+        errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
     }
 
 }

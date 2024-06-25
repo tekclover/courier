@@ -1,17 +1,17 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.language.Language;
 import com.courier.overc360.api.idmaster.primary.model.status.AddStatus;
 import com.courier.overc360.api.idmaster.primary.model.status.Status;
 import com.courier.overc360.api.idmaster.primary.model.status.UpdateStatus;
 import com.courier.overc360.api.idmaster.primary.repository.LanguageRepository;
-import com.courier.overc360.api.idmaster.primary.repository.NumberRangeRepository;
 import com.courier.overc360.api.idmaster.primary.repository.StatusRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.status.FindReplicaStatus;
 import com.courier.overc360.api.idmaster.replica.model.status.ReplicaStatus;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaLanguageRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaStatusSpecification;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +33,9 @@ import java.util.stream.Collectors;
 public class StatusService {
 
     @Autowired
+    private ReplicaLanguageRepository replicaLanguageRepository;
+
+    @Autowired
     private StatusRepository statusRepository;
 
     @Autowired
@@ -48,7 +51,6 @@ public class StatusService {
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
     /**
-     *
      * Get Status
      *
      * @param languageId
@@ -66,8 +68,7 @@ public class StatusService {
     }
 
     /**
-     *
-     *  Create Status
+     * Create Status
      *
      * @param newStatus
      * @param loginUserID
@@ -91,9 +92,9 @@ public class StatusService {
             } else {
                 log.info("newStatus : " + newStatus);
                 Status dbStatus = new Status();
-                IKeyValuePair iKeyValuePair = languageRepository.getDescription(newStatus.getLanguageId());
+                IKeyValuePair iKeyValuePair = replicaLanguageRepository.getDescription(newStatus.getLanguageId());
                 BeanUtils.copyProperties(newStatus, dbStatus, CommonUtils.getNullPropertyNames(newStatus));
-                if(newStatus.getStatusId() == null) {
+                if (newStatus.getStatusId() == null || newStatus.getStatusId().isBlank()) {
                     String NUM_RANGE_OBJ = "STATUS";
                     String STATUS_ID = numberRangeService.getNextNumberRange(NUM_RANGE_OBJ);
                     log.info("next Value from NumberRange for STATUS_ID : " + STATUS_ID);
@@ -116,8 +117,7 @@ public class StatusService {
     }
 
     /**
-     *
-     *  Update Status
+     * Update Status
      *
      * @param languageId
      * @param statusId
@@ -144,8 +144,7 @@ public class StatusService {
     }
 
     /**
-     *
-     *  Delete Status
+     * Delete Status
      *
      * @param languageId
      * @param statusId
@@ -166,7 +165,6 @@ public class StatusService {
     /*======================================================REPLICA=====================================================*/
 
     /**
-     *
      * Get All Statuses
      *
      * @return
@@ -178,8 +176,7 @@ public class StatusService {
     }
 
     /**
-     *
-     *  Get Status
+     * Get Status
      *
      * @param languageId
      * @param statusId
@@ -196,8 +193,7 @@ public class StatusService {
     }
 
     /**
-     *
-     *  Find Status
+     * Find Status
      *
      * @param findReplicaStatus
      * @return

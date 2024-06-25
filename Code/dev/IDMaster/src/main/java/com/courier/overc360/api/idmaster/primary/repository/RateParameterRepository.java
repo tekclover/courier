@@ -18,14 +18,4 @@ public interface RateParameterRepository extends JpaRepository<RateParameter, St
 //    Optional<Status> findByLanguageIdAndCompanyIdAndDeletionIndicator(
 //            String languageId, String companyId,String StatusId, Long DeletionIndicator);
 
-
-    // Get Description
-//    @Query(value = "Select \n" +
-//            "status_text statusDesc, \n" +
-//            "From tblstatus  \n" +
-//            "Where \n" +
-//            "status_id IN (:statusId) and \n" +
-//            "is_deleted = 0", nativeQuery = true)
-//    IKeyValuePair getStatusDescription(@Param(value = "statusId") String statusId);
-
 }

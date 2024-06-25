@@ -18,28 +18,29 @@ public interface ReplicaHubRepository extends JpaRepository<ReplicaHub, String>,
     Optional<ReplicaHub> findByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
             String languageId, String companyId, String hubCode, Long deletionIndicator);
 
-    // Get Hub Description
+    // Get Description
     @Query(value = "Select \n" +
-            "tl.lang_text langDesc, \n" +
-            "tcm.c_name companyDesc, \n" +
-            "tcn.country_name countryDesc, \n" +
-            "tcy.city_name cityDesc \n" +
+            "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +
+            "CONCAT (tcm.C_ID, ' - ', tcm.C_NAME) As companyDesc, \n" +
+            "CONCAT (tcn.COUNTRY_ID, ' - ', tcn.COUNTRY_NAME) As countryDesc, \n" +
+            "CONCAT (tp.CITY_ID, ' - ', tp.CITY_NAME) As cityDesc \n" +
             "From tbllanguage tl \n" +
-            "Join tblcompany tcm on tcm.lang_id = tl.lang_id \n" +
-            "Join tblcountry tcn on tcn.lang_id = tl.lang_id and tcn.c_id = tcm.c_id \n" +
-            "Join tblcity tcy on tcy.lang_id = tl.lang_id and tcy.c_id = tcm.c_id and tcy.country_id = tcn.country_id \n" +
+            "Join tblcompany tcm on tcm.LANG_ID = tl.LANG_ID \n" +
+            "Join tblcountry tcn on tcn.LANG_ID = tl.LANG_ID and tcn.C_ID = tcm.C_ID \n" +
+            "Join tblcity tp on tp.LANG_ID = tl.LANG_ID and tp.C_ID = tcm.C_ID and tp.COUNTRY_ID = tcn.COUNTRY_ID \n" +
             "Where \n" +
-            "tl.lang_id IN (:languageId) and \n" +
-            "tcm.c_id IN (:companyId) and \n" +
-            "tcn.country_id IN (:countryId) and \n" +
-            "tcy.city_id IN (:cityId) and \n" +
-            "tcm.is_deleted = 0 and \n" +
-            "tl.is_deleted = 0 and \n" +
-            "tcn.is_deleted = 0 and \n" +
-            "tcy.is_deleted = 0", nativeQuery = true)
-    IKeyValuePair getDescriptionForHub(@Param(value = "languageId") String languageId,
-                                       @Param(value = "companyId") String companyId,
-                                       @Param(value = "countryId") String countryId,
-                                       @Param(value = "cityId") String cityId);
+            "tl.LANG_ID IN (:languageId) and \n" +
+            "tcm.C_ID IN (:companyId) and \n" +
+            "tcn.COUNTRY_ID IN (:countryId) and \n" +
+            "tp.CITY_ID IN (:cityId) and \n" +
+            "tl.IS_DELETED = 0 and \n" +
+            "tcm.IS_DELETED = 0 and \n" +
+            "tcn.IS_DELETED = 0 and \n" +
+            "tp.IS_DELETED = 0", nativeQuery = true)
+    IKeyValuePair getDescription(@Param(value = "languageId") String languageId,
+                                 @Param(value = "companyId") String companyId,
+                                 @Param(value = "countryId") String countryId,
+                                 @Param(value = "cityId") String cityId);
+
 
 }

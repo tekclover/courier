@@ -10,5 +10,6 @@ public class FindSubProduct {
     private List<String> languageId;
     private List<String> companyId;
     private List<String> subProductId;
+    private List<String> statusId;
 
 }

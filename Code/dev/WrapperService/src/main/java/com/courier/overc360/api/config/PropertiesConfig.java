@@ -26,42 +26,25 @@ public class PropertiesConfig {
     private String password;
 
     //-----------------------------------------------------------------------------------
-    @Value("${transaction.oauth.access_token_url}")
-    private String transactionAccessTokenUrl;
-
-    @Value("${enterprise.oauth.access_token_url}")
-    private String enterpriseAccessTokenUrl;
-
-    @Value("${masters.oauth.access_token_url}")
-    private String mastersAccessTokenUrl;
+    @Value("${midmile.oauth.access_token_url}")
+    private String midMileAccessTokenUrl;
 
     @Value("${idmaster.oauth.access_token_url}")
     private String idmasterAccessTokenUrl;
 
-    @Value("${spark.oauth.access_token_url}")
-    private String sparkAccessTokenUrl;
-
-    @Value("${connector.oauth.access_token_url}")
-    private String connectorAccessTokenUrl;
+    @Value("${common.oauth.access_token_url}")
+    private String commonAccessTokenUrl;
 
     //-----------------------------------------------------------------------------------
-    @Value("${api.transaction.service.url}")
-    private String transactionServiceUrl;
-
-    @Value("${api.enterprise.service.url}")
-    private String enterpriseServiceUrl;
-
-    @Value("${api.masters.service.url}")
-    private String mastersServiceUrl;
+    @Value("${api.midmile.service.url}")
+    private String midMileServiceUrl;
 
     @Value("${api.idmaster.service.url}")
     private String idmasterServiceUrl;
 
-    @Value("${api.spark.service.url}")
-    private String sparkServiceUrl;
+    @Value("${api.common.service.url}")
+    private String commonServiceUrl;
 
-    @Value("${api.connector.service.url}")
-    private String connectorServiceUrl;
     //-----------------------------------------------------------------------------------
 
     @Value("${file.upload-dir}")
@@ -147,9 +130,9 @@ public class PropertiesConfig {
 
     //-------------ErrorLog-----------------------------------------------------------------
     @Value("${errorlog.folder.name}")
-    private String errorlogFolderName;
+    private String errorLogFolderName;
 
     @Value("${file.errorlog}")
-    private String errorlogFileName;
+    private String errorLogFileName;
 
 }

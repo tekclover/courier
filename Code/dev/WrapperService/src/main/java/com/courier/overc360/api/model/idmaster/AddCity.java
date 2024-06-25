@@ -11,13 +11,15 @@ public class AddCity {
 
     private String countryId;
 
-    private String partnerId;
-
     private String provinceId;
+
+    private String districtId;
 
     private String cityId;
 
     private String cityName;
+
+    private String statusId;
 
     private String remark;
 

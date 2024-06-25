@@ -13,6 +13,8 @@ public class AddServiceType {
 
     private String serviceTypeText;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

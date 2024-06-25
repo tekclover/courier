@@ -21,6 +21,9 @@ public class AddProduct {
     @NotBlank(message = "Product Name is mandatory")
     private String productName;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

@@ -7,6 +7,8 @@ public class UpdateCity {
 
     private String cityName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

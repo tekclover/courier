@@ -13,6 +13,8 @@ public class AddRateParameter {
 
     private String companyId;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

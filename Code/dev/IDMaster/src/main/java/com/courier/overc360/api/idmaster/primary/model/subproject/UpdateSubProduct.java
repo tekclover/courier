@@ -7,6 +7,8 @@ public class UpdateSubProduct {
 
     private String subProductName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

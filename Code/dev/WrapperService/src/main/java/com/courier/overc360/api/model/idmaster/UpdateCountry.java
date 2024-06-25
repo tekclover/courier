@@ -7,6 +7,8 @@ public class UpdateCountry {
 
     private String countryName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

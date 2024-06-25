@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddServiceType {
+
     @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
@@ -16,6 +17,9 @@ public class AddServiceType {
 
     @NotBlank(message = "serviceTypeText is mandatory")
     private String serviceTypeText;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String remark;
 

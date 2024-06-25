@@ -9,6 +9,8 @@ public class AddCurrency {
 
     private String currencyDescription;
 
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;

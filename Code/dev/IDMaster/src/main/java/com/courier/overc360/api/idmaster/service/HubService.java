@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.hub.AddHub;
@@ -12,9 +11,11 @@ import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.HubRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.hub.FindHub;
 import com.courier.overc360.api.idmaster.replica.model.hub.ReplicaHub;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaHubRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaProvinceRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaHubSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class HubService {
+
+    @Autowired
+    private ReplicaProvinceRepository replicaProvinceRepository;
 
     @Autowired
     private HubRepository hubRepository;
@@ -60,8 +64,6 @@ public class HubService {
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
 
-
-
     /**
      * Get Hub
      *
@@ -75,9 +77,11 @@ public class HubService {
         Optional<Hub> dbHub = hubRepository.findByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
                 languageId, companyId, hubCode, 0L);
         if (dbHub.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId
+                    + ", companyId - " + companyId + " and hubCode - " + hubCode + " and doesn't exists";
             // Error Log
-            createHubLog1(languageId, companyId, hubCode, "HubCode - " + hubCode + " and given values doesn't exists");
-            throw new BadRequestException("HubCode - " + hubCode + " and given values doesn't exists");
+            createHubLog1(languageId, companyId, hubCode, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbHub.get();
     }
@@ -110,12 +114,12 @@ public class HubService {
             } else {
                 log.info("new Hub --> " + addHub);
                 Hub newHub = new Hub();
-                IKeyValuePair iKeyValuePair = hubRepository.getDescriptionForHub(addHub.getLanguageId(), addHub.getCompanyId(),
+                IKeyValuePair iKeyValuePair = replicaHubRepository.getDescription(addHub.getLanguageId(), addHub.getCompanyId(),
                         addHub.getCountryId(), addHub.getCityId());
                 BeanUtils.copyProperties(addHub, newHub, CommonUtils.getNullPropertyNames(addHub));
                 if (addHub.getHubCode() == null || addHub.getHubCode().isBlank()) {
                     String NUM_RAN_OBJ = "HUB";
-                    String HUB_CODE = numberRangeService.getNextNumberRange( NUM_RAN_OBJ);
+                    String HUB_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for HUB_CODE : " + HUB_CODE);
                     newHub.setHubCode(HUB_CODE);
                 }
@@ -126,7 +130,7 @@ public class HubService {
                     newHub.setCityName(iKeyValuePair.getCityDesc());
                 }
                 if (addHub.getProvinceId() != null) {
-                    IKeyValuePair iKeyValuePair1 = provinceRepository.getProvinceDescription(addHub.getProvinceId());
+                    IKeyValuePair iKeyValuePair1 = replicaProvinceRepository.getProvinceName(addHub.getProvinceId());
                     if (iKeyValuePair1 != null) {
                         newHub.setProvinceName(iKeyValuePair1.getProvinceDesc());
                     }
@@ -226,12 +230,15 @@ public class HubService {
         Optional<ReplicaHub> dbHub = replicaHubRepository.findByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
                 languageId, companyId, hubCode, 0L);
         if (dbHub.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId
+                    + ", companyId - " + companyId + " and hubCode - " + hubCode + " and doesn't exists";
             // Error Log
-            createHubLog1(languageId, companyId, hubCode, "HubCode - " + hubCode + " and given values doesn't exists");
-            throw new BadRequestException("HubCode - " + hubCode + " and given values doesn't exists");
+            createHubLog1(languageId, companyId, hubCode, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbHub.get();
     }
+
     /**
      * Find Hub
      *
@@ -259,7 +266,7 @@ public class HubService {
         errorLog.setMethod("Exception thrown in updateHub");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -289,7 +296,7 @@ public class HubService {
         errorLog.setMethod("Exception thrown in createHub");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

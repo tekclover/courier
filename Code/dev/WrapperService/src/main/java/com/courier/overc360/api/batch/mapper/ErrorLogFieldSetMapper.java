@@ -21,6 +21,11 @@ public class ErrorLogFieldSetMapper implements FieldSetMapper<ErrorLogdto> {
                 fieldSet.readString("referenceField3"),
                 fieldSet.readString("referenceField4"),
                 fieldSet.readString("referenceField5"),
+                fieldSet.readString("referenceField6"),
+                fieldSet.readString("referenceField7"),
+                fieldSet.readString("referenceField8"),
+                fieldSet.readString("referenceField9"),
+                fieldSet.readString("referenceField10"),
                 fieldSet.readString("createdBy")
         );
     }

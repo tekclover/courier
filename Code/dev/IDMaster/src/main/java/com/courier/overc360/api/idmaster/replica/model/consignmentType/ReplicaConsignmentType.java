@@ -1,11 +1,15 @@
 package com.courier.overc360.api.idmaster.replica.model.consignmentType;
 
-import com.courier.overc360.api.idmaster.primary.model.consignmentType.ConsignmentTypeCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
@@ -34,13 +38,13 @@ public class ReplicaConsignmentType {
     @Column(name = "CN_TYPE_ID", columnDefinition = "nvarchar(50)")
     private String consignmentTypeId;
 
-    @Column(name = "LANG_NAME", columnDefinition = "nvarchar(50)")
+    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
-    @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
+    @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
-    @Column(name = "CN_TYPE_TEXT", columnDefinition = "nvarchar(50)")
+    @Column(name = "CN_TYPE_TEXT", columnDefinition = "nvarchar(100)")
     private String consignmentTypeText;
 
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")

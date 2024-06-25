@@ -48,10 +48,10 @@ public class CityController {
     @ApiOperation(response = City.class, value = "Update City") // label for swagger
     @PatchMapping("/{cityId}")
     public ResponseEntity<?> patchCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId,
-                                       @RequestParam String countryId, @RequestParam String provinceId,
+                                       @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String districtId,
                                        @RequestParam String loginUserID, @RequestBody UpdateCity updateCity)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        City updatedCity = cityService.updateCity(languageId, companyId, countryId, provinceId, cityId, loginUserID, updateCity);
+        City updatedCity = cityService.updateCity(languageId, companyId, countryId, provinceId, districtId, cityId, loginUserID, updateCity);
         return new ResponseEntity<>(updatedCity, HttpStatus.OK);
     }
 
@@ -59,8 +59,8 @@ public class CityController {
     @ApiOperation(response = City.class, value = "Delete City") // label for swagger
     @DeleteMapping("/{cityId}")
     public ResponseEntity<?> deleteCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId,
-                                        @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String loginUserID) {
-        cityService.deleteCity(languageId, companyId, countryId, provinceId, cityId, loginUserID);
+                                        @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String districtId, @RequestParam String loginUserID) {
+        cityService.deleteCity(languageId, companyId, countryId, provinceId, districtId, cityId, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -77,9 +77,10 @@ public class CityController {
     // Get City
     @ApiOperation(response = ReplicaCity.class, value = "Get a City") // label for swagger
     @GetMapping("/{cityId}")
-    public ResponseEntity<?> getCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String countryId, @RequestParam String provinceId) {
+    public ResponseEntity<?> getCity(@PathVariable String cityId, @RequestParam String languageId, @RequestParam String companyId,
+                                     @RequestParam String countryId, @RequestParam String provinceId, @RequestParam String districtId) {
 
-        ReplicaCity city = cityService.replicaGetCity(languageId, companyId, countryId, provinceId, cityId);
+        ReplicaCity city = cityService.replicaGetCity(languageId, companyId, countryId, provinceId, districtId, cityId);
         return new ResponseEntity<>(city, HttpStatus.OK);
     }
     // Find City

@@ -19,10 +19,16 @@ public class AddCity {
     @NotBlank(message = "Province Id is mandatory")
     private String provinceId;
 
+    @NotBlank(message = "District Id is mandatory")
+    private String districtId;
+
     private String cityId;
 
     @NotBlank(message = "City Name is mandatory")
     private String cityName;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String remark;
 

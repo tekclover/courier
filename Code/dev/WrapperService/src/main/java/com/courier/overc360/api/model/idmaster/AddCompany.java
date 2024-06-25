@@ -11,8 +11,6 @@ public class AddCompany {
 
     private String companyName;
 
-    private String provinceName;
-
     private String addressLine1;
 
     private String addressLine2;
@@ -26,6 +24,10 @@ public class AddCompany {
     private String provinceId;
 
     private String countryId;
+
+    private String districtId;
+
+    private String statusId;
 
     private String referenceField1;
 

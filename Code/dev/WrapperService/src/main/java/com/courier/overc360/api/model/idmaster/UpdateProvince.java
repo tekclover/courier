@@ -9,6 +9,8 @@ public class UpdateProvince {
 
     private String remark;
 
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;

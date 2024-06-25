@@ -16,7 +16,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_city",
-                        columnNames = {"LANG_ID", "C_ID", "COUNTRY_ID", "CITY_ID", "PROVINCE_ID"})
+                        columnNames = {"LANG_ID", "C_ID", "COUNTRY_ID", "CITY_ID", "PROVINCE_ID", "DISTRICT_ID"})
         }
 )
 @IdClass(CityCompositeKey.class)
@@ -42,6 +42,10 @@ public class City {
     @Column(name = "CITY_ID", columnDefinition = "nvarchar(50)")
     private String cityId;
 
+    @Id
+    @Column(name = "DISTRICT_ID", columnDefinition = "nvarchar(50)")
+    private String districtId;
+
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
@@ -57,10 +61,13 @@ public class City {
     @Column(name = "CITY_NAME", columnDefinition = "nvarchar(100)")
     private String cityName;
 
+    @Column(name = "DISTRICT_NAME", columnDefinition = "nvarchar(100)")
+    private String districtName;
+
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
     private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")

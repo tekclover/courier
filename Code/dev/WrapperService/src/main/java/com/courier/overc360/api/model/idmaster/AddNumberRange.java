@@ -38,4 +38,5 @@ public class AddNumberRange {
     private String referenceField9;
 
     private String referenceField10;
+
 }

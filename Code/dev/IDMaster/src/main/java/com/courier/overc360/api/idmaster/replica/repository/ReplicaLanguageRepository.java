@@ -1,7 +1,7 @@
 package com.courier.overc360.api.idmaster.replica.repository;
 
-import com.courier.overc360.api.idmaster.replica.model.language.ReplicaLanguage;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
+import com.courier.overc360.api.idmaster.replica.model.language.ReplicaLanguage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -19,11 +19,12 @@ public interface ReplicaLanguageRepository extends JpaRepository<ReplicaLanguage
 
     // Get Description
     @Query(value = "Select \n" +
-            "tl.lang_text langDesc \n" +
+            "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc \n" +
             "From tbllanguage tl \n" +
             "Where \n" +
-            "tl.lang_id IN (:languageId) and \n" +
-            "tl.is_deleted = 0", nativeQuery = true)
+            "tl.LANG_ID IN (:languageId) and \n" +
+            "tl.IS_DELETED = 0", nativeQuery = true)
     IKeyValuePair getDescription(@Param(value = "languageId") String languageId);
+
 
 }

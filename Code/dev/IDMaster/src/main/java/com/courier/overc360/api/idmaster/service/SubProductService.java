@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.subproject.AddSubProduct;
@@ -11,8 +10,11 @@ import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.SubProductRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
+import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.subproduct.FindSubProduct;
 import com.courier.overc360.api.idmaster.replica.model.subproduct.ReplicaSubProduct;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaSubProductRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaSubProductSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -35,6 +37,12 @@ import java.util.stream.Collectors;
 public class SubProductService {
 
     @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
+    private ReplicaCompanyRepository replicaCompanyRepository;
+
+    @Autowired
     private SubProductRepository subProductRepository;
 
     @Autowired
@@ -53,6 +61,7 @@ public class SubProductService {
     private ErrorLogService errorLogService;
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
+
     /**
      * Get SubProduct
      *
@@ -98,19 +107,23 @@ public class SubProductService {
             } else if (duplicateSubProduct.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : subProductId - " + addSubProduct.getSubProductId());
             } else {
-                log.info("new SubProduct : " + addSubProduct);
-                IKeyValuePair iKeyValuePair = companyRepository.getDescription(addSubProduct.getLanguageId(), addSubProduct.getCompanyId());
+                log.info("new SubProduct --> " + addSubProduct);
+                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSubProduct.getLanguageId(), addSubProduct.getCompanyId());
                 SubProduct newSubProduct = new SubProduct();
                 BeanUtils.copyProperties(addSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(addSubProduct));
                 if (addSubProduct.getSubProductId() == null || addSubProduct.getSubProductId().isBlank()) {
                     String NUM_RAN_OBJ = "SUBPRODUCT";
-                    String SUB_PRODUCT_ID = numberRangeService.getNextNumberRange( NUM_RAN_OBJ);
+                    String SUB_PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for SUB_PRODUCT_ID : " + SUB_PRODUCT_ID);
                     newSubProduct.setSubProductId(SUB_PRODUCT_ID);
                 }
                 if (iKeyValuePair != null) {
                     newSubProduct.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newSubProduct.setCompanyName(iKeyValuePair.getCompanyDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addSubProduct.getStatusId());
+                if (statusDesc != null) {
+                    newSubProduct.setStatusDescription(statusDesc);
                 }
                 newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);
@@ -142,10 +155,32 @@ public class SubProductService {
     @Transactional
     public SubProduct updateSubProduct(String languageId, String companyId, String subProductId, UpdateSubProduct updateSubProduct, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-
         try {
             SubProduct dbSubProduct = getSubProduct(languageId, companyId, subProductId);
+//            if (updateSubProduct.getSubProductName() != null) {
+//                if (updateSubProduct.getSubProductName().isBlank()) {
+//                    throw new BadRequestException("SubProduct Name cannot be blank");
+//                }
+//                boolean isSubProductNameChanged = !dbSubProduct.getSubProductName().equalsIgnoreCase(updateSubProduct.getSubProductName());
+//                if (isSubProductNameChanged) {
+//                    String oldSubProductDesc = dbSubProduct.getSubProductName();
+//                    BeanUtils.copyProperties(updateSubProduct, dbSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
+//                    dbSubProduct.setUpdatedBy(loginUserID);
+//                    dbSubProduct.setUpdatedOn(new Date());
+//                    SubProduct updatedSubProduct = subProductRepository.save(dbSubProduct);
+//
+//                    // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure
+//                    subProductRepository.subProductDescUpdateProc(languageId, companyId, subProductId, oldSubProductDesc, updateSubProduct.getSubProductName());
+//                    return updatedSubProduct;
+//                }
+//            }
             BeanUtils.copyProperties(updateSubProduct, dbSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
+            if (updateSubProduct.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateSubProduct.getStatusId());
+                if (statusDesc != null) {
+                    dbSubProduct.setStatusDescription(statusDesc);
+                }
+            }
             dbSubProduct.setUpdatedBy(loginUserID);
             dbSubProduct.setUpdatedOn(new Date());
             return subProductRepository.save(dbSubProduct);
@@ -179,6 +214,7 @@ public class SubProductService {
             throw new BadRequestException("Error in deleting SubProductId - " + subProductId);
         }
     }
+
     //===============================================Replica==================================================
 
     /**
@@ -239,7 +275,7 @@ public class SubProductService {
         errorLog.setMethod("Exception thrown in updateSubProduct");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }
@@ -268,7 +304,7 @@ public class SubProductService {
         errorLog.setMethod("Exception thrown in createSubProduct");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
-//        errorLogRepository.save(errorLog);
+        errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
     }

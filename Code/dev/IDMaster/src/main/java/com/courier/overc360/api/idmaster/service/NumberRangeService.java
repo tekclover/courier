@@ -29,6 +29,7 @@ public class NumberRangeService {
 
     @Autowired
     NumberRangeRepository numberRangeRepository;
+
     @Autowired
     ReplicaNumberRangeRepository replicaNumberRangeRepository;
 
@@ -44,16 +45,14 @@ public class NumberRangeService {
      * @return
      */
     public NumberRange getNumberRange(String languageId, Long numberRangeCode, String numberRangeObject) {
-        Optional<NumberRange> numberRange =
+        Optional<NumberRange> dbNumberRange =
                 numberRangeRepository.findByLanguageIdAndNumberRangeCodeAndNumberRangeObjectAndDeletionIndicator(
                         languageId, numberRangeCode, numberRangeObject, 0L);
-
-        if (numberRange.isEmpty()) {
+        if (dbNumberRange.isEmpty()) {
             throw new BadRequestException("The given NumberRangeCode - " + numberRangeCode + ", languageId - "
                     + languageId + " and numberRangeObject - " + numberRangeObject + " doesn't exists");
         }
-
-        return numberRange.get();
+        return dbNumberRange.get();
     }
 
     /**
@@ -71,7 +70,7 @@ public class NumberRangeService {
             throw new BadRequestException("Record not found for given NumberRangeObject - " + duplicateNumberRange);
         } else {
             NumberRange numberRange = duplicateNumberRange.get();
-            log.info("Current record --> " + numberRange);
+//            log.info("Current record --> " + numberRange);
 
             String strCurrentValue = numberRange.getNumberRangeCurrent();
             Long currentValue = 0L;
@@ -89,7 +88,7 @@ public class NumberRangeService {
             numberRange.setNumberRangeCurrent(String.valueOf(currentValue));
             strCurrentValue = String.valueOf(currentValue);
 //        }
-            log.info("New value NumberRange --> " + numberRange);
+//            log.info("New value NumberRange --> " + numberRange);
             numberRangeRepository.save(numberRange);
             log.info("New value has been updated in NumberRangeCurrent column");
             return strCurrentValue;
@@ -156,9 +155,10 @@ public class NumberRangeService {
         if (numberRange != null) {
             numberRange.setDeletionIndicator(1L);
             numberRange.setUpdatedBy(loginUserID);
+            numberRange.setUpdatedOn(new Date());
             numberRangeRepository.save(numberRange);
         } else {
-            throw new BadRequestException("Error in deleting NumberRange Id - " + numberRangeCode);
+            throw new BadRequestException("Error in deleting NumberRangeId - " + numberRangeCode);
         }
     }
 
@@ -195,16 +195,14 @@ public class NumberRangeService {
      * @return
      */
     public ReplicaNumberRange replicaGetNumberRange(String languageId, Long numberRangeCode, String numberRangeObject) {
-        Optional<ReplicaNumberRange> numberRange =
+        Optional<ReplicaNumberRange> dbNumberRange =
                 replicaNumberRangeRepository.findByLanguageIdAndNumberRangeCodeAndNumberRangeObjectAndDeletionIndicator(
                         languageId, numberRangeCode, numberRangeObject, 0L);
-
-        if (numberRange.isEmpty()) {
+        if (dbNumberRange.isEmpty()) {
             throw new BadRequestException("The given NumberRangeCode - " + numberRangeCode + ", languageId - "
                     + languageId + " and numberRangeObject - " + numberRangeObject + " doesn't exists");
         }
-
-        return numberRange.get();
+        return dbNumberRange.get();
     }
 
 

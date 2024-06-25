@@ -1,6 +1,5 @@
 package com.courier.overc360.api.idmaster.replica.repository;
 
-import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.status.ReplicaStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -18,22 +17,13 @@ public interface ReplicaStatusRepository extends JpaRepository<ReplicaStatus, St
     Optional<ReplicaStatus> findByLanguageIdAndStatusIdAndDeletionIndicator(
             String languageId, String statusId, Long deletionIndicator);
 
-
-    // Get Description
+    // Get Status Description
     @Query(value = "Select \n" +
-            "lang_text langDesc, \n" +
-            "From tbllanguage  \n" +
+            "CONCAT (ts.STATUS_ID, ' - ', ts.STATUS_TEXT) \n" +
+            "From tblstatus ts \n" +
             "Where \n" +
-            "lang_id IN (:languageId) and \n" +
-            "is_deleted = 0", nativeQuery = true)
-    IKeyValuePair getDescription(@Param(value = "languageId") String languageId);
+            "ts.STATUS_ID IN (:statusId) and \n" +
+            "ts.IS_DELETED = 0", nativeQuery = true)
+    String getStatusDescription(@Param(value = "statusId") String statusId);
 
-    // Get Description
-    @Query(value = "Select \n" +
-            "status_text statusDesc, \n" +
-            "From tblstatus  \n" +
-            "Where \n" +
-            "status_id IN (:statusId) and \n" +
-            "is_deleted = 0", nativeQuery = true)
-    IKeyValuePair getStatusDescription(@Param(value = "statusId") String statusId);
 }
