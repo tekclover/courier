@@ -41,8 +41,8 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
 	    return new ApiInfo (
-	      "Classic WMS Services",
-	      "Classic WMS Service API",
+	      "OverC 360 Services",
+	      "OverC 360 Service API",
 	      "1.0",
 	      "Terms of service",
 	      new Contact("WMS", "www.tekclover.com", "admin@tekclover.com"),
