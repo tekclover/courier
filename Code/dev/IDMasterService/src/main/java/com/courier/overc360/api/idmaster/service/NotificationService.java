@@ -15,6 +15,7 @@ import com.courier.overc360.api.idmaster.replica.model.notification.FindNotifica
 import com.courier.overc360.api.idmaster.replica.model.notification.ReplicaNotification;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaNotificationRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaNotificationSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class NotificationService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaCompanyRepository replicaCompanyRepository;
@@ -117,7 +121,6 @@ public class NotificationService {
                     log.info("next Value from NumberRange for NOTIFICATION_ID : " + NOTIFICATION_ID);
                     newNotification.setNotificationId(NOTIFICATION_ID);
                 }
-
                 if (iKeyValuePair != null) {
                     newNotification.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newNotification.setCompanyName(iKeyValuePair.getCompanyDesc());
@@ -139,6 +142,10 @@ public class NotificationService {
                     if (productDesc != null) {
                         newNotification.setProductName(productDesc);
                     }
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addNotification.getStatusId());
+                if (statusDesc != null) {
+                    newNotification.setStatusDescription(statusDesc);
                 }
                 newNotification.setDeletionIndicator(0L);
                 newNotification.setCreatedBy(loginUserID);
@@ -192,6 +199,12 @@ public class NotificationService {
                 String productDesc = replicaNotificationRepository.getProductDesc(updateNotification.getProductId());
                 if (productDesc != null) {
                     dbNotification.setProductName(productDesc);
+                }
+            }
+            if (updateNotification.getStatusId() != null) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateNotification.getStatusId());
+                if (statusDesc != null) {
+                    dbNotification.setStatusDescription(statusDesc);
                 }
             }
             dbNotification.setUpdatedBy(loginUserID);
