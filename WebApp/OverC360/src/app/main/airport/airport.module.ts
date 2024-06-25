@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { AirportRoutingModule } from './airport-routing.module';
 import { SharedModule } from '../../shared/shared.module';
-import { ManifestComponent } from './manifest/manifest.component';
+import { PreAlertManifestComponent } from './pre-alert-manifest/pre-alert-manifest.component';
 
 
 @NgModule({
   declarations: [
-    ManifestComponent
+    PreAlertManifestComponent
   ],
   imports: [
     CommonModule,
