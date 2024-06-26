@@ -37,7 +37,7 @@
                               </div>
                               
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">OpStatus </p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">OpStatus </p>
                                 <p-dropdown [options]="statusCodeList" placeholder="Select" formControlName="statusCode" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('statusCode')" class="text-danger"><small>{{
@@ -45,14 +45,19 @@
                               </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Event ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="eventCode" [ngClass]="form.get('eventCode')?.invalid && form.get('eventCode')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('eventCode')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                         
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Event Name</p>
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="eventDescription" class=" w-100" pInputText placeholder="Enter" />
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000"  formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
                             </div>
 
                         </div>

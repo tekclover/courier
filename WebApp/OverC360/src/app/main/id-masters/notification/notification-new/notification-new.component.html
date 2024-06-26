@@ -37,6 +37,17 @@
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Notification ID</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="notificationId" [ngClass]="form.get('notificationId')?.invalid && form.get('notificationId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('notificationId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Notification Name</p>
+                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="notificationText" class=" w-100" pInputText placeholder="Enter" />
+                            </div>
+                            
+                              <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Sub Product </p>
                                 <p-dropdown [options]="subProductIdList"  placeholder="Select"  formControlName="subProductId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="false"  [panelStyle]="{'width':'100%'}" />
@@ -70,16 +81,6 @@
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="userName" class=" w-100" pInputText placeholder="Enter" />
                             </div>
 
-                             
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="notificationId" [ngClass]="form.get('notificationId')?.invalid && form.get('notificationId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('notificationId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
-                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="notificationText" class=" w-100" pInputText placeholder="Enter" />
-                            </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />

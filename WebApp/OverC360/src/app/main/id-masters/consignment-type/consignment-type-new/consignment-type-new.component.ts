@@ -88,6 +88,7 @@ export class ConsignmentTypeNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.consignmentTypeId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();

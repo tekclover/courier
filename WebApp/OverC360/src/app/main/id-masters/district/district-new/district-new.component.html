@@ -38,7 +38,7 @@
 
                               
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Country </p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Country </p>
                                 <p-dropdown [options]="countryIdList"  placeholder="Select"  formControlName="countryId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true"  [panelStyle]="{'width':'100%'}" (onChange)="districtChanged()" />
                                 <mat-error *ngIf="errorHandling('countryId')" class="text-danger"><small>{{
@@ -46,7 +46,7 @@
                               </div>
                               
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Province </p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Province </p>
                                 <p-dropdown [options]="provinceIdList" placeholder="Select" formControlName="provinceId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('provinceId')" class="text-danger"><small>{{
@@ -54,13 +54,13 @@
                               </div>
                               
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">District ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="districtId" [ngClass]="form.get('districtId')?.invalid && form.get('districtId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('districtId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">District Name</p>
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="districtName" class=" w-100" pInputText placeholder="Enter" />
                             </div> 
                             
@@ -68,6 +68,11 @@
                                 <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />
                             </div> 
+                            
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000"  formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
+                            </div>
 
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">

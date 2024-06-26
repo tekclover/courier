@@ -99,6 +99,7 @@ export class DistrictNewComponent {
       this.form.controls.companyId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.provinceId.disable();
+      this.form.controls.districtId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();

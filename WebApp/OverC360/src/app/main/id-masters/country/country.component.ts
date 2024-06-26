@@ -42,17 +42,17 @@ export class CountryComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'countryId', header: 'ID' },
-      { field: 'languageDescription', header: 'Language' },
+      { field: 'countryId', header: 'Country ID' },
       { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
-      { field: 'countryName', header: 'Description' },
+      { field: 'countryName', header: 'Country Name' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
