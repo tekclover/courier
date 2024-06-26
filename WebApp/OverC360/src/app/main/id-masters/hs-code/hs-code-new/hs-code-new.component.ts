@@ -38,7 +38,7 @@ export class HsCodeNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    hsCode: [],
+    hsCode: [, Validators.required],
     itemCode: [],
     itemDescription: [],
     itemGroup: [],

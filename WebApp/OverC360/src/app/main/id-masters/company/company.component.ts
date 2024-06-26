@@ -50,10 +50,12 @@ export class CompanyComponent {
       { field: 'companyId', header: 'Company ID' },
       { field: 'companyName', header: 'Company Name' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'addressLine1', header: 'Address Line 1' },
+      { field: 'addressLine2', header: 'Address Line 2' },
+      { field: 'addressLine3', header: 'Address Line 3' },
+      { field: 'addressLine4', header: 'Address Line 4' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
-      { field: 'updatedBy', header: 'Updated By' },
-      { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
     this.target = [
       { field: 'statusId', header: 'Status ID' },
