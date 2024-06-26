@@ -11,8 +11,6 @@ import { ProvinceMappingComponent } from './province-mapping/province-mapping.co
 import { ProvinceMappingNewComponent } from './province-mapping/province-mapping-new/province-mapping-new.component';
 import { CountryMappingComponent } from './country-mapping/country-mapping.component';
 import { CountryMappingNewComponent } from './country-mapping/country-mapping-new/country-mapping-new.component';
-import { RateComponent } from './rate/rate.component';
-import { RateNewComponent } from './rate/rate-new/rate-new.component';
 
 
 @NgModule({
@@ -24,9 +22,7 @@ import { RateNewComponent } from './rate/rate-new/rate-new.component';
     ProvinceMappingComponent,
     ProvinceMappingNewComponent,
     CountryMappingComponent,
-    CountryMappingNewComponent,
-    RateComponent,
-    RateNewComponent
+    CountryMappingNewComponent
   ],
   imports: [
     CommonModule,

@@ -160,12 +160,12 @@ export const navbarData: INavbarData[] = [
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'idMaster/province',
+                        routerLink: 'idMaster/hsCode',
                         label: 'HS Code'
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'idMaster/district',
+                        routerLink: 'idMaster/customer',
                         label: 'Customer'
                     },
                     {

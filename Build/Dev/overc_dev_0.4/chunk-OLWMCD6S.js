@@ -216,12 +216,12 @@ var navbarData = [
           },
           {
             routerId: 1003,
-            routerLink: "idMaster/province",
+            routerLink: "idMaster/hsCode",
             label: "HS Code"
           },
           {
             routerId: 1004,
-            routerLink: "idMaster/district",
+            routerLink: "idMaster/customer",
             label: "Customer"
           },
           {
@@ -1008,8 +1008,8 @@ var routes = [{
   path: "",
   component: MainComponent,
   children: [
-    { path: "idMaster", loadChildren: () => import("./chunk-HA3BLVGY.js").then((m) => m.IdMastersModule) },
-    { path: "master", loadChildren: () => import("./chunk-NBHCWS4L.js").then((m) => m.MasterModule) },
+    { path: "idMaster", loadChildren: () => import("./chunk-JN663GK5.js").then((m) => m.IdMastersModule) },
+    { path: "master", loadChildren: () => import("./chunk-67CGQFC4.js").then((m) => m.MasterModule) },
     { path: "airport", loadChildren: () => import("./chunk-YIIZEXVG.js").then((m) => m.AirportModule) },
     { path: "operation", loadChildren: () => import("./chunk-CFA7WTC4.js").then((m) => m.OperationModule) }
   ]
@@ -1039,4 +1039,4 @@ var MainModule = _MainModule;
 export {
   MainModule
 };
-//# sourceMappingURL=chunk-BMPFOCWL.js.map
+//# sourceMappingURL=chunk-OLWMCD6S.js.map

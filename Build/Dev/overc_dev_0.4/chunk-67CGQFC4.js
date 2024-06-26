@@ -3,7 +3,7 @@ import {
   CommonAPIService,
   CountryService,
   ProvinceService
-} from "./chunk-QO63WZQR.js";
+} from "./chunk-4Q64VQB3.js";
 import {
   CustomTableComponent,
   DeleteComponent
@@ -1127,7 +1127,7 @@ function CountryMappingNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function CountryMappingNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1139,7 +1139,7 @@ function CountryMappingNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) 
 }
 function CountryMappingNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1151,7 +1151,7 @@ function CountryMappingNewComponent_ng_template_9_mat_error_10_Template(rf, ctx)
 }
 function CountryMappingNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1163,7 +1163,7 @@ function CountryMappingNewComponent_ng_template_9_mat_error_15_Template(rf, ctx)
 }
 function CountryMappingNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1175,7 +1175,7 @@ function CountryMappingNewComponent_ng_template_9_mat_error_20_Template(rf, ctx)
 }
 function CountryMappingNewComponent_ng_template_9_mat_error_33_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1187,7 +1187,7 @@ function CountryMappingNewComponent_ng_template_9_mat_error_33_Template(rf, ctx)
 }
 function CountryMappingNewComponent_ng_template_9_mat_error_38_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1245,17 +1245,22 @@ function CountryMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275elementEnd();
     \u0275\u0275element(37, "input", 28);
     \u0275\u0275template(38, CountryMappingNewComponent_ng_template_9_mat_error_38_Template, 3, 1, "mat-error", 20);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(39, "div", 29)(40, "button", 30);
-    \u0275\u0275text(41, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(42, "button", 31);
-    \u0275\u0275listener("click", function CountryMappingNewComponent_ng_template_9_Template_button_click_42_listener() {
+    \u0275\u0275elementStart(39, "div", 17)(40, "p", 18);
+    \u0275\u0275text(41, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(42, "input", 29);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(43, "div", 30)(44, "button", 31);
+    \u0275\u0275text(45, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(46, "button", 32);
+    \u0275\u0275listener("click", function CountryMappingNewComponent_ng_template_9_Template_button_click_46_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(43);
+    \u0275\u0275text(47);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -1290,7 +1295,7 @@ function CountryMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_21_0 = ctx_r2.form.get("partnerCountryName")) == null ? null : tmp_21_0.invalid) && ((tmp_21_0 = ctx_r2.form.get("partnerCountryName")) == null ? null : tmp_21_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("partnerCountryName"));
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -1304,10 +1309,10 @@ function CountryMappingNewComponent_p_stepperPanel_10_ng_template_1_Template(rf,
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 33);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 34);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 34);
+    \u0275\u0275elementStart(4, "div")(5, "p", 35);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -1322,34 +1327,34 @@ function CountryMappingNewComponent_p_stepperPanel_10_ng_template_1_Template(rf,
 function CountryMappingNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 35)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275elementStart(0, "div", 36)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 36);
+    \u0275\u0275element(4, "input", 37);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 37);
+    \u0275\u0275element(8, "input", 38);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 38);
+    \u0275\u0275element(12, "input", 39);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 39);
+    \u0275\u0275element(16, "input", 40);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 29)(18, "button", 40);
+    \u0275\u0275elementStart(17, "div", 30)(18, "button", 41);
     \u0275\u0275listener("click", function CountryMappingNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 31);
+    \u0275\u0275elementStart(20, "button", 32);
     \u0275\u0275listener("click", function CountryMappingNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -1514,7 +1519,7 @@ var _CountryMappingNewComponent = class _CountryMappingNewComponent {
 _CountryMappingNewComponent.\u0275fac = function CountryMappingNewComponent_Factory(t) {
   return new (t || _CountryMappingNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(CountryMappingService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(CommonAPIService));
 };
-_CountryMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CountryMappingNewComponent, selectors: [["app-country-mapping-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["placeholder", "Select", "formControlName", "countryId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerType", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerCountryId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerCountryName", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/master/countryMapping", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CountryMappingNewComponent_Template(rf, ctx) {
+_CountryMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CountryMappingNewComponent, selectors: [["app-country-mapping-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["placeholder", "Select", "formControlName", "countryId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerType", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerCountryId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerCountryName", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/master/countryMapping", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CountryMappingNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -1525,7 +1530,7 @@ _CountryMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineCompon
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, CountryMappingNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CountryMappingNewComponent_ng_template_9_Template, 44, 33, "ng-template", 7);
+    \u0275\u0275template(8, CountryMappingNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CountryMappingNewComponent_ng_template_9_Template, 48, 33, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, CountryMappingNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -1687,7 +1692,6 @@ var _CountryMappingComponent = class _CountryMappingComponent {
   callTableHeader() {
     this.cols = [
       { field: "partnerId", header: "Partner ID" },
-      { field: "languageDescription", header: "Language" },
       { field: "companyName", header: "Company" },
       { field: "partnerType", header: "Partner Type" },
       { field: "partnerName", header: "Partner Name" },
@@ -1699,6 +1703,7 @@ var _CountryMappingComponent = class _CountryMappingComponent {
     ];
     this.target = [
       { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company ID" },
       { field: "countryId", header: "Country ID" },
       { field: "partnerCountryId", header: "Partner Country ID" },
@@ -1946,7 +1951,7 @@ function DistrictMappingNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1958,7 +1963,7 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_5_Template(rf, ctx)
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1970,7 +1975,7 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_10_Template(rf, ctx
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1982,7 +1987,7 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_15_Template(rf, ctx
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1994,7 +1999,7 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_20_Template(rf, ctx
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_25_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2006,7 +2011,7 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_25_Template(rf, ctx
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_30_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2018,7 +2023,7 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_30_Template(rf, ctx
 }
 function DistrictMappingNewComponent_ng_template_9_mat_error_35_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2028,21 +2033,9 @@ function DistrictMappingNewComponent_ng_template_9_mat_error_35_Template(rf, ctx
     \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
   }
 }
-function DistrictMappingNewComponent_ng_template_9_mat_error_40_Template(rf, ctx) {
+function DistrictMappingNewComponent_ng_template_9_mat_error_46_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
-  }
-}
-function DistrictMappingNewComponent_ng_template_9_mat_error_45_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2056,7 +2049,7 @@ function DistrictMappingNewComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
-    \u0275\u0275text(3, "Language ");
+    \u0275\u0275text(3, "Language");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "p-dropdown", 19);
     \u0275\u0275template(5, DistrictMappingNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
@@ -2074,51 +2067,58 @@ function DistrictMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(15, DistrictMappingNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 22);
-    \u0275\u0275text(18, " Partner ID");
+    \u0275\u0275text(18, "Partner ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(19, "input", 24);
     \u0275\u0275template(20, DistrictMappingNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(21, "div", 17)(22, "p", 22);
-    \u0275\u0275text(23, " Partner Name");
+    \u0275\u0275text(23, "Partner Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(24, "input", 25);
     \u0275\u0275template(25, DistrictMappingNewComponent_ng_template_9_mat_error_25_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(26, "div", 17)(27, "p", 22);
-    \u0275\u0275text(28, " Partner Type");
+    \u0275\u0275text(28, "Partner Type");
     \u0275\u0275elementEnd();
     \u0275\u0275element(29, "input", 26);
     \u0275\u0275template(30, DistrictMappingNewComponent_ng_template_9_mat_error_30_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(31, "div", 17)(32, "p", 18);
-    \u0275\u0275text(33, " Partner District ID");
+    \u0275\u0275text(33, "Partner District ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(34, "input", 27);
     \u0275\u0275template(35, DistrictMappingNewComponent_ng_template_9_mat_error_35_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(36, "div", 17)(37, "p", 18);
-    \u0275\u0275text(38, " Partner District Name");
+    \u0275\u0275elementStart(36, "div", 17);
+    \u0275\u0275text(37, "\n<<<<<<< HEAD ");
+    \u0275\u0275elementStart(38, "p", 18);
+    \u0275\u0275text(39, "Partner District Name");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(39, "input", 28);
-    \u0275\u0275template(40, DistrictMappingNewComponent_ng_template_9_mat_error_40_Template, 3, 1, "mat-error", 20);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(41, "div", 17)(42, "p", 18);
-    \u0275\u0275text(43, " Remark ");
+    \u0275\u0275element(40, "input", 28);
+    \u0275\u0275text(41, "\n======= ");
+    \u0275\u0275elementStart(42, "p", 18);
+    \u0275\u0275text(43, " Partner District Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(44, "input", 29);
-    \u0275\u0275template(45, DistrictMappingNewComponent_ng_template_9_mat_error_45_Template, 3, 1, "mat-error", 20);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(46, "div", 30)(47, "button", 31);
-    \u0275\u0275text(48, "Cancel");
+    \u0275\u0275text(45, "\n>>>>>>> 8a4ac8bb5332ade833cf74872e40055b2d9ce300 ");
+    \u0275\u0275template(46, DistrictMappingNewComponent_ng_template_9_mat_error_46_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(49, "button", 32);
-    \u0275\u0275listener("click", function DistrictMappingNewComponent_ng_template_9_Template_button_click_49_listener() {
+    \u0275\u0275elementStart(47, "div", 17)(48, "p", 18);
+    \u0275\u0275text(49, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(50, "input", 30);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(51, "div", 31)(52, "button", 32);
+    \u0275\u0275text(53, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(54, "button", 33);
+    \u0275\u0275listener("click", function DistrictMappingNewComponent_ng_template_9_Template_button_click_54_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(50);
+    \u0275\u0275text(55);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -2127,21 +2127,21 @@ function DistrictMappingNewComponent_ng_template_9_Template(rf, ctx) {
     let tmp_21_0;
     let tmp_23_0;
     let tmp_25_0;
-    let tmp_27_0;
+    let tmp_26_0;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(33, _c03));
-    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(34, _c03));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(32, _c03));
+    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(33, _c03));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("languageId"));
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(35, _c03));
-    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(36, _c03));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(34, _c03));
+    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(35, _c03));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("companyId"));
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(37, _c03));
-    \u0275\u0275property("options", ctx_r2.districtIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(38, _c03));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(36, _c03));
+    \u0275\u0275property("options", ctx_r2.districtIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(37, _c03));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("districtId"));
     \u0275\u0275advance(4);
@@ -2160,15 +2160,13 @@ function DistrictMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_23_0 = ctx_r2.form.get("partnerDistrictId")) == null ? null : tmp_23_0.invalid) && ((tmp_23_0 = ctx_r2.form.get("partnerDistrictId")) == null ? null : tmp_23_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("partnerDistrictId"));
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(5);
     \u0275\u0275property("ngClass", ((tmp_25_0 = ctx_r2.form.get("partnerDistrictName")) == null ? null : tmp_25_0.invalid) && ((tmp_25_0 = ctx_r2.form.get("partnerDistrictName")) == null ? null : tmp_25_0.dirty) ? "invalid" : "");
-    \u0275\u0275advance();
+    \u0275\u0275advance(4);
+    \u0275\u0275property("ngClass", ((tmp_26_0 = ctx_r2.form.get("partnerDistrictName")) == null ? null : tmp_26_0.invalid) && ((tmp_26_0 = ctx_r2.form.get("partnerDistrictName")) == null ? null : tmp_26_0.dirty) ? "invalid" : "");
+    \u0275\u0275advance(2);
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("partnerDistrictName"));
-    \u0275\u0275advance(4);
-    \u0275\u0275property("ngClass", ((tmp_27_0 = ctx_r2.form.get("remark")) == null ? null : tmp_27_0.invalid) && ((tmp_27_0 = ctx_r2.form.get("remark")) == null ? null : tmp_27_0.dirty) ? "invalid" : "");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r2.errorHandling("remark"));
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -2182,10 +2180,10 @@ function DistrictMappingNewComponent_p_stepperPanel_10_ng_template_1_Template(rf
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 34);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 35);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 35);
+    \u0275\u0275elementStart(4, "div")(5, "p", 36);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -2200,34 +2198,34 @@ function DistrictMappingNewComponent_p_stepperPanel_10_ng_template_1_Template(rf
 function DistrictMappingNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 36)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275elementStart(0, "div", 37)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 37);
+    \u0275\u0275element(4, "input", 38);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 38);
+    \u0275\u0275element(8, "input", 39);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 39);
+    \u0275\u0275element(12, "input", 40);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 40);
+    \u0275\u0275element(16, "input", 41);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 30)(18, "button", 41);
+    \u0275\u0275elementStart(17, "div", 31)(18, "button", 42);
     \u0275\u0275listener("click", function DistrictMappingNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 32);
+    \u0275\u0275elementStart(20, "button", 33);
     \u0275\u0275listener("click", function DistrictMappingNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -2393,7 +2391,7 @@ var _DistrictMappingNewComponent = class _DistrictMappingNewComponent {
 _DistrictMappingNewComponent.\u0275fac = function DistrictMappingNewComponent_Factory(t) {
   return new (t || _DistrictMappingNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(DistrictMappingService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
 };
-_DistrictMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DistrictMappingNewComponent, selectors: [["app-district-mapping-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "districtId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerType", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerDistrictId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerDistrictName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "2000", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "remark", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/master/districtMapping", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function DistrictMappingNewComponent_Template(rf, ctx) {
+_DistrictMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DistrictMappingNewComponent, selectors: [["app-district-mapping-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "districtId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerType", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerDistrictId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerDistrictName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerDistrictName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/master/districtMapping", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function DistrictMappingNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -2404,7 +2402,7 @@ _DistrictMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineCompo
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, DistrictMappingNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, DistrictMappingNewComponent_ng_template_9_Template, 51, 39, "ng-template", 7);
+    \u0275\u0275template(8, DistrictMappingNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, DistrictMappingNewComponent_ng_template_9_Template, 56, 38, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, DistrictMappingNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -2567,7 +2565,6 @@ var _DistrictMappingComponent = class _DistrictMappingComponent {
     this.cols = [
       { field: "partnerId", header: "Partner ID" },
       { field: "districtName", header: "District" },
-      { field: "languageDescription", header: "Language" },
       { field: "companyName", header: "Company" },
       { field: "partnerName", header: "Partner Name" },
       { field: "partnerType", header: "Partner Type" },
@@ -2577,6 +2574,7 @@ var _DistrictMappingComponent = class _DistrictMappingComponent {
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
+      { field: "languageDescription", header: "Language" },
       { field: "partnerDistrictId", header: "Partner District ID" },
       { field: "districtId", header: "District ID" },
       { field: "languageId", header: "Language Id" },
@@ -2919,29 +2917,17 @@ function ProvinceMappingNewComponent_ng_template_9_mat_error_40_Template(rf, ctx
     \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
   }
 }
-function ProvinceMappingNewComponent_ng_template_9_mat_error_45_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
-  }
-}
 function ProvinceMappingNewComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
-    \u0275\u0275text(3, "Language ");
+    \u0275\u0275text(3, "Language");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "p-dropdown", 19);
     \u0275\u0275template(5, ProvinceMappingNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "div", 17)(7, "p", 18);
-    \u0275\u0275text(8, "Company ");
+    \u0275\u0275text(8, "Company");
     \u0275\u0275elementEnd();
     \u0275\u0275element(9, "p-dropdown", 21);
     \u0275\u0275template(10, ProvinceMappingNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
@@ -2953,7 +2939,7 @@ function ProvinceMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(15, ProvinceMappingNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 22);
-    \u0275\u0275text(18, " Partner ID");
+    \u0275\u0275text(18, "Partner ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(19, "input", 24);
     \u0275\u0275template(20, ProvinceMappingNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
@@ -2983,21 +2969,20 @@ function ProvinceMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(40, ProvinceMappingNewComponent_ng_template_9_mat_error_40_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(41, "div", 17)(42, "p", 18);
-    \u0275\u0275text(43, " Remark ");
+    \u0275\u0275text(43, "Remark");
     \u0275\u0275elementEnd();
     \u0275\u0275element(44, "input", 29);
-    \u0275\u0275template(45, ProvinceMappingNewComponent_ng_template_9_mat_error_45_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(46, "div", 30)(47, "button", 31);
-    \u0275\u0275text(48, "Cancel");
+    \u0275\u0275elementStart(45, "div", 30)(46, "button", 31);
+    \u0275\u0275text(47, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(49, "button", 32);
-    \u0275\u0275listener("click", function ProvinceMappingNewComponent_ng_template_9_Template_button_click_49_listener() {
+    \u0275\u0275elementStart(48, "button", 32);
+    \u0275\u0275listener("click", function ProvinceMappingNewComponent_ng_template_9_Template_button_click_48_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(50);
+    \u0275\u0275text(49);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -3006,21 +2991,20 @@ function ProvinceMappingNewComponent_ng_template_9_Template(rf, ctx) {
     let tmp_21_0;
     let tmp_23_0;
     let tmp_25_0;
-    let tmp_27_0;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(33, _c04));
-    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(34, _c04));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(31, _c04));
+    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(32, _c04));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("languageId"));
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(35, _c04));
-    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(36, _c04));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(33, _c04));
+    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(34, _c04));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("companyId"));
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(37, _c04));
-    \u0275\u0275property("options", ctx_r2.provinceIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(38, _c04));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(35, _c04));
+    \u0275\u0275property("options", ctx_r2.provinceIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(36, _c04));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("provinceId"));
     \u0275\u0275advance(4);
@@ -3043,11 +3027,7 @@ function ProvinceMappingNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_25_0 = ctx_r2.form.get("partnerProvinceName")) == null ? null : tmp_25_0.invalid) && ((tmp_25_0 = ctx_r2.form.get("partnerProvinceName")) == null ? null : tmp_25_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("partnerProvinceName"));
-    \u0275\u0275advance(4);
-    \u0275\u0275property("ngClass", ((tmp_27_0 = ctx_r2.form.get("remark")) == null ? null : tmp_27_0.invalid) && ((tmp_27_0 = ctx_r2.form.get("remark")) == null ? null : tmp_27_0.dirty) ? "invalid" : "");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r2.errorHandling("remark"));
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -3272,7 +3252,7 @@ var _ProvinceMappingNewComponent = class _ProvinceMappingNewComponent {
 _ProvinceMappingNewComponent.\u0275fac = function ProvinceMappingNewComponent_Factory(t) {
   return new (t || _ProvinceMappingNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(ProvinceMappingService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
 };
-_ProvinceMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ProvinceMappingNewComponent, selectors: [["app-province-mapping-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "provinceId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerType", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerProvinceId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerProvinceName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "remark", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/master/provinceMapping", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ProvinceMappingNewComponent_Template(rf, ctx) {
+_ProvinceMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ProvinceMappingNewComponent, selectors: [["app-province-mapping-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "provinceId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerType", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "partnerProvinceId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "partnerProvinceName", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/master/provinceMapping", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ProvinceMappingNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -3283,7 +3263,7 @@ _ProvinceMappingNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineCompo
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, ProvinceMappingNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ProvinceMappingNewComponent_ng_template_9_Template, 51, 39, "ng-template", 7);
+    \u0275\u0275template(8, ProvinceMappingNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ProvinceMappingNewComponent_ng_template_9_Template, 50, 37, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, ProvinceMappingNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -3446,7 +3426,6 @@ var _ProvinceMappingComponent = class _ProvinceMappingComponent {
     this.cols = [
       { field: "partnerId", header: "Partner ID" },
       { field: "provinceName", header: "Province" },
-      { field: "languageDescription", header: "Language" },
       { field: "companyName", header: "Company" },
       { field: "partnerName", header: "Partner Name" },
       { field: "partnerType", header: "Partner Type" },
@@ -3456,6 +3435,7 @@ var _ProvinceMappingComponent = class _ProvinceMappingComponent {
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
+      { field: "languageDescription", header: "Language" },
       { field: "partnerProvinceId", header: "Partner Province ID" },
       { field: "provinceId", header: "Province ID" },
       { field: "languageId", header: "Language Id" },
@@ -3673,4 +3653,4 @@ var MasterModule = _MasterModule;
 export {
   MasterModule
 };
-//# sourceMappingURL=chunk-NBHCWS4L.js.map
+//# sourceMappingURL=chunk-67CGQFC4.js.map

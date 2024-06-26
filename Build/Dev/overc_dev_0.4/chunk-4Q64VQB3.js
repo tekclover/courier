@@ -36,7 +36,8 @@ var _CommonAPIService = class _CommonAPIService {
         product: { url: this.setup + "product", key: { key: "productId", value: "productName", languageId: "languageId", companyId: "companyId" } },
         customer: { url: this.setup + "customer", key: { key: "customerId", value: "customerName", languageId: "languageId", companyId: "companyId" } },
         city: { url: this.setup + "city", key: { key: "cityId", value: "cityName", languageId: "languageId", companyId: "companyId" } },
-        serviceType: { url: this.setup + "serviceType", key: { key: "serviceTypeId", value: "serviceTypeText", languageId: "languageId", companyId: "companyId" } }
+        serviceType: { url: this.setup + "serviceType", key: { key: "serviceTypeId", value: "serviceTypeText", languageId: "languageId", companyId: "companyId" } },
+        opStatus: { url: this.setup + "opStatus", key: { key: "statusCode", value: "opStatusDescription", languageId: "languageId", companyId: "companyId" } }
       }
     };
   }
@@ -179,4 +180,4 @@ export {
   CityService,
   CountryService
 };
-//# sourceMappingURL=chunk-QO63WZQR.js.map
+//# sourceMappingURL=chunk-4Q64VQB3.js.map

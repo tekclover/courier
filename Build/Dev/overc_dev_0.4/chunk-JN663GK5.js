@@ -3,7 +3,7 @@ import {
   CommonAPIService,
   CountryService,
   ProvinceService
-} from "./chunk-QO63WZQR.js";
+} from "./chunk-4Q64VQB3.js";
 import {
   CustomTableComponent,
   DeleteComponent
@@ -1288,17 +1288,17 @@ var _ConsignmentTypeComponent = class _ConsignmentTypeComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "consignmentTypeId", header: "ID" },
-      { field: "languageDescription", header: "Language" },
-      { field: "companyName", header: "Comapany" },
+      { field: "consignmentTypeId", header: "Consignment Type ID" },
+      { field: "companyName", header: "Company" },
       { field: "statusDescription", header: "Status" },
       { field: "remark", header: "Remark" },
-      { field: "consignmentTypeText", header: "Description" },
+      { field: "consignmentTypeText", header: "Consignment Type Name" },
       { field: "createdBy", header: "Created By" },
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
       { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company ID" },
       { field: "statusId", header: "Status ID" },
       { field: "referenceField1", header: "Reference Field 1" },
@@ -1517,7 +1517,7 @@ function ConsignmentTypeNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function ConsignmentTypeNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1529,7 +1529,7 @@ function ConsignmentTypeNewComponent_ng_template_9_mat_error_5_Template(rf, ctx)
 }
 function ConsignmentTypeNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1541,7 +1541,7 @@ function ConsignmentTypeNewComponent_ng_template_9_mat_error_10_Template(rf, ctx
 }
 function ConsignmentTypeNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -1567,13 +1567,13 @@ function ConsignmentTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(10, ConsignmentTypeNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, " ID");
+    \u0275\u0275text(13, " Consignment Type ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(14, "input", 22);
     \u0275\u0275template(15, ConsignmentTypeNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 23);
-    \u0275\u0275text(18, "Description");
+    \u0275\u0275text(18, "Consignment Type Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(19, "input", 24);
     \u0275\u0275elementEnd();
@@ -1581,17 +1581,22 @@ function ConsignmentTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275text(22, "Status");
     \u0275\u0275elementEnd();
     \u0275\u0275element(23, "p-dropdown", 25);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(24, "div", 26)(25, "button", 27);
-    \u0275\u0275text(26, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(27, "button", 28);
-    \u0275\u0275listener("click", function ConsignmentTypeNewComponent_ng_template_9_Template_button_click_27_listener() {
+    \u0275\u0275elementStart(24, "div", 17)(25, "p", 18);
+    \u0275\u0275text(26, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(27, "input", 26);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(28, "div", 27)(29, "button", 28);
+    \u0275\u0275text(30, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(31, "button", 29);
+    \u0275\u0275listener("click", function ConsignmentTypeNewComponent_ng_template_9_Template_button_click_31_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(28);
+    \u0275\u0275text(32);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -1614,7 +1619,7 @@ function ConsignmentTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275advance(8);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(24, _c0));
     \u0275\u0275property("options", ctx_r2.status);
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -1628,10 +1633,10 @@ function ConsignmentTypeNewComponent_p_stepperPanel_10_ng_template_1_Template(rf
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 30);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 31);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 31);
+    \u0275\u0275elementStart(4, "div")(5, "p", 32);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -1649,31 +1654,31 @@ function ConsignmentTypeNewComponent_p_stepperPanel_10_ng_template_2_Template(rf
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 32);
+    \u0275\u0275element(4, "input", 33);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 33);
+    \u0275\u0275element(8, "input", 34);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 34);
+    \u0275\u0275element(12, "input", 35);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 35);
+    \u0275\u0275element(16, "input", 36);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 26)(18, "button", 36);
+    \u0275\u0275elementStart(17, "div", 27)(18, "button", 37);
     \u0275\u0275listener("click", function ConsignmentTypeNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 28);
+    \u0275\u0275elementStart(20, "button", 29);
     \u0275\u0275listener("click", function ConsignmentTypeNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -1767,6 +1772,7 @@ var _ConsignmentTypeNewComponent = class _ConsignmentTypeNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.consignmentTypeId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -1835,7 +1841,7 @@ var _ConsignmentTypeNewComponent = class _ConsignmentTypeNewComponent {
 _ConsignmentTypeNewComponent.\u0275fac = function ConsignmentTypeNewComponent_Factory(t) {
   return new (t || _ConsignmentTypeNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(ConsignmentTypeService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(CommonAPIService));
 };
-_ConsignmentTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ConsignmentTypeNewComponent, selectors: [["app-consignment-type-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "consignmentTypeId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "consignmentTypeText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/consignmentType", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ConsignmentTypeNewComponent_Template(rf, ctx) {
+_ConsignmentTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ConsignmentTypeNewComponent, selectors: [["app-consignment-type-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "consignmentTypeId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "consignmentTypeText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/consignmentType", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ConsignmentTypeNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -1846,7 +1852,7 @@ _ConsignmentTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineCompo
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, ConsignmentTypeNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ConsignmentTypeNewComponent_ng_template_9_Template, 29, 25, "ng-template", 7);
+    \u0275\u0275template(8, ConsignmentTypeNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ConsignmentTypeNewComponent_ng_template_9_Template, 33, 25, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, ConsignmentTypeNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -2035,19 +2041,19 @@ var _MenuComponent = class _MenuComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "languageIdAndDescription", header: "Language " },
+      { field: "menuId", header: "Menu ID" },
       { field: "companyIdAndDescription", header: "Company " },
       { field: "menuName", header: "Menu Name" },
-      { field: "subMenuName", header: "SubMenu Name" },
-      { field: "authorizationObjectValue", header: "AuthorizationObject Value" },
+      { field: "subMenuName", header: "Sub Menu Name" },
+      { field: "authorizationObjectValue", header: "Authorization Object Value" },
+      { field: "authorizationObject", header: "Authorization Object" },
       { field: "createdBy", header: "Created By" },
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
-      { field: "menuId", header: "MenuID" },
-      { field: "subMenuId", header: "SubMenuID" },
-      { field: "authorizationObject", header: "AuthorizationObject" },
-      { field: "authorizationObjectId", header: "AuthorizationObjectID" },
+      { field: "languageIdAndDescription", header: "Language " },
+      { field: "subMenuId", header: "Sub Menu ID" },
+      { field: "authorizationObjectId", header: "Authorization Object ID" },
       { field: "referenceField1", header: "Reference Field 1" },
       { field: "referenceField2", header: "Reference Field 2" },
       { field: "referenceField3", header: "Reference Field 3" },
@@ -2057,7 +2063,9 @@ var _MenuComponent = class _MenuComponent {
       { field: "referenceField7", header: "Reference Field 7" },
       { field: "referenceField8", header: "Reference Field 8" },
       { field: "referenceField9", header: "Reference Field 9" },
-      { field: "referenceField10", header: "Reference Field 10" }
+      { field: "referenceField10", header: "Reference Field 10" },
+      { field: "updatedBy", header: "Updated By" },
+      { field: "updatedOn", header: "Updated On", format: "date" }
     ];
   }
   initialCall() {
@@ -2262,7 +2270,7 @@ function MenuNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function MenuNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2274,7 +2282,7 @@ function MenuNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function MenuNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2286,7 +2294,7 @@ function MenuNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function MenuNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2298,7 +2306,7 @@ function MenuNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
 }
 function MenuNewComponent_ng_template_9_mat_error_24_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2310,7 +2318,7 @@ function MenuNewComponent_ng_template_9_mat_error_24_Template(rf, ctx) {
 }
 function MenuNewComponent_ng_template_9_mat_error_33_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -2341,43 +2349,48 @@ function MenuNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275element(14, "input", 22);
     \u0275\u0275template(15, MenuNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "div", 17)(17, "p", 23);
+    \u0275\u0275elementStart(16, "div", 17)(17, "p", 18);
     \u0275\u0275text(18, "Menu Name");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(19, "input", 24);
+    \u0275\u0275element(19, "input", 23);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(20, "div", 17)(21, "p", 18);
-    \u0275\u0275text(22, "SubMenu ID");
+    \u0275\u0275text(22, "Sub Menu ID");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(23, "input", 25);
+    \u0275\u0275element(23, "input", 24);
     \u0275\u0275template(24, MenuNewComponent_ng_template_9_mat_error_24_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(25, "div", 17)(26, "p", 23);
-    \u0275\u0275text(27, "SubMenu Name");
+    \u0275\u0275elementStart(25, "div", 17)(26, "p", 18);
+    \u0275\u0275text(27, "Sub Menu Name");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(28, "input", 26);
+    \u0275\u0275element(28, "input", 25);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(29, "div", 17)(30, "p", 18);
     \u0275\u0275text(31, "AuthorizationObject ID");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(32, "input", 27);
+    \u0275\u0275element(32, "input", 26);
     \u0275\u0275template(33, MenuNewComponent_ng_template_9_mat_error_33_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(34, "div", 17)(35, "p", 23);
-    \u0275\u0275text(36, "Value");
+    \u0275\u0275elementStart(34, "div", 17)(35, "p", 27);
+    \u0275\u0275text(36, "Authorization Object Value");
     \u0275\u0275elementEnd();
     \u0275\u0275element(37, "input", 28);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(38, "div", 29)(39, "button", 30);
-    \u0275\u0275text(40, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(41, "button", 31);
-    \u0275\u0275listener("click", function MenuNewComponent_ng_template_9_Template_button_click_41_listener() {
+    \u0275\u0275elementStart(38, "div", 17)(39, "p", 27);
+    \u0275\u0275text(40, "Authorization Object ");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(41, "input", 29);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(42, "div", 30)(43, "button", 31);
+    \u0275\u0275text(44, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(45, "button", 32);
+    \u0275\u0275listener("click", function MenuNewComponent_ng_template_9_Template_button_click_45_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(42);
+    \u0275\u0275text(46);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -2407,7 +2420,7 @@ function MenuNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_16_0 = ctx_r2.form.get("authorizationObjectId")) == null ? null : tmp_16_0.invalid) && ((tmp_16_0 = ctx_r2.form.get("authorizationObjectId")) == null ? null : tmp_16_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("authorizationObjectId"));
-    \u0275\u0275advance(8);
+    \u0275\u0275advance(12);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -2421,10 +2434,10 @@ function MenuNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 33);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 34);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 34);
+    \u0275\u0275elementStart(4, "div")(5, "p", 35);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -2439,34 +2452,34 @@ function MenuNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
 function MenuNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 35)(1, "div", 17)(2, "p", 23);
+    \u0275\u0275elementStart(0, "div", 36)(1, "div", 17)(2, "p", 27);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 36);
+    \u0275\u0275element(4, "input", 37);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "div", 17)(6, "p", 23);
+    \u0275\u0275elementStart(5, "div", 17)(6, "p", 27);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 37);
+    \u0275\u0275element(8, "input", 38);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "div", 17)(10, "p", 23);
+    \u0275\u0275elementStart(9, "div", 17)(10, "p", 27);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 38);
+    \u0275\u0275element(12, "input", 39);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "div", 17)(14, "p", 23);
+    \u0275\u0275elementStart(13, "div", 17)(14, "p", 27);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 39);
+    \u0275\u0275element(16, "input", 40);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 29)(18, "button", 40);
+    \u0275\u0275elementStart(17, "div", 30)(18, "button", 41);
     \u0275\u0275listener("click", function MenuNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 31);
+    \u0275\u0275elementStart(20, "button", 32);
     \u0275\u0275listener("click", function MenuNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -2630,7 +2643,7 @@ var _MenuNewComponent = class _MenuNewComponent {
 _MenuNewComponent.\u0275fac = function MenuNewComponent_Factory(t) {
   return new (t || _MenuNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(MenuService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
 };
-_MenuNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _MenuNewComponent, selectors: [["app-menu-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["formControlName", "menuId", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "menuName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["formControlName", "subMenuId", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["formControlName", "subMenuName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["formControlName", "authorizationObjectId", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["formControlName", "authorizationObjectValue", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/menu", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function MenuNewComponent_Template(rf, ctx) {
+_MenuNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _MenuNewComponent, selectors: [["app-menu-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["formControlName", "menuId", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["formControlName", "menuName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["formControlName", "subMenuId", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["formControlName", "subMenuName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["formControlName", "authorizationObjectId", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "authorizationObjectValue", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100"], ["formControlName", "authorizationObject", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/menu", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function MenuNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -2641,7 +2654,7 @@ _MenuNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, MenuNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, MenuNewComponent_ng_template_9_Template, 43, 25, "ng-template", 7);
+    \u0275\u0275template(8, MenuNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, MenuNewComponent_ng_template_9_Template, 47, 25, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, MenuNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -5405,9 +5418,8 @@ var _LoadTypeComponent = class _LoadTypeComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "loadTypeId", header: "ID" },
-      { field: "loadTypeText", header: "Description" },
-      { field: "languageDescription", header: "Language" },
+      { field: "loadTypeId", header: "Load Type ID" },
+      { field: "loadTypeText", header: "Load Type Name" },
       { field: "companyName", header: "Company" },
       { field: "statusDescription", header: "Status" },
       { field: "remark", header: "Remark" },
@@ -5415,6 +5427,7 @@ var _LoadTypeComponent = class _LoadTypeComponent {
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
+      { field: "languageDescription", header: "Language" },
       { field: "languageId", header: "Language Id" },
       { field: "companyId", header: "Company Id" },
       { field: "statusId", header: "Status Id" },
@@ -5644,7 +5657,7 @@ function LoadTypeNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function LoadTypeNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -5656,7 +5669,7 @@ function LoadTypeNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function LoadTypeNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -5668,7 +5681,7 @@ function LoadTypeNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function LoadTypeNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -5694,31 +5707,36 @@ function LoadTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(10, LoadTypeNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, " ID");
+    \u0275\u0275text(13, "Load Type ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(14, "input", 22);
     \u0275\u0275template(15, LoadTypeNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 23);
-    \u0275\u0275text(18, "Description");
+    \u0275\u0275text(18, "Load Type Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(19, "input", 24);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(20, "div", 17)(21, "p", 18);
-    \u0275\u0275text(22, "Status");
+    \u0275\u0275text(22, "Remark");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(23, "p-dropdown", 25);
+    \u0275\u0275element(23, "input", 25);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(24, "div", 17)(25, "p", 18);
+    \u0275\u0275text(26, "Status");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(27, "p-dropdown", 26);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(24, "div", 26)(25, "button", 27);
-    \u0275\u0275text(26, "Cancel");
+    \u0275\u0275elementStart(28, "div", 27)(29, "button", 28);
+    \u0275\u0275text(30, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(27, "button", 28);
-    \u0275\u0275listener("click", function LoadTypeNewComponent_ng_template_9_Template_button_click_27_listener() {
+    \u0275\u0275elementStart(31, "button", 29);
+    \u0275\u0275listener("click", function LoadTypeNewComponent_ng_template_9_Template_button_click_31_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(28);
+    \u0275\u0275text(32);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -5738,7 +5756,7 @@ function LoadTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_12_0 = ctx_r2.form.get("loadTypeId")) == null ? null : tmp_12_0.invalid) && ((tmp_12_0 = ctx_r2.form.get("loadTypeId")) == null ? null : tmp_12_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("loadTypeId"));
-    \u0275\u0275advance(8);
+    \u0275\u0275advance(12);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(24, _c07));
     \u0275\u0275property("options", ctx_r2.status);
     \u0275\u0275advance(4);
@@ -5755,10 +5773,10 @@ function LoadTypeNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) 
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 30);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 31);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 31);
+    \u0275\u0275elementStart(4, "div")(5, "p", 32);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -5776,31 +5794,31 @@ function LoadTypeNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) 
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 32);
+    \u0275\u0275element(4, "input", 33);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 33);
+    \u0275\u0275element(8, "input", 34);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 34);
+    \u0275\u0275element(12, "input", 35);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 35);
+    \u0275\u0275element(16, "input", 36);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 26)(18, "button", 36);
+    \u0275\u0275elementStart(17, "div", 27)(18, "button", 37);
     \u0275\u0275listener("click", function LoadTypeNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 28);
+    \u0275\u0275elementStart(20, "button", 29);
     \u0275\u0275listener("click", function LoadTypeNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -5962,7 +5980,7 @@ var _LoadTypeNewComponent = class _LoadTypeNewComponent {
 _LoadTypeNewComponent.\u0275fac = function LoadTypeNewComponent_Factory(t) {
   return new (t || _LoadTypeNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(LoadTypeService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
 };
-_LoadTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _LoadTypeNewComponent, selectors: [["app-load-type-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "loadTypeId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "loadTypeText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/loadType", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function LoadTypeNewComponent_Template(rf, ctx) {
+_LoadTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _LoadTypeNewComponent, selectors: [["app-load-type-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "loadTypeId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "loadTypeText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/loadType", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function LoadTypeNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -5973,7 +5991,7 @@ _LoadTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ 
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, LoadTypeNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, LoadTypeNewComponent_ng_template_9_Template, 29, 25, "ng-template", 7);
+    \u0275\u0275template(8, LoadTypeNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, LoadTypeNewComponent_ng_template_9_Template, 33, 25, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, LoadTypeNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -6162,17 +6180,17 @@ var _ServiceTypeComponent = class _ServiceTypeComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "serviceTypeId", header: "ID" },
-      { field: "languageDescription", header: "Language" },
-      { field: "companyName", header: "Comapany" },
+      { field: "serviceTypeId", header: "Service Type ID" },
+      { field: "companyName", header: "Company" },
       { field: "statusDescription", header: "Status " },
       { field: "remark", header: "Remark" },
-      { field: "serviceTypeText", header: "Description" },
+      { field: "serviceTypeText", header: "Service Type Name" },
       { field: "createdBy", header: "Created By" },
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
       { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company ID" },
       { field: "statusId", header: "Status ID" },
       { field: "referenceField1", header: "Reference Field 1" },
@@ -6391,7 +6409,7 @@ function ServiceTypeNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function ServiceTypeNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -6403,7 +6421,7 @@ function ServiceTypeNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function ServiceTypeNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -6415,7 +6433,7 @@ function ServiceTypeNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function ServiceTypeNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -6441,31 +6459,36 @@ function ServiceTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(10, ServiceTypeNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, " ID");
+    \u0275\u0275text(13, "Service Type ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(14, "input", 22);
     \u0275\u0275template(15, ServiceTypeNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 23);
-    \u0275\u0275text(18, "Description");
+    \u0275\u0275text(18, "Service Type Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(19, "input", 24);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(20, "div", 17)(21, "p", 18);
-    \u0275\u0275text(22, "Status");
+    \u0275\u0275text(22, "Remark");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(23, "p-dropdown", 25);
+    \u0275\u0275element(23, "input", 25);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(24, "div", 17)(25, "p", 18);
+    \u0275\u0275text(26, "Status");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(27, "p-dropdown", 26);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(24, "div", 26)(25, "button", 27);
-    \u0275\u0275text(26, "Cancel");
+    \u0275\u0275elementStart(28, "div", 27)(29, "button", 28);
+    \u0275\u0275text(30, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(27, "button", 28);
-    \u0275\u0275listener("click", function ServiceTypeNewComponent_ng_template_9_Template_button_click_27_listener() {
+    \u0275\u0275elementStart(31, "button", 29);
+    \u0275\u0275listener("click", function ServiceTypeNewComponent_ng_template_9_Template_button_click_31_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(28);
+    \u0275\u0275text(32);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -6485,7 +6508,7 @@ function ServiceTypeNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_12_0 = ctx_r2.form.get("serviceTypeId")) == null ? null : tmp_12_0.invalid) && ((tmp_12_0 = ctx_r2.form.get("serviceTypeId")) == null ? null : tmp_12_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("serviceTypeId"));
-    \u0275\u0275advance(8);
+    \u0275\u0275advance(12);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(24, _c08));
     \u0275\u0275property("options", ctx_r2.status);
     \u0275\u0275advance(4);
@@ -6502,10 +6525,10 @@ function ServiceTypeNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ct
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 30);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 31);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 31);
+    \u0275\u0275elementStart(4, "div")(5, "p", 32);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -6523,31 +6546,31 @@ function ServiceTypeNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ct
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 32);
+    \u0275\u0275element(4, "input", 33);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 33);
+    \u0275\u0275element(8, "input", 34);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 34);
+    \u0275\u0275element(12, "input", 35);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 35);
+    \u0275\u0275element(16, "input", 36);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 26)(18, "button", 36);
+    \u0275\u0275elementStart(17, "div", 27)(18, "button", 37);
     \u0275\u0275listener("click", function ServiceTypeNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 28);
+    \u0275\u0275elementStart(20, "button", 29);
     \u0275\u0275listener("click", function ServiceTypeNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -6640,6 +6663,7 @@ var _ServiceTypeNewComponent = class _ServiceTypeNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.serviceTypeId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -6708,7 +6732,7 @@ var _ServiceTypeNewComponent = class _ServiceTypeNewComponent {
 _ServiceTypeNewComponent.\u0275fac = function ServiceTypeNewComponent_Factory(t) {
   return new (t || _ServiceTypeNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(ServiceTypeService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(CommonAPIService));
 };
-_ServiceTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ServiceTypeNewComponent, selectors: [["app-service-type-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "serviceTypeId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "serviceTypeText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/serviceType", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ServiceTypeNewComponent_Template(rf, ctx) {
+_ServiceTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ServiceTypeNewComponent, selectors: [["app-service-type-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "serviceTypeId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputTextformControlName", "serviceTypeText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/serviceType", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ServiceTypeNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -6719,7 +6743,7 @@ _ServiceTypeNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, ServiceTypeNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ServiceTypeNewComponent_ng_template_9_Template, 29, 25, "ng-template", 7);
+    \u0275\u0275template(8, ServiceTypeNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ServiceTypeNewComponent_ng_template_9_Template, 33, 25, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, ServiceTypeNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -7907,14 +7931,17 @@ var _ProvinceComponent = class _ProvinceComponent {
   }
   callTableHeader() {
     this.cols = [
+      { field: "provinceId", header: "ProvinceID" },
       { field: "provinceName", header: "Province Name" },
-      { field: "countryName", header: "Country Name" },
-      { field: "companyName", header: "Company Name" },
+      { field: "countryName", header: "Country " },
+      { field: "companyName", header: "Company " },
       { field: "languageDescription", header: "Language" },
-      { field: "statusDescription", header: "Status" }
+      { field: "statusDescription", header: "Status" },
+      { field: "remark", header: "Remark" },
+      { field: "createdBy", header: "Created By" },
+      { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
-      { field: "provinceId", header: "ProvinceID" },
       { field: "countryId", header: "CountryID" },
       { field: "companyId", header: "CompanyID" },
       { field: "languageId", header: "LanguageId" },
@@ -7928,7 +7955,9 @@ var _ProvinceComponent = class _ProvinceComponent {
       { field: "referenceField7", header: "Reference Field 7" },
       { field: "referenceField8", header: "Reference Field 8" },
       { field: "referenceField9", header: "Reference Field 9" },
-      { field: "referenceField10", header: "Reference Field 10" }
+      { field: "referenceField10", header: "Reference Field 10" },
+      { field: "updatedBy", header: "Updated By" },
+      { field: "updatedOn", header: "Updated On", format: "date" }
     ];
   }
   initialCall() {
@@ -8179,35 +8208,23 @@ function ProvinceNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
   }
 }
-function ProvinceNewComponent_ng_template_9_mat_error_28_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 31)(1, "small");
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
-  }
-}
 function ProvinceNewComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
-    \u0275\u0275text(3, "Language ID");
+    \u0275\u0275text(3, "Language");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "p-dropdown", 19);
     \u0275\u0275template(5, ProvinceNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "div", 17)(7, "p", 18);
-    \u0275\u0275text(8, "Company ID");
+    \u0275\u0275text(8, "Company");
     \u0275\u0275elementEnd();
     \u0275\u0275element(9, "p-dropdown", 21);
     \u0275\u0275template(10, ProvinceNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, "Country ID");
+    \u0275\u0275text(13, "Country");
     \u0275\u0275elementEnd();
     \u0275\u0275element(14, "p-dropdown", 22);
     \u0275\u0275template(15, ProvinceNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
@@ -8218,55 +8235,58 @@ function ProvinceNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275element(19, "input", 23);
     \u0275\u0275template(20, ProvinceNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(21, "div", 17)(22, "p", 24);
+    \u0275\u0275elementStart(21, "div", 17)(22, "p", 18);
     \u0275\u0275text(23, "Province Name");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(24, "input", 25);
+    \u0275\u0275element(24, "input", 24);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(25, "div", 17)(26, "div", 26);
-    \u0275\u0275element(27, "p-dropdown", 27);
+    \u0275\u0275elementStart(25, "div", 17)(26, "p", 25);
+    \u0275\u0275text(27, "Remark");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(28, ProvinceNewComponent_ng_template_9_mat_error_28_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275element(28, "input", 26);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(29, "div", 17)(30, "p", 25);
+    \u0275\u0275text(31, "Status");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(32, "p-dropdown", 27);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(29, "div", 28)(30, "button", 29);
-    \u0275\u0275text(31, "Cancel");
+    \u0275\u0275elementStart(33, "div", 28)(34, "button", 29);
+    \u0275\u0275text(35, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(32, "button", 30);
-    \u0275\u0275listener("click", function ProvinceNewComponent_ng_template_9_Template_button_click_32_listener() {
+    \u0275\u0275elementStart(36, "button", 30);
+    \u0275\u0275listener("click", function ProvinceNewComponent_ng_template_9_Template_button_click_36_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(33);
+    \u0275\u0275text(37);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     let tmp_17_0;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(27, _c010));
-    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(28, _c010));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(26, _c010));
+    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(27, _c010));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("languageId"));
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(29, _c010));
-    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(30, _c010));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(28, _c010));
+    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(29, _c010));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("companyId"));
     \u0275\u0275advance(4);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(31, _c010));
-    \u0275\u0275property("options", ctx_r2.countryIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(32, _c010));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(30, _c010));
+    \u0275\u0275property("options", ctx_r2.countryIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(31, _c010));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("countryId"));
     \u0275\u0275advance(4);
     \u0275\u0275property("ngClass", ((tmp_17_0 = ctx_r2.form.get("provinceId")) == null ? null : tmp_17_0.invalid) && ((tmp_17_0 = ctx_r2.form.get("provinceId")) == null ? null : tmp_17_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("provinceId"));
-    \u0275\u0275advance(7);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(33, _c010));
+    \u0275\u0275advance(12);
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(32, _c010));
     \u0275\u0275property("options", ctx_r2.status);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r2.errorHandling("statusId"));
     \u0275\u0275advance(4);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
@@ -8299,22 +8319,22 @@ function ProvinceNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) 
 function ProvinceNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 34)(1, "div", 17)(2, "p", 24);
+    \u0275\u0275elementStart(0, "div", 34)(1, "div", 17)(2, "p", 25);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "input", 35);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "div", 17)(6, "p", 24);
+    \u0275\u0275elementStart(5, "div", 17)(6, "p", 25);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
     \u0275\u0275element(8, "input", 36);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "div", 17)(10, "p", 24);
+    \u0275\u0275elementStart(9, "div", 17)(10, "p", 25);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
     \u0275\u0275element(12, "input", 37);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "div", 17)(14, "p", 24);
+    \u0275\u0275elementStart(13, "div", 17)(14, "p", 25);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
     \u0275\u0275element(16, "input", 38);
@@ -8468,7 +8488,7 @@ var _ProvinceNewComponent = class _ProvinceNewComponent {
       this.spin.show();
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: "success", summary: "Updated", key: "br", detail: res.languageId + res.countryId + res.provinceId + res.companyId + " has been updated successfully" });
+          this.messageService.add({ severity: "success", summary: "Updated", key: "br", detail: res.provinceId + " has been updated successfully" });
           this.router.navigate(["/main/idMaster/province"]);
           this.spin.hide();
         },
@@ -8482,7 +8502,7 @@ var _ProvinceNewComponent = class _ProvinceNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
           if (res) {
-            this.messageService.add({ severity: "success", summary: "Created", key: "br", detail: res.languageId + res.countryId + res.provinceId + res.companyId + " has been created successfully" });
+            this.messageService.add({ severity: "success", summary: "Created", key: "br", detail: res.provinceId + " has been created successfully" });
             this.router.navigate(["/main/idMaster/province"]);
             this.spin.hide();
           }
@@ -8498,7 +8518,7 @@ var _ProvinceNewComponent = class _ProvinceNewComponent {
 _ProvinceNewComponent.\u0275fac = function ProvinceNewComponent_Factory(t) {
   return new (t || _ProvinceNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(ProvinceService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
 };
-_ProvinceNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ProvinceNewComponent, selectors: [["app-province-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "languageId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["formControlName", "countryId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["formControlName", "provinceId", "maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["pInputText", "", "formControlName", "provinceName", "maxlength", "50", "placeholder", "Enter", 1, "w-100"], [1, "card", "flex"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select ", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/province", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ProvinceNewComponent_Template(rf, ctx) {
+_ProvinceNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ProvinceNewComponent, selectors: [["app-province-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["formControlName", "languageId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["formControlName", "countryId", "appendTo", "body", "placeholder", "Select", 3, "options", "disabled", "panelStyle"], ["formControlName", "provinceId", "maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["pInputText", "", "formControlName", "provinceName", "maxlength", "50", "placeholder", "Enter", 1, "w-100"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/province", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function ProvinceNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -8509,7 +8529,7 @@ _ProvinceNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ 
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, ProvinceNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ProvinceNewComponent_ng_template_9_Template, 34, 34, "ng-template", 7);
+    \u0275\u0275template(8, ProvinceNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, ProvinceNewComponent_ng_template_9_Template, 38, 33, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, ProvinceNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -8698,9 +8718,8 @@ var _DistrictComponent = class _DistrictComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "districtId", header: "ID" },
-      { field: "districtName", header: "Description" },
-      { field: "languageDescription", header: "Language" },
+      { field: "districtId", header: "District ID" },
+      { field: "districtName", header: "District Name" },
       { field: "companyName", header: "Company" },
       { field: "countryName", header: "Country" },
       { field: "provinceName", header: "Province" },
@@ -8711,9 +8730,11 @@ var _DistrictComponent = class _DistrictComponent {
     ];
     this.target = [
       { field: "languageId", header: "Language Id" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company Id" },
       { field: "countryId", header: "Country Id" },
       { field: "provinceId", header: "Province Id" },
+      { field: "languageDescription", header: "Language" },
       { field: "statusId", header: "Status Id" },
       { field: "referenceField1", header: "Reference Field 1" },
       { field: "referenceField2", header: "Reference Field 2" },
@@ -8931,7 +8952,7 @@ function DistrictNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function DistrictNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 31)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -8943,7 +8964,7 @@ function DistrictNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function DistrictNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 31)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -8955,7 +8976,7 @@ function DistrictNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function DistrictNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 31)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -8967,7 +8988,7 @@ function DistrictNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
 }
 function DistrictNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 31)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -8979,7 +9000,7 @@ function DistrictNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
 }
 function DistrictNewComponent_ng_template_9_mat_error_25_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 31)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -8993,21 +9014,21 @@ function DistrictNewComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
-    \u0275\u0275text(3, "Language ");
+    \u0275\u0275text(3, "Language");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "p-dropdown", 19);
     \u0275\u0275template(5, DistrictNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "div", 17)(7, "p", 18);
-    \u0275\u0275text(8, "Company ");
+    \u0275\u0275text(8, "Company");
     \u0275\u0275elementEnd();
     \u0275\u0275element(9, "p-dropdown", 21);
     \u0275\u0275template(10, DistrictNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
+    \u0275\u0275elementStart(11, "div", 17)(12, "p", 22);
     \u0275\u0275text(13, "Country ");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "p-dropdown", 22);
+    \u0275\u0275elementStart(14, "p-dropdown", 23);
     \u0275\u0275listener("onChange", function DistrictNewComponent_ng_template_9_Template_p_dropdown_onChange_14_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
@@ -9016,20 +9037,20 @@ function DistrictNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275elementEnd();
     \u0275\u0275template(15, DistrictNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "div", 17)(17, "p", 18);
+    \u0275\u0275elementStart(16, "div", 17)(17, "p", 22);
     \u0275\u0275text(18, "Province ");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(19, "p-dropdown", 23);
+    \u0275\u0275element(19, "p-dropdown", 24);
     \u0275\u0275template(20, DistrictNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(21, "div", 17)(22, "p", 18);
-    \u0275\u0275text(23, " ID");
+    \u0275\u0275text(23, "District ID");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(24, "input", 24);
+    \u0275\u0275element(24, "input", 25);
     \u0275\u0275template(25, DistrictNewComponent_ng_template_9_mat_error_25_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(26, "div", 17)(27, "p", 25);
-    \u0275\u0275text(28, "Description");
+    \u0275\u0275elementStart(26, "div", 17)(27, "p", 22);
+    \u0275\u0275text(28, "District Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(29, "input", 26);
     \u0275\u0275elementEnd();
@@ -9037,17 +9058,22 @@ function DistrictNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275text(32, "Status");
     \u0275\u0275elementEnd();
     \u0275\u0275element(33, "p-dropdown", 27);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(34, "div", 28)(35, "button", 29);
-    \u0275\u0275text(36, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(37, "button", 30);
-    \u0275\u0275listener("click", function DistrictNewComponent_ng_template_9_Template_button_click_37_listener() {
+    \u0275\u0275elementStart(34, "div", 17)(35, "p", 18);
+    \u0275\u0275text(36, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(37, "input", 28);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(38, "div", 29)(39, "button", 30);
+    \u0275\u0275text(40, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(41, "button", 31);
+    \u0275\u0275listener("click", function DistrictNewComponent_ng_template_9_Template_button_click_41_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(38);
+    \u0275\u0275text(42);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -9080,7 +9106,7 @@ function DistrictNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275advance(8);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(40, _c011));
     \u0275\u0275property("options", ctx_r2.status);
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -9094,10 +9120,10 @@ function DistrictNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) 
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 32);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 33);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 33);
+    \u0275\u0275elementStart(4, "div")(5, "p", 34);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -9112,34 +9138,34 @@ function DistrictNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) 
 function DistrictNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 34)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275elementStart(0, "div", 35)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 35);
+    \u0275\u0275element(4, "input", 36);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 36);
+    \u0275\u0275element(8, "input", 37);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 37);
+    \u0275\u0275element(12, "input", 38);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 38);
+    \u0275\u0275element(16, "input", 39);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 28)(18, "button", 39);
+    \u0275\u0275elementStart(17, "div", 29)(18, "button", 40);
     \u0275\u0275listener("click", function DistrictNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 30);
+    \u0275\u0275elementStart(20, "button", 31);
     \u0275\u0275listener("click", function DistrictNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -9242,6 +9268,7 @@ var _DistrictNewComponent = class _DistrictNewComponent {
       this.form.controls.companyId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.provinceId.disable();
+      this.form.controls.districtId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -9329,7 +9356,7 @@ var _DistrictNewComponent = class _DistrictNewComponent {
 _DistrictNewComponent.\u0275fac = function DistrictNewComponent_Factory(t) {
   return new (t || _DistrictNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(DistrictService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(ProvinceService));
 };
-_DistrictNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DistrictNewComponent, selectors: [["app-district-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "countryId", "appendTo", "body", 3, "onChange", "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "provinceId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "districtId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "districtName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/district", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function DistrictNewComponent_Template(rf, ctx) {
+_DistrictNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DistrictNewComponent, selectors: [["app-district-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["placeholder", "Select", "formControlName", "countryId", "appendTo", "body", 3, "onChange", "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "provinceId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "districtId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "districtName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/district", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function DistrictNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -9340,7 +9367,7 @@ _DistrictNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ 
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, DistrictNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, DistrictNewComponent_ng_template_9_Template, 39, 41, "ng-template", 7);
+    \u0275\u0275template(8, DistrictNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, DistrictNewComponent_ng_template_9_Template, 43, 41, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, DistrictNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -9501,9 +9528,8 @@ var _CityComponent = class _CityComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "cityId", header: "ID" },
-      { field: "cityName", header: "Description" },
-      { field: "languageDescription", header: "Language" },
+      { field: "cityId", header: " City ID" },
+      { field: "cityName", header: "City Name" },
       { field: "companyName", header: "Company" },
       { field: "countryName", header: "Country" },
       { field: "provinceName", header: "Province" },
@@ -9519,6 +9545,7 @@ var _CityComponent = class _CityComponent {
       { field: "countryId", header: "Country Id" },
       { field: "provinceId", header: "Province Id" },
       { field: "districtId", header: "District Id" },
+      { field: "languageDescription", header: "Language" },
       { field: "statusId", header: "Status Id" },
       { field: "referenceField1", header: "Reference Field 1" },
       { field: "referenceField2", header: "Reference Field 2" },
@@ -9736,7 +9763,7 @@ function CityNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function CityNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -9748,7 +9775,7 @@ function CityNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function CityNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -9760,7 +9787,7 @@ function CityNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function CityNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -9772,7 +9799,7 @@ function CityNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
 }
 function CityNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -9784,7 +9811,7 @@ function CityNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
 }
 function CityNewComponent_ng_template_9_mat_error_25_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -9796,7 +9823,7 @@ function CityNewComponent_ng_template_9_mat_error_25_Template(rf, ctx) {
 }
 function CityNewComponent_ng_template_9_mat_error_30_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 32)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -9810,21 +9837,21 @@ function CityNewComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
-    \u0275\u0275text(3, "Language ");
+    \u0275\u0275text(3, "Language");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "p-dropdown", 19);
     \u0275\u0275template(5, CityNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "div", 17)(7, "p", 18);
-    \u0275\u0275text(8, "Company ");
+    \u0275\u0275text(8, "Company");
     \u0275\u0275elementEnd();
     \u0275\u0275element(9, "p-dropdown", 21);
     \u0275\u0275template(10, CityNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, "Country ");
+    \u0275\u0275elementStart(11, "div", 17)(12, "p", 22);
+    \u0275\u0275text(13, "Country");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "p-dropdown", 22);
+    \u0275\u0275elementStart(14, "p-dropdown", 23);
     \u0275\u0275listener("onChange", function CityNewComponent_ng_template_9_Template_p_dropdown_onChange_14_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
@@ -9833,26 +9860,26 @@ function CityNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275elementEnd();
     \u0275\u0275template(15, CityNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "div", 17)(17, "p", 18);
-    \u0275\u0275text(18, "Province ");
+    \u0275\u0275elementStart(16, "div", 17)(17, "p", 22);
+    \u0275\u0275text(18, "Province");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(19, "p-dropdown", 23);
+    \u0275\u0275element(19, "p-dropdown", 24);
     \u0275\u0275template(20, CityNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(21, "div", 17)(22, "p", 18);
-    \u0275\u0275text(23, "District ");
+    \u0275\u0275elementStart(21, "div", 17)(22, "p", 22);
+    \u0275\u0275text(23, "District");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(24, "p-dropdown", 24);
+    \u0275\u0275element(24, "p-dropdown", 25);
     \u0275\u0275template(25, CityNewComponent_ng_template_9_mat_error_25_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(26, "div", 17)(27, "p", 18);
-    \u0275\u0275text(28, " ID");
+    \u0275\u0275text(28, "City ID");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(29, "input", 25);
+    \u0275\u0275element(29, "input", 26);
     \u0275\u0275template(30, CityNewComponent_ng_template_9_mat_error_30_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(31, "div", 17)(32, "p", 26);
-    \u0275\u0275text(33, "Description");
+    \u0275\u0275elementStart(31, "div", 17)(32, "p", 22);
+    \u0275\u0275text(33, "City Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(34, "input", 27);
     \u0275\u0275elementEnd();
@@ -9860,17 +9887,22 @@ function CityNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275text(37, "Status");
     \u0275\u0275elementEnd();
     \u0275\u0275element(38, "p-dropdown", 28);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(39, "div", 29)(40, "button", 30);
-    \u0275\u0275text(41, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(42, "button", 31);
-    \u0275\u0275listener("click", function CityNewComponent_ng_template_9_Template_button_click_42_listener() {
+    \u0275\u0275elementStart(39, "div", 17)(40, "p", 18);
+    \u0275\u0275text(41, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(42, "input", 29);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(43, "div", 30)(44, "button", 31);
+    \u0275\u0275text(45, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(46, "button", 32);
+    \u0275\u0275listener("click", function CityNewComponent_ng_template_9_Template_button_click_46_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(43);
+    \u0275\u0275text(47);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -9908,7 +9940,7 @@ function CityNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275advance(8);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(48, _c012));
     \u0275\u0275property("options", ctx_r2.status);
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -9922,10 +9954,10 @@ function CityNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 33);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 34);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 34);
+    \u0275\u0275elementStart(4, "div")(5, "p", 35);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -9940,34 +9972,34 @@ function CityNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
 function CityNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 35)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275elementStart(0, "div", 36)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 36);
+    \u0275\u0275element(4, "input", 37);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 37);
+    \u0275\u0275element(8, "input", 38);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 38);
+    \u0275\u0275element(12, "input", 39);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 39);
+    \u0275\u0275element(16, "input", 40);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 29)(18, "button", 40);
+    \u0275\u0275elementStart(17, "div", 30)(18, "button", 41);
     \u0275\u0275listener("click", function CityNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 31);
+    \u0275\u0275elementStart(20, "button", 32);
     \u0275\u0275listener("click", function CityNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -10009,15 +10041,15 @@ var _CityNewComponent = class _CityNewComponent {
     this.form = this.fb.group({
       cityId: [],
       cityName: [, Validators.required],
-      districtId: [],
+      districtId: [, Validators.required],
       districtName: [],
       languageId: [this.auth.languageId, Validators.required],
       languageDescription: [],
       companyId: [this.auth.companyId, Validators.required],
       companyName: [],
-      countryId: [],
+      countryId: [, Validators.required],
       countryName: [],
-      provinceId: [],
+      provinceId: [, Validators.required],
       provinceName: [],
       statusDescription: [],
       createdOn: [""],
@@ -10165,7 +10197,7 @@ var _CityNewComponent = class _CityNewComponent {
 _CityNewComponent.\u0275fac = function CityNewComponent_Factory(t) {
   return new (t || _CityNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(CityService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(ProvinceService));
 };
-_CityNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CityNewComponent, selectors: [["app-city-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "countryId", "appendTo", "body", 3, "onChange", "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "provinceId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "districtId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "cityId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "cityName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/city", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CityNewComponent_Template(rf, ctx) {
+_CityNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CityNewComponent, selectors: [["app-city-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["placeholder", "Select", "formControlName", "countryId", "appendTo", "body", 3, "onChange", "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "provinceId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "districtId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "cityId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "cityName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/city", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CityNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -10176,7 +10208,7 @@ _CityNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, CityNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CityNewComponent_ng_template_9_Template, 44, 49, "ng-template", 7);
+    \u0275\u0275template(8, CityNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CityNewComponent_ng_template_9_Template, 48, 49, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, CityNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -13944,7 +13976,6 @@ var _NumberrangeNewComponent = class _NumberrangeNewComponent {
     this.submitted = false;
     this.email = new FormControl("", [Validators.required, Validators.email]);
     this.languageIdList = [];
-    this.numberRangeCodeList = [];
   }
   errorHandling(control, error = "required") {
     const controlInstance = this.form.get(control);
@@ -13976,12 +14007,10 @@ var _NumberrangeNewComponent = class _NumberrangeNewComponent {
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
-      this.cas.dropdownlist.setup.language.url,
-      this.cas.dropdownlist.setup.numberrange.url
+      this.cas.dropdownlist.setup.language.url
     ]).subscribe({
       next: (results) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-        this.numberRangeCodeList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.numberrange.key);
         this.spin.hide();
       },
       error: (err) => {
@@ -15907,7 +15936,7 @@ function CountryNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function CountryNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -15919,7 +15948,7 @@ function CountryNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function CountryNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -15931,7 +15960,7 @@ function CountryNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function CountryNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -15957,13 +15986,13 @@ function CountryNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(10, CountryNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, " ID");
+    \u0275\u0275text(13, "Country ID");
     \u0275\u0275elementEnd();
     \u0275\u0275element(14, "input", 22);
     \u0275\u0275template(15, CountryNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 23);
-    \u0275\u0275text(18, "Description");
+    \u0275\u0275text(18, "Country Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(19, "input", 24);
     \u0275\u0275elementEnd();
@@ -15971,17 +16000,22 @@ function CountryNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275text(22, "Status");
     \u0275\u0275elementEnd();
     \u0275\u0275element(23, "p-dropdown", 25);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(24, "div", 26)(25, "button", 27);
-    \u0275\u0275text(26, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(27, "button", 28);
-    \u0275\u0275listener("click", function CountryNewComponent_ng_template_9_Template_button_click_27_listener() {
+    \u0275\u0275elementStart(24, "div", 17)(25, "p", 18);
+    \u0275\u0275text(26, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(27, "input", 26);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(28, "div", 27)(29, "button", 28);
+    \u0275\u0275text(30, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(31, "button", 29);
+    \u0275\u0275listener("click", function CountryNewComponent_ng_template_9_Template_button_click_31_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(28);
+    \u0275\u0275text(32);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -16004,7 +16038,7 @@ function CountryNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275advance(8);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(24, _c020));
     \u0275\u0275property("options", ctx_r2.status);
-    \u0275\u0275advance(4);
+    \u0275\u0275advance(8);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -16018,10 +16052,10 @@ function CountryNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 30);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 31);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 31);
+    \u0275\u0275elementStart(4, "div")(5, "p", 32);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -16039,31 +16073,31 @@ function CountryNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 32);
+    \u0275\u0275element(4, "input", 33);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 33);
+    \u0275\u0275element(8, "input", 34);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 34);
+    \u0275\u0275element(12, "input", 35);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 35);
+    \u0275\u0275element(16, "input", 36);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 26)(18, "button", 36);
+    \u0275\u0275elementStart(17, "div", 27)(18, "button", 37);
     \u0275\u0275listener("click", function CountryNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 28);
+    \u0275\u0275elementStart(20, "button", 29);
     \u0275\u0275listener("click", function CountryNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -16157,6 +16191,7 @@ var _CountryNewComponent = class _CountryNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.countryId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -16225,7 +16260,7 @@ var _CountryNewComponent = class _CountryNewComponent {
 _CountryNewComponent.\u0275fac = function CountryNewComponent_Factory(t) {
   return new (t || _CountryNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(CountryService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(CommonAPIService));
 };
-_CountryNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CountryNewComponent, selectors: [["app-country-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "countryId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "countryName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/country", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CountryNewComponent_Template(rf, ctx) {
+_CountryNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CountryNewComponent, selectors: [["app-country-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "countryId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "countryName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/country", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CountryNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -16236,7 +16271,7 @@ _CountryNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ t
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, CountryNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CountryNewComponent_ng_template_9_Template, 29, 25, "ng-template", 7);
+    \u0275\u0275template(8, CountryNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CountryNewComponent_ng_template_9_Template, 33, 25, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, CountryNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -16397,17 +16432,17 @@ var _CountryComponent = class _CountryComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "countryId", header: "ID" },
-      { field: "languageDescription", header: "Language" },
+      { field: "countryId", header: "Country ID" },
       { field: "companyName", header: "Company" },
       { field: "statusDescription", header: "Status" },
       { field: "remark", header: "Remark" },
-      { field: "countryName", header: "Description" },
+      { field: "countryName", header: "Country Name" },
       { field: "createdBy", header: "Created By" },
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
       { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company ID" },
       { field: "statusId", header: "Status ID" },
       { field: "referenceField1", header: "Reference Field 1" },
@@ -16654,7 +16689,7 @@ function EventNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function EventNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -16666,7 +16701,7 @@ function EventNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
 }
 function EventNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -16678,7 +16713,7 @@ function EventNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
 }
 function EventNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -16690,7 +16725,7 @@ function EventNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
 }
 function EventNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 29)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -16715,33 +16750,38 @@ function EventNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275element(9, "p-dropdown", 21);
     \u0275\u0275template(10, EventNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
+    \u0275\u0275elementStart(11, "div", 17)(12, "p", 22);
     \u0275\u0275text(13, "OpStatus ");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(14, "p-dropdown", 22);
+    \u0275\u0275element(14, "p-dropdown", 23);
     \u0275\u0275template(15, EventNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "div", 17)(17, "p", 18);
-    \u0275\u0275text(18, " ID");
+    \u0275\u0275text(18, "Event ID");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(19, "input", 23);
+    \u0275\u0275element(19, "input", 24);
     \u0275\u0275template(20, EventNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(21, "div", 17)(22, "p", 24);
-    \u0275\u0275text(23, "Description");
+    \u0275\u0275elementStart(21, "div", 17)(22, "p", 22);
+    \u0275\u0275text(23, "Event Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(24, "input", 25);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(25, "div", 26)(26, "button", 27);
-    \u0275\u0275text(27, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(28, "button", 28);
-    \u0275\u0275listener("click", function EventNewComponent_ng_template_9_Template_button_click_28_listener() {
+    \u0275\u0275elementStart(25, "div", 17)(26, "p", 18);
+    \u0275\u0275text(27, "Remark");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(28, "input", 26);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(29, "div", 27)(30, "button", 28);
+    \u0275\u0275text(31, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(32, "button", 29);
+    \u0275\u0275listener("click", function EventNewComponent_ng_template_9_Template_button_click_32_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(29);
+    \u0275\u0275text(33);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -16766,7 +16806,7 @@ function EventNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_17_0 = ctx_r2.form.get("eventCode")) == null ? null : tmp_17_0.invalid) && ((tmp_17_0 = ctx_r2.form.get("eventCode")) == null ? null : tmp_17_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("eventCode"));
-    \u0275\u0275advance(8);
+    \u0275\u0275advance(12);
     \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
@@ -16780,10 +16820,10 @@ function EventNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 30);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 31);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 31);
+    \u0275\u0275elementStart(4, "div")(5, "p", 32);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -16801,31 +16841,31 @@ function EventNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 32);
+    \u0275\u0275element(4, "input", 33);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 33);
+    \u0275\u0275element(8, "input", 34);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 34);
+    \u0275\u0275element(12, "input", 35);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 35);
+    \u0275\u0275element(16, "input", 36);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 26)(18, "button", 36);
+    \u0275\u0275elementStart(17, "div", 27)(18, "button", 37);
     \u0275\u0275listener("click", function EventNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 28);
+    \u0275\u0275elementStart(20, "button", 29);
     \u0275\u0275listener("click", function EventNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -16921,6 +16961,7 @@ var _EventNewComponent = class _EventNewComponent {
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
       this.form.controls.statusCode.disable();
+      this.form.controls.eventCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -16932,12 +16973,12 @@ var _EventNewComponent = class _EventNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.OpStatus.url
+      this.cas.dropdownlist.setup.opStatus.url
     ]).subscribe({
       next: (results) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.OpStatus.key);
+        this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.opStatus.key);
         this.spin.hide();
       },
       error: (err) => {
@@ -16991,7 +17032,7 @@ var _EventNewComponent = class _EventNewComponent {
 _EventNewComponent.\u0275fac = function EventNewComponent_Factory(t) {
   return new (t || _EventNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(EventService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(CommonAPIService));
 };
-_EventNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventNewComponent, selectors: [["app-event-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "statusCode", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "eventCode", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "eventDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/event", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function EventNewComponent_Template(rf, ctx) {
+_EventNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventNewComponent, selectors: [["app-event-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["placeholder", "Select", "formControlName", "statusCode", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "eventCode", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "eventDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/event", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function EventNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -17002,7 +17043,7 @@ _EventNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ typ
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, EventNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, EventNewComponent_ng_template_9_Template, 30, 29, "ng-template", 7);
+    \u0275\u0275template(8, EventNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, EventNewComponent_ng_template_9_Template, 34, 29, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, EventNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -17163,10 +17204,9 @@ var _EventComponent = class _EventComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "eventCode", header: "ID" },
-      { field: "eventDescription", header: "Description" },
-      { field: "languageDescription", header: "Language" },
-      { field: "companyName", header: "Comapany" },
+      { field: "eventCode", header: "Event ID" },
+      { field: "eventDescription", header: "Event Name" },
+      { field: "companyName", header: "Company" },
       { field: "opStatusDescription", header: "OpStatus" },
       { field: "remark", header: "Remark" },
       { field: "createdBy", header: "Created By" },
@@ -17174,8 +17214,9 @@ var _EventComponent = class _EventComponent {
     ];
     this.target = [
       { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company ID" },
-      { field: "statusId", header: "Status ID" },
+      { field: "statusCode", header: "Status Code" },
       { field: "referenceField1", header: "Reference Field 1" },
       { field: "referenceField2", header: "Reference Field 2" },
       { field: "referenceField3", header: "Reference Field 3" },
@@ -17454,7 +17495,7 @@ function NotificationNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
   }
 }
-function NotificationNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
+function NotificationNewComponent_ng_template_9_mat_error_24_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
@@ -17466,7 +17507,7 @@ function NotificationNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
   }
 }
-function NotificationNewComponent_ng_template_9_mat_error_25_Template(rf, ctx) {
+function NotificationNewComponent_ng_template_9_mat_error_29_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
@@ -17478,7 +17519,7 @@ function NotificationNewComponent_ng_template_9_mat_error_25_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
   }
 }
-function NotificationNewComponent_ng_template_9_mat_error_38_Template(rf, ctx) {
+function NotificationNewComponent_ng_template_9_mat_error_34_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
@@ -17506,41 +17547,41 @@ function NotificationNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275template(10, NotificationNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
-    \u0275\u0275text(13, "Sub Product ");
+    \u0275\u0275text(13, "Notification ID");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(14, "p-dropdown", 22);
+    \u0275\u0275element(14, "input", 22);
     \u0275\u0275template(15, NotificationNewComponent_ng_template_9_mat_error_15_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "div", 17)(17, "p", 18);
-    \u0275\u0275text(18, "Product ");
+    \u0275\u0275elementStart(16, "div", 17)(17, "p", 23);
+    \u0275\u0275text(18, "Notification Name");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(19, "p-dropdown", 23);
-    \u0275\u0275template(20, NotificationNewComponent_ng_template_9_mat_error_20_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275element(19, "input", 24);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(21, "div", 17)(22, "p", 18);
-    \u0275\u0275text(23, "Service Type ");
+    \u0275\u0275elementStart(20, "div", 17)(21, "p", 18);
+    \u0275\u0275text(22, "Sub Product ");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(24, "p-dropdown", 24);
-    \u0275\u0275template(25, NotificationNewComponent_ng_template_9_mat_error_25_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275element(23, "p-dropdown", 25);
+    \u0275\u0275template(24, NotificationNewComponent_ng_template_9_mat_error_24_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(26, "div", 17)(27, "p", 18);
-    \u0275\u0275text(28, "User Role");
+    \u0275\u0275elementStart(25, "div", 17)(26, "p", 18);
+    \u0275\u0275text(27, "Product ");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(29, "input", 25);
+    \u0275\u0275element(28, "p-dropdown", 26);
+    \u0275\u0275template(29, NotificationNewComponent_ng_template_9_mat_error_29_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(30, "div", 17)(31, "p", 18);
-    \u0275\u0275text(32, "User Name");
+    \u0275\u0275text(32, "Service Type ");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(33, "input", 26);
+    \u0275\u0275element(33, "p-dropdown", 27);
+    \u0275\u0275template(34, NotificationNewComponent_ng_template_9_mat_error_34_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(34, "div", 17)(35, "p", 18);
-    \u0275\u0275text(36, " ID");
+    \u0275\u0275elementStart(35, "div", 17)(36, "p", 18);
+    \u0275\u0275text(37, "User Role");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(37, "input", 27);
-    \u0275\u0275template(38, NotificationNewComponent_ng_template_9_mat_error_38_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275element(38, "input", 28);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(39, "div", 17)(40, "p", 28);
-    \u0275\u0275text(41, "Description");
+    \u0275\u0275elementStart(39, "div", 17)(40, "p", 18);
+    \u0275\u0275text(41, "User Name");
     \u0275\u0275elementEnd();
     \u0275\u0275element(42, "input", 29);
     \u0275\u0275elementEnd();
@@ -17562,7 +17603,7 @@ function NotificationNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    let tmp_27_0;
+    let tmp_12_0;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance(4);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(38, _c022));
@@ -17575,6 +17616,10 @@ function NotificationNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("companyId"));
     \u0275\u0275advance(4);
+    \u0275\u0275property("ngClass", ((tmp_12_0 = ctx_r2.form.get("notificationId")) == null ? null : tmp_12_0.invalid) && ((tmp_12_0 = ctx_r2.form.get("notificationId")) == null ? null : tmp_12_0.dirty) ? "invalid" : "");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r2.errorHandling("notificationId"));
+    \u0275\u0275advance(8);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(42, _c022));
     \u0275\u0275property("options", ctx_r2.subProductIdList)("disabled", false)("panelStyle", \u0275\u0275pureFunction0(43, _c022));
     \u0275\u0275advance();
@@ -17590,10 +17635,6 @@ function NotificationNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("serviceTypeId"));
     \u0275\u0275advance(12);
-    \u0275\u0275property("ngClass", ((tmp_27_0 = ctx_r2.form.get("notificationId")) == null ? null : tmp_27_0.invalid) && ((tmp_27_0 = ctx_r2.form.get("notificationId")) == null ? null : tmp_27_0.dirty) ? "invalid" : "");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r2.errorHandling("notificationId"));
-    \u0275\u0275advance(8);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(48, _c022));
     \u0275\u0275property("options", ctx_r2.status);
     \u0275\u0275advance(4);
@@ -17760,6 +17801,7 @@ var _NotificationNewComponent = class _NotificationNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.notificationId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -17834,7 +17876,7 @@ var _NotificationNewComponent = class _NotificationNewComponent {
 _NotificationNewComponent.\u0275fac = function NotificationNewComponent_Factory(t) {
   return new (t || _NotificationNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(NotificationService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(CommonAPIService));
 };
-_NotificationNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NotificationNewComponent, selectors: [["app-notification-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "subProductId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "productId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "serviceTypeId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "userRole", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "formControlName", "userName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "notificationId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "formControlName", "notificationText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/notification", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function NotificationNewComponent_Template(rf, ctx) {
+_NotificationNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NotificationNewComponent, selectors: [["app-notification-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "notificationId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "notificationText", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["placeholder", "Select", "formControlName", "subProductId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "productId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["placeholder", "Select", "formControlName", "serviceTypeId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "userRole", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "formControlName", "userName", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/notification", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function NotificationNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -18006,22 +18048,21 @@ var _NotificationComponent = class _NotificationComponent {
   }
   callTableHeader() {
     this.cols = [
-      { field: "notificationId", header: "ID" },
-      { field: "languageDescription", header: "Language" },
-      { field: "companyName", header: "Comapany" },
+      { field: "notificationId", header: "Notification ID" },
+      { field: "companyName", header: "Company" },
       { field: "statusDescription", header: "Status" },
       { field: "productName", header: "Product" },
       { field: "subProductName", header: "Sub Product" },
       { field: "serviceTypeText", header: "Service Type" },
       { field: "userRole", header: "User Role" },
       { field: "userName", header: "User Name" },
-      { field: "remark", header: "Remark" },
-      { field: "notificationText", header: "Description" },
+      { field: "notificationText", header: "Notification Name" },
       { field: "createdBy", header: "Created By" },
       { field: "createdOn", header: "Created On", format: "date" }
     ];
     this.target = [
       { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
       { field: "companyId", header: "Company ID" },
       { field: "statusId", header: "Status ID" },
       { field: "productId", header: "Product ID" },
@@ -18365,7 +18406,7 @@ var _CurrencyExchangeRateComponent = class _CurrencyExchangeRateComponent {
     this.target = [];
   }
   ngOnInit() {
-    const dataToSend = ["Setup", "Currency Exchange Rate - List"];
+    const dataToSend = ["Master", "Currency Exchange Rate - List"];
     this.path.setData(dataToSend);
     this.callTableHeader();
     this.initialCall();
@@ -18605,7 +18646,7 @@ function CurrencyExchangeRateNewComponent_ng_template_8_Template(rf, ctx) {
 }
 function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -18617,7 +18658,7 @@ function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_5_Template(rf,
 }
 function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -18629,7 +18670,7 @@ function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_10_Template(rf
 }
 function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -18641,7 +18682,7 @@ function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_15_Template(rf
 }
 function CurrencyExchangeRateNewComponent_ng_template_9_mat_error_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-error", 33)(1, "small");
+    \u0275\u0275elementStart(0, "mat-error", 34)(1, "small");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -18655,13 +18696,13 @@ function CurrencyExchangeRateNewComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
-    \u0275\u0275text(3, "Language ");
+    \u0275\u0275text(3, "Language");
     \u0275\u0275elementEnd();
     \u0275\u0275element(4, "p-dropdown", 19);
     \u0275\u0275template(5, CurrencyExchangeRateNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "div", 17)(7, "p", 18);
-    \u0275\u0275text(8, "Company ");
+    \u0275\u0275text(8, "Company");
     \u0275\u0275elementEnd();
     \u0275\u0275element(9, "p-dropdown", 21);
     \u0275\u0275template(10, CurrencyExchangeRateNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
@@ -18699,20 +18740,25 @@ function CurrencyExchangeRateNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275element(36, "input", 28);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(37, "div", 17)(38, "p", 18);
-    \u0275\u0275text(39, "Status");
+    \u0275\u0275text(39, "Remark");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(40, "p-dropdown", 29);
+    \u0275\u0275element(40, "input", 29);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(41, "div", 17)(42, "p", 18);
+    \u0275\u0275text(43, "Status");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(44, "p-dropdown", 30);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(41, "div", 30)(42, "button", 31);
-    \u0275\u0275text(43, "Cancel");
+    \u0275\u0275elementStart(45, "div", 31)(46, "button", 32);
+    \u0275\u0275text(47, "Cancel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(44, "button", 32);
-    \u0275\u0275listener("click", function CurrencyExchangeRateNewComponent_ng_template_9_Template_button_click_44_listener() {
+    \u0275\u0275elementStart(48, "button", 33);
+    \u0275\u0275listener("click", function CurrencyExchangeRateNewComponent_ng_template_9_Template_button_click_48_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.save());
     });
-    \u0275\u0275text(45);
+    \u0275\u0275text(49);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -18737,7 +18783,7 @@ function CurrencyExchangeRateNewComponent_ng_template_9_Template(rf, ctx) {
     \u0275\u0275property("ngClass", ((tmp_14_0 = ctx_r2.form.get("toCurrencyId")) == null ? null : tmp_14_0.invalid) && ((tmp_14_0 = ctx_r2.form.get("toCurrencyId")) == null ? null : tmp_14_0.dirty) ? "invalid" : "");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.errorHandling("toCurrencyId"));
-    \u0275\u0275advance(20);
+    \u0275\u0275advance(24);
     \u0275\u0275styleMap(\u0275\u0275pureFunction0(26, _c023));
     \u0275\u0275property("options", ctx_r2.status);
     \u0275\u0275advance(4);
@@ -18754,10 +18800,10 @@ function CurrencyExchangeRateNewComponent_p_stepperPanel_10_ng_template_1_Templa
       const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
       return \u0275\u0275resetView(onClick_r6.emit());
     });
-    \u0275\u0275elementStart(1, "div", 10)(2, "p", 34);
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 35);
     \u0275\u0275text(3, " 2");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div")(5, "p", 35);
+    \u0275\u0275elementStart(4, "div")(5, "p", 36);
     \u0275\u0275text(6, " Admin");
     \u0275\u0275elementEnd()()();
   }
@@ -18772,34 +18818,34 @@ function CurrencyExchangeRateNewComponent_p_stepperPanel_10_ng_template_1_Templa
 function CurrencyExchangeRateNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 36)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275elementStart(0, "div", 37)(1, "div", 17)(2, "p", 18);
     \u0275\u0275text(3, "Created By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(4, "input", 37);
+    \u0275\u0275element(4, "input", 38);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
     \u0275\u0275text(7, "Created On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(8, "input", 38);
+    \u0275\u0275element(8, "input", 39);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
     \u0275\u0275text(11, "Updated By");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(12, "input", 39);
+    \u0275\u0275element(12, "input", 40);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
     \u0275\u0275text(15, "Updated On");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(16, "input", 40);
+    \u0275\u0275element(16, "input", 41);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "div", 30)(18, "button", 41);
+    \u0275\u0275elementStart(17, "div", 31)(18, "button", 42);
     \u0275\u0275listener("click", function CurrencyExchangeRateNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
       const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
       return \u0275\u0275resetView(prevCallback_r8.emit());
     });
     \u0275\u0275text(19, "Back");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "button", 32);
+    \u0275\u0275elementStart(20, "button", 33);
     \u0275\u0275listener("click", function CurrencyExchangeRateNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -18888,7 +18934,7 @@ var _CurrencyExchangeRateNewComponent = class _CurrencyExchangeRateNewComponent 
   ngOnInit() {
     let code = this.route.snapshot.params["code"];
     this.pageToken = this.cs.decrypt(code);
-    const dataToSend = ["Setup", "Currency Exchange Rate", this.pageToken.pageflow];
+    const dataToSend = ["Master", "Currency Exchange Rate", this.pageToken.pageflow];
     this.path.setData(dataToSend);
     this.dropdownlist();
     this.form.controls.languageId.disable();
@@ -18965,7 +19011,7 @@ var _CurrencyExchangeRateNewComponent = class _CurrencyExchangeRateNewComponent 
 _CurrencyExchangeRateNewComponent.\u0275fac = function CurrencyExchangeRateNewComponent_Factory(t) {
   return new (t || _CurrencyExchangeRateNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(CurrencyExchangeRateService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
 };
-_CurrencyExchangeRateNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CurrencyExchangeRateNewComponent, selectors: [["app-currency-exchange-rate-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "fromCurrencyId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "toCurrencyId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "fromCurrencyDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "formControlName", "toCurrencyDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "fromCurrencyValue", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "toCurrencyValue", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/currencyExchangeRate", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CurrencyExchangeRateNewComponent_Template(rf, ctx) {
+_CurrencyExchangeRateNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CurrencyExchangeRateNewComponent, selectors: [["app-currency-exchange-rate-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row", "scrollNew"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "fromCurrencyId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "toCurrencyId", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["maxlength", "100", "pInputText", "", "formControlName", "fromCurrencyDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "formControlName", "toCurrencyDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "fromCurrencyValue", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "toCurrencyValue", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["maxlength", "2000", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select\xA0", 3, "options"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/currencyExchangeRate", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], [1, "row"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function CurrencyExchangeRateNewComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
     \u0275\u0275text(3);
@@ -18976,7 +19022,7 @@ _CurrencyExchangeRateNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275define
       return $event;
     });
     \u0275\u0275elementStart(7, "p-stepperPanel");
-    \u0275\u0275template(8, CurrencyExchangeRateNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CurrencyExchangeRateNewComponent_ng_template_9_Template, 46, 27, "ng-template", 7);
+    \u0275\u0275template(8, CurrencyExchangeRateNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, CurrencyExchangeRateNewComponent_ng_template_9_Template, 50, 27, "ng-template", 7);
     \u0275\u0275elementEnd();
     \u0275\u0275template(10, CurrencyExchangeRateNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
     \u0275\u0275elementEnd()()()();
@@ -20809,6 +20855,785 @@ var UsersComponent = _UsersComponent;
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(UsersComponent, { className: "UsersComponent", filePath: "src\\app\\main\\id-masters\\users\\users.component.ts", lineNumber: 19 });
 })();
 
+// src/app/main/id-masters/rate-parameter/rate-parameter.service.ts
+var _RateParameterService = class _RateParameterService {
+  constructor(http, auth) {
+    this.http = http;
+    this.auth = auth;
+  }
+  Get(rateParameterId) {
+    return this.http.get("/overc-idmaster-service/rateParameter/" + rateParameterId + "?companyId=" + this.auth.companyId + "&languageId=" + this.auth.languageId);
+  }
+  Create(obj) {
+    return this.http.post("/overc-idmaster-service/rateParameter", obj);
+  }
+  Update(obj) {
+    return this.http.patch("/overc-idmaster-service/rateParameter/" + obj.rateParameterId + "?companyId=" + this.auth.companyId + "&languageId=" + this.auth.languageId, obj);
+  }
+  Delete(rateParameterId) {
+    return this.http.delete("/overc-idmaster-service/rateParameter/" + rateParameterId + "?companyId=" + this.auth.companyId + "&languageId=" + this.auth.languageId);
+  }
+  search(obj) {
+    return this.http.post("/overc-idmaster-service/rateParameter/find", obj);
+  }
+};
+_RateParameterService.\u0275fac = function RateParameterService_Factory(t) {
+  return new (t || _RateParameterService)(\u0275\u0275inject(HttpClient), \u0275\u0275inject(AuthService));
+};
+_RateParameterService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _RateParameterService, factory: _RateParameterService.\u0275fac, providedIn: "root" });
+var RateParameterService = _RateParameterService;
+
+// src/app/main/id-masters/rate-parameter/rate-parameter-new/rate-parameter-new.component.ts
+var _c026 = () => ({ "width": "100%" });
+function RateParameterNewComponent_ng_template_8_p_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 14);
+    \u0275\u0275text(1, "1");
+    \u0275\u0275elementEnd();
+  }
+}
+function RateParameterNewComponent_ng_template_8_img_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "img", 15);
+  }
+}
+function RateParameterNewComponent_ng_template_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 9);
+    \u0275\u0275listener("click", function RateParameterNewComponent_ng_template_8_Template_div_click_0_listener() {
+      const onClick_r2 = \u0275\u0275restoreView(_r1).onClick;
+      return \u0275\u0275resetView(onClick_r2.emit());
+    });
+    \u0275\u0275elementStart(1, "div", 10);
+    \u0275\u0275template(2, RateParameterNewComponent_ng_template_8_p_2_Template, 2, 0, "p", 11)(3, RateParameterNewComponent_ng_template_8_img_3_Template, 1, 0, "img", 12);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "div")(5, "p", 13);
+    \u0275\u0275text(6, "General");
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    const ctx_r2 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngIf", ctx_r2.active == 0);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r2.active != 0);
+  }
+}
+function RateParameterNewComponent_ng_template_9_mat_error_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
+  }
+}
+function RateParameterNewComponent_ng_template_9_mat_error_10_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
+  }
+}
+function RateParameterNewComponent_ng_template_9_mat_error_19_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "mat-error", 30)(1, "small");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(ctx_r2.getErrorMessage());
+  }
+}
+function RateParameterNewComponent_ng_template_9_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r4 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275text(3, "Language");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(4, "p-dropdown", 19);
+    \u0275\u0275template(5, RateParameterNewComponent_ng_template_9_mat_error_5_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "div", 17)(7, "p", 18);
+    \u0275\u0275text(8, "Company");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(9, "p-dropdown", 21);
+    \u0275\u0275template(10, RateParameterNewComponent_ng_template_9_mat_error_10_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(11, "div", 17)(12, "p", 18);
+    \u0275\u0275text(13, "Rate Parameter ID");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(14, "input", 22);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(15, "div", 17)(16, "p", 23);
+    \u0275\u0275text(17, "Rate Parameter Name");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(18, "input", 24);
+    \u0275\u0275template(19, RateParameterNewComponent_ng_template_9_mat_error_19_Template, 3, 1, "mat-error", 20);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(20, "div", 17)(21, "p", 18);
+    \u0275\u0275text(22, "Status");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(23, "p-dropdown", 25);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(24, "div", 17)(25, "p", 18);
+    \u0275\u0275text(26, "Remarks");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(27, "input", 26);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(28, "div", 27)(29, "button", 28);
+    \u0275\u0275text(30, "Cancel");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(31, "button", 29);
+    \u0275\u0275listener("click", function RateParameterNewComponent_ng_template_9_Template_button_click_31_listener() {
+      \u0275\u0275restoreView(_r4);
+      const ctx_r2 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r2.save());
+    });
+    \u0275\u0275text(32);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    let tmp_12_0;
+    let tmp_13_0;
+    const ctx_r2 = \u0275\u0275nextContext();
+    \u0275\u0275advance(4);
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(21, _c026));
+    \u0275\u0275property("options", ctx_r2.languageIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(22, _c026));
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r2.errorHandling("languageId"));
+    \u0275\u0275advance(4);
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(23, _c026));
+    \u0275\u0275property("options", ctx_r2.companyIdList)("disabled", true)("panelStyle", \u0275\u0275pureFunction0(24, _c026));
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r2.errorHandling("companyId"));
+    \u0275\u0275advance(4);
+    \u0275\u0275property("ngClass", ((tmp_12_0 = ctx_r2.form.get("rateParameterId")) == null ? null : tmp_12_0.invalid) && ((tmp_12_0 = ctx_r2.form.get("rateParameterId")) == null ? null : tmp_12_0.dirty) ? "invalid" : "");
+    \u0275\u0275advance(4);
+    \u0275\u0275property("ngClass", ((tmp_13_0 = ctx_r2.form.get("rateParameterDescription")) == null ? null : tmp_13_0.invalid) && ((tmp_13_0 = ctx_r2.form.get("rateParameterDescription")) == null ? null : tmp_13_0.dirty) ? "invalid" : "");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r2.errorHandling("rateParameterDescription"));
+    \u0275\u0275advance(4);
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(25, _c026));
+    \u0275\u0275property("options", ctx_r2.status);
+    \u0275\u0275advance(8);
+    \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
+  }
+}
+function RateParameterNewComponent_p_stepperPanel_10_ng_template_1_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 9);
+    \u0275\u0275listener("click", function RateParameterNewComponent_p_stepperPanel_10_ng_template_1_Template_div_click_0_listener() {
+      const onClick_r6 = \u0275\u0275restoreView(_r5).onClick;
+      return \u0275\u0275resetView(onClick_r6.emit());
+    });
+    \u0275\u0275elementStart(1, "div", 10)(2, "p", 31);
+    \u0275\u0275text(3, " 2");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(4, "div")(5, "p", 32);
+    \u0275\u0275text(6, " Admin");
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngClass", ctx_r2.active == 2 ? "borderCircle" : "disabled text-muted");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("ngClass", ctx_r2.active == 2 ? "textBlack f600" : "text-muted");
+  }
+}
+function RateParameterNewComponent_p_stepperPanel_10_ng_template_2_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r7 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 16)(1, "div", 17)(2, "p", 18);
+    \u0275\u0275text(3, "Created By");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(4, "input", 33);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "div", 17)(6, "p", 18);
+    \u0275\u0275text(7, "Created On");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(8, "input", 34);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "div", 17)(10, "p", 18);
+    \u0275\u0275text(11, "Updated By");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(12, "input", 35);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(13, "div", 17)(14, "p", 18);
+    \u0275\u0275text(15, "Updated On");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(16, "input", 36);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(17, "div", 27)(18, "button", 37);
+    \u0275\u0275listener("click", function RateParameterNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_18_listener() {
+      const prevCallback_r8 = \u0275\u0275restoreView(_r7).prevCallback;
+      return \u0275\u0275resetView(prevCallback_r8.emit());
+    });
+    \u0275\u0275text(19, "Back");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(20, "button", 29);
+    \u0275\u0275listener("click", function RateParameterNewComponent_p_stepperPanel_10_ng_template_2_Template_button_click_20_listener() {
+      \u0275\u0275restoreView(_r7);
+      const ctx_r2 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r2.save());
+    });
+    \u0275\u0275text(21);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(20);
+    \u0275\u0275property("disabled", ctx_r2.form.invalid)("ngClass", ctx_r2.form.invalid ? "disabledButton" : "");
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r2.pageToken.pageflow != "New" ? "Update" : "Save");
+  }
+}
+function RateParameterNewComponent_p_stepperPanel_10_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-stepperPanel");
+    \u0275\u0275template(1, RateParameterNewComponent_p_stepperPanel_10_ng_template_1_Template, 7, 2, "ng-template", 6)(2, RateParameterNewComponent_p_stepperPanel_10_ng_template_2_Template, 22, 3, "ng-template", 7);
+    \u0275\u0275elementEnd();
+  }
+}
+var _RateParameterNewComponent = class _RateParameterNewComponent {
+  constructor(cs, spin, route, router, path, fb, service, messageService, cas, auth) {
+    this.cs = cs;
+    this.spin = spin;
+    this.route = route;
+    this.router = router;
+    this.path = path;
+    this.fb = fb;
+    this.service = service;
+    this.messageService = messageService;
+    this.cas = cas;
+    this.auth = auth;
+    this.active = 0;
+    this.status = [];
+    this.form = this.fb.group({
+      languageId: [this.auth.languageId],
+      languageDescription: [],
+      companyId: [this.auth.companyId],
+      companyName: [],
+      rateParameterId: [],
+      rateParameterDescription: [, Validators.required],
+      remark: [],
+      statusId: ["1"],
+      statusDescription: [],
+      referenceField1: [],
+      referenceField10: [],
+      referenceField2: [],
+      referenceField3: [],
+      referenceField4: [],
+      referenceField5: [],
+      referenceField6: [],
+      referenceField7: [],
+      referenceField8: [],
+      referenceField9: [],
+      createdOn: [""],
+      createdBy: [],
+      updatedOn: [""],
+      updatedBy: []
+    });
+    this.submitted = false;
+    this.email = new FormControl("", [Validators.required, Validators.email]);
+    this.languageIdList = [];
+    this.companyIdList = [];
+    this.status = [
+      { value: "2", label: "Inactive" },
+      { value: "1", label: "Active" }
+    ];
+  }
+  errorHandling(control, error = "required") {
+    const controlInstance = this.form.get(control);
+    return controlInstance && controlInstance.hasError(error) && this.submitted;
+  }
+  getErrorMessage() {
+    if (this.email.hasError("required")) {
+      return " Field should not be blank";
+    }
+    return this.email.hasError("email") ? "Not a valid email" : "";
+  }
+  ngOnInit() {
+    let code = this.route.snapshot.params["code"];
+    this.pageToken = this.cs.decrypt(code);
+    const dataToSend = ["Setup", "Rate Parameter", this.pageToken.pageflow];
+    this.path.setData(dataToSend);
+    this.dropdownlist();
+    this.form.controls.languageId.disable();
+    this.form.controls.companyId.disable();
+    if (this.pageToken.pageflow != "New") {
+      this.fill(this.pageToken.line);
+      this.form.controls.rateParameterId.disable();
+      this.form.controls.updatedBy.disable();
+      this.form.controls.createdBy.disable();
+      this.form.controls.updatedOn.disable();
+      this.form.controls.createdOn.disable();
+    }
+  }
+  dropdownlist() {
+    this.spin.show();
+    this.cas.getalldropdownlist([
+      this.cas.dropdownlist.setup.language.url,
+      this.cas.dropdownlist.setup.company.url
+    ]).subscribe({
+      next: (results) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+  }
+  fill(line) {
+    this.form.patchValue(line);
+    this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
+    this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+  }
+  save() {
+    this.submitted = true;
+    if (this.form.invalid) {
+      this.messageService.add({
+        severity: "error",
+        summary: "Error",
+        key: "br",
+        detail: "Please fill required fields to continue"
+      });
+      return;
+    }
+    if (this.pageToken.pageflow != "New") {
+      this.spin.show();
+      this.service.Update(this.form.getRawValue()).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: "success",
+            summary: "Updated",
+            key: "br",
+            detail: res.rateParameterId + " has been updated successfully"
+          });
+          this.router.navigate(["/main/idMaster/rateParameter"]);
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      });
+    } else {
+      this.spin.show();
+      this.service.Create(this.form.getRawValue()).subscribe({
+        next: (res) => {
+          if (res) {
+            this.messageService.add({
+              severity: "success",
+              summary: "Created",
+              key: "br",
+              detail: res.rateParameterId + " has been created successfully"
+            });
+            this.router.navigate(["/main/idMaster/rateParameter"]);
+            this.spin.hide();
+          }
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      });
+    }
+  }
+};
+_RateParameterNewComponent.\u0275fac = function RateParameterNewComponent_Factory(t) {
+  return new (t || _RateParameterNewComponent)(\u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(NgxSpinnerService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(RateParameterService), \u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonAPIService), \u0275\u0275directiveInject(AuthService));
+};
+_RateParameterNewComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RateParameterNewComponent, selectors: [["app-rate-parameter-new"]], decls: 11, vars: 4, consts: [[1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], [1, "w-75", "mt-4", "mx-auto"], [3, "formGroup"], [3, "activeStepChange", "activeStep"], ["pTemplate", "header"], ["pTemplate", "content"], [4, "ngIf"], [1, "d-flex", "flex-column", "align-items-center", 3, "click"], [1, "d-flex", "justify-content-center", "align-items-center"], ["class", "circle borderCircle mb-0", 4, "ngIf"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", "", 4, "ngIf"], [1, "mb-0", "mt-2", "f600", "textBlack"], [1, "circle", "borderCircle", "mb-0"], ["src", "./assets/dashboard/tick.png", "alt", "", "srcset", ""], [1, "row"], [1, "col-6", "marginFieldNew", "borderRadius12"], [1, "formControlLabel", "f600", "textBlack", "mb-0"], ["formControlName", "languageId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["class", "text-danger", 4, "ngIf"], ["formControlName", "companyId", "appendTo", "body", 3, "options", "disabled", "panelStyle"], ["maxlength", "50", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "rateParameterId", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], [1, "formControlLabel", "f600", "textBlack", "mb-0", "required"], ["maxlength", "100", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "rateParameterDescription", "pInputText", "", "placeholder", "Enter", 1, "w-100", 3, "ngClass"], ["appendTo", "body", "formControlName", "statusId", "placeholder", "Select ", 3, "options"], ["maxlength", "2000", "pInputText", "", "pKeyFilter", "alphanum", "formControlName", "remark", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "d-flex", "mt-1", "justify-content-end", 2, "position", "absolute", "right", "5%", "bottom", "5%"], ["routerLink", "/main/idMaster/rateParameter", 1, "buttom1", "textBlack", "mx-1"], [1, "buttom1", "bgBlack", "text-white", "mx-1", 3, "click", "disabled", "ngClass"], [1, "text-danger"], [1, "circle", "mb-0", 3, "ngClass"], [1, "mb-0", "mt-2", "f600", 3, "ngClass"], ["type", "text", "formControlName", "createdBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "createdOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedBy", "pInputText", "", "placeholder", "Enter", 1, "w-100"], ["type", "text", "formControlName", "updatedOn", "pInputText", "", "placeholder", "Enter", 1, "w-100"], [1, "buttom1", "textBlack", "mx-1", 3, "click"]], template: function RateParameterNewComponent_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "p", 2);
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(4, "div", 3)(5, "form", 4)(6, "p-stepper", 5);
+    \u0275\u0275twoWayListener("activeStepChange", function RateParameterNewComponent_Template_p_stepper_activeStepChange_6_listener($event) {
+      \u0275\u0275twoWayBindingSet(ctx.active, $event) || (ctx.active = $event);
+      return $event;
+    });
+    \u0275\u0275elementStart(7, "p-stepperPanel");
+    \u0275\u0275template(8, RateParameterNewComponent_ng_template_8_Template, 7, 2, "ng-template", 6)(9, RateParameterNewComponent_ng_template_9_Template, 33, 26, "ng-template", 7);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(10, RateParameterNewComponent_p_stepperPanel_10_Template, 3, 0, "p-stepperPanel", 8);
+    \u0275\u0275elementEnd()()()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate1("Rate Parameter - ", ctx.pageToken.pageflow, "");
+    \u0275\u0275advance(2);
+    \u0275\u0275property("formGroup", ctx.form);
+    \u0275\u0275advance();
+    \u0275\u0275twoWayProperty("activeStep", ctx.active);
+    \u0275\u0275advance(4);
+    \u0275\u0275property("ngIf", ctx.pageToken.pageflow != "New");
+  }
+}, dependencies: [NgClass, NgIf, RouterLink, PrimeTemplate, Dropdown, InputText, Stepper, StepperPanel, \u0275NgNoValidate, DefaultValueAccessor, NgControlStatus, NgControlStatusGroup, MaxLengthValidator, KeyFilter, MatError, FormGroupDirective, FormControlName], styles: ["\n\n.circle[_ngcontent-%COMP%] {\n  width: 44px;\n  height: 44px;\n  flex-grow: 0;\n  margin: 0 6px 12px;\n  border-radius: 100%;\n  padding: 12px 17px 11px;\n  background-color: var(--white);\n}\n.borderCircle[_ngcontent-%COMP%] {\n  border: solid 1.5px var(--black);\n}\n.marginFieldNew[_ngcontent-%COMP%] {\n  margin-bottom: 2.5rem;\n}\n/*# sourceMappingURL=rate-parameter-new.component.css.map */"] });
+var RateParameterNewComponent = _RateParameterNewComponent;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(RateParameterNewComponent, { className: "RateParameterNewComponent", filePath: "src\\app\\main\\id-masters\\rate-parameter\\rate-parameter-new\\rate-parameter-new.component.ts", lineNumber: 17 });
+})();
+
+// src/app/main/id-masters/rate-parameter/rate-parameter.component.ts
+function RateParameterComponent_ng_template_25_th_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "th");
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const col_r3 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", col_r3.header, " ");
+  }
+}
+function RateParameterComponent_ng_template_25_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "tr")(1, "th", 25);
+    \u0275\u0275element(2, "p-tableHeaderCheckbox", 26);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(3, RateParameterComponent_ng_template_25_th_3_Template, 2, 1, "th", 27);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const columns_r4 = ctx.$implicit;
+    \u0275\u0275advance(2);
+    \u0275\u0275property("disabled", true);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngForOf", columns_r4);
+  }
+}
+function RateParameterComponent_ng_template_26_td_3_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainerStart(0);
+    \u0275\u0275text(1);
+    \u0275\u0275elementContainerEnd();
+  }
+  if (rf & 2) {
+    const col_r7 = \u0275\u0275nextContext().$implicit;
+    const rowData_r8 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", rowData_r8[col_r7.field], " ");
+  }
+}
+function RateParameterComponent_ng_template_26_td_3_ng_template_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+    \u0275\u0275pipe(1, "date");
+  }
+  if (rf & 2) {
+    const col_r7 = \u0275\u0275nextContext().$implicit;
+    const rowData_r8 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(1, 1, rowData_r8[col_r7.field], "dd-MM-yyyy"), " ");
+  }
+}
+function RateParameterComponent_ng_template_26_td_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "td");
+    \u0275\u0275template(1, RateParameterComponent_ng_template_26_td_3_ng_container_1_Template, 2, 1, "ng-container", 30)(2, RateParameterComponent_ng_template_26_td_3_ng_template_2_Template, 2, 4, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const col_r7 = ctx.$implicit;
+    const dateTemplate_r9 = \u0275\u0275reference(3);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", col_r7.format !== "date")("ngIfElse", dateTemplate_r9);
+  }
+}
+function RateParameterComponent_ng_template_26_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "tr")(1, "td", 28)(2, "p-checkbox", 29);
+    \u0275\u0275listener("onChange", function RateParameterComponent_ng_template_26_Template_p_checkbox_onChange_2_listener() {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r5 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r5.onChange());
+    });
+    \u0275\u0275twoWayListener("ngModelChange", function RateParameterComponent_ng_template_26_Template_p_checkbox_ngModelChange_2_listener($event) {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r5 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r5.selectedRateParameter, $event) || (ctx_r5.selectedRateParameter = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(3, RateParameterComponent_ng_template_26_td_3_Template, 4, 2, "td", 27);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const rowData_r8 = ctx.$implicit;
+    const columns_r10 = ctx.columns;
+    const ctx_r5 = \u0275\u0275nextContext();
+    \u0275\u0275classProp("selectedRow", ctx_r5.selectedRateParameter[0] === rowData_r8);
+    \u0275\u0275advance(2);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r5.selectedRateParameter);
+    \u0275\u0275property("value", rowData_r8);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngForOf", columns_r10);
+  }
+}
+function RateParameterComponent_ng_template_27_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "tr")(1, "td")(2, "p", 31);
+    \u0275\u0275text(3, "No records found");
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance();
+    \u0275\u0275attribute("colspan", 4);
+  }
+}
+var _RateParameterComponent = class _RateParameterComponent {
+  constructor(messageService, cs, router, path, service, dialog, datePipe, spin) {
+    this.messageService = messageService;
+    this.cs = cs;
+    this.router = router;
+    this.path = path;
+    this.service = service;
+    this.dialog = dialog;
+    this.datePipe = datePipe;
+    this.spin = spin;
+    this.rateParameterTable = [];
+    this.selectedRateParameter = [];
+    this.cols = [];
+    this.target = [];
+  }
+  ngOnInit() {
+    const dataToSend = ["Setup", "Rate Parameter - List"];
+    this.path.setData(dataToSend);
+    this.callTableHeader();
+    this.initialCall();
+  }
+  callTableHeader() {
+    this.cols = [
+      { field: "companyName", header: "Company" },
+      { field: "rateParameterId", header: "Rate Parameter ID" },
+      { field: "rateParameterDescription", header: "Rate Parameter Name" },
+      { field: "remark", header: "Remarks" },
+      { field: "statusDescription", header: "Status" },
+      { field: "createdBy", header: "Created By" },
+      { field: "createdOn", header: "Created On", format: "date" }
+    ];
+    this.target = [
+      { field: "languageId", header: "Language ID" },
+      { field: "languageDescription", header: "Language" },
+      { field: "companyId", header: "Company ID" },
+      { field: "statusId", header: "Status ID" },
+      { field: "referenceField1", header: "Reference Field 1" },
+      { field: "referenceField2", header: "Reference Field 2" },
+      { field: "referenceField3", header: "Reference Field 3" },
+      { field: "referenceField4", header: "Reference Field 4" },
+      { field: "referenceField5", header: "Reference Field 5" },
+      { field: "referenceField6", header: "Reference Field 6" },
+      { field: "referenceField7", header: "Reference Field 7" },
+      { field: "referenceField8", header: "Reference Field 8" },
+      { field: "referenceField9", header: "Reference Field 9" },
+      { field: "referenceField10", header: "Reference Field 10" },
+      { field: "updatedBy", header: "Updated By" },
+      { field: "updatedOn", header: "Updated On", format: "date" }
+    ];
+  }
+  initialCall() {
+    this.spin.show();
+    this.service.search({}).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.rateParameterTable = res;
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+  }
+  onChange() {
+    const choosen = this.selectedRateParameter[this.selectedRateParameter.length - 1];
+    this.selectedRateParameter.length = 0;
+    this.selectedRateParameter.push(choosen);
+  }
+  customTable() {
+    const dialogRef = this.dialog.open(CustomTableComponent, {
+      disableClose: true,
+      width: "70%",
+      maxWidth: "80%",
+      position: { top: "6.5%", left: "30%" },
+      data: { target: this.cols, source: this.target }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleterecord(this.selectedRateParameter[0]);
+      }
+    });
+  }
+  openCrud(type = "New", linedata = null) {
+    if (this.selectedRateParameter.length === 0 && type != "New") {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Warning",
+        key: "br",
+        detail: "Kindly select any Row"
+      });
+    } else {
+      let paramdata = this.cs.encrypt({
+        line: linedata == null ? this.selectedRateParameter[0] : linedata,
+        pageflow: type
+      });
+      this.router.navigate(["/main/idMaster/rateParameter-new/" + paramdata]);
+    }
+  }
+  deleteDialog() {
+    if (this.selectedRateParameter.length === 0) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Warning",
+        key: "br",
+        detail: "Kindly select any Row"
+      });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: "70%",
+      maxWidth: "82%",
+      position: { top: "6.5%", left: "30%" },
+      data: {
+        line: this.selectedRateParameter,
+        module: "Rate Parameter",
+        body: "This action cannot be undone. All values associated with this field will be lost."
+      }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleterecord(this.selectedRateParameter[0]);
+      }
+    });
+  }
+  deleterecord(lines) {
+    this.spin.show();
+    this.service.Delete(lines.rateParameterId).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Deleted",
+          key: "br",
+          detail: lines.rateParameterId + " Deleted successfully"
+        });
+        this.spin.hide();
+        this.initialCall();
+      },
+      error: (err) => {
+        this.cs.commonerrorNew(err);
+        this.spin.hide();
+      }
+    });
+  }
+  downloadExcel() {
+    const exportData = this.rateParameterTable.map((item) => {
+      const exportItem = {};
+      this.cols.forEach((col) => {
+        if (col.format == "date") {
+          console.log(3);
+          exportItem[col.field] = this.datePipe.transform(item[col.field], "dd-MM-yyyy");
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+      });
+      return exportItem;
+    });
+    this.cs.exportAsExcel(exportData, "Rate Parameter");
+  }
+};
+_RateParameterComponent.\u0275fac = function RateParameterComponent_Factory(t) {
+  return new (t || _RateParameterComponent)(\u0275\u0275directiveInject(MessageService), \u0275\u0275directiveInject(CommonServiceService), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(PathNameService), \u0275\u0275directiveInject(RateParameterService), \u0275\u0275directiveInject(MatDialog), \u0275\u0275directiveInject(DatePipe), \u0275\u0275directiveInject(NgxSpinnerService));
+};
+_RateParameterComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RateParameterComponent, selectors: [["app-rate-parameter"]], decls: 28, vars: 9, consts: [["subProductTag", ""], ["dateTemplate", ""], [1, "componentBody"], [1, "d-flex", "justify-content-between", "align-items-center"], [1, "componentHeader", "f600", "mb-0"], ["type", "button", "src", "./assets/common/edit.png", "alt", "", "srcset", "", 2, "padding-left", "37px", "height", "1.5rem", 3, "click"], ["type", "button", "src", "./assets/common/download.png", "alt", "", "srcset", "", 2, "padding-left", "37px", "height", "1.5rem", 3, "click"], ["type", "button", "src", "./assets/common/deletetool.png", "alt", "", "srcset", "", 2, "padding-left", "37px", "height", "1.5rem", 3, "click"], ["type", "button", "src", "./assets/common/settings.png", "alt", "", "srcset", "", 2, "padding-left", "37px", "padding-right", "28px", "height", "1.5rem", 3, "click"], ["type", "button", 1, "btn", "ml-2", "addNewbuttom", "bgBlack", "text-white", 3, "click"], [1, "bi", "bi-plus-square", "pr-2"], [1, "d-flex", "justify-content-between", "align-items-center", "my-2"], ["iconPosition", "left", 1, "mr-5"], ["styleClass", "pi pi-search"], ["type", "text", "id", "toolInput1", "pInputText", "", "placeholder", "Search", 2, "width", "20rem", 3, "input"], [1, "d-flex", "justify-content-end", "align-items-center"], [1, "mb-0", "d-flex", "f600", "float-right", "w-25", "pr-2"], ["type", "text", "id", "toolInput", "pInputText", "", "placeholder", "Customer Name", 1, "w-75"], ["id", "toolInput", "placeholder", "Filter by Date", 1, "w-75", 3, "iconDisplay", "showIcon"], ["optionLabel", "name", "placeholder", "Filter by Product", 1, "d-flex", "float-right"], [1, "tableProperties"], ["selectionMode", "single", "scrollHeight", "calc(100vh - 19.8rem)", "sortField", "createdOn", "currentPageReportTemplate", "Showing {first} to {last} of {totalRecords} entries", "styleClass", "p-datatable-sm", 1, "custom-table", 3, "columns", "value", "scrollable", "paginator", "rows", "showCurrentPageReport", "sortOrder"], ["pTemplate", "header"], ["pTemplate", "body"], ["pTemplate", "emptymessage"], [2, "width", "5rem"], [1, "pl-3", 3, "disabled"], [4, "ngFor", "ngForOf"], [2, "width", "5rem", "justify-content", "center"], [1, "pl-3", 3, "onChange", "ngModelChange", "ngModel", "value"], [4, "ngIf", "ngIfElse"], [1, "my-2", "w-100", "pl-3"]], template: function RateParameterComponent_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 2)(1, "div", 3)(2, "p", 4);
+    \u0275\u0275text(3, "Rate Parameter - List");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "div", 3)(5, "img", 5);
+    \u0275\u0275listener("click", function RateParameterComponent_Template_img_click_5_listener() {
+      \u0275\u0275restoreView(_r1);
+      return \u0275\u0275resetView(ctx.openCrud("Edit"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "img", 6);
+    \u0275\u0275listener("click", function RateParameterComponent_Template_img_click_6_listener() {
+      \u0275\u0275restoreView(_r1);
+      return \u0275\u0275resetView(ctx.downloadExcel());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "img", 7);
+    \u0275\u0275listener("click", function RateParameterComponent_Template_img_click_7_listener() {
+      \u0275\u0275restoreView(_r1);
+      return \u0275\u0275resetView(ctx.deleteDialog());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(8, "img", 8);
+    \u0275\u0275listener("click", function RateParameterComponent_Template_img_click_8_listener() {
+      \u0275\u0275restoreView(_r1);
+      return \u0275\u0275resetView(ctx.customTable());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "button", 9);
+    \u0275\u0275listener("click", function RateParameterComponent_Template_button_click_9_listener() {
+      \u0275\u0275restoreView(_r1);
+      return \u0275\u0275resetView(ctx.openCrud("New"));
+    });
+    \u0275\u0275element(10, "i", 10);
+    \u0275\u0275text(11, " Add New");
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275elementStart(12, "div", 11)(13, "p-iconField", 12);
+    \u0275\u0275element(14, "p-inputIcon", 13);
+    \u0275\u0275elementStart(15, "input", 14);
+    \u0275\u0275listener("input", function RateParameterComponent_Template_input_input_15_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const subProductTag_r2 = \u0275\u0275reference(24);
+      return \u0275\u0275resetView(subProductTag_r2.filterGlobal($event.target.value, "contains"));
+    });
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(16, "div", 15)(17, "p", 16);
+    \u0275\u0275text(18, "Filter By");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(19, "input", 17)(20, "p-calendar", 18)(21, "p-dropdown", 19);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(22, "div", 20)(23, "p-table", 21, 0);
+    \u0275\u0275template(25, RateParameterComponent_ng_template_25_Template, 4, 2, "ng-template", 22)(26, RateParameterComponent_ng_template_26_Template, 4, 5, "ng-template", 23)(27, RateParameterComponent_ng_template_27_Template, 4, 1, "ng-template", 24);
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(20);
+    \u0275\u0275property("iconDisplay", "input")("showIcon", true);
+    \u0275\u0275advance(3);
+    \u0275\u0275property("columns", ctx.cols)("value", ctx.rateParameterTable)("scrollable", true)("paginator", true)("rows", 100)("showCurrentPageReport", true)("sortOrder", -1);
+  }
+}, dependencies: [NgForOf, NgIf, PrimeTemplate, Table, TableHeaderCheckbox, InputIcon, IconField, Dropdown, InputText, Calendar, Checkbox, NgControlStatus, NgModel, DatePipe], styles: ["\n\n  .customClass {\n  border-radius: 12px !important;\n  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;\n}\n.custom-height[_ngcontent-%COMP%] {\n  height: calc(100vh - 19.3rem) !important;\n  overflow-y: scroll !important;\n}\n/*# sourceMappingURL=rate-parameter.component.css.map */"] });
+var RateParameterComponent = _RateParameterComponent;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(RateParameterComponent, { className: "RateParameterComponent", filePath: "src\\app\\main\\id-masters\\rate-parameter\\rate-parameter.component.ts", lineNumber: 18 });
+})();
+
 // src/app/main/id-masters/id-masters-routing.module.ts
 var routes = [
   { path: "company", component: CompanyComponent, data: { title: "Setup", module: "Company" } },
@@ -20857,12 +21682,14 @@ var routes = [
   { path: "notification-new/:code", component: NotificationNewComponent, data: { title: "Setup", module: "Notification - Add New" } },
   { path: "event", component: EventComponent, data: { title: "Master", module: "Event" } },
   { path: "event-new/:code", component: EventNewComponent, data: { title: "Master", module: "Event - Add New" } },
-  { path: "currencyExchangeRate", component: CurrencyExchangeRateComponent, data: { title: "Setup", module: "CurrencyExchangeRate" } },
-  { path: "currencyExchangeRate-new/:code", component: CurrencyExchangeRateNewComponent, data: { title: "Setup", module: "CurrencyExchangeRate - Add New" } },
+  { path: "currencyExchangeRate", component: CurrencyExchangeRateComponent, data: { title: "Master", module: "CurrencyExchangeRate" } },
+  { path: "currencyExchangeRate-new/:code", component: CurrencyExchangeRateNewComponent, data: { title: "Master", module: "CurrencyExchangeRate - Add New" } },
   { path: "iata", component: IataComponent, data: { title: "Master", module: "Iata" } },
   { path: "iata-new/:code", component: IataNewComponent, data: { title: "Master", module: "Iata - Add New" } },
   { path: "users", component: UsersComponent, data: { title: "Master", module: "Users" } },
-  { path: "users-new/:code", component: UsersNewComponent, data: { title: "Master", module: "Users - Add New" } }
+  { path: "users-new/:code", component: UsersNewComponent, data: { title: "Master", module: "Users - Add New" } },
+  { path: "rateParameter", component: RateParameterComponent, data: { title: "Setup", module: "Rate Parameter" } },
+  { path: "rateParameter-new/:code", component: RateParameterNewComponent, data: { title: "Setup", module: "Rate Parameter - Add New" } }
 ];
 var _IdMastersRoutingModule = class _IdMastersRoutingModule {
 };
@@ -20907,4 +21734,4 @@ var IdMastersModule = _IdMastersModule;
 export {
   IdMastersModule
 };
-//# sourceMappingURL=chunk-HA3BLVGY.js.map
+//# sourceMappingURL=chunk-JN663GK5.js.map
