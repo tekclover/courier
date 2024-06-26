@@ -11768,6 +11768,17 @@ body {
 .p-picklist .p-picklist-list .p-picklist-item:not(.p-highlight):hover {
   color: var(--overcOrange) !important;
 }
+.p-picklist .p-picklist-list .p-picklist-item:first-child {
+  background-color: var(--black);
+}
+.p-picklist .p-picklist-list .p-picklist-item:first-child:hover {
+  background-color: var(--white);
+  color: var(--overcOrange) !important;
+}
+.p-picklist .p-picklist-list {
+  height: calc(100vh - 16rem);
+  overflow-y: scroll;
+}
 .componentHeader {
   font-size: var(--header20);
   font-weight: 600;

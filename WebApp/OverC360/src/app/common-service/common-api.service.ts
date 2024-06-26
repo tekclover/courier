@@ -47,6 +47,8 @@ export class CommonAPIService {
       country:{url:this.setup + 'country',key:{key:'countryId',value:'countryName', languageId :'languageId', companyId: 'companyId'}},
       province:{url:this.setup + 'province',key:{key:'provinceId',value:'provinceName', languageId :'languageId', companyId: 'companyId'}},
       menu:{url:this.setup + 'menu', key:{key:'menuId',value:'menuName', languageId :'languageId', companyId: 'companyId'}},
+      subMenu:{url:this.setup + 'menu', key:{key:'subMenuId',value:'subMenuName', languageId :'languageId', companyId: 'companyId'}},
+      authorizationObject:{url:this.setup + 'menu', key:{key:'authorizationObjectId',value:'authorizationObjectValue', languageId :'languageId', companyId: 'companyId'}},
       district:{url:this.setup + 'district',key:{key:'districtId',value:'districtName', languageId :'languageId', companyId: 'companyId'}},
       subProduct: { url: this.setup + 'subProduct', key: { key: 'subProductId', value: 'subProductName', languageId: 'languageId', companyId: 'companyId' } },
       product: { url: this.setup + 'product', key: { key: 'productId', value: 'productName', languageId: 'languageId', companyId: 'companyId' } },

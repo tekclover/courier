@@ -1480,7 +1480,7 @@ public class IDMasterServiceController {
     }
 
     // Update DistrictMapping
-    @ApiOperation(response = District.class, value = "Update DistrictMapping") // label for swagger
+    @ApiOperation(response = DistrictMapping.class, value = "Update DistrictMapping") // label for swagger
     @PatchMapping("/districtMapping/{partnerId}")
     public ResponseEntity<?> patchDistrictMapping(@PathVariable String partnerId, @RequestParam String languageId,
                                                   @RequestParam String companyId, @RequestParam String districtId,

@@ -23,6 +23,9 @@ public class AddNotification {
 
     private String serviceTypeId;
 
+    @NotBlank(message = "Status Id is mandatory")
+    private String statusId;
+
     private String userRole;
 
     private String userName;

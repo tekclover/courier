@@ -19,6 +19,8 @@ public class AddNotification {
 
     private String serviceTypeId;
 
+    private String statusId;
+
     private String userRole;
 
     private String userName;

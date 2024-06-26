@@ -9,7 +9,6 @@ import com.courier.overc360.api.idmaster.primary.model.hub.UpdateHub;
 import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.HubRepository;
-import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.hub.FindHub;
@@ -48,9 +47,6 @@ public class HubService {
 
     @Autowired
     private ReplicaHubRepository replicaHubRepository;
-
-    @Autowired
-    private ProvinceRepository provinceRepository;
 
     @Autowired
     private NumberRangeService numberRangeService;

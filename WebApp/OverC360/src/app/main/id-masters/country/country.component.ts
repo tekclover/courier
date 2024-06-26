@@ -44,7 +44,7 @@ export class CountryComponent {
     this.cols = [
       { field: 'countryId', header: 'ID' },
       { field: 'languageDescription', header: 'Language' },
-      { field: 'companyName', header: 'Comapany' },
+      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'countryName', header: 'Description' },

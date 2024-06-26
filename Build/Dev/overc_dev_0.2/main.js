@@ -1,10 +1,6 @@
-import "./chunk-RO63AB6E.js";
+import "./chunk-JHNGUKCX.js";
 import {
   AuthService,
-  NgxSpinnerComponent,
-  NgxSpinnerModule
-} from "./chunk-4HDWEJ7N.js";
-import {
   BehaviorSubject,
   BrowserAnimationsModule,
   BrowserModule,
@@ -21,6 +17,8 @@ import {
   LocationStrategy,
   MessageService,
   NgModule,
+  NgxSpinnerComponent,
+  NgxSpinnerModule,
   Renderer2,
   Router,
   RouterModule,
@@ -51,7 +49,7 @@ import {
   ɵɵqueryRefresh,
   ɵɵtext,
   ɵɵviewQuery
-} from "./chunk-VMREKZ45.js";
+} from "./chunk-6HM2KXH4.js";
 
 // node_modules/jsbarcode/bin/barcodes/Barcode.js
 var require_Barcode = __commonJS({
@@ -3626,8 +3624,8 @@ var require_JsBarcode = __commonJS({
 
 // src/app/app-routing.module.ts
 var routes = [
-  { path: "", loadChildren: () => import("./chunk-JEVHSZUV.js").then((m) => m.LoginModule) },
-  { path: "main", loadChildren: () => import("./chunk-LQYPR5OS.js").then((m) => m.MainModule) }
+  { path: "", loadChildren: () => import("./chunk-W5RB2DU7.js").then((m) => m.LoginModule) },
+  { path: "main", loadChildren: () => import("./chunk-YBRYPO2J.js").then((m) => m.MainModule) }
 ];
 var _AppRoutingModule = class _AppRoutingModule {
 };
