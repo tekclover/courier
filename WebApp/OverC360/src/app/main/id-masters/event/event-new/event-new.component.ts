@@ -87,6 +87,7 @@ export class EventNewComponent {active: number | undefined = 0;
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
       this.form.controls.statusCode.disable();
+      this.form.controls.eventCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -104,12 +105,12 @@ export class EventNewComponent {active: number | undefined = 0;
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.OpStatus.url,
+      this.cas.dropdownlist.setup.opStatus.url,
 
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.OpStatus.key);
+      this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.opStatus.key);
       this.spin.hide();
     },
     error: (err: any) => {

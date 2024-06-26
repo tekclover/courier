@@ -40,17 +40,17 @@ export class ConsignmentTypeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'consignmentTypeId', header: 'ID' },
-      { field: 'languageDescription', header: 'Language' },
-      { field: 'companyName', header: 'Comapany' },
+      { field: 'consignmentTypeId', header: 'Consignment Type ID' },
+      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
-      { field: 'consignmentTypeText', header: 'Description' },
+      { field: 'consignmentTypeText', header: 'Consignment Type Name' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },

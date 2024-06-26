@@ -42,7 +42,6 @@ export class CountryMappingComponent {
   callTableHeader() {
     this.cols = [
       { field: 'partnerId', header: 'Partner ID' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'companyName', header: 'Company' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
@@ -54,6 +53,7 @@ export class CountryMappingComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'countryId', header: 'Country ID' },
       { field: 'partnerCountryId', header: 'Partner Country ID' },

@@ -40,10 +40,9 @@ export class EventComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'eventCode', header: 'ID' },
-      { field: 'eventDescription', header: 'Description' },
-      { field: 'languageDescription', header: 'Language' },
-      { field: 'companyName', header: 'Comapany' },
+      { field: 'eventCode', header: 'Event ID' },
+      { field: 'eventDescription', header: 'Event Name' },
+      { field: 'companyName', header: 'Company' },
       { field: 'opStatusDescription', header: 'OpStatus' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -51,8 +50,9 @@ export class EventComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'statusId', header: 'Status ID' },
+      { field: 'statusCode', header: 'Status Code' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

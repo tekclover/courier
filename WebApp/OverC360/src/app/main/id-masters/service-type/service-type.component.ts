@@ -39,17 +39,17 @@ export class ServiceTypeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'serviceTypeId', header: 'ID' },
-      { field: 'languageDescription', header: 'Language' },
-      { field: 'companyName', header: 'Comapany' },
+      { field: 'serviceTypeId', header: 'Service Type ID' },
+      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status ' },
       { field: 'remark', header: 'Remark' },
-      { field: 'serviceTypeText', header: 'Description' },
+      { field: 'serviceTypeText', header: 'Service Type Name' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
