@@ -248,11 +248,18 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
-        routerId: 1000,
+        routerId: 5000,
         routerLink: 'dashboard',
         src: './assets/sidebar/operations/oprations.png',
         srcDark: './assets/sidebar/operations/oprationsDark.png',
-        label: 'Operations'
+        label: 'Operations',
+        items: [
+            {
+                routerId: 5001,
+                routerLink: '/main/operation/consignment',
+                label: 'Consignment'
+            }
+        ]
     },
     {
         routerId: 1000,

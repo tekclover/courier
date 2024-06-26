@@ -11,7 +11,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { LanguageService } from '../../id-masters/language/language.service';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { PreAlertManifestService } from './pre-alert-manifest.service';
+import { ConsignmentService } from '../../operation/consignment/consignment.service';
 
 @Component({
   selector: 'app-pre-alert-manifest',
@@ -33,7 +33,7 @@ export class PreAlertManifestComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: PreAlertManifestService,
+  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: ConsignmentService,
     public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
   ) { }
 

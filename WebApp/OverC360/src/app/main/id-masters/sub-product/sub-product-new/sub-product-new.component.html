@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">SubProduct Name</p>
-                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="subProductName"
+                                <input maxlength="100" pInputText  formControlName="subProductName"
                                     [ngClass]="form.get('subProductName')?.invalid && form.get('subProductName')?.dirty ? 'invalid' : ''"
                                     class=" w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('subProductName')"

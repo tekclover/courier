@@ -85,6 +85,7 @@ export class MainComponent {
     this.dataSubscription = this.path.dataArray$.subscribe(data => {
       this.dataArray = data;
       this.cdRef.detectChanges();
+
     });
 
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
