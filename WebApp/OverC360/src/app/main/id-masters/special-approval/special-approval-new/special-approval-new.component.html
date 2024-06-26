@@ -35,20 +35,22 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Special Approval ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="specialApprovalId"
+                                <input maxlength="50" pInputText pKeyFilter="alphanum"
+                                    formControlName="specialApprovalId"
                                     [ngClass]="form.get('specialApprovalId')?.invalid && form.get('specialApprovalId')?.dirty ? 'invalid' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Special Approval Text</p>
-                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="specialApprovalText"
+                                <input maxlength="100" pInputText pKeyFilter="alphanum"
+                                    formControlName="specialApprovalText"
                                     [ngClass]="form.get('specialApprovalText')?.invalid && form.get('specialApprovalText')?.dirty ? 'invalid' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Remarks</p>
-                                <input maxlength="2000" pInputText pKeyFilter="alphanum" formControlName="remark"
-                                    class=" w-100" pInputText placeholder="Enter" />
+                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
+                                    placeholder="Enter" />
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
