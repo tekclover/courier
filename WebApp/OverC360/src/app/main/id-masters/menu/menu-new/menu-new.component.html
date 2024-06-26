@@ -42,12 +42,12 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Menu Name</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Menu Name</p>
                                 <input formControlName="menuName" class=" w-100"  pInputText pKeyFilter="alphanum"
                                     placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">SubMenu ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu ID</p>
                                 <input formControlName="subMenuId"
                                     [ngClass]="form.get('subMenuId')?.invalid && form.get('subMenuId')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -55,7 +55,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">SubMenu Name</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu Name</p>
                                 <input formControlName="subMenuName" class=" w-100"  pInputText pKeyFilter="alphanum"
                                     placeholder="Enter" />  
                             </div>
@@ -68,8 +68,14 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Value</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Authorization Object Value</p>
                                 <input formControlName="authorizationObjectValue" class=" w-100"  pInputText pKeyFilter="alphanum"
+                                    placeholder="Enter" />
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Authorization Object </p>
+                                <input formControlName="authorizationObject" class=" w-100"  pInputText pKeyFilter="alphanum"
                                     placeholder="Enter" />
                             </div>
                         </div>

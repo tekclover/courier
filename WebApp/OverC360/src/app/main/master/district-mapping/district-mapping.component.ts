@@ -43,7 +43,6 @@ export class DistrictMappingComponent {
     this.cols = [
       { field: 'partnerId', header: 'Partner ID' },
       { field: 'districtName', header: 'District' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'companyName', header: 'Company' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
@@ -53,6 +52,8 @@ export class DistrictMappingComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      
+      { field: 'languageDescription', header: 'Language' },
       { field: 'partnerDistrictId', header: 'Partner District ID' },
       { field: 'districtId', header: 'District ID' },
       { field: 'languageId', header: 'Language Id' },

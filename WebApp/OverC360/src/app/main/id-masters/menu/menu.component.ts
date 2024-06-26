@@ -46,19 +46,19 @@ export class MenuComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageIdAndDescription', header: 'Language '},
+      { field: 'menuId', header: 'Menu ID'},
       { field: 'companyIdAndDescription', header: 'Company '},
       { field: 'menuName', header: 'Menu Name'},
-      { field: 'subMenuName', header: 'SubMenu Name'},
-      { field: 'authorizationObjectValue', header: 'AuthorizationObject Value'},
+      { field: 'subMenuName', header: 'Sub Menu Name'},
+      { field: 'authorizationObjectValue', header: 'Authorization Object Value'},
+      { field: 'authorizationObject', header: 'Authorization Object' },
       { field: 'createdBy', header: 'Created By'},
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target =[
-      { field: 'menuId', header: 'MenuID'},
-      { field: 'subMenuId', header: 'SubMenuID'},
-      { field: 'authorizationObject', header: 'AuthorizationObject' },
-      { field: 'authorizationObjectId', header: 'AuthorizationObjectID'},
+      { field: 'languageIdAndDescription', header: 'Language '},
+      { field: 'subMenuId', header: 'Sub Menu ID'},
+      { field: 'authorizationObjectId', header: 'Authorization Object ID'},
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -69,6 +69,8 @@ export class MenuComponent {
       { field: 'referenceField8', header: 'Reference Field 8' },
       { field: 'referenceField9', header: 'Reference Field 9' },
       { field: 'referenceField10', header: 'Reference Field 10' },
+      { field: 'updatedBy', header: 'Updated By' },
+      { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
 

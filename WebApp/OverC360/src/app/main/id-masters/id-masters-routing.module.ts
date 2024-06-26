@@ -123,8 +123,8 @@ const routes: Routes = [
   {path:'event',component: EventComponent, data: { title: 'Master', module: 'Event' } },
   {path:'event-new/:code',component: EventNewComponent,data: { title: 'Master', module: 'Event - Add New' } },
 
-  {path:'currencyExchangeRate',component: CurrencyExchangeRateComponent, data: { title: 'Setup', module: 'CurrencyExchangeRate' } },
-  {path:'currencyExchangeRate-new/:code',component: CurrencyExchangeRateNewComponent,data: { title: 'Setup', module: 'CurrencyExchangeRate - Add New' } },
+  {path:'currencyExchangeRate',component: CurrencyExchangeRateComponent, data: { title: 'Master', module: 'CurrencyExchangeRate' } },
+  {path:'currencyExchangeRate-new/:code',component: CurrencyExchangeRateNewComponent,data: { title: 'Master', module: 'CurrencyExchangeRate - Add New' } },
 
   {path:'iata',component: IataComponent, data: { title: 'Master', module: 'Iata' } },
   {path:'iata-new/:code',component: IataNewComponent,data: { title: 'Master', module: 'Iata - Add New' } },

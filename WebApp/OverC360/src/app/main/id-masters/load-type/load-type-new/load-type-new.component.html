@@ -37,18 +37,23 @@
                               </div>
                               
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Load Type ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="loadTypeId" [ngClass]="form.get('loadTypeId')?.invalid && form.get('loadTypeId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('loadTypeId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Load Type Name</p>
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="loadTypeText" class=" w-100" pInputText placeholder="Enter" />
+                            </div> 
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
                             </div> 
                             
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />
                             </div> 
 

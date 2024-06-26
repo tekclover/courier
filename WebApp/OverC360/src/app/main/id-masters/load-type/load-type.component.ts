@@ -41,9 +41,8 @@ export class LoadTypeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'loadTypeId', header: 'ID' },
-      { field: 'loadTypeText', header: 'Description' },
-      { field: 'languageDescription', header: 'Language' },
+      { field: 'loadTypeId', header: 'Load Type ID' },
+      { field: 'loadTypeText', header: 'Load Type Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
@@ -51,6 +50,7 @@ export class LoadTypeComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'languageDescription', header: 'Language' },
       { field: 'languageId', header: 'Language Id' },
       { field: 'companyId', header: 'Company Id' },
       { field: 'statusId', header: 'Status Id' },

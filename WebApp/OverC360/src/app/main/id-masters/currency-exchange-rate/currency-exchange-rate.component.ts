@@ -33,7 +33,7 @@ export class CurrencyExchangeRateComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Currency Exchange Rate - List'];
+    const dataToSend = ['Master', 'Currency Exchange Rate - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
