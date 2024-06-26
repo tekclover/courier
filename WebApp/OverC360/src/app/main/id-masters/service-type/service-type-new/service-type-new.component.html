@@ -19,9 +19,8 @@
                     </ng-template>
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row">
-                        
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Language </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
@@ -29,20 +28,21 @@
                               </div>
                 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Company </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                               </div>
+
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Service Type ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="serviceTypeId" [ngClass]="form.get('serviceTypeId')?.invalid && form.get('serviceTypeId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('serviceTypeId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Service Type Name</p>
-                                <input maxlength="100" pInputTextformControlName="serviceTypeText" class=" w-100" pInputText placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
+                                <input maxlength="100" pInputText formControlName="serviceTypeText" class=" w-100" pInputText placeholder="Enter" />
                             </div>
                             
                             <div class="col-6 marginFieldNew borderRadius12">

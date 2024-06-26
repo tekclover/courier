@@ -46,9 +46,12 @@ export class NumberrangeComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'numberRangeCode', header: 'NumberRange Code' },
       { field: 'numberRangeObject', header: 'NumberRange Object' },
       { field: 'numberRangeStatus', header: 'NumberRange Status' },
-      { field: 'numberRangeCode', header: 'NumberRange Code' },
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
+      
     ];
     this.target = [
       { field: 'numberRangeFrom', header: 'NumberRange From' },
@@ -64,6 +67,8 @@ export class NumberrangeComponent {
       { field: 'referenceField8', header: 'Reference Field 8' },
       { field: 'referenceField9', header: 'Reference Field 9' },
       { field: 'referenceField10', header: 'Reference Field 10' },
+      { field: 'updatedBy', header: 'Updated By' },
+      { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
 
@@ -135,7 +140,7 @@ export class NumberrangeComponent {
     this.spin.show(); 
     this.service.Delete(lines).subscribe({
       next: (res) =>{
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.numberRangeCode + lines.languageId + lines.numberRangeObject + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.numberRangeCode +' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       },error: (err) => {

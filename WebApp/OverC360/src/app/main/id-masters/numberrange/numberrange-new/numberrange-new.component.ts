@@ -126,7 +126,7 @@ export class NumberrangeNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.languageId + res.numberRangeObject + res.numberRangeCode + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail:  res.numberRangeCode + ' has been updated successfully' });
           this.router.navigate(['/main/idMaster/numberrange']);
           this.spin.hide();
         }, error: (err) => {
@@ -139,7 +139,7 @@ export class NumberrangeNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + res.numberRangeObject + res.numberRangeCode + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:  res.numberRangeCode + ' has been created successfully' });
           this.router.navigate(['/main/idMaster/numberrange']);
           this.spin.hide();
         }
