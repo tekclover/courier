@@ -8,22 +8,20 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { ConsignmentTypeService } from './consignment-type.service';
+import { HubPartnerAssignmentService } from './hub-partner-assignment.service';
 
 @Component({
-  selector: 'app-consignment-type',
-  templateUrl: './consignment-type.component.html',
-  styleUrl: './consignment-type.component.scss'
+  selector: 'app-hub-partner-assignment',
+  templateUrl: './hub-partner-assignment.component.html',
+  styleUrl: './hub-partner-assignment.component.scss'
 })
-export class ConsignmentTypeComponent {
-  
-
-  consignmentTypeTable: any[] = [];
-  selectedConsignmentType: any[] = [];
+export class HubPartnerAssignmentComponent {
+  hubPartnerAssignmentTable: any[] = [];
+  selectedHubPartnerAssignment: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: ConsignmentTypeService,
+  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: HubPartnerAssignmentService,
     public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
   ) { }
 
@@ -31,7 +29,7 @@ export class ConsignmentTypeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'ConsignmentType - List'];
+    const dataToSend = ['Master', 'HubPartnerAssignment - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -40,10 +38,12 @@ export class ConsignmentTypeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'consignmentTypeId', header: 'Consignment Type ID' },
+      { field: 'partnerId', header: 'Partner ID' },
       { field: 'companyName', header: 'Company' },
-      { field: 'consignmentTypeText', header: 'Description' },
-      { field: 'statusDescription', header: 'Status' },
+      { field: 'partnerType', header: 'Partner Type' },
+      { field: 'partnerName', header: 'Partner Name' },
+      { field: 'hubCategory', header: 'Hub Category' },
+      { field: 'hubName', header: 'Hub Name' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -52,7 +52,7 @@ export class ConsignmentTypeComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'statusId', header: 'Status ID' },
+      { field: 'hubCode', header: 'Hub Code' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -75,7 +75,7 @@ export class ConsignmentTypeComponent {
     this.service.search({}).subscribe({
       next: (res: any) => {
         console.log(res);
-        this.consignmentTypeTable = res;
+        this.hubPartnerAssignmentTable = res;
         this.spin.hide();
       }, error: (err: any) => {
         this.spin.hide();
@@ -85,9 +85,9 @@ export class ConsignmentTypeComponent {
   }
 
   onChange() {
-    const choosen = this.selectedConsignmentType[this.selectedConsignmentType.length - 1];
-    this.selectedConsignmentType.length = 0;
-    this.selectedConsignmentType.push(choosen);
+    const choosen = this.selectedHubPartnerAssignment[this.selectedHubPartnerAssignment.length - 1];
+    this.selectedHubPartnerAssignment.length = 0;
+    this.selectedHubPartnerAssignment.push(choosen);
   }
 
   customTable() {
@@ -101,22 +101,22 @@ export class ConsignmentTypeComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedConsignmentType[0]);
+        this.deleterecord(this.selectedHubPartnerAssignment[0]);
       }
     });
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedConsignmentType.length === 0 && type != 'New') {
+    if (this.selectedHubPartnerAssignment.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsignmentType[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/consignmentType-new/' + paramdata]);
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedHubPartnerAssignment[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/master/hubPartnerAssignment-new/' + paramdata]);
     }
   }
 
   deleteDialog() {
-    if (this.selectedConsignmentType.length === 0) {
+    if (this.selectedHubPartnerAssignment.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
       return;
     }
@@ -125,20 +125,20 @@ export class ConsignmentTypeComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedConsignmentType, module: 'Consignment Type', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedHubPartnerAssignment, module: 'HubPartnerAssignment', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedConsignmentType[0]);
+        this.deleterecord(this.selectedHubPartnerAssignment[0]);
       }
     });
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.consignmentTypeId).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res: any) =>{
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.consignmentTypeId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.partnerId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       },error: (err: any) => {
@@ -149,7 +149,7 @@ export class ConsignmentTypeComponent {
   }
 
   downloadExcel() {
-    const exportData = this.consignmentTypeTable.map(item => {
+    const exportData = this.hubPartnerAssignmentTable.map(item => {
       const exportItem: any = {};
      this.cols.forEach(col => {
       if(col.format == 'date'){
@@ -164,8 +164,6 @@ export class ConsignmentTypeComponent {
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Consignment Type');
+   this.cs.exportAsExcel(exportData, 'HubPartnerAssignment');
   }
-
-
 }

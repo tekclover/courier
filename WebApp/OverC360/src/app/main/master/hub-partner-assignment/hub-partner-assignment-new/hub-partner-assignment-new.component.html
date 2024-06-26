@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">ServiceType - {{this.pageToken.pageflow}}</p>
+        <p class="componentHeader f600 mb-0">Hub Partner Assignment - {{this.pageToken.pageflow}}</p>
     </div>
     <div class="w-75 mt-4 mx-auto">
         <form [formGroup]="form">
@@ -18,9 +18,10 @@
                         </div>
                     </ng-template>
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
-                        <div class="row">
+                        <div class="row scrollNew">
+                        
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language </p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
@@ -28,7 +29,7 @@
                               </div>
                 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company </p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
@@ -36,13 +37,33 @@
                               </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Service Type ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="serviceTypeId" [ngClass]="form.get('serviceTypeId')?.invalid && form.get('serviceTypeId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('serviceTypeId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p class="formControlLabel f600 textBlack mb-0 required"> Partner ID</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="partnerId" [ngClass]="form.get('partnerId')?.invalid && form.get('partnerId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('partnerId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
+
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
-                                <input maxlength="100" pInputText formControlName="serviceTypeText" class=" w-100" pInputText placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0 required">Hub Code </p>
+                                <p-dropdown [options]="hubCodeList"  placeholder="Select"  formControlName="hubCode" appendTo="body"
+                                  [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('hubCode')" class="text-danger"><small>{{
+                                    getErrorMessage()}}</small></mat-error>
+                              </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Hub Category</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="hubCategory" [ngClass]="form.get('hubCategory')?.invalid && form.get('hubCategory')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('hubCategory')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner Name</p>
+                                <input maxlength="100" pInputText  formControlName="partnerName" class=" w-100" pInputText placeholder="Enter" />
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner Type</p>
+                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="partnerType" class=" w-100" pInputText placeholder="Enter" />
                             </div>
                             
                             <div class="col-6 marginFieldNew borderRadius12">
@@ -50,13 +71,9 @@
                                 <input maxlength="2000"  formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
-                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />
-                            </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
-                            <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/serviceType">Cancel</button>
+                            <button class="buttom1 textBlack mx-1" routerLink="/main/master/hubPartnerAssignment">Cancel</button>
                             <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>

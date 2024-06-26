@@ -42,7 +42,7 @@ export class LoadTypeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'loadTypeId', header: 'Load Type ID' },
-      { field: 'loadTypeText', header: 'Load Type Name' },
+      { field: 'loadTypeText', header: 'Description' },
       { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },

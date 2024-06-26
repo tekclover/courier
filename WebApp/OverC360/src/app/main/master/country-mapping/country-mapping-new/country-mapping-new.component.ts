@@ -88,6 +88,7 @@ export class CountryMappingNewComponent {
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
       this.form.controls.countryId.disable();
+      this.form.controls.partnerId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -150,7 +151,7 @@ export class CountryMappingNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.countryId + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
           this.router.navigate(['/main/master/countryMapping']);
           this.spin.hide();
         }

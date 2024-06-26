@@ -142,7 +142,7 @@ export class MenuComponent {
     this.spin.show();
     this.service.Delete(lines).subscribe({
       next: (res) =>{
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + lines.companyId + lines.menuId + lines.subMenuId + lines.authorizationObjectId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.menuId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       },error: (err) => {
