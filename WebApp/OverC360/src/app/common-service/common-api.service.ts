@@ -55,7 +55,8 @@ export class CommonAPIService {
       customer: { url: this.setup + 'customer', key: { key: 'customerId', value: 'customerName', languageId: 'languageId', companyId: 'companyId' } },
       city: { url: this.setup + 'city', key: { key: 'cityId', value: 'cityName', languageId: 'languageId', companyId: 'companyId' } },
       serviceType: { url: this.setup + 'serviceType', key: { key: 'serviceTypeId', value: 'serviceTypeText', languageId: 'languageId', companyId: 'companyId' } },
-      
+      opStatus: { url: this.setup + 'opStatus', key: { key: 'statusCode', value: 'opStatusDescription', languageId: 'languageId', companyId: 'companyId' } },
+
     },
   }
  

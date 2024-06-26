@@ -50,7 +50,7 @@
   <mat-sidenav-content class="bodyBackGround" style="margin-left: 120px;" [ngStyle]="{ 'margin-left': collapsed ? '300px' : '105px' }">
     <div class="d-flex justify-content-between">
       <div id="breadcrumbs">
-        <p class="headerPageName">Setup</p>
+        <p class="headerPageName">{{dataArray[0]}}</p>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb" >
             <li *ngFor="let element of dataArray; let j = index" class="breadcrumb-item" [ngClass]="j == dataArray.length -1 ? 'active' : ''">{{element}}</li>

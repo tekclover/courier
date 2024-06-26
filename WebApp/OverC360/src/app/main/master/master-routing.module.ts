@@ -8,10 +8,15 @@ import { DistrictMappingNewComponent } from './district-mapping/district-mapping
 import { DistrictMappingComponent } from './district-mapping/district-mapping.component';
 import { ProvinceMappingNewComponent } from './province-mapping/province-mapping-new/province-mapping-new.component';
 import { ProvinceMappingComponent } from './province-mapping/province-mapping.component';
+import { RateNewComponent } from './rate/rate-new/rate-new.component';
+import { RateComponent } from './rate/rate.component';
 
 const routes: Routes = [
   { path: 'hub', component: HubComponent, data: { title: 'Master', module: 'Hub' } },
   { path: 'hub-new/:code', component: HubNewComponent, data: { title: 'Master', module: 'Hub - Add New' } },
+
+  { path: 'rate', component: RateComponent, data: { title: 'Master', module: 'Rate' } },
+  { path: 'rate-new/:code', component: RateNewComponent, data: { title: 'Master', module: 'Rate - Add New' } },
 
   {path:'districtMapping',component: DistrictMappingComponent, data: { title: 'Master', module: 'DistrictMapping' } },
     {path:'districtMapping-new/:code',component: DistrictMappingNewComponent,data: { title: 'Master', module: 'DistrictMapping - Add New' } },

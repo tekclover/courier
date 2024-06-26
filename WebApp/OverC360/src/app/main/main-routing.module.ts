@@ -8,6 +8,7 @@ const routes: Routes = [{
   { path: 'idMaster', loadChildren: () => import('../main/id-masters/id-masters.module').then(m => m.IdMastersModule) },
   { path: 'master', loadChildren: () => import('../main/master/master.module').then(m => m.MasterModule) },
   { path: 'airport', loadChildren: () => import('../main/airport/airport.module').then(m => m.AirportModule) },
+  { path: 'operation', loadChildren: () => import('../main/operation/operation.module').then(m => m.OperationModule) },
 
   ]
  }];

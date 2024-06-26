@@ -42,7 +42,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0 required">Status Code</p>
                                 <input formControlName="statusCode" maxlength="50"
                                     [ngClass]="form.get('statusCode')?.invalid && form.get('statusCode')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                    class="w-100"  pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('statusCode')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

@@ -40,22 +40,21 @@ export class NotificationComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'notificationId', header: 'ID' },
-      { field: 'languageDescription', header: 'Language' },
-      { field: 'companyName', header: 'Comapany' },
+      { field: 'notificationId', header: 'Notification ID' },
+      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'productName', header: 'Product' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'serviceTypeText', header: 'Service Type' },
       { field: 'userRole', header: 'User Role' },
       { field: 'userName', header: 'User Name' },
-      { field: 'remark', header: 'Remark' },
-      { field: 'notificationText', header: 'Description' },
+      { field: 'notificationText', header: 'Notification Name' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'productId', header: 'Product ID' },
