@@ -57,7 +57,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Customer Name</p>
-                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="customerName"
+                                <input maxlength="100" pInputText  formControlName="customerName"
                                     [ngClass]="form.get('customerName')?.invalid && form.get('customerName')?.dirty ? 'invalid' : ''"
                                     class=" w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('customerName')"
@@ -65,7 +65,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Remarks</p>
-                                <input maxlength="2000" pInputText pKeyFilter="alphanum" formControlName="remark"
+                                <input maxlength="2000" pInputText  formControlName="remark"
                                     class=" w-100" pInputText placeholder="Enter" />
                             </div>
                         </div>
