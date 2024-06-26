@@ -9,6 +9,8 @@ import { DistrictMappingComponent } from './district-mapping/district-mapping.co
 import { DistrictMappingNewComponent } from './district-mapping/district-mapping-new/district-mapping-new.component';
 import { ProvinceMappingComponent } from './province-mapping/province-mapping.component';
 import { ProvinceMappingNewComponent } from './province-mapping/province-mapping-new/province-mapping-new.component';
+import { CountryMappingComponent } from './country-mapping/country-mapping.component';
+import { CountryMappingNewComponent } from './country-mapping/country-mapping-new/country-mapping-new.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { ProvinceMappingNewComponent } from './province-mapping/province-mapping
     DistrictMappingComponent,
     DistrictMappingNewComponent,
     ProvinceMappingComponent,
-    ProvinceMappingNewComponent
+    ProvinceMappingNewComponent,
+    CountryMappingComponent,
+    CountryMappingNewComponent
   ],
   imports: [
     CommonModule,
