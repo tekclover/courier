@@ -11,6 +11,10 @@ import { ProvinceMappingComponent } from './province-mapping/province-mapping.co
 import { ProvinceMappingNewComponent } from './province-mapping/province-mapping-new/province-mapping-new.component';
 import { CountryMappingComponent } from './country-mapping/country-mapping.component';
 import { CountryMappingNewComponent } from './country-mapping/country-mapping-new/country-mapping-new.component';
+import { CityMappingComponent } from './city-mapping/city-mapping.component';
+import { CityMappingNewComponent } from './city-mapping/city-mapping-new/city-mapping-new.component';
+import { HubPartnerAssignmentComponent } from './hub-partner-assignment/hub-partner-assignment.component';
+import { HubPartnerAssignmentNewComponent } from './hub-partner-assignment/hub-partner-assignment-new/hub-partner-assignment-new.component';
 
 
 @NgModule({
@@ -22,7 +26,11 @@ import { CountryMappingNewComponent } from './country-mapping/country-mapping-ne
     ProvinceMappingComponent,
     ProvinceMappingNewComponent,
     CountryMappingComponent,
-    CountryMappingNewComponent
+    CountryMappingNewComponent,
+    CityMappingComponent,
+    CityMappingNewComponent,
+    HubPartnerAssignmentComponent,
+    HubPartnerAssignmentNewComponent
   ],
   imports: [
     CommonModule,

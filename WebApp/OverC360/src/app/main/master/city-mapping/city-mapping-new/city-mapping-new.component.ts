@@ -7,20 +7,20 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
-import { CountryMappingService } from '../country-mapping.service';
+import { CityMappingService } from '../city-mapping.service';
 
 @Component({
-  selector: 'app-country-mapping-new',
-  templateUrl: './country-mapping-new.component.html',
-  styleUrl: './country-mapping-new.component.scss'
+  selector: 'app-city-mapping-new',
+  templateUrl: './city-mapping-new.component.html',
+  styleUrl: './city-mapping-new.component.scss'
 })
-export class CountryMappingNewComponent {
+export class CityMappingNewComponent {
   active: number | undefined = 0;
   status:any[] = []
 
   constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CountryMappingService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
+    private service: CityMappingService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
     
      }
        
@@ -31,14 +31,14 @@ export class CountryMappingNewComponent {
     partnerId: [, Validators.required],
     partnerType: [, Validators.required],
     partnerName: [, Validators.required],
-    countryId: [, Validators.required],
-    countryName: [],
+    cityId: [, Validators.required],
+    cityName: [],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
-    partnerCountryId: [],
-    partnerCountryName: [],
+    partnerCityId: [],
+    partnerCityName: [],
     remark: [],
     referenceField1: [], 
     referenceField2: [],
@@ -75,7 +75,7 @@ export class CountryMappingNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'CountryMapping', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'CityMapping', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -87,7 +87,7 @@ export class CountryMappingNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
-      this.form.controls.countryId.disable();
+      this.form.controls.cityId.disable();
       this.form.controls.partnerId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
@@ -99,18 +99,18 @@ export class CountryMappingNewComponent {
   
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  countryIdList: any[] = [];
+  cityIdList: any[] = [];
 
   dropdownlist(){
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.city.url,
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
+      this.cityIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.city.key);
       this.spin.hide();
     },
     error: (err: any) => {
@@ -139,7 +139,7 @@ export class CountryMappingNewComponent {
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.partnerId + ' has been updated successfully' });
-          this.router.navigate(['/main/master/countryMapping']);
+          this.router.navigate(['/main/master/cityMapping']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -151,8 +151,8 @@ export class CountryMappingNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
-          this.router.navigate(['/main/master/countryMapping']);
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.cityId + ' has been created successfully' });
+          this.router.navigate(['/main/master/cityMapping']);
           this.spin.hide();
         }
         }, error: (err) => {

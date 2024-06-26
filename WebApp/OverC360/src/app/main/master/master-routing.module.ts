@@ -8,6 +8,10 @@ import { DistrictMappingNewComponent } from './district-mapping/district-mapping
 import { DistrictMappingComponent } from './district-mapping/district-mapping.component';
 import { ProvinceMappingNewComponent } from './province-mapping/province-mapping-new/province-mapping-new.component';
 import { ProvinceMappingComponent } from './province-mapping/province-mapping.component';
+import { CityMappingNewComponent } from './city-mapping/city-mapping-new/city-mapping-new.component';
+import { CityMappingComponent } from './city-mapping/city-mapping.component';
+import { HubPartnerAssignmentNewComponent } from './hub-partner-assignment/hub-partner-assignment-new/hub-partner-assignment-new.component';
+import { HubPartnerAssignmentComponent } from './hub-partner-assignment/hub-partner-assignment.component';
 
 const routes: Routes = [
   { path: 'hub', component: HubComponent, data: { title: 'Master', module: 'Hub' } },
@@ -20,7 +24,13 @@ const routes: Routes = [
     {path:'provinceMapping-new/:code',component: ProvinceMappingNewComponent,data: { title: 'Master', module: 'ProvinceMapping - Add New' } },
 
     {path:'countryMapping',component: CountryMappingComponent, data: { title: 'Master', module: 'CountryMapping' } },
-  {path:'countryMapping-new/:code',component: CountryMappingNewComponent,data: { title: 'Master', module: 'CountryMapping - Add New' } },
+    {path:'countryMapping-new/:code',component: CountryMappingNewComponent,data: { title: 'Master', module: 'CountryMapping - Add New' } },
+  
+    {path:'cityMapping',component: CityMappingComponent, data: { title: 'Master', module: 'CityMapping' } },
+    {path:'cityMapping-new/:code',component: CityMappingNewComponent,data: { title: 'Master', module: 'CityMapping - Add New' } },
+  
+    {path:'hubPartnerAssignment',component: HubPartnerAssignmentComponent, data: { title: 'Master', module: 'HubPartnerAssignment' } },
+    {path:'hubPartnerAssignment-new/:code',component: HubPartnerAssignmentNewComponent,data: { title: 'Master', module: 'HubPartnerAssignment - Add New' } },
   
 ];
 
