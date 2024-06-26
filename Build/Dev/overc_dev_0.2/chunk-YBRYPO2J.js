@@ -997,9 +997,9 @@ var routes = [{
   path: "",
   component: MainComponent,
   children: [
-    { path: "idMaster", loadChildren: () => import("./chunk-U4U5TZRE.js").then((m) => m.IdMastersModule) },
-    { path: "master", loadChildren: () => import("./chunk-4T4T3FLM.js").then((m) => m.MasterModule) },
-    { path: "airport", loadChildren: () => import("./chunk-VOZ6SDWE.js").then((m) => m.AirportModule) }
+    { path: "idMaster", loadChildren: () => import("./chunk-D5SQNPKM.js").then((m) => m.IdMastersModule) },
+    { path: "master", loadChildren: () => import("./chunk-BKDWSAUO.js").then((m) => m.MasterModule) },
+    { path: "airport", loadChildren: () => import("./chunk-GA237IEL.js").then((m) => m.AirportModule) }
   ]
 }];
 var _MainRoutingModule = class _MainRoutingModule {
@@ -1027,4 +1027,4 @@ var MainModule = _MainModule;
 export {
   MainModule
 };
-//# sourceMappingURL=chunk-FKWW6SGB.js.map
+//# sourceMappingURL=chunk-YBRYPO2J.js.map

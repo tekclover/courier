@@ -3625,7 +3625,7 @@ var require_JsBarcode = __commonJS({
 // src/app/app-routing.module.ts
 var routes = [
   { path: "", loadChildren: () => import("./chunk-W5RB2DU7.js").then((m) => m.LoginModule) },
-  { path: "main", loadChildren: () => import("./chunk-FKWW6SGB.js").then((m) => m.MainModule) }
+  { path: "main", loadChildren: () => import("./chunk-YBRYPO2J.js").then((m) => m.MainModule) }
 ];
 var _AppRoutingModule = class _AppRoutingModule {
 };

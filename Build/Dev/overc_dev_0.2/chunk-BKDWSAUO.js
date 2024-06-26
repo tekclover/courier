@@ -3,7 +3,7 @@ import {
   CommonAPIService,
   CountryService,
   ProvinceService
-} from "./chunk-VMCG4GGO.js";
+} from "./chunk-6US2CFLL.js";
 import {
   CustomTableComponent,
   DeleteComponent
@@ -2846,4 +2846,4 @@ var MasterModule = _MasterModule;
 export {
   MasterModule
 };
-//# sourceMappingURL=chunk-4T4T3FLM.js.map
+//# sourceMappingURL=chunk-BKDWSAUO.js.map

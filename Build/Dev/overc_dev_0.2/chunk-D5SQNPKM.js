@@ -3,7 +3,7 @@ import {
   CommonAPIService,
   CountryService,
   ProvinceService
-} from "./chunk-VMCG4GGO.js";
+} from "./chunk-6US2CFLL.js";
 import {
   CustomTableComponent,
   DeleteComponent
@@ -2530,9 +2530,6 @@ var _MenuNewComponent = class _MenuNewComponent {
     this.email = new FormControl("", [Validators.required, Validators.email]);
     this.languageIdList = [];
     this.companyIdList = [];
-    this.menuIdList = [];
-    this.subMenuIdList = [];
-    this.authorizationObjectId = [];
   }
   errorHandling(control, error = "required") {
     const controlInstance = this.form.get(control);
@@ -2571,17 +2568,11 @@ var _MenuNewComponent = class _MenuNewComponent {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
-      this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.menu.url,
-      this.cas.dropdownlist.setup.subMenu.url,
-      this.cas.dropdownlist.setup.authorizationObject.url
+      this.cas.dropdownlist.setup.company.url
     ]).subscribe({
       next: (results) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.menuIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.menu.key);
-        this.subMenuIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.subMenu.key);
-        this.authorizationObjectId = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.authorizationObject.key);
         this.spin.hide();
       },
       error: (err) => {
@@ -14651,7 +14642,6 @@ var _OpstatusNewComponent = class _OpstatusNewComponent {
     this.email = new FormControl("", [Validators.required, Validators.email]);
     this.languageIdList = [];
     this.companyIdList = [];
-    this.statusCodeList = [];
     this.OpStatus = [
       { value: "2", label: "Inactive" },
       { value: "1", label: "Active" }
@@ -14690,13 +14680,11 @@ var _OpstatusNewComponent = class _OpstatusNewComponent {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
-      this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.opstatus.url
+      this.cas.dropdownlist.setup.company.url
     ]).subscribe({
       next: (results) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.opstatus.key);
         this.spin.hide();
       },
       error: (err) => {
@@ -20891,4 +20879,4 @@ var IdMastersModule = _IdMastersModule;
 export {
   IdMastersModule
 };
-//# sourceMappingURL=chunk-U4U5TZRE.js.map
+//# sourceMappingURL=chunk-D5SQNPKM.js.map

@@ -250,7 +250,7 @@ function PreAlertManifestComponent_ng_template_27_Template(rf, ctx) {
     \u0275\u0275text(40);
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(41, "div", 42)(42, "p", 43);
-    \u0275\u0275text(43, "Currency");
+    \u0275\u0275text(43, "No of Pieces");
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(44, "div", 42)(45, "p", 44);
     \u0275\u0275text(46);
@@ -587,4 +587,4 @@ var AirportModule = _AirportModule;
 export {
   AirportModule
 };
-//# sourceMappingURL=chunk-VOZ6SDWE.js.map
+//# sourceMappingURL=chunk-GA237IEL.js.map
