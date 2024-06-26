@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ManifestComponent } from './manifest/manifest.component';
+import { PreAlertManifestComponent } from './pre-alert-manifest/pre-alert-manifest.component';
 
 const routes: Routes = [
-  {path:'manifest',component: ManifestComponent, data: { title: 'Airport Hub', module: 'Manifest' } },
+  {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Airport Hub', module: 'Manifest' } },
 
 ];
 

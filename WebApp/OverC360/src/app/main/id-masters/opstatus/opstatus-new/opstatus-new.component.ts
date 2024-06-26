@@ -101,17 +101,14 @@ export class OpstatusNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  statusCodeList: any[] = [];
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.opstatus.url,
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.opstatus.key);
       this.spin.hide();
     },
     error: (err: any) => {

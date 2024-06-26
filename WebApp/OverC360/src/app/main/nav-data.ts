@@ -234,11 +234,18 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
-        routerId: 1000,
+        routerId: 4000,
         routerLink: 'dashboard',
         src: './assets/sidebar/airport/Airport Hub.png',
         srcDark: './assets/sidebar/airport/Airport HubDark.png',
-        label: 'Airport'
+        label: 'Airport',
+        items: [
+            {
+                routerId: 4001,
+                routerLink: '/main/airport/preAlertManifest',
+                label: 'Pre-Alert Manifest'
+            }
+        ]
     },
     {
         routerId: 1000,
