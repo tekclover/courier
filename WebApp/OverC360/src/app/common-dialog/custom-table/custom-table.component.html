@@ -1,11 +1,54 @@
-<div class="bgBlack text-white">
+<p-tabView styleClass="tabview-custom">
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+                <i class="bi bi-sliders"></i>
+                <span class="font-bold white-space-nowrap m-0">
+                    Amy Elsner
+                </span>
+            </div>
+        </ng-template>
+        <p>
+            Lorem ipsum dolor sit amet...
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Header II">
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+                <i class="bi bi-sliders"></i>
+                <span class="font-bold white-space-nowrap m-0">
+                    Onyama Limba
+                </span>
+            </div>
+        </ng-template>
+        <p>
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Header III">
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+                <i class="bi bi-sliders"></i>
+                                <span class="font-bold white-space-nowrap m-0">
+                    Ioni Bowcher
+                </span>
+            </div>
+        </ng-template>
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos...
+        </p>
+    </p-tabPanel>
+</p-tabView>
+
+<div class="">
     <p-pickList
         [source]="sourceProducts" 
         [target]="targetProducts" 
         sourceHeader="Available Columns"
         targetHeader="Shown Columns" 
         [dragdrop]="true" 
-        [responsive]="true">
+        [responsive]="true"
+        filterBy="field" >
             <ng-template let-product pTemplate="item">
                 <div class="flex flex-wrap p-2 align-items-center gap-3">
                     <div class="flex-1 flex flex-column gap-2">

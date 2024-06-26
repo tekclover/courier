@@ -17,7 +17,8 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { PickListModule } from 'primeng/picklist';
 import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
-
+import { TabViewModule } from 'primeng/tabview';
+import { ChipsModule } from 'primeng/chips';
 @NgModule({
   declarations: [],
   imports: [
@@ -38,7 +39,9 @@ import { PasswordModule } from 'primeng/password';
     KeyFilterModule,
     PickListModule,
     CardModule,
-    PasswordModule
+    PasswordModule,
+    TabViewModule,
+    ChipsModule
   ], 
   exports: [
     CommonModule,
@@ -58,7 +61,9 @@ import { PasswordModule } from 'primeng/password';
     KeyFilterModule,
     PickListModule,
     CardModule,
-    PasswordModule
+    PasswordModule,
+    TabViewModule,
+    ChipsModule
   ]
 })
 export class PrimengModule { }

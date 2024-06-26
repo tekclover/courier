@@ -26,7 +26,7 @@ import { CustomTableComponent } from './common-dialog/custom-table/custom-table.
     BrowserAnimationsModule,
     HttpClientModule,
     NgxBarcode6Module,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
+    NgxSpinnerModule.forRoot({ type: 'line-spin-clockwise-fade' })
   ],
   providers: [
     MessageService, DatePipe, DecimalPipe,
