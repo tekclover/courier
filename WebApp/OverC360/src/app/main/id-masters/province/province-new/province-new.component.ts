@@ -147,7 +147,7 @@ export class ProvinceNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.languageId + res.countryId + res.provinceId + res.companyId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail:  res.provinceId + ' has been updated successfully' });
           this.router.navigate(['/main/idMaster/province']);
           this.spin.hide();
         }, error: (err) => {
@@ -160,7 +160,7 @@ export class ProvinceNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + res.countryId + res.provinceId + res.companyId + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.provinceId +' has been created successfully' });
           this.router.navigate(['/main/idMaster/province']);
           this.spin.hide();
         }

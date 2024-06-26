@@ -87,6 +87,7 @@ export class CountryNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.countryId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();

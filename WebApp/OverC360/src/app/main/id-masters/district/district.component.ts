@@ -41,9 +41,8 @@ export class DistrictComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'districtId', header: 'ID' },
-      { field: 'districtName', header: 'Description' },
-      { field: 'languageDescription', header: 'Language' },
+      { field: 'districtId', header: 'District ID' },
+      { field: 'districtName', header: 'District Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'countryName', header: 'Country' },
       { field: 'provinceName', header: 'Province' },
@@ -54,9 +53,11 @@ export class DistrictComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language Id' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company Id' },
       { field: 'countryId', header: 'Country Id' },
       { field: 'provinceId', header: 'Province Id' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'statusId', header: 'Status Id' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },

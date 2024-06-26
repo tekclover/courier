@@ -21,7 +21,7 @@
 
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Language </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
@@ -29,7 +29,7 @@
                               </div>
                 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Company </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
@@ -66,6 +66,11 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">To Currency Value </p>
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="toCurrencyValue" class=" w-100" pInputText placeholder="Enter" />
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">

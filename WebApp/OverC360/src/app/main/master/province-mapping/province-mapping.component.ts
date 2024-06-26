@@ -44,7 +44,6 @@ export class ProvinceMappingComponent {
     this.cols = [
       { field: 'partnerId', header: 'Partner ID' },
       { field: 'provinceName', header: 'Province' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'companyName', header: 'Company' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
@@ -54,6 +53,8 @@ export class ProvinceMappingComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      
+      { field: 'languageDescription', header: 'Language' },
       { field: 'partnerProvinceId', header: 'Partner Province ID' },
       { field: 'provinceId', header: 'Province ID' },
       { field: 'languageId', header: 'Language Id' },

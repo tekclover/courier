@@ -45,14 +45,17 @@ export class ProvinceComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'provinceId', header: 'ProvinceID' },
       { field: 'provinceName', header: 'Province Name' },
-      { field: 'countryName', header: 'Country Name' },
-      { field: 'companyName', header: 'Company Name' },
+      { field: 'countryName', header: 'Country ' },
+      { field: 'companyName', header: 'Company ' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'remark', header: 'Remark' },
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'provinceId', header: 'ProvinceID' },
       { field: 'countryId', header: 'CountryID' },
       { field: 'companyId', header: 'CompanyID' },
       { field: 'languageId', header: 'LanguageId' },
@@ -67,6 +70,8 @@ export class ProvinceComponent {
       { field: 'referenceField8', header: 'Reference Field 8' },
       { field: 'referenceField9', header: 'Reference Field 9' },
       { field: 'referenceField10', header: 'Reference Field 10' },
+      { field: 'updatedBy', header: 'Updated By' },
+      { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
 

@@ -21,7 +21,7 @@
 
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Language </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
@@ -45,40 +45,44 @@
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required"> Partner ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="partnerId" [ngClass]="form.get('partnerId')?.invalid && form.get('partnerId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('partnerId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required"> Partner Name</p>
-                                <input maxlength="100" pInputText formControlName="partnerName" [ngClass]="form.get('partnerName')?.invalid && form.get('partnerName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner Name</p>
+                                <input maxlength="100" pInputText  formControlName="partnerName" [ngClass]="form.get('partnerName')?.invalid && form.get('partnerName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('partnerName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required"> Partner Type</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner Type</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="partnerType" [ngClass]="form.get('partnerType')?.invalid && form.get('partnerType')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('partnerType')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> Partner District ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Partner District ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="partnerDistrictId" [ngClass]="form.get('partnerDistrictId')?.invalid && form.get('partnerDistrictId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('partnerDistrictId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
+<<<<<<< HEAD
+                                <p class="formControlLabel f600 textBlack mb-0">Partner District Name</p>
+                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="partnerDistrictName" [ngClass]="form.get('partnerDistrictName')?.invalid && form.get('partnerDistrictName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+=======
                                 <p class="formControlLabel f600 textBlack mb-0 "> Partner District Name</p>
                                 <input maxlength="100" pInputText  formControlName="partnerDistrictName" [ngClass]="form.get('partnerDistrictName')?.invalid && form.get('partnerDistrictName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+>>>>>>> 8a4ac8bb5332ade833cf74872e40055b2d9ce300
                                 <mat-error *ngIf="errorHandling('partnerDistrictName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> Remark  </p>
-                                <input maxlength="2000" pInputText pKeyFilter="alphanum" formControlName="remark" [ngClass]="form.get('remark')?.invalid && form.get('remark')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('remark')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                              </div>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
+                            </div> 
                             
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">

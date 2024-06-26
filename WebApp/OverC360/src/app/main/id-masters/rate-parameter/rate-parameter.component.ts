@@ -1,5 +1,6 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { RateParameterService } from './rate-parameter.service';
+import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,30 +9,35 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { EventService } from './event.service';
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html',
-  styleUrl: './event.component.scss'
+  selector: 'app-rate-parameter',
+  templateUrl: './rate-parameter.component.html',
+  styleUrl: './rate-parameter.component.scss'
 })
-export class EventComponent {
-  
+export class RateParameterComponent {
 
-  eventTable: any[] = [];
-  selectedEvent: any[] = [];
+  rateParameterTable: any[] = [];
+  selectedRateParameter: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: EventService,
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: RateParameterService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private spin: NgxSpinnerService
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Event - List'];
+    const dataToSend = ['Setup', 'Rate Parameter - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -40,11 +46,11 @@ export class EventComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'eventCode', header: 'Event ID' },
-      { field: 'eventDescription', header: 'Event Name' },
       { field: 'companyName', header: 'Company' },
-      { field: 'opStatusDescription', header: 'OpStatus' },
-      { field: 'remark', header: 'Remark' },
+      { field: 'rateParameterId', header: 'Rate Parameter ID' },
+      { field: 'rateParameterDescription', header: 'Rate Parameter Name' },
+      { field: 'remark', header: 'Remarks' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -52,7 +58,7 @@ export class EventComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'statusCode', header: 'Status Code' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -65,29 +71,28 @@ export class EventComponent {
       { field: 'referenceField10', header: 'Reference Field 10' },
       { field: 'updatedBy', header: 'Updated By' },
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
-
-
     ];
   }
-  
+
   initialCall() {
     this.spin.show();
     this.service.search({}).subscribe({
       next: (res: any) => {
         console.log(res);
-        this.eventTable = res;
+        this.rateParameterTable = res;
         this.spin.hide();
-      }, error: (err: any) => {
+      },
+      error: (err) => {
         this.spin.hide();
         this.cs.commonerrorNew(err);
-      }
-    })
+      },
+    });
   }
 
   onChange() {
-    const choosen = this.selectedEvent[this.selectedEvent.length - 1];
-    this.selectedEvent.length = 0;
-    this.selectedEvent.push(choosen);
+    const choosen = this.selectedRateParameter[this.selectedRateParameter.length - 1];
+    this.selectedRateParameter.length = 0;
+    this.selectedRateParameter.push(choosen);
   }
 
   customTable() {
@@ -96,75 +101,101 @@ export class EventComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedEvent[0]);
+        this.deleterecord(this.selectedRateParameter[0]);
       }
     });
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedEvent.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    if (this.selectedRateParameter.length === 0 && type != 'New') {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        key: 'br',
+        detail: 'Kindly select any Row',
+      });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedEvent[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/event-new/' + paramdata]);
+      let paramdata = this.cs.encrypt({
+        line: linedata == null ? this.selectedRateParameter[0] : linedata,
+        pageflow: type,
+      });
+      this.router.navigate(['/main/idMaster/rateParameter-new/' + paramdata]);
     }
   }
 
   deleteDialog() {
-    if (this.selectedEvent.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    if (this.selectedRateParameter.length === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        key: 'br',
+        detail: 'Kindly select any Row',
+      });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
       disableClose: true,
       width: '70%',
-      maxWidth: '80%',
+      maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedEvent, module: 'Event', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: {
+        line: this.selectedRateParameter,
+        module: 'Rate Parameter',
+        body: 'This action cannot be undone. All values associated with this field will be lost.',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedEvent[0]);
+        this.deleterecord(this.selectedRateParameter[0]);
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines).subscribe({
-      next: (res: any) =>{
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.eventCode + ' deleted successfully' });
+    this.service.Delete(lines.rateParameterId).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          key: 'br',
+          detail: lines.rateParameterId + ' Deleted successfully',
+        });
         this.spin.hide();
         this.initialCall();
-      },error: (err: any) => {
+      },
+      error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
-      }
-    })
+      },
+    });
   }
 
   downloadExcel() {
-    const exportData = this.eventTable.map(item => {
+    const exportData = this.rateParameterTable.map((item) => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach((col) => {
+        if (col.format == 'date') {
+          console.log(3);
+          exportItem[col.field] = this.datePipe.transform(
+            item[col.field],
+            'dd-MM-yyyy'
+          );
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Event');
+    this.cs.exportAsExcel(exportData, 'Rate Parameter');
   }
 
 }

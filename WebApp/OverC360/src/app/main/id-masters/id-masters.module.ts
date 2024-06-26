@@ -56,6 +56,8 @@ import { IataComponent } from './iata/iata.component';
 import { UsersComponent } from './users/users.component';
 import { IataNewComponent } from './iata/iata-new/iata-new.component';
 import { UsersNewComponent } from './users/users-new/users-new.component';
+import { RateParameterComponent } from './rate-parameter/rate-parameter.component';
+import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/rate-parameter-new.component';
 
 
 @NgModule({
@@ -113,6 +115,8 @@ import { UsersNewComponent } from './users/users-new/users-new.component';
     UsersComponent,
     IataNewComponent,
     UsersNewComponent,
+    RateParameterComponent,
+    RateParameterNewComponent,
   ],
   imports: [
     CommonModule,

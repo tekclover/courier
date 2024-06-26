@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Menu - {{ this.pageToken.pageflow }}</p>
+        <p class="componentHeader f600 mb-0">Rate Parameter - {{this.pageToken.pageflow}}</p>
     </div>
     <div class="w-75 mt-4 mx-auto">
         <form [formGroup]="form">
@@ -18,76 +18,58 @@
                         </div>
                     </ng-template>
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
-                        <div class="row scrollNew">
+                        <div class="row">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Company ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Menu ID</p>
-                                <input formControlName="menuId"
-                                    [ngClass]="form.get('menuId')?.invalid && form.get('menuId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('menuId')"
+                                <p class="formControlLabel f600 textBlack mb-0">Rate Parameter ID</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="rateParameterId"
+                                    [ngClass]="form.get('rateParameterId')?.invalid && form.get('rateParameterId')?.dirty ? 'invalid' : ''"
+                                    class="w-100" pInputText placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Rate Parameter Name</p>
+                                <input maxlength="100" pInputText pKeyFilter="alphanum"
+                                    formControlName="rateParameterDescription"
+                                    [ngClass]="form.get('rateParameterDescription')?.invalid && form.get('rateParameterDescription')?.dirty ? 'invalid' : ''"
+                                    class=" w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('rateParameterDescription')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Menu Name</p>
-                                <input formControlName="menuName" class=" w-100"  pInputText
-                                    placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu ID</p>
-                                <input formControlName="subMenuId"
-                                    [ngClass]="form.get('subMenuId')?.invalid && form.get('subMenuId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('subMenuId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu Name</p>
-                                <input formControlName="subMenuName" class=" w-100"  pInputText
-                                    placeholder="Enter" />  
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">AuthorizationObject ID</p>
-                                <input formControlName="authorizationObjectId"
-                                    [ngClass]="form.get('authorizationObjectId')?.invalid && form.get('authorizationObjectId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('authorizationObjectId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Authorization Object Value</p>
-                                <input formControlName="authorizationObjectValue" class=" w-100"  pInputText pKeyFilter="alphanum"
-                                    placeholder="Enter" />
-                            </div>
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select " />
 
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Authorization Object </p>
-                                <input formControlName="authorizationObject" class=" w-100"  pInputText pKeyFilter="alphanum"
-                                    placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0">Remarks</p>
+                                <input maxlength="2000" pInputText pKeyFilter="alphanum" formControlName="remark"
+                                    class=" w-100" pInputText placeholder="Enter" />
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
-                            <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/menu">Cancel</button>
+                            <button class="buttom1 textBlack mx-1"
+                                routerLink="/main/idMaster/rateParameter">Cancel</button>
                             <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
+                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                                'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
                 <p-stepperPanel *ngIf="this.pageToken.pageflow != 'New'">
-                    <!--*ngIf="this.pageToken.pageflow != 'New'"-->
                     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                         <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
                             <div class="d-flex justify-content-center align-items-center">
@@ -126,7 +108,8 @@
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
                             <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
+                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                                'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>

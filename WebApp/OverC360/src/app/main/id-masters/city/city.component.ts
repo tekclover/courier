@@ -40,9 +40,8 @@ export class CityComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'cityId', header: 'ID' },
-      { field: 'cityName', header: 'Description' },
-      { field: 'languageDescription', header: 'Language' },
+      { field: 'cityId', header: ' City ID' },
+      { field: 'cityName', header: 'City Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'countryName', header: 'Country' },
       { field: 'provinceName', header: 'Province' },
@@ -58,6 +57,7 @@ export class CityComponent {
       { field: 'countryId', header: 'Country Id' },
       { field: 'provinceId', header: 'Province Id' },
       { field: 'districtId', header: 'District Id' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'statusId', header: 'Status Id' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },

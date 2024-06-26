@@ -36,14 +36,20 @@
                                     getErrorMessage()}}</small></mat-error>
                               </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Service Type ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="serviceTypeId" [ngClass]="form.get('serviceTypeId')?.invalid && form.get('serviceTypeId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('serviceTypeId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
-                                <input maxlength="100" pInputText formControlName="serviceTypeText" class=" w-100" pInputText placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0 required">Service Type Name</p>
+                                <input maxlength="100" pInputTextformControlName="serviceTypeText" class=" w-100" pInputText placeholder="Enter" />
                             </div>
+                            
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000"  formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
+                            </div>
+
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />
