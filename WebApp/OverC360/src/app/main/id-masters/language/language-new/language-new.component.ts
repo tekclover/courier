@@ -46,11 +46,14 @@ export class LanguageNewComponent {
 
   btnText = 'Save'
   ngOnInit() {
-    const dataToSend = ['Setup', 'Language', this.pageToken.pageflow];
-    this.path.setData(dataToSend);
+  
 
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
+
+    const dataToSend = ['Setup', 'Language', this.pageToken.pageflow];
+    this.path.setData(dataToSend);
+    
     if (this.pageToken.pageflow != 'New') {
       this.btnText = 'Update';
       console.log(this.btnText)
