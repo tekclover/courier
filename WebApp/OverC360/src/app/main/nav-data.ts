@@ -105,7 +105,7 @@ export const navbarData: INavbarData[] = [
                     {
                         routerId: 5001,
                         routerLink: 'idMaster/subProduct',
-                        label: 'SubProduct'
+                        label: 'Sub Product'
                     },
                     {
                         routerId: 5002,
@@ -130,7 +130,7 @@ export const navbarData: INavbarData[] = [
                     {
                         routerId: 5006,
                         routerLink: 'idMaster/userrole',
-                        label: 'UserRole'
+                        label: 'User Role'
                     },
                 ]
             },
@@ -188,24 +188,61 @@ export const navbarData: INavbarData[] = [
                     {
                         routerId: 1001,
                         routerLink: 'idMaster/numberrange',
-                        label: 'NumberRange'
+                        label: 'Number Range'
                     },
                     {
                         routerId: 1002,
                         routerLink: 'idMaster/opstatus',
-                        label: 'Opstatus'
+                        label: 'Op Status'
                     },
                     {
-                        routerId: 1007,
+                        routerId: 1003,
                         routerLink: 'idMaster/currencyExchangeRate',
-                        label: 'CurrencyExchange Rate'
+                        label: 'Currency Exchange Rate'
+                    },
+                    {
+                        routerId: 1004,
+                        routerLink: 'idMaster/cityMapping',
+                        label: 'City Mapping'
+                    },
+                    {
+                        routerId: 1005,
+                        routerLink: 'idMaster/countryMapping',
+                        label: 'Country Mapping'
+                    },
+                    {
+                        routerId: 1006,
+                        routerLink: 'idMaster/districtMapping',
+                        label: 'District Mapping'
                     },
                 ]
             },
             {
                 routerId: 1000,
                 routerLink: 'setup/list',
-                label: 'Master3'
+                label: 'Master3',
+                items: [
+                    {
+                        routerId: 1001,
+                        routerLink: 'idMaster/provinceMapping',
+                        label: 'Province Mapping'
+                    },
+                    {
+                        routerId: 1002,
+                        routerLink: 'idMaster/hub',
+                        label: 'Hub'
+                    },
+                    {
+                        routerId: 1003,
+                        routerLink: 'idMaster/rate',
+                        label: 'Rate'
+                    },
+                    {
+                        routerId: 1004,
+                        routerLink: 'idMaster/hubPartnerAssignment',
+                        label: 'Hub Partner Assignment'
+                    },
+                ]
             },
         ]
     },

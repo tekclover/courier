@@ -54,6 +54,8 @@ import { UsersNewComponent } from './users/users-new/users-new.component';
 import { UsersComponent } from './users/users.component';
 import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/rate-parameter-new.component';
 import { RateParameterComponent } from './rate-parameter/rate-parameter.component';
+import { UserRoleComponent } from './user-role/user-role.component';
+import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
 
 const routes: Routes = [
   { path: 'company', component: CompanyComponent, data: { title: 'Setup', module: 'Company' } },
@@ -136,6 +138,10 @@ const routes: Routes = [
 
   { path: 'rateParameter', component: RateParameterComponent, data: { title: 'Setup', module: 'Rate Parameter' } },
   { path: 'rateParameter-new/:code', component: RateParameterNewComponent, data: { title: 'Setup', module: 'Rate Parameter - Add New' } },
+
+  { path: 'userrole', component: UserRoleComponent, data: { title: 'Master', module: 'UserRole' } },
+  { path: 'userrole-new/:code', component: UserRoleNewComponent, data: { title: 'Master', module: 'UserRole - Add New' } },
+
 ];
 
 @NgModule({

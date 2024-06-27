@@ -49,9 +49,10 @@ export class UserRoleComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'userRoleName', header: 'UserRole Name' },
-      { field: 'menuName', header: 'Menu Name' },
-      { field: 'subMenuName', header: 'SubMenu Name' },
+      { field: 'roleId', header: 'Role ID' },
+      { field: 'userRoleName', header: 'UserRole' },
+      { field: 'menuName', header: 'Menu' },
+      { field: 'subMenuName', header: 'SubMenu' },
       { field: 'description', header: 'Role Description'},
       { field: 'languageIdAndDescription', header: 'Language'},
       { field: 'companyIdAndDescription', header: 'Company'},
@@ -63,7 +64,6 @@ export class UserRoleComponent {
       { field: 'userRoleId', header: 'UserRole ID' },
       { field: 'menuId', header: 'Menu ID' },
       { field: 'subMenuId', header: 'SubMenu ID' },
-      { field: 'roleId', header: 'Role ID' },
       { field: 'moduleId', header: 'Module ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'authorizationObjectId', header: 'AuthorizationObject ID'},

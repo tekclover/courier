@@ -119,11 +119,11 @@ export class UsersNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.users.url,
+      // this.cas.dropdownlist.setup.users.url,
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.userIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.users.key);
+      // this.userIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.users.key);
       this.spin.hide();
     },
     error: (err: any) => {

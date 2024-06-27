@@ -19,6 +19,11 @@ import { ModuleService } from '../../module/module.service';
 })
 export class UserRoleNewComponent {
 
+  userRoleTable: any[] = [];
+  selectedUserRole: any[] = [];
+  cols: any[] = [];
+  target: any[] = [];
+
   active: number | undefined = 0;
   status: any[] = [];
   constructor(
@@ -90,6 +95,8 @@ export class UserRoleNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
+      this.form.controls.languageId.disable();
+      this.form.controls.companyId.disable();
       this.form.controls.roleId.disable();
     }
 
@@ -146,8 +153,28 @@ export class UserRoleNewComponent {
       }
 
       this.spin.show();
+      console.log(data)
       this.moduleService.search({languageId: [this.auth.languageId], companyId: this.auth.companyId}).subscribe(moduleRes => {
-        this.sub.add(this.service.Get(data.roleId + this.auth.languageId + this.auth.companyId).subscribe(res => {
+        // this.sub.add(this.service.Get(data.roleId + this.auth.languageId + this.auth.companyId).subscribe(res => {
+        //   this.form.patchValue(res[0]);
+        //   let combined = this.cs.removeDuplicateObj(res, moduleRes);
+        //   this.form.controls.statusDescription.patchValue(this.form.controls.statusDescription.value ? 'Active' : 'Inactive');
+        //   this.menuList = [];
+        //   this.menuList.push({
+        //     mainMenu: "Setup",
+        //     Menu: combined.filter((x: any) => x.moduleId == 2000)
+        //   });
+        //   this.menuList.push({
+        //     mainMenu: "Masters",
+        //     Menu: combined.filter((x: any) => x.moduleId == 3000)
+        //   })
+        //   this.spin.hide();
+        // }, err => {
+        //   this.cs.commonerrorNew(err);
+        //   this.spin.hide();
+        // }));
+        this.sub.add(this.service.GetNew(data.roleId, this.auth.companyId, this.auth.languageId, data.menuId, data.subMenuId).subscribe(res => {
+          console.log(res)
           this.form.patchValue(res[0]);
           let combined = this.cs.removeDuplicateObj(res, moduleRes);
           this.form.controls.statusDescription.patchValue(this.form.controls.statusDescription.value ? 'Active' : 'Inactive');
@@ -159,12 +186,36 @@ export class UserRoleNewComponent {
           this.menuList.push({
             mainMenu: "Masters",
             Menu: combined.filter((x: any) => x.moduleId == 3000)
-          })
+          });
+          this.menuList.push({
+            mainMenu: "Airport",
+            Menu: combined.filter((x: any) => x.moduleId == 4000)
+          });
+          this.menuList.push({
+            mainMenu: "Customer Service",
+            Menu: combined.filter((x: any) => x.moduleId == 5000)
+          });
+          this.menuList.push({
+            mainMenu: "Operations",
+            Menu: combined.filter((x: any) => x.moduleId == 6000)
+          });
+          this.menuList.push({
+            mainMenu: "Billings",
+            Menu: combined.filter((x: any) => x.moduleId == 7000)
+          });
+          this.menuList.push({
+            mainMenu: "Integrations",
+            Menu: combined.filter((x: any) => x.moduleId == 8000)
+          });
+          this.menuList.push({
+            mainMenu: "Reports",
+            Menu: combined.filter((x: any) => x.moduleId == 9000)
+          });
           this.spin.hide();
         }, err => {
           this.cs.commonerrorNew(err);
           this.spin.hide();
-        }));
+        }))
       });
     }
   }
@@ -224,6 +275,30 @@ export class UserRoleNewComponent {
         mainMenu: "Master",
         Menu: res.filter((x: any) => x.module == 3000)
       });
+      this.menuList.push({
+        mainMenu: "Airport",
+        Menu: res.filter((x: any) => x.moduleId == 4000)
+      });
+      this.menuList.push({
+        mainMenu: "Customer Service",
+        Menu: res.filter((x: any) => x.moduleId == 5000)
+      });
+      this.menuList.push({
+        mainMenu: "Operations",
+        Menu: res.filter((x: any) => x.moduleId == 6000)
+      });
+      this.menuList.push({
+        mainMenu: "Billings",
+        Menu: res.filter((x: any) => x.moduleId == 7000)
+      });
+      this.menuList.push({
+        mainMenu: "Integrations",
+        Menu: res.filter((x: any) => x.moduleId == 8000)
+      });
+      this.menuList.push({
+        mainMenu: "Reports",
+        Menu: res.filter((x: any) => x.moduleId == 9000)
+      });
     });
   }
 
@@ -239,6 +314,30 @@ export class UserRoleNewComponent {
       this.menuList.push({
         mainMenu: "Masters",
         Menu: res.filter((x: any) => x.moduleId == 3000)
+      });
+      this.menuList.push({
+        mainMenu: "Airport",
+        Menu: res.filter((x: any) => x.moduleId == 4000)
+      });
+      this.menuList.push({
+        mainMenu: "Customer Service",
+        Menu: res.filter((x: any) => x.moduleId == 5000)
+      });
+      this.menuList.push({
+        mainMenu: "Operations",
+        Menu: res.filter((x: any) => x.moduleId == 6000)
+      });
+      this.menuList.push({
+        mainMenu: "Billings",
+        Menu: res.filter((x: any) => x.moduleId == 7000)
+      });
+      this.menuList.push({
+        mainMenu: "Integrations",
+        Menu: res.filter((x: any) => x.moduleId == 8000)
+      });
+      this.menuList.push({
+        mainMenu: "Reports",
+        Menu: res.filter((x: any) => x.moduleId == 9000)
       });
     })
   }
@@ -300,13 +399,7 @@ export class UserRoleNewComponent {
   getModuleId() {
     this.moduleService.search({companyId: this.auth.companyId, languageId: [this.auth.languageId]}).subscribe(res => {
       this.moduleResult = [];
-
-      if (this.modeOfImplementation == "LEAN") {
-        let Result = res.filter((x: { referenceField1: string; }) => x.referenceField1 == "LEAN");
-        this.moduleResult = Result;
-      } else {
-        this.moduleResult = res;
-      }
+      this.moduleResult = res;
 
       this.menuList = [];
       this.menuList.push({
@@ -317,7 +410,30 @@ export class UserRoleNewComponent {
         mainMenu: "Masters",
         Menu: this.moduleResult.filter((x: any) => x.moduleId == 3000)
       });
-      
+      this.menuList.push({
+        mainMenu: "Airport",
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 4000)
+      });
+      this.menuList.push({
+        mainMenu: "Customer Service",
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 5000)
+      });
+      this.menuList.push({
+        mainMenu: "Operations",
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 6000)
+      });
+      this.menuList.push({
+        mainMenu: "Billings",
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 7000)
+      });
+      this.menuList.push({
+        mainMenu: "Integrations",
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 8000)
+      });
+      this.menuList.push({
+        mainMenu: "Reports",
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 9000)
+      });
     });
   }
 
@@ -333,6 +449,30 @@ export class UserRoleNewComponent {
       this.menuList.push({
         mainMenu: "Masters",
         Menu: res.filter((x: any) => x.moduleId == 3000)
+      });
+      this.menuList.push({
+        mainMenu: "Airport",
+        Menu: res.filter((x: any) => x.moduleId == 4000)
+      });
+      this.menuList.push({
+        mainMenu: "Customer Service",
+        Menu: res.filter((x: any) => x.moduleId == 5000)
+      });
+      this.menuList.push({
+        mainMenu: "Operations",
+        Menu: res.filter((x: any) => x.moduleId == 6000)
+      });
+      this.menuList.push({
+        mainMenu: "Billings",
+        Menu: res.filter((x: any) => x.moduleId == 7000)
+      });
+      this.menuList.push({
+        mainMenu: "Integrations",
+        Menu: res.filter((x: any) => x.moduleId == 8000)
+      });
+      this.menuList.push({
+        mainMenu: "Reports",
+        Menu: res.filter((x: any) => x.moduleId == 9000)
       });
     });
   }
