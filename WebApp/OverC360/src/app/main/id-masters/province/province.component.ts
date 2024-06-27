@@ -130,7 +130,7 @@ export class ProvinceComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedProvince, module: 'Menu', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedProvince, module: 'Province', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {

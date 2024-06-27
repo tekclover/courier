@@ -37,7 +37,7 @@ export class NumberrangeComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'NumberRange - List'];
+    const dataToSend = ['Setup', 'Number Range - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -46,17 +46,17 @@ export class NumberrangeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'numberRangeCode', header: 'NumberRange Code' },
-      { field: 'numberRangeObject', header: 'NumberRange Object' },
-      { field: 'numberRangeStatus', header: 'NumberRange Status' },
+      { field: 'numberRangeCode', header: 'Number Range Code' },
+      { field: 'numberRangeObject', header: 'Number Range Object' },
+      { field: 'numberRangeStatus', header: 'Number Range Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
       
     ];
     this.target = [
-      { field: 'numberRangeFrom', header: 'NumberRange From' },
-      { field: 'numberRangeTo', header: 'NumberRange To' },
-      { field: 'numberRangeCurrent', header: 'NumberRangeCurrent' },
+      { field: 'numberRangeFrom', header: 'Number Range From' },
+      { field: 'numberRangeTo', header: 'Number Range To' },
+      { field: 'numberRangeCurrent', header: 'Number Range Current' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -127,7 +127,7 @@ export class NumberrangeComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedNumberRange, module: 'Menu', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedNumberRange, module: 'Number Range', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {

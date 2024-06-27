@@ -47,19 +47,19 @@
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="notificationText" class=" w-100" pInputText placeholder="Enter" />
                             </div>
 
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Product </p>
+                                <p-dropdown [options]="productIdList"  placeholder="Select"  formControlName="productId" appendTo="body"
+                                  [style]="{'width': '100%'}" [disabled]="false"  [panelStyle]="{'width':'100%'}" (onChange)="notificationChanged()" />
+                                <mat-error *ngIf="errorHandling('productId')" class="text-danger"><small>{{
+                                    getErrorMessage()}}</small></mat-error>
+                              </div>
+
                               <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Sub Product </p>
                                 <p-dropdown [options]="subProductIdList"  placeholder="Select"  formControlName="subProductId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="false"  [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('subProductId')" class="text-danger"><small>{{
-                                    getErrorMessage()}}</small></mat-error>
-                              </div>
-
-                              <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Product </p>
-                                <p-dropdown [options]="productIdList"  placeholder="Select"  formControlName="productId" appendTo="body"
-                                  [style]="{'width': '100%'}" [disabled]="false"  [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('productId')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                               </div>
 
