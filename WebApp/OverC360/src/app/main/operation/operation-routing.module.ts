@@ -5,7 +5,7 @@ import { ConsignmentNewComponent } from './consignment/consignment-new/consignme
 
 const routes: Routes = [
   {path:'consignment',component: ConsignmentComponent, data: { title: 'Operation', module: 'Consignment' } },
-  {path:'consignment-new',component: ConsignmentNewComponent, data: { title: 'Operation', module: 'Consignment' } },
+  {path:'consignment-new/:code',component: ConsignmentNewComponent, data: { title: 'Operation', module: 'Consignment' } },
 
 ];
 

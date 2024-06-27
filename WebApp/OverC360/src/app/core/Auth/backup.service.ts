@@ -87,8 +87,8 @@ console.log(2)
       clientId: "pixeltrice",
       clientSecretKey: "pixeltrice-secret-key",
       grantType: "password",
-      oauthPassword: "test",
-      oauthUserName: "test",
+      oauthPassword: "overc",
+      oauthUserName: "overc",
       apiName: apiName
     });
   }

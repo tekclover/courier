@@ -38,7 +38,7 @@ export class ConsignmentComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Operation', 'Consignment - List'];
+    const dataToSend = ['operation', 'Consignment - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -130,7 +130,7 @@ export class ConsignmentComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsignment[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/city-new/' + paramdata]);
+      this.router.navigate(['/main/operation/consignment-new/' + paramdata]);
     }
   }
 
