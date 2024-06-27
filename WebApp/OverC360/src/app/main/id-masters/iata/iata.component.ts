@@ -55,6 +55,7 @@ export class IataComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language Description' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'originCode', header: 'Origin Code' },
       { field: 'currencyId', header: 'Currency ID' },

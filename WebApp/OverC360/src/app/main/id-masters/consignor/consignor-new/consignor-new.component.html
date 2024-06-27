@@ -36,6 +36,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Sub Product</p>
                                 <p-dropdown [options]="subProductIdList" formControlName="subProductId"
+                                [ngClass]="form.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     placeholder="Select" appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
                                     [panelStyle]="{'width':'100%'}" (onChange)="subProductChanged()" />
                                 <mat-error *ngIf="errorHandling('subProductId')"
@@ -44,6 +45,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Product</p>
                                 <p-dropdown [options]="productIdList" formControlName="productId" placeholder="Select"
+                                [ngClass]="form.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
                                     [panelStyle]="{'width':'100%'}" (onChange)="productChanged()" />
                                 <mat-error *ngIf="errorHandling('productId')"
@@ -52,8 +54,9 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Customer</p>
                                 <p-dropdown [options]="customerIdList" formControlName="customerId" placeholder="Select"
+                                [ngClass]="form.get('customerId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
-                                    [panelStyle]="{'width':'100%'}"/>
+                                    [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('customerId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
@@ -65,7 +68,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Consignor Name</p>
-                                <input maxlength="100" pInputText  formControlName="consignorName"
+                                <input maxlength="100" pInputText formControlName="consignorName"
                                     [ngClass]="form.get('consignorName')?.invalid && form.get('consignorName')?.dirty ? 'invalid' : ''"
                                     class=" w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('consignorName')"
@@ -73,14 +76,14 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Remarks</p>
-                                <input maxlength="2000" pInputText  formControlName="remark"
-                                    class=" w-100" pInputText placeholder="Enter" />
+                                <input maxlength="2000" pInputText formControlName="remark" class=" w-100" pInputText
+                                    placeholder="Enter" />
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/consignor">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                !=
                                 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
@@ -123,8 +126,8 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                !=
                                 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
