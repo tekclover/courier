@@ -75,7 +75,7 @@ export class NumberrangeNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'NumberRange', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'Number Range', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

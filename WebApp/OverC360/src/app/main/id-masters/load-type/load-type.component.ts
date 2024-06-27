@@ -32,7 +32,7 @@ export class LoadTypeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'LoadType - List'];
+    const dataToSend = ['Setup', 'Load Type - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
