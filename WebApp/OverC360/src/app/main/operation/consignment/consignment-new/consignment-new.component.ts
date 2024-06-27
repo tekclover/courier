@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { ConsignmentService } from '../consignment.service';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,7 +30,8 @@ export class ConsignmentNewComponent {
     private service: ConsignmentService,
     private messageService: MessageService,
     private cas: CommonAPIService,
-    private auth: AuthService
+    private auth: AuthService,
+    private el: ElementRef
   ) {
     this.status = [
       { value: '2', label: 'Inactive' },
@@ -128,6 +129,21 @@ export class ConsignmentNewComponent {
 
   save() {
     this.submitted = true;
+
+    if (this.form.invalid) {
+      for (const control in this.form.controls) {
+        const controlInstance = this.form.get(control);
+          if (controlInstance?.invalid) {
+              const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
+              console.log(invalidControl)
+              if (invalidControl) {
+                  invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  break;
+              }
+          }
+      }
+  }
+
     if (this.form.invalid) {
       this.messageService.add({
         severity: 'error',
