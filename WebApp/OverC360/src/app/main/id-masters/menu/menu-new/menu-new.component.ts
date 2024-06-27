@@ -37,10 +37,10 @@ export class MenuNewComponent {
     languageIdAndDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyIdAndDescription: [],
-    menuId: [, Validators.required],
+    menuId: [],
     menuName: [, Validators.required],
     subMenuId: [, Validators.required],
-    subMenuName: [, Validators.required],
+    subMenuName: [],
     authorizationObject: [],
     authorizationObjectId: [, Validators.required],
     authorizationObjectValue: [],
@@ -138,7 +138,7 @@ export class MenuNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.languageId + res.companyId + res.menuId + res.subMenuId + res.authorizationObjectId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.menuId + ' has been updated successfully' });
           this.router.navigate(['/main/idMaster/menu']);
           this.spin.hide();
         }, error: (err) => {
@@ -151,7 +151,7 @@ export class MenuNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + res.companyId + res.menuId + res.subMenuId + res.authorizationObjectId + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created',  key: 'br', detail: res.menuId + ' has been created successfully' });
           this.router.navigate(['/main/idMaster/menu']);
           this.spin.hide();
         }

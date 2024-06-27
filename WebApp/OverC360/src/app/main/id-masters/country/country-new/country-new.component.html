@@ -37,7 +37,7 @@
                               </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Country ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Country ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="countryId" [ngClass]="form.get('countryId')?.invalid && form.get('countryId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('countryId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

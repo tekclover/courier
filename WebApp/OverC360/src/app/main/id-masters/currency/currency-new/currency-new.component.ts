@@ -32,7 +32,7 @@ export class CurrencyNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    currencyId: [],
+    currencyId: [, Validators.required],
     currencyDescription: [,  Validators.required],
     createdOn: ['', ],
     createdBy: [],
