@@ -30,7 +30,7 @@ export class ServiceTypeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'ServiceType - List'];
+    const dataToSend = ['Setup', 'Service Type - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -40,7 +40,7 @@ export class ServiceTypeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'serviceTypeId', header: 'Service Type ID' },
-      { field: 'serviceTypeText', header: 'Description' },
+      { field: 'serviceTypeText', header: 'Service Type Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status ' },
       { field: 'remark', header: 'Remark' },

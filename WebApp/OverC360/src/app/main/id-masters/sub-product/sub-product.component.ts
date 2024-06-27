@@ -144,7 +144,7 @@ export class SubProductComponent {
       position: { top: '6.5%', left: '30%' },
       data: {
         line: this.selectedSubProduct,
-        module: 'Company',
+        module: 'Sub Product',
         body: 'This action cannot be undone. All values associated with this field will be lost.',
       },
     });

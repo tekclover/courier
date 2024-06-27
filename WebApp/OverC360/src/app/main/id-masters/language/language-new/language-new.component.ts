@@ -23,8 +23,8 @@ export class LanguageNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    languageId: [, Validators.required],
-    languageDescription: [, Validators.required],
+    languageId: [, [Validators.required, Validators.maxLength(50)]],
+    languageDescription: [, [Validators.required, Validators.maxLength(100)]],
     createdOn: ['', ],
     createdBy: [],
     updatedBy: [],
@@ -53,7 +53,7 @@ export class LanguageNewComponent {
 
     const dataToSend = ['Setup', 'Language', this.pageToken.pageflow];
     this.path.setData(dataToSend);
-    
+
     if (this.pageToken.pageflow != 'New') {
       this.btnText = 'Update';
       console.log(this.btnText)

@@ -28,14 +28,14 @@
     <div class="tableProperties">
         <p-table #consignmentTag [columns]="cols" [value]="consignmentTable" class="custom-table" [scrollable]="true"
             selectionMode="single" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100"
-            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
+            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '130rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
                     </th>
-                    <th *ngFor="let col of columns">
+                    <th *ngFor="let col of columns"  [style]="col.style">
                         {{ col.header }}
                     </th>
                 </tr>
@@ -46,7 +46,7 @@
                         <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedConsignment" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
-                    <td *ngFor="let col of columns">
+                    <td *ngFor="let col of columns" [style]="col.style">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
                             {{ rowData[col.field] }}
                           </ng-container>

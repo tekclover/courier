@@ -21,19 +21,19 @@
                         <div class="row">
                              <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="languageId" [ngClass]="form.get('languageId')?.invalid && form.get('languageId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="languageId" [ngClass]="form.get('languageId')?.invalid && submitted ? 'invalid' : ''" class="w-100 " placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                              <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Description</p>
-                                <input maxlength="100" pInputText formControlName="languageDescription" [ngClass]="form.get('languageDescription')?.invalid && form.get('languageDescription')?.dirty ? 'invalid' : ''" class=" w-100" pInputText placeholder="Enter" />
+                                <input maxlength="100" pInputText formControlName="languageDescription" [ngClass]="form.get('languageDescription')?.invalid && submitted     ? 'invalid' : ''" class=" w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('languageDescription')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
 
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/language">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">  {{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
+                            <button  [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">  {{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">
+                            <button  [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">
                                 {{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}
                             </button>
                         </div>

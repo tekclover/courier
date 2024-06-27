@@ -42,7 +42,7 @@ export class ConsignmentTypeComponent {
     this.cols = [
       { field: 'consignmentTypeId', header: 'Consignment Type ID' },
       { field: 'companyName', header: 'Company' },
-      { field: 'consignmentTypeText', header: 'Description' },
+      { field: 'consignmentTypeText', header: 'Consignment Type Name' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
