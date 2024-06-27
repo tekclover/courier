@@ -28,7 +28,7 @@
                               </div>
                               
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Status ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusId" [ngClass]="form.get('statusId')?.invalid && form.get('statusId')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('statusId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

@@ -48,7 +48,7 @@ export class SubProductComponent {
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'subProductName', header: 'Sub Product Name' },
       { field: 'companyName', header: 'Company' },
-      { field: 'remark', header: 'Remarks' },
+      { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

@@ -37,7 +37,7 @@ export class OpstatusComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Opstatus - List'];
+    const dataToSend = ['Setup', 'Op Status - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -53,9 +53,9 @@ export class OpstatusComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'companyId', header: 'CompanyID' },
-      { field: 'languageId', header: 'LanguageId' },
-      { field: 'statusCode', header: 'StatusCode' },
+      { field: 'companyId', header: 'Company ID' },
+      { field: 'languageId', header: 'Language ID' },
+      { field: 'statusCode', header: 'Status Code' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
