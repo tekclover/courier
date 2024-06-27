@@ -39,7 +39,7 @@ export class IataNewComponent {
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
     origin: [, Validators.required],
-    originCode: [],
+    originCode: [, Validators.required],
     iataKd: [, Validators.required],
     iataCharge: [],
     currencyId: [, Validators.required],
@@ -92,8 +92,6 @@ export class IataNewComponent {
       this.form.controls.companyId.disable();
       this.form.controls.originCode.disable();
       this.form.controls.origin.disable();
-      this.form.controls.currencyId.disable();
-      this.form.controls.iataKd.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -103,20 +101,19 @@ export class IataNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  originCodeList: any[] = [];
   currencyIdList: any[] = [];
+  
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.origin.url,
       this.cas.dropdownlist.setup.currency.url,
+
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.originCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.origin.key);
-      this.currencyIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.currency.key);
+      this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
       this.spin.hide();
     },
     error: (err: any) => {
@@ -141,7 +138,7 @@ export class IataNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.origin + res.originCode + res.companyId + res.languageId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.originCode +' has been updated successfully' });
           this.router.navigate(['/main/idMaster/iata']);
           this.spin.hide();
         }, error: (err) => {
@@ -154,7 +151,7 @@ export class IataNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.origin + res.originCode + res.companyId + res.languageId + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:  res.originCode+ ' has been created successfully' });
           this.router.navigate(['/main/idMaster/iata']);
           this.spin.hide();
         }
@@ -163,6 +160,6 @@ export class IataNewComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }
+    } 
   }
 }

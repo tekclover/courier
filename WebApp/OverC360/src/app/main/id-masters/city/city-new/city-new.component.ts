@@ -97,6 +97,7 @@ export class CityNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.cityId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.provinceId.disable();
       this.form.controls.districtId.disable();
