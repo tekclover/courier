@@ -45,7 +45,6 @@ export class IataComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageDescription', header: 'Language Description' },
       { field: 'companyName', header: 'Company Name' },
       { field: 'origin', header: 'Origin' },
       { field: 'iataKd', header: 'IATA KD' },
@@ -54,6 +53,7 @@ export class IataComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language Description' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'originCode', header: 'Origin Code' },
       { field: 'currencyId', header: 'Currency ID' },

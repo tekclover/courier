@@ -39,12 +39,13 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Load Type ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="loadTypeId" [ngClass]="form.get('loadTypeId')?.invalid && form.get('loadTypeId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('loadTypeId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <!-- <mat-error *ngIf="errorHandling('loadTypeId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error> -->
                             </div>
                             
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Load Type Name</p>
-                                <input maxlength="100" pInputText formControlName="loadTypeText" class=" w-100" pInputText placeholder="Enter" />
+                                <input maxlength="100" pInputText formControlName="loadTypeText" class=" w-100" pInputText placeholder="Enter"
+                                [ngClass]="form.get('loadTypeText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                             </div> 
 
                             <div class="col-6 marginFieldNew borderRadius12">
@@ -60,7 +61,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/loadType">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
@@ -98,7 +99,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''" class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
