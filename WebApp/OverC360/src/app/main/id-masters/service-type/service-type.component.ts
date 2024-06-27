@@ -40,7 +40,7 @@ export class ServiceTypeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'serviceTypeId', header: 'Service Type ID' },
-      { field: 'serviceTypeText', header: 'Description' },
+      { field: 'serviceTypeText', header: 'Service Type Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status ' },
       { field: 'remark', header: 'Remark' },

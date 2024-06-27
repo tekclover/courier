@@ -35,7 +35,7 @@ export class LoadTypeNewComponent {
   //form builder initialize
   form = this.fb.group({
     loadTypeId: [],
-    loadTypeText: [,  Validators.required, noLeadingTrailingSpacesValidator()],
+    loadTypeText: [,  [Validators.required, noLeadingTrailingSpacesValidator()]],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription:[],
     companyId:[this.auth.companyId, Validators.required],
