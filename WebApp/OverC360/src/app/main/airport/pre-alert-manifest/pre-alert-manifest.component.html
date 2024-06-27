@@ -63,7 +63,7 @@
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                            {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
+                            {{ rowData.createdOn | date: 'dd-MM-yyyy' }}
                         </ng-template>
                     </td>
                 </tr>
@@ -78,72 +78,72 @@
                                     <p class="mb-0 headerText">Origin</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.countryOfOrigin}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.countryOfOrigin}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Destination</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText w-75 text-dark" [ngClass]="rowData.destinationDetails.country ? 'chip' : ''">{{rowData.destinationDetails.country}}</p>
+                                    <p class="mb-0 valueText chip" [ngClass]="rowData.destinationDetails.country ? 'bgOrange text-dark' : ''">{{rowData.destinationDetails.country}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Flight No</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.flightNo}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.flightNo}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">No of Pieces</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText w-75 text-dark"  [ngClass]="rowData.noOfPieceHawb ? 'chip' : ''">{{rowData.noOfPieceHawb}}</p>
+                                    <p class="mb-0 valueText chip"  [ngClass]="rowData.noOfPieceHawb ? 'bgOrange text-dark' : ''">{{rowData.noOfPieceHawb}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Gross Weight</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.grossWeight}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.grossWeight}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">ETA</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText w-75 text-dark" [ngClass]="rowData.flightArrivalTime ? 'chip' : ''">{{rowData.flightArrivalTime}}</p>
+                                    <p class="mb-0 valueText chip" [ngClass]="rowData.flightArrivalTime ? 'bgOrange text-dark' : ''">{{rowData.flightArrivalTime}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">No of Pieces</p>
+                                    <p class="mb-0 headerText">Currency</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.currecy}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.currecy}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Value</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.consignmentValue}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.consignmentValue}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Invoice No</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.invoiceNumber}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.invoiceNumber}}</p>
                                 </div>
                                 
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Shipper Name</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.shipperName}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.shipperName}}</p>
                                 </div>
                                 
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Consignee Name</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText">{{rowData.consigneeName}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.consigneeName}}</p>
                                 </div>
                             </div>
                         </div>

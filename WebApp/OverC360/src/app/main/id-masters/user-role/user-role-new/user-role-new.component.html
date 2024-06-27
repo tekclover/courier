@@ -1,0 +1,305 @@
+<div class="componentBody">
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="componentHeader f600 mb-0">User Role - {{ this.pageToken.pageflow }}</p>
+    </div>
+    <div class="w-75 mt-4 mx-auto">
+        <form [formGroup]="form">
+            <p-stepper [(activeStep)]="active">
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                        <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
+                            <div class="d-flex justify-content-center  align-items-center">
+                                <p *ngIf="active == 0;" class="circle borderCircle mb-0">1</p>
+                                <img *ngIf="active != 0;" src="./assets/dashboard/tick.png" alt="" srcset="">
+                            </div>
+                            <div>
+                                <p class="mb-0 mt-2 f600 textBlack">General</p>
+                            </div>
+
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-nextCallback="nextCallback">
+                        <div class="row scrollNew">
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
+                                <p-dropdown (onChange)="onLanguageChange($event)" placeholder="Select" class="w-100"
+                                    [filter]="true" [options]="languageIdList" formControlName="languageId"
+                                    [style]="{'width': '100%', 'margin-top': '0.3rem', 'margin-bottom': '0.3rem'}"
+                                    [panelStyle]="{'width':'20%'}" appendTo="body">
+                                </p-dropdown>
+                                <mat-error *ngIf="errorHandling('languageId')">{{getErrorMessage()}}</mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Company ID</p>
+                                <p-dropdown (onChange)="onCompanyChange($event)" placeholder="Select" class="w-100"
+                                    [filter]="true" [options]="companyIdList" formControlName="companyId"
+                                    [style]="{'width': '100%', 'margin-top': '0.3rem', 'margin-bottom': '0.3rem'}"
+                                    [panelStyle]="{'width':'20%'}" appendTo="body">
+                                </p-dropdown>
+                                <mat-error *ngIf="errorHandling('companyId')">{{getErrorMessage()}}</mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Role ID</p>
+                                <input formControlName="roleId"
+                                    [ngClass]="form.get('roleId')?.invalid && form.get('roleId')?.dirty ? 'invalid' : ''"
+                                    class="w-100" pInputText pKeyFilter="num" placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('roleId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Role Name</p>
+                                <input formControlName="userRoleName"
+                                    [ngClass]="form.get('userRoleName')?.invalid && form.get('userRoleName')?.dirty ? 'invalid' : ''"
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('userRoleName')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Status</p>
+                                <div class="card flex">
+                                    <p-dropdown 
+                                        [options]="status"  [style]="{'width': '100%'}" appendTo="body"
+                                        formControlName="statusId" 
+                                placeholder="Select " />
+                                </div>
+                                <mat-error *ngIf="errorHandling('statusId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                        </div>
+                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%">
+                            <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/userrole">
+                              Cancel
+                            </button>
+                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                              class="buttom1 bgBlack text-white mx-1" (click)="nextCallback.emit()">
+                              Next
+                            </button>
+                          </div>
+                    </ng-template>
+                </p-stepperPanel>
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                        <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
+                            <div class="d-flex justify-content-center  align-items-center">
+                                <p *ngIf="active == 0;" class="circle borderCircle mb-0">2</p>
+                                <img *ngIf="active != 0;" src="./assets/dashboard/tick.png" alt="" srcset="">
+                            </div>
+                            <div>
+                                <p class="mb-0 mt-2 f600 textBlack">Admin</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-prevCallback="nextCallback">
+                    <div class="row scrollNew">
+                        <div class="row ms-3 me-3 px-1">
+                            <div class="col-md-12 px-0 mt-1">
+                                <div class="">
+                                    <mat-accordion>
+                                        <mat-expansion-panel class="shadow-none " hideToggle #panel10>
+                                            <form [formGroup]="form">
+                                                <div class="row mt-1 p-1 px-3">
+                                                    <div class="col-lg-2 col-md-6 mt-2">
+                                                        <div class="d-flex flex-column">
+                                                            <p class="mb-0 py-0 required"> Language</p>
+                                                            <p-dropdown (onChange)="onLanguageChange($event)"
+                                                                placeholder="Select" class="w-100" [filter]="true"
+                                                                [options]="languageIdList"
+                                                                formControlName="languageId"
+                                                                [style]="{'width': '100%', 'margin-top': '0.3rem', 'margin-bottom': '0.3rem'}"
+                                                                [panelStyle]="{'width':'20%'}" appendTo="body">
+                                                            </p-dropdown>
+                                                            <mat-error
+                                                                *ngIf="errorHandling('languageId')">{{getErrorMessage()}}</mat-error>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-6 mt-2">
+                                                        <div class="d-flex flex-column">
+                                                            <p class="mb-0 py-0 text-black required">Company</p>
+                                                            <p-dropdown placeholder="Select" class="w-100"
+                                                                [filter]="true" [options]="companyIdList"
+                                                                formControlName="companyId"
+                                                                [style]="{'width': '100%', 'margin-top': '0.3rem', 'margin-bottom': '0.3rem'}"
+                                                                [panelStyle]="{'width':'20%'}" appendTo="body"
+                                                                (onChange)="onCompanyChange($event)">
+                                                            </p-dropdown>
+                                                            <mat-error
+                                                                *ngIf="errorHandling('companyId')">{{getErrorMessage()}}</mat-error>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-lg-2 col-md-6 mt-2"
+                                                        *ngIf="this.pageToken.pageflow != 'New'">
+                                                        <div class="d-flex flex-column">
+                                                            <p class="mb-0 py-0">Role Id</p>
+                                                            <mat-form-field class="form-group input_field mb-0"
+                                                                appearance="outline">
+                                                                <input matInput placeholder="Enter"
+                                                                    formControlName="roleId">
+                                                            </mat-form-field>
+                                                            <mat-error
+                                                                *ngIf="errorHandling('roleId')">{{getErrorMessage()}}</mat-error>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-6 mt-2">
+                                                        <div class="d-flex flex-column">
+                                                            <p class="mb-0 py-0 required">Role Name</p>
+                                                            <mat-form-field class="form-group input_field mb-0"
+                                                                appearance="outline">
+                                                                <input matInput placeholder="Enter"
+                                                                    formControlName="userRoleName" required>
+                                                            </mat-form-field>
+                                                            <mat-error
+                                                                *ngIf="errorHandling('userRoleName')">{{getErrorMessage()}}
+                                                            </mat-error>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-6 mt-2">
+
+                                                        <p class="mb-0 py-0 text-black">Status</p>
+                                                        <mat-form-field class="w-100" appearance="outline">
+                                                            <mat-select class="form-group   mb-0"
+                                                                formControlName="statusDescription" placeholder="Select">
+                                                                <mat-option value="Active">Active</mat-option>
+                                                                <mat-option value="Inactive">Inactive</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <mat-error
+                                                            *ngIf="errorHandling('statusDescription')">{{getErrorMessage()}}</mat-error>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </mat-expansion-panel>
+
+                                        <mat-expansion-panel class="shadow-none " [expanded]="step === 0"
+                                            (opened)="setStep(0)" hideToggle #panel10>
+                                            <mat-tab-group class="mx-2">
+                                                <mat-tab *ngFor="let element of menuList; let j = index">
+                                                    <ng-template mat-tab-label>
+                                                        <ul class="nav nav-tabs mt-1">
+                                                            <li class="nav-item">
+                                                                <p class="nav-link navpadding bg-white whs-text-grey pl-2 py-1 pl-1 row mx-0"
+                                                                    href="">
+                                                                    {{element.mainMenu}}
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </ng-template>
+                                                    <div class="scrolltable mr-1">
+                                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 pt-3 py-2 ">
+                                                            <mat-checkbox
+                                                                (change)="checkUncheckAll(element.mainMenu,$event)">
+                                                                Select All
+                                                            </mat-checkbox>
+                                                        </div>
+                                                        <p-table [value]="element.Menu">
+                                                            <ng-template pTemplate="header">
+                                                                <tr>
+                                                                    <th>S.No</th>
+                                                                    <th>Menu</th>
+                                                                    <th>Select All</th>
+                                                                    <th>Create / Modify</th>
+                                                                    <th>Display</th>
+                                                                    <th>Delete</th>
+                                                                </tr>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="body" let-menu let-i="rowIndex">
+                                                                <tr>
+                                                                    <td>{{ i + 1 }}</td>
+                                                                    <td>{{ menu.subMenuName }}</td>
+                                                                    <td>
+                                                                        <p-checkbox 
+                                                                            [binary]="true" 
+                                                                            [ngModel]="menu.createUpdate && menu.view && menu.delete"
+                                                                            (onChange)="onChange(menu, $event)"></p-checkbox>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p-checkbox 
+                                                                            [binary]="true" 
+                                                                            [(ngModel)]="menu.createUpdate"></p-checkbox>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p-checkbox 
+                                                                            [binary]="true" 
+                                                                            [(ngModel)]="menu.view"></p-checkbox>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p-checkbox 
+                                                                            [binary]="true" 
+                                                                            [(ngModel)]="menu.delete"></p-checkbox>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-template>
+                                                        </p-table>                                                        
+                                                    </div>
+                                                    <div class="d-flex justify-content-end mr-2">
+                                                        Total Records: {{element.Menu.length}}
+                                                    </div>
+                                                </mat-tab>
+
+                                            </mat-tab-group>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                        <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
+                        <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                            class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                            "New" ? "Update" : "Save" }}</button>
+                    </div>
+                    </ng-template>
+                </p-stepperPanel>
+                <p-stepperPanel *ngIf="this.pageToken.pageflow != 'New'">
+                    <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                        <div class="d-flex flex-column align-items-center">
+                            <p class="circle mb-0" [ngClass]="active == 2 ? 'borderCircle' : 'disable text-muted'">2</p>
+                        </div>
+                        <div>
+                            <p class="mb-0 mt-2 f600" [ngClass]="active == 2 ? 'textBlack f600' : 'text-muted' ">Admin
+                            </p>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-prevCallback="prevCallback">
+                        <div class="row">
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Created By</p>
+                                <input type="text" formControlName="createdBy" class=" w-100" pInputText
+                                    placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Created On</p>
+                                <input type="text" formControlName="createdOn" class=" w-100" pInputText
+                                    placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Updated By</p>
+                                <input type="text" formControlName="updatedBy" class=" w-100" pInputText
+                                    placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Updated On</p>
+                                <input type="text" formControlName="updatedOn" class=" w-100" pInputText
+                                    placeholder="Enter" />
+                            </div>
+                        </div>
+                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                            <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
+                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                                "New" ? "Update" : "Save" }}</button>
+                        </div>
+                    </ng-template>
+                </p-stepperPanel>
+            </p-stepper>
+        </form>
+    </div>
+</div>
