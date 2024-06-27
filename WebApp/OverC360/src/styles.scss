@@ -21,7 +21,7 @@ html, body { height: 100%; }
 }
 
 
-body { position: relative; font-family: 'Nunito', sans-serif !important;}
+body { position: relative; font-family: 'Nunito', sans-serif !important; overflow-y:  hidden !important;}
 
 
 .textOrange{color: var(--overcOrange) !important;}
@@ -90,7 +90,8 @@ body { position: relative; font-family: 'Nunito', sans-serif !important;}
 //component
 .componentHeader{font-size: var(--header20); font-weight: 600;}
 .addNewbuttom{font-size: var(--line14) !important; padding: 10px 22px !important; border-radius: 8px !important;}
-.buttom1{font-size: var(--line14) !important; padding: 10px 34px !important; border-radius: 8px !important;  border: solid 1px var(--black) !important;}
+.buttom1{font-size: var(--line14) !important; padding: 10px 34px !important; border-radius: 8px !important; color: var(--white);  border: solid 1px var(--black) !important;}
+.buttom1:hover{background-color: var(--overcOrange) !important; border: solid 1px transparent !important; color: var(--black) !important; font-weight: bold !important;}
 .toolIcons{font-size: var(--header24); margin-left: 1.2rem; margin-right: 1.2rem;}
 .form-control{font-size: var(--line14) !important;}
 .formControlLabel{font-size: var(--line14) !important;}
