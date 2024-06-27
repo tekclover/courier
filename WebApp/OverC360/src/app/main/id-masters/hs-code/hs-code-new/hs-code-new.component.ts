@@ -42,6 +42,8 @@ export class HsCodeNewComponent {
     itemCode: [],
     itemDescription: [],
     itemGroup: [],
+    specialApprovalId: [],
+    specialApprovalText: [],
     remark: [],
     referenceField1: [],
     referenceField10: [],

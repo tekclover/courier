@@ -52,6 +52,18 @@
                                     class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Special Approval ID</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="specialApprovalId"
+                                    [ngClass]="form.get('specialApprovalId')?.invalid && form.get('specialApprovalId')?.dirty ? 'invalid' : ''"
+                                    class="w-100" pInputText placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Special Approval Description</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="specialApprovalText"
+                                    [ngClass]="form.get('specialApprovalText')?.invalid && form.get('specialApprovalText')?.dirty ? 'invalid' : ''"
+                                    class="w-100" pInputText placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Item Group</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="itemGroup"
                                     [ngClass]="form.get('itemGroup')?.invalid && form.get('itemGroup')?.dirty ? 'invalid' : ''"
