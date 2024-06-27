@@ -35,6 +35,9 @@
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
                     </th>
+                    <th style="width: 5rem;">
+                       Label
+                    </th>
                     <th *ngFor="let col of columns"  [style]="col.style">
                         {{ col.header }}
                     </th>
@@ -46,6 +49,8 @@
                         <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedConsignment" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
+                    <td style="width: 5rem; justify-content: center;">
+                        <i type="button" (click)="downloadLabel(rowData)" style="font-size: 1.1rem;" class=" textOrange bi bi-file-earmark-pdf-fill"></i>                    </td>
                     <td *ngFor="let col of columns" [style]="col.style">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
                             {{ rowData[col.field] }}
