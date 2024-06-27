@@ -63,7 +63,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0 required">Authorization Object ID</p>
                                 <input formControlName="authorizationObjectId"
                                     [ngClass]="form.get('authorizationObjectId')?.invalid && form.get('authorizationObjectId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('authorizationObjectId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
