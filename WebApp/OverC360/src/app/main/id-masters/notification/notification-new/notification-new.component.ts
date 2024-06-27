@@ -8,6 +8,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { NotificationService } from '../notification.service';
+import { SubProductService } from '../../sub-product/sub-product.service';
 
 @Component({
   selector: 'app-notification-new',
@@ -18,10 +19,9 @@ export class NotificationNewComponent {
 
   active: number | undefined = 0;
   status:any[] = []
-
   constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: NotificationService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
+    private service: NotificationService, private subProductService: SubProductService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
       this.status = [
         { value: '2', label: 'Inactive' },
         { value: '1', label: 'Active' }
@@ -122,9 +122,9 @@ export class NotificationNewComponent {
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.subProductIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.subProduct.key);
-      this.productIdList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.product.key);
-      this.serviceTypeIdList = this.cas.foreachlist(results[4], this.cas.dropdownlist.setup.serviceType.key);
+      this.subProductIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.subProduct.key);
+      this.productIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.product.key);
+      this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
       this.spin.hide();
     },
     error: (err: any) => {
@@ -175,5 +175,22 @@ export class NotificationNewComponent {
         }
       })
     }
+  }
+  notificationChanged(){
+
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.productId = [this.form.controls.productId.value]
+
+    this.subProductIdList = [];
+    this.spin.show();
+    this.subProductService.search(obj).subscribe({next: (result: any) => {
+      this.subProductIdList = this.cas.foreachlist(result, {key: 'subProductId', value: 'subProductName'});
+      this.spin.hide();
+    }, error: (err: any) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
   }
 }

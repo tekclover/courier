@@ -43,7 +43,8 @@
                 <p class="formControlLabel f600 textBlack mb-0 required">
                   Company Name
                 </p>
-                <input type="text" formControlName="companyName" [ngClass]="
+                <input type="text" [ngClass]="form.get('companyName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" 
+                formControlName="companyName" [ngClass]="
                     form.get('companyName')?.invalid &&
                     form.get('companyName')?.dirty
                       ? 'invalid'
@@ -56,7 +57,8 @@
                 <p class="formControlLabel f600 textBlack mb-0 required">
                   Address Line 1
                 </p>
-                <input type="text" formControlName="addressLine1" [ngClass]="
+                <input type="text" [ngClass]="form.get('addressLine1')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"  
+                formControlName="addressLine1" [ngClass]="
                     form.get('addressLine1')?.invalid &&
                     form.get('addressLine1')?.dirty
                       ? 'invalid'
@@ -108,8 +110,7 @@
               <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/company">
                 Cancel
               </button>
-              <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                class="buttom1 bgBlack text-white mx-1" (click)="save()">
+              <button class="buttom1 bgBlack text-white mx-1" (click)="save()">
                 {{ this.pageToken.pageflow != "New" ? "Update" : "Save" }}
               </button>
             </div>
@@ -155,8 +156,7 @@
               <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">
                 Back
               </button>
-              <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                class="buttom1 bgBlack text-white mx-1" (click)="save()">
+              <button class="buttom1 bgBlack text-white mx-1" (click)="save()">
                 {{ this.pageToken.pageflow != "New" ? "Update" : "Save" }}
               </button>
             </div>

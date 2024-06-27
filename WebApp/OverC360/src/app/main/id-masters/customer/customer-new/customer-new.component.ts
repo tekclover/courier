@@ -189,36 +189,17 @@ export class CustomerNewComponent {
     }
   }
 
-  subProductChanged() {
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    obj.subProductId = [this.form.controls.subProductId.value]
-
-    this.subProductIdList = [];
-    this.spin.show();
-    this.subProductService.search(obj).subscribe({
-      next: (result) => {
-        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }
-
   productChanged() {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.productId = [this.form.controls.productId.value]
 
-    this.productIdList = [];
+    this.subProductIdList = [];
     this.spin.show();
-    this.productService.search(obj).subscribe({
+    this.subProductService.search(obj).subscribe({
       next: (result) => {
-        this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
+        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();

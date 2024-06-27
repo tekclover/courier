@@ -53,7 +53,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0">Customer</p>
                                 <p-dropdown [options]="customerIdList" formControlName="customerId" placeholder="Select"
                                     appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
-                                    [panelStyle]="{'width':'100%'}" (onChange)="customerChanged()" />
+                                    [panelStyle]="{'width':'100%'}"/>
                                 <mat-error *ngIf="errorHandling('customerId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
