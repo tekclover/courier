@@ -19,7 +19,7 @@
         <p-iconField iconPosition="left" class="mr-5">
             <p-inputIcon styleClass="pi pi-search" />
             <input type="text" id="toolInput1" style="width: 20rem;" pInputText placeholder="Search"
-                (input)="subProductTag.filterGlobal($any($event.target).value, 'contains')" />
+                (input)="rateParameterTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
         <div class="d-flex justify-content-end align-items-center">
             <p class="mb-0 d-flex f600 float-right w-25 pr-2">Filter By</p>
@@ -31,9 +31,9 @@
     </div>
 
     <div class="tableProperties">
-        <p-table #subProductTag [columns]="cols" [value]="rateParameterTable" class="custom-table" [scrollable]="true"
-            selectionMode="single" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100"
-            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
+        <p-table #rateParameterTag [columns]="cols" [value]="rateParameterTable" class="custom-table"
+            [scrollable]="true" selectionMode="single" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true"
+            [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>
