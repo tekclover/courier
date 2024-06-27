@@ -45,18 +45,20 @@ export class IataComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageDescription', header: 'Language Description' },
-      { field: 'companyName', header: 'Company Name' },
+      { field: 'companyName', header: 'Company' },
       { field: 'origin', header: 'Origin' },
       { field: 'iataKd', header: 'IATA KD' },
       { field: 'iataCharge', header: 'Iata Charge' },
       { field: 'currencyDescription', header: 'Currency Description' },
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'originCode', header: 'Origin Code' },
       { field: 'currencyId', header: 'Currency ID' },
+      { field: 'languageDescription', header: 'Language Description' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -67,6 +69,8 @@ export class IataComponent {
       { field: 'referenceField8', header: 'Reference Field 8' },
       { field: 'referenceField9', header: 'Reference Field 9' },
       { field: 'referenceField10', header: 'Reference Field 10' },
+      { field: 'updatedBy', header: 'Updated By' },
+      { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
 

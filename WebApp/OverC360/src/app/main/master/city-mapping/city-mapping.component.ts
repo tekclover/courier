@@ -29,7 +29,7 @@ export class CityMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'CityMapping - List'];
+    const dataToSend = ['Master', 'City Mapping - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -126,7 +126,7 @@ export class CityMappingComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedCityMapping, module: 'CityMapping', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedCityMapping, module: 'City Mapping', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -165,6 +165,6 @@ export class CityMappingComponent {
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'CityMapping');
+   this.cs.exportAsExcel(exportData, 'City Mapping');
   }
 }

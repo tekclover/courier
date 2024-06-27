@@ -144,7 +144,7 @@ export class DistrictMappingNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: ' District Mapping has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.partnerId + 'has been updated successfully' });
           this.router.navigate(['/main/master/districtMapping']);
           this.spin.hide();
         }, error: (err) => {
@@ -157,7 +157,7 @@ export class DistrictMappingNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'District Mapping has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + 'has been created successfully' });
           this.router.navigate(['/main/master/districtMapping']);
           this.spin.hide();
         }

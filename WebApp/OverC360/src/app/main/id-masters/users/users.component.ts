@@ -46,7 +46,6 @@ export class UsersComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'userRoleIdAndDescription', header: 'User Role' },
       { field: 'userTypeIdAndDescription', header: 'User Type' },
@@ -58,6 +57,7 @@ export class UsersComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'userId', header: 'User ID' },
       { field: 'userRoleId', header: 'User Role ID' },

@@ -37,7 +37,7 @@
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">District </p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">District</p>
                                 <p-dropdown [options]="districtIdList" formControlName="districtId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('districtId')" class="text-danger"><small>{{

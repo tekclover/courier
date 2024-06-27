@@ -46,12 +46,12 @@ export class ConsignorComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'consignorId', header: 'Consignor ID' },
+      { field: 'consignorName', header: 'Consignor Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'productName', header: 'Product' },
       { field: 'customerName', header: 'Customer' },
-      { field: 'consignorId', header: 'Consignor ID' },
-      { field: 'consignorName', header: 'Consignor Name' },
       { field: 'remark', header: 'Remarks' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

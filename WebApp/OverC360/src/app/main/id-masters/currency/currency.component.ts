@@ -41,7 +41,7 @@ export class CurrencyComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'currencyId', header: 'ID' },
+      { field: 'currencyId', header: ' Currency ID' },
       { field: 'currencyDescription', header: 'Description' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
