@@ -48,7 +48,9 @@ export class OpstatusComponent {
     this.cols = [
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyName', header: 'Company Name' },
-      { field: 'opStatusDescription', header: 'OpStatus' },
+      { field: 'opStatusDescription', header: 'Op Status' },
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'companyId', header: 'CompanyID' },
@@ -64,6 +66,8 @@ export class OpstatusComponent {
       { field: 'referenceField8', header: 'Reference Field 8' },
       { field: 'referenceField9', header: 'Reference Field 9' },
       { field: 'referenceField10', header: 'Reference Field 10' },
+      { field: 'updatedBy', header: 'Updated By' },
+      { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
 

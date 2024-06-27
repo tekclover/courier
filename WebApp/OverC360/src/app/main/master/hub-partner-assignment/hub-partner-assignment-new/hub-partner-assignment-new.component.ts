@@ -74,7 +74,7 @@ export class HubPartnerAssignmentNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'HubPartnerAssignment', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Hub Partner Assignment', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

@@ -21,8 +21,7 @@
                         <div class="row">
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Currency ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="currencyId"  placeholder="Enter"
-                                [ngClass]="form.get('currencyId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" class="w-100"/>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="currencyId" [ngClass]="form.get('currencyId')?.invalid && form.get('currencyId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('currencyId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             

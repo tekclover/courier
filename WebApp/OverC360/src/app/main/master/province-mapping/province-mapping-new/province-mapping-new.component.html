@@ -37,7 +37,7 @@
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Province </p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Province</p>
                                 <p-dropdown [options]="provinceIdList" formControlName="provinceId" appendTo="body"
                                   [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('provinceId')" class="text-danger"><small>{{
@@ -51,7 +51,7 @@
                               </div>
 
                               <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required"> Partner Name</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner Name</p>
                                 <input maxlength="100" pInputText  formControlName="partnerName" [ngClass]="form.get('partnerName')?.invalid && form.get('partnerName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('partnerName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                               </div>

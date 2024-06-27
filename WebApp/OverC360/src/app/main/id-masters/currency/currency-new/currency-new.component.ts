@@ -76,6 +76,7 @@ export class CurrencyNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
+        this.form.controls.currencyId.disable();
     }
   }
 

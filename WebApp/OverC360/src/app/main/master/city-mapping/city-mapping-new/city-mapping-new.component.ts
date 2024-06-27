@@ -75,7 +75,7 @@ export class CityMappingNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'CityMapping', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'City Mapping', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -151,7 +151,7 @@ export class CityMappingNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.cityId + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
           this.router.navigate(['/main/master/cityMapping']);
           this.spin.hide();
         }

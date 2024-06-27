@@ -29,7 +29,7 @@ export class HubPartnerAssignmentComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'HubPartnerAssignment - List'];
+    const dataToSend = ['Master', 'Hub Partner Assignment - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -164,6 +164,6 @@ export class HubPartnerAssignmentComponent {
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'HubPartnerAssignment');
+   this.cs.exportAsExcel(exportData, 'Hub Partner Assignment');
   }
 }
