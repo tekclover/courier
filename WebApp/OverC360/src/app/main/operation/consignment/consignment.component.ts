@@ -126,20 +126,11 @@ export class ConsignmentComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    console.log(3)
     if (this.selectedConsignment.length === 0 && type != 'New') {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        key: 'br',
-        detail: 'Kindly select any Row',
-      });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
-      let paramdata = this.cs.encrypt({
-        line: linedata == null ? this.selectedConsignment[0] : linedata,
-        pageflow: type,
-      });
-      this.router.navigate(['/main/idMaster/consignment-new/' + paramdata]);
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsignment[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/idMaster/city-new/' + paramdata]);
     }
   }
 
