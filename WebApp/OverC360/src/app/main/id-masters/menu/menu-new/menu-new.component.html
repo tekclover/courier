@@ -20,14 +20,14 @@
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Company ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')"
@@ -60,10 +60,10 @@
                                     placeholder="Enter" />  
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">AuthorizationObject ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Authorization Object ID</p>
                                 <input formControlName="authorizationObjectId"
                                     [ngClass]="form.get('authorizationObjectId')?.invalid && form.get('authorizationObjectId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('authorizationObjectId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

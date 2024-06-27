@@ -45,6 +45,7 @@ export class CommonAPIService {
       language:{url:this.setup + 'language',key:{key:'languageId',value:'languageDescription'}},
       company:{url:this.setup + 'company',key:{key:'companyId',value:'companyName'}},
       country:{url:this.setup + 'country',key:{key:'countryId',value:'countryName', languageId :'languageId', companyId: 'companyId'}},
+      currency:{url:this.setup + 'currency',key:{key:'currencyId',value:'currencyDescription'}},
       province:{url:this.setup + 'province',key:{key:'provinceId',value:'provinceName', languageId :'languageId', companyId: 'companyId'}},
       menu:{url:this.setup + 'menu', key:{key:'menuId',value:'menuName', languageId :'languageId', companyId: 'companyId'}},
       subMenu:{url:this.setup + 'menu', key:{key:'subMenuId',value:'subMenuName', languageId :'languageId', companyId: 'companyId'}},

@@ -9,6 +9,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { ProvinceService } from '../../province/province.service';
+import { DistrictService } from '../../district/district.service';
 
 @Component({
   selector: 'app-city-new',
@@ -23,7 +24,7 @@ export class CityNewComponent {
   constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
     private service: CityService, private messageService: MessageService,private cas: CommonAPIService,
-    private auth: AuthService, private provinceService: ProvinceService) { 
+    private auth: AuthService, private provinceService: ProvinceService, private districtService: DistrictService) { 
       this.status = [
         { value: '2', label: 'Inactive' },
         { value: '1', label: 'Active' }
@@ -34,7 +35,7 @@ export class CityNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    cityId:[],
+    cityId:[, Validators.required],
     cityName:[, Validators.required],
     districtId: [, Validators.required],
     districtName: [],
@@ -96,6 +97,7 @@ export class CityNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.cityId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.provinceId.disable();
       this.form.controls.districtId.disable();
@@ -180,7 +182,7 @@ export class CityNewComponent {
     }
   }
 
-  cityChanged(){
+  countryChanged(){
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -191,6 +193,25 @@ export class CityNewComponent {
     this.spin.show();
     this.provinceService.search(obj).subscribe({next: (result) => {
       this.provinceIdList = this.cas.foreachlist(result, {key: 'provinceId', value: 'provinceName'});
+      this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
+  provinceChanged(){
+
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.countryId = [this.form.controls.countryId.value]
+    obj.provinceId = [this.form.controls.provinceId.value]
+
+
+    this.districtIdList = [];
+    this.spin.show();
+    this.districtService.search(obj).subscribe({next: (result) => {
+      this.districtIdList = this.cas.foreachlist(result, {key: 'districtId', value: 'districtName'});
       this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();

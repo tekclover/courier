@@ -46,7 +46,6 @@ export class UsersComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'userRoleIdAndDescription', header: 'User Role' },
       { field: 'userTypeIdAndDescription', header: 'User Type' },
@@ -58,6 +57,7 @@ export class UsersComponent {
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'userId', header: 'User ID' },
       { field: 'userRoleId', header: 'User Role ID' },
@@ -137,7 +137,7 @@ export class UsersComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedUser, module: 'Menu', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedUser, module: 'Users', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {

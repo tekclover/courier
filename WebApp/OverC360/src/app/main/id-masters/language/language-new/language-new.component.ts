@@ -50,7 +50,7 @@ export class LanguageNewComponent {
 
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
-
+console.log(this.pageToken)
     const dataToSend = ['Setup', 'Language', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 

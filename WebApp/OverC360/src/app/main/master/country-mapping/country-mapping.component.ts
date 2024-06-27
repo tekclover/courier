@@ -32,7 +32,7 @@ export class CountryMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'CountryMapping - List'];
+    const dataToSend = ['Master', 'Country Mapping - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -129,7 +129,7 @@ export class CountryMappingComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedCountryMapping, module: 'CountryMapping', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedCountryMapping, module: 'Country Mapping', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -168,7 +168,7 @@ export class CountryMappingComponent {
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'CountryMapping');
+   this.cs.exportAsExcel(exportData, 'Country Mapping');
   }
 
 }

@@ -20,21 +20,21 @@
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                     <mat-error *ngIf="errorHandling('languageId')" 
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Company ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">OpStatus Description</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Op Status Description</p>
                                 <input formControlName="opStatusDescription" maxlength="50" class=" w-100"  pInputText pKeyFilter="alphanum"
                                     placeholder="Enter" />
                             </div>
@@ -46,6 +46,11 @@
                                 <mat-error *ngIf="errorHandling('statusCode')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Remark</p>
+                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText placeholder="Enter" />
+                            </div> 
+                            
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/opstatus">Cancel</button>

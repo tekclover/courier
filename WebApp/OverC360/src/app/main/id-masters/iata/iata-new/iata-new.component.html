@@ -20,56 +20,72 @@
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
-                                    [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                                    <mat-error *ngIf="errorHandling('languageId')" 
+                                    [style]="{'width': '100%'}" placeholder="Select" [disabled]="true"
+                                    [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('languageId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Company ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
-                                    [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                                    <mat-error *ngIf="errorHandling('companyId')" 
+                                    [style]="{'width': '100%'}" placeholder="Select" [disabled]="true"
+                                    [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('companyId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Origin</p>
                                 <input formControlName="origin"
-                                    [ngClass]="form.get('origin')?.invalid && form.get('origin')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                    [ngClass]="form.get('origin')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('origin')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Origin Code</p>
+                                <input formControlName="originCode"
+                                    [ngClass]="form.get('originCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('originCode')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Iata KD</p>
-                                <input formControlName="iataKd" 
-                                    [ngClass]="form.get('iataKd')?.invalid && form.get('iataKd')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                <input formControlName="iataKd"
+                                    [ngClass]="form.get('iataKd')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('iataKd')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Iata Charge</p>
-                                <input formControlName="iataCharge" 
+                                <input formControlName="iataCharge"
                                     [ngClass]="form.get('iataCharge')?.invalid && form.get('iataCharge')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('iataCharge')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Currency ID</p>
-                                <input formControlName="currencyId" 
-                                    [ngClass]="form.get('currencyId')?.invalid && form.get('currencyId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('currencyId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="currencyIdList" placeholder="Select" formControlName="currencyId"
+                                    appendTo="body"
+                                    [ngClass]="form.get('currencyId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('currencyId')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
+                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
+                                    placeholder="Enter" />
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/iata">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                != "New" ? "Update" : "Save" }}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
@@ -112,8 +128,8 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                != "New" ? "Update" : "Save" }}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>

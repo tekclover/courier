@@ -46,14 +46,14 @@ export class CompanyComponent {
   callTableHeader() {
     this.cols = [
       
-      { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'companyName', header: 'Company Name' },
-      { field: 'statusDescription', header: 'Status' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'addressLine1', header: 'Address Line 1' },
       { field: 'addressLine2', header: 'Address Line 2' },
       { field: 'addressLine3', header: 'Address Line 3' },
       { field: 'addressLine4', header: 'Address Line 4' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];

@@ -42,7 +42,7 @@ export class StatusComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'statusId', header: 'ID' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'statusDescription', header: 'Description' },
       { field: 'createdBy', header: 'Created By' },

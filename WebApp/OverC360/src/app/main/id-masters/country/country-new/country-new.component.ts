@@ -32,7 +32,7 @@ export class CountryNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    countryId: [],
+    countryId: [, Validators.required],
     countryName: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],

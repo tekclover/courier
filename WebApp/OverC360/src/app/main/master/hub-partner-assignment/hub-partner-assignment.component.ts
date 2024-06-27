@@ -29,7 +29,7 @@ export class HubPartnerAssignmentComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'HubPartnerAssignment - List'];
+    const dataToSend = ['Master', 'Hub Partner Assignment - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -125,7 +125,7 @@ export class HubPartnerAssignmentComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedHubPartnerAssignment, module: 'HubPartnerAssignment', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedHubPartnerAssignment, module: 'Hub Partner Assignment', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -164,6 +164,6 @@ export class HubPartnerAssignmentComponent {
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'HubPartnerAssignment');
+   this.cs.exportAsExcel(exportData, 'Hub Partner Assignment');
   }
 }

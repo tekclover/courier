@@ -43,7 +43,7 @@ export class ProvinceNewComponent {
     languageDescription: [],
     countryId: [, Validators.required],
     countryName: [],
-    provinceId: [],
+    provinceId: [, Validators.required],
     provinceName: [, Validators.required],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],

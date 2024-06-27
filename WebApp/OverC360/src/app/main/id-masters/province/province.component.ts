@@ -45,21 +45,21 @@ export class ProvinceComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'provinceId', header: 'ProvinceID' },
+      { field: 'provinceId', header: 'Province ID' },
       { field: 'provinceName', header: 'Province Name' },
       { field: 'countryName', header: 'Country ' },
       { field: 'companyName', header: 'Company ' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'countryId', header: 'CountryID' },
-      { field: 'companyId', header: 'CompanyID' },
-      { field: 'languageId', header: 'LanguageId' },
-      { field: 'statusId', header: 'StatusID' },
+      { field: 'countryId', header: 'Country ID' },
+      { field: 'companyId', header: 'Company ID' },
+      { field: 'languageId', header: 'Language ID' },
+      { field: 'statusId', header: 'Status ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -130,7 +130,7 @@ export class ProvinceComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedProvince, module: 'Menu', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedProvince, module: 'Province', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {

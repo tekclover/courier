@@ -32,7 +32,7 @@ export class CurrencyNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    currencyId: [],
+    currencyId: [, Validators.required],
     currencyDescription: [,  Validators.required],
     createdOn: ['', ],
     createdBy: [],
@@ -76,6 +76,7 @@ export class CurrencyNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
+        this.form.controls.currencyId.disable();
     }
   }
 

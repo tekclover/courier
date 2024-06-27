@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">NumberRange - {{ this.pageToken.pageflow }}</p>
+        <p class="componentHeader f600 mb-0">Number Range - {{ this.pageToken.pageflow }}</p>
     </div>
     <div class="w-75 mt-4 mx-auto">
         <form [formGroup]="form">
@@ -20,14 +20,14 @@
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Language ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                     <mat-error *ngIf="errorHandling('languageId')" 
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">NumberRange Code</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Code</p>
                                 <input formControlName="numberRangeCode"
                                     [ngClass]="form.get('numberRangeCode')?.invalid && form.get('numberRangeCode')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -35,7 +35,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">NumberRange Object</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Object</p>
                                 <input formControlName="numberRangeObject"
                                     [ngClass]="form.get('numberRangeObject')?.invalid && form.get('numberRangeObject')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -43,7 +43,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">NumberRange From</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range From</p>
                                 <input formControlName="numberRangeFrom" 
                                     [ngClass]="form.get('numberRangeFrom')?.invalid && form.get('numberRangeFrom')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -51,7 +51,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">NumberRange To</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range To</p>
                                 <input formControlName="numberRangeTo" 
                                     [ngClass]="form.get('numberRangeTo')?.invalid && form.get('numberRangeTo')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -59,7 +59,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">NumberRange Current</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Current</p>
                                 <input formControlName="numberRangeCurrent" 
                                     [ngClass]="form.get('numberRangeCurrent')?.invalid && form.get('numberRangeCurrent')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -67,7 +67,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">NumberRange Status</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Status</p>
                                 <input formControlName="numberRangeStatus"
                                     [ngClass]="form.get('numberRangeStatus')?.invalid && form.get('numberRangeStatus')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />

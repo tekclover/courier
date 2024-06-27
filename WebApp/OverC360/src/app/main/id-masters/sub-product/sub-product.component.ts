@@ -45,10 +45,10 @@ export class SubProductComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'companyName', header: 'Company' },
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'subProductName', header: 'Sub Product Name' },
-      { field: 'remark', header: 'Remarks' },
+      { field: 'companyName', header: 'Company' },
+      { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -144,7 +144,7 @@ export class SubProductComponent {
       position: { top: '6.5%', left: '30%' },
       data: {
         line: this.selectedSubProduct,
-        module: 'Company',
+        module: 'Sub Product',
         body: 'This action cannot be undone. All values associated with this field will be lost.',
       },
     });

@@ -35,15 +35,15 @@ export class DistrictNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    districtId: [],
+    districtId: [, Validators.required],
     districtName: [,  Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription:[],
     companyId:[this.auth.companyId, Validators.required],
     companyName:[],
-    countryId:[],
+    countryId:[, Validators.required],
     countryName:[],
-    provinceId:[],
+    provinceId:[, Validators.required],
     provinceName:[],
     statusDescription:[],
     createdOn: ['', ],

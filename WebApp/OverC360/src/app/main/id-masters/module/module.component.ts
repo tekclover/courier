@@ -45,13 +45,12 @@ export class ModuleComponent {
 
   callTableHeader() {
     this.cols = [     
-      { field: 'languageIdAndDescription', header: 'Language' },
-      { field: 'companyIdAndDescription', header: 'Company' },
-      { field: 'statusDescription', header: 'Status' },
       { field: 'moduleId', header: 'Module ID' },
       { field: 'moduleDescription', header: 'Description' },
+      { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Menu' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -61,6 +60,7 @@ export class ModuleComponent {
       { field: 'companyId', header: 'Company ID' },
       { field: 'menuId', header: 'Menu ID' },
       { field: 'subMenuId', header: 'Sub Menu ID' },
+      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

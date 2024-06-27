@@ -9,6 +9,7 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
+import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-consignment',
@@ -29,7 +30,8 @@ export class ConsignmentComponent {
     private service: ConsignmentService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
-    private spin: NgxSpinnerService
+    private spin: NgxSpinnerService,
+    private pdf: ConsignmentLabelComponent,
   ) {}
 
   fullDate: any;
@@ -124,20 +126,11 @@ export class ConsignmentComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    console.log(3)
     if (this.selectedConsignment.length === 0 && type != 'New') {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        key: 'br',
-        detail: 'Kindly select any Row',
-      });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
-      let paramdata = this.cs.encrypt({
-        line: linedata == null ? this.selectedConsignment[0] : linedata,
-        pageflow: type,
-      });
-      this.router.navigate(['/main/idMaster/consignment-new/' + paramdata]);
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsignment[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/idMaster/city-new/' + paramdata]);
     }
   }
 
@@ -195,7 +188,6 @@ export class ConsignmentComponent {
       const exportItem: any = {};
       this.cols.forEach((col) => {
         if (col.format == 'date') {
-          console.log(3);
           exportItem[col.field] = this.datePipe.transform(
             item[col.field],
             'dd-MM-yyyy'
@@ -209,5 +201,9 @@ export class ConsignmentComponent {
 
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Consignment');
+  }
+
+  downloadLabel(line:any){
+    this.pdf.generatePdfBarocde(line);
   }
 }
