@@ -19,17 +19,9 @@ export class ConsignmentNewComponent {
 
   activeIndex: number = 0;
   status: any[] = [];
-
+  
   disabledCarrier = true;
   disabledSender = true;
-  disabledDelivery = true;
-  disabledBilling = true;
-  disabledConsignment = true;
-  disabledPiece = true;
-  disabledDelivered = true;
-  disabledReturn = true;
-
-
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -53,151 +45,39 @@ export class ConsignmentNewComponent {
   // form builder initialize
 
   shipmentInfo = this.fb.group({
-    languageId: [this.auth.languageId, Validators.required],
-    companyId: [this.auth.companyId, Validators.required],
-    priority: [],
-    partnerType: [],
-    partnerId: [, Validators.required],
-    partnerName: [,],
-    statusId: [, Validators.required],
-    paymentType: [,],
-    productId: [],
-    productName: [],
-    subProductId: [],
-    subProductName: [],
-    serviceTypeId: [],
-    serviceTypeText: [],
-    manufacturer: [],
-    masterAirwayBill: [],
-    houseAirwayBill: [],
-    noOfPieceHawb: [],
-    noOfPackageMawb: [],
-    countryOfOrigin: [],
-    consignmentType: [,],
-    customerCode: [],
-    customerReferenceNumber: [],
-    actionType: [],
-    movementType: [],
-    forwardReferenceNumber: [],
-    workerCode: [],
-    loadType: [],
-    courierAccount: [],
-    courierPartner: [],
-    courierPartnerReferenceNumber: [],
+
   });
-
-  carrierInfo = this.fb.group({
-    partnerHouseAirwayBill: [],
-    partnerMasterAirwayBill: [],
-    airportOriginCode: [],
-    flightArrivalTime: [],
-    noOfPackages: [],
-    flightName: [],
-    flightNo: [],
-    packageType: [],
-  })
-
-
   OriginDetails = this.fb.group({
-    accountId: [],
-    addressHubCode: [,],
-    addressLine1: [],
-    addressLine2: [],
-    alternatePhone: [],
-    city: [],
-    companyName: [],
-    country: [],
-    district: [],
-    email: [],
-    latitude: [],
-    longitude: [],
-    name: [],
-    phone: [],
-    pinCode: [],
-    state: [],
+  accountId: [],
+  addressHubCode: [, Validators.required],
+  addressLine1: [],
+  addressLine2: [],
+  alternatePhone: [],
+  city: [],
+  companyName: [],
+  country: [],
+  district: [],
+  email: [],
+  latitude: [],
+  longitude: [],
+  name: [],
+  phone: [],
+  pinCode: [],
+  state: [],
   });
-
-
-  DestinationDetails = this.fb.group({
-    accountId: [,],
-    addressHubCode: [],
-    addressLine1: [],
-    addressLine2: [],
-    alternatePhone: [],
-    city: [, Validators.required],
-    companyName: [],
-    country: [],
-    district: [],
-    email: [],
-    latitude: [],
-    longitude: [],
-    name: [],
-    phone: [],
-    pinCode: [],
-    state: [],
-  });
-
-
-  senderInfo = this.fb.group({
-    shipperId: [],
-    shipperName: [],
-    originDetails: this.OriginDetails
-  })
-
-  deliveryInfo = this.fb.group({
-    consigneeName: [, Validators.required],
-    consigneeCivilId: [],
-    destinationDetails: this.DestinationDetails
-  })
-
-  billing = this.fb.group({
-    incoTerms: [],
-    currency: [],
-    freightCurrency: [],
-    freightCharges: [],
-    countryOfSupply: [],
-    declaredValue: [],
-    consignmentCurrency: [],
-    consignmentValue: [],
-    actualCurrency: [],
-    totalDuty: [],
-    specialApprovalValue: [],
-    codAmount: [],
-    codFavorOf: [],
-    codCollectionMode: [],
-    declaredValueWithoutTax: [],
-    invoiceAmount: [],
-    invoiceUrl: [],
-    productCode: [],
-    customsValue: [],
-    amount: [],
-    isCustomsDeclarable: [],
-  })
-
-  consignment = this.fb.group({
-    length: [],
-    width: [],
-    height: [],
-    dimensionUnit: [],
-    volume: [],
-    volumeUnit: [],
-    weight: [],
-    weightUnit: [],
-    invoiceNumber: [],
-    invoiceDate: [],
-    invoiceSupplierName: [],
-    goodsDescription: [],
-    notifyParty: [],
-    consignmentCurrency: [],
-    consignmentValue: []
-
-  })
 
   form = this.fb.group({
+    languageId: [this.auth.languageId, Validators.required],
     updatedBy: [,],
     updatedOn: ['',],
     createdOn: ['',],
     createdBy: [,],
+    companyId: [this.auth.companyId, Validators.required],    
+    partnerId: [, Validators.required],
+    statusId: [,  Validators.required],
+    masterAirwayBill: [, Validators.required],
+    houseAirwayBill: [, Validators.required],
+    actionType: [],
     actualCurrency: [],
     airportOriginCode: [],
     allocationTime: [],
@@ -212,8 +92,14 @@ export class ConsignmentNewComponent {
     consignmentId: [],
     consignmentValue: [],
     constraintTags: [],
+    countryOfOrigin: [],
     countryOfSupply: [],
+    courierAccount: [],
+    courierPartner: [],
+    courierPartnerReferenceNumber: [],
     currency: [],
+    customerCode: [],
+    customerReferenceNumber: [],
     customsValue: [],
     declaredValue: [],
     declaredValueWithoutTax: [],
@@ -222,7 +108,7 @@ export class ConsignmentNewComponent {
     deliveryTimeSlotEnd: [],
     deliveryTimeSlotStart: [],
     description: [],
-    dimensionUnit: [],
+  dimensionUnit: [],
     ewayBill: [],
     exemptionBeneficiary: [],
     exemptionFor: [],
@@ -231,6 +117,7 @@ export class ConsignmentNewComponent {
     flightDetails: [],
     flightName: [],
     flightNo: [],
+    forwardReferenceNumber: [],
     freightCharges: [],
     freightCurrency: [],
     goodsDescription: [],
@@ -252,22 +139,30 @@ export class ConsignmentNewComponent {
     languageDescription: [],
     length: [],
     lineNo: [],
+    loadType: [],
+    manufacturer: [],
+    movementType: [],
     netWeight: [],
     noOfPackageHawb: [],
+    noOfPackageMawb: [],
     noOfPackages: [],
+    noOfPieceHawb: [],
     notes: [],
     notifyParty: [],
     packDetails: [],
     packageType: [],
     partnerHouseAirwayBill: [],
     partnerMasterAirwayBill: [],
-    partnerName: [,],
+    partnerName: [, ],
     partnerType: [],
     pickupOtp: [],
     pickupServiceTime: [],
     pickupTimeSlotEnd: [],
     pickupTimeSlotStart: [],
+    priority: [],
     productCode: [],
+    productId: [],
+    productName: [],
     quantity: [],
     referenceField1: [],
     referenceField10: [],
@@ -319,17 +214,21 @@ export class ConsignmentNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    referenceNumber: [],
+  referenceNumber: [],
     remark: [],
-    reverseReason: [],
+  reverseReason: [],
     rtoOtp: [],
     scheduledAt: [],
     serviceTime: [],
+    serviceTypeId: [],
+    serviceTypeText: [],
     shipperId: [],
     shipperName: [],
     specialApprovalValue: [],
     statusDescription: [],
     storageLocation: [],
+    subProductId: [],
+    subProductName: [],
     tags: [],
     totalDuty: [],
     upstreamCreationSource: [],
@@ -339,8 +238,10 @@ export class ConsignmentNewComponent {
     weight: [],
     weightUnit: [],
     width: [],
+    workerCode: [],
     workerEligiblePayout: [],
     workerTipAmount: [],
+    originDetails: this.OriginDetails,
   });
 
 
@@ -348,28 +249,8 @@ export class ConsignmentNewComponent {
 
   submitted = false;
   email = new FormControl('', [Validators.required, Validators.email]);
-  errorHandlingShipment(control: string, error: string = 'required') {
-    const controlInstance = this.shipmentInfo.get(control);
-    return controlInstance && controlInstance.hasError(error) && this.submitted;
-  }
-  errorHandlingCarrier(control: string, error: string = 'required') {
-    const controlInstance = this.carrierInfo.get(control);
-    return controlInstance && controlInstance.hasError(error) && this.submitted;
-  }
-  errorHandlingSender(control: string, error: string = 'required') {
-    const controlInstance = this.senderInfo.get(control);
-    return controlInstance && controlInstance.hasError(error) && this.submitted;
-  }
-  errorHandlingDelivery(control: string, error: string = 'required') {
-    const controlInstance = this.deliveryInfo.get(control);
-    return controlInstance && controlInstance.hasError(error) && this.submitted;
-  }  
-  errorHandlingBilling(control: string, error: string = 'required') {
-    const controlInstance = this.billing.get(control);
-    return controlInstance && controlInstance.hasError(error) && this.submitted;
-  }
-  errorHandlingConsignment(control: string, error: string = 'required') {
-    const controlInstance = this.consignment.get(control);
+  errorHandling(control: string, error: string = 'required') {
+    const controlInstance = this.form.get(control);
     return controlInstance && controlInstance.hasError(error) && this.submitted;
   }
   getErrorMessage() {
@@ -380,16 +261,17 @@ export class ConsignmentNewComponent {
   }
 
   ngOnInit() {
+    console.log(this.mainForm.getRawValue())
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
     const dataToSend = ['Operation', 'Consignment', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
-    //  this.dropdownlist();
+    this.dropdownlist();
 
-    //this.form.controls.languageId.disable();
-    //this.form.controls.companyId.disable();
+    this.form.controls.languageId.disable();
+    this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -501,9 +383,9 @@ export class ConsignmentNewComponent {
 
   saveShipment() {
     this.submitted = true;
-    if (this.shipmentInfo.invalid) {
-      for (const control in this.shipmentInfo.controls) {
-        const controlInstance = this.shipmentInfo.get(control);
+    if (this.form.invalid) {
+      for (const control in this.form.controls) {
+        const controlInstance = this.form.get(control);
         if (controlInstance?.invalid) {
           const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
           if (invalidControl) {
@@ -514,7 +396,7 @@ export class ConsignmentNewComponent {
       }
     }
 
-    if (this.shipmentInfo.invalid) {
+    if (this.form.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -522,18 +404,17 @@ export class ConsignmentNewComponent {
         detail: 'Please fill required fields to continue',
       });
       return;
-    } else {
-      this.activeIndex = 1;
-      this.disabledConsignment = false;
-      this.submitted = false;
+      }else{
+        this.activeIndex = 1;
+        this.disabledCarrier = false;
     }
   }
 
-  saveConsignment() {
+  saveCarrier(){
     this.submitted = true;
-    if (this.consignment.invalid) {
-      for (const control in this.consignment.controls) {
-        const controlInstance = this.consignment.get(control);
+    if (this.form.invalid) {
+      for (const control in this.form.controls) {
+        const controlInstance = this.form.get(control);
         if (controlInstance?.invalid) {
           const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
           if (invalidControl) {
@@ -544,7 +425,7 @@ export class ConsignmentNewComponent {
       }
     }
 
-    if (this.consignment.invalid) {
+    if (this.form.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -552,22 +433,16 @@ export class ConsignmentNewComponent {
         detail: 'Please fill required fields to continue',
       });
       return;
-    } else {
-      this.activeIndex = 2;
-      this.submitted = false;
-      this.disabledPiece = false;
+      }else{
+        this.activeIndex = 2;
     }
   }
-  savePiece(){
-    this.activeIndex = 3;
-    this.submitted = false;
-    this.disabledSender = false;
-  }
-  saveSender() {
+
+  saveSender(){
     this.submitted = true;
-    if (this.senderInfo.invalid) {
-      for (const control in this.senderInfo.controls) {
-        const controlInstance = this.senderInfo.get(control);
+    if (this.form.invalid) {
+      for (const control in this.form.controls) {
+        const controlInstance = this.form.get(control);
         if (controlInstance?.invalid) {
           const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
           if (invalidControl) {
@@ -578,7 +453,7 @@ export class ConsignmentNewComponent {
       }
     }
 
-    if (this.senderInfo.invalid) {
+    if (this.form.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -586,98 +461,8 @@ export class ConsignmentNewComponent {
         detail: 'Please fill required fields to continue',
       });
       return;
-    } else {
-      this.activeIndex = 4;
-      this.disabledDelivery = false;
-      this.submitted = false;
+      }else{
+        this.activeIndex = 2;
     }
   }
-  saveDelivery() {
-    this.submitted = true;
-    if (this.deliveryInfo.invalid) {
-      for (const control in this.deliveryInfo.controls) {
-        const controlInstance = this.deliveryInfo.get(control);
-        if (controlInstance?.invalid) {
-          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
-          if (invalidControl) {
-            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            break;
-          }
-        }
-      }
-    }
-
-    if (this.deliveryInfo.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        key: 'br',
-        detail: 'Please fill required fields to continue',
-      });
-      return;
-    } else {
-      this.activeIndex = 5;
-      this.submitted = false;
-      this.disabledCarrier = false;
-    }
-  }
-  saveCarrier() {
-    this.submitted = true;
-    if (this.carrierInfo.invalid) {
-      for (const control in this.carrierInfo.controls) {
-        const controlInstance = this.carrierInfo.get(control);
-        if (controlInstance?.invalid) {
-          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
-          if (invalidControl) {
-            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            break;
-          }
-        }
-      }
-    }
-
-    if (this.carrierInfo.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        key: 'br',
-        detail: 'Please fill required fields to continue',
-      });
-      return;
-    } else {
-      this.activeIndex = 6;
-      this.disabledBilling = false;
-      this.submitted = false;
-    }
-  }
-  saveBilling() {
-    this.submitted = true;
-    if (this.billing.invalid) {
-      for (const control in this.billing.controls) {
-        const controlInstance = this.billing.get(control);
-        if (controlInstance?.invalid) {
-          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
-          if (invalidControl) {
-            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            break;
-          }
-        }
-      }
-    }
-
-    if (this.billing.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        key: 'br',
-        detail: 'Please fill required fields to continue',
-      });
-      return;
-    } else {
-      this.activeIndex = 7;
-      this.submitted = false;
-    }
-  }
-
-
 }
