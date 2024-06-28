@@ -31,15 +31,12 @@ const routes: Routes = [
   { path: 'countryMapping', component: CountryMappingComponent, data: { title: 'Master', module: 'CountryMapping' } },
   { path: 'countryMapping-new/:code', component: CountryMappingNewComponent, data: { title: 'Master', module: 'CountryMapping - Add New' } },
 
-    {path:'countryMapping',component: CountryMappingComponent, data: { title: 'Master', module: 'CountryMapping' } },
-    {path:'countryMapping-new/:code',component: CountryMappingNewComponent,data: { title: 'Master', module: 'CountryMapping - Add New' } },
-  
-    {path:'cityMapping',component: CityMappingComponent, data: { title: 'Master', module: 'CityMapping' } },
-    {path:'cityMapping-new/:code',component: CityMappingNewComponent,data: { title: 'Master', module: 'CityMapping - Add New' } },
-  
-    {path:'hubPartnerAssignment',component: HubPartnerAssignmentComponent, data: { title: 'Master', module: 'HubPartnerAssignment' } },
-    {path:'hubPartnerAssignment-new/:code',component: HubPartnerAssignmentNewComponent,data: { title: 'Master', module: 'HubPartnerAssignment - Add New' } },
-  
+  { path: 'cityMapping', component: CityMappingComponent, data: { title: 'Master', module: 'CityMapping' } },
+  { path: 'cityMapping-new/:code', component: CityMappingNewComponent, data: { title: 'Master', module: 'CityMapping - Add New' } },
+
+  { path: 'hubPartnerAssignment', component: HubPartnerAssignmentComponent, data: { title: 'Master', module: 'HubPartnerAssignment' } },
+  { path: 'hubPartnerAssignment-new/:code', component: HubPartnerAssignmentNewComponent, data: { title: 'Master', module: 'HubPartnerAssignment - Add New' } },
+
 ];
 
 @NgModule({
