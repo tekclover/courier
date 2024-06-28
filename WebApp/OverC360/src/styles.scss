@@ -70,6 +70,9 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-focus > .p-inputtext{border-color: #d1d5db; box-shadow: none !important;}
 .p-inputtext:hover{border-color: #d1d5db; box-shadow: none !important;}
 .p-picklist-buttons { display: none !important; }
+.p-tabview-nav-link:hover{text-decoration: none !important;color: var(--black);}
+.p-tabview-nav-link{text-decoration: none !important; color:var(--black);}
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{color: var(--overcOrange) !important; border-color: var(--overcOrange) !important;}
 // .p-picklist .p-picklist-list-wrapper{background-color: var(--black) !important; color: var(--white) !important; border: 0px; border-right: 1px solid #e0e0e0; border-radius: 0px;}
 // .p-picklist .p-picklist-header{color: var(--white);}
 // .p-picklist .p-picklist-list .p-picklist-item{color: var(--white);}
