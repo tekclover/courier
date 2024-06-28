@@ -35,54 +35,60 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Menu ID</p>
-                                <input formControlName="menuId"
-                                    [ngClass]="form.get('menuId')?.invalid && form.get('menuId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                <input maxlength="50" formControlName="menuId"
+                                    [ngClass]="form.get('menuId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('menuId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Menu Name</p>
-                                <input formControlName="menuName" class=" w-100"  pInputText
-                                    placeholder="Enter" />
+                                <input maxlength="50" formControlName="menuName" class=" w-100" pInputText
+                                    placeholder="Enter"
+                                    [ngClass]="form.get('menuName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('subMenuId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu ID</p>
-                                <input formControlName="subMenuId"
-                                    [ngClass]="form.get('subMenuId')?.invalid && form.get('subMenuId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                <input maxlength="50" formControlName="subMenuId"
+                                    [ngClass]="form.get('subMenuId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('subMenuId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu Name</p>
-                                <input formControlName="subMenuName" class=" w-100"  pInputText
-                                    placeholder="Enter" />  
+                                <input maxlength="50" formControlName="subMenuName" class=" w-100" pInputText
+                                    [ngClass]="form.get('subMenuName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('subMenuName')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Authorization Object ID</p>
-                                <input formControlName="authorizationObjectId"
-                                    [ngClass]="form.get('authorizationObjectId')?.invalid && form.get('authorizationObjectId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
+                                <input maxlength="50" formControlName="authorizationObjectId"
+                                    [ngClass]="form.get('authorizationObjectId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText pKeyFilter="num" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('authorizationObjectId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Authorization Object Value</p>
-                                <input formControlName="authorizationObjectValue" class=" w-100"  pInputText pKeyFilter="alphanum"
-                                    placeholder="Enter" />
+                                <input maxlength="50" formControlName="authorizationObjectValue" class=" w-100"
+                                    pInputText pKeyFilter="alphanum" placeholder="Enter" />
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Authorization Object </p>
-                                <input formControlName="authorizationObject" class=" w-100"  pInputText pKeyFilter="alphanum"
-                                    placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0">Authorization Object</p>
+                                <input maxlength="100" formControlName="authorizationObject" class=" w-100" pInputText
+                                    pKeyFilter="alphanum" placeholder="Enter" />
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/menu">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                != "New" ? "Update" : "Save" }}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
@@ -125,8 +131,8 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                != "New" ? "Update" : "Save" }}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>

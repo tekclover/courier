@@ -5,7 +5,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { OpstatusService } from '../opstatus.service'; 
+import { OpstatusService } from '../opstatus.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
 
@@ -17,7 +17,7 @@ import { AuthService } from '../../../../core/core';
 export class OpstatusNewComponent {
 
   active: number | undefined = 0;
-  OpStatus:any[] = [];
+  OpStatus: any[] = [];
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -29,12 +29,7 @@ export class OpstatusNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { 
-    this.OpStatus = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
-  ];
-  }
+  ) { }
 
   pageToken: any;
   // Form builder Initialize
@@ -43,8 +38,8 @@ export class OpstatusNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
-    statusCode: ["1", Validators.required],
-    opStatusDescription: [],
+    statusCode: [],
+    opStatusDescription: [, Validators.required],
     remark: [],
     referenceField1: [],
     referenceField10: [],
@@ -56,10 +51,10 @@ export class OpstatusNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -106,16 +101,17 @@ export class OpstatusNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   fill(line: any) {
@@ -147,11 +143,11 @@ export class OpstatusNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + res.companyId + res.statusCode + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/opstatus']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + res.companyId + res.statusCode + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/opstatus']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

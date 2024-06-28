@@ -52,7 +52,7 @@ export class ModuleNewComponent {
     menuId: [, Validators.required],
     menuName: [],
     moduleDescription: [, Validators.required],
-    moduleId: [],
+    moduleId: [, Validators.required],
     referenceField1: [],
     referenceField10: [],
     referenceField2: [],

@@ -17,35 +17,35 @@ import { noLeadingTrailingSpacesValidator } from '../../../../config/spaceValida
 })
 export class LoadTypeNewComponent {
 
-  
+
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
   constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: LoadTypeService, private messageService: MessageService,private cas: CommonAPIService,
-    private auth: AuthService) { 
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
-        ];
-    }
+    private service: LoadTypeService, private messageService: MessageService, private cas: CommonAPIService,
+    private auth: AuthService) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
+    ];
+  }
 
   pageToken: any;
 
   //form builder initialize
   form = this.fb.group({
     loadTypeId: [],
-    loadTypeText: [,  [Validators.required, noLeadingTrailingSpacesValidator()]],
+    loadTypeText: [, [Validators.required, noLeadingTrailingSpacesValidator()]],
     languageId: [this.auth.languageId, Validators.required],
-    languageDescription:[],
-    companyId:[this.auth.companyId, Validators.required],
-    companyName:[],
-    statusDescription:[],
-    createdOn: ['', ],
+    languageDescription: [],
+    companyId: [this.auth.companyId, Validators.required],
+    companyName: [],
+    statusDescription: [],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-    referenceField1: [], 
+    updatedOn: ['',],
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -55,9 +55,9 @@ export class LoadTypeNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    remark:[],
-    statusId:["1",],
-   
+    remark: [],
+    statusId: ["1",],
+
   });
 
   submitted = false;
@@ -82,7 +82,7 @@ export class LoadTypeNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -101,21 +101,22 @@ export class LoadTypeNewComponent {
   languageIdList: any[] = [];
   companyIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
   fill(line: any) {
@@ -147,11 +148,11 @@ export class LoadTypeNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.loadTypeId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/loadType']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.loadTypeId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/loadType']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

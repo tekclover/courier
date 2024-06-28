@@ -36,16 +36,15 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Special Approval ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum"
-                                    formControlName="specialApprovalId"
-                                    [ngClass]="form.get('specialApprovalId')?.invalid && form.get('specialApprovalId')?.dirty ? 'invalid' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
+                                    formControlName="specialApprovalId" class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Special Approval Text</p>
-                                <input maxlength="100" pInputText
-                                    formControlName="specialApprovalText"
-                                    [ngClass]="form.get('specialApprovalText')?.invalid && form.get('specialApprovalText')?.dirty ? 'invalid' : ''"
+                                <input maxlength="100" pInputText formControlName="specialApprovalText"
+                                    [ngClass]="form.get('specialApprovalText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('specialApprovalText')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Remark</p>
@@ -56,8 +55,8 @@
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1"
                                 routerLink="/main/idMaster/specialApproval">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                !=
                                 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
@@ -100,8 +99,8 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
-                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                                !=
                                 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
