@@ -38,18 +38,22 @@
                 <div class="col-6 marginFieldNew borderRadius12">
                     <p class="formControlLabel f600 textBlack mb-0 required">Menu ID</p>
                     <p-dropdown [options]="menuIdList" placeholder="Select" (onChange)="menuIdChanged($event)" formControlName="menuId" appendTo="body"
+                    [ngClass]="form.get('menuId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                     [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                    <mat-error *ngIf="errorHandling('menuId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                   </div>
 
                   <div class="col-6 marginFieldNew borderRadius12">
                     <p class="formControlLabel f600 textBlack mb-0 ">Module ID</p>
-                    <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="moduleId" [ngClass]="form.get('moduleId')?.invalid && form.get('moduleId')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                    <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="moduleId" placeholder="Enter"
+                    [ngClass]="form.get('moduleId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                     <mat-error *ngIf="errorHandling('moduleId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                 </div>
 
                 <div class="col-6 marginFieldNew borderRadius12">
                   <p class="formControlLabel f600 textBlack mb-0 required"> Module Description</p>
-                  <input maxlength="100" pInputText (keydown)="space($event)" formControlName="moduleDescription" [ngClass]="form.get('moduleDescription')?.invalid && form.get('moduleDescription')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                  <input maxlength="100" pInputText (keydown)="space($event)" formControlName="moduleDescription" class="w-100" placeholder="Enter" 
+                  [ngClass]="form.get('moduleDescription')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                   <mat-error *ngIf="errorHandling('moduleDescription')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
               </div>
               </div>
@@ -57,7 +61,7 @@
                 <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/module">
                   Cancel
                 </button>
-                <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                <button
                   class="buttom1 bgBlack text-white mx-1" (click)="nextCallback.emit()">
                   Next
                 </button>
@@ -117,7 +121,7 @@
                 <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/module">
                   Cancel
                 </button>
-                <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                <button
                   class="buttom1 bgBlack text-white mx-1" (click)="save()">
                   {{ this.pageToken.pageflow != "New" ? "Update" : "Save" }}
                 </button>
@@ -165,7 +169,7 @@
                 <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">
                   Back
                 </button>
-                <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                <button
                   class="buttom1 bgBlack text-white mx-1" (click)="save()">
                   {{ this.pageToken.pageflow != "New" ? "Update" : "Save" }}
                 </button>

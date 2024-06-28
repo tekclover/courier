@@ -16,14 +16,20 @@ import { HubPartnerAssignmentService } from '../hub-partner-assignment.service';
 })
 export class HubPartnerAssignmentNewComponent {
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: HubPartnerAssignmentService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-    
-     }
-       
+  constructor(private cs: CommonServiceService, 
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private path: PathNameService, 
+    private fb: FormBuilder,
+    private service: HubPartnerAssignmentService, 
+    private messageService: MessageService, 
+    private auth: AuthService, 
+    private cas: CommonAPIService) {
+  }
+
   pageToken: any;
 
   //form builder initialize
@@ -33,13 +39,13 @@ export class HubPartnerAssignmentNewComponent {
     partnerName: [, Validators.required],
     hubCode: [, Validators.required],
     hubName: [],
-    hubCategory: [, Validators.required],
+    // hubCategory: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
     remark: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -49,11 +55,11 @@ export class HubPartnerAssignmentNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-  
+    updatedOn: ['',],
+
   });
 
   submitted = false;
@@ -78,7 +84,7 @@ export class HubPartnerAssignmentNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -95,28 +101,29 @@ export class HubPartnerAssignmentNewComponent {
     }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   hubCodeList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.hub.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.hubCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.hub.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.hubCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.hub.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -149,11 +156,11 @@ export class HubPartnerAssignmentNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
-          this.router.navigate(['/main/master/hubPartnerAssignment']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+            this.router.navigate(['/main/master/hubPartnerAssignment']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

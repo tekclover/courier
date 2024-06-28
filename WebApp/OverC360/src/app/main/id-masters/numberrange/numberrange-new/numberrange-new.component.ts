@@ -5,7 +5,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NumberrangeService } from '../numberrange.service';  
+import { NumberrangeService } from '../numberrange.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
 
@@ -18,6 +18,7 @@ import { AuthService } from '../../../../core/core';
 export class NumberrangeNewComponent {
 
   active: number | undefined = 0;
+  status: any[] = []
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -29,7 +30,12 @@ export class NumberrangeNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
+    ];
+  }
 
   pageToken: any;
   // Form builder Initialize
@@ -38,10 +44,10 @@ export class NumberrangeNewComponent {
     // languageDescription: [],
     numberRangeCode: [, Validators.required],
     numberRangeObject: [, Validators.required],
-    numberRangeFrom: [],
-    numberRangeTo: [],
-    numberRangeCurrent: [],
-    numberRangeStatus: [],
+    numberRangeFrom: [, Validators.required],
+    numberRangeTo: [, Validators.required],
+    numberRangeCurrent: [, Validators.required],
+    numberRangeStatus: ["1", ],
     referenceField1: [],
     referenceField10: [],
     referenceField2: [],
@@ -52,10 +58,10 @@ export class NumberrangeNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -98,15 +104,16 @@ export class NumberrangeNewComponent {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   fill(line: any) {
@@ -126,7 +133,7 @@ export class NumberrangeNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail:  res.numberRangeCode + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.numberRangeCode + ' has been updated successfully' });
           this.router.navigate(['/main/idMaster/numberrange']);
           this.spin.hide();
         }, error: (err) => {
@@ -138,11 +145,11 @@ export class NumberrangeNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:  res.numberRangeCode + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/numberrange']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.numberRangeCode + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/numberrange']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

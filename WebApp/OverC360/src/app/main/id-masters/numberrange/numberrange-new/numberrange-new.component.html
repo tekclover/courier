@@ -28,56 +28,56 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range Code</p>
-                                <input formControlName="numberRangeCode"
-                                    [ngClass]="form.get('numberRangeCode')?.invalid && form.get('numberRangeCode')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('statusCode')"
+                                <input maxlength="50" formControlName="numberRangeCode"
+                                [ngClass]="form.get('numberRangeCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('numberRangeCode')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range Object</p>
-                                <input formControlName="numberRangeObject"
-                                    [ngClass]="form.get('numberRangeObject')?.invalid && form.get('numberRangeObject')?.dirty ? 'invalid' : ''"
+                                <input maxlength="100" formControlName="numberRangeObject"
+                                [ngClass]="form.get('numberRangeObject')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('numberRangeObject')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range From</p>
-                                <input formControlName="numberRangeFrom" 
-                                    [ngClass]="form.get('numberRangeFrom')?.invalid && form.get('numberRangeFrom')?.dirty ? 'invalid' : ''"
+                                <input maxlength="50" formControlName="numberRangeFrom" 
+                                [ngClass]="form.get('numberRangeFrom')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('numberRangeFrom')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range To</p>
-                                <input formControlName="numberRangeTo" 
-                                    [ngClass]="form.get('numberRangeTo')?.invalid && form.get('numberRangeTo')?.dirty ? 'invalid' : ''"
+                                <input maxlength="50" formControlName="numberRangeTo" 
+                                [ngClass]="form.get('numberRangeTo')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('numberRangeTo')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range Current</p>
-                                <input formControlName="numberRangeCurrent" 
-                                    [ngClass]="form.get('numberRangeCurrent')?.invalid && form.get('numberRangeCurrent')?.dirty ? 'invalid' : ''"
+                                <input maxlength="50" formControlName="numberRangeCurrent" 
+                                [ngClass]="form.get('numberRangeCurrent')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('numberRangeCurrent')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range Status</p>
-                                <input formControlName="numberRangeStatus"
-                                    [ngClass]="form.get('numberRangeStatus')?.invalid && form.get('numberRangeStatus')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                [ngClass]="form.get('numberRangeStatus')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    formControlName="numberRangeStatus" placeholder="Select"/>
                                 <mat-error *ngIf="errorHandling('numberRangeStatus')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/numberrange">Cancel</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                            <button
                                 class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
                         </div>
                     </ng-template>
@@ -121,7 +121,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button [disabled]="form.invalid" [ngClass]="form.invalid ? 'disabledButton' : ''"
+                            <button
                                 class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow != "New" ? "Update" : "Save" }}</button>
                         </div>
                     </ng-template>
