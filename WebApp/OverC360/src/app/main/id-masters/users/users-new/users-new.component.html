@@ -27,7 +27,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Company ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                     <mat-error *ngIf="errorHandling('companyId')" 
@@ -51,11 +51,11 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">User Type ID</p>
-                                <input formControlName="userTypeId" 
-                                    [ngClass]="form.get('userTypeId')?.invalid && form.get('userTypeId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('userTypeId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="userType" placeholder="Select" formControlName="userTypeId"
+                                    appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
+                                    [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('userTypeId')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Password</p>

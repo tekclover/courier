@@ -31,7 +31,7 @@ export class EventComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Event - List'];
+    const dataToSend = ['Master', 'Event - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -43,7 +43,7 @@ export class EventComponent {
       { field: 'eventCode', header: 'Event ID' },
       { field: 'eventDescription', header: 'Event Name' },
       { field: 'companyName', header: 'Company' },
-      { field: 'opStatusDescription', header: 'OpStatus' },
+      { field: 'opStatusDescription', header: 'Op Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

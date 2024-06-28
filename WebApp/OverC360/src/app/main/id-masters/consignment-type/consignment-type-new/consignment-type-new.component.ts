@@ -76,7 +76,7 @@ export class ConsignmentTypeNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'ConsignmentType', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'Consignment Type', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

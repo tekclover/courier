@@ -85,7 +85,7 @@ export class UserRoleNewComponent {
     obj.companyId = this.auth.companyId;
     obj.languageId = this.auth.languageId;
 
-    const dataToSend = ['Setup', 'UserRole', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'User Role', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

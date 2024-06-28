@@ -36,7 +36,7 @@ export class IataComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'IATA - List'];
+    const dataToSend = ['Master', 'IATA - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,8 +47,8 @@ export class IataComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'origin', header: 'Origin' },
-      { field: 'iataKd', header: 'IATA KD' },
-      { field: 'iataCharge', header: 'Iata Charge' },
+      { field: 'iataKd', header: 'IATA ' },
+      { field: 'iataCharge', header: 'IATA Charge' },
       { field: 'currencyDescription', header: 'Currency Description' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -130,7 +130,7 @@ export class IataComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedIata, module: 'Iata', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedIata, module: 'IATA', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {

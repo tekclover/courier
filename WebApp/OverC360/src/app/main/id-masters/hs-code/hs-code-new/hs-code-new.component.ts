@@ -78,7 +78,7 @@ export class HsCodeNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'HS Code', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'HS Code', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -98,16 +98,19 @@ export class HsCodeNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  specialApprovalIdList: any[] =[];
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.specialApproval.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.specialApprovalIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.specialApproval.key);
         this.spin.hide();
       },
       error: (err: any) => {

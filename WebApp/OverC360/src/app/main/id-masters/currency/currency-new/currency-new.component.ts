@@ -18,6 +18,7 @@ export class CurrencyNewComponent {
 
   active: number | undefined = 0;
   status:any[] = []
+
   constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
     private service: CurrencyService, private messageService: MessageService,private cas: CommonAPIService,
@@ -26,6 +27,7 @@ export class CurrencyNewComponent {
         { value: '2', label: 'Inactive' },
         { value: '1', label: 'Active' }
         ];
+      
     }
 
   pageToken: any;

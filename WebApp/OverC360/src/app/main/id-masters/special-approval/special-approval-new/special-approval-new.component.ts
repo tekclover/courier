@@ -74,7 +74,7 @@ export class SpecialApprovalNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'Special Approval', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Special Approval', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

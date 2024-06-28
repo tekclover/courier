@@ -18,6 +18,7 @@ import { AuthService } from '../../../../core/core';
 export class UsersNewComponent {
 
   active: number | undefined = 0;
+  userType:any[] =[]
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -29,7 +30,13 @@ export class UsersNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.userType = [
+      { value: 'Portal', label: 'Portal' },
+      { value: 'Customer', label: 'Customer' },
+      { value: 'App', label: 'App' }
+        ];
+   }
 
   pageToken: any;
   // Form builder Initialize

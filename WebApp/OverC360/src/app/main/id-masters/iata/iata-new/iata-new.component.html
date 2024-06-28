@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Iata - {{ this.pageToken.pageflow }}</p>
+        <p class="componentHeader f600 mb-0">IATA - {{ this.pageToken.pageflow }}</p>
     </div>
     <div class="w-75 mt-4 mx-auto">
         <form [formGroup]="form">
@@ -52,7 +52,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Iata KD</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">IATA</p>
                                 <input formControlName="iataKd"
                                     [ngClass]="form.get('iataKd')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -60,7 +60,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Iata Charge</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">IATA Charge</p>
                                 <input formControlName="iataCharge"
                                     [ngClass]="form.get('iataCharge')?.invalid && form.get('iataCharge')?.dirty ? 'invalid' : ''"
                                     class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />

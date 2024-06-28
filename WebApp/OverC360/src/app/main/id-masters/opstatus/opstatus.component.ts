@@ -37,7 +37,7 @@ export class OpstatusComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Op Status - List'];
+    const dataToSend = ['Master', 'Op Status - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -46,9 +46,9 @@ export class OpstatusComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageDescription', header: 'Language' },
-      { field: 'companyName', header: 'Company Name' },
-      { field: 'opStatusDescription', header: 'Op Status' },
+      { field: 'companyName', header: 'Company' },
+      { field: 'opStatusDescription', header: 'Op Status Description' },
+      { field: 'remark', header: 'Remarks' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -56,6 +56,7 @@ export class OpstatusComponent {
       { field: 'companyId', header: 'Company ID' },
       { field: 'languageId', header: 'Language ID' },
       { field: 'statusCode', header: 'Status Code' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

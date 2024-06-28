@@ -9,6 +9,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { NotificationService } from '../notification.service';
 import { SubProductService } from '../../sub-product/sub-product.service';
+import { ProductService } from '../../product/product.service';
 
 @Component({
   selector: 'app-notification-new',
@@ -18,17 +19,17 @@ import { SubProductService } from '../../sub-product/sub-product.service';
 export class NotificationNewComponent {
 
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
   constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: NotificationService, private subProductService: SubProductService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
+    private service: NotificationService, private productService: ProductService, private messageService: MessageService, private auth: AuthService, private cas: CommonAPIService) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
     ];
-    
-     }
-       
+
+  }
+
   pageToken: any;
 
   //form builder initialize
@@ -49,7 +50,7 @@ export class NotificationNewComponent {
     userRole: [],
     userName: [],
     remark: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -59,11 +60,11 @@ export class NotificationNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-    statusId:["1", ],
+    updatedOn: ['',],
+    statusId: ["1",],
   });
 
   submitted = false;
@@ -88,7 +89,7 @@ export class NotificationNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -104,14 +105,14 @@ export class NotificationNewComponent {
     }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   subProductIdList: any[] = [];
   productIdList: any[] = [];
   serviceTypeIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
@@ -119,19 +120,20 @@ export class NotificationNewComponent {
       this.cas.dropdownlist.setup.subProduct.url,
       this.cas.dropdownlist.setup.product.url,
       this.cas.dropdownlist.setup.serviceType.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.subProductIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.subProduct.key);
-      this.productIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.product.key);
-      this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.subProductIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.subProduct.key);
+        this.productIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.product.key);
+        this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -164,11 +166,11 @@ export class NotificationNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.notificationId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/notification']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.notificationId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/notification']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
@@ -176,7 +178,7 @@ export class NotificationNewComponent {
       })
     }
   }
-  notificationChanged(){
+  notificationChanged() {
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -185,12 +187,14 @@ export class NotificationNewComponent {
 
     this.subProductIdList = [];
     this.spin.show();
-    this.subProductService.search(obj).subscribe({next: (result: any) => {
-      this.subProductIdList = this.cas.foreachlist(result, {key: 'subProductId', value: 'subProductName'});
-      this.spin.hide();
-    }, error: (err: any) =>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }})
+    this.productService.search(obj).subscribe({
+      next: (result: any) => {
+        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
+        this.spin.hide();
+      }, error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 }

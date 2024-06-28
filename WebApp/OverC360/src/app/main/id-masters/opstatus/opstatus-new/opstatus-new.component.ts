@@ -79,7 +79,7 @@ export class OpstatusNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'Province', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Op Status', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

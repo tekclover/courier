@@ -50,23 +50,23 @@ export class UserRoleComponent {
   callTableHeader() {
     this.cols = [
       { field: 'roleId', header: 'Role ID' },
-      { field: 'userRoleName', header: 'UserRole' },
+      { field: 'userRoleName', header: 'User Role' },
       { field: 'menuName', header: 'Menu' },
-      { field: 'subMenuName', header: 'SubMenu' },
+      { field: 'subMenuName', header: 'Sub Menu' },
       { field: 'description', header: 'Role Description'},
       { field: 'languageIdAndDescription', header: 'Language'},
       { field: 'companyIdAndDescription', header: 'Company'},
-      { field: 'authorizationObjectValue', header: 'AuthorizationObject Value'}
+      { field: 'authorizationObjectValue', header: 'Authorization Object Value'}
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'userRoleId', header: 'UserRole ID' },
       { field: 'menuId', header: 'Menu ID' },
-      { field: 'subMenuId', header: 'SubMenu ID' },
+      { field: 'subMenuId', header: 'Sub Menu ID' },
       { field: 'moduleId', header: 'Module ID' },
       { field: 'statusId', header: 'Status ID' },
-      { field: 'authorizationObjectId', header: 'AuthorizationObject ID'},
+      { field: 'authorizationObjectId', header: 'Authorization Object ID'},
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

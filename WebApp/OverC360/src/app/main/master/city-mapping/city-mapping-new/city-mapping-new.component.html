@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 "> Partner City Name</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Partner City</p>
                                 <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="partnerCityName" [ngClass]="form.get('partnerCityName')?.invalid && form.get('partnerCityName')?.dirty ? 'invalid' : ''" class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('partnerCityName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

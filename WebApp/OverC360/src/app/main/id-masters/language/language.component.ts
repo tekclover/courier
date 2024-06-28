@@ -39,7 +39,7 @@ export class LanguageComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageId', header: 'ID' },
+      { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Description' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

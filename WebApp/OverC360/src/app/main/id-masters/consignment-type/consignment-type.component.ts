@@ -31,7 +31,7 @@ export class ConsignmentTypeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'ConsignmentType - List'];
+    const dataToSend = ['Setup', 'Consignment Type - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

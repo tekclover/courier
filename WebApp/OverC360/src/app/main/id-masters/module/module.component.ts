@@ -49,7 +49,7 @@ export class ModuleComponent {
       { field: 'moduleDescription', header: 'Description' },
       { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'menuName', header: 'Menu' },
-      { field: 'subMenuName', header: 'Menu' },
+      { field: 'subMenuName', header: 'Sub Menu' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

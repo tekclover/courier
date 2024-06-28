@@ -47,7 +47,7 @@ export class ProductComponent {
   callTableHeader() {
     this.cols = [
       
-      { field: 'productId', header: 'Product Id' },
+      { field: 'productId', header: 'Product ID' },
       { field: 'productName', header: 'Product Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'subProductName', header: 'Sub Product' },

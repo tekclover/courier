@@ -45,7 +45,7 @@ export class CountryMappingComponent {
       { field: 'companyName', header: 'Company' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
-      { field: 'partnerCountryName', header: 'Partner Name' },
+      { field: 'partnerCountryName', header: 'Partner Country' },
       { field: 'remark', header: 'Remark' },
       { field: 'countryName', header: 'Country' },
       { field: 'createdBy', header: 'Created By' },
