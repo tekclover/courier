@@ -55,7 +55,7 @@ export class OpstatusComponent {
     this.target = [
       { field: 'companyId', header: 'Company ID' },
       { field: 'languageId', header: 'Language ID' },
-      { field: 'statusCode', header: 'Status Code' },
+      { field: 'statusCode', header: 'Op Status Code' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },

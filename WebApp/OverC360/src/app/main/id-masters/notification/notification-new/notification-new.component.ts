@@ -117,16 +117,16 @@ export class NotificationNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.subProduct.url,
-      this.cas.dropdownlist.setup.product.url,
       this.cas.dropdownlist.setup.serviceType.url,
+      this.cas.dropdownlist.setup.product.url,
+      this.cas.dropdownlist.setup.subProduct.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.subProductIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.subProduct.key);
+        this.serviceTypeIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.serviceType.key);
         this.productIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.product.key);
-        this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
+        this.subProductIdList = this.cas.forLanguageFilterWithoutKey(results[4], this.cas.dropdownlist.setup.subProduct.key);
         this.spin.hide();
       },
       error: (err: any) => {

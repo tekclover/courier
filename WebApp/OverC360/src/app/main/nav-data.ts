@@ -202,17 +202,17 @@ export const navbarData: INavbarData[] = [
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'idMaster/cityMapping',
+                        routerLink: 'master/cityMapping',
                         label: 'City Mapping'
                     },
                     {
                         routerId: 1005,
-                        routerLink: 'idMaster/countryMapping',
+                        routerLink: 'master/countryMapping',
                         label: 'Country Mapping'
                     },
                     {
                         routerId: 1006,
-                        routerLink: 'idMaster/districtMapping',
+                        routerLink: 'master/districtMapping',
                         label: 'District Mapping'
                     },
                 ]
@@ -224,22 +224,22 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 1001,
-                        routerLink: 'idMaster/provinceMapping',
+                        routerLink: 'master/provinceMapping',
                         label: 'Province Mapping'
                     },
                     {
                         routerId: 1002,
-                        routerLink: 'idMaster/hub',
+                        routerLink: 'master/hub',
                         label: 'Hub'
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'idMaster/rate',
+                        routerLink: 'master/rate',
                         label: 'Rate'
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'idMaster/hubPartnerAssignment',
+                        routerLink: 'master/hubPartnerAssignment',
                         label: 'Hub Partner Assignment'
                     },
                 ]
