@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Console - List</p>
+        <p class="componentHeader f600 mb-0">CCR - List</p>
         <div class="d-flex justify-content-between align-items-center">
             <img type="button" (click)="openCrud('Edit')" src="./assets/common/edit.png" alt="" srcset=""
                 style="padding-left: 37px; height: 1.5rem;">
@@ -19,7 +19,7 @@
         <p-iconField iconPosition="left" class="mr-5">
             <p-inputIcon styleClass="pi pi-search" />
             <input type="text" id="toolInput1" style="width: 20rem !important;" pInputText placeholder="Search"
-                (input)="consoleTag.filterGlobal($any($event.target).value, 'contains')" />
+                (input)="bondedManifestTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
         <div class="d-flex justify-content-end align-items-center">
             <p class="mb-0 d-flex f600 float-right w-25 pr-2">Filter By</p>
@@ -30,13 +30,13 @@
         </div>
     </div>
 
+
     <div class="tableProperties">
-        <p-table #consoleTag [columns]="cols" [value]="consoleTable" class="custom-table" [scrollable]="true"
+        <p-table #bondedManifestTag [columns]="cols" [value]="ccrTable" class="custom-table" [scrollable]="true"
             selectionMode="single" sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
             [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consignmentId"
-            rowExpandMode="single">
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consignmentId"  rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
@@ -51,14 +51,13 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                <tr [class.selectedRow]="selectedConsole[0] === rowData">
+                <tr [class.selectedRow]="selectedCcr[0] === rowData">
                     <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedConsole" class="pl-3"
+                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedCcr" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
                     <td style="width: 5rem; justify-content: center;">
-                        <i style="font-size: 14px;" [pRowToggler]="rowData"
-                            [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
+                        <i style="font-size: 14px;" [pRowToggler]="rowData" [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
                     </td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
@@ -77,6 +76,12 @@
                         <div class="contentBox ">
                             <div class="row">
                                 <div class="col-2 spacingBottom">
+                                    <p class="mb-0 headerText">MAWB</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 valueText chip">{{rowData.masterAirwayBill}}</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">HAWB</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
@@ -86,38 +91,26 @@
                                     <p class="mb-0 headerText">Origin</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.countryOfOrigin ? 'bgOrange text-dark' : ''">
-                                        {{rowData.destinationDetails.countryOfOrigin}}</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Airline No</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.flightNo}}</p>
+                                    <p class="mb-0 valueText chip"  [ngClass]="rowData.origin ? 'bgOrange text-dark' : ''">{{rowData.origin}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Console ID</p>
+                                    <p class="mb-0 headerText">Bonded ID</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.consoleId ? 'bgOrange text-dark' : ''">
-                                        {{rowData.consoleId}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.bondedId}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Currency</p>
+                                    <p class="mb-0 headerText">Consolidated Bill No</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.currency}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.consolidatedBillNo}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Value</p>
+                                    <p class="mb-0 headerText">Bill of Landing For</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.actualValue ? 'bgOrange text-dark' : ''">
-                                        {{rowData.actualValue}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.billOfLadingFor}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
@@ -128,16 +121,16 @@
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Customs</p>
+                                    <p class="mb-0 headerText">Pcs</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.customsKd}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.pcs}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">IATA</p>
+                                    <p class="mb-0 headerText">Weight</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.iataKd}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.grossWeight}}</p>
                                 </div>
                             </div>
                         </div>

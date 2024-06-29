@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Output } from '@angular/core';
 import { ConsignmentService } from '../consignment.service';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
@@ -196,6 +196,10 @@ export class ConsignmentNewComponent {
 
   })
 
+  piece = this.fb.group({
+    pieceDetails: this.fb.array([]) // Initialize an empty FormArray
+  });
+
   form = this.fb.group({
     updatedBy: [,],
     updatedOn: ['',],
@@ -346,9 +350,36 @@ export class ConsignmentNewComponent {
     workerTipAmount: [],
   });
 
-
-
-
+  get pieceDetails(): FormArray {
+    return this.piece.get('pieceDetails') as FormArray;
+  }
+  addItem() {
+    this.pieceDetails.push(this.createItemFormGroup());
+  }
+  createItemFormGroup(): FormGroup {
+    return this.fb.group({
+      tags: [],
+      volume: [],
+      pieceValue: [],
+      pieceCurrency: [],
+      volumeUnit: [],
+      weight: [],
+      weight_unit: [],
+      width: [],
+      codAmount: [],
+      declaredValue: [],
+      description: [],
+      dimensionUnit: [],
+      height: [],
+      length: [],
+      packReferenceNumber: [],
+      partnerType: [],
+      pieceId: [],
+    });
+  }
+  removeItem(index: number) {
+    this.pieceDetails.removeAt(index);
+  }
   submitted = false;
   email = new FormControl('', [Validators.required, Validators.email]);
   errorHandlingShipment(control: string, error: string = 'required') {
@@ -432,13 +463,17 @@ export class ConsignmentNewComponent {
     this.form.patchValue(line);
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+
+    line.forEach((res:any) => {
+      this.pieceDetails.push(this.fb.group(res));
+    });
   }
 
   opendialog(type: any = 'New'){
     const dialogRef = this.dialog.open(PieceDetailsComponent, {
       disableClose: true,
       width: '70%',
-      maxWidth: '82%',
+      maxWidth: '85%',
       position: { top: '6.5%', left: '30%' },
     });
   }

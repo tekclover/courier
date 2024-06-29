@@ -1,5 +1,6 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { CcrService } from './ccr.service';
+import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,30 +10,29 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { ConsoleService } from './console.service';
 
 @Component({
-  selector: 'app-console',
-  templateUrl: './console.component.html',
-  styleUrl: './console.component.scss'
+  selector: 'app-ccr',
+  templateUrl: './ccr.component.html',
+  styleUrl: './ccr.component.scss'
 })
-export class ConsoleComponent {
+export class CcrComponent {
 
 
-  consoleTable: any[] = [];
-  selectedConsole: any[] = [];
+  ccrTable: any[] = [];
+  selectedCcr: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, 
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,  private service: ConsoleService
+  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CcrService,
+    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService, 
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'Console - List'];
+    const dataToSend = ['Airport Hub', 'CCR - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -66,7 +66,7 @@ export class ConsoleComponent {
     this.service.search({}).subscribe({
       next: (res: any) => {
         console.log(res);
-        this.consoleTable = res;
+        this.ccrTable = res;
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -76,9 +76,9 @@ export class ConsoleComponent {
   }
 
   onChange() {
-    const choosen = this.selectedConsole[this.selectedConsole.length - 1];
-    this.selectedConsole.length = 0;
-    this.selectedConsole.push(choosen);
+    const choosen = this.selectedCcr[this.selectedCcr.length - 1];
+    this.selectedCcr.length = 0;
+    this.selectedCcr.push(choosen);
   }
 
   customTable() {
@@ -92,22 +92,22 @@ export class ConsoleComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedConsole[0]);
+        this.deleterecord(this.selectedCcr[0]);
       }
     });
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedConsole.length === 0 && type != 'New') {
+    if (this.selectedCcr.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsole[0] : linedata, pageflow: type });
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCcr[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/language-new/' + paramdata]);
     }
   }
 
   deleteDialog() {
-    if (this.selectedConsole.length === 0) {
+    if (this.selectedCcr.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
       return;
     }
@@ -116,12 +116,12 @@ export class ConsoleComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedConsole, module: 'Language', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedCcr, module: 'Language', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedConsole[0]);
+        this.deleterecord(this.selectedCcr[0]);
       }
     });
   }
@@ -140,7 +140,7 @@ export class ConsoleComponent {
   }
 
   downloadExcel() {
-    const exportData = this.consoleTable.map(item => {
+    const exportData = this.ccrTable.map(item => {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
@@ -155,7 +155,7 @@ export class ConsoleComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Console');
+    this.cs.exportAsExcel(exportData, 'Bonded Manifest');
   }
 
   onRowExpand(event: TableRowExpandEvent) {
@@ -166,4 +166,5 @@ export class ConsoleComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
+
 }

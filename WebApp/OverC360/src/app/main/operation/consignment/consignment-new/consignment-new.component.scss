@@ -17,4 +17,6 @@
     height: calc(100vh - 22rem);
     overflow-y: scroll;
   }
-  
+  .inputborderLess{
+    border: none !important;
+  }
