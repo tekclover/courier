@@ -129,7 +129,7 @@ deleteDialog() {
   const dialogRef = this.dialog.open(DeleteComponent, {
     disableClose: true,
     width: '70%',
-    maxWidth: '80%',
+    maxWidth: '82%',
     position: { top: '6.5%', left: '30%' },
     data: { line: this.selectedCurrencyExchangeRate, module: 'CurrencyExchangeRate', body: 'This action cannot be undone. All values associated with this field will be lost.' },
   });

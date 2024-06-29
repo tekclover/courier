@@ -8,6 +8,8 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
+import { MatDialog } from '@angular/material/dialog';
+import { PieceDetailsComponent } from './piece-details/piece-details.component';
 
 @Component({
   selector: 'app-consignment-new',
@@ -17,7 +19,7 @@ import { AuthService } from '../../../../core/core';
 export class ConsignmentNewComponent {
 
 
-  activeIndex: number = 0;
+  activeIndex: number = 2;
   status: any[] = [];
 
   disabledCarrier = true;
@@ -41,7 +43,8 @@ export class ConsignmentNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
-    private el: ElementRef
+    private el: ElementRef,
+    public dialog: MatDialog,
   ) {
     this.status = [
       { value: '2', label: 'Inactive' },
@@ -429,6 +432,15 @@ export class ConsignmentNewComponent {
     this.form.patchValue(line);
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+  }
+
+  opendialog(type: any = 'New'){
+    const dialogRef = this.dialog.open(PieceDetailsComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+    });
   }
 
   save() {

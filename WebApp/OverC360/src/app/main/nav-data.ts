@@ -281,6 +281,16 @@ export const navbarData: INavbarData[] = [
                 routerId: 4001,
                 routerLink: '/main/airport/preAlertManifest',
                 label: 'Pre-Alert Manifest'
+            },
+            {
+                routerId: 4002,
+                routerLink: '/main/airport/console',
+                label: 'Console'
+            },
+            {
+                routerId: 4003,
+                routerLink: '/main/airport/bondedManifest',
+                label: 'Bonded Manifest'
             }
         ]
     },
