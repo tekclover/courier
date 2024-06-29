@@ -22,11 +22,10 @@
                 (input)="preAlertManifestTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
         <div class="d-flex justify-content-end align-items-center">
-            <p class="mb-0 d-flex f600 float-right w-25 pr-2">Filter By</p>
-            <input type="text" id="toolInput" class="w-75" pInputText placeholder="Customer Name" />
-            <p-calendar id="toolInput" class="w-75" placeholder="Filter by Date" [iconDisplay]="'input'"
-                [showIcon]="true" />
-            <p-dropdown class=" d-flex float-right" optionLabel="name" placeholder="Filter by Product" />
+            <button (click)="createConsole" type="button" class="btn ml-2 addNewbuttom hoverButton"><i
+                class="bi bi-plus-circle pr-2"></i>Console</button>
+                <button (click)="createManifest" type="button" class="btn ml-2  addNewbuttom hoverButton"><i
+                    class="bi bi-plus-circle pr-2"></i>Manifest</button>
         </div>
     </div>
 

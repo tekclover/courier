@@ -12,6 +12,8 @@ import { LanguageService } from '../../id-masters/language/language.service';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ConsignmentService } from '../../operation/consignment/consignment.service';
+import { BondedManifestService } from '../bonded-manifest/bonded-manifest.service';
+import { ConsoleService } from '../console/console.service';
 
 @Component({
   selector: 'app-pre-alert-manifest',
@@ -34,7 +36,7 @@ export class PreAlertManifestComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: ConsignmentService,
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService, private manifest: BondedManifestService, private console: ConsoleService
   ) { }
 
   fullDate: any;
@@ -94,7 +96,7 @@ export class PreAlertManifestComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -135,11 +137,11 @@ export class PreAlertManifestComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.languageId).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -149,28 +151,57 @@ export class PreAlertManifestComponent {
   downloadExcel() {
     const exportData = this.preAlertManifestTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Pre-Alert Manifest');
+    this.cs.exportAsExcel(exportData, 'Pre-Alert Manifest');
   }
 
   onRowExpand(event: TableRowExpandEvent) {
   }
-onRowCollapse(event: TableRowCollapseEvent) {
-}
+  onRowCollapse(event: TableRowCollapseEvent) {
+  }
 
-getColspan(): number {
-  return this.cols.length + 2; // +1 for the expanded content column
-}
+  getColspan(): number {
+    return this.cols.length + 2; // +1 for the expanded content column
+  }
+
+  createConsole(){
+    if (this.selectedPreAlertManifest.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      return;
+    }
+    this.spin.show();
+    this.console.Create(this.selectedPreAlertManifest[0]).subscribe({next: (res) =>{
+      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+      this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
+  createManifest(){
+    if (this.selectedPreAlertManifest.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      return;
+    }
+    this.spin.show();
+    this.manifest.Create(this.selectedPreAlertManifest[0]).subscribe({next: (res) =>{
+      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+      this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
 }
