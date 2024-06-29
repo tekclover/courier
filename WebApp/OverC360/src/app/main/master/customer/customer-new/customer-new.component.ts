@@ -8,8 +8,8 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
-import { SubProductService } from '../../sub-product/sub-product.service';
-import { ProductService } from '../../product/product.service';
+import { SubProductService } from '../../../id-masters/sub-product/sub-product.service';
+import { ProductService } from '../../../id-masters/product/product.service';
 
 @Component({
   selector: 'app-customer-new',

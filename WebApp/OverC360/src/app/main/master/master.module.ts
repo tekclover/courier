@@ -17,6 +17,24 @@ import { HubPartnerAssignmentComponent } from './hub-partner-assignment/hub-part
 import { HubPartnerAssignmentNewComponent } from './hub-partner-assignment/hub-partner-assignment-new/hub-partner-assignment-new.component';
 import { RateComponent } from './rate/rate.component';
 import { RateNewComponent } from './rate/rate-new/rate-new.component';
+import { EventNewComponent } from './event/event-new/event-new.component';
+import { EventComponent } from './event/event.component';
+import { HsCodeNewComponent } from './hs-code/hs-code-new/hs-code-new.component';
+import { HsCodeComponent } from './hs-code/hs-code.component';
+import { NumberrangeNewComponent } from './numberrange/numberrange-new/numberrange-new.component';
+import { NumberrangeComponent } from './numberrange/numberrange.component';
+import { OpstatusNewComponent } from './opstatus/opstatus-new/opstatus-new.component';
+import { OpstatusComponent } from './opstatus/opstatus.component';
+import { SpecialApprovalNewComponent } from './special-approval/special-approval-new/special-approval-new.component';
+import { SpecialApprovalComponent } from './special-approval/special-approval.component';
+import { CurrencyExchangeRateNewComponent } from './currency-exchange-rate/currency-exchange-rate-new/currency-exchange-rate-new.component';
+import { CurrencyExchangeRateComponent } from './currency-exchange-rate/currency-exchange-rate.component';
+import { IataNewComponent } from './iata/iata-new/iata-new.component';
+import { IataComponent } from './iata/iata.component';
+import { ConsignorNewComponent } from './consignor/consignor-new/consignor-new.component';
+import { ConsignorComponent } from './consignor/consignor.component';
+import { CustomerNewComponent } from './customer/customer-new/customer-new.component';
+import { CustomerComponent } from './customer/customer.component';
 
 
 @NgModule({
@@ -34,7 +52,26 @@ import { RateNewComponent } from './rate/rate-new/rate-new.component';
     HubPartnerAssignmentComponent,
     HubPartnerAssignmentNewComponent,
     RateComponent,
-    RateNewComponent
+    RateNewComponent,
+    HsCodeComponent,
+    HsCodeNewComponent,
+    OpstatusComponent,
+    OpstatusNewComponent,
+    NumberrangeComponent,
+    NumberrangeNewComponent,
+    SpecialApprovalComponent,
+    SpecialApprovalNewComponent,
+    EventComponent,
+    EventNewComponent,
+    CurrencyExchangeRateComponent,
+    CurrencyExchangeRateNewComponent,
+    IataComponent,
+    IataNewComponent,
+    ConsignorComponent,
+    ConsignorNewComponent,
+    CustomerComponent,
+    CustomerNewComponent,
+
   ],
   imports: [
     CommonModule,

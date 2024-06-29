@@ -9,8 +9,8 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { CustomerService } from '../../customer/customer.service';
-import { ProductService } from '../../product/product.service';
-import { SubProductService } from '../../sub-product/sub-product.service';
+import { ProductService } from '../../../id-masters/product/product.service';
+import { SubProductService } from '../../../id-masters/sub-product/sub-product.service';
 
 @Component({
   selector: 'app-consignor-new',

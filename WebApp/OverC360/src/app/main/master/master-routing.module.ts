@@ -14,6 +14,24 @@ import { HubPartnerAssignmentNewComponent } from './hub-partner-assignment/hub-p
 import { HubPartnerAssignmentComponent } from './hub-partner-assignment/hub-partner-assignment.component';
 import { RateComponent } from './rate/rate.component';
 import { RateNewComponent } from './rate/rate-new/rate-new.component';
+import { CustomerComponent } from './customer/customer.component';
+import { CustomerNewComponent } from './customer/customer-new/customer-new.component';
+import { ConsignorNewComponent } from './consignor/consignor-new/consignor-new.component';
+import { ConsignorComponent } from './consignor/consignor.component';
+import { CurrencyExchangeRateNewComponent } from './currency-exchange-rate/currency-exchange-rate-new/currency-exchange-rate-new.component';
+import { CurrencyExchangeRateComponent } from './currency-exchange-rate/currency-exchange-rate.component';
+import { EventNewComponent } from './event/event-new/event-new.component';
+import { EventComponent } from './event/event.component';
+import { HsCodeNewComponent } from './hs-code/hs-code-new/hs-code-new.component';
+import { HsCodeComponent } from './hs-code/hs-code.component';
+import { IataNewComponent } from './iata/iata-new/iata-new.component';
+import { IataComponent } from './iata/iata.component';
+import { NumberrangeNewComponent } from './numberrange/numberrange-new/numberrange-new.component';
+import { NumberrangeComponent } from './numberrange/numberrange.component';
+import { OpstatusNewComponent } from './opstatus/opstatus-new/opstatus-new.component';
+import { OpstatusComponent } from './opstatus/opstatus.component';
+import { SpecialApprovalNewComponent } from './special-approval/special-approval-new/special-approval-new.component';
+import { SpecialApprovalComponent } from './special-approval/special-approval.component';
 
 const routes: Routes = [
   { path: 'hub', component: HubComponent, data: { title: 'Master', module: 'Hub' } },
@@ -36,6 +54,37 @@ const routes: Routes = [
 
   { path: 'hubPartnerAssignment', component: HubPartnerAssignmentComponent, data: { title: 'Master', module: 'HubPartnerAssignment' } },
   { path: 'hubPartnerAssignment-new/:code', component: HubPartnerAssignmentNewComponent, data: { title: 'Master', module: 'HubPartnerAssignment - Add New' } },
+
+  { path: 'customer', component: CustomerComponent, data: { title: 'Setup', module: 'Customer' } },
+  { path: 'customer-new/:code', component: CustomerNewComponent, data: { title: 'Setup', module: 'Customer - Add New' } },
+
+  
+  { path: 'consignor', component: ConsignorComponent, data: { title: 'Setup', module: 'Consignor' } },
+  { path: 'consignor-new/:code', component: ConsignorNewComponent, data: { title: 'Setup', module: 'Consignor - Add New' } },
+
+  { path: 'hsCode', component: HsCodeComponent, data: { title: 'Setup', module: 'HS Code' } },
+  { path: 'hsCode-new/:code', component: HsCodeNewComponent, data: { title: 'Setup', module: 'HS Code - Add New' } },
+
+  { path: 'opstatus', component: OpstatusComponent, data: { title: 'Setup', module: 'Opstatus' } },
+  { path: 'opstatus-new/:code', component: OpstatusNewComponent, data: { title: 'Setup', module: 'Opstatus - Add New' } },
+
+  { path: 'numberrange', component: NumberrangeComponent, data: { title: 'Setup', module: 'NumberRange' } },
+  { path: 'numberrange-new/:code', component: NumberrangeNewComponent, data: { title: 'Setup', module: 'NumberRange - Add New' } },
+
+  { path: 'specialApproval', component: SpecialApprovalComponent, data: { title: 'Setup', module: 'Special Approval' } },
+  { path: 'specialApproval-new/:code', component: SpecialApprovalNewComponent, data: { title: 'Setup', module: 'Special Approval - Add New' } },
+
+
+  { path: 'event', component: EventComponent, data: { title: 'Master', module: 'Event' } },
+  { path: 'event-new/:code', component: EventNewComponent, data: { title: 'Master', module: 'Event - Add New' } },
+
+  {path:'currencyExchangeRate',component: CurrencyExchangeRateComponent, data: { title: 'Master', module: 'CurrencyExchangeRate' } },
+  {path:'currencyExchangeRate-new/:code',component: CurrencyExchangeRateNewComponent,data: { title: 'Master', module: 'CurrencyExchangeRate - Add New' } },
+
+  { path: 'iata', component: IataComponent, data: { title: 'Master', module: 'Iata' } },
+  { path: 'iata-new/:code', component: IataNewComponent, data: { title: 'Master', module: 'Iata - Add New' } },
+
+
 
 ];
 

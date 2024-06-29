@@ -30,31 +30,31 @@ import { CityComponent } from './city/city.component';
 import { DistrictComponent } from './district/district.component';
 import { CityNewComponent } from './city/city-new/city-new.component';
 import { DistrictNewComponent } from './district/district-new/district-new.component';
-import { ConsignorComponent } from './consignor/consignor.component';
-import { ConsignorNewComponent } from './consignor/consignor-new/consignor-new.component';
-import { CustomerComponent } from './customer/customer.component';
-import { CustomerNewComponent } from './customer/customer-new/customer-new.component';
+import { ConsignorComponent } from '../master/consignor/consignor.component';
+import { ConsignorNewComponent } from '../master/consignor/consignor-new/consignor-new.component';
+import { CustomerComponent } from '../master/customer/customer.component';
+import { CustomerNewComponent } from '../master/customer/customer-new/customer-new.component';
 import { ProductComponent } from './product/product.component';
 import { ProductNewComponent } from './product/product-new/product-new.component';
-import { HsCodeComponent } from './hs-code/hs-code.component';
-import { HsCodeNewComponent } from './hs-code/hs-code-new/hs-code-new.component';
-import { OpstatusComponent } from './opstatus/opstatus.component';
-import { OpstatusNewComponent } from './opstatus/opstatus-new/opstatus-new.component';
-import { NumberrangeComponent } from './numberrange/numberrange.component';
-import { NumberrangeNewComponent } from './numberrange/numberrange-new/numberrange-new.component';
-import { SpecialApprovalComponent } from './special-approval/special-approval.component';
-import { SpecialApprovalNewComponent } from './special-approval/special-approval-new/special-approval-new.component';
-import { EventComponent } from './event/event.component';
-import { EventNewComponent } from './event/event-new/event-new.component';
+import { HsCodeComponent } from '../master/hs-code/hs-code.component';
+import { HsCodeNewComponent } from '../master/hs-code/hs-code-new/hs-code-new.component';
+import { OpstatusComponent } from '../master/opstatus/opstatus.component';
+import { OpstatusNewComponent } from '../master/opstatus/opstatus-new/opstatus-new.component';
+import { NumberrangeComponent } from '../master/numberrange/numberrange.component';
+import { NumberrangeNewComponent } from '../master/numberrange/numberrange-new/numberrange-new.component';
+import { SpecialApprovalComponent } from '../master/special-approval/special-approval.component';
+import { SpecialApprovalNewComponent } from '../master/special-approval/special-approval-new/special-approval-new.component';
+import { EventComponent } from '../master/event/event.component';
+import { EventNewComponent } from '../master/event/event-new/event-new.component';
 import { NotificationComponent } from './notification/notification.component';
 import { NotificationNewComponent } from './notification/notification-new/notification-new.component';
 import { CountryComponent } from './country/country.component';
 import { CountryNewComponent } from './country/country-new/country-new.component';
-import { CurrencyExchangeRateComponent } from './currency-exchange-rate/currency-exchange-rate.component';
-import { CurrencyExchangeRateNewComponent } from './currency-exchange-rate/currency-exchange-rate-new/currency-exchange-rate-new.component';
-import { IataComponent } from './iata/iata.component';
+import { CurrencyExchangeRateComponent } from '../master/currency-exchange-rate/currency-exchange-rate.component';
+import { CurrencyExchangeRateNewComponent } from '../master/currency-exchange-rate/currency-exchange-rate-new/currency-exchange-rate-new.component';
+import { IataComponent } from '../master/iata/iata.component';
 import { UsersComponent } from './users/users.component';
-import { IataNewComponent } from './iata/iata-new/iata-new.component';
+import { IataNewComponent } from '../master/iata/iata-new/iata-new.component';
 import { UsersNewComponent } from './users/users-new/users-new.component';
 import { RateParameterComponent } from './rate-parameter/rate-parameter.component';
 import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/rate-parameter-new.component';
@@ -90,31 +90,15 @@ import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.co
     DistrictComponent,
     CityNewComponent,
     DistrictNewComponent,
-    ConsignorComponent,
-    ConsignorNewComponent,
-    CustomerComponent,
-    CustomerNewComponent,
     ProductComponent,
     ProductNewComponent,
-    HsCodeComponent,
-    HsCodeNewComponent,
-    OpstatusComponent,
-    OpstatusNewComponent,
-    NumberrangeComponent,
-    NumberrangeNewComponent,
-    SpecialApprovalComponent,
-    SpecialApprovalNewComponent,
-    EventComponent,
-    EventNewComponent,
+   
     NotificationComponent,
     NotificationNewComponent,
     CountryComponent,
     CountryNewComponent,
-    CurrencyExchangeRateComponent,
-    CurrencyExchangeRateNewComponent,
-    IataComponent,
+   
     UsersComponent,
-    IataNewComponent,
     UsersNewComponent,
     RateParameterComponent,
     RateParameterNewComponent,
