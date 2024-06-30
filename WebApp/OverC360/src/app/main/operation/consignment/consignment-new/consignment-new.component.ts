@@ -19,7 +19,7 @@ import { PieceDetailsComponent } from './piece-details/piece-details.component';
 export class ConsignmentNewComponent {
 
 
-  activeIndex: number = 2;
+  activeIndex: number = 0;
   status: any[] = [];
 
   disabledCarrier = true;
@@ -358,6 +358,7 @@ export class ConsignmentNewComponent {
   }
   createItemFormGroup(): FormGroup {
     return this.fb.group({
+      id: [this.pieceDetails.value.length, ],
       tags: [],
       volume: [],
       pieceValue: [],
@@ -421,10 +422,10 @@ export class ConsignmentNewComponent {
     const dataToSend = ['Operation', 'Consignment', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
-    //  this.dropdownlist();
+    this.dropdownlist();
 
-    //this.form.controls.languageId.disable();
-    //this.form.controls.companyId.disable();
+    this.shipmentInfo.controls.languageId.disable();
+    this.shipmentInfo.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -553,6 +554,13 @@ export class ConsignmentNewComponent {
         },
       });
     }
+  }
+  
+  calculateVolume(form11: any){
+    const volume =  form11.controls.length.value as number *  form11.controls.width.value as number *  form11.controls.height.value as number;
+    form11.controls.volume.patchValue(volume);
+    console.log(volume)
+    console.log(this.consignment)
   }
 
   saveShipment() {

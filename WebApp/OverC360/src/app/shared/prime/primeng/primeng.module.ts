@@ -19,6 +19,10 @@ import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
 import { TabViewModule } from 'primeng/tabview';
 import { ChipsModule } from 'primeng/chips';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
+
+
 @NgModule({
   declarations: [],
   imports: [
@@ -41,7 +45,8 @@ import { ChipsModule } from 'primeng/chips';
     CardModule,
     PasswordModule,
     TabViewModule,
-    ChipsModule
+    ChipsModule,
+    OverlayPanelModule
   ], 
   exports: [
     CommonModule,
@@ -63,7 +68,8 @@ import { ChipsModule } from 'primeng/chips';
     CardModule,
     PasswordModule,
     TabViewModule,
-    ChipsModule
+    ChipsModule,
+    OverlayPanelModule
   ]
 })
 export class PrimengModule { }
