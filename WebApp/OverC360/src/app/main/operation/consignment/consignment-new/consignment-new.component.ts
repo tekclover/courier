@@ -441,16 +441,20 @@ export class ConsignmentNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  districtList: any[] = [];
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.district.url
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.districtList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.district.key);
+
         this.spin.hide();
       },
       error: (err: any) => {
@@ -556,11 +560,10 @@ export class ConsignmentNewComponent {
     }
   }
   
-  calculateVolume(form11: any){
-    const volume =  form11.controls.length.value as number *  form11.controls.width.value as number *  form11.controls.height.value as number;
-    form11.controls.volume.patchValue(volume);
-    console.log(volume)
-    console.log(this.consignment)
+  calculateVolume(formName: any){
+    console.log(formName)
+    const volume =  formName.controls.length.value as number *  formName.controls.width.value as number *  formName.controls.height.value as number;
+    formName.controls.volume.patchValue(volume);
   }
 
   saveShipment() {

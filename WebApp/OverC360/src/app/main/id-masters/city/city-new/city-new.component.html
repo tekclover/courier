@@ -38,7 +38,7 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Country</p>
-                                <p-dropdown [options]="countryIdList" placeholder="Select" formControlName="countryId"
+                                <p-dropdown [options]="countryIdList" placeholder="Select" filter="true" formControlName="countryId"
                                     appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
                                     [panelStyle]="{'width':'100%'}" (onChange)="countryChanged()" />
                                 <mat-error *ngIf="errorHandling('countryId')" class="text-danger"><small>{{
@@ -47,7 +47,7 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Province</p>
-                                <p-dropdown [options]="provinceIdList" placeholder="Select" formControlName="provinceId"
+                                <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true" formControlName="provinceId"
                                     appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
                                     [panelStyle]="{'width':'100%'}" (onChange)="provinceChanged()" />
                                 <mat-error *ngIf="errorHandling('provinceId')" class="text-danger"><small>{{
@@ -56,7 +56,7 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">District</p>
-                                <p-dropdown [options]="districtIdList" placeholder="Select" formControlName="districtId"
+                                <p-dropdown [options]="districtIdList" placeholder="Select" filter="true" formControlName="districtId"
                                     appendTo="body"
                                     [ngClass]="form.get('districtId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />

@@ -36,7 +36,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Rate Parameter</p>
                                 <p-dropdown [options]="rateParameterIdList" formControlName="rateParameterId"
-                                    appendTo="body" [style]="{'width': '100%'}" [disabled]="true" placeholder="Select"
+                                    appendTo="body" [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" filter="true"
                                     [ngClass]="form.get('rateParameterId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('rateParameterId')"

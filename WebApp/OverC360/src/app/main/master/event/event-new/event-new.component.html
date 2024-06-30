@@ -38,7 +38,7 @@
                               
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Op Status</p>
-                                <p-dropdown [options]="statusCodeList" placeholder="Select" formControlName="statusCode" appendTo="body"
+                                <p-dropdown [options]="statusCodeList" placeholder="Select" filter="true" formControlName="statusCode" appendTo="body"
                                 [ngClass]="form.get('statusCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('statusCode')" class="text-danger"><small>{{

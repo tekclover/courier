@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Special Approval ID</p>
-                                <p-dropdown [options]="specialApprovalIdList" placeholder="Select" formControlName="specialApprovalId"
+                                <p-dropdown [options]="specialApprovalIdList" placeholder="Select" filter="true" formControlName="specialApprovalId"
                                     appendTo="body"
                                     [ngClass]="form.get('specialApprovalId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />

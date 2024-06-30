@@ -22,7 +22,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
-                                    [style]="{'width': '100%'}" placeholder="Select" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                    [style]="{'width': '100%'}" placeholder="Select" filter="true" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                     <mat-error *ngIf="errorHandling('languageId')" 
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
@@ -70,7 +70,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0 required">Number Range Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
                                 [ngClass]="form.get('numberRangeStatus')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    formControlName="numberRangeStatus" placeholder="Select"/>
+                                    formControlName="numberRangeStatus" placeholder="Select" filter="true"/>
                                 <mat-error *ngIf="errorHandling('numberRangeStatus')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

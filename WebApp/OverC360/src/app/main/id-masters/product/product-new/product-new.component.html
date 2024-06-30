@@ -36,7 +36,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Sub Product</p>
                                 <p-dropdown [options]="subProductIdList" formControlName="subProductId"
-                                    placeholder="Select" appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
+                                    placeholder="Select" filter="true" appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
                                     [ngClass]="form.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('subProductId')"

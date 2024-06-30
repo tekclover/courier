@@ -38,10 +38,10 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Country</p>
-                                <p-dropdown [options]="countryIdList" placeholder="Select" formControlName="countryId"
+                                <p-dropdown [options]="countryIdList" placeholder="Select" filter="true" formControlName="countryId"
                                     appendTo="body"
                                     [ngClass]="form.get('countryId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    [style]="{'width': '100%'}" [disabled]="true" placeholder="Select"
+                                    [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" filter="true"
                                     [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('countryId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>

@@ -23,7 +23,7 @@
                         <div class="row">
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Language</p>
-                                <p-dropdown (onChange)="onLanguageChange($event)" placeholder="Select" class="w-100"
+                                <p-dropdown (onChange)="onLanguageChange($event)" placeholder="Select" filter="true" class="w-100"
                                     [filter]="true" [options]="languageIdList" formControlName="languageId"
                                     [style]="{'width': '100%', 'margin-top': '0.3rem', 'margin-bottom': '0.3rem'}"
                                     [panelStyle]="{'width':'20%'}" appendTo="body">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Company</p>
-                                <p-dropdown (onChange)="onCompanyChange($event)" placeholder="Select" class="w-100"
+                                <p-dropdown (onChange)="onCompanyChange($event)" placeholder="Select" filter="true" class="w-100"
                                     [filter]="true" [options]="companyIdList" formControlName="companyId"
                                     [style]="{'width': '100%', 'margin-top': '0.3rem', 'margin-bottom': '0.3rem'}"
                                     [panelStyle]="{'width':'20%'}" appendTo="body">

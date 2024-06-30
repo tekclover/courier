@@ -37,7 +37,7 @@
 
                 <div class="col-6 marginFieldNew borderRadius12">
                     <p class="formControlLabel f600 textBlack mb-0 required">Menu ID</p>
-                    <p-dropdown [options]="menuIdList" placeholder="Select" (onChange)="menuIdChanged($event)" formControlName="menuId" appendTo="body"
+                    <p-dropdown [options]="menuIdList" placeholder="Select" filter="true" (onChange)="menuIdChanged($event)" formControlName="menuId" appendTo="body"
                     [ngClass]="form.get('menuId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                     [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     <mat-error *ngIf="errorHandling('menuId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
