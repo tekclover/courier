@@ -10,22 +10,22 @@ export class CcrService {
 
 
   Get(partnerId: string) {
-    return this.http.get<any>('/overc-midmile-service/console/' + partnerId);
+    return this.http.get<any>('/overc-midmile-service/ccr/' + partnerId);
   }
 
   Create(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/bondedManifest/create/list', obj);
+    return this.http.post<any>('/overc-midmile-service/ccr/create/list', obj);
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/console/'+ obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId, obj);
+    return this.http.patch<any>('/overc-midmile-service/ccr/'+ obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId, obj);
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/console/' + obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId);
+    return this.http.delete<any>('/overc-midmile-service/ccr/' + obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId);
   }
 
   search(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/bondedManifest/findBondedManifest', obj);
+    return this.http.post<any>('/overc-midmile-service/ccr/findCcr', obj);
   }
 }
