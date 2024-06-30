@@ -150,32 +150,32 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 1001,
-                        routerLink: 'idMaster/iata',
+                        routerLink: 'master/iata',
                         label: 'Iata'
                     },
                     {
                         routerId: 1002,
-                        routerLink: 'idMaster/specialApproval',
+                        routerLink: 'master/specialApproval',
                         label: 'Special Approval'
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'idMaster/hsCode',
+                        routerLink: 'master/hsCode',
                         label: 'HS Code'
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'idMaster/customer',
+                        routerLink: 'master/customer',
                         label: 'Customer'
                     },
                     {
                         routerId: 1005,
-                        routerLink: 'idMaster/consignor',
+                        routerLink: 'master/consignor',
                         label: 'Consignor'
                     },
                     {
                         routerId: 1006,
-                        routerLink: 'idMaster/event',
+                        routerLink: 'master/event',
                         label: 'Event'
                     },
                 ]
@@ -187,17 +187,17 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 1001,
-                        routerLink: 'idMaster/numberrange',
+                        routerLink: 'master/numberrange',
                         label: 'Number Range'
                     },
                     {
                         routerId: 1002,
-                        routerLink: 'idMaster/opstatus',
+                        routerLink: 'master/opstatus',
                         label: 'Op Status'
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'idMaster/currencyExchangeRate',
+                        routerLink: 'master/currencyExchangeRate',
                         label: 'Currency Exchange Rate'
                     },
                     {

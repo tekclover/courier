@@ -139,7 +139,7 @@ export class IataNewComponent {
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.originCode +' has been updated successfully' });
-          this.router.navigate(['/main/idMaster/iata']);
+          this.router.navigate(['/main/master/iata']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -152,7 +152,7 @@ export class IataNewComponent {
         next: (res) => {
         if(res){
           this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:  res.originCode+ ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/iata']);
+          this.router.navigate(['/main/master/iata']);
           this.spin.hide();
         }
         }, error: (err) => {

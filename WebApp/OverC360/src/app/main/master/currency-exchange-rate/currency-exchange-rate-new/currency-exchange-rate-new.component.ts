@@ -143,7 +143,7 @@ export class CurrencyExchangeRateNewComponent {
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res: any) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: 'CurrencyExchangeRate has been updated successfully' });
-          this.router.navigate(['/main/idMaster/currencyExchangeRate']);
+          this.router.navigate(['/main/master/currencyExchangeRate']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -156,7 +156,7 @@ export class CurrencyExchangeRateNewComponent {
         next: (res) => {
           if (res) {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: ' CurrencyExchangeRate has been created successfully' });
-            this.router.navigate(['/main/idMaster/currencyExchangeRate']);
+            this.router.navigate(['/main/master/currencyExchangeRate']);
             this.spin.hide();
           }
         }, error: (err) => {

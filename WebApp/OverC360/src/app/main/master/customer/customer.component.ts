@@ -127,7 +127,7 @@ export class CustomerComponent {
         line: linedata == null ? this.selectedCustomer[0] : linedata,
         pageflow: type,
       });
-      this.router.navigate(['/main/idMaster/customer-new/' + paramdata]);
+      this.router.navigate(['/main/master/customer-new/' + paramdata]);
     }
   }
 

@@ -139,7 +139,7 @@ export class EventNewComponent {active: number | undefined = 0;
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.eventCode + ' has been updated successfully' });
-          this.router.navigate(['/main/idMaster/event']);
+          this.router.navigate(['/main/master/event']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -152,7 +152,7 @@ export class EventNewComponent {active: number | undefined = 0;
         next: (res) => {
         if(res){
           this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.eventCode + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/event']);
+          this.router.navigate(['/main/master/event']);
           this.spin.hide();
         }
         }, error: (err) => {

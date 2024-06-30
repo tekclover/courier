@@ -132,7 +132,7 @@ export class OpstatusNewComponent {
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.languageId + res.companyId + res.statusCode + ' has been updated successfully' });
-          this.router.navigate(['/main/idMaster/opstatus']);
+          this.router.navigate(['/main/master/opstatus']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -145,7 +145,7 @@ export class OpstatusNewComponent {
         next: (res) => {
           if (res) {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + res.companyId + res.statusCode + ' has been created successfully' });
-            this.router.navigate(['/main/idMaster/opstatus']);
+            this.router.navigate(['/main/master/opstatus']);
             this.spin.hide();
           }
         }, error: (err) => {

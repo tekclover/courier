@@ -128,7 +128,7 @@ export class ConsignorComponent {
         line: linedata == null ? this.selectedConsignor[0] : linedata,
         pageflow: type,
       });
-      this.router.navigate(['/main/idMaster/consignor-new/' + paramdata]);
+      this.router.navigate(['/main/master/consignor-new/' + paramdata]);
     }
   }
 

@@ -158,7 +158,7 @@ export class CustomerNewComponent {
             key: 'br',
             detail: res.customerId + ' has been updated successfully',
           });
-          this.router.navigate(['/main/idMaster/customer']);
+          this.router.navigate(['/main/master/customer']);
           this.spin.hide();
         },
         error: (err) => {
@@ -177,7 +177,7 @@ export class CustomerNewComponent {
               key: 'br',
               detail: res.customerId + ' has been created successfully',
             });
-            this.router.navigate(['/main/idMaster/customer']);
+            this.router.navigate(['/main/master/customer']);
             this.spin.hide();
           }
         },

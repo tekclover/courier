@@ -126,7 +126,7 @@ export class HsCodeComponent {
         line: linedata == null ? this.selectedHsCode[0] : linedata,
         pageflow: type,
       });
-      this.router.navigate(['/main/idMaster/hsCode-new/' + paramdata]);
+      this.router.navigate(['/main/master/hsCode-new/' + paramdata]);
     }
   }
 

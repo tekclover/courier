@@ -148,7 +148,7 @@ export class HsCodeNewComponent {
             key: 'br',
             detail: res.hsCode + ' has been updated successfully',
           });
-          this.router.navigate(['/main/idMaster/hsCode']);
+          this.router.navigate(['/main/master/hsCode']);
           this.spin.hide();
         },
         error: (err) => {
@@ -167,7 +167,7 @@ export class HsCodeNewComponent {
               key: 'br',
               detail: res.hsCode + ' has been created successfully',
             });
-            this.router.navigate(['/main/idMaster/hsCode']);
+            this.router.navigate(['/main/master/hsCode']);
             this.spin.hide();
           }
         },

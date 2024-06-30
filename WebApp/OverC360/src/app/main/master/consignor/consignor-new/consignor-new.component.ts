@@ -166,7 +166,7 @@ export class ConsignorNewComponent {
             key: 'br',
             detail: res.consignorId + ' has been updated successfully',
           });
-          this.router.navigate(['/main/idMaster/consignor']);
+          this.router.navigate(['/main/master/consignor']);
           this.spin.hide();
         },
         error: (err) => {
@@ -185,7 +185,7 @@ export class ConsignorNewComponent {
               key: 'br',
               detail: res.consignorId + ' has been created successfully',
             });
-            this.router.navigate(['/main/idMaster/consignor']);
+            this.router.navigate(['/main/master/consignor']);
             this.spin.hide();
           }
         },

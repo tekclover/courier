@@ -141,7 +141,7 @@ export class SpecialApprovalNewComponent {
             key: 'br',
             detail: res.specialApprovalId + ' has been updated successfully',
           });
-          this.router.navigate(['/main/idMaster/specialApproval']);
+          this.router.navigate(['/main/master/specialApproval']);
           this.spin.hide();
         },
         error: (err) => {
@@ -160,7 +160,7 @@ export class SpecialApprovalNewComponent {
               key: 'br',
               detail: res.specialApprovalId + ' has been created successfully',
             });
-            this.router.navigate(['/main/idMaster/specialApproval']);
+            this.router.navigate(['/main/master/specialApproval']);
             this.spin.hide();
           }
         },

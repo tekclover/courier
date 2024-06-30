@@ -123,7 +123,7 @@ export class SpecialApprovalComponent {
         line: linedata == null ? this.selectedSpecialApproval[0] : linedata,
         pageflow: type,
       });
-      this.router.navigate(['/main/idMaster/specialApproval-new/' + paramdata]);
+      this.router.navigate(['/main/master/specialApproval-new/' + paramdata]);
     }
   }
 

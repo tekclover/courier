@@ -134,7 +134,7 @@ export class NumberrangeNewComponent {
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.numberRangeCode + ' has been updated successfully' });
-          this.router.navigate(['/main/idMaster/numberrange']);
+          this.router.navigate(['/main/master/numberrange']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -147,7 +147,7 @@ export class NumberrangeNewComponent {
         next: (res) => {
           if (res) {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.numberRangeCode + ' has been created successfully' });
-            this.router.navigate(['/main/idMaster/numberrange']);
+            this.router.navigate(['/main/master/numberrange']);
             this.spin.hide();
           }
         }, error: (err) => {
