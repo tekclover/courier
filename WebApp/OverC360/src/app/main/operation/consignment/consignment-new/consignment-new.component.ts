@@ -375,6 +375,7 @@ export class ConsignmentNewComponent {
       packReferenceNumber: [],
       partnerType: [],
       pieceId: [],
+      itemDetails: [],
     });
   }
   removeItem(index: number) {
@@ -469,12 +470,20 @@ export class ConsignmentNewComponent {
     });
   }
 
-  opendialog(type: any = 'New'){
+  opendialog(type: any = 'New', data: any){
+    console.log(data)
     const dialogRef = this.dialog.open(PieceDetailsComponent, {
       disableClose: true,
-      width: '70%',
-      maxWidth: '85%',
-      position: { top: '6.5%', left: '30%' },
+      width: '90%',
+      maxWidth: '95%',
+      position: { top: '6.5%', left: '10%' },
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        data.controls.itemDetails.patchValue(result);
+      }
     });
   }
 
@@ -606,6 +615,7 @@ export class ConsignmentNewComponent {
     }
   }
   savePiece(){
+    console.log(this.piece)
     this.activeIndex = 3;
     this.submitted = false;
     this.disabledSender = false;

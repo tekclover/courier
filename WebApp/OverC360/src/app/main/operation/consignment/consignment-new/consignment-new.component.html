@@ -477,7 +477,7 @@
                                   <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="weight_unit"></td>
                                   <td alignFrozen="right" pFrozenColumn [frozen]="true" class="d-flex justify-content-center">
                                     <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png" alt="" srcset="" style="height: 1.5rem;">
-                                    <i class="bi bi-plus-circle textBlack pl-2" style="font-size: 1.2rem;"></i>
+                                    <i type="button" (click)="opendialog('New', item)" class="bi bi-plus-circle textBlack pl-2" style="font-size: 1.2rem;"></i>
                                 </td>
                                 </tr>
                               </ng-template>
