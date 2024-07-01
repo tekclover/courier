@@ -19,4 +19,7 @@ public class ProductDeleteInput {
     @NotBlank(message = "ProductId is mandatory")
     private String productId;
 
+    @NotBlank(message = "SubProduct Value is mandatory")
+    private String subProductValue;
+
 }

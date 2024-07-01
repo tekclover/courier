@@ -47,6 +47,10 @@ public class ReplicaProductSpecification implements Specification<ReplicaProduct
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
             predicates.add(group.in(findProduct.getStatusId()));
         }
+        if (findProduct.getSubProductValue() != null && !findProduct.getSubProductValue().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("subProductValue");
+            predicates.add(group.in(findProduct.getSubProductValue()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

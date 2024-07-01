@@ -12,10 +12,10 @@ import java.util.Optional;
 @Transactional
 public interface ReplicaConsignorRepository extends JpaRepository<ReplicaConsignor, String>, JpaSpecificationExecutor<ReplicaConsignor> {
 
-    Optional<ReplicaConsignor> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String productId, String customerId, String consignorId, Long deletionIndicator);
+    Optional<ReplicaConsignor> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue, String productId, String customerId, String consignorId, Long deletionIndicator);
 
-    boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String productId, String customerId, String consignorId, Long deletionIndicator);
+    boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue, String productId, String customerId, String consignorId, Long deletionIndicator);
 
 }

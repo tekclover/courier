@@ -13,5 +13,6 @@ public class FindConsignor {
     private List<String> productId;
     private List<String> customerId;
     private List<String> consignorId;
+    private List<String> subProductValue;
 
 }
