@@ -1,7 +1,7 @@
 import {
   require_JsBarcode
-} from "./chunk-IZAXRTOM.js";
-import "./chunk-7YGGI2S3.js";
+} from "./chunk-JFBDLV3E.js";
+import "./chunk-MBBZ74EH.js";
 import {
   AuthService,
   BehaviorSubject,
@@ -52,12 +52,12 @@ import {
   ɵɵqueryRefresh,
   ɵɵtext,
   ɵɵviewQuery
-} from "./chunk-AJRJ5UQL.js";
+} from "./chunk-VS6WNB2T.js";
 
 // src/app/app-routing.module.ts
 var routes = [
-  { path: "", loadChildren: () => import("./chunk-WRDQYNPX.js").then((m) => m.LoginModule) },
-  { path: "main", loadChildren: () => import("./chunk-R72X43KQ.js").then((m) => m.MainModule) }
+  { path: "", loadChildren: () => import("./chunk-RIFGQZ7W.js").then((m) => m.LoginModule) },
+  { path: "main", loadChildren: () => import("./chunk-C5ALG2AA.js").then((m) => m.MainModule) }
 ];
 var _AppRoutingModule = class _AppRoutingModule {
 };
