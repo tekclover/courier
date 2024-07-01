@@ -79,6 +79,9 @@
             <td class="d-flex justify-content-center">
               <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="height: 1.5rem;">
+                <input type="file" #fileInput multiple style="display:none" (change)="selectFiles($event)" />   
+                <i type="button" class="bi bi-card-image textBlack pl-3" style="font-size: 1.2rem;" (click)="fileInput.click()"></i> 
+
             </td>
           </tr>
         </ng-template>
