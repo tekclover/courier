@@ -58,6 +58,7 @@ import { UserRoleComponent } from './user-role/user-role.component';
 import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
 
 const routes: Routes = [
+
   { path: 'company', component: CompanyComponent, data: { title: 'Setup', module: 'Company' } },
   { path: 'company-new/:code', component: CompanyNewComponent, data: { title: 'Setup', module: 'Company - Add New' } },
 
