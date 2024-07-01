@@ -14,10 +14,10 @@ public class AddMenu {
     @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotNull(message = "MenuId is mandatory")
+//    @NotNull(message = "MenuId is mandatory")
     private Long menuId;
 
-    @NotNull(message = "SubMenuId is mandatory")
+//    @NotNull(message = "SubMenuId is mandatory")
     private Long subMenuId;
 
     @NotNull(message = "Authorization Object Id is mandatory")

@@ -14,8 +14,8 @@ import java.util.Optional;
 @Transactional
 public interface SubProductRepository extends JpaRepository<SubProduct, String>, JpaSpecificationExecutor<SubProduct> {
 
-    Optional<SubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, Long deletionIndicator);
+    Optional<SubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue, Long deletionIndicator);
 
     // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure
     @Transactional

@@ -22,7 +22,7 @@ public class AddCity {
     @NotBlank(message = "District Id is mandatory")
     private String districtId;
 
-    @NotBlank(message = "City Id is mandatory")
+    //    @NotBlank(message = "City Id is mandatory")
     private String cityId;
 
     @NotBlank(message = "City Name is mandatory")

@@ -16,9 +16,10 @@ public class UpdateSubProduct {
     @NotBlank(message = "SubProductId is mandatory")
     private String subProductId;
 
-    private String subProductName;
-
+    @NotBlank(message = "SubProduct Value is mandatory")
     private String subProductValue;
+
+    private String subProductName;
 
     private String statusId;
 

@@ -112,12 +112,12 @@ public class CountryService {
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addCountry.getLanguageId(), addCountry.getCompanyId());
                 Country newCountry = new Country();
                 BeanUtils.copyProperties(addCountry, newCountry, CommonUtils.getNullPropertyNames(addCountry));
-//                if (addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
-//                    String NUM_RAN_OBJ = "COUNTRY";
-//                    String COUNTRY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for COUNTRY_ID : " + COUNTRY_ID);
-//                    newCountry.setCountryId(COUNTRY_ID);
-//                }
+                if (addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
+                    String NUM_RAN_OBJ = "COUNTRY";
+                    String COUNTRY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for COUNTRY_ID : " + COUNTRY_ID);
+                    newCountry.setCountryId(COUNTRY_ID);
+                }
                 if (iKeyValuePair != null) {
                     newCountry.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newCountry.setCompanyName(iKeyValuePair.getCompanyDesc());

@@ -16,5 +16,6 @@ public class SubProductCompositeKey implements Serializable {
     private String companyId;
     private String languageId;
     private String subProductId;
+    private String subProductValue;
 
 }

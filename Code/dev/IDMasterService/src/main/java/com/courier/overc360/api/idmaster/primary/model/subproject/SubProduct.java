@@ -17,14 +17,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 /*
- * `C_ID`, `LANG_ID`, `SUB_PRODUCT_ID`
+ * `C_ID`, `LANG_ID`, `SUB_PRODUCT_ID`, `SUB_PRODUCT_VALUE`
  */
 @Table(
         name = "tblsubproduct",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_subproduct",
-                        columnNames = {"C_ID", "LANG_ID", "SUB_PRODUCT_ID"}
+                        columnNames = {"C_ID", "LANG_ID", "SUB_PRODUCT_ID", "SUB_PRODUCT_VALUE"}
                 )
         }
 )
@@ -52,6 +52,7 @@ public class SubProduct {
     @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String subProductName;
 
+    @Id
     @Column(name = "SUB_PRODUCT_VALUE", columnDefinition = "nvarchar(50)")
     private String subProductValue;
 

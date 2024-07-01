@@ -95,9 +95,9 @@ public class ProductService {
     public Product createProduct(AddProduct addProduct, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            boolean subProductPresent = replicaSubProductRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
+            boolean dbSubProductPresent = replicaSubProductRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
                     addProduct.getLanguageId(), addProduct.getCompanyId(), addProduct.getSubProductId(), 0L);
-            if (!subProductPresent) {
+            if (!dbSubProductPresent) {
                 throw new BadRequestException("SubProductId - " + addProduct.getSubProductId() + ", companyId - " +
                         addProduct.getCompanyId() + " and languageId - " + addProduct.getLanguageId() + " doesn't exists");
             }
