@@ -66,15 +66,15 @@ public class SubProductService {
      * @param subProductId
      * @return
      */
-    public SubProduct getSubProduct(String languageId, String companyId, String subProductId) {
+    public SubProduct getSubProduct(String languageId, String companyId, String subProductId, String subProductValue) {
 
-        Optional<SubProduct> dbSubProduct = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
-                languageId, companyId, subProductId, 0L);
+        Optional<SubProduct> dbSubProduct = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, 0L);
         if (dbSubProduct.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId
-                    + ", companyId - " + companyId + " and subProductId - " + subProductId + " and doesn't exists";
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId +
+                    ", subProductId - " + subProductId + " and subProductValue - " + subProductValue + " and doesn't exists";
             // Error Log
-            createSubProductLog1(languageId, companyId, subProductId, errMsg);
+            createSubProductLog1(languageId, companyId, subProductId, subProductValue, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbSubProduct.get();
@@ -173,10 +173,11 @@ public class SubProductService {
      * @throws InvocationTargetException
      */
     @Transactional
-    public SubProduct updateSubProduct(String languageId, String companyId, String subProductId, UpdateSubProduct updateSubProduct, String loginUserID)
+    public SubProduct updateSubProduct(String languageId, String companyId, String subProductId, String subProductValue,
+                                       UpdateSubProduct updateSubProduct, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            SubProduct dbSubProduct = getSubProduct(languageId, companyId, subProductId);
+            SubProduct dbSubProduct = getSubProduct(languageId, companyId, subProductId, subProductValue);
 //            if (updateSubProduct.getSubProductName() != null) {
 //                if (updateSubProduct.getSubProductName().isBlank()) {
 //                    throw new BadRequestException("SubProduct Name cannot be blank");
@@ -206,7 +207,7 @@ public class SubProductService {
             return subProductRepository.save(dbSubProduct);
         } catch (Exception e) {
             // Error Log
-            createSubProductLog(languageId, companyId, subProductId, e.toString());
+            createSubProductLog(languageId, companyId, subProductId, subProductValue, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -229,7 +230,7 @@ public class SubProductService {
         List<SubProduct> updatedSubProductList = new ArrayList<>();
         for (UpdateSubProduct updateSubProduct : updateSubProductList) {
             SubProduct dbSubProduct = updateSubProduct(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
-                    updateSubProduct.getSubProductId(), updateSubProduct, loginUserID);
+                    updateSubProduct.getSubProductId(), updateSubProduct.getSubProductValue(), updateSubProduct, loginUserID);
             updatedSubProductList.add(dbSubProduct);
         }
         return updatedSubProductList;
@@ -243,9 +244,9 @@ public class SubProductService {
      * @param subProductId
      * @param loginUserID
      */
-    public void deleteSubProduct(String languageId, String companyId, String subProductId, String loginUserID) {
+    public void deleteSubProduct(String languageId, String companyId, String subProductId, String subProductValue, String loginUserID) {
 
-        SubProduct dbSubProduct = getSubProduct(languageId, companyId, subProductId);
+        SubProduct dbSubProduct = getSubProduct(languageId, companyId, subProductId, subProductValue);
         if (dbSubProduct != null) {
             dbSubProduct.setDeletionIndicator(1L);
             dbSubProduct.setUpdatedBy(loginUserID);
@@ -253,7 +254,7 @@ public class SubProductService {
             subProductRepository.save(dbSubProduct);
         } else {
             // Error Log
-            createSubProductLog1(languageId, companyId, subProductId, "Error in deleting subProductId - " + subProductId);
+            createSubProductLog1(languageId, companyId, subProductId, subProductValue, "Error in deleting subProductId - " + subProductId);
             throw new BadRequestException("Error in deleting subProductId - " + subProductId);
         }
     }
@@ -267,7 +268,8 @@ public class SubProductService {
     public void deleteSubProductBulk(List<SubProductDeleteInput> subProductDeleteInputList, String loginUserID) {
 
         for (SubProductDeleteInput deleteInput : subProductDeleteInputList) {
-            deleteSubProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(), loginUserID);
+            deleteSubProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+                    deleteInput.getSubProductValue(), loginUserID);
         }
     }
 
@@ -281,15 +283,15 @@ public class SubProductService {
      * @param subProductId
      * @return
      */
-    public ReplicaSubProduct replicaGetSubProduct(String languageId, String companyId, String subProductId) {
+    public ReplicaSubProduct replicaGetSubProduct(String languageId, String companyId, String subProductId, String subProductValue) {
 
-        Optional<ReplicaSubProduct> dbSubProduct = replicaSubProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
-                languageId, companyId, subProductId, 0L);
+        Optional<ReplicaSubProduct> dbSubProduct = replicaSubProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, 0L);
         if (dbSubProduct.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId
-                    + ", companyId - " + companyId + " and subProductId - " + subProductId + " and doesn't exists";
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId +
+                    ", subProductId - " + subProductId + " and subProductValue - " + subProductValue + " and doesn't exists";
             // Error Log
-            createSubProductLog1(languageId, companyId, subProductId, errMsg);
+            createSubProductLog1(languageId, companyId, subProductId, subProductValue, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbSubProduct.get();
@@ -322,7 +324,8 @@ public class SubProductService {
     }
 
     //==========================================SubProduct_ErrorLog====================================================
-    private void createSubProductLog(String languageId, String companyId, String subProductId, String error) throws IOException, CsvException {
+    private void createSubProductLog(String languageId, String companyId, String subProductId, String subProductValue,
+                                     String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();
@@ -330,6 +333,7 @@ public class SubProductService {
         errorLog.setLanguageId(languageId);
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(subProductId);
+        errorLog.setReferenceField1(subProductValue);
         errorLog.setMethod("Exception thrown in updateSubProduct");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
@@ -338,13 +342,14 @@ public class SubProductService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createSubProductLog1(String languageId, String companyId, String subProductId, String error) {
+    private void createSubProductLog1(String languageId, String companyId, String subProductId, String subProductValue, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
         errorLog.setLanguageId(languageId);
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(subProductId);
+        errorLog.setReferenceField1(subProductValue);
         errorLog.setMethod("Exception thrown in getSubProduct");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
@@ -359,6 +364,7 @@ public class SubProductService {
         errorLog.setLanguageId(addSubProduct.getLanguageId());
         errorLog.setCompanyId(addSubProduct.getCompanyId());
         errorLog.setRefDocNumber(addSubProduct.getSubProductId());
+        errorLog.setReferenceField1(addSubProduct.getSubProductValue());
         errorLog.setMethod("Exception thrown in createSubProduct");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");

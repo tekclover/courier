@@ -446,7 +446,7 @@ public class IDMasterService {
     }
 
     // Get SubProduct
-    public SubProduct getSubProduct(String languageId, String companyId, String subProductId, String authToken) {
+    public SubProduct getSubProduct(String languageId, String companyId, String subProductId, String subProductValue, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -454,7 +454,8 @@ public class IDMasterService {
             headers.add("Authorization", "Bearer " + authToken);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "subProduct/" + subProductId)
                     .queryParam("languageId", languageId)
-                    .queryParam("companyId", companyId);
+                    .queryParam("companyId", companyId)
+                    .queryParam("subProductValue", subProductValue);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<SubProduct> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, SubProduct.class);
             log.info("result : " + result.getStatusCode());
@@ -484,7 +485,7 @@ public class IDMasterService {
     }
 
     // Update SubProduct
-    public SubProduct updateSubProduct(String languageId, String companyId, String subProductId,
+    public SubProduct updateSubProduct(String languageId, String companyId, String subProductId, String subProductValue,
                                        UpdateSubProduct updateSubProduct, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -498,6 +499,7 @@ public class IDMasterService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "subProduct/" + subProductId)
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<SubProduct> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, SubProduct.class);
             log.info("result : " + result.getStatusCode());
@@ -509,7 +511,8 @@ public class IDMasterService {
     }
 
     // Delete SubProduct
-    public boolean deleteSubProduct(String languageId, String companyId, String subProductId, String loginUserID, String authToken) {
+    public boolean deleteSubProduct(String languageId, String companyId, String subProductId,
+                                    String subProductValue, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -519,6 +522,7 @@ public class IDMasterService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "subProduct/" + subProductId)
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
             log.info("result : " + result);

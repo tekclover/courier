@@ -50,18 +50,19 @@ public class SubProductController {
     @ApiOperation(response = SubProduct.class, value = "Update SubProduct") // label for swagger
     @PatchMapping("/{subProductId}")
     public ResponseEntity<?> patchSubProduct(@PathVariable String subProductId, @RequestParam String languageId, @RequestParam String loginUserID,
-                                             @RequestParam String companyId, @RequestBody UpdateSubProduct updateSubProduct)
+                                             @RequestParam String companyId, @RequestParam String subProductValue,
+                                             @Valid @RequestBody UpdateSubProduct updateSubProduct)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        SubProduct updatedSubProduct = subProductService.updateSubProduct(languageId, companyId, subProductId, updateSubProduct, loginUserID);
+        SubProduct updatedSubProduct = subProductService.updateSubProduct(languageId, companyId, subProductId, subProductValue, updateSubProduct, loginUserID);
         return new ResponseEntity<>(updatedSubProduct, HttpStatus.OK);
     }
 
     // Delete SubProduct
     @ApiOperation(response = SubProduct.class, value = "Delete SubProduct") // label for swagger
     @DeleteMapping("/{subProductId}")
-    public ResponseEntity<?> deleteSubProduct(@PathVariable String subProductId, @RequestParam String languageId,
+    public ResponseEntity<?> deleteSubProduct(@PathVariable String subProductId, @RequestParam String languageId, @RequestParam String subProductValue,
                                               @RequestParam String companyId, @RequestParam String loginUserID) {
-        subProductService.deleteSubProduct(languageId, companyId, subProductId, loginUserID);
+        subProductService.deleteSubProduct(languageId, companyId, subProductId, subProductValue, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -106,8 +107,8 @@ public class SubProductController {
     @ApiOperation(response = ReplicaSubProduct.class, value = "Get a SubProduct") // label for swagger
     @GetMapping("/{subProductId}")
     public ResponseEntity<?> getSubProduct(@PathVariable String subProductId, @RequestParam String languageId,
-                                           @RequestParam String companyId) {
-        ReplicaSubProduct dbSubProduct = subProductService.replicaGetSubProduct(languageId, companyId, subProductId);
+                                           @RequestParam String companyId, @RequestParam String subProductValue) {
+        ReplicaSubProduct dbSubProduct = subProductService.replicaGetSubProduct(languageId, companyId, subProductId, subProductValue);
         return new ResponseEntity<>(dbSubProduct, HttpStatus.OK);
     }
 

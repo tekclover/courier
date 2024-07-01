@@ -15,8 +15,8 @@ import java.util.Optional;
 @Transactional
 public interface ReplicaSubProductRepository extends JpaRepository<ReplicaSubProduct, String>, JpaSpecificationExecutor<ReplicaSubProduct> {
 
-    Optional<ReplicaSubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, Long deletionIndicator);
+    Optional<ReplicaSubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue, Long deletionIndicator);
 
     boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, Long deletionIndicator);
