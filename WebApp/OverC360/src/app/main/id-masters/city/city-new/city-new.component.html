@@ -78,7 +78,7 @@
                                 <input maxlength="100" pInputText formControlName="cityName" class=" w-100" pInputText
                                     placeholder="Enter"
                                     [ngClass]="form.get('cityName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('cityId')"
+                                <mat-error *ngIf="errorHandling('cityName')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
 

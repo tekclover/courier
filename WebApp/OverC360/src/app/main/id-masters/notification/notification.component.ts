@@ -45,7 +45,7 @@ export class NotificationComponent {
       { field: 'companyName', header: 'Company' },
       { field: 'productName', header: 'Product' },
       { field: 'subProductName', header: 'Sub Product' },
-      { field: 'serviceTypeText', header: 'Description' },
+      { field: 'serviceTypeText', header: 'Service Type Name' },
       { field: 'userRole', header: 'User Role' },
       { field: 'userName', header: 'User Name' },
       { field: 'statusDescription', header: 'Status' },

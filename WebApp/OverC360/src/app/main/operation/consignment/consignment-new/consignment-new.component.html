@@ -5,19 +5,9 @@
     <div class="mt-4 mx-auto">
 
         <p-tabView [(activeIndex)]="activeIndex">
-
             <p-tabPanel header="Shipment Info">
                 <form [formGroup]="shipmentInfo">
                     <div class="row scrollNew22">
-                        <div class="col-3 marginFieldNew borderRadius12">
-                            <p class="formControlLabel f600 textBlack mb-0">Language</p>
-                            <p-dropdown placeholder="Select" filter="true" formControlName="languageId" appendTo="body"
-                                [style]="{'width': '100%'}" [options]="languageIdList"
-                                [panelStyle]="{'width':'100%'}" />
-                            <mat-error *ngIf="errorHandlingShipment( 'languageId')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
                         <div class="col-3 marginFieldNew borderRadius12">
                             <p class="formControlLabel f600 textBlack mb-0">Company</p>
                             <p-dropdown placeholder="Select" filter="true" [options]="companyIdList" formControlName="companyId"
@@ -26,12 +16,84 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="priority">
-                            <p class="formControlLabel f600 textBlack mb-0">Priority</p>
-                            <input maxlength="50" formControlName="priority"
-                                [ngClass]="shipmentInfo.get('priority')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                        <div class="col-3 marginFieldNew borderRadius12" id="productId">
+                            <p class="formControlLabel f600 textBlack mb-0">Product</p>
+                            <input maxlength="50" formControlName="productId"
+                                [ngClass]="shipmentInfo.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('priority')"
+                            <mat-error *ngIf="errorHandlingShipment('productId')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="productName">
+                            <p class="formControlLabel f600 textBlack mb-0">Product Name </p>
+                            <input maxlength="50" formControlName="productName"
+                                [ngClass]="shipmentInfo.get('productName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('productName')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        
+                        <div class="col-3 marginFieldNew borderRadius12" id="subProductId">
+                            <p class="formControlLabel f600 textBlack mb-0">Sub Product</p>
+                            <input maxlength="50" formControlName="subProductId"
+                                [ngClass]="shipmentInfo.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('subProductId')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="subProductName">
+                            <p class="formControlLabel f600 textBlack mb-0">Sub Product Name </p>
+                            <input maxlength="50" formControlName="subProductName"
+                                [ngClass]="shipmentInfo.get('subProductName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('subProductName')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="serviceTypeId">
+                            <p class="formControlLabel f600 textBlack mb-0 required">Service Type </p>
+                            <input maxlength="50" formControlName="serviceTypeId"
+                                [ngClass]="shipmentInfo.get('serviceTypeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('serviceTypeId')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="serviceTypeText">
+                            <p class="formControlLabel f600 textBlack mb-0">Service Type Name</p>
+                            <input maxlength="50" formControlName="serviceTypeText"
+                                [ngClass]="shipmentInfo.get('serviceTypeText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('serviceTypeText')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="masterAirwayBill">
+                            <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
+                            <input maxlength="50" formControlName="masterAirwayBill"
+                                [ngClass]="shipmentInfo.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('masterAirwayBill')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="houseAirwayBill">
+                            <p class="formControlLabel f600 textBlack mb-0">HAWB</p>
+                            <input maxlength="50" formControlName="houseAirwayBill"
+                                [ngClass]="shipmentInfo.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('houseAirwayBill')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="statusId">
+                            <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                            <input maxlength="50" formControlName="statusId"
+                                [ngClass]="shipmentInfo.get('statusId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('statusId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
@@ -62,133 +124,6 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="statusId">
-                            <p class="formControlLabel f600 textBlack mb-0 required">Status</p>
-                            <input maxlength="50" formControlName="statusId"
-                                [ngClass]="shipmentInfo.get('statusId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('statusId')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="paymentType">
-                            <p class="formControlLabel f600 textBlack mb-0">Payment Type</p>
-                            <input maxlength="50" formControlName="paymentType"
-                                [ngClass]="shipmentInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('paymentType')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="productId">
-                            <p class="formControlLabel f600 textBlack mb-0">Product</p>
-                            <input maxlength="50" formControlName="productId"
-                                [ngClass]="shipmentInfo.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('productId')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="productName">
-                            <p class="formControlLabel f600 textBlack mb-0">Product Name </p>
-                            <input maxlength="50" formControlName="productName"
-                                [ngClass]="shipmentInfo.get('productName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('productName')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="subProductId">
-                            <p class="formControlLabel f600 textBlack mb-0">Sub Product</p>
-                            <input maxlength="50" formControlName="subProductId"
-                                [ngClass]="shipmentInfo.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('subProductId')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="subProductName">
-                            <p class="formControlLabel f600 textBlack mb-0">Sub Product Name </p>
-                            <input maxlength="50" formControlName="subProductName"
-                                [ngClass]="shipmentInfo.get('subProductName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('subProductName')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="serviceTypeId">
-                            <p class="formControlLabel f600 textBlack mb-0">Service Type </p>
-                            <input maxlength="50" formControlName="serviceTypeId"
-                                [ngClass]="shipmentInfo.get('serviceTypeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('serviceTypeId')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="serviceTypeText">
-                            <p class="formControlLabel f600 textBlack mb-0">Service Type Name</p>
-                            <input maxlength="50" formControlName="serviceTypeText"
-                                [ngClass]="shipmentInfo.get('serviceTypeText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('serviceTypeText')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="manufacturer">
-                            <p class="formControlLabel f600 textBlack mb-0">Manufacturer</p>
-                            <input maxlength="50" formControlName="manufacturer"
-                                [ngClass]="shipmentInfo.get('manufacturer')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('manufacturer')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="masterAirwayBill">
-                            <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
-                            <input maxlength="50" formControlName="masterAirwayBill"
-                                [ngClass]="shipmentInfo.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('masterAirwayBill')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPackageMawb">
-                            <p class="formControlLabel f600 textBlack mb-0">No of Packages MAWB</p>
-                            <input maxlength="50" formControlName="noOfPackageMawb"
-                                [ngClass]="shipmentInfo.get('noOfPackageMawb')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('noOfPackageMawb')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="houseAirwayBill">
-                            <p class="formControlLabel f600 textBlack mb-0">HAWB</p>
-                            <input maxlength="50" formControlName="houseAirwayBill"
-                                [ngClass]="shipmentInfo.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('houseAirwayBill')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPieceHawb">
-                            <p class="formControlLabel f600 textBlack mb-0">No of Pieces HAWB</p>
-                            <input maxlength="50" formControlName="noOfPieceHawb"
-                                [ngClass]="shipmentInfo.get('noOfPieceHawb')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('noOfPieceHawb')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="countryOfOrigin">
-                            <p class="formControlLabel f600 textBlack mb-0">Country of Origin</p>
-                            <input maxlength="50" formControlName="countryOfOrigin"
-                                [ngClass]="shipmentInfo.get('countryOfOrigin')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('countryOfOrigin')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="consignmentType">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Type</p>
                             <input maxlength="50" formControlName="consignmentType"
@@ -197,7 +132,16 @@
                             <mat-error *ngIf="errorHandlingShipment('consignmentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
+                        
+                        <div class="col-3 marginFieldNew borderRadius12" id="loadType">
+                            <p class="formControlLabel f600 textBlack mb-0 required">Load Type <Code></Code></p>
+                            <input maxlength="50" formControlName="loadType"
+                                [ngClass]="shipmentInfo.get('loadType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('loadType')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                       
                         <div class="col-3 marginFieldNew borderRadius12" id="customerCode">
                             <p class="formControlLabel f600 textBlack mb-0">Customer Code</p>
                             <input maxlength="50" formControlName="customerCode"
@@ -213,6 +157,24 @@
                                 [ngClass]="shipmentInfo.get('customerReferenceNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingShipment('customerReferenceNumber')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPackageMawb">
+                            <p class="formControlLabel f600 textBlack mb-0">No of Packages MAWB</p>
+                            <input maxlength="50" formControlName="noOfPackageMawb"
+                                [ngClass]="shipmentInfo.get('noOfPackageMawb')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('noOfPackageMawb')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        
+                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPieceHawb">
+                            <p class="formControlLabel f600 textBlack mb-0">No of Pieces HAWB</p>
+                            <input maxlength="50" formControlName="noOfPieceHawb"
+                                [ngClass]="shipmentInfo.get('noOfPieceHawb')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('noOfPieceHawb')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
@@ -243,6 +205,15 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
+                        <div class="col-3 marginFieldNew borderRadius12" id="countryOfOrigin">
+                            <p class="formControlLabel f600 textBlack mb-0">Country of Origin</p>
+                            <input maxlength="50" formControlName="countryOfOrigin"
+                                [ngClass]="shipmentInfo.get('countryOfOrigin')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('countryOfOrigin')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
                         <div class="col-3 marginFieldNew borderRadius12" id="workerCode">
                             <p class="formControlLabel f600 textBlack mb-0">Worker <Code></Code></p>
                             <input maxlength="50" formControlName="workerCode"
@@ -252,21 +223,30 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="loadType">
-                            <p class="formControlLabel f600 textBlack mb-0">Load Type <Code></Code></p>
-                            <input maxlength="50" formControlName="loadType"
-                                [ngClass]="shipmentInfo.get('loadType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                        <div class="col-3 marginFieldNew borderRadius12" id="paymentType">
+                            <p class="formControlLabel f600 textBlack mb-0">Payment Type</p>
+                            <input maxlength="50" formControlName="paymentType"
+                                [ngClass]="shipmentInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('loadType')"
+                            <mat-error *ngIf="errorHandlingShipment('paymentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="loadType">
-                            <p class="formControlLabel f600 textBlack mb-0">Load Type <Code></Code></p>
-                            <input maxlength="50" formControlName="loadType"
-                                [ngClass]="shipmentInfo.get('loadType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                        <div class="col-3 marginFieldNew borderRadius12" id="priority">
+                            <p class="formControlLabel f600 textBlack mb-0">Priority</p>
+                            <input maxlength="50" formControlName="priority"
+                                [ngClass]="shipmentInfo.get('priority')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingShipment('loadType')"
+                            <mat-error *ngIf="errorHandlingShipment('priority')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="manufacturer">
+                            <p class="formControlLabel f600 textBlack mb-0">Manufacturer</p>
+                            <input maxlength="50" formControlName="manufacturer"
+                                [ngClass]="shipmentInfo.get('manufacturer')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('manufacturer')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
@@ -296,7 +276,6 @@
                             <mat-error *ngIf="errorHandlingShipment('courierPartnerReferenceNumber')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                     </div>
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
@@ -313,70 +292,63 @@
                             <input maxlength="50" formControlName="partnerHouseAirwayBill"
                                 [ngClass]="carrierInfo.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('partnerHouseAirwayBill')"
+                            <mat-error *ngIf="errorHandlingConsignment('partnerHouseAirwayBill')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerMasterAirwayBill">
                             <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
                             <input maxlength="50" formControlName="partnerMasterAirwayBill"
                                 [ngClass]="carrierInfo.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('partnerMasterAirwayBill')"
+                            <mat-error *ngIf="errorHandlingConsignment('partnerMasterAirwayBill')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="airportOriginCode">
                             <p class="formControlLabel f600 textBlack mb-0">Airport Origin Code</p>
                             <input maxlength="50" formControlName="airportOriginCode"
                                 [ngClass]="carrierInfo.get('airportOriginCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('airportOriginCode')"
+                            <mat-error *ngIf="errorHandlingConsignment('airportOriginCode')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="flightNo">
                             <p class="formControlLabel f600 textBlack mb-0">Flight No</p>
                             <input maxlength="50" formControlName="flightNo"
                                 [ngClass]="carrierInfo.get('flightNo')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('flightNo')"
+                            <mat-error *ngIf="errorHandlingConsignment('flightNo')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="flightArrivalTime">
                             <p class="formControlLabel f600 textBlack mb-0">Flight Arrival Time</p>
                             <input maxlength="50" formControlName="flightArrivalTime"
                                 [ngClass]="carrierInfo.get('flightArrivalTime')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('flightArrivalTime')"
+                            <mat-error *ngIf="errorHandlingConsignment('flightArrivalTime')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="noOfPackages">
                             <p class="formControlLabel f600 textBlack mb-0">No of Packages</p>
                             <input maxlength="50" formControlName="noOfPackages"
                                 [ngClass]="carrierInfo.get('noOfPackages')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('noOfPackages')"
+                            <mat-error *ngIf="errorHandlingConsignment('noOfPackages')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="flightName">
                             <p class="formControlLabel f600 textBlack mb-0">Flight Name</p>
                             <input maxlength="50" formControlName="flightName"
                                 [ngClass]="carrierInfo.get('flightName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('flightName')"
+                            <mat-error *ngIf="errorHandlingConsignment('flightName')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
                         <div class="col-3 marginFieldNew borderRadius12" id="packageType">
                             <p class="formControlLabel f600 textBlack mb-0">Package Type</p>
                             <input maxlength="50" formControlName="packageType"
                                 [ngClass]="carrierInfo.get('packageType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('packageType')"
+                            <mat-error *ngIf="errorHandlingConsignment('packageType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="length">
@@ -414,22 +386,6 @@
                             <mat-error *ngIf="errorHandlingConsignment('dimensionUnit')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="volume">
-                            <p class="formControlLabel f600 textBlack mb-0">Volume</p>
-                            <input maxlength="50" formControlName="volume"
-                                [ngClass]="senderInfo.get('volume')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingConsignment('volume')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="volumeUnit">
-                            <p class="formControlLabel f600 textBlack mb-0">Volume Unit</p>
-                            <input maxlength="50" formControlName="volumeUnit"
-                                [ngClass]="senderInfo.get('volumeUnit')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingConsignment('volumeUnit')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="weight">
                             <p class="formControlLabel f600 textBlack mb-0">Weight</p>
                             <input maxlength="50" pKeyFilter="num" formControlName="weight"
@@ -446,7 +402,38 @@
                             <mat-error *ngIf="errorHandlingConsignment('weightUnit')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-
+                        <div class="col-3 marginFieldNew borderRadius12" id="volume">
+                            <p class="formControlLabel f600 textBlack mb-0">Volume</p>
+                            <input maxlength="50" formControlName="volume"
+                                [ngClass]="senderInfo.get('volume')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('volume')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="volumeUnit">
+                            <p class="formControlLabel f600 textBlack mb-0">Volume Unit</p>
+                            <input maxlength="50" formControlName="volumeUnit"
+                                [ngClass]="senderInfo.get('volumeUnit')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('volumeUnit')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="netWeight">
+                            <p class="formControlLabel f600 textBlack mb-0">New Weight</p>
+                            <input maxlength="50" formControlName="netWeight"
+                                [ngClass]="senderInfo.get('netWeight')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('netWeight')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="grossWeight">
+                            <p class="formControlLabel f600 textBlack mb-0">Gross Weight</p>
+                            <input maxlength="50" formControlName="grossWeight"
+                                [ngClass]="senderInfo.get('grossWeight')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('grossWeight')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceNumber">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice</p>
                             <input maxlength="50" formControlName="invoiceNumber"
