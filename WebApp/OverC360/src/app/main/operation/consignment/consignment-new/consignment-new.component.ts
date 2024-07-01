@@ -56,7 +56,7 @@ export class ConsignmentNewComponent {
   // form builder initialize
 
   shipmentInfo = this.fb.group({
-    companyId: [this.auth.companyId, Validators.required],
+    companyId: [this.auth.companyId,],
     priority: [],
     partnerType: [],
     partnerId: [, Validators.required],
@@ -487,7 +487,6 @@ export class ConsignmentNewComponent {
     }
   }
   savePiece(){
-    console.log(this.piece)
     this.activeIndex = 3;
     this.submitted = false;
     this.disabledSender = false;
@@ -545,9 +544,10 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      this.activeIndex = 5;
-      this.submitted = false;
-      this.disabledBilling = false;
+      // this.activeIndex = 5;
+      // this.submitted = false;
+      // this.disabledBilling = false;
+      this.saveFinal();
     }
   }
   saveBilling() {
@@ -581,25 +581,26 @@ export class ConsignmentNewComponent {
   }
 
 mainForm: FormGroup = new FormGroup({
-  
 
 });
 
 saveFinal(){
+  console.log(this.piece)
   this.mainForm = this.fb.group({
     ...this.shipmentInfo.value,
     ...this.consignment.value,
-    ...this.piece.value,
     ...this.senderInfo.value,
     ...this.deliveryInfo.value,
     ...this.billing.value,
+    pieceDetails: this.pieceDetails,
     updatedBy: [,],
     updatedOn: ['',],
     createdOn: ['',],
     createdBy: [,],
+    companyId: [this.auth.companyId,]
   });
 
-  this.service.Create(this.mainForm.getRawValue()).subscribe({next: (res) => {
+  this.service.Create([this.mainForm.getRawValue()]).subscribe({next: (res) => {
     this.messageService.add({
       severity: 'success',
       summary: 'Updated',

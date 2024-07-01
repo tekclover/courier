@@ -45,6 +45,7 @@ export class SubProductNewComponent {
     companyName: [],
     subProductId: [],
     subProductName: [, Validators.required],
+    subProductValue: [, Validators.required],
     remark: [],
     statusId: ['1',],
     statusDescription: [],

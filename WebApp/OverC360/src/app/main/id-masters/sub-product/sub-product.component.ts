@@ -47,6 +47,7 @@ export class SubProductComponent {
     this.cols = [
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'subProductName', header: 'Sub Product Name' },
+      { field: 'subProductValue', header: 'Sub Product Value' },
       { field: 'companyName', header: 'Company' },
       { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
@@ -158,7 +159,7 @@ export class SubProductComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.subProductId).subscribe({
+    this.service.Delete(lines.subProductId, lines.subProductValue).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
@@ -194,7 +195,7 @@ export class SubProductComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'SubProduct');
+    this.cs.exportAsExcel(exportData, 'Sub Product');
   }
 
 }

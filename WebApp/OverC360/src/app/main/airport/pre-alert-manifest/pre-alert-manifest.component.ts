@@ -111,7 +111,7 @@ export class PreAlertManifestComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/language-new/' + paramdata]);
+      this.router.navigate(['/main/airport/preAlertManifest-new/' + paramdata]);
     }
   }
 
