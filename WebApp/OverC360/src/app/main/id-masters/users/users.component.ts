@@ -50,10 +50,10 @@ export class UsersComponent {
       { field: 'userRoleIdAndDescription', header: 'User Role' },
       { field: 'userTypeIdAndDescription', header: 'User Type' },
       { field: 'userName', header: 'User Name' },
-      { field: 'firstName', header: 'First Name' },
-      { field: 'lastName', header: 'Last Name' },
-      { field: 'timeZone', header: 'Time Zone' },
-      { field: 'emailId', header: 'Email Id'}
+      { field: 'emailId', header: 'Email Id'},
+      { field: 'statusId', header: 'Status ID' },
+      { field: 'createdBy', header: 'Created By'},
+      { field: 'createdOn', header: 'Created On'},
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
@@ -63,7 +63,9 @@ export class UsersComponent {
       { field: 'userRoleId', header: 'User Role ID' },
       { field: 'userTypeId', header: 'User Type ID' },
       { field: 'password', header: 'Password' },
-      { field: 'statusId', header: 'Status ID' },
+      { field: 'firstName', header: 'First Name' },
+      { field: 'lastName', header: 'Last Name' },
+      { field: 'timeZone', header: 'Time Zone' },
       { field: 'dateFormatId', header: 'Date Format ID' },
       { field: 'currencyDecimal', header: 'Currency Decimal' },
       { field: 'portalLoggedIn', header: 'Portal Logged In' },

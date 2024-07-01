@@ -5,7 +5,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { UsersService } from '../users.service';  
+import { UsersService } from '../users.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
 
@@ -18,7 +18,12 @@ import { AuthService } from '../../../../core/core';
 export class UsersNewComponent {
 
   active: number | undefined = 0;
-  userType:any[] =[]
+  userType: any[] = []
+
+  status: any[] = [];
+
+  flag: any[] = [];
+
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -33,10 +38,18 @@ export class UsersNewComponent {
   ) {
     this.userType = [
       { value: 'Portal', label: 'Portal' },
-      { value: 'Customer', label: 'Customer' },
-      { value: 'App', label: 'App' }
-        ];
-   }
+      { value: 'Customer', label: 'Customer' },
+      { value: 'App', label: 'App' }
+    ];
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
+    ];
+    this.flag = [
+      { value: '0', label: 'False'},
+      { value: '1', label: 'True'}
+    ]
+  }
 
   pageToken: any;
   // Form builder Initialize
@@ -120,23 +133,24 @@ export class UsersNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
- 
+
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
 
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-           this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   fill(line: any) {
@@ -166,11 +180,11 @@ export class UsersNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.userId + res.companyId + res.languageId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/users']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.userId + res.companyId + res.languageId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/users']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
