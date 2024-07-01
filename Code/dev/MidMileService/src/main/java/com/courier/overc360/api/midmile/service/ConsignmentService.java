@@ -296,11 +296,11 @@ public class ConsignmentService {
             newAddConsignment.setPieceDetails(addPieceDetailsList);
             newAddConsignment.setReferenceImageList(referenceImageList);
             BeanUtils.copyProperties(saveConsignment, newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getConsignmentInfo(), newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getConsignmentRefs(), newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getDestinationDetails(), newAddConsignment.getDestinationDetails());
-            BeanUtils.copyProperties(saveConsignment.getReturnDetails(), newAddConsignment.getReturnDetails());
-            BeanUtils.copyProperties(saveConsignment.getOriginDetails(), newAddConsignment.getOriginDetails());
+            BeanUtils.copyProperties(saveConsignment.getConsignmentInfo() != null, newAddConsignment);
+            BeanUtils.copyProperties(saveConsignment.getConsignmentRefs() != null, newAddConsignment);
+            BeanUtils.copyProperties(saveConsignment.getDestinationDetails() != null, newAddConsignment.getDestinationDetails());
+            BeanUtils.copyProperties(saveConsignment.getReturnDetails() != null, newAddConsignment.getReturnDetails());
+            BeanUtils.copyProperties(saveConsignment.getOriginDetails() != null, newAddConsignment.getOriginDetails());
 
             consignmentEntities.add(newAddConsignment);
         }
