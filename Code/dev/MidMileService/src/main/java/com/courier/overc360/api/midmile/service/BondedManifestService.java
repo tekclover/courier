@@ -120,11 +120,11 @@ public class BondedManifestService {
 
             for (AddBondedManifest addBondedManifest : addBondedManifestList) {
                 // If ShipperId matches with consignorId then create
-                IKeyValuePair shipperData = bondedManifestRepository.getProductId(addBondedManifest.getShipperId(),
-                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
+//                IKeyValuePair shipperData = bondedManifestRepository.getProductId(addBondedManifest.getShipperId(),
+//                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
 
-                if (addBondedManifest.getProductId().equalsIgnoreCase(shipperData.getProductId()) &&
-                        addBondedManifest.getSubProductId().equalsIgnoreCase(shipperData.getSubProductId())) {
+//                if (addBondedManifest.getProductId().equalsIgnoreCase(shipperData.getProductId()) &&
+//                        addBondedManifest.getSubProductId().equalsIgnoreCase(shipperData.getSubProductId())) {
 
 //                    Long companyCount = replicaBondedManifestHeaderRepository.companyRecordCount(
 //                            addBondedManifestHeader.getLanguageId(), addBondedManifestHeader.getCompanyId());
@@ -178,8 +178,6 @@ public class BondedManifestService {
                         newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
                         newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
                     }
-                    newBondedManifest.setProductName(shipperData.getProductName());
-                    newBondedManifest.setSubProductName(shipperData.getSubProductName());
                     newBondedManifest.setStatusId(STATUS_ID);
                     newBondedManifest.setDeletionIndicator(0L);
                     newBondedManifest.setCreatedBy(loginUserID);
@@ -188,10 +186,7 @@ public class BondedManifestService {
                     newBondedManifest.setUpdatedOn(new Date());
                     BondedManifest createdBondedManifest = bondedManifestRepository.save(newBondedManifest);
                     createdBondedManifestList.add(createdBondedManifest);
-                } else
-                    throw new BadRequestException("ProductId " + addBondedManifest.getProductId() + " and SubProductId " +
-                            addBondedManifest.getSubProductId() + " doesn't match");
-            }
+                }
             return createdBondedManifestList;
         } catch (Exception e) {
             // Error Log

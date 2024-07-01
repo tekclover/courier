@@ -8,12 +8,12 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddConsignmentRef {
 
-    @NotBlank(message = "PackDetails is mandatory")
+//    @NotBlank(message = "PackDetails is mandatory")
     private String packDetails;
 
     private String description;
 
-    @NotBlank(message = "ReferenceNumber is mandatory")
+//    @NotBlank(message = "ReferenceNumber is mandatory")
     private String referenceNumber;
 
     private String storageLocation;
