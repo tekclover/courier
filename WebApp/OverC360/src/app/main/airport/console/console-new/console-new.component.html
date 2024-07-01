@@ -84,9 +84,8 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">PCS</p>
-                                <input maxlength="50" formControlName="noOfPieceHawb" [ngClass]="form.get('noOfPieceHawb')?.invalid && form.get('noOfPieceHawb')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('noOfPieceHawb')" class="text-danger"><small>{{
-                                    getErrorMessage()}}</small></mat-error>
+                                <input maxlength="50" formControlName="noOfPieceHawb" [ngClass]="form.get('noOfPieceHawb')?.invalid && form.get('noOfPieceHawb')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('noOfPieceHawb')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Description</p>
