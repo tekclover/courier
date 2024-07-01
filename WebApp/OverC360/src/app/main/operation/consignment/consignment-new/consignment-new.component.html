@@ -507,18 +507,22 @@
                     <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)" [value]="pieceDetails.controls">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Piece ID</th>
+                                <th *ngIf="this.pageToken.pageflow != 'New'">Piece ID</th>
                                 <th>Description</th>
                                 <th style="width: 5rem; justify-content: center;">Dimension</th>
+                                <th>HS Code</th>
                                 <th>Piece Value</th>
                                 <th>Piece Currency</th>
-                                <th>Actions</th>
+                                <th>HS code</th>
+                                <th>Declared Value</th>
+                                <th>COD Amount</th>
+                                <th style="width: 10rem; justify-content: center;">Actions</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
                             <tr [formGroup]="item">
 
-                                <td><input class="inputborderLess pl-3" placeholder="Enter" [value]="i"
+                                <td *ngIf="this.pageToken.pageflow != 'New'"><input class="inputborderLess pl-3" placeholder="Enter" [value]="i"
                                         formControlName="pieceId"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="description"></td>
@@ -573,14 +577,23 @@
                                     </p-overlayPanel>
                                 </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                    formControlName="hsCode"></td>
+                                    <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="pieceValue"></td>
+                                        <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                            formControlName="pieceCurrency"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="pieceCurrency"></td>
+                                        formControlName="declaredValue"></td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                        formControlName="codAmount"></td>
                                 <td class="d-flex justify-content-center">
                                     <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png"
-                                        alt="" srcset="" style="height: 1.5rem;">
+                                        alt="" srcset="" style="height: 1.4rem;">
                                     <i type="button" (click)="opendialog('New', item)"
                                         class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
+                                        <input type="file" #fileInput multiple style="display:none" (change)="selectFiles($event)" />   
+                                        <i type="button" class="bi bi-card-image textBlack pl-3" style="font-size: 1.2rem;" (click)="fileInput.click()"></i> 
+                                        
                                 </td>
                             </tr>
 

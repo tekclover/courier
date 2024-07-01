@@ -229,6 +229,7 @@ export class ConsignmentNewComponent {
       width: [],
       codAmount: [],
       declaredValue: [],
+      hsCode: [],
       description: [],
       dimensionUnit: [],
       height: [],
@@ -346,6 +347,11 @@ export class ConsignmentNewComponent {
         data.controls.itemDetails.patchValue(result);
       }
     });
+  }
+
+  selectedFiles: any[] = [];
+  selectFiles(event:any): void {
+    this.selectedFiles = event.target.files;
   }
 
   save() {
