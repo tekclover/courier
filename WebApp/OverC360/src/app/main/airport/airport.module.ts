@@ -8,6 +8,7 @@ import { ConsoleComponent } from './console/console.component';
 import { BondedManifestComponent } from './bonded-manifest/bonded-manifest.component';
 import { CcrComponent } from './ccr/ccr.component';
 import { PreAlertNewComponent } from './pre-alert-manifest/pre-alert-new/pre-alert-new.component';
+import { BondedManifestNewComponent } from './bonded-manifest/bonded-manifest-new/bonded-manifest-new.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { PreAlertNewComponent } from './pre-alert-manifest/pre-alert-new/pre-ale
     ConsoleComponent,
     BondedManifestComponent,
     CcrComponent,
-    PreAlertNewComponent
+    PreAlertNewComponent,
+    BondedManifestNewComponent
   ],
   imports: [
     CommonModule,
