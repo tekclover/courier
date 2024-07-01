@@ -651,6 +651,25 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
+                        <div class="col-3 marginFieldNew borderRadius12" id="country" formGroupName="originDetails">
+                            <p class="formControlLabel f600 textBlack mb-0">Country</p>
+                            <input maxlength="50" formControlName="country"
+                                [ngClass]="senderInfo.get('originDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingSender('originDetails.country')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        
+                        <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="originDetails">
+                            <p class="formControlLabel f600 textBlack mb-0">State</p>
+                            <input maxlength="50" formControlName="state"
+                                [ngClass]="senderInfo.get('originDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingSender('originDetails.state')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        
                         <div class="col-3 marginFieldNew borderRadius12" id="district" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">District</p>
                             <p-dropdown placeholder="Select" filter="true" formControlName="district"
@@ -670,23 +689,6 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="originDetails">
-                            <p class="formControlLabel f600 textBlack mb-0">State</p>
-                            <input maxlength="50" formControlName="state"
-                                [ngClass]="senderInfo.get('originDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingSender('originDetails.state')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="country" formGroupName="originDetails">
-                            <p class="formControlLabel f600 textBlack mb-0">Country</p>
-                            <input maxlength="50" formControlName="country"
-                                [ngClass]="senderInfo.get('originDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingSender('originDetails.country')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
 
                         <div class="col-3 marginFieldNew borderRadius12" id="latitude" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Latitude</p>
