@@ -135,23 +135,30 @@ public class ConsignmentService {
             if(productId != null && subProductId != null) {
                 if (!productId.equalsIgnoreCase(shipperData.getProductId()) ||
                         !subProductId.equalsIgnoreCase(shipperData.getSubProductId())) {
-                    if (!subProductId.equalsIgnoreCase(getProductIdFromCustomer.getSubProductId()) ||
-                            !productId.equalsIgnoreCase(getProductIdFromCustomer.getProductId())) {
-                        throw new BadRequestException("Product ID and Sub-product ID do not match.");
+                    if ( getProductIdFromCustomer != null) {
+                        if (!subProductId.equalsIgnoreCase(getProductIdFromCustomer.getSubProductId()) ||
+                                !productId.equalsIgnoreCase(getProductIdFromCustomer.getProductId())) {
+                            throw new BadRequestException("Product ID and Sub-product ID do not match.");
+                        }
                     }
                 }
             }
 
-            //Setting the number range object based on product ID
+//            //Setting the number range object based on product ID
+//            String NUM_RAN_OBJ = null;
+//            if (productId.equalsIgnoreCase("1")) {
+//                NUM_RAN_OBJ = "INTERNATIONALINBOUND";
+//            } else if (productId.equalsIgnoreCase("2")) {
+//                NUM_RAN_OBJ = "INTERNATIONALOUTBOUND";
+//            } else if (productId.equalsIgnoreCase("3")) {
+//                NUM_RAN_OBJ = "DOMESTIC";
+//            } else {
+//                log.info("ProductId given not 1 or 2 or 3");
+//            }
             String NUM_RAN_OBJ = null;
-            if (productId.equalsIgnoreCase("1")) {
-                NUM_RAN_OBJ = "INTERNATIONALINBOUND";
-            } else if (productId.equalsIgnoreCase("2")) {
-                NUM_RAN_OBJ = "INTERNATIONALOUTBOUND";
-            } else if (productId.equalsIgnoreCase("3")) {
-                NUM_RAN_OBJ = "DOMESTIC";
-            } else {
-                log.info("ProductId given not 1 or 2 or 3");
+
+            if(shipperData.getConsignorName() != null) {
+                NUM_RAN_OBJ = shipperData.getConsignorName();
             }
 
             // Generating house and master airway bills
@@ -289,11 +296,11 @@ public class ConsignmentService {
             newAddConsignment.setPieceDetails(addPieceDetailsList);
             newAddConsignment.setReferenceImageList(referenceImageList);
             BeanUtils.copyProperties(saveConsignment, newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getConsignmentInfo(), newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getConsignmentRefs(), newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getDestinationDetails(), newAddConsignment.getDestinationDetails());
-            BeanUtils.copyProperties(saveConsignment.getReturnDetails(), newAddConsignment.getReturnDetails());
-            BeanUtils.copyProperties(saveConsignment.getOriginDetails(), newAddConsignment.getOriginDetails());
+            BeanUtils.copyProperties(saveConsignment.getConsignmentInfo() != null, newAddConsignment);
+            BeanUtils.copyProperties(saveConsignment.getConsignmentRefs() != null, newAddConsignment);
+            BeanUtils.copyProperties(saveConsignment.getDestinationDetails() != null, newAddConsignment.getDestinationDetails());
+            BeanUtils.copyProperties(saveConsignment.getReturnDetails() != null, newAddConsignment.getReturnDetails());
+            BeanUtils.copyProperties(saveConsignment.getOriginDetails() != null, newAddConsignment.getOriginDetails());
 
             consignmentEntities.add(newAddConsignment);
         }

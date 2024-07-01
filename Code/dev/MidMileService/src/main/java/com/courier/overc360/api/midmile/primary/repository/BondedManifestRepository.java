@@ -52,7 +52,7 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
 
     @Query(value = "select customer_name customerName, \n" +
             " product_id productId, product_name productName, \n " +
-            " sub_product_id subProductId, sub_product_name subProductName, \n " +
+            " sub_product_id subProductId, sub_product_name subProductName \n " +
             " from tblcustomer where customer_id in (:customerId) and \n " +
             " lang_id in (:languageId) and \n " +
             " c_id in (:companyId) and is_deleted = 0 ", nativeQuery = true)
