@@ -11,4 +11,6 @@ public class SubProductDeleteInput {
 
     private String subProductId;
 
+    private String subProductValue;
+
 }

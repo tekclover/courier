@@ -49,6 +49,9 @@ public class MenuService {
     private CompanyRepository companyRepository;
 
     @Autowired
+    private NumberRangeService numberRangeService;
+
+    @Autowired
     private ErrorLogRepository errorLogRepository;
 
     @Autowired
@@ -107,19 +110,31 @@ public class MenuService {
                 throw new BadRequestException("Record is Getting Duplicated with the given values : menuId - " + addMenu.getMenuId());
             } else {
                 log.info("new Menu --> " + addMenu);
-                Menu dbMenu = new Menu();
+                Menu newMenu = new Menu();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addMenu.getLanguageId(), addMenu.getCompanyId());
-                BeanUtils.copyProperties(addMenu, dbMenu, CommonUtils.getNullPropertyNames(addMenu));
-                if (iKeyValuePair != null) {
-                    dbMenu.setLanguageIdAndDescription(iKeyValuePair.getLangDesc());
-                    dbMenu.setCompanyIdAndDescription(iKeyValuePair.getCompanyDesc());
+                BeanUtils.copyProperties(addMenu, newMenu, CommonUtils.getNullPropertyNames(addMenu));
+                if (addMenu.getMenuId() == null) {
+                    String NUM_RAN_OBJ = "MENU";
+                    String MENU_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for MENU_ID : " + MENU_ID);
+                    newMenu.setMenuId(Long.valueOf(MENU_ID));
                 }
-                dbMenu.setDeletionIndicator(0L);
-                dbMenu.setCreatedBy(loginUserID);
-                dbMenu.setCreatedOn(new Date());
-                dbMenu.setUpdatedBy(loginUserID);
-                dbMenu.setUpdatedOn(new Date());
-                return menuRepository.save(dbMenu);
+                if (addMenu.getSubMenuId() == null) {
+                    String NUM_RAN_OBJ = "SUB_MENU";
+                    String SUB_MENU_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for SUB_MENU_ID : " + SUB_MENU_ID);
+                    newMenu.setSubMenuId(Long.valueOf(SUB_MENU_ID));
+                }
+                if (iKeyValuePair != null) {
+                    newMenu.setLanguageIdAndDescription(iKeyValuePair.getLangDesc());
+                    newMenu.setCompanyIdAndDescription(iKeyValuePair.getCompanyDesc());
+                }
+                newMenu.setDeletionIndicator(0L);
+                newMenu.setCreatedBy(loginUserID);
+                newMenu.setCreatedOn(new Date());
+                newMenu.setUpdatedBy(loginUserID);
+                newMenu.setUpdatedOn(new Date());
+                return menuRepository.save(newMenu);
             }
         } catch (Exception e) {
             // Error Log

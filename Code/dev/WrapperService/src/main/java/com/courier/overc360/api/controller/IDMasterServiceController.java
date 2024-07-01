@@ -227,16 +227,17 @@ public class IDMasterServiceController {
     // Get SubProduct
     @ApiOperation(response = SubProduct.class, value = "Get SubProduct") // label for swagger
     @GetMapping("/subProduct/{subProductId}")
-    public ResponseEntity<?> getSubProduct(@PathVariable String subProductId, @RequestParam String companyId,
+    public ResponseEntity<?> getSubProduct(@PathVariable String subProductId, @RequestParam String companyId, @RequestParam String subProductValue,
                                            @RequestParam String languageId, @RequestParam String authToken) {
-        SubProduct subProduct = idmasterService.getSubProduct(languageId, companyId, subProductId, authToken);
+        SubProduct subProduct = idmasterService.getSubProduct(languageId, companyId, subProductId, subProductValue, authToken);
         return new ResponseEntity<>(subProduct, HttpStatus.OK);
     }
 
     // Create SubProduct
     @ApiOperation(response = SubProduct.class, value = "Create new SubProduct") // label for swagger
     @PostMapping("/subProduct")
-    public ResponseEntity<?> createSubProduct(@RequestBody AddSubProduct addSubProduct, @RequestParam String loginUserID, @RequestParam String authToken) {
+    public ResponseEntity<?> postSubProduct(@RequestBody AddSubProduct addSubProduct,
+                                            @RequestParam String loginUserID, @RequestParam String authToken) {
         SubProduct subProduct = idmasterService.createSubProduct(addSubProduct, loginUserID, authToken);
         return new ResponseEntity<>(subProduct, HttpStatus.OK);
     }
@@ -244,10 +245,11 @@ public class IDMasterServiceController {
     // Update SubProduct
     @ApiOperation(response = SubProduct.class, value = "Update SubProduct") // label for swagger
     @PatchMapping("/subProduct/{subProductId}")
-    public ResponseEntity<?> updateSubProduct(@PathVariable String subProductId, @RequestParam String languageId,
-                                              @RequestParam String loginUserID, @RequestBody UpdateSubProduct updateSubProduct,
-                                              @RequestParam String companyId, @RequestParam String authToken) {
-        SubProduct subProduct = idmasterService.updateSubProduct(languageId, companyId, subProductId, updateSubProduct, loginUserID, authToken);
+    public ResponseEntity<?> patchSubProduct(@PathVariable String subProductId, @RequestParam String languageId, @RequestParam String subProductValue,
+                                             @RequestParam String loginUserID, @RequestBody UpdateSubProduct updateSubProduct,
+                                             @RequestParam String companyId, @RequestParam String authToken) {
+        SubProduct subProduct = idmasterService.updateSubProduct(languageId, companyId, subProductId, subProductValue,
+                updateSubProduct, loginUserID, authToken);
         return new ResponseEntity<>(subProduct, HttpStatus.OK);
     }
 
@@ -255,8 +257,8 @@ public class IDMasterServiceController {
     @ApiOperation(response = SubProduct.class, value = "Delete SubProduct") // label for swagger
     @DeleteMapping("/subProduct/{subProductId}")
     public ResponseEntity<?> deleteSubProduct(@PathVariable String subProductId, @RequestParam String languageId, @RequestParam String loginUserID,
-                                              @RequestParam String companyId, @RequestParam String authToken) {
-        idmasterService.deleteSubProduct(languageId, companyId, subProductId, loginUserID, authToken);
+                                              @RequestParam String companyId, @RequestParam String subProductValue, @RequestParam String authToken) {
+        idmasterService.deleteSubProduct(languageId, companyId, subProductId, subProductValue, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -269,7 +271,7 @@ public class IDMasterServiceController {
 
     /*----------------------------------------------list_APIs'-------------------------------------------------------*/
     // Create SubProducts - bulk
-    @ApiOperation(response = SubProduct.class, value = "Create new SubProducts - bulk") // label for swagger
+    @ApiOperation(response = SubProduct[].class, value = "Create new SubProducts - bulk") // label for swagger
     @PostMapping("/subProduct/create/list")
     public ResponseEntity<?> postSubProductBulk(@RequestBody List<AddSubProduct> addSubProductList,
                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
@@ -278,7 +280,7 @@ public class IDMasterServiceController {
     }
 
     // Update SubProducts - bulk
-    @ApiOperation(response = SubProduct.class, value = "Update SubProducts - bulk") // label for swagger
+    @ApiOperation(response = SubProduct[].class, value = "Update SubProducts - bulk") // label for swagger
     @PatchMapping("/subProduct/update/list")
     public ResponseEntity<?> patchSubProductBulk(@RequestBody List<UpdateSubProduct> updateSubProductList,
                                                  @RequestParam String loginUserID, @RequestParam String authToken) {
@@ -287,7 +289,7 @@ public class IDMasterServiceController {
     }
 
     // Delete SubProducts - bulk
-    @ApiOperation(response = SubProduct.class, value = "Delete SubProducts - bulk") // label for swagger
+    @ApiOperation(response = SubProduct[].class, value = "Delete SubProducts - bulk") // label for swagger
     @PostMapping("/subProduct/delete/list")
     public ResponseEntity<?> deleteSubProductBulk(@RequestBody List<SubProductDeleteInput> deleteInputs,
                                                   @RequestParam String loginUserID, @RequestParam String authToken) {

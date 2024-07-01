@@ -120,11 +120,11 @@ public class DistrictService {
 
                 District newDistrict = new District();
                 BeanUtils.copyProperties(addDistrict, newDistrict, CommonUtils.getNullPropertyNames(addDistrict));
-//                if (addDistrict.getDistrictId() == null || addDistrict.getDistrictId().isBlank()) {
-//                    String NUM_RAN_OBJ = "DISTRICT";
-//                    String DISTRICT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    newDistrict.setDistrictId(DISTRICT_ID);
-//                }
+                if (addDistrict.getDistrictId() == null || addDistrict.getDistrictId().isBlank()) {
+                    String NUM_RAN_OBJ = "DISTRICT";
+                    String DISTRICT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    newDistrict.setDistrictId(DISTRICT_ID);
+                }
                 if (iKeyValuePair != null) {
                     newDistrict.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newDistrict.setCompanyName(iKeyValuePair.getCompanyDesc());

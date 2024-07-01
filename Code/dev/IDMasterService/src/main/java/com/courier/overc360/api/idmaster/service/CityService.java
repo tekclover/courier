@@ -47,6 +47,9 @@ public class CityService {
     private ReplicaCityRepository replicaCityRepository;
 
     @Autowired
+    private NumberRangeService numberRangeService;
+
+    @Autowired
     private ErrorLogRepository errorLogRepository;
 
     @Autowired
@@ -115,12 +118,12 @@ public class CityService {
                         addCity.getCountryId(), addCity.getProvinceId(), addCity.getDistrictId());
                 City newCity = new City();
                 BeanUtils.copyProperties(addCity, newCity, CommonUtils.getNullPropertyNames(addCity));
-//                if (addCity.getCityId() == null || addCity.getCityId().isBlank()) {
-//                    String NUM_RAN_OBJ = "CITY";
-//                    String CITY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for CITY_ID : " + CITY_ID);
-//                    newCity.setCityId(CITY_ID);
-//                }
+                if (addCity.getCityId() == null || addCity.getCityId().isBlank()) {
+                    String NUM_RAN_OBJ = "CITY";
+                    String CITY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for CITY_ID : " + CITY_ID);
+                    newCity.setCityId(CITY_ID);
+                }
                 if (iKeyValuePair != null) {
                     newCity.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newCity.setCompanyName(iKeyValuePair.getCompanyDesc());
