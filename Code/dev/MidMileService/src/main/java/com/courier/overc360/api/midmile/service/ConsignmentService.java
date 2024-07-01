@@ -135,9 +135,11 @@ public class ConsignmentService {
             if(productId != null && subProductId != null) {
                 if (!productId.equalsIgnoreCase(shipperData.getProductId()) ||
                         !subProductId.equalsIgnoreCase(shipperData.getSubProductId())) {
-                    if (!subProductId.equalsIgnoreCase(getProductIdFromCustomer.getSubProductId()) ||
-                            !productId.equalsIgnoreCase(getProductIdFromCustomer.getProductId())) {
-                        throw new BadRequestException("Product ID and Sub-product ID do not match.");
+                    if ( getProductIdFromCustomer != null) {
+                        if (!subProductId.equalsIgnoreCase(getProductIdFromCustomer.getSubProductId()) ||
+                                !productId.equalsIgnoreCase(getProductIdFromCustomer.getProductId())) {
+                            throw new BadRequestException("Product ID and Sub-product ID do not match.");
+                        }
                     }
                 }
             }
