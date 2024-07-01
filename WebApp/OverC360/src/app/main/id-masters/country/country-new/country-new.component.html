@@ -25,10 +25,10 @@
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
-                                    getErrorMessage()}}</small></mat-error>
-                              </div>
-                
-                              <div class="col-6 marginFieldNew borderRadius12">
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
@@ -39,7 +39,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Country ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="countryId"
-                                [ngClass]="form.get('countryId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [ngClass]="form.get('countryId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('countryId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
@@ -57,7 +57,7 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
-                                    formControlName="statusId" placeholder="Select "   />
+                                    formControlName="statusId" placeholder="Select" />
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
