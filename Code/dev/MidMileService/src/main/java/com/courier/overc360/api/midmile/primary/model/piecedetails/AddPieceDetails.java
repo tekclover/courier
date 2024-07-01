@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -26,6 +27,8 @@ public class AddPieceDetails {
     private String partnerType;
 
     private String partnerName;
+
+    private String hsCode;
 
     private String partnerMasterAirwayBill;
 
@@ -54,6 +57,9 @@ public class AddPieceDetails {
     private String volume;
 
     private String volumeUnit;
+
+    private String pieceStatusId;
+    private Date pieceStatusTimestamp;
 
     private List<ReferenceImageList> referenceImageList;
     private String imageReferenceId;

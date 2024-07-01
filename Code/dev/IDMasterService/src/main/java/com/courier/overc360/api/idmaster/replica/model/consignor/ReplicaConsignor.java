@@ -17,14 +17,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 /*
- * `LANG_ID`, `C_ID`, `SUB_PRODUCT_ID`, `PRODUCT_ID`, `CUSTOMER_ID`, `CONSIGNOR_ID`
+ * `LANG_ID`, `C_ID`, `SUB_PRODUCT_ID`, `PRODUCT_ID`, `CUSTOMER_ID`, `CONSIGNOR_ID`, `SUB_PRODUCT_VALUE`
  */
-@Table(
-        name = "tblconsignor",
+@Table(name = "tblconsignor",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_consignor",
-                        columnNames = {"LANG_ID", "C_ID", "SUB_PRODUCT_ID", "PRODUCT_ID", "CUSTOMER_ID", "CONSIGNOR_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "SUB_PRODUCT_ID", "PRODUCT_ID", "CUSTOMER_ID", "CONSIGNOR_ID", "SUB_PRODUCT_VALUE"}
                 )
         }
 )
@@ -64,6 +63,7 @@ public class ReplicaConsignor {
     @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String subProductName;
 
+    @Id
     @Column(name = "SUB_PRODUCT_VALUE", columnDefinition = "nvarchar(50)")
     private String subProductValue;
 

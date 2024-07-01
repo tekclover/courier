@@ -90,38 +90,6 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Create HHT User</p>
-                                <input formControlName="createHhtUser" 
-                                    [ngClass]="form.get('createHhtUser')?.invalid && form.get('createHhtUser')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('createHhtUser')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Date Format ID</p>
-                                <input formControlName="dateFormatId" 
-                                    [ngClass]="form.get('dateFormatId')?.invalid && form.get('dateFormatId')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('dateFormatId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Currency Decimal</p>
-                                <input formControlName="currencyDecimal" 
-                                    [ngClass]="form.get('currencyDecimal')?.invalid && form.get('currencyDecimal')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('currencyDecimal')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Time Zone</p>
-                                <input formControlName="timeZone" 
-                                    [ngClass]="form.get('timeZone')?.invalid && form.get('timeZone')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('timeZone')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Email ID</p>
                                 <input formControlName="emailId" 
                                     [ngClass]="form.get('emailId')?.invalid && form.get('emailId')?.dirty ? 'invalid' : ''"
@@ -129,6 +97,18 @@
                                 <mat-error *ngIf="errorHandling('emailId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Contact Number</p>
+                                <input formControlName="emailId" 
+                                    [ngClass]="form.get('emailId')?.invalid && form.get('emailId')?.dirty ? 'invalid' : ''"
+                                    class="w-100"  pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('emailId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />
+                            </div> 
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/users">Cancel</button>

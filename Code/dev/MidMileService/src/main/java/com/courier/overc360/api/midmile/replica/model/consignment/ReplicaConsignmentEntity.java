@@ -51,6 +51,24 @@ public class ReplicaConsignmentEntity {
     @Column(name = "NO_OF_PIECE_HAWB", columnDefinition = "nvarchar(50)")
     private String noOfPieceHawb;
 
+    @Column(name = "CONS_BAG_ID")
+    private Long consignmentBagId;
+
+    @Column(name = "COUNTRY_OF_DESTINATION", columnDefinition = "nvarchar(50)")
+    private String countryOfDestination;
+
+    @Column(name = "NO_OF_CRT", columnDefinition = "nvarchar(50)")
+    private String noOfCrt;
+
+    @Column(name = "TOTAL_SHIPMENT_WEIGHT", columnDefinition = "nvarchar(50)")
+    private String totalShipmentWeight;
+
+    @Column(name = "TOTAL_WEIGHT_HAWB", columnDefinition = "nvarchar(50)")
+    private String totalWeightHawb;
+
+    @Column(name = "ESTIMATED_DEPARTURE_TIME")
+    private Date estimatedDepartureTime;
+
     @Column(name = "SHIPPER_ID", columnDefinition = "nvarchar(50)")
     private String shipperId;
 
@@ -93,8 +111,8 @@ public class ReplicaConsignmentEntity {
     @Column(name = "FLIGHT_NAME", columnDefinition = "nvarchar(50)")
     private String flightName;
 
-    @Column(name = "FLIGHT_ARRIVAL_TIME", columnDefinition = "nvarchar(50)")
-    private String flightArrivalTime;
+    @Column(name = "FLIGHT_ARRIVAL_TIME")
+    private Date flightArrivalTime;
 
     @Column(name = "CONSIGNEE_NAME", columnDefinition = "nvarchar(50)")
     private String consigneeName;

@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -40,6 +41,11 @@ public class PieceDetails {
     private String packReferenceNumber;
 
     private String tags;
+
+    private String pieceStatusId;
+    private Date pieceStatusTimestamp;
+
+    private String hsCode;
 
     private String referenceField1;
 

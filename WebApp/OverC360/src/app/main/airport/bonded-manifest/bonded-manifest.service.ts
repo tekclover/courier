@@ -9,7 +9,7 @@ export class BondedManifestService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
-
+ 
   Get(partnerId: string) {
     return this.http.get<any>('/overc-midmile-service/console/' + partnerId);
   }

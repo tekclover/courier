@@ -20,7 +20,7 @@ import { PasswordModule } from 'primeng/password';
 import { TabViewModule } from 'primeng/tabview';
 import { ChipsModule } from 'primeng/chips';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @NgModule({
@@ -46,7 +46,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     PasswordModule,
     TabViewModule,
     ChipsModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    FileUploadModule 
   ], 
   exports: [
     CommonModule,
@@ -69,7 +70,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     PasswordModule,
     TabViewModule,
     ChipsModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    FileUploadModule 
   ]
 })
 export class PrimengModule { }

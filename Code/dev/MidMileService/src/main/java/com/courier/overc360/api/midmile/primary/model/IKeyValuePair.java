@@ -30,5 +30,7 @@ public interface IKeyValuePair {
 
     String getConsignorName();
 
+    String getCustomerName();
+
 
 }

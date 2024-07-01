@@ -18,7 +18,7 @@ export class PieceDetailsComponent {
 
 
   pieceForm = this.fb.group({
-    items: this.fb.array([]) 
+    items: this.fb.array([])
   });
 
   constructor(
@@ -38,7 +38,7 @@ export class PieceDetailsComponent {
     itemDetails: this.fb.array([]) // Initialize an empty FormArray
   });
 
-  
+
   get itemDetails(): FormArray {
     return this.itemForm.get('itemDetails') as FormArray;
   }
@@ -93,17 +93,23 @@ export class PieceDetailsComponent {
   }
 
   ngOnInit() {
-if(this.data){
-  this.data.controls.itemDetails.value.forEach((res:any) => {
-    this.itemDetails.push(this.fb.group(res));
-  });
-}
+    if (this.data) {
+      this.data.controls.itemDetails.value.forEach((res: any) => {
+        this.itemDetails.push(this.fb.group(res));
+      });
+    }
   }
-  save(){
+
+  selectedFiles: any[] = [];
+  selectFiles(event:any): void {
+    this.selectedFiles = event.target.files;
+  }
+  
+  save() {
     this.dialogRef.close(this.itemForm.controls.itemDetails.value)
   }
-  calculateVolume(formName: any){
-    const volume =  formName.controls.length.value as number *  formName.controls.width.value as number *  formName.controls.height.value as number;
+  calculateVolume(formName: any) {
+    const volume = formName.controls.length.value as number * formName.controls.width.value as number * formName.controls.height.value as number;
     formName.controls.volume.patchValue(volume);
   }
 }

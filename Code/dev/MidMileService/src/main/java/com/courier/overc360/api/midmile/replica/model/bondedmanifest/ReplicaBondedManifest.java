@@ -137,6 +137,27 @@ public class ReplicaBondedManifest {
     @Column(name = "REMARKS", columnDefinition = "nvarchar(100)")
     private String remarks;
 
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
+
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
+
+    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date eventTimestamp;
+
+    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date statusTimestamp;
+
+    @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")
+    private String consolidatedBillNo;
+
+    @Column(name = "BILL_OF_LOADING", columnDefinition = "nvarchar(50)")
+    private String billOfLoadingFor;
+
     @Column(name = "IS_CONSOLIDATED_SHIPMENT", columnDefinition = "nvarchar(50)")
     private String isConsolidatedShipment;
 
@@ -277,12 +298,6 @@ public class ReplicaBondedManifest {
 
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
-
-    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
-    private String paymentType;
-
-    @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")
-    private String consolidatedBillNo;
 
     @Column(name = "BILL_OF_LADING_FOR", columnDefinition = "nvarchar(50)")
     private String billOfLadingFor;

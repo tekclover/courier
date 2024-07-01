@@ -2,8 +2,6 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 @Data
 public class AddCustomer {
 
@@ -12,6 +10,8 @@ public class AddCustomer {
     private String languageId;
 
     private String subProductId;
+
+    private String subProductValue;
 
     private String productId;
 

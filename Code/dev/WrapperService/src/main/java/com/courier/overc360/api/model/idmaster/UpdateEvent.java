@@ -7,6 +7,8 @@ public class UpdateEvent {
 
     private String eventDescription;
 
+    private String remark;
+
     private Long deletionIndicator;
 
     private String referenceField1;

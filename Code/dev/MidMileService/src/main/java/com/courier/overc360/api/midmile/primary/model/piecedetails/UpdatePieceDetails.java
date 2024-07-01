@@ -6,6 +6,7 @@ import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDeta
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -45,6 +46,12 @@ public class UpdatePieceDetails { ;
         private String volume;
 
         private String volumeUnit;
+
+        private String pieceStatusId;
+
+        private Date pieceStatusTimestamp;
+
+        private String hsCode;
 
         private List<ReferenceImageList> referenceImageList;
 

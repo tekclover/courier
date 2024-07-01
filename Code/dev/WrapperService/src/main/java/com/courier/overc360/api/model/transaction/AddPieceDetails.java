@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class AddPieceDetails {
 
 //        private String houseAirwayBill;
 
-        private String pieceId;
+//        private String pieceId;
 
         private String partnerType;
 
@@ -36,6 +37,8 @@ public class AddPieceDetails {
         private String declaredValue;
 
         private String codAmount;
+
+        private String hsCode;
 
         private String length;
 
@@ -58,6 +61,10 @@ public class AddPieceDetails {
         private String packReferenceNumber;
 
         private String tags;
+
+        private String pieceStatusId;
+
+        private Date pieceStatusTimestamp;
 
         private String referenceField1;
 

@@ -2,6 +2,9 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import java.util.Date;
+
 @Data
 public class UpdateCcr {
 
@@ -50,6 +53,16 @@ public class UpdateCcr {
     private String volume;
 
     private String finalDestination;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
 
     private String notifyParty;
 

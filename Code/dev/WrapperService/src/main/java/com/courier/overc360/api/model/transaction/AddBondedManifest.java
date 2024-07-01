@@ -2,6 +2,8 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class AddBondedManifest {
 
@@ -66,6 +68,20 @@ public class AddBondedManifest {
     private String shipperName;
 
     private String remarks;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private String billOfLoadingFor;
 
     private String isConsolidatedShipment;
 
@@ -154,10 +170,6 @@ public class AddBondedManifest {
     private String declaredValue;
 
     private String currency;
-
-    private String paymentType;
-
-    private String consolidatedBillNo;
 
     private String billOfLadingFor;
 

@@ -197,7 +197,7 @@ export class HsCodeComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'HSCode');
+    this.cs.exportAsExcel(exportData, 'HS Code');
   }
 
 }

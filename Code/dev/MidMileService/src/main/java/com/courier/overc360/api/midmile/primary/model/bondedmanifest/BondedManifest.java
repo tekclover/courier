@@ -212,6 +212,27 @@ public class BondedManifest {
     @Column(name = "COUNTRY_OF_ORIGIN", columnDefinition = "nvarchar(50)")
     private String countryOfOrigin;
 
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
+
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
+
+    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date eventTimestamp;
+
+    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date statusTimestamp;
+
+    @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")
+    private String consolidatedBillNo;
+
+    @Column(name = "BILL_OF_LOADING", columnDefinition = "nvarchar(50)")
+    private String billOfLoadingFor;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -274,12 +295,6 @@ public class BondedManifest {
 
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
-
-    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
-    private String paymentType;
-
-    @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")
-    private String consolidatedBillNo;
 
     @Column(name = "BILL_OF_LADING_FOR", columnDefinition = "nvarchar(50)")
     private String billOfLadingFor;

@@ -13,10 +13,9 @@
         [value]="itemDetails.controls" >
         <ng-template pTemplate="header">
           <tr>
-            <th >Product Code</th>
             <th >Description</th>
+            <th >Product Code</th>
             <th style="width: 5rem; justify-content: center;">Dimension</th>
-            <th >Image Ref ID</th>
             <th >HS Code</th>
             <th >Declared Value</th>
             <th >COD Amount</th>
@@ -25,8 +24,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-item let-i="rowIndex"  let-rowData>
           <tr [formGroup]="item">
-            <td ><input class="inputborderLess pl-3" placeholder="Enter" formControlName="itemCode"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="description"></td>
+            <td ><input class="inputborderLess pl-3" placeholder="Enter" formControlName="itemCode"></td>
             <td style="width: 5rem; text-align: center;">
               <i style="font-size: 14px;" class='bi-chevron-up' (click)="op.toggle($event)"></i>
               <p-overlayPanel #op [style]="{ width: '42rem' }">
@@ -74,13 +73,15 @@
                   </div>
               </p-overlayPanel>
           </td>
-            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="imageRefId"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="declaredValue"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="codAmount"></td>
             <td class="d-flex justify-content-center">
               <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="height: 1.5rem;">
+                <input type="file" #fileInput multiple style="display:none" (change)="selectFiles($event)" />   
+                <i type="button" class="bi bi-card-image textBlack pl-3" style="font-size: 1.2rem;" (click)="fileInput.click()"></i> 
+
             </td>
           </tr>
         </ng-template>

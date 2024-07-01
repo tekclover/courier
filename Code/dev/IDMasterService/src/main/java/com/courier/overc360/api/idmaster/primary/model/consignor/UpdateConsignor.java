@@ -16,6 +16,9 @@ public class UpdateConsignor {
     @NotBlank(message = "SubProductId is mandatory")
     private String subProductId;
 
+    @NotBlank(message = "SubProduct Value is mandatory")
+    private String subProductValue;
+
     @NotBlank(message = "ProductId is mandatory")
     private String productId;
 

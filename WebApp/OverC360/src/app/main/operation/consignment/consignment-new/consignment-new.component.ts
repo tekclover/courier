@@ -56,19 +56,18 @@ export class ConsignmentNewComponent {
   // form builder initialize
 
   shipmentInfo = this.fb.group({
-    languageId: [this.auth.languageId, Validators.required],
     companyId: [this.auth.companyId, Validators.required],
     priority: [],
     partnerType: [],
     partnerId: [, Validators.required],
     partnerName: [,],
-    statusId: [, Validators.required],
+    statusId: [, ],
     paymentType: [,],
     productId: [],
     productName: [],
     subProductId: [],
     subProductName: [],
-    serviceTypeId: [],
+    serviceTypeId: [, Validators.required],
     serviceTypeText: [],
     manufacturer: [],
     masterAirwayBill: [],
@@ -83,7 +82,7 @@ export class ConsignmentNewComponent {
     movementType: [],
     forwardReferenceNumber: [],
     workerCode: [],
-    loadType: [],
+    loadType: [, Validators.required],
     courierAccount: [],
     courierPartner: [],
     courierPartnerReferenceNumber: [],
@@ -194,6 +193,8 @@ export class ConsignmentNewComponent {
     flightName: [],
     flightNo: [],
     packageType: [],
+    netWeight: [],
+    grossWeight: [],
   })
 
   piece = this.fb.group({
@@ -228,6 +229,7 @@ export class ConsignmentNewComponent {
       width: [],
       codAmount: [],
       declaredValue: [],
+      hsCode: [],
       description: [],
       dimensionUnit: [],
       height: [],
@@ -283,7 +285,6 @@ export class ConsignmentNewComponent {
 
     this.dropdownlist();
 
-    this.shipmentInfo.controls.languageId.disable();
     this.shipmentInfo.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
@@ -298,21 +299,18 @@ export class ConsignmentNewComponent {
     }
   }
 
-  languageIdList: any[] = [];
   companyIdList: any[] = [];
   districtList: any[] = [];
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
-      this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.district.url
     ]).subscribe({
       next: (results: any) => {
-        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.districtList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.district.key);
+        this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
+        this.districtList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
 
         this.spin.hide();
       },
@@ -349,6 +347,11 @@ export class ConsignmentNewComponent {
         data.controls.itemDetails.patchValue(result);
       }
     });
+  }
+
+  selectedFiles: any[] = [];
+  selectFiles(event:any): void {
+    this.selectedFiles = event.target.files;
   }
 
   save() {
@@ -588,8 +591,7 @@ saveFinal(){
     ...this.consignment.value,
     ...this.piece.value,
     ...this.senderInfo.value,
-    ...this.OriginDetails.value,
-    ...this.DestinationDetails.value,
+    ...this.deliveryInfo.value,
     ...this.billing.value,
     updatedBy: [,],
     updatedOn: ['',],
@@ -597,7 +599,18 @@ saveFinal(){
     createdBy: [,],
   });
 
-  this.service.Create(this.mainForm.getRawValue).subscribe
+  this.service.Create(this.mainForm.getRawValue()).subscribe({next: (res) => {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Updated',
+      key: 'br',
+      detail: res.consignmentId + ' has been created successfully',
+    });
+    this.router.navigate(['/main/operation/consignment']);
+  }, error: (err) =>{
+    this.spin.hide();
+    this.cs.commonerrorNew(err);
+  }})
 }
 }
 
