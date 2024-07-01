@@ -77,8 +77,8 @@ ngOnDestroy(){
       clientId: "pixeltrice",
       clientSecretKey: "pixeltrice-secret-key",
       grantType: "password",
-      oauthPassword: "test",
-      oauthUserName: "test",
+      oauthPassword: "overc",
+      oauthUserName: "overc",
       apiName: apiName
     });
   }

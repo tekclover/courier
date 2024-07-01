@@ -17,5 +17,6 @@ public class ReplicaProductCompositeKey implements Serializable {
     private String languageId;
     private String subProductId;
     private String productId;
+    private String subProductValue;
 
 }

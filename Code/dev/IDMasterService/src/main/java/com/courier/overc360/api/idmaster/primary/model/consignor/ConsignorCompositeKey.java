@@ -19,5 +19,6 @@ public class ConsignorCompositeKey implements Serializable {
     private String productId;
     private String customerId;
     private String consignorId;
+    private String subProductValue;
 
 }

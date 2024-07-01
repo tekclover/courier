@@ -51,6 +51,10 @@ public class ReplicaConsignorSpecification implements Specification<ReplicaConsi
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("consignorId");
             predicates.add(group.in(findConsignor.getConsignorId()));
         }
+        if (findConsignor.getSubProductValue() != null && !findConsignor.getSubProductValue().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("subProductValue");
+            predicates.add(group.in(findConsignor.getSubProductValue()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

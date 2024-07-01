@@ -51,18 +51,20 @@ public class ConsignorController {
     @PatchMapping("/{consignorId}")
     public ResponseEntity<?> patchConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String subProductId,
                                             @RequestParam String loginUserID, @RequestParam String companyId, @RequestParam String productId,
-                                            @RequestParam String customerId, @RequestBody UpdateConsignor updateConsignor)
+                                            @RequestParam String customerId, @RequestParam String subProductValue, @Valid @RequestBody UpdateConsignor updateConsignor)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        Consignor updatedConsignor = consignorService.updateConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, updateConsignor, loginUserID);
+        Consignor updatedConsignor = consignorService.updateConsignor(languageId, companyId, subProductId,
+                subProductValue, productId, customerId, consignorId, updateConsignor, loginUserID);
         return new ResponseEntity<>(updatedConsignor, HttpStatus.OK);
     }
 
     // Delete Consignor
     @ApiOperation(response = Consignor.class, value = "Delete Consignor") // label for swagger
     @DeleteMapping("/{consignorId}")
-    public ResponseEntity<?> deleteConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String subProductId,
-                                             @RequestParam String productId, @RequestParam String customerId, @RequestParam String loginUserID) {
-        consignorService.deleteConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, loginUserID);
+    public ResponseEntity<?> deleteConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId,
+                                             @RequestParam String subProductId, @RequestParam String productId, @RequestParam String customerId,
+                                             @RequestParam String subProductValue, @RequestParam String loginUserID) {
+        consignorService.deleteConsignor(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -107,8 +109,9 @@ public class ConsignorController {
     @ApiOperation(response = ReplicaConsignor.class, value = "Get a Consignor") // label for swagger
     @GetMapping("/{consignorId}")
     public ResponseEntity<?> getConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId,
-                                          @RequestParam String subProductId, @RequestParam String productId, @RequestParam String customerId) {
-        ReplicaConsignor dbConsignor = consignorService.getConsignorReplica(languageId, companyId, subProductId, productId, customerId, consignorId);
+                                          @RequestParam String subProductId, @RequestParam String subProductValue,
+                                          @RequestParam String productId, @RequestParam String customerId) {
+        ReplicaConsignor dbConsignor = consignorService.getConsignorReplica(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId);
         return new ResponseEntity<>(dbConsignor, HttpStatus.OK);
     }
 
