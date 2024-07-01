@@ -105,10 +105,6 @@
                                     </ng-template>
                                     <div class="scrolltable mr-1">
                                         <div class="col-12 col-sm-12 col-md-4 col-lg-4 pt-3 pb-3 ">
-                                            <!-- <mat-checkbox
-                                                (change)="checkUncheckAll(element.mainMenu,$event)">
-                                                Select All
-                                            </mat-checkbox> -->
                                             <p-checkbox [binary]="true"
                                                             (onChange)="onChange(element.mainMenu, $event)"></p-checkbox>
                                                 Select All    
@@ -172,6 +168,87 @@
                         </div>
                     </ng-template>
                 </p-stepperPanel>
+                <!-- <p-stepperPanel *ngIf="this.pageToken.pageflow == 'New' ">
+                    <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                        <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
+                            <div class="d-flex justify-content-center  align-items-center">
+                                <p *ngIf="active == 0;" class="circle borderCircle mb-0">2</p>
+                                <img *ngIf="active != 0;" src="./assets/dashboard/tick.png" alt="" srcset="">
+                            </div>
+                            <div>
+                                <p class="mb-0 mt-2 f600 textBlack">Table2</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-prevCallback="nextCallback">
+                        <div class="row d-flex justify-content">    
+                            <mat-tab-group [@.disabled]="true" class="mx-8" >
+                                <mat-tab *ngFor="let element of menuList; let j = index" >
+                                    <ng-template mat-tab-label>
+                                        <ul class="nav" >
+                                            <li class="nav-item">
+                                                    <p class="nav-link"
+                                                            href="">
+                                                            {{element.mainMenu}}
+                                                    </p>
+                                            </li>
+                                        </ul>
+                                        
+                                    </ng-template>
+                                    <div>
+                                        <p-table [value]="element.Menu" class="custom-table" [scrollable]="true"
+                                        selectionMode="single" scrollHeight="calc(78vh - 19.8rem)"
+                                         styleClass="p-datatable-sm">
+                                                <ng-template pTemplate="header" let-columns>
+                                                        <tr>
+                                                                <th style="text-align: center;">S.No</th>
+                                                                <th style="text-align: center;">Menu</th>
+                                                                <th style="text-align: center;">Select All</th>
+                                                                <th style="text-align: center;">Create / Modify</th>
+                                                                <th style="text-align: center;">Display</th>
+                                                                <th style="text-align: center;">Delete</th>
+                                                        </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-menu let-i="rowIndex">
+                                                        <tr>
+                                                                <td style="text-align: center;">{{ i + 1 }}</td>
+                                                                <td style="text-align: center;">{{ menu.subMenuName }}</td>
+                                                                <td style="text-align: center;">
+                                                                        <p-checkbox 
+                                                                                [binary]="true" 
+                                                                                [ngModel]="menu.createUpdate && menu.view && menu.delete"
+                                                                                (onChange)="onChange(menu, $event)"></p-checkbox>
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                        <p-checkbox 
+                                                                                [binary]="true" 
+                                                                                [(ngModel)]="menu.createUpdate"></p-checkbox>
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                        <p-checkbox 
+                                                                                [binary]="true" 
+                                                                                [(ngModel)]="menu.view"></p-checkbox>
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                        <p-checkbox 
+                                                                                [binary]="true" 
+                                                                                [(ngModel)]="menu.delete"></p-checkbox>
+                                                                </td>
+                                                        </tr>
+                                                </ng-template>
+                                        </p-table>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                            <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
+                            <button
+                                class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow !=
+                                "New" ? "Update" : "Save" }}</button>
+                        </div>
+                    </ng-template>
+                </p-stepperPanel> -->
                 <p-stepperPanel *ngIf="this.pageToken.pageflow != 'New'">
                     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                         <div class="d-flex flex-column align-items-center">
