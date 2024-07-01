@@ -37,10 +37,11 @@
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">From Currency ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">From Currency ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="fromCurrencyId"
+                                [ngClass]="form.get('fromCurrencyId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" placeholder="Enter" />
-                                <!-- <mat-error *ngIf="errorHandling('fromCurrencyId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error> -->
+                             <mat-error *ngIf="errorHandling('fromCurrencyId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">

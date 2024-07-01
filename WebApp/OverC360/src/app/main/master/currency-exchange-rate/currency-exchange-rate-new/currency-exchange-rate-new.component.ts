@@ -34,7 +34,7 @@ export class CurrencyExchangeRateNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    fromCurrencyId: [],
+    fromCurrencyId: [, Validators.required],
     fromCurrencyDescription: [, Validators.required],
     fromCurrencyValue: [, Validators.required],
     toCurrencyId: [, Validators.required],
