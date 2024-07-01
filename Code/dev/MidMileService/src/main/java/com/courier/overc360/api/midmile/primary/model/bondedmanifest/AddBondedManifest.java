@@ -2,7 +2,9 @@ package com.courier.overc360.api.midmile.primary.model.bondedmanifest;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Data
 public class AddBondedManifest {
@@ -71,6 +73,20 @@ public class AddBondedManifest {
     private String shipperId;
 
     private String shipperName;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private String billOfLoadingFor;
 
     private String remarks;
 
@@ -161,10 +177,6 @@ public class AddBondedManifest {
     private String declaredValue;
 
     private String currency;
-
-    private String paymentType;
-
-    private String consolidatedBillNo;
 
     private String billOfLadingFor;
 

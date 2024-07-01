@@ -56,19 +56,18 @@ export class ConsignmentNewComponent {
   // form builder initialize
 
   shipmentInfo = this.fb.group({
-    languageId: [this.auth.languageId, Validators.required],
     companyId: [this.auth.companyId, Validators.required],
     priority: [],
     partnerType: [],
     partnerId: [, Validators.required],
     partnerName: [,],
-    statusId: [, Validators.required],
+    statusId: [, ],
     paymentType: [,],
     productId: [],
     productName: [],
     subProductId: [],
     subProductName: [],
-    serviceTypeId: [],
+    serviceTypeId: [, Validators.required],
     serviceTypeText: [],
     manufacturer: [],
     masterAirwayBill: [],
@@ -83,21 +82,14 @@ export class ConsignmentNewComponent {
     movementType: [],
     forwardReferenceNumber: [],
     workerCode: [],
-    loadType: [],
+    loadType: [, Validators.required],
     courierAccount: [],
     courierPartner: [],
     courierPartnerReferenceNumber: [],
   });
 
   carrierInfo = this.fb.group({
-    partnerHouseAirwayBill: [],
-    partnerMasterAirwayBill: [],
-    airportOriginCode: [],
-    flightArrivalTime: [],
-    noOfPackages: [],
-    flightName: [],
-    flightNo: [],
-    packageType: [],
+   
   })
 
 
@@ -127,7 +119,7 @@ export class ConsignmentNewComponent {
     addressLine1: [],
     addressLine2: [],
     alternatePhone: [],
-    city: [, Validators.required],
+    city: [, ],
     companyName: [],
     country: [],
     district: [],
@@ -148,7 +140,7 @@ export class ConsignmentNewComponent {
   })
 
   deliveryInfo = this.fb.group({
-    consigneeName: [, Validators.required],
+    consigneeName: [, ],
     consigneeCivilId: [],
     destinationDetails: this.DestinationDetails
   })
@@ -192,8 +184,17 @@ export class ConsignmentNewComponent {
     goodsDescription: [],
     notifyParty: [],
     consignmentCurrency: [],
-    consignmentValue: []
-
+    consignmentValue: [],
+    partnerHouseAirwayBill: [],
+    partnerMasterAirwayBill: [],
+    airportOriginCode: [],
+    flightArrivalTime: [],
+    noOfPackages: [],
+    flightName: [],
+    flightNo: [],
+    packageType: [],
+    netWeight: [],
+    grossWeight: [],
   })
 
   piece = this.fb.group({
@@ -205,150 +206,9 @@ export class ConsignmentNewComponent {
     updatedOn: ['',],
     createdOn: ['',],
     createdBy: [,],
-    actualCurrency: [],
-    airportOriginCode: [],
-    allocationTime: [],
-    amount: [],
-    autoAllocate: [],
-    codAmount: [],
-    codCollectionMode: [],
-    codFavorOf: [],
-    consigneeCivilId: [],
-    consigneeName: [],
-    consignmentCurrency: [],
-    consignmentId: [],
-    consignmentValue: [],
-    constraintTags: [],
-    countryOfSupply: [],
-    currency: [],
-    customsValue: [],
-    declaredValue: [],
-    declaredValueWithoutTax: [],
-    deliveryOtp: [],
-    deliveryServiceTime: [],
-    deliveryTimeSlotEnd: [],
-    deliveryTimeSlotStart: [],
-    description: [],
-    dimensionUnit: [],
-    ewayBill: [],
-    exemptionBeneficiary: [],
-    exemptionFor: [],
-    exemptionReference: [],
-    flightArrivalTime: [],
-    flightDetails: [],
-    flightName: [],
-    flightNo: [],
-    freightCharges: [],
-    freightCurrency: [],
-    goodsDescription: [],
-    grossWeight: [],
-    height: [],
-    hsCode: [],
-    hubCode: [],
-    incoTerms: [],
-    invoiceAmount: [],
-    invoiceDate: [],
-    invoiceNumber: [],
-    invoiceSupplierName: [],
-    invoiceType: [],
-    invoiceUrl: [],
-    isCustomsDeclarable: [],
-    isExchange: [],
-    isExempted: [],
-    itemTotalPrice: [],
-    languageDescription: [],
-    length: [],
-    lineNo: [],
-    netWeight: [],
-    noOfPackageHawb: [],
-    noOfPackages: [],
-    notes: [],
-    notifyParty: [],
-    packDetails: [],
-    packageType: [],
-    partnerHouseAirwayBill: [],
-    partnerMasterAirwayBill: [],
-    partnerName: [,],
-    partnerType: [],
-    pickupOtp: [],
-    pickupServiceTime: [],
-    pickupTimeSlotEnd: [],
-    pickupTimeSlotStart: [],
-    productCode: [],
-    quantity: [],
-    referenceField1: [],
-    referenceField10: [],
-    referenceField11: [],
-    referenceField12: [],
-    referenceField13: [],
-    referenceField14: [],
-    referenceField15: [],
-    referenceField16: [],
-    referenceField17: [],
-    referenceField18: [],
-    referenceField19: [],
-    referenceField2: [],
-    referenceField20: [],
-    referenceField21: [],
-    referenceField22: [],
-    referenceField23: [],
-    referenceField24: [],
-    referenceField25: [],
-    referenceField26: [],
-    referenceField27: [],
-    referenceField28: [],
-    referenceField29: [],
-    referenceField3: [],
-    referenceField30: [],
-    referenceField31: [],
-    referenceField32: [],
-    referenceField33: [],
-    referenceField34: [],
-    referenceField35: [],
-    referenceField36: [],
-    referenceField37: [],
-    referenceField38: [],
-    referenceField39: [],
-    referenceField4: [],
-    referenceField40: [],
-    referenceField41: [],
-    referenceField42: [],
-    referenceField43: [],
-    referenceField44: [],
-    referenceField45: [],
-    referenceField46: [],
-    referenceField47: [],
-    referenceField48: [],
-    referenceField49: [],
-    referenceField5: [],
-    referenceField50: [],
-    referenceField6: [],
-    referenceField7: [],
-    referenceField8: [],
-    referenceField9: [],
-    referenceNumber: [],
-    remark: [],
-    reverseReason: [],
-    rtoOtp: [],
-    scheduledAt: [],
-    serviceTime: [],
-    shipperId: [],
-    shipperName: [],
-    specialApprovalValue: [],
-    statusDescription: [],
-    storageLocation: [],
-    tags: [],
-    totalDuty: [],
-    upstreamCreationSource: [],
-    upstreamCreationTime: [],
-    volume: [],
-    volumeUnit: [],
-    weight: [],
-    weightUnit: [],
-    width: [],
-    workerEligiblePayout: [],
-    workerTipAmount: [],
+  originDetails: [],
   });
+
 
   get pieceDetails(): FormArray {
     return this.piece.get('pieceDetails') as FormArray;
@@ -369,6 +229,7 @@ export class ConsignmentNewComponent {
       width: [],
       codAmount: [],
       declaredValue: [],
+      hsCode: [],
       description: [],
       dimensionUnit: [],
       height: [],
@@ -424,7 +285,6 @@ export class ConsignmentNewComponent {
 
     this.dropdownlist();
 
-    this.shipmentInfo.controls.languageId.disable();
     this.shipmentInfo.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
@@ -439,21 +299,18 @@ export class ConsignmentNewComponent {
     }
   }
 
-  languageIdList: any[] = [];
   companyIdList: any[] = [];
   districtList: any[] = [];
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
-      this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.district.url
     ]).subscribe({
       next: (results: any) => {
-        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.districtList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.district.key);
+        this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
+        this.districtList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
 
         this.spin.hide();
       },
@@ -490,6 +347,11 @@ export class ConsignmentNewComponent {
         data.controls.itemDetails.patchValue(result);
       }
     });
+  }
+
+  selectedFiles: any[] = [];
+  selectFiles(event:any): void {
+    this.selectedFiles = event.target.files;
   }
 
   save() {
@@ -561,7 +423,6 @@ export class ConsignmentNewComponent {
   }
   
   calculateVolume(formName: any){
-    console.log(formName)
     const volume =  formName.controls.length.value as number *  formName.controls.width.value as number *  formName.controls.height.value as number;
     formName.controls.volume.patchValue(volume);
   }
@@ -686,36 +547,7 @@ export class ConsignmentNewComponent {
     } else {
       this.activeIndex = 5;
       this.submitted = false;
-      this.disabledCarrier = false;
-    }
-  }
-  saveCarrier() {
-    this.submitted = true;
-    if (this.carrierInfo.invalid) {
-      for (const control in this.carrierInfo.controls) {
-        const controlInstance = this.carrierInfo.get(control);
-        if (controlInstance?.invalid) {
-          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
-          if (invalidControl) {
-            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            break;
-          }
-        }
-      }
-    }
-
-    if (this.carrierInfo.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        key: 'br',
-        detail: 'Please fill required fields to continue',
-      });
-      return;
-    } else {
-      this.activeIndex = 6;
       this.disabledBilling = false;
-      this.submitted = false;
     }
   }
   saveBilling() {
@@ -742,10 +574,83 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      this.activeIndex = 7;
-      this.submitted = false;
+      // this.activeIndex = 7;
+      // this.submitted = false;
+      this.saveFinal();
     }
   }
 
+mainForm: FormGroup = new FormGroup({
+  
 
+});
+
+saveFinal(){
+  this.mainForm = this.fb.group({
+    ...this.shipmentInfo.value,
+    ...this.consignment.value,
+    ...this.piece.value,
+    ...this.senderInfo.value,
+    ...this.deliveryInfo.value,
+    ...this.billing.value,
+    updatedBy: [,],
+    updatedOn: ['',],
+    createdOn: ['',],
+    createdBy: [,],
+  });
+
+  this.service.Create(this.mainForm.getRawValue()).subscribe({next: (res) => {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Updated',
+      key: 'br',
+      detail: res.consignmentId + ' has been created successfully',
+    });
+    this.router.navigate(['/main/operation/consignment']);
+  }, error: (err) =>{
+    this.spin.hide();
+    this.cs.commonerrorNew(err);
+  }})
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// saveCarrier() {
+//   this.submitted = true;
+//   if (this.carrierInfo.invalid) {
+//     for (const control in this.carrierInfo.controls) {
+//       const controlInstance = this.carrierInfo.get(control);
+//       if (controlInstance?.invalid) {
+//         const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
+//         if (invalidControl) {
+//           invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//           break;
+//         }
+//       }
+//     }
+//   }
+
+//   if (this.carrierInfo.invalid) {
+//     this.messageService.add({
+//       severity: 'error',
+//       summary: 'Error',
+//       key: 'br',
+//       detail: 'Please fill required fields to continue',
+//     });
+//     return;
+//   } else {
+//     this.activeIndex = 6;
+//     this.disabledBilling = false;
+//     this.submitted = false;
+//   }
+// }

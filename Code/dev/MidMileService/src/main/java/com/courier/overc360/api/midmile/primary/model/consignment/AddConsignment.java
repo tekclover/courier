@@ -22,16 +22,13 @@ public class AddConsignment {
 //    @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 
-    @NotBlank(message = "PartnerName is mandatory")
+//    @NotBlank(message = "PartnerName is mandatory")
     private String partnerName;
 
-//    @NotBlank(message = "Master AirwayBill is mandatory")
     private String masterAirwayBill;
 
-//    @NotBlank(message = "House AirwayBill is mandatory")
     private String houseAirwayBill;
 
-    @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 
     private String partnerMasterAirwayBill;
@@ -77,9 +74,9 @@ public class AddConsignment {
 
     private String flightName;
 
-    private String flightArrivalTime;
+    private Date flightArrivalTime;
 
-//    private String consigneeName;
+    private String consigneeName;
 
     private String consigneeCivilId;
 
@@ -147,6 +144,8 @@ public class AddConsignment {
     private String exemptionReference;
 
     private String airportOriginCode;
+
+    private Date estimatedDepartureTime;
 
 //    @NotBlank(message = "ReferenceNumber is mandatory")
     private String referenceNumber;
@@ -289,6 +288,14 @@ public class AddConsignment {
     private String workerEligiblePayout;
 
     private String constraintTags;
+
+    private String countryOfDestination;
+
+    private String totalWeightHawb;
+
+    private String noOfCrt;
+
+    private String totalShipmentWeight;
 
 //    @NotBlank(message = "EWayBill is mandatory")
     private String ewayBill;

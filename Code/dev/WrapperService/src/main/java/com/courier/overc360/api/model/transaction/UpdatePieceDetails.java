@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -41,6 +42,12 @@ public class UpdatePieceDetails {
         private String volume;
 
         private String volumeUnit;
+
+        private String pieceStatusId;
+
+        private String hsCode;
+
+        private Date pieceStatusTimestamp;
 
         private List<ReferenceImageList> referenceImageList;
 

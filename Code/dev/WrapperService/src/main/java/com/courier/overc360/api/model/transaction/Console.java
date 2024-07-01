@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 @Data
@@ -72,6 +73,18 @@ public class Console {
     private String shipperId;
 
     private String shipperName;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private Long shipmentBagId;
 
     private String remarks;
 

@@ -86,6 +86,9 @@ public class PieceDetails {
     @Column(name = "DIMENSION_UNIT", columnDefinition = "nvarchar(50)")
     private String dimensionUnit;
 
+    @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
+    private String hsCode;
+
     @Column(name = "WIDTH", columnDefinition = "nvarchar(50)")
     private String width;
 
@@ -115,6 +118,12 @@ public class PieceDetails {
 
     @Column(name = "CONSIGNMENT_ID")
     private Long consignmentId;
+
+    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String pieceStatusId;
+
+    @Column(name = "PIECE_STATUS_TIMESTAMP")
+    private Date pieceStatusTimestamp;
 
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;

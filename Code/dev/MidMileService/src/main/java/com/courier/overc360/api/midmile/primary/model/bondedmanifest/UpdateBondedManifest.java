@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.primary.model.bondedmanifest;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Data
 public class UpdateBondedManifest {
@@ -90,6 +91,16 @@ public class UpdateBondedManifest {
     private String bwhInvestor;
 
     private String kind;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String billOfLoadingFor;
 
     private String goodsType;
 

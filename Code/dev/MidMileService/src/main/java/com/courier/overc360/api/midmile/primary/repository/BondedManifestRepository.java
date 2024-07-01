@@ -50,6 +50,16 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                @Param(value = "languageId") String languageId,
                                @Param(value = "companyId") String companyId);
 
+    @Query(value = "select customer_name customerName, \n" +
+            " product_id productId, product_name productName, \n " +
+            " sub_product_id subProductId, sub_product_name subProductName, \n " +
+            " from tblcustomer where customer_id in (:customerId) and \n " +
+            " lang_id in (:languageId) and \n " +
+            " c_id in (:companyId) and is_deleted = 0 ", nativeQuery = true)
+    IKeyValuePair getProductIdFromCustomer(@Param(value = "customerId") String customerId,
+                                           @Param(value = "languageId") String languageId,
+                                           @Param(value = "companyId") String companyId);
+
     @Query(value = "Select * From tblbondedmanifestheader h \n" +
             "Where h.IS_DELETED = 0", nativeQuery = true)
     List<BondedManifest> getAllNonDeletedHeaders();
