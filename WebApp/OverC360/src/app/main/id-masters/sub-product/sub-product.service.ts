@@ -6,11 +6,11 @@ import { AuthService } from '../../../core/core';
   providedIn: 'root',
 })
 export class SubProductService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
-  Get(subProductId: string) {
+  Get(subProductId: string, subProductValue: string) {
     return this.http.get<any>(
-      '/overc-idmaster-service/subProduct/' + subProductId + '?companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
+      '/overc-idmaster-service/subProduct/' + subProductId + "?subProductValue=" + subProductValue + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
   }
 
   Create(obj: any) {
@@ -19,12 +19,12 @@ export class SubProductService {
 
   Update(obj: any) {
     return this.http.patch<any>(
-      '/overc-idmaster-service/subProduct/' + obj.subProductId +'?companyId=' +this.auth.companyId +'&languageId=' +this.auth.languageId,obj);
+      '/overc-idmaster-service/subProduct/' + obj.subProductId + "?subProductValue=" + obj.subProductValue + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId, obj);
   }
 
-  Delete(subProductId: string) {
+  Delete(subProductId: string, subProductValue: string) {
     return this.http.delete<any>(
-      '/overc-idmaster-service/subProduct/' + subProductId + '?companyId=' + this.auth.companyId +'&languageId=' + this.auth.languageId);
+      '/overc-idmaster-service/subProduct/' + subProductId + "?subProductValue=" + subProductValue + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
   }
 
   search(obj: any) {
