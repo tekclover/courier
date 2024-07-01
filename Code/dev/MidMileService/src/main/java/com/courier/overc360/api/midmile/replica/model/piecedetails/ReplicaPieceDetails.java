@@ -87,6 +87,12 @@ public class ReplicaPieceDetails {
     @Column(name = "DIMENSION_UNIT", columnDefinition = "nvarchar(50)")
     private String dimensionUnit;
 
+    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String pieceStatusId;
+
+    @Column(name = "PIECE_STATUS_TIMESTAMP")
+    private Date pieceStatusTimestamp;
+
     @Column(name = "WIDTH", columnDefinition = "nvarchar(50)")
     private String width;
 

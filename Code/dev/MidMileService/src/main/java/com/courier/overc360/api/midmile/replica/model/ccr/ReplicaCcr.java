@@ -79,6 +79,21 @@ public class ReplicaCcr {
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
+
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
+
+    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date eventTimestamp;
+
+    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date statusTimestamp;
+
     @Column(name = "NO_OF_PACKAGE_MAWB" , columnDefinition = "nvarchar(50)")
     private String noOfPackageMawb;
 

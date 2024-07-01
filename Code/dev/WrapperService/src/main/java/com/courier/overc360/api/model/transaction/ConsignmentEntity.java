@@ -71,7 +71,7 @@ public class ConsignmentEntity {
 
     private String flightName;
 
-    private String flightArrivalTime;
+    private Date flightArrivalTime;
 
     private String consigneeName;
 
@@ -260,6 +260,16 @@ public class ConsignmentEntity {
     private String isExchange;
 
     private String reverseReason;
+
+    private String countryOfDestination;
+
+    private String noOfCrt;
+
+    private String totalShipmentWeight;
+
+    private String totalWeightHawb;
+
+    private Date estimatedDepartureTime;
 
     private String referenceField1;
     private String referenceField2;

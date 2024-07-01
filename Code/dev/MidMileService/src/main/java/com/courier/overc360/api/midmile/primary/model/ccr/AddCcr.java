@@ -2,7 +2,9 @@ package com.courier.overc360.api.midmile.primary.model.ccr;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Data
 public class AddCcr {
@@ -29,6 +31,16 @@ public class AddCcr {
     private String customsCcrNo;
 
     private String partnerType;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
 
     private String partnerName;
 

@@ -2,6 +2,8 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UpdateBondedManifest {
 
@@ -56,6 +58,16 @@ public class UpdateBondedManifest {
     private String notifyParty;
 
     private String consigneeName;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String billOfLoadingFor;
 
     private String productId;
 
