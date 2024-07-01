@@ -18,7 +18,6 @@ import { BondedManifestService } from './bonded-manifest.service';
 })
 export class BondedManifestComponent {
 
-
   bondedManifestTable: any[] = [];
   selectedBondedManifest: any[] = [];
   cols: any[] = [];
@@ -102,7 +101,7 @@ export class BondedManifestComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedBondedManifest[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/language-new/' + paramdata]);
+      this.router.navigate(['/main/airport/bondedManifest-new/' + paramdata]);
     }
   }
 
