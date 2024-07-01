@@ -142,16 +142,21 @@ public class ConsignmentService {
                 }
             }
 
-            //Setting the number range object based on product ID
+//            //Setting the number range object based on product ID
+//            String NUM_RAN_OBJ = null;
+//            if (productId.equalsIgnoreCase("1")) {
+//                NUM_RAN_OBJ = "INTERNATIONALINBOUND";
+//            } else if (productId.equalsIgnoreCase("2")) {
+//                NUM_RAN_OBJ = "INTERNATIONALOUTBOUND";
+//            } else if (productId.equalsIgnoreCase("3")) {
+//                NUM_RAN_OBJ = "DOMESTIC";
+//            } else {
+//                log.info("ProductId given not 1 or 2 or 3");
+//            }
             String NUM_RAN_OBJ = null;
-            if (productId.equalsIgnoreCase("1")) {
-                NUM_RAN_OBJ = "INTERNATIONALINBOUND";
-            } else if (productId.equalsIgnoreCase("2")) {
-                NUM_RAN_OBJ = "INTERNATIONALOUTBOUND";
-            } else if (productId.equalsIgnoreCase("3")) {
-                NUM_RAN_OBJ = "DOMESTIC";
-            } else {
-                log.info("ProductId given not 1 or 2 or 3");
+
+            if(shipperData.getConsignorName() != null) {
+                NUM_RAN_OBJ = shipperData.getConsignorName();
             }
 
             // Generating house and master airway bills
