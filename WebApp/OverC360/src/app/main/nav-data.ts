@@ -1,5 +1,5 @@
 export interface INavbarData {
-    routerLink: string;
+    routerLink?: string;
     routerId: number;
     src?: string;
     srcDark?: string;
@@ -18,118 +18,118 @@ export const navbarData: INavbarData[] = [
     },
     {
         routerId: 2000,
-        routerLink: 'idMaster',
+        routerLink: '/main/idMaster',
         src: './assets/sidebar/setting/Seting.png',
         srcDark: './assets/sidebar/setting/SetingDark.png',
         label: 'Setup',
         items: [
             {
                 routerId: 2001,
-                routerLink: 'setup/list',
+                // routerLink: 'setup/list',
                 label: 'Setup-1',
                 items: [
                     {
                         routerId: 3001,
-                        routerLink: 'idMaster/language',
+                        routerLink: '/main/idMaster/language',
                         label: 'Language'
                     },
                     {
                         routerId: 3002,
-                        routerLink: 'idMaster/company',
+                        routerLink: '/main/idMaster/company',
                         label: 'Company'
                     },
                     {
                         routerId: 3003,
-                        routerLink: 'idMaster/country',
+                        routerLink: '/main/idMaster/country',
                         label: 'Country'
                     },
                     {
                         routerId: 3004,
-                        routerLink: 'idMaster/menu',
+                        routerLink: '/main/idMaster/menu',
                         label: 'Menu'
                     },
                     {
                         routerId: 3005,
-                        routerLink: 'idMaster/product',
+                        routerLink: '/main/idMaster/product',
                         label: 'Product'
                     },
                     {
                         routerId: 5006,
-                        routerLink: 'idMaster/notification',
+                        routerLink: '/main/idMaster/notification',
                         label: 'Notification'
                     },
                 ],
             },
             {
                 routerId: 2002,
-                routerLink: 'setup/list',
+                // routerLink: 'setup/list',
                 label: 'Setup-2',
                 items: [
                     {
                         routerId: 4001,
-                        routerLink: 'idMaster/consignmentType',
+                        routerLink: '/main/idMaster/consignmentType',
                         label: 'Consignment Type'
                     },
                     {
                         routerId: 4002,
-                        routerLink: 'idMaster/serviceType',
+                        routerLink: '/main/idMaster/serviceType',
                         label: 'Service Type'
                     },
                     {
                         routerId: 4003,
-                        routerLink: 'idMaster/status',
+                        routerLink: '/main/idMaster/status',
                         label: 'Status'
                     },
                     {
                         routerId: 4004,
-                        routerLink: 'idMaster/city',
+                        routerLink: '/main/idMaster/city',
                         label: 'City'
                     },
                     {
                         routerId: 4005,
-                        routerLink: 'idMaster/loadType',
+                        routerLink: '/main/idMaster/loadType',
                         label: 'Load Type'
                     },
                     {
                         routerId: 4006,
-                        routerLink: 'idMaster/currency',
+                        routerLink: '/main/idMaster/currency',
                         label: 'Currency'
                     },
                 ]
             },
             {
                 routerId: 2003,
-                routerLink: 'setup/list',
+                // routerLink: 'setup/list',
                 label: 'Setup-3',
                 items: [
                     {
                         routerId: 5001,
-                        routerLink: 'idMaster/subProduct',
+                        routerLink: '/main/idMaster/subProduct',
                         label: 'Sub Product'
                     },
                     {
                         routerId: 5002,
-                        routerLink: 'idMaster/module',
+                        routerLink: '/main/idMaster/module',
                         label: 'Module'
                     },
                     {
                         routerId: 5003,
-                        routerLink: 'idMaster/province',
+                        routerLink: '/main/idMaster/province',
                         label: 'Province'
                     },
                     {
                         routerId: 5004,
-                        routerLink: 'idMaster/district',
+                        routerLink: '/main/idMaster/district',
                         label: 'District'
                     },
                     {
                         routerId: 5005,
-                        routerLink: 'idMaster/users',
+                        routerLink: '/main/idMaster/users',
                         label: 'Users'
                     },
                     {
                         routerId: 5006,
-                        routerLink: 'idMaster/userrole',
+                        routerLink: '/main/idMaster/userrole',
                         label: 'User Role'
                     },
                 ]
@@ -137,109 +137,109 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
-        routerId: 1000,
-        routerLink: 'masters',
+        routerId: 3000,
+        routerLink: '/main/master',
         src: './assets/sidebar/masters/Database.png',
         srcDark: './assets/sidebar/masters/DatabaseDark.png',
         label: 'Masters',
         items: [
             {
                 routerId: 1000,
-                routerLink: 'setup/list',
+                // routerLink: 'setup/list',
                 label: 'Master1',
                 items: [
                     {
                         routerId: 1001,
-                        routerLink: 'master/iata',
-                        label: 'Iata'
+                        routerLink: '/main/master/iata',
+                        label: 'IATA'
                     },
                     {
                         routerId: 1002,
-                        routerLink: 'master/specialApproval',
+                        routerLink: '/main/master/specialApproval',
                         label: 'Special Approval'
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'master/hsCode',
+                        routerLink: '/main/master/hsCode',
                         label: 'HS Code'
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'master/customer',
+                        routerLink: '/main/master/customer',
                         label: 'Customer'
                     },
                     {
                         routerId: 1005,
-                        routerLink: 'master/consignor',
+                        routerLink: '/main/master/consignor',
                         label: 'Consignor'
                     },
                     {
                         routerId: 1006,
-                        routerLink: 'master/event',
+                        routerLink: '/main/master/event',
                         label: 'Event'
                     },
                 ]
             },
             {
                 routerId: 1000,
-                routerLink: 'setup/list',
+                // routerLink: 'setup/list',
                 label: 'Master2',
                 items: [
                     {
                         routerId: 1001,
-                        routerLink: 'master/numberrange',
+                        routerLink: '/main/master/numberrange',
                         label: 'Number Range'
                     },
                     {
                         routerId: 1002,
-                        routerLink: 'master/opstatus',
+                        routerLink: '/main/master/opstatus',
                         label: 'Op Status'
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'master/currencyExchangeRate',
+                        routerLink: '/main/master/currencyExchangeRate',
                         label: 'Currency Exchange Rate'
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'master/cityMapping',
+                        routerLink: '/main/master/cityMapping',
                         label: 'City Mapping'
                     },
                     {
                         routerId: 1005,
-                        routerLink: 'master/countryMapping',
+                        routerLink: '/main/master/countryMapping',
                         label: 'Country Mapping'
                     },
                     {
                         routerId: 1006,
-                        routerLink: 'master/districtMapping',
+                        routerLink: '/main/master/districtMapping',
                         label: 'District Mapping'
                     },
                 ]
             },
             {
                 routerId: 1000,
-                routerLink: 'setup/list',
+                // routerLink: 'setup/list',
                 label: 'Master3',
                 items: [
                     {
                         routerId: 1001,
-                        routerLink: 'master/provinceMapping',
+                        routerLink: '/main/master/provinceMapping',
                         label: 'Province Mapping'
                     },
                     {
                         routerId: 1002,
-                        routerLink: 'master/hub',
+                        routerLink: '/main/master/hub',
                         label: 'Hub'
                     },
                     {
                         routerId: 1003,
-                        routerLink: 'master/rate',
+                        routerLink: '/main/master/rate',
                         label: 'Rate'
                     },
                     {
                         routerId: 1004,
-                        routerLink: 'master/hubPartnerAssignment',
+                        routerLink: '/main/master/hubPartnerAssignment',
                         label: 'Hub Partner Assignment'
                     },
                 ]
@@ -248,7 +248,7 @@ export const navbarData: INavbarData[] = [
     },
     {
         routerId: 1000,
-        routerLink: 'masters',
+        routerLink: 'master',
         src: './assets/sidebar/service/Service.png',
         srcDark: './assets/sidebar/service/ServiceDark.png',
         label: 'Customer',
@@ -272,7 +272,7 @@ export const navbarData: INavbarData[] = [
     },
     {
         routerId: 4000,
-        routerLink: 'dashboard',
+        routerLink: '/main/airport',
         src: './assets/sidebar/airport/Airport Hub.png',
         srcDark: './assets/sidebar/airport/Airport HubDark.png',
         label: 'Airport',

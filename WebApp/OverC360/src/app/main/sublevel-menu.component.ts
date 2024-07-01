@@ -92,7 +92,10 @@ export class SublevelMenuComponent {
     item.expanded = !item.expanded;
   }
 
-  isActive(routerLink: string): boolean {
+  isActive(routerLink?: string): boolean {
+    if (!routerLink) {
+      return false;
+    }
     const options: IsActiveMatchOptions = {
       paths: 'exact',
       queryParams: 'ignored',

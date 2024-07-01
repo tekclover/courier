@@ -308,6 +308,77 @@
             <p-tabPanel header="Consignment" [disabled]="disabledConsignment">
                 <form [formGroup]="consignment">
                     <div class="row scrollNew22">
+                        <div class="col-3 marginFieldNew borderRadius12" id="partnerHouseAirwayBill">
+                            <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
+                            <input maxlength="50" formControlName="partnerHouseAirwayBill"
+                                [ngClass]="carrierInfo.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('partnerHouseAirwayBill')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="partnerMasterAirwayBill">
+                            <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
+                            <input maxlength="50" formControlName="partnerMasterAirwayBill"
+                                [ngClass]="carrierInfo.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('partnerMasterAirwayBill')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="airportOriginCode">
+                            <p class="formControlLabel f600 textBlack mb-0">Airport Origin Code</p>
+                            <input maxlength="50" formControlName="airportOriginCode"
+                                [ngClass]="carrierInfo.get('airportOriginCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('airportOriginCode')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="flightNo">
+                            <p class="formControlLabel f600 textBlack mb-0">Flight No</p>
+                            <input maxlength="50" formControlName="flightNo"
+                                [ngClass]="carrierInfo.get('flightNo')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('flightNo')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="flightArrivalTime">
+                            <p class="formControlLabel f600 textBlack mb-0">Flight Arrival Time</p>
+                            <input maxlength="50" formControlName="flightArrivalTime"
+                                [ngClass]="carrierInfo.get('flightArrivalTime')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('flightArrivalTime')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPackages">
+                            <p class="formControlLabel f600 textBlack mb-0">No of Packages</p>
+                            <input maxlength="50" formControlName="noOfPackages"
+                                [ngClass]="carrierInfo.get('noOfPackages')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('noOfPackages')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="flightName">
+                            <p class="formControlLabel f600 textBlack mb-0">Flight Name</p>
+                            <input maxlength="50" formControlName="flightName"
+                                [ngClass]="carrierInfo.get('flightName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('flightName')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="packageType">
+                            <p class="formControlLabel f600 textBlack mb-0">Package Type</p>
+                            <input maxlength="50" formControlName="packageType"
+                                [ngClass]="carrierInfo.get('packageType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingCarrier('packageType')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="length">
                             <p class="formControlLabel f600 textBlack mb-0">Length</p>
                             <input maxlength="50" pKeyFilter="num" formControlName="length"
@@ -470,19 +541,19 @@
                                         <div class="row">
                                             <div class="col-4 mb-2" id="length">
                                                 <p class="formControlLabel f600 textBlack mb-0">Length</p>
-                                                <input maxlength="50" (change)="calculateVolume(rowData)"
+                                                <input maxlength="50" pKeyFilter="num" (change)="calculateVolume(rowData)"
                                                     formControlName="length" class=" w-100" pInputText
                                                     placeholder="Enter" />
                                             </div>
                                             <div class="col-4 mb-2" id="width">
                                                 <p class="formControlLabel f600 textBlack mb-0">Width</p>
-                                                <input maxlength="50" (change)="calculateVolume(rowData)"
+                                                <input maxlength="50"  pKeyFilter="num" (change)="calculateVolume(rowData)"
                                                     formControlName="width" class=" w-100" pInputText
                                                     placeholder="Enter" />
                                             </div>
                                             <div class="col-4 mb-2" id="height">
                                                 <p class="formControlLabel f600 textBlack mb-0">Height</p>
-                                                <input maxlength="50" (change)="calculateVolume(rowData)"
+                                                <input maxlength="50" pKeyFilter="num" (change)="calculateVolume(rowData)"
                                                     formControlName="height" class=" w-100" pInputText
                                                     placeholder="Enter" />
                                             </div>
@@ -900,89 +971,6 @@
                     </div>
                 </form>
             </p-tabPanel>
-
-            <p-tabPanel header="Carrier Info" [disabled]="disabledCarrier">
-                <form [formGroup]="carrierInfo">
-                    <div class="row">
-                        <div class="col-3 marginFieldNew borderRadius12" id="partnerHouseAirwayBill">
-                            <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
-                            <input maxlength="50" formControlName="partnerHouseAirwayBill"
-                                [ngClass]="carrierInfo.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('partnerHouseAirwayBill')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="partnerMasterAirwayBill">
-                            <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
-                            <input maxlength="50" formControlName="partnerMasterAirwayBill"
-                                [ngClass]="carrierInfo.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('partnerMasterAirwayBill')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="airportOriginCode">
-                            <p class="formControlLabel f600 textBlack mb-0">Airport Origin Code</p>
-                            <input maxlength="50" formControlName="airportOriginCode"
-                                [ngClass]="carrierInfo.get('airportOriginCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('airportOriginCode')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="flightNo">
-                            <p class="formControlLabel f600 textBlack mb-0">Flight No</p>
-                            <input maxlength="50" formControlName="flightNo"
-                                [ngClass]="carrierInfo.get('flightNo')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('flightNo')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="flightArrivalTime">
-                            <p class="formControlLabel f600 textBlack mb-0">Flight Arrival Time</p>
-                            <input maxlength="50" formControlName="flightArrivalTime"
-                                [ngClass]="carrierInfo.get('flightArrivalTime')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('flightArrivalTime')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPackages">
-                            <p class="formControlLabel f600 textBlack mb-0">No of Packages</p>
-                            <input maxlength="50" formControlName="noOfPackages"
-                                [ngClass]="carrierInfo.get('noOfPackages')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('noOfPackages')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="flightName">
-                            <p class="formControlLabel f600 textBlack mb-0">Flight Name</p>
-                            <input maxlength="50" formControlName="flightName"
-                                [ngClass]="carrierInfo.get('flightName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('flightName')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-
-                        <div class="col-3 marginFieldNew borderRadius12" id="packageType">
-                            <p class="formControlLabel f600 textBlack mb-0">Package Type</p>
-                            <input maxlength="50" formControlName="packageType"
-                                [ngClass]="carrierInfo.get('packageType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingCarrier('packageType')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-                    </div>
-                </form>
-                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
-                    <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
-                    <button class="buttom1 bgBlack text-white mx-1" (click)="saveCarrier()">Next</button>
-                </div>
-            </p-tabPanel>
-
             <p-tabPanel header="Billing" [disabled]="disabledBilling">
                 <form [formGroup]="billing">
                     <div class="row scrollNew22">
@@ -1188,3 +1176,28 @@
         </p-tabView>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<p-tabPanel header="Carrier Info" [disabled]="disabledCarrier">
+    <form [formGroup]="carrierInfo">
+        <div class="row">
+    
+        </div>
+    </form>
+    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+        <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
+        <button class="buttom1 bgBlack text-white mx-1" (click)="saveCarrier()">Next</button>
+    </div>
+</p-tabPanel> -->

@@ -93,11 +93,17 @@ export class PieceDetailsComponent {
   }
 
   ngOnInit() {
-    this.data.controls.itemDetails.value.forEach((res:any) => {
-      this.itemDetails.push(this.fb.group(res));
-    });
+if(this.data){
+  this.data.controls.itemDetails.value.forEach((res:any) => {
+    this.itemDetails.push(this.fb.group(res));
+  });
+}
   }
   save(){
     this.dialogRef.close(this.itemForm.controls.itemDetails.value)
+  }
+  calculateVolume(formName: any){
+    const volume =  formName.controls.length.value as number *  formName.controls.width.value as number *  formName.controls.height.value as number;
+    formName.controls.volume.patchValue(volume);
   }
 }

@@ -34,6 +34,7 @@ import { SpecialApprovalNewComponent } from './special-approval/special-approval
 import { SpecialApprovalComponent } from './special-approval/special-approval.component';
 
 const routes: Routes = [
+
   { path: 'hub', component: HubComponent, data: { title: 'Master', module: 'Hub' } },
   { path: 'hub-new/:code', component: HubNewComponent, data: { title: 'Master', module: 'Hub - Add New' } },
 

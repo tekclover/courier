@@ -23,7 +23,7 @@
             <th >Actions</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-item let-i="rowIndex">
+        <ng-template pTemplate="body" let-item let-i="rowIndex"  let-rowData>
           <tr [formGroup]="item">
             <td ><input class="inputborderLess pl-3" placeholder="Enter" formControlName="itemCode"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="description"></td>
@@ -33,17 +33,17 @@
                   <div class="row">
                       <div class="col-4 mb-2" id="length">
                           <p class="formControlLabel f600 textBlack mb-0">Length</p>
-                          <input maxlength="50" formControlName="length" class=" w-100" pInputText
+                          <input maxlength="50" pKeyFilter="num" (change)="calculateVolume(rowData)" formControlName="length" class=" w-100" pInputText
                               placeholder="Enter" />
                       </div>
                       <div class="col-4 mb-2" id="width">
                           <p class="formControlLabel f600 textBlack mb-0">Width</p>
-                          <input maxlength="50" formControlName="width" class=" w-100" pInputText
+                          <input maxlength="50" pKeyFilter="num" (change)="calculateVolume(rowData)" formControlName="width" class=" w-100" pInputText
                               placeholder="Enter" />
                       </div>
                       <div class="col-4 mb-2" id="height">
                           <p class="formControlLabel f600 textBlack mb-0">Height</p>
-                          <input maxlength="50" formControlName="height" class=" w-100" pInputText
+                          <input maxlength="50 " pKeyFilter="num" (change)="calculateVolume(rowData)" formControlName="height" class=" w-100" pInputText
                               placeholder="Enter" />
                       </div>
                       <div class="col-4 mb-2" id="dimensionUnit">
@@ -56,9 +56,9 @@
                           <input maxlength="50" formControlName="volume" class=" w-100" pInputText
                               placeholder="Enter" />
                       </div>
-                      <div class="col-4 mb-2" id="volume">
+                      <div class="col-4 mb-2" id="volumeUnit">
                           <p class="formControlLabel f600 textBlack mb-0">Volume Unit</p>
-                          <input maxlength="50" formControlName="volume" class=" w-100" pInputText
+                          <input maxlength="50" formControlName="volumeUnit" class=" w-100" pInputText
                               placeholder="Enter" />
                       </div>
                       <div class="col-4 mb-2" id="weight">
@@ -66,9 +66,9 @@
                           <input maxlength="50" formControlName="weight" class=" w-100" pInputText
                               placeholder="Enter" />
                       </div>
-                      <div class="col-4 mb-2" id="weight_unit">
+                      <div class="col-4 mb-2" id="weightUnit">
                           <p class="formControlLabel f600 textBlack mb-0">Weight Unit</p>
-                          <input maxlength="50" formControlName="weight_unit" class=" w-100"
+                          <input maxlength="50" formControlName="weightUnit" class=" w-100"
                               pInputText placeholder="Enter" />
                       </div>
                   </div>
