@@ -284,6 +284,15 @@ public class MidMileController {
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
+    // Create new BondedManifest Based on ConsignmentInput
+    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest Based On ConsignmentInput") // label for swagger
+    @PostMapping("/bondedManifest/create")
+    public ResponseEntity<?> postBondedManifestPost(@Valid @RequestBody List<AddConsignment> addConsignments,
+                                                @RequestParam String loginUserID, @RequestParam String authToken) {
+        BondedManifest[] bondedManifest = midMileService.createBondedManifestBasedOnConsignment(addConsignments, loginUserID, authToken);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
+    }
+
     // Update BondedManifest
     @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for swagger
     @PatchMapping("/bondedManifest/update/list")

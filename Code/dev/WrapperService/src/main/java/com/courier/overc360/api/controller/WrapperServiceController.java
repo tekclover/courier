@@ -4,6 +4,7 @@ import com.courier.overc360.api.batch.scheduler.BatchJobScheduler;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.auth.AuthTokenRequest;
 import com.courier.overc360.api.model.dto.PDFMerger;
+import com.courier.overc360.api.model.transaction.UploadApiResponse;
 import com.courier.overc360.api.service.CommonService;
 import com.courier.overc360.api.service.FileStorageService;
 import com.courier.overc360.api.service.RegisterService;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -129,6 +131,15 @@ public class WrapperServiceController {
                 .contentLength(file.length())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
+    }
+
+    // Consignment-Upload
+    @ApiOperation(response = UploadApiResponse.class, value = " Consignment Upload")
+    @PostMapping("/consignment/Upload")
+    public ResponseEntity<?> consignmentUpload(@RequestParam("file") MultipartFile file) {
+
+        Map<String, String> response = fileStorageService.processConsignmentOrders(file);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
