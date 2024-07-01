@@ -4,12 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -24,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_notification",
-                        columnNames = {"LANG_ID", "C_ID", "NOTIFICATION_ID"}
+                        columnNames = { "LANG_ID", "C_ID", "NOTIFICATION_ID"}
                 )
         }
 )
@@ -32,15 +27,15 @@ import java.util.Date;
 public class Notification {
 
     @Id
-    @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
+    @Column(name = "LANG_ID" , columnDefinition = "nvarchar(50)")
     private String languageId;
 
     @Id
-    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
+    @Column(name = "C_ID" , columnDefinition = "nvarchar(50)")
     private String companyId;
 
     @Id
-    @Column(name = "NOTIFICATION_ID", columnDefinition = "nvarchar(50)")
+    @Column(name = "NOTIFICATION_ID" ,columnDefinition = "nvarchar(50)")
     private String notificationId;
 
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")

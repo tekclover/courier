@@ -5,6 +5,14 @@ import lombok.Data;
 @Data
 public class UpdateProduct {
 
+    private String languageId;
+
+    private String companyId;
+
+    private String subProductId;
+
+    private String productId;
+
     private String productName;
 
     private String remark;

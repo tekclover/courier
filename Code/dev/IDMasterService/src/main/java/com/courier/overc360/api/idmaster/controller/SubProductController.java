@@ -1,11 +1,12 @@
 package com.courier.overc360.api.idmaster.controller;
 
-import com.courier.overc360.api.idmaster.service.SubProductService;
 import com.courier.overc360.api.idmaster.primary.model.subproject.AddSubProduct;
 import com.courier.overc360.api.idmaster.primary.model.subproject.SubProduct;
+import com.courier.overc360.api.idmaster.primary.model.subproject.SubProductDeleteInput;
 import com.courier.overc360.api.idmaster.primary.model.subproject.UpdateSubProduct;
 import com.courier.overc360.api.idmaster.replica.model.subproduct.FindSubProduct;
 import com.courier.overc360.api.idmaster.replica.model.subproduct.ReplicaSubProduct;
+import com.courier.overc360.api.idmaster.service.SubProductService;
 import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -64,6 +65,33 @@ public class SubProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /*----------------------------------------------list_APIs'-------------------------------------------------------*/
+    // Create SubProducts - bulk
+    @ApiOperation(response = SubProduct.class, value = "Create new SubProducts - bulk") // label for swagger
+    @PostMapping("/create/list")
+    public ResponseEntity<?> postSubProductBulk(@Valid @RequestBody List<AddSubProduct> addSubProductList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<SubProduct> newSubProducts = subProductService.createSubProductBulk(addSubProductList, loginUserID);
+        return new ResponseEntity<>(newSubProducts, HttpStatus.OK);
+    }
+
+    // Update SubProducts - bulk
+    @ApiOperation(response = SubProduct.class, value = "Update SubProducts - bulk") // label for swagger
+    @PatchMapping("/update/list")
+    public ResponseEntity<?> patchSubProductBulk(@Valid @RequestBody List<UpdateSubProduct> updateSubProductList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<SubProduct> updatedSubProducts = subProductService.updateSubProductBulk(updateSubProductList, loginUserID);
+        return new ResponseEntity<>(updatedSubProducts, HttpStatus.OK);
+    }
+
+    // Delete SubProducts - bulk
+    @ApiOperation(response = SubProduct.class, value = "Delete SubProducts - bulk") // label for swagger
+    @PostMapping("/delete/list")
+    public ResponseEntity<?> deleteProductBulk(@Valid @RequestBody List<SubProductDeleteInput> subProductDeleteInputList, @RequestParam String loginUserID) {
+        subProductService.deleteSubProductBulk(subProductDeleteInputList, loginUserID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     /*-----------------------------------------------REPLICA---------------------------------------------------------------*/
 
     // Get All SubProduct Details
@@ -82,6 +110,7 @@ public class SubProductController {
         ReplicaSubProduct dbSubProduct = subProductService.replicaGetSubProduct(languageId, companyId, subProductId);
         return new ResponseEntity<>(dbSubProduct, HttpStatus.OK);
     }
+
     // Find SubProduct
     @ApiOperation(response = ReplicaSubProduct.class, value = "Find SubProduct") // label for swagger
     @PostMapping("/find")

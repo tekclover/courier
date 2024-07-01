@@ -13,6 +13,7 @@ public class AddCountry {
     @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
+    @NotBlank(message = "CountryId is mandatory")
     private String countryId;
 
     @NotBlank(message = "Country Name is mandatory")

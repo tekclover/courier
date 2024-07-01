@@ -18,6 +18,9 @@ public class AddSubProduct {
     @NotBlank(message = "SubProduct Name is mandatory")
     private String subProductName;
 
+    @NotBlank(message = "SubProduct Value is mandatory")
+    private String subProductValue;
+
     @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 

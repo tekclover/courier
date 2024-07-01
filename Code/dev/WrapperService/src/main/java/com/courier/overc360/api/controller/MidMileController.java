@@ -48,20 +48,20 @@ public class MidMileController {
         return new ResponseEntity<>(createConsignment, HttpStatus.OK);
     }
 
-    // Update Consignment
-    @ApiOperation(response = UpdateConsignment.class, value = "Update Consignment") // label for swagger
-    @PatchMapping("/consignment")
-    public ResponseEntity<?> updateConsignment(@RequestParam String loginUserID, @RequestBody  List<UpdateConsignment> updateConsignment,
-                                               @RequestParam String authToken) {
-        ConsignmentEntity consignment = midMileService.updateConsignment( updateConsignment, loginUserID, authToken);
-        return new ResponseEntity<>(updateConsignment, HttpStatus.OK);
-    }
 
+    // Update Consignment
+    @ApiOperation(response = ConsignmentEntity.class, value = "Update Consignment") // label for swagger
+    @PatchMapping("/consignment")
+    public ResponseEntity<?> updateConsignment(@RequestParam String loginUserID, @Valid @RequestBody List<UpdateConsignment> updateConsignment,
+                                               @RequestParam String authToken) {
+        ConsignmentEntity[] consignment = midMileService.updateConsignment( updateConsignment, loginUserID, authToken);
+        return new ResponseEntity<>(consignment, HttpStatus.OK);
+    }
 
     // Find Consignment
     @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignment") //label for swagger
     @PostMapping("/consignment/find")
-    public AddConsignment[] findConsignment(@Valid @RequestBody FindConsignment findConsignment, @RequestParam String authToken) throws Exception {
+    public ConsignmentEntity[] findConsignment(@Valid @RequestBody FindConsignment findConsignment, @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentEntity(findConsignment, authToken);
     }
 
@@ -255,77 +255,60 @@ public class MidMileController {
     }
 
     //=========================================BondedManifestHeader====================================================
-    // Get All BondedManifestHeader Details
-    @ApiOperation(response = BondedManifestHeader[].class, value = "Get all BondedManifestHeader Details")
-    @GetMapping("/bondedManifest/allHeaders")
-    public ResponseEntity<?> getAllBondedManifestHeaderDetails(@RequestParam String authToken) {
-        BondedManifestHeader[] bondedManifestHeaders = midMileService.getAllBondedManifestHeaders(authToken);
-        return new ResponseEntity<>(bondedManifestHeaders, HttpStatus.OK);
+    // Get All BondedManifest Details
+    @ApiOperation(response = BondedManifest[].class, value = "Get all BondedManifest Details")
+    @GetMapping("/bondedManifest")
+    public ResponseEntity<?> getAllBondedManifestDetails(@RequestParam String authToken) {
+        BondedManifest[] bondedManifest = midMileService.getAllBondedManifest(authToken);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
-    // Get All BondedManifestLine Details
-    @ApiOperation(response = BondedManifestLine[].class, value = "Get all BondedManifestLine Details")
-    @GetMapping("/bondedManifest/allLines")
-    public ResponseEntity<?> getAllBondedManifestLineDetails(@RequestParam String authToken) {
-        BondedManifestLine[] bondedManifestLines = midMileService.getAllBondedManifestLines(authToken);
-        return new ResponseEntity<>(bondedManifestLines, HttpStatus.OK);
-    }
-
-    // Get BondedManifestHeader
-    @ApiOperation(response = BondedManifestHeader.class, value = "Get BondedManifestHeader") // label for swagger
+    // Get BondedManifest
+    @ApiOperation(response = BondedManifest.class, value = "Get BondedManifest") // label for swagger
     @GetMapping("/bondedManifest/{bondedId}")
-    public ResponseEntity<?> getBondedManifestHeader(@PathVariable String bondedId, @RequestParam String languageId,
+    public ResponseEntity<?> getBondedManifest(@PathVariable String bondedId, @RequestParam String languageId,
                                                      @RequestParam String companyId, @RequestParam String partnerId,
                                                      @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
                                                      @RequestParam String authToken) {
-        BondedManifestHeader bondedManifestHeader = midMileService.getBondedManifestHeader(languageId, companyId, partnerId,
+        BondedManifest bondedManifest = midMileService.getBondedManifest(languageId, companyId, partnerId,
                 masterAirwayBill, houseAirwayBill, bondedId, authToken);
-        return new ResponseEntity<>(bondedManifestHeader, HttpStatus.OK);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
-    // Create new BondedManifestHeader
-    @ApiOperation(response = BondedManifestHeader.class, value = "Create new BondedManifestHeader") // label for swagger
+    // Create new BondedManifest
+    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest") // label for swagger
     @PostMapping("/bondedManifest/create/list")
-    public ResponseEntity<?> postBondedManifestHeaders(@Valid @RequestBody List<AddBondedManifestHeader> addBondedManifestHeaders,
+    public ResponseEntity<?> postBondedManifest(@Valid @RequestBody List<AddBondedManifest> addBondedManifest,
                                                        @RequestParam String loginUserID, @RequestParam String authToken) {
-        BondedManifestHeader[] bondedManifestHeaders = midMileService.createBondedManifestHeader(addBondedManifestHeaders, loginUserID, authToken);
-        return new ResponseEntity<>(bondedManifestHeaders, HttpStatus.OK);
+        BondedManifest[] bondedManifest = midMileService.createBondedManifest(addBondedManifest, loginUserID, authToken);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
-    // Update BondedManifestHeader
-    @ApiOperation(response = BondedManifestHeader.class, value = "Update BondedManifestHeader") // label for swagger
+    // Update BondedManifest
+    @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for swagger
     @PatchMapping("/bondedManifest/update/list")
-    public ResponseEntity<?> patchBondedManifestHeaders(@Valid @RequestBody List<UpdateBondedManifestHeader> updateBondedManifestHeaders,
+    public ResponseEntity<?> patchBondedManifest(@Valid @RequestBody List<UpdateBondedManifest> updateBondedManifest,
                                                         @RequestParam String loginUserID, @RequestParam String authToken) {
-        BondedManifestHeader[] bondedManifestHeader = midMileService.updateBondedManifestHeader(updateBondedManifestHeaders, loginUserID, authToken);
-        return new ResponseEntity<>(bondedManifestHeader, HttpStatus.OK);
+        BondedManifest[] bondedManifest = midMileService.updateBondedManifest(updateBondedManifest, loginUserID, authToken);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
-    // Delete BondedManifestHeader
-    @ApiOperation(response = BondedManifestHeader.class, value = "Delete BondedManifestHeader") // label for Swagger
+    // Delete BondedManifest
+    @ApiOperation(response = BondedManifest.class, value = "Delete BondedManifest") // label for Swagger
     @PostMapping("/bondedManifest/delete/list")
-    public ResponseEntity<?> deleteBondedManifestHeaders(@Valid @RequestBody List<BondedManifestDeleteInput> deleteInputList,
+    public ResponseEntity<?> deleteBondedManifest(@Valid @RequestBody List<BondedManifestDeleteInput> deleteInputList,
                                                          @RequestParam String loginUserID, @RequestParam String authToken) {
-        midMileService.deleteBondedManifestHeader(deleteInputList, loginUserID, authToken);
+        midMileService.deleteBondedManifest(deleteInputList, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find BondedManifestHeaders
-    @ApiOperation(response = BondedManifestHeader[].class, value = "Find BondedManifestHeaders") // label for swagger
-    @PostMapping("/bondedManifest/findBondedManifestHeader")
-    public ResponseEntity<?> findBondedManifestHeaders(@RequestBody FindBondedManifestHeader findBondedManifestHeader,
+    // Find BondedManifest
+    @ApiOperation(response = BondedManifest[].class, value = "Find BondedManifest") // label for swagger
+    @PostMapping("/bondedManifest/findBondedManifest")
+    public ResponseEntity<?> findBondedManifest(@RequestBody FindBondedManifest findBondedManifest,
                                                        @RequestParam String authToken) throws Exception {
-        BondedManifestHeader[] bondedManifestHeaders = midMileService.findBondedManifestHeaders(findBondedManifestHeader, authToken);
-        return new ResponseEntity<>(bondedManifestHeaders, HttpStatus.OK);
-    }
-
-    // Find BondedManifestLines
-    @ApiOperation(response = BondedManifestLine[].class, value = "Find BondedManifestLines") // label for swagger
-    @PostMapping("/bondedManifest/findBondedManifestLine")
-    public ResponseEntity<?> findBondedManifestLines(@RequestBody FindBondedManifestLine findBondedManifestLine,
-                                                     @RequestParam String authToken) throws Exception {
-        BondedManifestLine[] bondedManifestLines = midMileService.findBondedManifestLines(findBondedManifestLine, authToken);
-        return new ResponseEntity<>(bondedManifestLines, HttpStatus.OK);
+        BondedManifest[] bondedManifest = midMileService.findBondedManifest(findBondedManifest, authToken);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
     //=========================================CcrHeader====================================================
@@ -443,4 +426,12 @@ public class MidMileController {
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
+    // Console Create consignmentResponse
+    @ApiOperation(response = Console[].class, value = "Create Console based on Consignment Input")
+    @PostMapping("/console/consignment")
+    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<AddConsignment> addConsignment, @RequestParam String loginUserID,
+                                                          @RequestParam String authToken) {
+        Console[] createConsole = midMileService.createConsoleConsignmentInput(addConsignment, loginUserID, authToken);
+        return new ResponseEntity<>(createConsole, HttpStatus.OK);
+    }
 }

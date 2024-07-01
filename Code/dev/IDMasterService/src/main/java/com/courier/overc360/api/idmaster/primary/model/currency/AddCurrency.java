@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddCurrency {
 
+    @NotBlank(message = "CurrencyId is mandatory")
     private String currencyId;
 
     @NotBlank(message = "Currency Description is mandatory")

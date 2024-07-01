@@ -15,4 +15,7 @@ public interface ReplicaConsignorRepository extends JpaRepository<ReplicaConsign
     Optional<ReplicaConsignor> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String productId, String customerId, String consignorId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String productId, String customerId, String consignorId, Long deletionIndicator);
+
 }

@@ -2,10 +2,12 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Date;
 
 @Data
-public class UpdateBondedManifestHeader {
+public class BondedManifest {
+
+    private String  bondedId;
 
     private String languageId;
 
@@ -17,17 +19,21 @@ public class UpdateBondedManifestHeader {
 
     private String houseAirwayBill;
 
-    private String bondedId;
+    private String languageDescription;
+
+    private String companyName;
 
     private String partnerType;
 
     private String partnerName;
 
+    private String statusId;
+
+    private String noOfPackagesMawb;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
-
-    private String noOfPackagesMawb;
 
     private String description;
 
@@ -123,9 +129,101 @@ public class UpdateBondedManifestHeader {
 
     private String countryOfOrigin;
 
-    private Long deletionIndicator;
+    private Long deletionIndicator = 0L;
 
+    private String lineNo;
 
-    private List<UpdateBondedManifestLine> updateBondedManifestLines;
+    private String noOfPiecesHawb;
+
+    private String consigneeCivilId;
+
+    private String incoTerms;
+
+    private String invoiceNumber;
+
+    private String invoiceDate;
+
+    private String invoiceType;
+
+    private String invoiceSupplierName;
+
+    private String hsCode;
+
+    private String goodsDescription;
+
+    private String quantity;
+
+    private String freightCurrency;
+
+    private String freightCharges;
+
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String actualCurrency;
+
+    private String totalDuty;
+
+    private String specialApprovalValue;
+
+    private String declaredValue;
+
+    private String currency;
+
+    private String paymentType;
+
+    private String consolidatedBillNo;
+
+    private String billOfLadingFor;
+
+    private String referenceField1;
+
+    private String referenceField2;
+
+    private String referenceField3;
+
+    private String referenceField4;
+
+    private String referenceField5;
+
+    private String referenceField6;
+
+    private String referenceField7;
+
+    private String referenceField8;
+
+    private String referenceField9;
+
+    private String referenceField10;
+
+    private String referenceField11;
+
+    private String referenceField12;
+
+    private String referenceField13;
+
+    private String referenceField14;
+
+    private String referenceField15;
+
+    private String referenceField16;
+
+    private String referenceField17;
+
+    private String referenceField18;
+
+    private String referenceField19;
+
+    private String referenceField20;
+
+    private String createdBy;
+
+    private Date createdOn ;
+
+    private String updatedBy;
+
+    private Date updatedOn;
+
 
 }

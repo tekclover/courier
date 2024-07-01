@@ -5,7 +5,15 @@ import lombok.Data;
 @Data
 public class UpdateSubProduct {
 
+    private String languageId;
+
+    private String companyId;
+
+    private String subProductId;
+
     private String subProductName;
+
+    private String subProductValue;
 
     private String remark;
 

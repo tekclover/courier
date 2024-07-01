@@ -108,6 +108,7 @@ public class StatusService {
                 dbStatus.setUpdatedBy(loginUserID);
                 dbStatus.setCreatedOn(new Date());
                 dbStatus.setUpdatedOn(new Date());
+                log.info("Status Id created Time "  + new Date());
                 return statusRepository.save(dbStatus);
             }
         } catch (Exception e) {
@@ -156,6 +157,7 @@ public class StatusService {
             dbStatus.setDeletionIndicator(1L);
             dbStatus.setUpdatedBy(loginUserID);
             dbStatus.setUpdatedOn(new Date());
+            log.info("Delete Status Time " + new Date());
             statusRepository.save(dbStatus);
         } else {
             throw new EntityNotFoundException("Error in deleting StatusId - " + statusId);
@@ -201,6 +203,7 @@ public class StatusService {
     public List<ReplicaStatus> findReplicaStatus(FindReplicaStatus findReplicaStatus) {
 
         ReplicaStatusSpecification spec = new ReplicaStatusSpecification(findReplicaStatus);
+        log.info("Status Return Find Method " + new Date());
         List<ReplicaStatus> results = replicaStatusRepository.findAll(spec);
         log.info("results: " + results);
         return results;

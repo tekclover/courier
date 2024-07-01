@@ -101,7 +101,7 @@ public class NotificationService {
                     addNotification.getCompanyId(), addNotification.getLanguageId(), 0L);
 
             Optional<Notification> duplicateNotification = notificationRepository.findByLanguageIdAndCompanyIdAndNotificationIdAndDeletionIndicator
-                    (addNotification.getLanguageId(), addNotification.getCompanyId(), addNotification.getNotificationId(), 0l);
+                    (addNotification.getLanguageId(), addNotification.getCompanyId(), addNotification.getNotificationId(), 0L);
 
             if (dbCompany.isEmpty()) {
                 throw new BadRequestException("CompanyId - " + addNotification.getCompanyId() + " and LanguageId - "
@@ -126,19 +126,20 @@ public class NotificationService {
                     newNotification.setCompanyName(iKeyValuePair.getCompanyDesc());
                 }
                 if (addNotification.getServiceTypeId() != null) {
-                    String serviceTypDesc = replicaNotificationRepository.getServiceTypeDesc(addNotification.getServiceTypeId());
+                    String serviceTypDesc = replicaNotificationRepository.getServiceTypeDesc(addNotification.getServiceTypeId(),
+                            addNotification.getLanguageId(), addNotification.getCompanyId());
                     if (serviceTypDesc != null) {
                         newNotification.setServiceTypeText(serviceTypDesc);
                     }
                 }
-                if (addNotification.getSubProductId() != null) {
-                    String subProductDesc = replicaNotificationRepository.getSubProductDesc(addNotification.getSubProductId());
+                if (addNotification.getSubProductId() != null && addNotification.getProductId() != null) {
+                    String subProductDesc = replicaNotificationRepository.getSubProductDesc(addNotification.getSubProductId(),
+                            addNotification.getLanguageId(), addNotification.getCompanyId());
                     if (subProductDesc != null) {
                         newNotification.setSubProductName(subProductDesc);
                     }
-                }
-                if (addNotification.getProductId() != null) {
-                    String productDesc = replicaNotificationRepository.getProductDesc(addNotification.getProductId());
+                    String productDesc = replicaNotificationRepository.getProductDesc(addNotification.getProductId(),
+                            addNotification.getLanguageId(), addNotification.getCompanyId(), addNotification.getSubProductId());
                     if (productDesc != null) {
                         newNotification.setProductName(productDesc);
                     }
@@ -184,19 +185,19 @@ public class NotificationService {
             Notification dbNotification = getNotification(languageId, companyId, notificationId);
             BeanUtils.copyProperties(updateNotification, dbNotification, CommonUtils.getNullPropertyNames(updateNotification));
             if (updateNotification.getServiceTypeId() != null) {
-                String serviceTypDesc = replicaNotificationRepository.getServiceTypeDesc(updateNotification.getServiceTypeId());
+                String serviceTypDesc = replicaNotificationRepository.getServiceTypeDesc(updateNotification.getServiceTypeId(), languageId, companyId);
                 if (serviceTypDesc != null) {
                     dbNotification.setServiceTypeText(serviceTypDesc);
                 }
             }
-            if (updateNotification.getSubProductId() != null) {
-                String subProductDesc = replicaNotificationRepository.getSubProductDesc(updateNotification.getSubProductId());
+            if (updateNotification.getSubProductId() != null && updateNotification.getProductId() != null) {
+                String subProductDesc = replicaNotificationRepository.getSubProductDesc(updateNotification.getSubProductId(),
+                        languageId, companyId);
                 if (subProductDesc != null) {
                     dbNotification.setSubProductName(subProductDesc);
                 }
-            }
-            if (updateNotification.getProductId() != null) {
-                String productDesc = replicaNotificationRepository.getProductDesc(updateNotification.getProductId());
+                String productDesc = replicaNotificationRepository.getProductDesc(updateNotification.getProductId(),
+                       languageId,companyId, updateNotification.getSubProductId());
                 if (productDesc != null) {
                     dbNotification.setProductName(productDesc);
                 }

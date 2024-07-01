@@ -81,6 +81,9 @@ public class ReplicaConsignmentEntity {
     @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(50)")
     private String subProductName;
 
+    @Column(name = "FLIGHT_DETAILS")
+    private String flightDetails;
+
     @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
     private String flightNo;
 

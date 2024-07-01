@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
 
     Optional<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-
             String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);
 
     // Updating productName in Consignor & Customer Tables using Stored Procedure

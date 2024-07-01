@@ -2,39 +2,36 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import java.util.Date;
-import java.util.List;
-
 @Data
-public class BondedManifestHeader {
-
-    private Long bondedManifestHeaderId;
+public class UpdateBondedManifest {
 
     private String languageId;
 
-    private String languageDescription;
-
     private String companyId;
 
-    private String companyName;
-
     private String partnerId;
-
-    private String partnerType;
-
-    private String partnerName;
 
     private String masterAirwayBill;
 
     private String houseAirwayBill;
+
+    private String bondedId;
+
+    private String paymentType;
+
+    private String consolidatedBillNo;
+
+    private String billOfLadingFor;
+
+    private String partnerType;
+
+    private String partnerName;
 
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
     private String noOfPackagesMawb;
-
-    private String bondedId;
 
     private String description;
 
@@ -65,8 +62,6 @@ public class BondedManifestHeader {
     private String productName;
 
     private String subProductId;
-
-    private String subproductName;
 
     private String serviceTypeId;
 
@@ -132,15 +127,83 @@ public class BondedManifestHeader {
 
     private Long deletionIndicator;
 
-    private String createdBy;
+    private String noOfPiecesHawb;
 
-    private Date createdOn;
+    private String subProductName;
 
-    private String updatedBy;
+    private String consigneeCivilId;
 
-    private Date updatedOn;
+    private String incoTerms;
 
+    private String invoiceNumber;
 
-    private List<BondedManifestLine> bondedManifestLines;
+    private String invoiceDate;
+
+    private String invoiceType;
+
+    private String invoiceSupplierName;
+
+    private String hsCode;
+
+    private String goodsDescription;
+
+    private String quantity;
+
+    private String freightCurrency;
+
+    private String freightCharges;
+
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String actualCurrency;
+
+    private String totalDuty;
+
+    private String declaredValue;
+
+    private String currency;
+
+    private String referenceField1;
+
+    private String referenceField2;
+
+    private String referenceField3;
+
+    private String referenceField4;
+
+    private String referenceField5;
+
+    private String referenceField6;
+
+    private String referenceField7;
+
+    private String referenceField8;
+
+    private String referenceField9;
+
+    private String referenceField10;
+
+    private String referenceField11;
+
+    private String referenceField12;
+
+    private String referenceField13;
+
+    private String referenceField14;
+
+    private String referenceField15;
+
+    private String referenceField16;
+
+    private String referenceField17;
+
+    private String referenceField18;
+
+    private String referenceField19;
+
+    private String referenceField20;
+
 
 }

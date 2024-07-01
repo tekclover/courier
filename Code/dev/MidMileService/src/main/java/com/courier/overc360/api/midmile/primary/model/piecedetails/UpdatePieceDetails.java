@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.primary.model.piecedetails;
 
+import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.List;
 public class UpdatePieceDetails { ;
 
         private String pieceId;
+
         private String partnerType;
 
         private String partnerMasterAirwayBill;
@@ -44,7 +46,7 @@ public class UpdatePieceDetails { ;
 
         private String volumeUnit;
 
-        private List<String> referenceImageList;
+        private List<ReferenceImageList> referenceImageList;
 
         private String packReferenceNumber;
 
@@ -93,7 +95,7 @@ public class UpdatePieceDetails { ;
         private String referenceField20;
 
         private List<UpdateItemDetails> itemDetails = new ArrayList<>();
-    }
+}
 
 
 

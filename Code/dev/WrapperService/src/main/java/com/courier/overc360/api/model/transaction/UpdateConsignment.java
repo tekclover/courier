@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -176,6 +177,16 @@ public class UpdateConsignment {
 
     private String volumeUnit;
 
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
     private String upstreamCreationTime;
 
     private String upstreamCreationSource;
@@ -234,7 +245,7 @@ public class UpdateConsignment {
 
     private String storageLocation;
 
-    private List<String> referenceImageList;
+    private List<ReferenceImageList> referenceImageList;
 
     private String isExchange;
 

@@ -16,6 +16,7 @@ public class AddProvince {
     @NotBlank(message = "Country Id is mandatory")
     private String countryId;
 
+    @NotBlank(message = "Province Id is mandatory")
     private String provinceId;
 
     @NotBlank(message = "Province Name is mandatory")

@@ -2,8 +2,12 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UpdateItemDetails {
+
+    private String pieceItemId;
 
     private String partnerType;
 
@@ -38,6 +42,8 @@ public class UpdateItemDetails {
     private String volume;
 
     private String volumeUnit;
+
+    private List<ReferenceImageList> referenceImageList;
 
     private Long deletionIndicator;
 

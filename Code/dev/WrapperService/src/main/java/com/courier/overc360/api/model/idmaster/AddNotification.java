@@ -13,13 +13,13 @@ public class AddNotification {
 
     private String notificationText;
 
+    private String statusId;
+
     private String productId;
 
     private String subProductId;
 
     private String serviceTypeId;
-
-    private String statusId;
 
     private String userRole;
 

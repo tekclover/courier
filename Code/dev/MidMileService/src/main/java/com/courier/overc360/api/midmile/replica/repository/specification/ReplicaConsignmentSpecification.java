@@ -1,8 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository.specification;
 
 
-import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifestLine;
-import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifestLine;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import org.springframework.context.annotation.DeferredImportSelector;

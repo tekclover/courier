@@ -207,15 +207,23 @@ public class ItemDetailsService {
                 dbItemDetails.setUpdatedOn(new Date());
                 ItemDetails savedItemDetails = itemDetailsRepository.save(dbItemDetails);
 
-                //Get Image Reference
-                List<ImageReference> imageReference =
-                        imageReferenceRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, itemDetails.getPieceItemId(), 0L);
-                List<String> imageReferenceList = new ArrayList<>();
-                for (ImageReference dbImageRef : imageReference) {
-                    imageReferenceList.add(dbImageRef.getReferenceImageUrl());
+                //Update ReferenceImage
+                List<ReferenceImageList> referenceImageLists = new ArrayList<>();
+                for(ReferenceImageList image : itemDetails.getReferenceImageList()){
+
+                    ReferenceImageList newRefImageList = new ReferenceImageList();
+                    String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
+                    ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(),0L);
+
+                    imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
+                    imageReferenceRecord.setReferenceField2(downloadDocument);
+                    imageReferenceRecord.setUpdatedBy(loginUserID);
+                    imageReferenceRecord.setUpdatedOn(new Date());
+                    ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
+                    BeanUtils.copyProperties(imageRef, newRefImageList);
+                    referenceImageLists.add(newRefImageList);
                 }
-                newItemDetails.setReferenceImageList(imageReferenceList);
+                newItemDetails.setReferenceImageList(referenceImageLists);
 
                 BeanUtils.copyProperties(savedItemDetails, newItemDetails);
                 itemDetailsList.add(newItemDetails);
@@ -513,20 +521,22 @@ public class ItemDetailsService {
 
                     //ImageReference Created
                     List<ReferenceImageList> imageReferenceList = new ArrayList<>();
+                    if (addItemDetails.getReferenceImageList() != null) {
                     for (ReferenceImageList imageReference : addItemDetails.getReferenceImageList()) {
-                        //CommonService
-                        String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
-                        ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
-                                partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, pieceId,
-                                PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
+                            //CommonService
+                            String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
+                            ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
+                                    partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null, pieceId,
+                                    PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
 
-                        //ReferenceImage Set
-                        ReferenceImageList newImage = new ReferenceImageList();
-                        newImage.setImageRefId(dbImage.getImageRefId());
-                        newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
-                        newImage.setPdfUrl(dbImage.getReferenceField2());
+                            //ReferenceImage Set
+                            ReferenceImageList newImage = new ReferenceImageList();
+                            newImage.setImageRefId(dbImage.getImageRefId());
+                            newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
+                            newImage.setPdfUrl(dbImage.getReferenceField2());
 
-                        imageReferenceList.add(newImage);
+                            imageReferenceList.add(newImage);
+                        }
                     }
 
                     newItemDetails.setDeletionIndicator(0L);

@@ -2,7 +2,6 @@ package com.courier.overc360.api.idmaster.primary.model.iata;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -17,6 +16,7 @@ public class AddIata {
     @NotBlank(message = "Origin is mandatory")
     private String origin;
 
+    @NotBlank(message = "OriginCode is mandatory")
     private String originCode;
 
     @NotBlank(message = "CurrencyId is mandatory")
@@ -48,6 +48,5 @@ public class AddIata {
     private String referenceField9;
 
     private String referenceField10;
-
 
 }

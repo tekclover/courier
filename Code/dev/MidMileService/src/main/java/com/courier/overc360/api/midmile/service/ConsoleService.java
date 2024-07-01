@@ -4,14 +4,17 @@ import com.courier.overc360.api.midmile.controller.exception.BadRequestException
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.console.*;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.midmile.primary.repository.BondedManifestHeaderRepository;
-import com.courier.overc360.api.midmile.primary.repository.BondedManifestLineRepository;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
+import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
+import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
 import com.courier.overc360.api.midmile.primary.repository.ConsoleRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
+import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.ConsoleSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -34,6 +37,9 @@ public class ConsoleService {
     private ConsoleRepository consoleRepository;
 
     @Autowired
+    private CcrRepository ccrRepository;
+
+    @Autowired
     private ReplicaConsoleRepository replicaConsoleRepository;
 
     @Autowired
@@ -43,10 +49,11 @@ public class ConsoleService {
     private ErrorLogService errorLogService;
 
     @Autowired
-    private ErrorLogRepository errorLogRepository;
+    private BondedManifestRepository bondedManifestRepository;
 
     @Autowired
-    private BondedManifestLineRepository bondedManifestLineRepository;
+    private ErrorLogRepository errorLogRepository;
+
 
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
@@ -147,7 +154,7 @@ public class ConsoleService {
      * @throws IOException
      * @throws CsvException
      */
-    public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
+    public List<Console> createConsList(List<AddConsole> addConsoleList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<Console> createdConsoleList = new ArrayList<>();
         // Create a map to group consignments by hsCode
@@ -157,10 +164,12 @@ public class ConsoleService {
 
         // Iterate over the grouped consignments
         for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
-            String hsCode = entry.getKey();
+//            String hsCode = entry.getKey();
+            String NUM_RAN_OBJ = "CONSOLE_ID";
+            String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
             List<AddConsole> consoleList = entry.getValue();
-            // 100 record above create another console
-
+            // 100 record above create another console 99
+            // 5000 ----4999
             for (AddConsole console : consoleList) {
                 boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
                         console.getLanguageId(), console.getCompanyId(),
@@ -171,7 +180,7 @@ public class ConsoleService {
                 }
 
                 // Pass ConsignmentCurrency
-                IKeyValuePair iKeyValuePair = bondedManifestLineRepository.getToCurrencyValue(console.getConsignmentCurrency());
+                IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getConsignmentCurrency());
 
                 Console newConsole = new Console();
                 BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
@@ -194,7 +203,7 @@ public class ConsoleService {
                 }
 
                 // Set TotalDuty Value
-                IKeyValuePair iKeyValue = bondedManifestLineRepository.getToCurrencyValue(console.getFreightCurrency());
+                IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getFreightCurrency());
                 Double freightCharge = Double.valueOf(console.getFreightCharges());
                 String incoTerms = console.getIncoTerms();
 
@@ -215,7 +224,7 @@ public class ConsoleService {
                 newConsole.setExpectedDuty(String.valueOf(totalDuty));
                 newConsole.setCustomsValue(CUS_VAL);
                 newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
-                newConsole.setConsoleId(hsCode);
+                newConsole.setConsoleId(CONSOLE_ID);
                 newConsole.setStatusId(STATUS_ID);
                 newConsole.setDeletionIndicator(0L);
                 newConsole.setCreatedBy(loginUserID);
@@ -225,6 +234,173 @@ public class ConsoleService {
 
                 Console createdConsole = consoleRepository.save(newConsole);
                 createdConsoleList.add(createdConsole);
+            }
+        }
+
+        return createdConsoleList;
+    }
+
+
+    /**
+     * CreateConsole
+     *
+     * @param replicaAddConsignment
+     * @param loginUserID
+     * @return
+     */
+    public List<Console> createConsoleInConsign(List<ReplicaAddConsignment> replicaAddConsignment, String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<AddConsole> consoles = new ArrayList<>();
+        for(ReplicaAddConsignment consignment : replicaAddConsignment) {
+            AddConsole console = new AddConsole();
+            console.setFreightCurrency(consignment.getFreightCurrency());
+            console.setFreightCharges(consignment.getFreightCharges());
+            for(ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
+                for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()){
+                    BeanUtils.copyProperties(replicaAddItemDetails, console, CommonUtils.getNullPropertyNames(replicaAddItemDetails));
+                }
+            }
+            consoles.add(console);
+        }
+        return createConsoleList(consoles, loginUserID);
+    }
+
+    /**
+     *
+     *
+     * @param addConsoleList
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws IOException
+     * @throws CsvException
+     */
+    public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Console> createdConsoleList = new ArrayList<>();
+
+        // Create a map to group consignments by hsCode
+        Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
+                .collect(Collectors.groupingBy(AddConsole::getHsCode));
+
+
+        for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
+            List<AddConsole> consoleList = entry.getValue();
+
+            // Split groups greater than 99 records into smaller subgroups
+            List<AddConsole> smallerGroups = new ArrayList<>();
+            for (int i = 0; i < consoleList.size(); i += 99) {      // 99
+                smallerGroups.addAll(consoleList.subList(i, Math.min(i + 99, consoleList.size())));         //99
+            }
+
+            // Further group the consignments based on the total value condition
+            List<List<AddConsole>> subGroups = new ArrayList<>();
+            List<AddConsole> currentSubGroup = new ArrayList<>();
+            Double currentSubGroupValue = 0.0;
+
+            for (AddConsole console : smallerGroups) {
+                Double freightCharge = Double.parseDouble(console.getFreightCharges());
+                IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getFreightCurrency());
+                Double toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
+                Double totalDuty = toCurrencyValue * freightCharge;
+                if (totalDuty > 100) {
+                    totalDuty += totalDuty * 0.05;
+                }
+                if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+                    totalDuty += 4;
+                }
+
+                Double iataValue = Double.parseDouble(ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId()).getIataKd());
+                Double recordValue = iataValue + totalDuty;
+
+                if (currentSubGroupValue + recordValue > 5000) {  // 5000
+                    subGroups.add(currentSubGroup);
+                    currentSubGroup = new ArrayList<>();
+                    currentSubGroupValue = 0.0;
+                }
+
+                currentSubGroup.add(console);
+                currentSubGroupValue += recordValue;
+            }
+
+            if (!currentSubGroup.isEmpty()) {
+                subGroups.add(currentSubGroup);
+            }
+
+            // Process each subgroup
+            for (List<AddConsole> subGroup : subGroups) {
+                // Generate a new CONSOLE_ID for each subgroup
+                String NUM_RAN_OBJ = "CONSOLE_ID";
+                String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
+                for (AddConsole console : subGroup) {
+                    boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
+                            console.getLanguageId(), console.getCompanyId(),
+                            console.getPartnerId(), console.getMasterAirwayBill(),
+                            console.getHouseAirwayBill()) == 1;
+                    if (duplicateConsole) {
+                        throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + console.getHouseAirwayBill());
+                    }
+
+                    // Pass ConsignmentCurrency
+                    IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getConsignmentCurrency());
+
+                    Console newConsole = new Console();
+                    BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+
+                    String STATUS_ID = "2 - Console Created";
+                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                            console.getLanguageId(), console.getCompanyId());
+
+                    if (lAndCDesc != null) {
+                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                    }
+
+                    // Customs Value set multiply formula
+                    String CUS_VAL = null;
+                    if (console.getConsignmentValue() != null && iKeyValuePair.getCurrencyValue() != null) {
+                        Double CON_VAL = Double.valueOf(console.getConsignmentValue());
+                        Double CURR_VAL = Double.valueOf(iKeyValuePair.getCurrencyValue());
+                        CUS_VAL = String.valueOf(CON_VAL * CURR_VAL);
+                    }
+
+                    //Get Iatakd
+                    IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
+                            console.getLanguageId(), console.getCompanyId());
+
+                    Double freightCharge = Double.valueOf(console.getFreightCharges());
+                    // Set TotalDuty Value
+                    double totalDuty = 0;
+                    if (iKeyValuePair.getCurrencyValue() != null) {
+                        double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+                        if (toCurrencyValue != 0 && freightCharge != 0) {
+                            totalDuty = toCurrencyValue * freightCharge;
+                            if (totalDuty > 100) {
+                                totalDuty += totalDuty * 0.05;
+                            }
+                            if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+                                totalDuty += 4;
+                            }
+                        }
+                    }
+
+                    newConsole.setIataKd(iataData.getCurrencyValue());
+                    newConsole.setExpectedDuty(String.valueOf(totalDuty));
+                    newConsole.setCustomsValue(CUS_VAL);
+                    newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
+                    newConsole.setConsoleId(CONSOLE_ID);
+                    newConsole.setStatusId(STATUS_ID);
+                    newConsole.setDeletionIndicator(0L);
+                    newConsole.setCreatedBy(loginUserID);
+                    newConsole.setCreatedOn(new Date());
+                    newConsole.setUpdatedBy(loginUserID);
+                    newConsole.setUpdatedOn(new Date());
+
+                    Console createdConsole = consoleRepository.save(newConsole);
+                    createdConsoleList.add(createdConsole);
+                }
             }
         }
 
@@ -295,76 +471,7 @@ public class ConsoleService {
     //    }
 
 
-//    /**
-//     * CreateConsole
-//     *
-//     * @param replicaAddConsignment
-//     * @param loginUserID
-//     * @return
-//     */
-//    public List<Console> createConsoleInConsign(List<ReplicaAddConsignment> replicaAddConsignment, String loginUserID) {
-//        // Create a map to group consignments by hsCode
-//        Map<String, List<ReplicaAddConsignment>> groupedByHsCode = replicaAddConsignment.stream()
-//                .collect(Collectors.groupingBy(ReplicaAddConsignment::getHsCode));
-//
-//        // Create a list to hold the Console objects
-//        List<Console> consoles = new ArrayList<>();
-//
-//        // Iterate over the grouped consignments
-//        for (Map.Entry<String, List<ReplicaAddConsignment>> entry : groupedByHsCode.entrySet()) {
-//            String hsCode = entry.getKey();
-//            List<ReplicaAddConsignment> consignments = entry.getValue();
-//
-//            for(ReplicaAddConsignment con : consignments) {
-//                Console console = new Console();
-//
-//                BeanUtils.copyProperties(con, console, CommonUtils.getNullPropertyNames(con));
-//                console.setConsoleId(hsCode);
-//                console.setCreatedBy(loginUserID);
-//                console.setCreatedOn(new Date());
-//                console.setUpdatedBy(loginUserID);
-//                console.setUpdatedOn(new Date());
-////                console.setConsoleId(hsCode);
-////                console.setCompanyId(con.getCompanyId());
-//////                console.setLanguageId(con.getLanguageId());
-////                console.setHouseAirwayBill(con.getHouseAirwayBill());
-////                console.setMasterAirwayBill(con.getMasterAirwayBill());
-////                console.setPartnerId(con.getPartnerId());
-////                console.setPartnerMasterAirwayBill(con.getPartnerMasterAirwayBill());
-////                console.setPartnerHouseAirwayBill(con.getPartnerHouseAirwayBill());
-////                console.setPartnerName(con.getPartnerName());
-////                console.setPartnerType(con.getPartnerType());
-////                console.setHsCode(con.getHsCode());
-//////                console.setNoOfPieceHawb(con.getNoOfPieceHawb());
-//////                console.setNoOfPackageMawb(con.getNoOfPackageMawb());
-////                console.setGrossWeight(con.getGrossWeight());
-//////                console.setTareWeight(con.getTareWeight());
-//////                console.setManifestedQuantity(con.getManifestedQuantity());
-////                console.setTotalQuantity(con.getTotalQuantity());
-////                console.setVolume(con.getVolume());
-////                console.setFinalDestination(con.getDescription());
-////                console.setNotifyParty(con.getNotifyParty());
-////                console.setConsigneeName(con.getConsigneeName());
-////                console.setShipperName(con.getShipperName());
-////                console.setRemarks(con.getRemark());
-////                console.setIsConsolidatedShipment(con.getIsConsolidatedShipment());
-////                console.setIsSplitBillOfLading(con.getIsSplitBillOfLading());
-////                console.setIsPendingShipment(con.getIsPendingShipment());
-////                console.setGoodsType(con.getGoodsType());
-////                console.setCountryOfOrigin(con.getCountryOfOrigin());
-////                console.setConsignmentCurrency(con.getConsignementCurrency());
-////                console.setConsignmentValue();
-////
-////                console.setHouseAirwayBill();
-////                console.setConsignments(consignments);
-//                    Console savedConsole = consoleRepository.save(console);
-//                // Add the console object to the list
-//                consoles.add(savedConsole);
-//            }
-//        }
-//
-//        return consoles;
-//    }
+
 
     /**
      * Update Console

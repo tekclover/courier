@@ -35,6 +35,8 @@ public class ReplicaAddConsignment {
     @NotBlank(message = "ShipperId is mandatory")
     private String shipperId;
 
+    private Long consignmentId;
+
     private String shipperName;
 
     private String noOfPieceHawb;
@@ -53,7 +55,7 @@ public class ReplicaAddConsignment {
 
     private String partnerHouseAirwayBill;
 
-    private String flightDetails;
+    private String languageDescription;
 
     @NotBlank(message = "LineNo is mandatory")
     private String lineNo;

@@ -64,6 +64,9 @@ public class Consignor {
     @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String subProductName;
 
+    @Column(name = "SUB_PRODUCT_VALUE", columnDefinition = "nvarchar(50)")
+    private String subProductValue;
+
     @Column(name = "PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String productName;
 

@@ -3,7 +3,6 @@ package com.courier.overc360.api.midmile.primary.model.itemdetails;
 import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -37,46 +36,32 @@ public class AddItemDetails {
 
     private String imageRefId;
 
-    @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 
-    @NotBlank(message = "PartnerName is mandatory")
     private String partnerName;
 
-    @NotBlank(message = "ItemCode is mandatory")
     private String itemCode;
 
-    @NotBlank(message = "HsCode is mandatory")
     private String hsCode;
 
-    @NotBlank(message = "Declared Value is mandatory")
     private String declaredValue;
 
-    @NotBlank(message = "Cod Amount is mandatory")
     private String codAmount;
 
-    @NotBlank(message = "Length is mandatory")
     private String length;
 
-    @NotBlank(message = "Dimension Unit is mandatory")
     private String dimensionUnit;
 
-    @NotBlank(message = "Width is mandatory")
     private String width;
 
-    @NotBlank(message = "Height is mandatory")
     private String height;
 
-    @NotBlank(message = "Weight is mandatory")
     private String weight;
 
-    @NotBlank(message = "Weight Unit is mandatory")
     private String weightUnit;
 
-    @NotBlank(message = "Volume is mandatory")
     private String volume;
 
-    @NotBlank(message = "Volume Unit is mandatory")
     private String volumeUnit;
 
     private List<ReferenceImageList> referenceImageList;

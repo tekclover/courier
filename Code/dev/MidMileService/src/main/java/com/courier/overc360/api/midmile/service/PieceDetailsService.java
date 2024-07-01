@@ -212,20 +212,22 @@ public class PieceDetailsService {
 
                     //ReferenceImage Create
                     List<ReferenceImageList> referenceImageList = new ArrayList<>();
+                    if (addPieceDetails.getReferenceImageList() != null) {
                     for (ReferenceImageList refImage : addPieceDetails.getReferenceImageList()) {
-                        //CommonService GetFileName
-                        String downloadDocument = commonService.downLoadDocument(refImage.getReferenceImageUrl(), "document", "image");
-                        ImageReference imageReference = imageReferenceService.createImageReference(
-                                languageId, companyId, partnerId, partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill,
-                                PIECE_ID, null, refImage.getReferenceImageUrl(), "P_ID", downloadDocument, loginUserID);
+                            //CommonService GetFileName
+                            String downloadDocument = commonService.downLoadDocument(refImage.getReferenceImageUrl(), "document", "image");
+                            ImageReference imageReference = imageReferenceService.createImageReference(
+                                    languageId, companyId, partnerId, partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null,
+                                    PIECE_ID, null, refImage.getReferenceImageUrl(), "P_ID", downloadDocument, loginUserID);
 
-                        //ReferenceImage set
-                        ReferenceImageList refImageList = new ReferenceImageList();
-                        refImageList.setImageRefId(imageReference.getImageRefId());
-                        refImageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
-                        refImageList.setPdfUrl(imageReference.getReferenceField2());
+                            //ReferenceImage set
+                            ReferenceImageList refImageList = new ReferenceImageList();
+                            refImageList.setImageRefId(imageReference.getImageRefId());
+                            refImageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+                            refImageList.setPdfUrl(imageReference.getReferenceField2());
 
-                        referenceImageList.add(refImageList);
+                            referenceImageList.add(refImageList);
+                        }
                     }
 
                     //Save PieceDetails
@@ -303,16 +305,24 @@ public class PieceDetailsService {
                 dbPieceDetails.setUpdatedBy(loginUserID);
                 dbPieceDetails.setUpdatedOn(new Date());
 
-                //Get ImageReferenceUrl
-                List<ImageReference> imageReference =
-                        imageReferenceRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceDetails.getPieceId(),null, 0L);
+                //Update ReferenceImage
+                List<ReferenceImageList> referenceImageLists = new ArrayList<>();
+                for(ReferenceImageList image : pieceDetails.getReferenceImageList()){
 
-                List<String> imageReferenceList = new ArrayList<>();
-                for (ImageReference dbImageRef : imageReference) {
-                    imageReferenceList.add(dbImageRef.getReferenceImageUrl());
+                    ReferenceImageList newRefImageList = new ReferenceImageList();
+                    String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
+                    ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(),0L);
+
+                    imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
+                    imageReferenceRecord.setReferenceField2(downloadDocument);
+                    imageReferenceRecord.setUpdatedBy(loginUserID);
+                    imageReferenceRecord.setUpdatedOn(new Date());
+                    ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
+                    BeanUtils.copyProperties(imageRef, newRefImageList);
+                    referenceImageLists.add(newRefImageList);
                 }
-                addPieceDetails.setReferenceImageList(imageReferenceList);
+                addPieceDetails.setReferenceImageList(referenceImageLists);
+
 
                 // UpdateItemDetails
                 if (pieceDetails.getItemDetails() != null && !pieceDetails.getItemDetails().isEmpty()) {

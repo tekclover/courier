@@ -2,6 +2,7 @@ package com.courier.overc360.api.midmile.primary.model.imagereference;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -21,6 +22,8 @@ public class AddImageReference {
 
     @NotBlank(message = "HouseAirwayBill is mandatory")
     private String houseAirwayBill;
+
+    private Long consignmentId;
 
     private String pieceId;
 

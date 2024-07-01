@@ -19,6 +19,8 @@ public class UpdateRate {
 
     private String partnerType;
 
+    private String statusId;
+
     private String deletionIndicator;
 
     private String remark;

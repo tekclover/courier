@@ -145,7 +145,7 @@ public class ImageReferenceService {
      */
     @Transactional
     public ImageReference createImageReference(String languageId, String companyId, String partnerId, String partnerName, String houseAirwayBill,
-                                               String masterAirwayBillNo, String partnerHouseAirwayBill, String partnerMasterAirwayBill,
+                                               String masterAirwayBillNo, String partnerHouseAirwayBill, String partnerMasterAirwayBill, Long consignmentId,
                                                String pieceId, String pieceItemId, String url, String tableName, String downloadUrl, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
@@ -161,6 +161,7 @@ public class ImageReferenceService {
             newImageReference.setMasterAirwayBill(masterAirwayBillNo);
             newImageReference.setPartnerHouseAirwayBill(partnerHouseAirwayBill);
             newImageReference.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
+            newImageReference.setConsignmentId(consignmentId);
             newImageReference.setPieceId(pieceId);
             newImageReference.setPieceItemId(pieceItemId);
             newImageReference.setReferenceImageUrl(url);

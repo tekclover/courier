@@ -7,6 +7,8 @@ public class UpdateHSCode {
 
     private String itemCode;
 
+    private String specialApprovalId;
+
     private String itemDescription;
 
     private String itemGroup;

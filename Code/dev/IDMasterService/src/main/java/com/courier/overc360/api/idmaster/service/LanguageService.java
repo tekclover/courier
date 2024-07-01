@@ -70,7 +70,7 @@ public class LanguageService {
                 throw new BadRequestException("Record is getting Duplicated with given values : languageId - " + addLanguage.getLanguageId());
             } else {
                 Language dbLanguage = new Language();
-                log.info("new Language : " + addLanguage);
+                log.info("new Language --> " + addLanguage);
                 BeanUtils.copyProperties(addLanguage, dbLanguage, CommonUtils.getNullPropertyNames(addLanguage));
                 dbLanguage.setDeletionIndicator(0L);
                 dbLanguage.setCreatedBy(loginUserID);

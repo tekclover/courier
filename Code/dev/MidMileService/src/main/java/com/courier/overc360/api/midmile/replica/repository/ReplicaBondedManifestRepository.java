@@ -1,6 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
-import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifestHeader;
+import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -13,10 +13,10 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface ReplicaBondedManifestHeaderRepository extends JpaRepository<ReplicaBondedManifestHeader, String>,
-        JpaSpecificationExecutor<ReplicaBondedManifestHeader> {
+public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBondedManifest, String>,
+        JpaSpecificationExecutor<ReplicaBondedManifest> {
 
-    Optional<ReplicaBondedManifestHeader> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
+    Optional<ReplicaBondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
 
     // Company Table records check
@@ -28,10 +28,10 @@ public interface ReplicaBondedManifestHeaderRepository extends JpaRepository<Rep
     Long companyRecordCount(@Param(value = "languageId") String languageId,
                             @Param(value = "companyId") String companyId);
 
-    // Duplicate Header Check
+    // Duplicate  Check
     @Query(value = "Select \n" +
             "Case When Exists \n" +
-            "(Select 1 From tblbondedmanifestheader h \n" +
+            "(Select 1 From tblbondedmanifest h \n" +
             "Where \n" +
             "h.LANG_ID = :languageId and \n" +
             "h.C_ID = :companyId and \n" +
@@ -42,7 +42,7 @@ public interface ReplicaBondedManifestHeaderRepository extends JpaRepository<Rep
             "Then 1 \n" +
             "Else 0 \n" +
             "End", nativeQuery = true)
-    Long duplicateHeaderExists(@Param(value = "languageId") String languageId,
+    Long duplicateExists(@Param(value = "languageId") String languageId,
                                @Param(value = "companyId") String companyId,
                                @Param(value = "partnerId") String partnerId,
                                @Param(value = "masterAirwayBill") String masterAirwayBill,
@@ -51,8 +51,8 @@ public interface ReplicaBondedManifestHeaderRepository extends JpaRepository<Rep
     boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
 
-    @Query(value = "Select * From tblbondedmanifestheader h \n" +
+    @Query(value = "Select * From tblbondedmanifest h \n" +
             "Where h.IS_DELETED = 0", nativeQuery = true)
-    List<ReplicaBondedManifestHeader> getAllNonDeletedHeaders();
+    List<ReplicaBondedManifest> getAllNonDeleted();
 
 }

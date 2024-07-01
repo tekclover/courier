@@ -11,6 +11,8 @@ public class UpdateHSCode {
 
     private String itemGroup;
 
+    private String specialApprovalId;
+
     private String remark;
 
     private Long deletionIndicator;

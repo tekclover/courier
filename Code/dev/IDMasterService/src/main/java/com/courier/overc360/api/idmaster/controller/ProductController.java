@@ -2,6 +2,7 @@ package com.courier.overc360.api.idmaster.controller;
 
 import com.courier.overc360.api.idmaster.primary.model.product.AddProduct;
 import com.courier.overc360.api.idmaster.primary.model.product.Product;
+import com.courier.overc360.api.idmaster.primary.model.product.ProductDeleteInput;
 import com.courier.overc360.api.idmaster.primary.model.product.UpdateProduct;
 import com.courier.overc360.api.idmaster.replica.model.product.FindProduct;
 import com.courier.overc360.api.idmaster.replica.model.product.ReplicaProduct;
@@ -49,7 +50,7 @@ public class ProductController {
     @ApiOperation(response = Product.class, value = "Update Product") // label for swagger
     @PatchMapping("/{productId}")
     public ResponseEntity<?> patchProduct(@PathVariable String productId, @RequestParam String languageId, @RequestParam String subProductId,
-                                          @RequestParam String loginUserID, @RequestParam String companyId, @RequestBody UpdateProduct updateProduct)
+                                          @RequestParam String loginUserID, @RequestParam String companyId, @Valid @RequestBody UpdateProduct updateProduct)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Product updatedProduct = productService.updateProduct(languageId, companyId, subProductId, productId, updateProduct, loginUserID);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
@@ -64,7 +65,34 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /*-----------------------------------------------REPLICA---------------------------------------------------------------*/
+    /*----------------------------------------------list_APIs'-------------------------------------------------------*/
+    // Create Products - bulk
+    @ApiOperation(response = Product.class, value = "Create new Products - bulk") // label for swagger
+    @PostMapping("/create/list")
+    public ResponseEntity<?> postProductBulk(@Valid @RequestBody List<AddProduct> addProductList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Product> newProducts = productService.createProductBulk(addProductList, loginUserID);
+        return new ResponseEntity<>(newProducts, HttpStatus.OK);
+    }
+
+    // Update Products - bulk
+    @ApiOperation(response = Product.class, value = "Update Products - bulk") // label for swagger
+    @PatchMapping("/update/list")
+    public ResponseEntity<?> patchProductBulk(@Valid @RequestBody List<UpdateProduct> updateProductList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Product> updatedProducts = productService.updateProductBulk(updateProductList, loginUserID);
+        return new ResponseEntity<>(updatedProducts, HttpStatus.OK);
+    }
+
+    // Delete Products - bulk
+    @ApiOperation(response = Product.class, value = "Delete Products - bulk") // label for swagger
+    @PostMapping("/delete/list")
+    public ResponseEntity<?> deleteProductBulk(@Valid @RequestBody List<ProductDeleteInput> productDeleteInputList, @RequestParam String loginUserID) {
+        productService.deleteProductBulk(productDeleteInputList, loginUserID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*-----------------------------------------------REPLICA---------------------------------------------------------*/
 
     // Get All Product Details
     @ApiOperation(response = ReplicaProduct.class, value = "Get all Product Details") // label for swagger

@@ -1,12 +1,10 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.hsCode.AddHSCode;
 import com.courier.overc360.api.idmaster.primary.model.hsCode.HSCode;
 import com.courier.overc360.api.idmaster.primary.model.hsCode.UpdateHSCode;
-import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.HSCodeRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
@@ -44,9 +42,6 @@ public class HSCodeService {
 
     @Autowired
     private ReplicaHSCodeRepository replicaHSCodeRepository;
-
-    @Autowired
-    private CompanyRepository companyRepository;
 
     @Autowired
     private NumberRangeService numberRangeService;
@@ -97,37 +92,44 @@ public class HSCodeService {
     public HSCode createHsCode(AddHSCode addHSCode, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addHSCode.getCompanyId(), addHSCode.getLanguageId(), 0L);
-            Optional<HSCode> duplicateHsCode = hsCodeRepository.findByLanguageIdAndCompanyIdAndHsCodeAndDeletionIndicator(
-                    addHSCode.getLanguageId(), addHSCode.getCompanyId(), addHSCode.getHsCode(), 0L);
-
-            if (dbCompany.isEmpty()) {
+            if (!dbCompanyPresent) {
                 throw new BadRequestException("CompanyId - " + addHSCode.getCompanyId() + " and languageId - " + addHSCode.getLanguageId() + " doesn't exists");
-            } else if (duplicateHsCode.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values : hsCode - " + addHSCode.getHsCode());
-            } else {
-                log.info("new HSCode --> " + addHSCode);
-                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addHSCode.getLanguageId(), addHSCode.getCompanyId());
-                HSCode newHsCode = new HSCode();
-                BeanUtils.copyProperties(addHSCode, newHsCode, CommonUtils.getNullPropertyNames(addHSCode));
-                if (addHSCode.getHsCode() == null || addHSCode.getHsCode().isBlank()) {
-                    String NUM_RAN_OBJ = "HSCODE";
-                    String HS_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for HS_CODE : " + HS_CODE);
-                    newHsCode.setHsCode(HS_CODE);
-                }
-                if (iKeyValuePair != null) {
-                    newHsCode.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newHsCode.setCompanyName(iKeyValuePair.getCompanyDesc());
-                }
-                newHsCode.setDeletionIndicator(0L);
-                newHsCode.setCreatedBy(loginUserID);
-                newHsCode.setCreatedOn(new Date());
-                newHsCode.setUpdatedBy(loginUserID);
-                newHsCode.setUpdatedOn(new Date());
-                return hsCodeRepository.save(newHsCode);
             }
+
+            boolean duplicateHsCodePresent = replicaHSCodeRepository.existsByLanguageIdAndCompanyIdAndHsCodeAndDeletionIndicator(
+                    addHSCode.getLanguageId(), addHSCode.getCompanyId(), addHSCode.getHsCode(), 0L);
+            if (duplicateHsCodePresent) {
+                throw new BadRequestException("Record is getting Duplicated with the given values : hsCode - " + addHSCode.getHsCode());
+            }
+            log.info("new HSCode --> " + addHSCode);
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addHSCode.getLanguageId(), addHSCode.getCompanyId());
+            HSCode newHsCode = new HSCode();
+            BeanUtils.copyProperties(addHSCode, newHsCode, CommonUtils.getNullPropertyNames(addHSCode));
+//                if (addHSCode.getHsCode() == null || addHSCode.getHsCode().isBlank()) {
+//                    String NUM_RAN_OBJ = "HSCODE";
+//                    String HS_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    log.info("next Value from NumberRange for HS_CODE : " + HS_CODE);
+//                    newHsCode.setHsCode(HS_CODE);
+//                }
+            if (iKeyValuePair != null) {
+                newHsCode.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newHsCode.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            if (addHSCode.getSpecialApprovalId() != null) {
+                String specialApprovalDesc = replicaHSCodeRepository.getSpecialApprovalDesc(addHSCode.getSpecialApprovalId(),
+                        addHSCode.getLanguageId(), addHSCode.getCompanyId());
+                if (specialApprovalDesc != null) {
+                    newHsCode.setSpecialApprovalText(specialApprovalDesc);
+                }
+            }
+            newHsCode.setDeletionIndicator(0L);
+            newHsCode.setCreatedBy(loginUserID);
+            newHsCode.setCreatedOn(new Date());
+            newHsCode.setUpdatedBy(loginUserID);
+            newHsCode.setUpdatedOn(new Date());
+            return hsCodeRepository.save(newHsCode);
         } catch (Exception e) {
             // Error Log
             createHSCodeLog2(addHSCode, e.toString());

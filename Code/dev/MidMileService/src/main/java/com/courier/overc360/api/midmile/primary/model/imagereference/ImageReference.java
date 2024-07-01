@@ -50,6 +50,9 @@ public class ImageReference {
     @Column(name = "HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
+    @Column(name = "CONSIGNMENT_ID")
+    private Long consignmentId;
+
     @Column(name = "PIECE_ID" , columnDefinition = "nvarchar(50)")
     private String pieceId;
 

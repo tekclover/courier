@@ -29,6 +29,8 @@ public class AddRate {
 
     private String rangeTo;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

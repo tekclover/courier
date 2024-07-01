@@ -2,10 +2,12 @@ package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
 import com.courier.overc360.api.idmaster.primary.model.company.Company;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.menu.AddMenu;
 import com.courier.overc360.api.idmaster.primary.model.menu.Menu;
 import com.courier.overc360.api.idmaster.primary.model.menu.UpdateMenu;
 import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
+import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.MenuRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
@@ -14,6 +16,7 @@ import com.courier.overc360.api.idmaster.replica.model.menu.ReplicaMenu;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaMenuRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaMenuSpecification;
+import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +24,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -44,6 +47,12 @@ public class MenuService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private ErrorLogRepository errorLogRepository;
+
+    @Autowired
+    private ErrorLogService errorLogService;
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------*/
 
@@ -62,15 +71,28 @@ public class MenuService {
                 menuRepository.findByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndAuthorizationObjectIdAndDeletionIndicator(
                         languageId, companyId, menuId, subMenuId, authorizationObjectId, 0L);
         if (dbMenu.isEmpty()) {
-            throw new BadRequestException("The given values : menuId - " + menuId + ", subMenuId - " + subMenuId +
-                    " and authorizationObjectId - " + authorizationObjectId + " doesn't exists");
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+                    + ", menuId - " + menuId + ", subMenuId - " + subMenuId +
+                    " and authorizationObjectId - " + authorizationObjectId + " doesn't exists";
+            // Error Log
+            createMenuLog1(languageId, companyId, menuId, subMenuId, authorizationObjectId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbMenu.get();
     }
 
+    /**
+     * Create new Menu
+     *
+     * @param addMenu
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     @Transactional
     public Menu createMenu(AddMenu addMenu, String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addMenu.getCompanyId(), addMenu.getLanguageId(), 0L);
@@ -79,7 +101,7 @@ public class MenuService {
                     addMenu.getSubMenuId(), addMenu.getAuthorizationObjectId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("The given values - CompanyId - " + addMenu.getCompanyId()
+                throw new BadRequestException("CompanyId - " + addMenu.getCompanyId()
                         + " and LanguageId - " + addMenu.getLanguageId() + " doesn't exists");
             } else if (duplicateMenu.isPresent()) {
                 throw new BadRequestException("Record is Getting Duplicated with the given values : menuId - " + addMenu.getMenuId());
@@ -100,55 +122,50 @@ public class MenuService {
                 return menuRepository.save(dbMenu);
             }
         } catch (Exception e) {
+            // Error Log
+            createMenuLog2(addMenu, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    @Transactional
+    /**
+     * Create new Menus - Bulk
+     *
+     * @param addMenuList
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     public List<Menu> createMenuBulk(List<AddMenu> addMenuList, String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
-        try {
-            List<Menu> newMenuList = new ArrayList<>();
-            for (AddMenu addMenu : addMenuList) {
-                Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
-                        addMenu.getCompanyId(), addMenu.getLanguageId(), 0L);
-                Optional<Menu> duplicateMenu = menuRepository.findByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndAuthorizationObjectIdAndDeletionIndicator(
-                        addMenu.getLanguageId(), addMenu.getCompanyId(), addMenu.getMenuId(),
-                        addMenu.getSubMenuId(), addMenu.getAuthorizationObjectId(), 0L);
-
-                if (dbCompany.isEmpty()) {
-                    throw new BadRequestException("The given values - CompanyId - " + addMenu.getCompanyId()
-                            + " and LanguageId - " + addMenu.getLanguageId() + " doesn't exists");
-                } else if (duplicateMenu.isPresent()) {
-                    throw new BadRequestException("Record is Getting Duplicated with the given values : menuId - " + addMenu.getMenuId());
-                } else {
-                    log.info("new Menu --> " + addMenu);
-                    Menu dbMenu = new Menu();
-                    IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addMenu.getLanguageId(), addMenu.getCompanyId());
-                    BeanUtils.copyProperties(addMenu, dbMenu, CommonUtils.getNullPropertyNames(addMenu));
-                    if (iKeyValuePair != null) {
-                        dbMenu.setLanguageIdAndDescription(addMenu.getLanguageId() + " - " + iKeyValuePair.getLangDesc());
-                        dbMenu.setCompanyIdAndDescription(addMenu.getCompanyId() + " - " + iKeyValuePair.getCompanyDesc());
-                    }
-                    dbMenu.setDeletionIndicator(0L);
-                    dbMenu.setCreatedBy(loginUserID);
-                    dbMenu.setCreatedOn(new Date());
-                    dbMenu.setUpdatedBy(loginUserID);
-                    dbMenu.setUpdatedOn(new Date());
-                    newMenuList.add(menuRepository.save(dbMenu));
-                }
-            }
-            return newMenuList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Menu> createdMenuList = new ArrayList<>();
+        for (AddMenu addMenu : addMenuList) {
+            Menu newMenu = createMenu(addMenu, loginUserID);
+            createdMenuList.add(newMenu);
         }
+        return createdMenuList;
     }
 
+    /**
+     * Update Menu
+     *
+     * @param languageId
+     * @param companyId
+     * @param menuId
+     * @param subMenuId
+     * @param authorizationObjectId
+     * @param loginUserID
+     * @param updateMenu
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     @Transactional
-    public Menu updateMenu(String languageId, String companyId, Long menuId, Long subMenuId, Long authorizationObjectId, String loginUserID, UpdateMenu updateMenu)
-            throws IllegalAccessException, InvocationTargetException {
+    public Menu updateMenu(String languageId, String companyId, Long menuId, Long subMenuId,
+                           Long authorizationObjectId, String loginUserID, UpdateMenu updateMenu)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Menu dbMenu = getMenu(languageId, companyId, menuId, subMenuId, authorizationObjectId);
             BeanUtils.copyProperties(updateMenu, dbMenu, CommonUtils.getNullPropertyNames(updateMenu));
@@ -156,6 +173,8 @@ public class MenuService {
             dbMenu.setUpdatedOn(new Date());
             return menuRepository.save(dbMenu);
         } catch (Exception e) {
+            // Error Log
+            createMenuLog(languageId, companyId, menuId, subMenuId, authorizationObjectId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -179,6 +198,8 @@ public class MenuService {
             dbMenu.setUpdatedOn(new Date());
             menuRepository.save(dbMenu);
         } else {
+            // Error Log
+            createMenuLog1(languageId, companyId, menuId, subMenuId, authorizationObjectId, "Error in deleting MenuId - " + menuId);
             throw new EntityNotFoundException("Error in deleting MenuId - " + menuId);
         }
     }
@@ -191,8 +212,7 @@ public class MenuService {
      * @return
      */
     public List<ReplicaMenu> getAllMenuDetails() {
-        List<ReplicaMenu> menuList = replicaMenuRepository.findAll();
-        menuList = menuList.stream().filter(i -> i.getDeletionIndicator() == 0).collect(Collectors.toList());
+        List<ReplicaMenu> menuList = replicaMenuRepository.getNonDeletedMenus();
         return menuList;
     }
 
@@ -211,19 +231,87 @@ public class MenuService {
                 replicaMenuRepository.findByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndAuthorizationObjectIdAndDeletionIndicator(
                         languageId, companyId, menuId, subMenuId, authorizationObjectId, 0L);
         if (dbMenu.isEmpty()) {
-            throw new BadRequestException("The given values : menuId - " + menuId + ", subMenuId - " + subMenuId +
-                    " and authorizationObjectId - " + authorizationObjectId + " doesn't exists");
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+                    + ", menuId - " + menuId + ", subMenuId - " + subMenuId +
+                    " and authorizationObjectId - " + authorizationObjectId + " doesn't exists";
+            // Error Log
+            createMenuLog1(languageId, companyId, menuId, subMenuId, authorizationObjectId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbMenu.get();
     }
 
-    // Find Menus
+    /**
+     * Find Menus
+     *
+     * @param findMenu
+     * @return
+     */
     public List<ReplicaMenu> findMenus(FindMenu findMenu) throws ParseException {
-
         ReplicaMenuSpecification spec = new ReplicaMenuSpecification(findMenu);
         List<ReplicaMenu> results = replicaMenuRepository.findAll(spec);
-        log.info("found Menu Details --> " + results);
+        log.info("found Menus --> " + results);
         return results;
+    }
+//    public List<ReplicaMenu> findMenus(FindMenu findMenu) throws ParseException {
+//
+//        List<ReplicaMenu> results = replicaMenuRepository.findMenusWithQry(findMenu.getLanguageId(), findMenu.getCompanyId(),
+//                findMenu.getMenuId(), findMenu.getSubMenuId(), findMenu.getAuthorizationObjectId());
+//        return results;
+//    }
+
+    //==============================================Menu_ErrorLog======================================================
+    private void createMenuLog(String languageId, String companyId, Long menuId, Long subMenuId,
+                               Long authorizationObjectId, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(String.valueOf(menuId));
+        errorLog.setReferenceField1(String.valueOf(subMenuId));
+        errorLog.setReferenceField2(String.valueOf(authorizationObjectId));
+        errorLog.setMethod("Exception thrown in updateMenu");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+        errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createMenuLog1(String languageId, String companyId, Long menuId, Long subMenuId,
+                                Long authorizationObjectId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(String.valueOf(menuId));
+        errorLog.setReferenceField1(String.valueOf(subMenuId));
+        errorLog.setReferenceField2(String.valueOf(authorizationObjectId));
+        errorLog.setMethod("Exception thrown in getMenu");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createMenuLog2(AddMenu addMenu, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(addMenu.getLanguageId());
+        errorLog.setCompanyId(addMenu.getCompanyId());
+        errorLog.setRefDocNumber(String.valueOf(addMenu.getMenuId()));
+        errorLog.setReferenceField1(String.valueOf(addMenu.getSubMenuId()));
+        errorLog.setReferenceField2(String.valueOf(addMenu.getAuthorizationObjectId()));
+        errorLog.setMethod("Exception thrown in createMenu");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+        errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.country.AddCountry;
 import com.courier.overc360.api.idmaster.primary.model.country.Country;
 import com.courier.overc360.api.idmaster.primary.model.country.UpdateCountry;
@@ -98,27 +97,27 @@ public class CountryService {
     public Country createCountry(AddCountry addCountry, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addCountry.getCompanyId(), addCountry.getLanguageId(), 0L);
 
-            Optional<Country> duplicateCountry = countryRepository.findByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
+            boolean duplicateCountryPresent = replicaCountryRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
                     addCountry.getLanguageId(), addCountry.getCompanyId(), addCountry.getCountryId(), 0L);
 
-            if (dbCompany.isEmpty()) {
+            if (!dbCompanyPresent) {
                 throw new BadRequestException("CompanyId - " + addCountry.getCompanyId() + " and languageId - " + addCountry.getLanguageId() + " doesn't exists");
-            } else if (duplicateCountry.isPresent()) {
+            } else if (duplicateCountryPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : countryId - " + addCountry.getCountryId());
             } else {
                 log.info("new Country --> " + addCountry);
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addCountry.getLanguageId(), addCountry.getCompanyId());
                 Country newCountry = new Country();
                 BeanUtils.copyProperties(addCountry, newCountry, CommonUtils.getNullPropertyNames(addCountry));
-                if (addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
-                    String NUM_RAN_OBJ = "COUNTRY";
-                    String COUNTRY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for COUNTRY_ID : " + COUNTRY_ID);
-                    newCountry.setCountryId(COUNTRY_ID);
-                }
+//                if (addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
+//                    String NUM_RAN_OBJ = "COUNTRY";
+//                    String COUNTRY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    log.info("next Value from NumberRange for COUNTRY_ID : " + COUNTRY_ID);
+//                    newCountry.setCountryId(COUNTRY_ID);
+//                }
                 if (iKeyValuePair != null) {
                     newCountry.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newCountry.setCompanyName(iKeyValuePair.getCompanyDesc());

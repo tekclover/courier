@@ -3,7 +3,7 @@ package com.courier.overc360.api.midmile.service;
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.ccr.*;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.midmile.primary.repository.BondedManifestLineRepository;
+import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
 import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
@@ -37,7 +37,7 @@ public class CcrService {
     private ReplicaCcrRepository replicaCcrRepository;
 
     @Autowired
-    private BondedManifestLineRepository bondedManifestLineRepository;
+    private BondedManifestRepository bondedManifestRepository;
 
     @Autowired
     private ErrorLogService errorLogService;
@@ -102,22 +102,44 @@ public class CcrService {
                         addCcr.getPartnerId(), addCcr.getMasterAirwayBill(),
                         addCcr.getHouseAirwayBill(), addCcr.getConsoleId(), addCcr.getCustomsCcrNo()) == 1;
 
-               //Calculate TotalDuty value
-                IKeyValuePair iKeyValuePair = bondedManifestLineRepository.getToCurrencyValue(addCcr.getFreightCurrency());
-                Double freightCharge = Double.valueOf(addCcr.getFreightCharges());
-                Double toCurrencyValue = Double.valueOf(iKeyValuePair.getCurrencyValue());
-                String incoTerms = addCcr.getIncoTerms();
-
-                Double totalDuty = null;
-                if (toCurrencyValue != null && freightCharge != null) {
-                    totalDuty = toCurrencyValue * freightCharge;
-                    if (totalDuty > 100) {
-                        totalDuty += totalDuty * 0.05;
+                //Check IsExempted status and throw error
+                if (addCcr.getIsExempted().equalsIgnoreCase("Yes")) {
+                    if (addCcr.getExemptionFor() == null || addCcr.getExemptionBeneficiary() == null || addCcr.getExemptionReference() == null) {
+                        throw new BadRequestException(" ExemptionFor - " + addCcr.getExemptionFor() + " , ExemptionBeneficiary - "
+                                + addCcr.getExemptionBeneficiary() + " and ExemptionReference - " + addCcr.getExemptionReference() + " is mandatory ");
                     }
-                    if (incoTerms != null && incoTerms.equalsIgnoreCase("DDU")) {
-                        totalDuty += 4;
+                } else if (addCcr.getIsExempted().equalsIgnoreCase("No")) {
+                    if (addCcr.getConsigneeName() == null || addCcr.getInvoiceDate() == null || addCcr.getInvoiceType() == null ||
+                            addCcr.getCurrency() == null || addCcr.getInvoiceSupplierName() == null || addCcr.getFreightCurrency() == null ||
+                            addCcr.getFreightCharges() == null || addCcr.getCountryOfOrigin() == null) {
+
+                        throw new BadRequestException(" ConsigneeName -  " + addCcr.getConsigneeName() + ",InvoiceDate - " + addCcr.getInvoiceDate() +
+                                ", InvoiceType - " + addCcr.getInvoiceType() + ", Currency - " + addCcr.getCurrency() + ", InvoiceSupplierName - " + addCcr.getInvoiceSupplierName() +
+                                ", FreightCurrency - " + addCcr.getFreightCurrency() + ", FreightCharges - " + addCcr.getFreightCharges() +
+                                " and CountryOfOrigin - " + addCcr.getCountryOfOrigin() + " is mandatory ");
                     }
                 }
+
+                //Get Iatakd
+                IKeyValuePair iataData = ccrRepository.getIataKd(addCcr.getCountryOfOrigin(),
+                        addCcr.getLanguageId(), addCcr.getCompanyId());
+
+                //Calculate TotalDuty value
+//                IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(addCcr.getFreightCurrency());
+//                Double freightCharge = Double.valueOf(addCcr.getFreightCharges());
+//                Double toCurrencyValue = Double.valueOf(iKeyValuePair.getCurrencyValue());
+//                String incoTerms = addCcr.getIncoTerms();
+//
+//                Double totalDuty = null;
+//                if (toCurrencyValue != null && freightCharge != null) {
+//                    totalDuty = toCurrencyValue * freightCharge;
+//                    if (totalDuty > 100) {
+//                        totalDuty += totalDuty * 0.05;
+//                    }
+//                    if (incoTerms != null && incoTerms.equalsIgnoreCase("DDU")) {
+//                        totalDuty += 4;
+//                    }
+//                }
 
                 if (duplicate) {
                     throw new BadRequestException("Record is getting Duplicated with given values : customsCcrNo - " + addCcr.getCustomsCcrNo());
@@ -139,7 +161,8 @@ public class CcrService {
                     newCcr.setLanguageDescription(lAndCDesc.getLangDesc());
                     newCcr.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                newCcr.setTotalDuty(String.valueOf(totalDuty));
+                newCcr.setIataKd(iataData.getIataKd());
+                //   newCcr.setTotalDuty(String.valueOf(totalDuty));
                 newCcr.setStatusId(STATUS_ID);
                 newCcr.setDeletionIndicator(0L);
                 newCcr.setCreatedBy(loginUserID);
@@ -188,8 +211,8 @@ public class CcrService {
                 dbCcr.setUpdatedBy(loginUserID);
                 dbCcr.setUpdatedOn(new Date());
 
-                Ccr updatedBondedManifest = ccrRepository.save(dbCcr);
-                updatedCcrList.add(updatedBondedManifest);
+                Ccr updatedCcr = ccrRepository.save(dbCcr);
+                updatedCcrList.add(updatedCcr);
             }
             return updatedCcrList;
         } catch (Exception e) {

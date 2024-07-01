@@ -6,6 +6,7 @@ import com.courier.overc360.api.idmaster.primary.model.menu.UpdateMenu;
 import com.courier.overc360.api.idmaster.replica.model.menu.FindMenu;
 import com.courier.overc360.api.idmaster.replica.model.menu.ReplicaMenu;
 import com.courier.overc360.api.idmaster.service.MenuService;
+import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class MenuController {
     @ApiOperation(response = Menu.class, value = "Create Menu") // label for swagger
     @PostMapping("")
     public ResponseEntity<?> postMenu(@Valid @RequestBody AddMenu addMenu, @RequestParam String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Menu menu = menuService.createMenu(addMenu, loginUserID);
         return new ResponseEntity<>(menu, HttpStatus.OK);
     }
@@ -46,8 +48,8 @@ public class MenuController {
     // Create Menu-bulk
     @ApiOperation(response = Menu.class, value = "Create bulk Menu") // label for swagger
     @PostMapping("/bulk")
-    public ResponseEntity<?> postBulkMenu(@Valid @RequestBody List<AddMenu> addMenuList,
-                                          @RequestParam String loginUserID) throws Exception {
+    public ResponseEntity<?> postBulkMenu(@Valid @RequestBody List<AddMenu> addMenuList, @RequestParam String loginUserID)
+            throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
         List<Menu> createdMenuId = menuService.createMenuBulk(addMenuList, loginUserID);
         return new ResponseEntity<>(createdMenuId, HttpStatus.OK);
     }
@@ -56,9 +58,9 @@ public class MenuController {
     @ApiOperation(response = Menu.class, value = "Update Menu") // label for swagger
     @PatchMapping("/{menuId}")
     public ResponseEntity<?> patchMenu(@PathVariable Long menuId, @RequestParam Long subMenuId, @RequestParam Long authorizationObjectId,
-                                       @RequestParam String companyId, @RequestParam String languageId, @Valid @RequestBody UpdateMenu updateMenu,
-                                       @RequestParam String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+                                       @RequestParam String companyId, @RequestParam String languageId,
+                                       @Valid @RequestBody UpdateMenu updateMenu, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Menu updatedMenu = menuService.updateMenu(languageId, companyId, menuId, subMenuId, authorizationObjectId, loginUserID, updateMenu);
         return new ResponseEntity<>(updatedMenu, HttpStatus.OK);
     }
@@ -67,8 +69,7 @@ public class MenuController {
     @ApiOperation(response = Menu.class, value = "Delete Menu") // label for swagger
     @DeleteMapping("/{menuId}")
     public ResponseEntity<?> deleteMenu(@PathVariable Long menuId, @RequestParam Long subMenuId, @RequestParam Long authorizationObjectId,
-                                        @RequestParam String companyId, @RequestParam String languageId,
-                                        @RequestParam String loginUserID) {
+                                        @RequestParam String companyId, @RequestParam String languageId, @RequestParam String loginUserID) {
         menuService.deleteMenu(languageId, companyId, menuId, subMenuId, authorizationObjectId, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -78,7 +79,7 @@ public class MenuController {
     // Get All Menu Details
     @ApiOperation(response = ReplicaMenu.class, value = "Get all Menu details") // label for swagger
     @GetMapping("")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAllMenus() {
         List<ReplicaMenu> menuidList = menuService.getAllMenuDetails();
         return new ResponseEntity<>(menuidList, HttpStatus.OK);
     }

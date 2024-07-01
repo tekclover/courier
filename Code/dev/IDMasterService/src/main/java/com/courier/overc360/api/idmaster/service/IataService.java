@@ -1,12 +1,10 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.iata.AddIata;
 import com.courier.overc360.api.idmaster.primary.model.iata.Iata;
 import com.courier.overc360.api.idmaster.primary.model.iata.UpdateIata;
-import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.IataRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
@@ -14,6 +12,7 @@ import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.iata.FindIata;
 import com.courier.overc360.api.idmaster.replica.model.iata.ReplicaIata;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCurrencyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaIataRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaIataSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -37,13 +36,13 @@ import java.util.stream.Collectors;
 public class IataService {
 
     @Autowired
+    private ReplicaCurrencyRepository replicaCurrencyRepository;
+
+    @Autowired
     private ReplicaCompanyRepository replicaCompanyRepository;
 
     @Autowired
     private IataRepository iataRepository;
-
-    @Autowired
-    private CompanyRepository companyRepository;
 
     @Autowired
     private ErrorLogService errorLogService;
@@ -73,9 +72,10 @@ public class IataService {
         Optional<Iata> dbIata = iataRepository.findByLanguageIdAndCompanyIdAndOriginAndOriginCodeAndDeletionIndicator(
                 languageId, companyId, origin, originCode, 0L);
         if (dbIata.isEmpty()) {
-            createIataLog1(companyId, languageId, origin, originCode,
-                    "companyId - " + companyId + ", languageId - " + languageId + ", origin - " + origin + ", originCode -" + originCode + " doesn't exists");
-            throw new BadRequestException("company with Id " + companyId + " ,language with Id " + languageId + " origin " + origin + " and originCode " + originCode + " doesn't exist");
+            String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId
+                    + ", origin - " + origin + ", originCode -" + originCode + " doesn't exists";
+            createIataLog1(companyId, languageId, origin, originCode, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbIata.get();
     }
@@ -94,48 +94,48 @@ public class IataService {
     public Iata createIata(AddIata addIata, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Iata> duplicateIata = iataRepository.findByLanguageIdAndCompanyIdAndOriginAndOriginCodeAndDeletionIndicator(
-                    addIata.getLanguageId(), addIata.getCompanyId(), addIata.getOrigin(), addIata.getOriginCode(), 0L);
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addIata.getCompanyId(), addIata.getLanguageId(), 0L);
-
-            String currencyDesc = null;
-
-            if (addIata.getCurrencyId() != null) {
-                currencyDesc = companyRepository.getCurrencyDesc(addIata.getCurrencyId());
-                if (currencyDesc == null) {
-                    throw new BadRequestException("Currency Id - " + addIata.getCurrencyId() + " doesn't Exist");
-                }
+            if (!dbCompanyPresent) {
+                throw new BadRequestException("CompanyId - " + addIata.getCompanyId() + " and LanguageId - " + addIata.getLanguageId() + " doesn't exists");
             }
-            if (dbCompany.isEmpty()) {
-                throw new BadRequestException(" CompanyId - " + addIata.getCompanyId() + " and LanguageId - " + addIata.getLanguageId() + " doesn't exist ");
-            } else if (duplicateIata.isPresent()) {
+
+            boolean duplicateIataPresent = replicaIataRepository.existsByLanguageIdAndCompanyIdAndOriginAndOriginCodeAndDeletionIndicator(
+                    addIata.getLanguageId(), addIata.getCompanyId(), addIata.getOrigin(), addIata.getOriginCode(), 0L);
+            if (duplicateIataPresent) {
                 throw new BadRequestException(" Record is getting Duplicated with the given values : originCode - " + addIata.getOriginCode());
-            } else {
-                log.info("new Iata --> " + addIata);
-                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addIata.getLanguageId(), addIata.getCompanyId());
-                Iata newIata = new Iata();
-                BeanUtils.copyProperties(addIata, newIata, CommonUtils.getNullPropertyNames(addIata));
-                if (addIata.getOriginCode() == null || addIata.getOriginCode().isBlank()) {
-                    String NUM_RAN_OBJ = "ORIGINCODE";
-                    String ORIGINCODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for ORIGINCODE : " + ORIGINCODE);
-                    newIata.setOriginCode(ORIGINCODE);
-                }
-                if (iKeyValuePair != null) {
-                    newIata.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newIata.setCompanyName(iKeyValuePair.getCompanyDesc());
-                }
-                if (currencyDesc != null && !currencyDesc.isEmpty()) {
-                    newIata.setCurrencyDescription(currencyDesc);
-                }
-                newIata.setDeletionIndicator(0L);
-                newIata.setCreatedBy(loginUserID);
-                newIata.setCreatedOn(new Date());
-                newIata.setUpdatedBy(loginUserID);
-                newIata.setUpdatedOn(new Date());
-                return iataRepository.save(newIata);
             }
+
+            log.info("new Iata --> " + addIata);
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addIata.getLanguageId(), addIata.getCompanyId());
+            Iata newIata = new Iata();
+            BeanUtils.copyProperties(addIata, newIata, CommonUtils.getNullPropertyNames(addIata));
+//                if (addIata.getOriginCode() == null || addIata.getOriginCode().isBlank()) {
+//                    String NUM_RAN_OBJ = "ORIGINCODE";
+//                    String ORIGINCODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    log.info("next Value from NumberRange for ORIGINCODE : " + ORIGINCODE);
+//                    newIata.setOriginCode(ORIGINCODE);
+//                }
+            if (iKeyValuePair != null) {
+                newIata.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newIata.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            String currencyDesc = null;
+            if (addIata.getCurrencyId() != null) {
+                currencyDesc = replicaCurrencyRepository.getCurrencyDesc(addIata.getCurrencyId());
+                if (currencyDesc == null) {
+                    throw new BadRequestException("CurrencyId - " + addIata.getCurrencyId() + " doesn't exists");
+                }
+            }
+            if (currencyDesc != null && !currencyDesc.isEmpty()) {
+                newIata.setCurrencyDescription(currencyDesc);
+            }
+            newIata.setDeletionIndicator(0L);
+            newIata.setCreatedBy(loginUserID);
+            newIata.setCreatedOn(new Date());
+            newIata.setUpdatedBy(loginUserID);
+            newIata.setUpdatedOn(new Date());
+            return iataRepository.save(newIata);
         } catch (Exception e) {
             createIataLog2(addIata, e.toString());
             e.printStackTrace();
@@ -191,7 +191,9 @@ public class IataService {
             dbIata.setUpdatedOn(new Date());
             iataRepository.save(dbIata);
         } else {
-            throw new BadRequestException(" Error in deleting OriginCode: " + originCode);
+            // Error Log
+            createIataLog1(companyId, languageId, origin, originCode, "Error in deleting originCode: " + originCode);
+            throw new BadRequestException("Error in deleting originCode: " + originCode);
         }
     }
 
@@ -224,9 +226,10 @@ public class IataService {
         Optional<ReplicaIata> dbIata = replicaIataRepository.findByLanguageIdAndCompanyIdAndOriginAndOriginCodeAndDeletionIndicator(
                 languageId, companyId, origin, originCode, 0L);
         if (dbIata.isEmpty()) {
-            createIataLog1(companyId, languageId, origin, originCode,
-                    " companyId - " + companyId + ", languageId - " + languageId + ", origin - " + origin + ", originCode -" + originCode + " doesn't exists");
-            throw new BadRequestException("company with Id " + companyId + " ,language with Id " + languageId + " origin " + origin + " and originCode " + originCode + " doesn't exist");
+            String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId
+                    + ", origin - " + origin + " and originCode - " + originCode + " doesn't exists";
+            createIataLog1(companyId, languageId, origin, originCode, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbIata.get();
     }
@@ -296,6 +299,4 @@ public class IataService {
         errorLogService.writeLog(errorLogList);
     }
 
-
 }
-

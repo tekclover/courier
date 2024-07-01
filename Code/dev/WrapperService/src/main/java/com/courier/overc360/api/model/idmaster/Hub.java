@@ -45,9 +45,9 @@ public class Hub {
 
     private String longitude;
 
-//    private String statusId;
-//
-//    private String statusDescription;
+    private String statusId;
+
+    private String statusDescription;
 
     private String remark;
 
