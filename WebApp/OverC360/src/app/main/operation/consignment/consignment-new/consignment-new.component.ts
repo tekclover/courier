@@ -90,14 +90,7 @@ export class ConsignmentNewComponent {
   });
 
   carrierInfo = this.fb.group({
-    partnerHouseAirwayBill: [],
-    partnerMasterAirwayBill: [],
-    airportOriginCode: [],
-    flightArrivalTime: [],
-    noOfPackages: [],
-    flightName: [],
-    flightNo: [],
-    packageType: [],
+   
   })
 
 
@@ -127,7 +120,7 @@ export class ConsignmentNewComponent {
     addressLine1: [],
     addressLine2: [],
     alternatePhone: [],
-    city: [, Validators.required],
+    city: [, ],
     companyName: [],
     country: [],
     district: [],
@@ -148,7 +141,7 @@ export class ConsignmentNewComponent {
   })
 
   deliveryInfo = this.fb.group({
-    consigneeName: [, Validators.required],
+    consigneeName: [, ],
     consigneeCivilId: [],
     destinationDetails: this.DestinationDetails
   })
@@ -192,8 +185,15 @@ export class ConsignmentNewComponent {
     goodsDescription: [],
     notifyParty: [],
     consignmentCurrency: [],
-    consignmentValue: []
-
+    consignmentValue: [],
+    partnerHouseAirwayBill: [],
+    partnerMasterAirwayBill: [],
+    airportOriginCode: [],
+    flightArrivalTime: [],
+    noOfPackages: [],
+    flightName: [],
+    flightNo: [],
+    packageType: [],
   })
 
   piece = this.fb.group({
@@ -205,150 +205,9 @@ export class ConsignmentNewComponent {
     updatedOn: ['',],
     createdOn: ['',],
     createdBy: [,],
-    actualCurrency: [],
-    airportOriginCode: [],
-    allocationTime: [],
-    amount: [],
-    autoAllocate: [],
-    codAmount: [],
-    codCollectionMode: [],
-    codFavorOf: [],
-    consigneeCivilId: [],
-    consigneeName: [],
-    consignmentCurrency: [],
-    consignmentId: [],
-    consignmentValue: [],
-    constraintTags: [],
-    countryOfSupply: [],
-    currency: [],
-    customsValue: [],
-    declaredValue: [],
-    declaredValueWithoutTax: [],
-    deliveryOtp: [],
-    deliveryServiceTime: [],
-    deliveryTimeSlotEnd: [],
-    deliveryTimeSlotStart: [],
-    description: [],
-    dimensionUnit: [],
-    ewayBill: [],
-    exemptionBeneficiary: [],
-    exemptionFor: [],
-    exemptionReference: [],
-    flightArrivalTime: [],
-    flightDetails: [],
-    flightName: [],
-    flightNo: [],
-    freightCharges: [],
-    freightCurrency: [],
-    goodsDescription: [],
-    grossWeight: [],
-    height: [],
-    hsCode: [],
-    hubCode: [],
-    incoTerms: [],
-    invoiceAmount: [],
-    invoiceDate: [],
-    invoiceNumber: [],
-    invoiceSupplierName: [],
-    invoiceType: [],
-    invoiceUrl: [],
-    isCustomsDeclarable: [],
-    isExchange: [],
-    isExempted: [],
-    itemTotalPrice: [],
-    languageDescription: [],
-    length: [],
-    lineNo: [],
-    netWeight: [],
-    noOfPackageHawb: [],
-    noOfPackages: [],
-    notes: [],
-    notifyParty: [],
-    packDetails: [],
-    packageType: [],
-    partnerHouseAirwayBill: [],
-    partnerMasterAirwayBill: [],
-    partnerName: [,],
-    partnerType: [],
-    pickupOtp: [],
-    pickupServiceTime: [],
-    pickupTimeSlotEnd: [],
-    pickupTimeSlotStart: [],
-    productCode: [],
-    quantity: [],
-    referenceField1: [],
-    referenceField10: [],
-    referenceField11: [],
-    referenceField12: [],
-    referenceField13: [],
-    referenceField14: [],
-    referenceField15: [],
-    referenceField16: [],
-    referenceField17: [],
-    referenceField18: [],
-    referenceField19: [],
-    referenceField2: [],
-    referenceField20: [],
-    referenceField21: [],
-    referenceField22: [],
-    referenceField23: [],
-    referenceField24: [],
-    referenceField25: [],
-    referenceField26: [],
-    referenceField27: [],
-    referenceField28: [],
-    referenceField29: [],
-    referenceField3: [],
-    referenceField30: [],
-    referenceField31: [],
-    referenceField32: [],
-    referenceField33: [],
-    referenceField34: [],
-    referenceField35: [],
-    referenceField36: [],
-    referenceField37: [],
-    referenceField38: [],
-    referenceField39: [],
-    referenceField4: [],
-    referenceField40: [],
-    referenceField41: [],
-    referenceField42: [],
-    referenceField43: [],
-    referenceField44: [],
-    referenceField45: [],
-    referenceField46: [],
-    referenceField47: [],
-    referenceField48: [],
-    referenceField49: [],
-    referenceField5: [],
-    referenceField50: [],
-    referenceField6: [],
-    referenceField7: [],
-    referenceField8: [],
-    referenceField9: [],
-    referenceNumber: [],
-    remark: [],
-    reverseReason: [],
-    rtoOtp: [],
-    scheduledAt: [],
-    serviceTime: [],
-    shipperId: [],
-    shipperName: [],
-    specialApprovalValue: [],
-    statusDescription: [],
-    storageLocation: [],
-    tags: [],
-    totalDuty: [],
-    upstreamCreationSource: [],
-    upstreamCreationTime: [],
-    volume: [],
-    volumeUnit: [],
-    weight: [],
-    weightUnit: [],
-    width: [],
-    workerEligiblePayout: [],
-    workerTipAmount: [],
+  originDetails: [],
   });
+
 
   get pieceDetails(): FormArray {
     return this.piece.get('pieceDetails') as FormArray;
@@ -561,7 +420,6 @@ export class ConsignmentNewComponent {
   }
   
   calculateVolume(formName: any){
-    console.log(formName)
     const volume =  formName.controls.length.value as number *  formName.controls.width.value as number *  formName.controls.height.value as number;
     formName.controls.volume.patchValue(volume);
   }
@@ -686,36 +544,7 @@ export class ConsignmentNewComponent {
     } else {
       this.activeIndex = 5;
       this.submitted = false;
-      this.disabledCarrier = false;
-    }
-  }
-  saveCarrier() {
-    this.submitted = true;
-    if (this.carrierInfo.invalid) {
-      for (const control in this.carrierInfo.controls) {
-        const controlInstance = this.carrierInfo.get(control);
-        if (controlInstance?.invalid) {
-          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
-          if (invalidControl) {
-            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            break;
-          }
-        }
-      }
-    }
-
-    if (this.carrierInfo.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        key: 'br',
-        detail: 'Please fill required fields to continue',
-      });
-      return;
-    } else {
-      this.activeIndex = 6;
       this.disabledBilling = false;
-      this.submitted = false;
     }
   }
   saveBilling() {
@@ -742,10 +571,73 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      this.activeIndex = 7;
-      this.submitted = false;
+      // this.activeIndex = 7;
+      // this.submitted = false;
+      this.saveFinal();
     }
   }
 
+mainForm: FormGroup = new FormGroup({
+  
 
+});
+
+saveFinal(){
+  this.mainForm = this.fb.group({
+    ...this.shipmentInfo.value,
+    ...this.consignment.value,
+    ...this.piece.value,
+    ...this.senderInfo.value,
+    ...this.OriginDetails.value,
+    ...this.DestinationDetails.value,
+    ...this.billing.value,
+    updatedBy: [,],
+    updatedOn: ['',],
+    createdOn: ['',],
+    createdBy: [,],
+  });
+
+  this.service.Create(this.mainForm.getRawValue).subscribe
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// saveCarrier() {
+//   this.submitted = true;
+//   if (this.carrierInfo.invalid) {
+//     for (const control in this.carrierInfo.controls) {
+//       const controlInstance = this.carrierInfo.get(control);
+//       if (controlInstance?.invalid) {
+//         const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
+//         if (invalidControl) {
+//           invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//           break;
+//         }
+//       }
+//     }
+//   }
+
+//   if (this.carrierInfo.invalid) {
+//     this.messageService.add({
+//       severity: 'error',
+//       summary: 'Error',
+//       key: 'br',
+//       detail: 'Please fill required fields to continue',
+//     });
+//     return;
+//   } else {
+//     this.activeIndex = 6;
+//     this.disabledBilling = false;
+//     this.submitted = false;
+//   }
+// }
