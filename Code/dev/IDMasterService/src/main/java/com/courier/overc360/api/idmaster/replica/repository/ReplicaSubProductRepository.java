@@ -18,11 +18,18 @@ public interface ReplicaSubProductRepository extends JpaRepository<ReplicaSubPro
     Optional<ReplicaSubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, Long deletionIndicator);
+
+    boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue, Long deletionIndicator);
+
     // Get Description
     @Query(value = "Select \n" +
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +
             "CONCAT (tcm.C_ID, ' - ', tcm.C_NAME) As companyDesc, \n" +
-            "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) As subProductDesc \n" +
+            "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) As subProductDesc, \n" +
+            "tsp.SUB_PRODUCT_VALUE As subProductValue \n" +
             "From tbllanguage tl \n" +
             "Join tblcompany tcm on tl.LANG_ID = tcm.LANG_ID \n" +
             "Join tblsubproduct tsp on tsp.LANG_ID = tl.LANG_ID and tsp.C_ID = tcm.C_ID \n" +

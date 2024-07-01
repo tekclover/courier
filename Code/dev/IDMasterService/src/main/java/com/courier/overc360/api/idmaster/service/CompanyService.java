@@ -79,9 +79,10 @@ public class CompanyService {
         Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
                 companyId, languageId, 0L);
         if (dbCompany.isEmpty()) {
+            String errMsg = "The given values : companyId - " + companyId + " and languageId - " + languageId + " doesn't exists";
             // Error Log
-            createCompanyLog1(languageId, companyId, "CompanyId - " + companyId + " and languageId - " + languageId + " doesn't exists");
-            throw new BadRequestException("CompanyId - " + companyId + " and languageId - " + languageId + " doesn't exists");
+            createCompanyLog1(languageId, companyId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbCompany.get();
     }
@@ -328,9 +329,10 @@ public class CompanyService {
         Optional<ReplicaCompany> dbCompany = replicaCompanyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
                 companyId, languageId, 0L);
         if (dbCompany.isEmpty()) {
+            String errMsg = "The given values : companyId - " + companyId + " and languageId - " + languageId + " doesn't exists";
             // Error Log
-            createCompanyLog1(languageId, companyId, "CompanyId - " + companyId + " and languageId - " + languageId + " doesn't exists");
-            throw new BadRequestException("CompanyId - " + companyId + " and languageId - " + languageId + " doesn't exists");
+            createCompanyLog1(languageId, companyId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbCompany.get();
     }

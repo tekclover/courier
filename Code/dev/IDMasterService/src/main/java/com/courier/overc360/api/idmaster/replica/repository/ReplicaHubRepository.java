@@ -18,6 +18,10 @@ public interface ReplicaHubRepository extends JpaRepository<ReplicaHub, String>,
     Optional<ReplicaHub> findByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
             String languageId, String companyId, String hubCode, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
+            String languageId, String companyId, String hubCode, Long deletionIndicator);
+
+
     // Get Description
     @Query(value = "Select \n" +
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +

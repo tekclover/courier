@@ -11,27 +11,20 @@ import java.util.List;
 @Data
 public class AddPieceDetails {
 
-    @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
 
-    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "MasterAirwayBill is mandatory")
     private String masterAirwayBill;
 
-    @NotBlank(message = "HouseAirwayBill is mandatory")
     private String houseAirwayBill;
 
     private String pieceId;
 
-    @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 
-    @NotBlank(message = "PartnerName is mandatory")
     private String partnerName;
 
     private String partnerMasterAirwayBill;
@@ -42,34 +35,24 @@ public class AddPieceDetails {
 
     private String description;
 
-    @NotBlank(message = "DeclaredValue is mandatory")
     private String declaredValue;
 
-    @NotBlank(message = "CodAmount is mandatory")
     private String codAmount;
 
-    @NotBlank(message = "Length is mandatory")
     private String length;
 
-    @NotBlank(message = "DimensionUnit is mandatory")
     private String dimensionUnit;
 
-    @NotBlank(message = "Width is mandatory")
     private String width;
 
-    @NotBlank(message = "Height is mandatory")
     private String height;
 
-    @NotBlank(message = "Weight is mandatory")
     private String weight;
 
-    @NotBlank(message = "WeightUnit is mandatory")
     private String weight_unit;
 
-    @NotBlank(message = "Volume is mandatory")
     private String volume;
 
-    @NotBlank(message = "VolumeUnit is mandatory")
     private String volumeUnit;
 
     private List<ReferenceImageList> referenceImageList;
@@ -118,7 +101,6 @@ public class AddPieceDetails {
     private String referenceField19;
 
     private String referenceField20;
-
 
     private List<AddItemDetails> itemDetails = new ArrayList<>();
 

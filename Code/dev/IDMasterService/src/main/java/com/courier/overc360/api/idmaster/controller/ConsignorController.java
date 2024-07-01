@@ -2,6 +2,7 @@ package com.courier.overc360.api.idmaster.controller;
 
 import com.courier.overc360.api.idmaster.primary.model.consignor.AddConsignor;
 import com.courier.overc360.api.idmaster.primary.model.consignor.Consignor;
+import com.courier.overc360.api.idmaster.primary.model.consignor.ConsignorDeleteInput;
 import com.courier.overc360.api.idmaster.primary.model.consignor.UpdateConsignor;
 import com.courier.overc360.api.idmaster.replica.model.consignor.FindConsignor;
 import com.courier.overc360.api.idmaster.replica.model.consignor.ReplicaConsignor;
@@ -62,6 +63,33 @@ public class ConsignorController {
     public ResponseEntity<?> deleteConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String subProductId,
                                              @RequestParam String productId, @RequestParam String customerId, @RequestParam String loginUserID) {
         consignorService.deleteConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, loginUserID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*----------------------------------------------list_APIs'-------------------------------------------------------*/
+    // Create Consignors - bulk
+    @ApiOperation(response = Consignor.class, value = "Create new Consignors - bulk") // label for swagger
+    @PostMapping("/create/list")
+    public ResponseEntity<?> postConsignorBulk(@Valid @RequestBody List<AddConsignor> addConsignorList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Consignor> newConsignors = consignorService.createConsignorBulk(addConsignorList, loginUserID);
+        return new ResponseEntity<>(newConsignors, HttpStatus.OK);
+    }
+
+    // Update Consignors - bulk
+    @ApiOperation(response = Consignor.class, value = "Update Consignors - bulk") // label for swagger
+    @PatchMapping("/update/list")
+    public ResponseEntity<?> patchConsignorBulk(@Valid @RequestBody List<UpdateConsignor> updateConsignorList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Consignor> updatedConsignors = consignorService.updateConsignorBulk(updateConsignorList, loginUserID);
+        return new ResponseEntity<>(updatedConsignors, HttpStatus.OK);
+    }
+
+    // Delete Consignors - bulk
+    @ApiOperation(response = Consignor.class, value = "Delete Consignors - bulk") // label for swagger
+    @PostMapping("/delete/list")
+    public ResponseEntity<?> deleteConsignorBulk(@Valid @RequestBody List<ConsignorDeleteInput> consignorDeleteInputs, @RequestParam String loginUserID) {
+        consignorService.deleteConsignorBulk(consignorDeleteInputs, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

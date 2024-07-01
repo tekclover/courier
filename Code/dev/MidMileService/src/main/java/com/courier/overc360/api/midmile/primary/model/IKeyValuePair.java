@@ -23,7 +23,12 @@ public interface IKeyValuePair {
     String getCurrencyValue();
 
     String getCurrencyId();
+
+    String getIataKd();
+
     String getStatusId();
+
+    String getConsignorName();
 
 
 }

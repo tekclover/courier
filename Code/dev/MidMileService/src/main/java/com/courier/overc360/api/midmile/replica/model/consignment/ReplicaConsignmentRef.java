@@ -26,8 +26,8 @@ public class ReplicaConsignmentRef{
     @Column(name = "STORAGE_LOCATION", columnDefinition = "nvarchar(50)")
     private String storageLocation;
 
-//    @Column(name = "REF_IMAGE_LIST", columnDefinition = "nvarchar(50)")
-//    private String referenceImageList;
+    @Column(name = "REF_IMAGE_LIST", columnDefinition = "nvarchar(50)")
+    private String referenceImageList;
 
     @Column(name = "IS_EXCHANGE", columnDefinition = "nvarchar(50)")
     private String isExchange;

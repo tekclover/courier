@@ -4,7 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
@@ -50,6 +55,9 @@ public class Product {
 
     @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String subProductName;
+
+    @Column(name = "SUB_PRODUCT_VALUE", columnDefinition = "nvarchar(50)")
+    private String subProductValue;
 
     @Column(name = "PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String productName;

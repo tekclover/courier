@@ -18,6 +18,7 @@ public class AddDistrictMapping {
     private String partnerType;
 
     private String partnerDistrictId;
+    private String remark;
 
     private String partnerDistrictName;
 

@@ -7,11 +7,11 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddProduct {
 
-    @NotBlank(message = "CompanyId is mandatory")
-    private String companyId;
-
     @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
+
+    @NotBlank(message = "CompanyId is mandatory")
+    private String companyId;
 
     @NotBlank(message = "SubProductId is mandatory")
     private String subProductId;

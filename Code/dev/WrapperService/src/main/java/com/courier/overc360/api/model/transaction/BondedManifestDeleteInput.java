@@ -17,6 +17,4 @@ public class BondedManifestDeleteInput {
 
     private String houseAirwayBill;
 
-    private String lineNo;
-
 }

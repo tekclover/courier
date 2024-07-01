@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.hub.AddHub;
 import com.courier.overc360.api.idmaster.primary.model.hub.Hub;
@@ -9,10 +8,12 @@ import com.courier.overc360.api.idmaster.primary.model.hub.UpdateHub;
 import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.HubRepository;
+import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.hub.FindHub;
 import com.courier.overc360.api.idmaster.replica.model.hub.ReplicaHub;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaHubRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaProvinceRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaHubSpecification;
@@ -37,6 +38,9 @@ import java.util.stream.Collectors;
 public class HubService {
 
     @Autowired
+    private ReplicaCompanyRepository replicaCompanyRepository;
+
+    @Autowired
     private ReplicaProvinceRepository replicaProvinceRepository;
 
     @Autowired
@@ -47,6 +51,9 @@ public class HubService {
 
     @Autowired
     private ReplicaHubRepository replicaHubRepository;
+
+    @Autowired
+    private ProvinceRepository provinceRepository;
 
     @Autowired
     private NumberRangeService numberRangeService;
@@ -97,47 +104,48 @@ public class HubService {
     public Hub createHub(AddHub addHub, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addHub.getCompanyId(), addHub.getLanguageId(), 0L);
-
-            Optional<Hub> duplicateHub = hubRepository.findByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
-                    addHub.getLanguageId(), addHub.getCompanyId(), addHub.getHubCode(), 0L);
-
-            if (dbCompany.isEmpty()) {
+            if (!dbCompanyPresent) {
                 throw new BadRequestException("CompanyId - " + addHub.getCompanyId() + " and LanguageId - " + addHub.getLanguageId() + " doesn't exists");
-            } else if (duplicateHub.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values : hubCode - " + addHub.getHubCode());
-            } else {
-                log.info("new Hub --> " + addHub);
-                Hub newHub = new Hub();
-                IKeyValuePair iKeyValuePair = replicaHubRepository.getDescription(addHub.getLanguageId(), addHub.getCompanyId(),
-                        addHub.getCountryId(), addHub.getCityId());
-                BeanUtils.copyProperties(addHub, newHub, CommonUtils.getNullPropertyNames(addHub));
-                if (addHub.getHubCode() == null || addHub.getHubCode().isBlank()) {
-                    String NUM_RAN_OBJ = "HUB";
-                    String HUB_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for HUB_CODE : " + HUB_CODE);
-                    newHub.setHubCode(HUB_CODE);
-                }
-                if (iKeyValuePair != null) {
-                    newHub.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newHub.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    newHub.setCountryName(iKeyValuePair.getCountryDesc());
-                    newHub.setCityName(iKeyValuePair.getCityDesc());
-                }
-                if (addHub.getProvinceId() != null) {
-                    IKeyValuePair iKeyValuePair1 = replicaProvinceRepository.getProvinceName(addHub.getProvinceId());
-                    if (iKeyValuePair1 != null) {
-                        newHub.setProvinceName(iKeyValuePair1.getProvinceDesc());
-                    }
-                }
-                newHub.setDeletionIndicator(0L);
-                newHub.setCreatedBy(loginUserID);
-                newHub.setCreatedOn(new Date());
-                newHub.setUpdatedBy(loginUserID);
-                newHub.setUpdatedOn(new Date());
-                return hubRepository.save(newHub);
             }
+
+            boolean duplicateHubPresent = replicaHubRepository.existsByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
+                    addHub.getLanguageId(), addHub.getCompanyId(), addHub.getHubCode(), 0L);
+            if (duplicateHubPresent) {
+                throw new BadRequestException("Record is getting Duplicated with the given values : hubCode - " + addHub.getHubCode());
+            }
+
+            log.info("new Hub --> {}", addHub);
+            Hub newHub = new Hub();
+            IKeyValuePair iKeyValuePair = replicaHubRepository.getDescription(addHub.getLanguageId(), addHub.getCompanyId(),
+                    addHub.getCountryId(), addHub.getCityId());
+            BeanUtils.copyProperties(addHub, newHub, CommonUtils.getNullPropertyNames(addHub));
+            if (addHub.getHubCode() == null || addHub.getHubCode().isBlank()) {
+                String NUM_RAN_OBJ = "HUB";
+                String HUB_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for HUB_CODE : " + HUB_CODE);
+                newHub.setHubCode(HUB_CODE);
+            }
+            if (iKeyValuePair != null) {
+                newHub.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newHub.setCompanyName(iKeyValuePair.getCompanyDesc());
+                newHub.setCountryName(iKeyValuePair.getCountryDesc());
+                newHub.setCityName(iKeyValuePair.getCityDesc());
+            }
+            if (addHub.getProvinceId() != null) {
+                String provinceName = replicaProvinceRepository.getProvinceName(addHub.getLanguageId(), addHub.getCompanyId(),
+                        addHub.getCountryId(), addHub.getProvinceId());
+                if (provinceName != null) {
+                    newHub.setProvinceName(provinceName);
+                }
+            }
+            newHub.setDeletionIndicator(0L);
+            newHub.setCreatedBy(loginUserID);
+            newHub.setCreatedOn(new Date());
+            newHub.setUpdatedBy(loginUserID);
+            newHub.setUpdatedOn(new Date());
+            return hubRepository.save(newHub);
         } catch (Exception e) {
             // Error Log
             createHubLog2(addHub, e.toString());

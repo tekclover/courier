@@ -61,15 +61,14 @@ public class NumberRangeService {
      * @param numberRangeObject
      * @return
      */
-    public String getNextNumberRange(String numberRangeObject) { //loadtype
-        log.info("numberRangeObject : " + numberRangeObject);
+    public String getNextNumberRange(String numberRangeObject) {
+//        log.info("numberRangeObject : " + numberRangeObject);
 
-        Optional<NumberRange> duplicateNumberRange =
-                numberRangeRepository.findByNumberRangeObjectAndDeletionIndicator(numberRangeObject, 0L);
-        if (duplicateNumberRange.isEmpty()) {
-            throw new BadRequestException("Record not found for given NumberRangeObject - " + duplicateNumberRange);
+        Optional<NumberRange> dbNumberRange = numberRangeRepository.findByNumberRangeObjectAndDeletionIndicator(numberRangeObject, 0L);
+        if (dbNumberRange.isEmpty()) {
+            throw new BadRequestException("Record not found for given NumberRangeObject - " + dbNumberRange);
         } else {
-            NumberRange numberRange = duplicateNumberRange.get();
+            NumberRange numberRange = dbNumberRange.get();
 //            log.info("Current record --> " + numberRange);
 
             String strCurrentValue = numberRange.getNumberRangeCurrent();

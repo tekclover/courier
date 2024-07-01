@@ -20,29 +20,44 @@ public interface ReplicaNotificationRepository extends JpaRepository<ReplicaNoti
 
     // Get Service Type Desc
     @Query(value = "Select \n" +
-            "CONCAT (tst.SERVICE_TYPE_ID, ' - ', tst.SERVICE_TYPE_TEXT) \n" +
+            "CONCAT (tst.SERVICE_TYPE_ID, ' - ', tst.SERVICE_TYPE_TEXT)\n" +
             "From tblservicetype tst \n" +
             "Where \n" +
+            "tst.LANG_ID IN (:languageId) and \n" +
+            "tst.C_ID IN (:companyId) and \n" +
             "tst.SERVICE_TYPE_ID IN (:serviceTypeId) and \n" +
             "tst.IS_DELETED = 0", nativeQuery = true)
-    String getServiceTypeDesc(@Param(value = "serviceTypeId") String serviceTypeId);
+    String getServiceTypeDesc(@Param(value = "serviceTypeId") String serviceTypeId,
+                              @Param(value = "languageId") String languageId,
+                              @Param(value = "companyId") String companyId);
 
     // Get Product Desc
     @Query(value = "Select \n" +
-            "CONCAT (tp.PRODUCT_ID, ' - ', tp.PRODUCT_NAME) \n" +
+            "CONCAT (tp.PRODUCT_ID, ' - ', tp.PRODUCT_NAME)\n" +
             "From tblproduct tp \n" +
             "Where \n" +
+            "tp.LANG_ID IN (:languageId) and \n" +
+            "tp.C_ID IN (:companyId) and \n" +
             "tp.PRODUCT_ID IN (:productId) and \n" +
+            "tp.SUB_PRODUCT_ID IN (:subProductId) and \n" +
             "tp.IS_DELETED = 0", nativeQuery = true)
-    String getProductDesc(@Param(value = "productId") String productId);
+    String getProductDesc(@Param(value = "productId") String productId,
+                          @Param(value = "languageId") String languageId,
+                          @Param(value = "companyId") String companyId,
+                          @Param(value = "subProductId")String subProductId);
+
 
     // Get SubProduct Desc
     @Query(value = "Select \n" +
-            "CONCAT (tp.SUB_PRODUCT_ID, ' - ', tp.SUB_PRODUCT_NAME) \n" +
-            "From tblsubproduct tp \n" +
+            "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) \n" +
+            "From tblsubproduct tsp \n" +
             "Where \n" +
-            "tp.SUB_PRODUCT_ID IN (:subProductId) and \n" +
-            "tp.IS_DELETED = 0", nativeQuery = true)
-    String getSubProductDesc(@Param(value = "subProductId") String subProductId);
+            "tsp.LANG_ID IN (:languageId) and \n" +
+            "tsp.C_ID IN (:companyId) and \n" +
+            "tsp.SUB_PRODUCT_ID IN (:subProductId) and \n" +
+            "tsp.IS_DELETED = 0", nativeQuery = true)
+    String getSubProductDesc(@Param(value = "subProductId") String subProductId,
+                             @Param(value = "languageId") String languageId,
+                             @Param(value = "companyId") String companyId);
 
 }

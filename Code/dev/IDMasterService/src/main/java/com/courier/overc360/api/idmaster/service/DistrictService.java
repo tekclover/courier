@@ -5,7 +5,6 @@ import com.courier.overc360.api.idmaster.primary.model.district.AddDistrict;
 import com.courier.overc360.api.idmaster.primary.model.district.District;
 import com.courier.overc360.api.idmaster.primary.model.district.UpdateDistrict;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.idmaster.primary.model.province.Province;
 import com.courier.overc360.api.idmaster.primary.repository.DistrictRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
@@ -13,7 +12,6 @@ import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.district.FindDistrict;
 import com.courier.overc360.api.idmaster.replica.model.district.ReplicaDistrict;
-import com.courier.overc360.api.idmaster.replica.repository.ReplicaCountryRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaDistrictRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaProvinceRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
@@ -43,9 +41,6 @@ public class DistrictService {
 
     @Autowired
     private ReplicaProvinceRepository replicaProvinceRepository;
-
-    @Autowired
-    private ReplicaCountryRepository replicaCountryRepository;
 
     @Autowired
     private DistrictRepository districtRepository;
@@ -82,9 +77,11 @@ public class DistrictService {
         Optional<District> dbDistrict = districtRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndDeletionIndicator(
                 languageId, companyId, countryId, provinceId, districtId, 0L);
         if (dbDistrict.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", countryId - " + countryId
+                    + ", provinceId - " + provinceId + " and districtId - " + districtId + " doesn't exists";
             // Error Log
-            createDistrictLog1(languageId, companyId, countryId, provinceId, districtId, "DistrictId - " + districtId + " and given values doesn't exists");
-            throw new BadRequestException("DistrictId - " + districtId + " and given values doesn't exists");
+            createDistrictLog1(languageId, companyId, countryId, provinceId, districtId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbDistrict.get();
     }
@@ -104,16 +101,17 @@ public class DistrictService {
     public District createDistrict(AddDistrict addDistrict, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Province> dbProvince = provinceRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
+            boolean dbProvincePresent = replicaProvinceRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
                     addDistrict.getLanguageId(), addDistrict.getCompanyId(), addDistrict.getCountryId(), addDistrict.getProvinceId(), 0L);
 
-            Optional<District> duplicateDistrict = districtRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndDeletionIndicator(
-                    addDistrict.getLanguageId(), addDistrict.getCompanyId(), addDistrict.getCountryId(), addDistrict.getProvinceId(), addDistrict.getDistrictId(), 0L);
+            boolean duplicateDistrictPresent = replicaDistrictRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndDeletionIndicator(
+                    addDistrict.getLanguageId(), addDistrict.getCompanyId(), addDistrict.getCountryId(),
+                    addDistrict.getProvinceId(), addDistrict.getDistrictId(), 0L);
 
-            if (dbProvince.isEmpty()) {
+            if (!dbProvincePresent) {
                 throw new BadRequestException("ProvinceId - " + addDistrict.getProvinceId() + ", CompanyId - " + addDistrict.getCompanyId()
                         + ", LanguageId - " + addDistrict.getLanguageId() + ", CountryId - " + addDistrict.getCountryId() + " doesn't exists");
-            } else if (duplicateDistrict.isPresent()) {
+            } else if (duplicateDistrictPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : districtId - " + addDistrict.getDistrictId());
             } else {
                 log.info("new District --> " + addDistrict);
@@ -122,11 +120,11 @@ public class DistrictService {
 
                 District newDistrict = new District();
                 BeanUtils.copyProperties(addDistrict, newDistrict, CommonUtils.getNullPropertyNames(addDistrict));
-                if (addDistrict.getDistrictId() == null || addDistrict.getDistrictId().isBlank()) {
-                    String NUM_RAN_OBJ = "DISTRICT";
-                    String DISTRICT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    newDistrict.setDistrictId(DISTRICT_ID);
-                }
+//                if (addDistrict.getDistrictId() == null || addDistrict.getDistrictId().isBlank()) {
+//                    String NUM_RAN_OBJ = "DISTRICT";
+//                    String DISTRICT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    newDistrict.setDistrictId(DISTRICT_ID);
+//                }
                 if (iKeyValuePair != null) {
                     newDistrict.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newDistrict.setCompanyName(iKeyValuePair.getCompanyDesc());
@@ -243,9 +241,11 @@ public class DistrictService {
 
         Optional<ReplicaDistrict> dbDistrict = replicaDistrictRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndDeletionIndicator(languageId, companyId, countryId, provinceId, districtId, 0L);
         if (dbDistrict.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", countryId - " + countryId
+                    + ", provinceId - " + provinceId + " and districtId - " + districtId + " doesn't exists";
             // Error Log
-            createDistrictLog1(languageId, companyId, countryId, provinceId, districtId, "DistrictId - " + districtId + " and given values doesn't exists");
-            throw new BadRequestException("DistrictId - " + districtId + " and given values doesn't exists");
+            createDistrictLog1(languageId, companyId, countryId, provinceId, districtId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbDistrict.get();
     }

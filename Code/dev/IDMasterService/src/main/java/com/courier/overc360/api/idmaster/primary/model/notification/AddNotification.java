@@ -17,14 +17,14 @@ public class AddNotification {
 
     private String notificationText;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String productId;
 
     private String subProductId;
 
     private String serviceTypeId;
-
-    @NotBlank(message = "Status Id is mandatory")
-    private String statusId;
 
     private String userRole;
 
@@ -69,6 +69,5 @@ public class AddNotification {
     private String referenceField19;
 
     private String referenceField20;
-
 
 }

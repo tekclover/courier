@@ -17,4 +17,8 @@ public interface ReplicaIataRepository extends JpaRepository<ReplicaIata, String
 
     Optional<ReplicaIata> findByLanguageIdAndCompanyIdAndOriginAndOriginCodeAndDeletionIndicator(
             String languageId, String companyId, String origin, String originCode, Long deletionIndicator);
+
+    boolean existsByLanguageIdAndCompanyIdAndOriginAndOriginCodeAndDeletionIndicator(
+            String languageId, String companyId, String origin, String originCode, Long deletionIndicator);
+
 }

@@ -71,7 +71,7 @@ public class MidMileService {
     }
 
     // Update Consignment
-    public ConsignmentEntity updateConsignment( List<UpdateConsignment> updateConsignment, String loginUserID, String authToken) {
+    public ConsignmentEntity[] updateConsignment( List<UpdateConsignment> updateConsignment, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -83,7 +83,7 @@ public class MidMileService {
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/updateConsignment")
                     .queryParam("loginUserID", loginUserID);
-            ResponseEntity<ConsignmentEntity> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ConsignmentEntity.class);
+            ResponseEntity<ConsignmentEntity[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ConsignmentEntity[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class MidMileService {
     }
 
     // Find ConsignmentEntity
-    public AddConsignment[] findConsignmentEntity(FindConsignment findConsignment, String authToken) throws Exception {
+    public ConsignmentEntity[] findConsignmentEntity(FindConsignment findConsignment, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -101,7 +101,7 @@ public class MidMileService {
             headers.add("Authorization", "Bearer " + authToken);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find");
             HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
-            ResponseEntity<AddConsignment[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, AddConsignment[].class);
+            ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -546,16 +546,16 @@ public class MidMileService {
     }
 
     //===============================================BondedManifest====================================================
-    // Get All BondedManifestHeader Details
-    public BondedManifestHeader[] getAllBondedManifestHeaders(String authToken) {
+    // Get All BondedManifest Details
+    public BondedManifest[] getAllBondedManifest(String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/allHeaders");
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest");
             HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<BondedManifestHeader[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BondedManifestHeader[].class);
+            ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BondedManifest[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -564,27 +564,10 @@ public class MidMileService {
         }
     }
 
-    // Get All BondedManifestLine Details
-    public BondedManifestLine[] getAllBondedManifestLines(String authToken) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.add("User-Agent", "RestTemplate");
-            headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/allLines");
-            HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<BondedManifestLine[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BondedManifestLine[].class);
-            log.info("result : " + result.getStatusCode());
-            return result.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
-    // Get BondedManifestHeader
-    public BondedManifestHeader getBondedManifestHeader(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                                        String houseAirwayBill, String bondedId, String authToken) {
+    // Get BondedManifest
+    public BondedManifest getBondedManifest(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                                  String houseAirwayBill, String bondedId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -597,7 +580,7 @@ public class MidMileService {
                     .queryParam("masterAirwayBill", masterAirwayBill)
                     .queryParam("houseAirwayBill", houseAirwayBill);
             HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<BondedManifestHeader> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BondedManifestHeader.class);
+            ResponseEntity<BondedManifest> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BondedManifest.class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -606,32 +589,32 @@ public class MidMileService {
         }
     }
 
-    // Create new BondedManifestHeader
-    public BondedManifestHeader[] createBondedManifestHeader(List<AddBondedManifestHeader> addBondedManifestHeaders, String loginUserID, String authToken) {
+    // Create new BondedManifest
+    public BondedManifest[] createBondedManifest(List<AddBondedManifest> addBondedManifest, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
         headers.add("Authorization", "Bearer " + authToken);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/create/list")
                 .queryParam("loginUserID", loginUserID);
-        HttpEntity<?> entity = new HttpEntity<>(addBondedManifestHeaders, headers);
-        ResponseEntity<BondedManifestHeader[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifestHeader[].class);
+        HttpEntity<?> entity = new HttpEntity<>(addBondedManifest, headers);
+        ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
         return result.getBody();
     }
 
-    public BondedManifestHeader[] updateBondedManifestHeader(List<UpdateBondedManifestHeader> updateBondedManifestHeaders, String loginUserID, String authToken) {
+    public BondedManifest[] updateBondedManifest(List<UpdateBondedManifest> updateBondedManifest, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "Classic WMS's RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            HttpEntity<?> entity = new HttpEntity<>(updateBondedManifestHeaders, headers);
+            HttpEntity<?> entity = new HttpEntity<>(updateBondedManifest, headers);
             HttpClient client = HttpClients.createDefault();
             RestTemplate restTemplate = getRestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/update/list")
                     .queryParam("loginUserID", loginUserID);
-            ResponseEntity<BondedManifestHeader[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, BondedManifestHeader[].class);
+            ResponseEntity<BondedManifest[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, BondedManifest[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -640,8 +623,8 @@ public class MidMileService {
         }
     }
 
-    // Delete BondedManifestHeader
-    public boolean deleteBondedManifestHeader(List<BondedManifestDeleteInput> deleteInputList, String loginUserID, String authToken) {
+    // Delete BondedManifest
+    public boolean deleteBondedManifest(List<BondedManifestDeleteInput> deleteInputList, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -659,16 +642,16 @@ public class MidMileService {
         }
     }
 
-    // Find BondedManifestHeaders
-    public BondedManifestHeader[] findBondedManifestHeaders(FindBondedManifestHeader findBondedManifestHeader, String authToken) throws Exception {
+    // Find BondedManifest
+    public BondedManifest[] findBondedManifest(FindBondedManifest findBondedManifest, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/findBondedManifestHeader");
-            HttpEntity<?> entity = new HttpEntity<>(findBondedManifestHeader, headers);
-            ResponseEntity<BondedManifestHeader[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifestHeader[].class);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/findBondedManifest");
+            HttpEntity<?> entity = new HttpEntity<>(findBondedManifest, headers);
+            ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -677,23 +660,6 @@ public class MidMileService {
         }
     }
 
-    // Find BondedManifestLines
-    public BondedManifestLine[] findBondedManifestLines(FindBondedManifestLine findBondedManifestLine, String authToken) throws Exception {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.add("User-Agent", "RestTemplate");
-            headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/findBondedManifestLine");
-            HttpEntity<?> entity = new HttpEntity<>(findBondedManifestLine, headers);
-            ResponseEntity<BondedManifestLine[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifestLine[].class);
-            log.info("result : " + result.getStatusCode());
-            return result.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
 
     //===============================================Ccr====================================================
@@ -930,4 +896,22 @@ public class MidMileService {
         }
     }
 
+    /**
+     *
+     * @param addConsignments
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public Console[] createConsoleConsignmentInput(List<AddConsignment> addConsignments, String loginUserID, String authToken){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("User-Agent", "RestTemplate");
+        headers.add("Authorization", " Bearer " + authToken);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/create/list/con")
+                .queryParam("loginUserID", loginUserID);
+        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+        ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+        return result.getBody();
+    }
 }

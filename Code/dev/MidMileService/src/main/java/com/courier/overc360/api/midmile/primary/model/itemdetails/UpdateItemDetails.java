@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.primary.model.itemdetails;
 
+import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public class UpdateItemDetails {
 
     private String pieceItemId;
+
     private String partnerType;
 
     private String partnerName;
@@ -42,7 +44,7 @@ public class UpdateItemDetails {
 
     private String volumeUnit;
 
-    private List<String> referenceImageList;
+    private List<ReferenceImageList> referenceImageList;
 
     private Long deletionIndicator;
 

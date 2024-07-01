@@ -14,6 +14,8 @@ public class UpdateDistrictMapping {
     private String partnerDistrictName;
 
     private Long deletionIndicator;
+    private String remark;
+
 
     private String referenceField1;
 

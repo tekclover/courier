@@ -231,6 +231,21 @@ public class ConsignmentEntity {
     @Column(name = "WORKER_CODE", columnDefinition = "nvarchar(50)")
     private String workerCode;
 
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
+
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
+
+    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date eventTimestamp;
+
+    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date statusTimestamp;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -246,28 +261,20 @@ public class ConsignmentEntity {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "CON_INFO_ID")
-//    private ConsignmentInfo consignmentInfo;
-
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CON_INFO_ID")
     private ConsignmentInfo consignmentInfo;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CON_REF_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ConsignmentRef consignmentRefs;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private DestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private OriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

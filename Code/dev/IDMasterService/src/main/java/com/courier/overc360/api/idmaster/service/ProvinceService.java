@@ -1,12 +1,10 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.country.Country;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.province.AddProvince;
 import com.courier.overc360.api.idmaster.primary.model.province.Province;
 import com.courier.overc360.api.idmaster.primary.model.province.UpdateProvince;
-import com.courier.overc360.api.idmaster.primary.repository.CountryRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
@@ -48,9 +46,6 @@ public class ProvinceService {
 
     @Autowired
     private ReplicaProvinceRepository replicaProvinceRepository;
-
-    @Autowired
-    private CountryRepository countryRepository;
 
     @Autowired
     private NumberRangeService numberRangeService;
@@ -101,45 +96,45 @@ public class ProvinceService {
     public Province createProvince(AddProvince addProvince, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Country> dbCountry = countryRepository.findByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
+            boolean dbCountryPresent = replicaCountryRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
                     addProvince.getLanguageId(), addProvince.getCompanyId(), addProvince.getCountryId(), 0L);
-
-            Optional<Province> duplicateProvince = provinceRepository.findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
-                    addProvince.getLanguageId(), addProvince.getCompanyId(), addProvince.getCountryId(), addProvince.getProvinceId(), 0L);
-
-            if (dbCountry.isEmpty()) {
+            if (!dbCountryPresent) {
                 throw new BadRequestException("CountryId - " + addProvince.getCountryId() + ", companyId - " + addProvince.getCompanyId() +
                         " and languageId - " + addProvince.getLanguageId() + " doesn't exists");
-            } else if (duplicateProvince.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values");
-            } else {
-                log.info("new Province --> " + addProvince);
-                Province newProvince = new Province();
-                IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addProvince.getLanguageId(),
-                        addProvince.getCompanyId(), addProvince.getCountryId());
-                BeanUtils.copyProperties(addProvince, newProvince, CommonUtils.getNullPropertyNames(addProvince));
-                if (addProvince.getProvinceId() == null || addProvince.getProvinceId().isBlank()) {
-                    String NUM_RAN_OBJ = "PROVINCE";
-                    String PROVINCE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for PROVINCE_ID : " + PROVINCE_ID);
-                    newProvince.setProvinceId(PROVINCE_ID);
-                }
-                if (iKeyValuePair != null) {
-                    newProvince.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newProvince.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    newProvince.setCountryName(iKeyValuePair.getCountryDesc());
-                }
-                String statusDesc = replicaStatusRepository.getStatusDescription(addProvince.getStatusId());
-                if (statusDesc != null) {
-                    newProvince.setStatusDescription(statusDesc);
-                }
-                newProvince.setDeletionIndicator(0L);
-                newProvince.setCreatedBy(loginUserID);
-                newProvince.setCreatedOn(new Date());
-                newProvince.setUpdatedBy(loginUserID);
-                newProvince.setUpdatedOn(new Date());
-                return provinceRepository.save(newProvince);
             }
+
+            boolean duplicateProvincePresent = replicaProvinceRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
+                    addProvince.getLanguageId(), addProvince.getCompanyId(), addProvince.getCountryId(), addProvince.getProvinceId(), 0L);
+            if (duplicateProvincePresent) {
+                throw new BadRequestException("Record is getting Duplicated with the given values");
+            }
+
+            log.info("new Province --> " + addProvince);
+            Province newProvince = new Province();
+            IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addProvince.getLanguageId(),
+                    addProvince.getCompanyId(), addProvince.getCountryId());
+            BeanUtils.copyProperties(addProvince, newProvince, CommonUtils.getNullPropertyNames(addProvince));
+//                if (addProvince.getProvinceId() == null || addProvince.getProvinceId().isBlank()) {
+//                    String NUM_RAN_OBJ = "PROVINCE";
+//                    String PROVINCE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    log.info("next Value from NumberRange for PROVINCE_ID : " + PROVINCE_ID);
+//                    newProvince.setProvinceId(PROVINCE_ID);
+//                }
+            if (iKeyValuePair != null) {
+                newProvince.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newProvince.setCompanyName(iKeyValuePair.getCompanyDesc());
+                newProvince.setCountryName(iKeyValuePair.getCountryDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addProvince.getStatusId());
+            if (statusDesc != null) {
+                newProvince.setStatusDescription(statusDesc);
+            }
+            newProvince.setDeletionIndicator(0L);
+            newProvince.setCreatedBy(loginUserID);
+            newProvince.setCreatedOn(new Date());
+            newProvince.setUpdatedBy(loginUserID);
+            newProvince.setUpdatedOn(new Date());
+            return provinceRepository.save(newProvince);
         } catch (Exception e) {
             // Error Log
             createProvinceLog2(addProvince, e.toString());

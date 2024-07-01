@@ -17,6 +17,8 @@ public class AddHSCode {
 
     private String itemDescription;
 
+    private String specialApprovalId;
+
     private String itemGroup;
 
     private String remark;

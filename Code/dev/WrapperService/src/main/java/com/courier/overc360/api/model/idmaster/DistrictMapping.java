@@ -7,6 +7,7 @@ import java.util.Date;
 @Data
 public class DistrictMapping {
 
+
     private String districtName;
 
     private String languageDescription;
@@ -28,6 +29,8 @@ public class DistrictMapping {
     private String partnerDistrictId;
 
     private String partnerDistrictName;
+
+    private String remark;
 
     private Long deletionIndicator;
 

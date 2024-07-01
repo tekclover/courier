@@ -9,6 +9,10 @@ public class HSCode {
 
     private String hsCode;
 
+    private String specialApprovalId;
+
+    private String specialApprovalText;
+
     private String languageId;
 
     private String companyId;

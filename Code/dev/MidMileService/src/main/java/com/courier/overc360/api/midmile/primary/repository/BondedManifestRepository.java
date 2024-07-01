@@ -1,7 +1,7 @@
 package com.courier.overc360.api.midmile.primary.repository;
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
-import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestHeader;
+import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -14,8 +14,8 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface BondedManifestHeaderRepository extends JpaRepository<BondedManifestHeader, String>,
-        JpaSpecificationExecutor<BondedManifestHeader> {
+public interface BondedManifestRepository extends JpaRepository<BondedManifest, String>,
+        JpaSpecificationExecutor<BondedManifest> {
 
     // Get Description
     @Query(value = "Select \n" +
@@ -31,10 +31,11 @@ public interface BondedManifestHeaderRepository extends JpaRepository<BondedMani
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
 
-    Optional<BondedManifestHeader> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
+    Optional<BondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
 
     @Query(value = "Select \n" +
+            "CONSIGNOR_NAME consignorName, \n" +
             "PRODUCT_ID productId, \n" +
             "SUB_PRODUCT_ID subProductId, \n" +
             "PRODUCT_NAME productName, \n" +
@@ -51,6 +52,14 @@ public interface BondedManifestHeaderRepository extends JpaRepository<BondedMani
 
     @Query(value = "Select * From tblbondedmanifestheader h \n" +
             "Where h.IS_DELETED = 0", nativeQuery = true)
-    List<BondedManifestHeader> getAllNonDeletedHeaders();
+    List<BondedManifest> getAllNonDeletedHeaders();
 
+    @Query(value = "Select \n" +
+            "TO_CURRENCY_VALUE currencyValue, \n" +
+            "TO_CURRENCY_ID currencyId \n " +
+            "From tblcurrencyexchangerate  \n" +
+            "Where \n" +
+            "FROM_CURRENCY_ID IN (:freightCurrency) and \n" +
+            "is_deleted = 0", nativeQuery = true)
+    IKeyValuePair getToCurrencyValue(@Param(value = "freightCurrency") String freightCurrency);
 }

@@ -1,6 +1,7 @@
 package com.courier.overc360.api.midmile.controller;
 
 
+import com.courier.overc360.api.midmile.primary.model.UploadResponse;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
 import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentEntity;
 import com.courier.overc360.api.midmile.primary.model.consignment.UpdateConsignment;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,4 +96,19 @@ public class ConsignmentController {
         return new ResponseEntity<>(filePathWithName, HttpStatus.OK);
     }
 
+    //Consignment Upload
+    @ApiOperation(response = AddConsignment.class, value = "Upload Consignment")
+    @PostMapping("/upload")
+    public ResponseEntity<?> consignmentUpload(@Valid @RequestBody List<AddConsignment> addConsignments, @RequestParam String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<UploadResponse> uploadResponseList = new ArrayList<>();
+        List<AddConsignment> addConsignment = consignmentService.createConsignment(addConsignments, loginUserID);
+        if(!addConsignment.isEmpty()){
+            UploadResponse uploadResponse = new UploadResponse();
+            uploadResponse.setStatusCode("200");
+            uploadResponse.setStatusCode("Consignment Upload Successfully");
+            uploadResponseList.add(uploadResponse);
+        }
+        return new ResponseEntity<>(uploadResponseList, HttpStatus.OK);
+    }
 }

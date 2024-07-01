@@ -8,6 +8,8 @@ public interface IKeyValuePair {
 
     String getSubProductDesc();
 
+    String getSubProductValue();
+
     String getProductDesc();
 
     String getCustomerDesc();

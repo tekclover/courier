@@ -1,43 +1,57 @@
-package com.courier.overc360.api.midmile.replica.model.bondedmanifest;
+package com.courier.overc360.api.midmile.primary.model.bondedmanifest;
 
+import com.courier.overc360.api.midmile.primary.model.ccr.CcrCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tblbondedmanifestline")
-public class ReplicaBondedManifestLine {
+@Table(name = "tblbondedmanifest",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_key_bondedmanifest",
+                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL"}
+                )
+        }
+)
+@IdClass(BondedManifestCompositeKey.class)
+public class BondedManifest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BONDED_MANIFEST_LINE_ID")
-    private Long bondedManifestLineId;
+    @Column(name = "BONDED_ID", columnDefinition = "nvarchar(50)")
+    private String  bondedId;
 
+    @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
     private String languageId;
+
+    @Id
+    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
+    private String companyId;
+
+    @Id
+    @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
+    private String partnerId;
+
+    @Id
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
+
+    @Id
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
-    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
-    private String companyId;
-
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
-
-    @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
-    private String partnerId;
 
     @Column(name = "PARTNER_TYP", columnDefinition = "nvarchar(50)")
     private String partnerType;
@@ -45,20 +59,11 @@ public class ReplicaBondedManifestLine {
     @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(100)")
     private String partnerName;
 
-    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String masterAirwayBill;
-
-    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String houseAirwayBill;
-
-    @Column(name = "LINE_NO", columnDefinition = "nvarchar(50)")
-    private String lineNo;
-
-    @Column(name = "BONDED_ID", columnDefinition = "nvarchar(50)")
-    private String bondedId;
-
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
+
+    @Column(name = "NO_OF_PACKAGES_MAWB", columnDefinition = "nvarchar(50)")
+    private String noOfPackagesMawb;
 
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
@@ -66,8 +71,38 @@ public class ReplicaBondedManifestLine {
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
-    @Column(name = "NO_OF_PIECES_HAWB", columnDefinition = "nvarchar(50)")
-    private String noOfPiecesHawb;
+    @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
+    private String description;
+
+    @Column(name = "NET_WEIGHT", columnDefinition = "nvarchar(50)")
+    private String netWeight;
+
+    @Column(name = "MANIFESTED_GROSS_WEIGHT", columnDefinition = "nvarchar(50)")
+    private String manifestedGrossWeight;
+
+    @Column(name = "GROSS_WEIGHT", columnDefinition = "nvarchar(50)")
+    private String grossWeight;
+
+    @Column(name = "TARE_WEIGHT", columnDefinition = "nvarchar(50)")
+    private String tareWeight;
+
+    @Column(name = "MANIFESTED_QTY", columnDefinition = "nvarchar(50)")
+    private String manifestedQuantity;
+
+    @Column(name = "LANDED_QTY", columnDefinition = "nvarchar(50)")
+    private String landedQuantity;
+
+    @Column(name = "TOTAL_QTY", columnDefinition = "nvarchar(50)")
+    private String totalQuantity;
+
+    @Column(name = "VOLUME", columnDefinition = "nvarchar(50)")
+    private String volume;
+
+    @Column(name = "FINAL_DESTINATION", columnDefinition = "nvarchar(50)")
+    private String finalDestination;
+
+    @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
+    private String notifyParty;
 
     @Column(name = "CONSIGNEE_NAME", columnDefinition = "nvarchar(50)")
     private String consigneeName;
@@ -96,6 +131,96 @@ public class ReplicaBondedManifestLine {
     @Column(name = "SHIPPER_NAME", columnDefinition = "nvarchar(100)")
     private String shipperName;
 
+    @Column(name = "REMARKS", columnDefinition = "nvarchar(100)")
+    private String remarks;
+
+    @Column(name = "IS_CONSOLIDATED_SHIPMENT", columnDefinition = "nvarchar(50)")
+    private String isConsolidatedShipment;
+
+    @Column(name = "IS_SPLIT_BILL_OF_LADING", columnDefinition = "nvarchar(50)")
+    private String isSplitBillOfLading;
+
+    @Column(name = "IS_PENDING_SHIPMENT", columnDefinition = "nvarchar(50)")
+    private String isPendingShipment;
+
+    @Column(name = "BWH_INVESTOR", columnDefinition = "nvarchar(50)")
+    private String bwhInvestor;
+
+    @Column(name = "KIND", columnDefinition = "nvarchar(50)")
+    private String kind;
+
+    @Column(name = "GOODS_TYP", columnDefinition = "nvarchar(50)")
+    private String goodsType;
+
+    @Column(name = "FCL_LCL", columnDefinition = "nvarchar(500)")
+    private String fclLcl;
+
+    @Column(name = "CONTAINER_NO", columnDefinition = "nvarchar(50)")
+    private String containerNo;
+
+    @Column(name = "CONTAINER_TYP", columnDefinition = "nvarchar(50)")
+    private String containerType;
+
+    @Column(name = "CONTAINER_SIZE", columnDefinition = "nvarchar(50)")
+    private String containerSize;
+
+    @Column(name = "MARK_ID", columnDefinition = "nvarchar(50)")
+    private String markId;
+
+    @Column(name = "MARK_TYP", columnDefinition = "nvarchar(50)")
+    private String markType;
+
+    @Column(name = "SEAL_NO", columnDefinition = "nvarchar(50)")
+    private String sealNo;
+
+    @Column(name = "VEHICLE_MODEL", columnDefinition = "nvarchar(500)")
+    private String vehicleModel;
+
+    @Column(name = "VEHICLE_TYP", columnDefinition = "nvarchar(50)")
+    private String vehicleType;
+
+    @Column(name = "CHASIS_NO", columnDefinition = "nvarchar(50)")
+    private String chasisNo;
+
+    @Column(name = "ENGINE_NO", columnDefinition = "nvarchar(50)")
+    private String engineNo;
+
+    @Column(name = "YR_OF_MANUFACTURE", columnDefinition = "nvarchar(50)")
+    private String yearOfManufacture;
+
+    @Column(name = "VEHICLE_BODY_COLOR", columnDefinition = "nvarchar(50)")
+    private String vehicleBodyColor;
+
+    @Column(name = "VEHICLE_BRAND", columnDefinition = "nvarchar(50)")
+    private String vehicleBrand;
+
+    @Column(name = "VEHICLE_NATIONALITY", columnDefinition = "nvarchar(50)")
+    private String vehicleNationality;
+
+    @Column(name = "LOAD", columnDefinition = "nvarchar(50)")
+    private String load;
+
+    @Column(name = "PASSENGER", columnDefinition = "nvarchar(50)")
+    private String passenger;
+
+    @Column(name = "ENGINE_POWER", columnDefinition = "nvarchar(50)")
+    private String enginePower;
+
+    @Column(name = "NO_OF_CYLINDERS", columnDefinition = "nvarchar(50)")
+    private String numberOfCylinders;
+
+    @Column(name = "COUNTRY_OF_ORIGIN", columnDefinition = "nvarchar(50)")
+    private String countryOfOrigin;
+
+    @Column(name = "IS_DELETED")
+    private Long deletionIndicator = 0L;
+
+    @Column(name = "LINE_NO", columnDefinition = "nvarchar(50)")
+    private String lineNo;
+
+    @Column(name = "NO_OF_PIECES_HAWB", columnDefinition = "nvarchar(50)")
+    private String noOfPiecesHawb;
+
     @Column(name = "CONSIGNEE_CIVIL_ID", columnDefinition = "nvarchar(50)")
     private String consigneeCivilId;
 
@@ -122,27 +247,6 @@ public class ReplicaBondedManifestLine {
 
     @Column(name = "QTY", columnDefinition = "nvarchar(50)")
     private String quantity;
-
-    @Column(name = "NET_WEIGHT", columnDefinition = "nvarchar(50)")
-    private String netWeight;
-
-    @Column(name = "MANIFESTED_GROSS_WEIGHT", columnDefinition = "nvarchar(50)")
-    private String manifestedGrossWeight;
-
-    @Column(name = "GROSS_WEIGHT", columnDefinition = "nvarchar(50)")
-    private String grossWeight;
-
-    @Column(name = "TARE_WEIGHT", columnDefinition = "nvarchar(50)")
-    private String tareWeight;
-
-    @Column(name = "MANIFESTED_QTY", columnDefinition = "nvarchar(50)")
-    private String manifestedQuantity;
-
-    @Column(name = "LANDED_QTY", columnDefinition = "nvarchar(50)")
-    private String landedQuantity;
-
-    @Column(name = "TOTAL_QTY", columnDefinition = "nvarchar(50)")
-    private String totalQuantity;
 
     @Column(name = "FREIGHT_CURRENCY", columnDefinition = "nvarchar(50)")
     private String freightCurrency;
@@ -171,8 +275,14 @@ public class ReplicaBondedManifestLine {
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
 
-    @Column(name = "IS_DELETED")
-    private Long deletionIndicator = 0L;
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")
+    private String consolidatedBillNo;
+
+    @Column(name = "BILL_OF_LADING_FOR", columnDefinition = "nvarchar(50)")
+    private String billOfLadingFor;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
@@ -245,5 +355,6 @@ public class ReplicaBondedManifestLine {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
+
 
 }

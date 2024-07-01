@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -16,11 +17,23 @@ public class ConsignmentEntity {
 
     private String partnerName;
 
+    private Long consignmentId;
+
     private String masterAirwayBill;
 
     private String houseAirwayBill;
 
     private String statusId;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
 
     private String languageDescription;
 

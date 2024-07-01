@@ -2,6 +2,7 @@ package com.courier.overc360.api.idmaster.controller;
 
 import com.courier.overc360.api.idmaster.primary.model.customer.AddCustomer;
 import com.courier.overc360.api.idmaster.primary.model.customer.Customer;
+import com.courier.overc360.api.idmaster.primary.model.customer.CustomerDeleteInput;
 import com.courier.overc360.api.idmaster.primary.model.customer.UpdateCustomer;
 import com.courier.overc360.api.idmaster.replica.model.customer.FindCustomer;
 import com.courier.overc360.api.idmaster.replica.model.customer.ReplicaCustomer;
@@ -50,7 +51,7 @@ public class CustomerController {
     @PatchMapping("/{customerId}")
     public ResponseEntity<?> patchCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String subProductId,
                                            @RequestParam String loginUserID, @RequestParam String companyId, @RequestParam String productId,
-                                           @RequestBody UpdateCustomer updateCustomer)
+                                           @Valid @RequestBody UpdateCustomer updateCustomer)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Customer updatedCustomer = customerService.updateCustomer(languageId, companyId, subProductId, productId, customerId, updateCustomer, loginUserID);
         return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
@@ -62,6 +63,33 @@ public class CustomerController {
     public ResponseEntity<?> deleteCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String subProductId,
                                             @RequestParam String companyId, @RequestParam String productId, @RequestParam String loginUserID) {
         customerService.deleteCustomer(languageId, companyId, subProductId, productId, customerId, loginUserID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*----------------------------------------------list_APIs'-------------------------------------------------------*/
+    // Create Customers - bulk
+    @ApiOperation(response = Customer.class, value = "Create new Customers - bulk") // label for swagger
+    @PostMapping("/create/list")
+    public ResponseEntity<?> postCustomerBulk(@Valid @RequestBody List<AddCustomer> addCustomerList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Customer> newCustomers = customerService.createCustomerBulk(addCustomerList, loginUserID);
+        return new ResponseEntity<>(newCustomers, HttpStatus.OK);
+    }
+
+    // Update Customers - bulk
+    @ApiOperation(response = Customer.class, value = "Update Customers - bulk") // label for swagger
+    @PatchMapping("/update/list")
+    public ResponseEntity<?> patchCustomerBulk(@Valid @RequestBody List<UpdateCustomer> updateCustomerList, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Customer> updatedCustomers = customerService.updateCustomerBulk(updateCustomerList, loginUserID);
+        return new ResponseEntity<>(updatedCustomers, HttpStatus.OK);
+    }
+
+    // Delete Customers - bulk
+    @ApiOperation(response = Customer.class, value = "Delete Customers - bulk") // label for swagger
+    @PostMapping("/delete/list")
+    public ResponseEntity<?> deleteCustomerBulk(@Valid @RequestBody List<CustomerDeleteInput> customerDeleteInputList, @RequestParam String loginUserID) {
+        customerService.deleteCustomerBulk(customerDeleteInputList, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

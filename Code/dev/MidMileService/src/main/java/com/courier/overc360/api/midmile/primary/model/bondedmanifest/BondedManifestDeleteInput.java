@@ -25,6 +25,5 @@ public class BondedManifestDeleteInput {
     @NotBlank(message = "House Airway Bill is mandatory")
     private String houseAirwayBill;
 
-    private String lineNo;
 
 }

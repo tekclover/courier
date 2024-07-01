@@ -13,6 +13,8 @@ public class AddSubProduct {
 
     private String subProductName;
 
+    private String subProductValue;
+
     private String statusId;
 
     private String remark;

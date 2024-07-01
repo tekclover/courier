@@ -37,5 +37,19 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
             String languageId, String companYId, String partnerId, String masterAirwayBill, String houseAirwayBill, String customsCcrNo, Long deletionIndicator
     );
 
+    //Get IataKd
+    @Query(value = "Select \n" +
+            "IATA_KD iataKd \n" +
+            "From tbliata  \n" +
+            "Where \n" +
+            "ORIGIN_CODE IN (:countryOfOrigin) and \n" +
+            "LANG_ID IN (:languageId) and \n" +
+            "C_ID IN (:companyId) and \n" +
+            "is_deleted = 0", nativeQuery = true)
+    IKeyValuePair getIataKd(@Param(value = "countryOfOrigin") String countryOfOrigin,
+                            @Param(value = "languageId") String languageId,
+                            @Param(value = "companyId") String companyId);
+
+
 }
 

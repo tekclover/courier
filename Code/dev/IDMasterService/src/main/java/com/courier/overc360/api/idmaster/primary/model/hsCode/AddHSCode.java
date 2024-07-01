@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddHSCode {
 
-   // @NotBlank(message = "HSCode is mandatory")
+    @NotBlank(message = "HSCode is mandatory")
     private String hsCode;
 
     @NotBlank(message = "LanguageId is mandatory")
@@ -21,6 +21,8 @@ public class AddHSCode {
     private String itemDescription;
 
     private String itemGroup;
+
+    private String specialApprovalId;
 
     private String remark;
 

@@ -52,6 +52,12 @@ public class HSCode {
     @Column(name = "ITEM_GRP", columnDefinition = "nvarchar(50)")
     private String itemGroup;
 
+    @Column(name = "SPECIAL_APPROVAL_ID", columnDefinition = "nvarchar(50)")
+    private String specialApprovalId;
+
+    @Column(name = "SPECIAL_APPROVAL_TEXT", columnDefinition = "nvarchar(100)")
+    private String specialApprovalText;
+
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;
 

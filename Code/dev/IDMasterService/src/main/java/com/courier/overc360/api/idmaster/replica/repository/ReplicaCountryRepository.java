@@ -18,6 +18,10 @@ public interface ReplicaCountryRepository extends JpaRepository<ReplicaCountry, 
     Optional<ReplicaCountry> findByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
             String languageId, String companyId, String countryId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
+            String languageId, String companyId, String countryId, Long deletionIndicator);
+
+
     // Get Description
     @Query(value = "Select \n" +
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +

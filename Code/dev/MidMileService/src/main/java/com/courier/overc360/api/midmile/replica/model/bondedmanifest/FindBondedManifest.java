@@ -1,11 +1,11 @@
-package com.courier.overc360.api.model.transaction;
+package com.courier.overc360.api.midmile.replica.model.bondedmanifest;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class FindBondedManifestHeader {
+public class FindBondedManifest {
 
     private List<String> languageId;
     private List<String> companyId;

@@ -18,14 +18,23 @@ public interface ReplicaProvinceRepository extends JpaRepository<ReplicaProvince
     Optional<ReplicaProvince> findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
             String languageId, String companyId, String countryId, String provinceId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDeletionIndicator(
+            String languageId, String companyId, String countryId, String provinceId, Long deletionIndicator);
+
     // Get Province Name
     @Query(value = "Select \n" +
-            "CONCAT (tp.PROVINCE_ID, ' - ', tp.PROVINCE_NAME) As provinceDesc \n" +
+            "CONCAT (tp.PROVINCE_ID, ' - ', tp.PROVINCE_NAME) \n" +
             "From tblprovince tp \n" +
             "Where \n" +
+            "tp.LANG_ID IN (:languageId) and \n" +
+            "tp.C_ID IN (:companyId) and \n" +
+            "tp.COUNTRY_ID IN (:countryId) and \n" +
             "tp.PROVINCE_ID (:provinceId) and \n" +
             "tp.IS_DELETED = 0", nativeQuery = true)
-    IKeyValuePair getProvinceName(@Param(value = "provinceId") String provinceId);
+    String getProvinceName(@Param(value = "languageId") String languageId,
+                           @Param(value = "companyId") String companyId,
+                           @Param(value = "countryId") String countryId,
+                           @Param(value = "provinceId") String provinceId);
 
 
     // Get Description
@@ -53,6 +62,4 @@ public interface ReplicaProvinceRepository extends JpaRepository<ReplicaProvince
                                  @Param(value = "provinceId") String provinceId);
 
 
-    Optional<ReplicaProvince> findByLanguageIdAndCompanyIdAndProvinceIdAndDeletionIndicator(
-            String languageId, String companyId, String provinceId, Long deletionIndicator);
 }

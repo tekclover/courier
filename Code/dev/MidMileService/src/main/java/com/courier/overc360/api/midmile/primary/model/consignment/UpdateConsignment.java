@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.primary.model.consignment;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
 import lombok.Data;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -35,6 +36,16 @@ public class UpdateConsignment {
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
 
     private String flightDetails;
 
@@ -234,7 +245,7 @@ public class UpdateConsignment {
 
     private String storageLocation;
 
-    private List<String> referenceImageList;
+    private List<ReferenceImageList> referenceImageList;
 
     private String isExchange;
 
@@ -298,4 +309,6 @@ public class UpdateConsignment {
     private UpdateReturnDetails returnDetails = new UpdateReturnDetails();
 
     private List<UpdatePieceDetails> pieceDetails = new ArrayList<>();
+
+
 }

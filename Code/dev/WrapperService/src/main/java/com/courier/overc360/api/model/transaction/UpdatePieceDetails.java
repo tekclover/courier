@@ -2,8 +2,13 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class UpdatePieceDetails {
+
+        private String pieceId;
 
         private String partnerType;
 
@@ -37,7 +42,7 @@ public class UpdatePieceDetails {
 
         private String volumeUnit;
 
-        private String referenceImageList;
+        private List<ReferenceImageList> referenceImageList;
 
         private String packReferenceNumber;
 
@@ -84,6 +89,8 @@ public class UpdatePieceDetails {
         private String referenceField19;
 
         private String referenceField20;
+
+        private List<UpdateItemDetails> itemDetails = new ArrayList<>();
 
 }
 

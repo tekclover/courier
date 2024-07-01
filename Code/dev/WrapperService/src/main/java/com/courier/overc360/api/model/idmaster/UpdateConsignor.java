@@ -5,6 +5,18 @@ import lombok.Data;
 @Data
 public class UpdateConsignor {
 
+    private String languageId;
+
+    private String companyId;
+
+    private String subProductId;
+
+    private String productId;
+
+    private String customerId;
+
+    private String consignorId;
+
     private String consignorName;
 
     private String remark;

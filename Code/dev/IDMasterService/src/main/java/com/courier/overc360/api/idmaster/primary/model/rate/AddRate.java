@@ -40,6 +40,9 @@ public class AddRate {
     @NotBlank(message = "RangeTo is mandatory")
     private String rangeTo;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

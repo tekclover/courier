@@ -25,6 +25,8 @@ public class Consignor {
 
     private String subProductName;
 
+    private String subProductValue;
+
     private String productName;
 
     private String customerName;
