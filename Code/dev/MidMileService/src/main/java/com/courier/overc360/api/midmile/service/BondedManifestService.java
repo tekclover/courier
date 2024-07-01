@@ -3,7 +3,10 @@ package com.courier.overc360.api.midmile.service;
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.*;
+import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
@@ -73,6 +76,32 @@ public class BondedManifestService {
         return dbBondedManifest.get();
     }
 
+
+    /**
+     *
+     * @param addConsignments
+     * @param loginUserID
+     * @return
+     * @throws IOException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws CsvException
+     */
+    public List<BondedManifest> createBondedManifestBasedOnConsignmentInput(List<AddConsignment> addConsignments, String loginUserID) throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+
+        List<AddBondedManifest> addBondedManifest = new ArrayList<>();
+        for(AddConsignment consignment : addConsignments) {
+            AddBondedManifest bondedManifest = new AddBondedManifest();
+            for(AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
+                for(AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+                    BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
+                }
+            }
+            addBondedManifest.add(bondedManifest);
+        }
+
+        return createBondedManifest(addBondedManifest, loginUserID);
+    }
 
     /**
      * Create BondedManifest

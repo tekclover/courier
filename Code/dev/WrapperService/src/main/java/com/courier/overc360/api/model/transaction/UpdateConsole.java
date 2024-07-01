@@ -2,6 +2,9 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import java.util.Date;
+
 @Data
 public class UpdateConsole {
 
@@ -40,6 +43,16 @@ public class UpdateConsole {
     private String customsValue;
 
     private String customsCurrency;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
 
     private String manifestedQuantity;
 

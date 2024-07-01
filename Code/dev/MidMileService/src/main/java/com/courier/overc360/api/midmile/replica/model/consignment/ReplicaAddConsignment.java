@@ -6,33 +6,26 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class ReplicaAddConsignment {
 
-    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 
-    @NotBlank(message = "PartnerName is mandatory")
     private String partnerName;
 
-    @NotBlank(message = "Master AirwayBill is mandatory")
     private String masterAirwayBill;
 
-    @NotBlank(message = "House AirwayBill is mandatory")
     private String houseAirwayBill;
 
-    @NotBlank(message = "statusId is mandatory")
     private String statusId;
 
-    @NotBlank(message = "ShipperId is mandatory")
     private String shipperId;
 
     private Long consignmentId;
@@ -57,19 +50,14 @@ public class ReplicaAddConsignment {
 
     private String languageDescription;
 
-    @NotBlank(message = "LineNo is mandatory")
     private String lineNo;
 
-    @NotBlank(message = "FlightNo is mandatory")
     private String flightNo;
 
-    @NotBlank(message = "FlightName is mandatory")
     private String flightName;
 
-    @NotBlank(message = "FlightArrival Time is mandatory")
-    private String flightArrivalTime;
+    private Date flightArrivalTime;
 
-    @NotBlank(message = "Consignee is mandatory")
     private String consigneeName;
 
     private String consigneeCivilId;
@@ -84,27 +72,20 @@ public class ReplicaAddConsignment {
 
     private String remark;
 
-    @NotBlank(message = "InvoiceAmount is mandatory")
     private String invoiceAmount;
 
-    @NotBlank(message = "Invoice Number is mandatory")
     private String invoiceNumber;
 
-    @NotBlank(message = "Invoice Date is mandatory")
     private String invoiceDate;
 
     private String invoiceType;
 
-    @NotBlank(message = "InvoiceUrl is mandatory")
     private String invoiceUrl;
 
-    @NotBlank(message = "HsCode is mandatory")
     private String hsCode;
 
-    @NotBlank(message = "Currency is mandatory")
     private String currency;
 
-    @NotBlank(message = "IncoTerms is mandatory")
     private String incoTerms;
 
     private String goodsDescription;
@@ -121,10 +102,8 @@ public class ReplicaAddConsignment {
 
     private String quantity;
 
-    @NotBlank(message = "NetWeight is mandatory")
     private String netWeight;
 
-    @NotBlank(message = "GrossWeight is mandatory")
     private String grossWeight;
 
     private String notifyParty;
@@ -139,31 +118,24 @@ public class ReplicaAddConsignment {
 
     private String airportOriginCode;
 
-    @NotBlank(message = "ReferenceNumber is mandatory")
     private String referenceNumber;
 
-    @NotBlank(message = "CustomerCode is mandatory")
     private String customerCode;
 
-    @NotBlank(message = "Customer ReferenceNumber is mandatory")
     private String customerReferenceNumber;
 
-    @NotBlank(message = "HusCode is mandatory")
     private String hubCode;
 
     private String serviceTypeId;
 
     private String serviceTypeText;
 
-    @NotBlank(message = "ConsignmentType  is mandatory")
     private String consignmentType;
 
     private String actionType;
 
-    @NotBlank(message = "MovementType is mandatory")
     private String movementType;
 
-    @NotBlank(message = "ForwardReference Number is mandatory")
     private String forwardReferenceNumber;
 
     private String workerCode;
@@ -174,16 +146,12 @@ public class ReplicaAddConsignment {
 
     private String notes;
 
-    @NotBlank(message = "Cod Amount is mandatory")
     private String codAmount;
 
-    @NotBlank(message = "CodeFavor Of is mandatory")
     private String codFavorOf;
 
-    @NotBlank(message = "Code CollectionMode is mandatory")
     private String codeCollectionMode;
 
-    @NotBlank(message = "DeclaredValue is mandatory")
     private String declaredValue;
 
     private String consignmentCurrency;
@@ -196,55 +164,38 @@ public class ReplicaAddConsignment {
 
     private String specialApprovalValue;
 
-    @NotBlank(message = "DeclaredValueWithout Tax is mandatory")
     private String declaredValueWithoutTax;
 
-    @NotBlank(message = "Length is mandatory")
     private String length;
 
-    @NotBlank(message = "DimensionUnit is mandatory")
     private String dimensionUnit;
 
-    @NotBlank(message = "Width is mandatory")
     private String width;
 
-    @NotBlank(message = "Height is mandatory")
     private String height;
 
-    @NotBlank(message = "Weight is mandatory")
     private String weight;
 
-    @NotBlank(message = "Weight is mandatory")
     private String weightUnit;
 
-    @NotBlank(message = "Volume is mandatory")
     private String volume;
 
-    @NotBlank(message = "Volume Unit is mandatory")
     private String volumeUnit;
 
-    @NotBlank(message = "UpStream CreationTime is mandatory")
     private String upstreamCreationTime;
 
-    @NotBlank(message = "UpStream Creation is mandatory")
     private String upstreamCreationSource;
 
-    @NotBlank(message = "Allocation Time is mandatory")
     private String allocationTime;
 
-    @NotBlank(message = "Auto Allocate is mandatory")
     private String autoAllocate;
 
-    @NotBlank(message = "Priority is mandatory")
     private String priority;
 
-    @NotBlank(message = "Courier Partner is mandatory")
     private String courierPartner;
 
-    @NotBlank(message = "Courier Account is mandatory")
     private String courierAccount;
 
-    @NotBlank(message = "Courier Partner Reference Number is mandatory")
     private String courierPartnerReferenceNumber;
 
     private String pickupOtp;
@@ -255,28 +206,20 @@ public class ReplicaAddConsignment {
 
     private String tags;
 
-    @NotBlank(message = "Service Time is mandatory")
     private String serviceTime;
 
-    @NotBlank(message = "PickupService Time is mandatory")
     private String pickupServiceTime;
 
-    @NotBlank(message = "Delivery Service Time is mandatory")
     private String deliveryServiceTime;
 
-    @NotBlank(message = "PickupTimeSlot Start is mandatory")
     private String pickupTimeSlotStart;
 
-    @NotBlank(message = "PickupTimeSlot End is mandatory ")
     private String pickupTimeSlotEnd;
 
-    @NotBlank(message = "DeliveryTimeSlot Start is mandatory")
     private String deliveryTimeSlotStart;
 
-    @NotBlank(message = "DeliveryTimeSlot End is mandatory")
     private String deliveryTimeSlotEnd;
 
-    @NotBlank(message = "Scheduled At is mandatory")
     private String scheduledAt;
 
     private String workerTipAmount;
@@ -285,26 +228,19 @@ public class ReplicaAddConsignment {
 
     private String constraintTags;
 
-    @NotBlank(message = "EWayBill is mandatory")
     private String ewayBill;
 
-    @NotBlank(message = "Product Code is mandatory")
     private String productCode;
 
-
-    @NotBlank(message = "Customs Value is mandatory")
     private String customsValue;
 
-    @NotBlank(message = "Amount is mandatory")
     private String amount;
 
-    @NotBlank(message = "IsCustoms Declarable is mandatory")
     private String isCustomsDeclarable;
 //    private AddConsignmentInfo consignmentInfo;
 
 //    private AddConsignmentRef consignmentRefs;
 
-    @NotBlank(message = "PackDetails is mandatory")
     private String packDetails;
 
     private String storageLocation;
@@ -312,6 +248,12 @@ public class ReplicaAddConsignment {
     private List<ReferenceImageList> referenceImageList;
 
     private String isExchange;
+
+    private String countryOfDestination;
+    private String noOfCrt;
+    private String totalShipmentWeight;
+    private String totalWeightHawb;
+    private Date estimatedDepartureTime;
 
     private String reverseReason;
 

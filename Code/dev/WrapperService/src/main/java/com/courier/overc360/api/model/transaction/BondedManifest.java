@@ -55,6 +55,20 @@ public class BondedManifest {
 
     private String finalDestination;
 
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private String billOfLoadingFor;
+
     private String notifyParty;
 
     private String consigneeName;
@@ -170,10 +184,6 @@ public class BondedManifest {
     private String declaredValue;
 
     private String currency;
-
-    private String paymentType;
-
-    private String consolidatedBillNo;
 
     private String billOfLadingFor;
 

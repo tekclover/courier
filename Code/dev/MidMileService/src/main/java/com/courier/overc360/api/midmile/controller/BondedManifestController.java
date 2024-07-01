@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.primary.model.bondedmanifest.AddBondedMa
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifest;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestDeleteInput;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.UpdateBondedManifest;
+import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import com.courier.overc360.api.midmile.service.BondedManifestService;
@@ -46,6 +47,15 @@ public class BondedManifestController {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<BondedManifest> bondedManifest = bondedManifestService.createBondedManifest(addBondedManifestList, loginUserID);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
+    }
+
+    // CreateBondedManifest based on ConsinmentInput
+    @ApiOperation(response = BondedManifest.class, value = "Create BondedManifest Based on ConsignmentInput")
+    @PostMapping("/bondedmanifest/create")
+    public ResponseEntity<?> createBondedManifest(@Valid @RequestBody List<AddConsignment> addConsignment, @RequestParam String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<BondedManifest> createBonded = bondedManifestService.createBondedManifestBasedOnConsignmentInput(addConsignment, loginUserID);
+        return new ResponseEntity<>(createBonded, HttpStatus.OK);
     }
 
     // Update BondedManifest

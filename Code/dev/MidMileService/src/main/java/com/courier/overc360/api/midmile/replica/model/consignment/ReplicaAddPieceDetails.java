@@ -9,6 +9,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -30,10 +31,8 @@ public class ReplicaAddPieceDetails {
 
     private String pieceId;
 
-    @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 
-    @NotBlank(message = "PartnerName is mandatory")
     private String partnerName;
 
     private String partnerMasterAirwayBill;
@@ -44,35 +43,28 @@ public class ReplicaAddPieceDetails {
 
     private String description;
 
-    @NotBlank(message = "DeclaredValue is mandatory")
     private String declaredValue;
 
-    @NotBlank(message = "CodAmount is mandatory")
     private String codAmount;
 
-    @NotBlank(message = "Length is mandatory")
     private String length;
 
-    @NotBlank(message = "DimensionUnit is mandatory")
     private String dimensionUnit;
 
-    @NotBlank(message = "Width is mandatory")
     private String width;
 
-    @NotBlank(message = "Height is mandatory")
     private String height;
 
-    @NotBlank(message = "Weight is mandatory")
     private String weight;
 
-    @NotBlank(message = "WeightUnit is mandatory")
     private String weight_unit;
 
-    @NotBlank(message = "Volume is mandatory")
     private String volume;
 
-    @NotBlank(message = "VolumeUnit is mandatory")
     private String volumeUnit;
+
+    private String pieceStatusId;
+    private Date pieceStatusTimestamp;
 
     private List<ReferenceImageList> referenceImageList;
 
@@ -119,7 +111,7 @@ public class ReplicaAddPieceDetails {
     private String referenceField19;
 
     private String referenceField20;
-    private String consignmentId;
+    private Long consignmentId;
 
     private List<ReplicaAddItemDetails> itemDetails = new ArrayList<>();
 }
