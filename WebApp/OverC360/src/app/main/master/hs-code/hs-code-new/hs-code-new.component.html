@@ -40,30 +40,19 @@
                                     class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Item Code</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="itemCode"
-                                    [ngClass]="form.get('itemCode')?.invalid && form.get('itemCode')?.dirty ? 'invalid' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Item Description</p>
-                                <input maxlength="50" pInputText formControlName="itemDescription"
-                                    [ngClass]="form.get('itemDescription')?.invalid && form.get('itemDescription')?.dirty ? 'invalid' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Special Approval ID</p>
-                                <p-dropdown [options]="specialApprovalIdList" placeholder="Select" filter="true" formControlName="specialApprovalId"
-                                    appendTo="body"
-                                    [ngClass]="form.get('specialApprovalId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Item Group</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="itemGroup"
                                     [ngClass]="form.get('itemGroup')?.invalid && form.get('itemGroup')?.dirty ? 'invalid' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                             </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Special Approval</p>
+                                <p-dropdown [options]="specialApprovalIdList" placeholder="Select" filter="true" formControlName="specialApprovalId"
+                                    appendTo="body"
+                                    [ngClass]="form.get('specialApprovalId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                            </div>
+                            
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Remark</p>
                                 <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
