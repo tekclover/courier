@@ -57,7 +57,7 @@ export class PreAlertNewComponent {
     countryOfDestination: [],
     flightArrivalTime: [],
     estimatedDepartureTime: [],
-    totalShipment: [],
+    noOfPackageMawb: [],
     noOfCRT: [],
     totalShipmentWeight: [],
     totalValue: [],
