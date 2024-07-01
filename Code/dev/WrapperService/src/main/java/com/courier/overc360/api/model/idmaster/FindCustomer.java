@@ -12,5 +12,6 @@ public class FindCustomer {
     private List<String> subProductId;
     private List<String> productId;
     private List<String> customerId;
+    private List<String> subProductValue;
 
 }

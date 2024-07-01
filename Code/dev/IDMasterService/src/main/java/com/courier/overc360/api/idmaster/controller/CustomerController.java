@@ -40,7 +40,7 @@ public class CustomerController {
     // Create Customer
     @ApiOperation(response = Customer.class, value = "Create new Customer") // label for swagger
     @PostMapping("")
-    public ResponseEntity<?> createCustomer(@Valid @RequestBody AddCustomer addCustomer, @RequestParam String loginUserID)
+    public ResponseEntity<?> postCustomer(@Valid @RequestBody AddCustomer addCustomer, @RequestParam String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         Customer newCustomer = customerService.createCustomer(addCustomer, loginUserID);
         return new ResponseEntity<>(newCustomer, HttpStatus.OK);
@@ -51,18 +51,20 @@ public class CustomerController {
     @PatchMapping("/{customerId}")
     public ResponseEntity<?> patchCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String subProductId,
                                            @RequestParam String loginUserID, @RequestParam String companyId, @RequestParam String productId,
-                                           @Valid @RequestBody UpdateCustomer updateCustomer)
+                                           @RequestParam String subProductValue, @Valid @RequestBody UpdateCustomer updateCustomer)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        Customer updatedCustomer = customerService.updateCustomer(languageId, companyId, subProductId, productId, customerId, updateCustomer, loginUserID);
+        Customer updatedCustomer = customerService.updateCustomer(languageId, companyId, subProductId, productId,
+                customerId, subProductValue, updateCustomer, loginUserID);
         return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
     }
 
     // Delete Customer
     @ApiOperation(response = Customer.class, value = "Delete Customer") // label for swagger
     @DeleteMapping("/{customerId}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String subProductId,
+    public ResponseEntity<?> deleteCustomer(@PathVariable String customerId, @RequestParam String languageId,
+                                            @RequestParam String subProductId, @RequestParam String subProductValue,
                                             @RequestParam String companyId, @RequestParam String productId, @RequestParam String loginUserID) {
-        customerService.deleteCustomer(languageId, companyId, subProductId, productId, customerId, loginUserID);
+        customerService.deleteCustomer(languageId, companyId, subProductId, subProductValue, productId, customerId, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -107,8 +109,8 @@ public class CustomerController {
     @ApiOperation(response = ReplicaCustomer.class, value = "Get a Customer") // label for swagger
     @GetMapping("/{customerId}")
     public ResponseEntity<?> getCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String companyId,
-                                         @RequestParam String subProductId, @RequestParam String productId) {
-        ReplicaCustomer dbCustomer = customerService.getReplicaCustomer(languageId, companyId, customerId, productId, subProductId);
+                                         @RequestParam String subProductId, @RequestParam String subProductValue, @RequestParam String productId) {
+        ReplicaCustomer dbCustomer = customerService.getReplicaCustomer(languageId, companyId, subProductId, subProductValue, productId, customerId);
         return new ResponseEntity<>(dbCustomer, HttpStatus.OK);
     }
 
@@ -119,4 +121,5 @@ public class CustomerController {
         List<ReplicaCustomer> customerList = customerService.findCustomers(findCustomer);
         return new ResponseEntity<>(customerList, HttpStatus.OK);
     }
+
 }

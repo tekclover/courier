@@ -18,5 +18,6 @@ public class CustomerCompositeKey implements Serializable {
     private String subProductId;
     private String productId;
     private String customerId;
+    private String subProductValue;
 
 }

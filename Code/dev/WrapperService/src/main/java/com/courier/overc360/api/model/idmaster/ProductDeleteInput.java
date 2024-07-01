@@ -13,4 +13,6 @@ public class ProductDeleteInput {
 
     private String productId;
 
+    private String subProductValue;
+
 }

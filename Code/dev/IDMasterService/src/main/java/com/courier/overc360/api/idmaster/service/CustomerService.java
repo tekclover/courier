@@ -65,15 +65,15 @@ public class CustomerService {
      * @param customerId
      * @return
      */
-    public Customer getCustomer(String languageId, String companyId, String customerId, String productId, String subProductId) {
+    public Customer getCustomer(String languageId, String companyId, String customerId, String productId, String subProductId, String subProductValue) {
 
-        Optional<Customer> dbCustomer = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
-                languageId, companyId, subProductId, productId, customerId, 0L);
+        Optional<Customer> dbCustomer = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, productId, customerId, 0L);
         if (dbCustomer.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId
-                    + ", productId - " + productId + " and customerId - " + customerId + " doesn't exists.";
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId +
+                    ", subProductValue - " + subProductValue + ", productId - " + productId + " and customerId - " + customerId + " doesn't exists.";
             // Error Log
-            createCustomerLog1(languageId, companyId, subProductId, productId, customerId, errMsg);
+            createCustomerLog1(languageId, companyId, subProductId, productId, customerId, subProductValue, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCustomer.get();
@@ -94,15 +94,17 @@ public class CustomerService {
     public Customer createCustomer(AddCustomer addCustomer, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            boolean productPresent = replicaProductRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-                    addCustomer.getLanguageId(), addCustomer.getCompanyId(), addCustomer.getSubProductId(), addCustomer.getProductId(), 0L);
+            boolean productPresent = replicaProductRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndSubProductValueAndDeletionIndicator(
+                    addCustomer.getLanguageId(), addCustomer.getCompanyId(), addCustomer.getSubProductId(),
+                    addCustomer.getProductId(), addCustomer.getSubProductValue(), 0L);
             if (!productPresent) {
-                throw new BadRequestException("ProductId - " + addCustomer.getProductId() + ", subProductId - " + addCustomer.getSubProductId() +
-                        ", companyId - " + addCustomer.getCompanyId() + " and languageId - " + addCustomer.getLanguageId() + " doesn't exists");
+                throw new BadRequestException("ProductId - " + addCustomer.getProductId() + ", subProductId - " + addCustomer.getSubProductId()
+                        + ", subProductValue - " + addCustomer.getSubProductValue() + ", companyId - " + addCustomer.getCompanyId()
+                        + " and languageId - " + addCustomer.getLanguageId() + " doesn't exists");
             }
 
-            boolean duplicateCustomerPresent = replicaCustomerRepository.existsByLanguageIdAndCompanyIdAndCustomerIdAndProductIdAndSubProductIdAndDeletionIndicator(
-                    addCustomer.getLanguageId(), addCustomer.getCompanyId(), addCustomer.getSubProductId(),
+            boolean duplicateCustomerPresent = replicaCustomerRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndDeletionIndicator(
+                    addCustomer.getLanguageId(), addCustomer.getCompanyId(), addCustomer.getSubProductId(), addCustomer.getSubProductValue(),
                     addCustomer.getProductId(), addCustomer.getCustomerId(), 0L);
             if (duplicateCustomerPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : customerId - " + addCustomer.getCustomerId());
@@ -110,7 +112,7 @@ public class CustomerService {
 
             log.info("new Customer --> " + addCustomer);
             IKeyValuePair iKeyValuePair = replicaProductRepository.getDescription(addCustomer.getLanguageId(), addCustomer.getCompanyId(),
-                    addCustomer.getSubProductId(), addCustomer.getProductId());
+                    addCustomer.getSubProductId(), addCustomer.getSubProductValue(), addCustomer.getProductId());
             Customer newCustomer = new Customer();
             BeanUtils.copyProperties(addCustomer, newCustomer, CommonUtils.getNullPropertyNames(addCustomer));
             if (addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
@@ -123,7 +125,6 @@ public class CustomerService {
                 newCustomer.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newCustomer.setCompanyName(iKeyValuePair.getCompanyDesc());
                 newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
-                newCustomer.setSubProductValue(iKeyValuePair.getSubProductValue());
                 newCustomer.setProductName(iKeyValuePair.getProductDesc());
             }
             newCustomer.setDeletionIndicator(0L);
@@ -180,10 +181,10 @@ public class CustomerService {
      */
     @Transactional
     public Customer updateCustomer(String languageId, String companyId, String subProductId, String productId,
-                                   String customerId, UpdateCustomer updateCustomer, String loginUserID)
+                                   String customerId, String subProductValue, UpdateCustomer updateCustomer, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId);
+            Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId, subProductValue);
 
 //            if (updateCustomer.getCustomerName() != null) {
 //                if (updateCustomer.getCustomerName().isBlank()) {
@@ -208,7 +209,7 @@ public class CustomerService {
             return customerRepository.save(dbCustomer);
         } catch (Exception e) {
             // Error Log
-            createCustomerLog(languageId, companyId, subProductId, productId, customerId, e.toString());
+            createCustomerLog(languageId, companyId, subProductId, productId, customerId, subProductValue, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -231,8 +232,8 @@ public class CustomerService {
         List<Customer> updatedCustomerList = new ArrayList<>();
         for (UpdateCustomer updateCustomer : updateCustomerList) {
             Customer dbCustomer = updateCustomer(updateCustomer.getLanguageId(), updateCustomer.getCompanyId(),
-                    updateCustomer.getSubProductId(), updateCustomer.getProductId(),
-                    updateCustomer.getCustomerId(), updateCustomer, loginUserID);
+                    updateCustomer.getSubProductId(), updateCustomer.getProductId(), updateCustomer.getCustomerId(),
+                    updateCustomer.getSubProductValue(), updateCustomer, loginUserID);
             updatedCustomerList.add(dbCustomer);
         }
         return updatedCustomerList;
@@ -248,10 +249,10 @@ public class CustomerService {
      * @param customerId
      * @param loginUserID
      */
-    public void deleteCustomer(String languageId, String companyId, String subProductId, String productId,
-                               String customerId, String loginUserID) {
+    public void deleteCustomer(String languageId, String companyId, String subProductId, String subProductValue,
+                               String productId, String customerId, String loginUserID) {
 
-        Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId);
+        Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId, subProductValue);
         if (dbCustomer != null) {
             dbCustomer.setDeletionIndicator(1L);
             dbCustomer.setUpdatedBy(loginUserID);
@@ -259,7 +260,7 @@ public class CustomerService {
             customerRepository.save(dbCustomer);
         } else {
             // Error Log
-            createCustomerLog1(languageId, companyId, subProductId, productId, customerId,
+            createCustomerLog1(languageId, companyId, subProductId, productId, customerId, subProductValue,
                     "Error in deleting CustomerId - " + customerId);
             throw new BadRequestException("Error in deleting CustomerId - " + customerId);
         }
@@ -274,7 +275,7 @@ public class CustomerService {
     public void deleteCustomerBulk(List<CustomerDeleteInput> customerDeleteInputList, String loginUserID) {
         for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
             deleteCustomer(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-                    deleteInput.getProductId(), deleteInput.getCustomerId(), loginUserID);
+                    deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId(), loginUserID);
         }
     }
 
@@ -301,15 +302,16 @@ public class CustomerService {
      * @param customerId
      * @return
      */
-    public ReplicaCustomer getReplicaCustomer(String languageId, String companyId, String customerId, String productId, String subProductId) {
+    public ReplicaCustomer getReplicaCustomer(String languageId, String companyId, String subProductId,
+                                              String subProductValue, String productId, String customerId) {
 
-        Optional<ReplicaCustomer> dbCustomer = replicaCustomerRepository.findByLanguageIdAndCompanyIdAndCustomerIdAndProductIdAndSubProductIdAndDeletionIndicator(
-                languageId, companyId, customerId, productId, subProductId, 0L);
+        Optional<ReplicaCustomer> dbCustomer = replicaCustomerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, productId, customerId, 0L);
         if (dbCustomer.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId
-                    + ", productId - " + productId + " and customerId - " + customerId + " doesn't exists.";
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId +
+                    ", subProductValue - " + subProductValue + ", productId - " + productId + " and customerId - " + customerId + " doesn't exists.";
             // Error Log
-            createCustomerLog1(languageId, companyId, subProductId, productId, customerId, errMsg);
+            createCustomerLog1(languageId, companyId, subProductId, productId, customerId, subProductValue, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCustomer.get();
@@ -332,7 +334,7 @@ public class CustomerService {
 
     //===========================================Customer_ErrorLog=====================================================
     private void createCustomerLog(String languageId, String companyId, String subProductId, String productId,
-                                   String customerId, String error) throws IOException, CsvException {
+                                   String customerId, String subProductValue, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();
@@ -343,6 +345,7 @@ public class CustomerService {
         errorLog.setMethod("Exception thrown in updateCustomer");
         errorLog.setReferenceField1(subProductId);
         errorLog.setReferenceField2(productId);
+        errorLog.setReferenceField3(subProductValue);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
@@ -351,7 +354,7 @@ public class CustomerService {
     }
 
     private void createCustomerLog1(String languageId, String companyId, String subProductId, String productId,
-                                    String customerId, String error) {
+                                    String customerId, String subProductValue, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
@@ -361,6 +364,7 @@ public class CustomerService {
         errorLog.setMethod("Exception thrown in getCustomer");
         errorLog.setReferenceField1(subProductId);
         errorLog.setReferenceField2(productId);
+        errorLog.setReferenceField3(subProductValue);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
@@ -377,6 +381,7 @@ public class CustomerService {
         errorLog.setMethod("Exception thrown in createCustomer");
         errorLog.setReferenceField1(addCustomer.getSubProductId());
         errorLog.setReferenceField2(addCustomer.getProductId());
+        errorLog.setReferenceField3(addCustomer.getSubProductValue());
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);

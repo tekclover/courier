@@ -11,6 +11,8 @@ public class AddProduct {
 
     private String subProductId;
 
+    private String subProductValue;
+
     private String productId;
 
     private String productName;

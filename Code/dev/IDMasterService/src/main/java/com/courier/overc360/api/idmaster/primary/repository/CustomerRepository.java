@@ -15,8 +15,9 @@ import java.util.Optional;
 @Transactional
 public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer> {
 
-    Optional<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String productId, String customerId, Long deletionIndicator);
+    Optional<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue,
+            String productId, String customerId, Long deletionIndicator);
 
     // Updating customerName in ConsignorTable using Stored Procedure
     @Transactional
@@ -29,9 +30,6 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
             @Param(value = "customerId") String customerId,
             @Param(value = "oldCustomerDesc") String oldCustomerDesc,
             @Param(value = "newCustomerDesc") String newCustomerDesc);
-
-    List<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);
 
 
 }
