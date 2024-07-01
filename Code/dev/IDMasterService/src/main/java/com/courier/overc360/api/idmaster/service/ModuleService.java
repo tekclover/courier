@@ -51,6 +51,9 @@ public class ModuleService {
     private CompanyRepository companyRepository;
 
     @Autowired
+    private NumberRangeService numberRangeService;
+
+    @Autowired
     private ErrorLogRepository errorLogRepository;
 
     @Autowired
@@ -124,6 +127,12 @@ public class ModuleService {
                         IKeyValuePair iKeyValuePair = replicaModuleRepository.getDescription(addModule.getLanguageId(), addModule.getCompanyId(),
                                 addModule.getMenuId(), addModule.getSubMenuId());
                         BeanUtils.copyProperties(addModule, module, CommonUtils.getNullPropertyNames(addModule));
+                        if (addModule.getModuleId() == null || addModule.getModuleId().isBlank()) {
+                            String NUM_RAN_OBJ = "MODULE";
+                            String MODULE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                            log.info("next Value from NumberRange for MODULE_ID : " + MODULE_ID);
+                            addModule.setModuleId(MODULE_ID);
+                        }
                         if (iKeyValuePair != null) {
                             module.setLanguageIdAndDescription(iKeyValuePair.getLangDesc());
                             module.setCompanyIdAndDescription(iKeyValuePair.getCompanyDesc());

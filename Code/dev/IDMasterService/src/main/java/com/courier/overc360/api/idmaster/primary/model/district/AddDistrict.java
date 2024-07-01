@@ -19,7 +19,7 @@ public class AddDistrict {
     @NotBlank(message = "CountryId is mandatory")
     private String countryId;
 
-    @NotBlank(message = "DistrictId is mandatory")
+    //    @NotBlank(message = "DistrictId is mandatory")
     private String districtId;
 
     @NotBlank(message = "DistrictName is mandatory")

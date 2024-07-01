@@ -114,12 +114,12 @@ public class ProvinceService {
             IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addProvince.getLanguageId(),
                     addProvince.getCompanyId(), addProvince.getCountryId());
             BeanUtils.copyProperties(addProvince, newProvince, CommonUtils.getNullPropertyNames(addProvince));
-//                if (addProvince.getProvinceId() == null || addProvince.getProvinceId().isBlank()) {
-//                    String NUM_RAN_OBJ = "PROVINCE";
-//                    String PROVINCE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for PROVINCE_ID : " + PROVINCE_ID);
-//                    newProvince.setProvinceId(PROVINCE_ID);
-//                }
+            if (addProvince.getProvinceId() == null || addProvince.getProvinceId().isBlank()) {
+                String NUM_RAN_OBJ = "PROVINCE";
+                String PROVINCE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for PROVINCE_ID : " + PROVINCE_ID);
+                newProvince.setProvinceId(PROVINCE_ID);
+            }
             if (iKeyValuePair != null) {
                 newProvince.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newProvince.setCompanyName(iKeyValuePair.getCompanyDesc());

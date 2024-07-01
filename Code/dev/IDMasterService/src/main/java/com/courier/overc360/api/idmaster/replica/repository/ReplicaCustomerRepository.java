@@ -26,7 +26,7 @@ public interface ReplicaCustomerRepository extends JpaRepository<ReplicaCustomer
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +
             "CONCAT (tcm.C_ID, ' - ', tcm.C_NAME) As companyDesc, \n" +
             "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) As subProductDesc, \n" +
-            "tsp.SUB_PRODUCT_VALUE As subProductValue, \n" +
+//            "tsp.SUB_PRODUCT_VALUE As subProductValue, \n" +
             "CONCAT (tp.PRODUCT_ID, ' - ', tp.PRODUCT_NAME) As productDesc, \n" +
             "CONCAT (tct.CUSTOMER_ID, ' - ', tct.CUSTOMER_NAME) As customerDesc \n" +
             "From tbllanguage tl \n" +

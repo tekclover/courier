@@ -23,7 +23,7 @@ public class AddModule {
     @NotNull(message = "SubMenuId is mandatory")
     private Long subMenuId;
 
-    @NotBlank(message = "ModuleId is mandatory")
+    //    @NotBlank(message = "ModuleId is mandatory")
     private String moduleId;
 
     private String referenceField1;
