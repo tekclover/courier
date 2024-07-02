@@ -35,6 +35,7 @@
                                 <mat-error *ngIf="errorHandling('companyId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
+
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Origin</p>
                                 <input formControlName="origin"
@@ -43,16 +44,16 @@
                                 <mat-error *ngIf="errorHandling('origin')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+ 
+                            <div class="col-6 marginFieldNew borderRadius12"  id="country">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Origin Code</p>
-                                <input formControlName="originCode"
-                                    [ngClass]="form.get('originCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('originCode')"
+                                <p-dropdown [options]="countryIdList" formControlName="country" appendTo="body"
+                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
+                                <mat-error *ngIf="errorHandling('country')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">IATA</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">IATA Value</p>
                                 <input formControlName="iataKd"
                                     [ngClass]="form.get('iataKd')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />

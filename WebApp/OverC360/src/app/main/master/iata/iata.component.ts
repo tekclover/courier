@@ -47,7 +47,7 @@ export class IataComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'origin', header: 'Origin' },
-      { field: 'iataKd', header: 'IATA ' },
+      { field: 'iataKd', header: 'IATA Value ' },
       { field: 'iataCharge', header: 'IATA Charge' },
       { field: 'currencyDescription', header: 'Currency Description' },
       { field: 'createdBy', header: 'Created By' },
@@ -57,7 +57,7 @@ export class IataComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language Description' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'originCode', header: 'Origin Code' },
+      { field: 'country', header: 'Origin Code' },
       { field: 'currencyId', header: 'Currency ID' },
       { field: 'languageDescription', header: 'Language Description' },
       { field: 'referenceField1', header: 'Reference Field 1' },

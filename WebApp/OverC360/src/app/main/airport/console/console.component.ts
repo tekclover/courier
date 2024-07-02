@@ -102,7 +102,7 @@ export class ConsoleComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsole[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/language-new/' + paramdata]);
+      this.router.navigate(['/main/airport/console-new/' + paramdata]);
     }
   }
 
@@ -129,7 +129,7 @@ export class ConsoleComponent {
     this.spin.show();
     this.service.Delete(lines.languageId).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.consoleId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

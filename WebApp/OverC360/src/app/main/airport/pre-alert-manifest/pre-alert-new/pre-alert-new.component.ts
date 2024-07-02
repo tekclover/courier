@@ -101,7 +101,6 @@ export class PreAlertNewComponent {
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.companyId.disable();
-      this.form.controls.hsCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -111,19 +110,16 @@ export class PreAlertNewComponent {
 
   companyIdList: any[] = [];
   countryIdList: any[] =[];
-  hsCodeList: any[] =[];
 
   dropdownlist(){
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
-      this.cas.dropdownlist.setup.hsCode.url,
 
     ]).subscribe({next: (results: any) => {
       this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
-      this.hsCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.hsCode.key);
 
       this.spin.hide();
     },
@@ -161,7 +157,7 @@ export class PreAlertNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show()
-      this.service.Update([this.form.getRawValue()]).subscribe({
+      this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: 'It has been updated successfully' });
           this.router.navigate(['/main/airport/preAlertManifest']);
@@ -173,10 +169,11 @@ export class PreAlertNewComponent {
       })
     } else {
       this.spin.show()
+      console.log(this.form.getRawValue())
       this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.cityId + ' has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:' has been created successfully' });
           this.router.navigate(['/main/airport/preAlertManifest']);
           this.spin.hide();
         }

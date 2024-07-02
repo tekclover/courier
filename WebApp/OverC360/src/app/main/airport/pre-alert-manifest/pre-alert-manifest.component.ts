@@ -52,7 +52,8 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'companyId', header: 'Company' },
+      { field: 'languageId', header: 'Language' },
+       { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -125,7 +126,7 @@ export class PreAlertManifestComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedPreAlertManifest, module: 'Language', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedPreAlertManifest, module: 'Pre Alert Manifest', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -136,9 +137,9 @@ export class PreAlertManifestComponent {
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.languageId).subscribe({
+    this.service.DeletePreAlertManifest(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

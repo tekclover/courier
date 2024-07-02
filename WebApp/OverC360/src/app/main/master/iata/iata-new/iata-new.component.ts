@@ -39,7 +39,7 @@ export class IataNewComponent {
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
     origin: [, Validators.required],
-    originCode: [, Validators.required],
+    country: [, Validators.required],
     iataKd: [, Validators.required],
     iataCharge: [],
     currencyId: [, Validators.required],
@@ -90,8 +90,7 @@ export class IataNewComponent {
       this.fill(this.pageToken.line)
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
-      this.form.controls.originCode.disable();
-      this.form.controls.origin.disable();
+      this.form.controls.country.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -102,6 +101,7 @@ export class IataNewComponent {
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   currencyIdList: any[] = [];
+  countryIdList: any[] =[];
   
   dropdownlist() {
     this.spin.show();
@@ -109,11 +109,13 @@ export class IataNewComponent {
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.currency.url,
+      this.cas.dropdownlist.setup.country.url,
 
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
       this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
+      this.countryIdList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.country.key);
       this.spin.hide();
     },
     error: (err: any) => {

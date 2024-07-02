@@ -111,10 +111,11 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12" id="hsCode" formGroupName="originDetails">
+                            <div class="col-6 marginFieldNew borderRadius12" id="hsCode">
                                 <p class="formControlLabel f600 textBlack mb-0 ">HS Code</p>
-                              <p-dropdown [options]="hsCodeList" formControlName="hsCode" appendTo="body"
-                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
+                                <input maxlength="100" pInputText formControlName="hsCode" class=" w-100" pInputText
+                                placeholder="Enter"
+                                [ngClass]="form.get('hsCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('hsCode')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>

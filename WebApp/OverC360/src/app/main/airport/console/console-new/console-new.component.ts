@@ -43,11 +43,10 @@ export class ConsoleNewComponent {
       consigneeName: [],
       consignmentCurrency: [],
       consignmentValue: [],
-      consoleId: [],
       countryOfOrigin: [],
       createdBy: [],
       createdOn: ['', ],
-      currency: [],
+      currencyId: [],
       customsCurrency: [],
       customsKd: [],
       customsValue: [],
@@ -159,7 +158,6 @@ export class ConsoleNewComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
-      this.form.controls.consoleId.disable();
       this.form.controls.masterAirwayBill.disable();
       this.form.controls.houseAirwayBill.disable();
       this.form.controls.updatedBy.disable();
@@ -171,6 +169,7 @@ export class ConsoleNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  countryIdList: any[] =[];
   mawbList: any[] = [];
   hawbList: any[] = [];
   iataList: any[] = [];
@@ -187,11 +186,13 @@ export class ConsoleNewComponent {
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.currency.url,
+      this.cas.dropdownlist.setup.country.url,
 
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
       this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
+      this.countryIdList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.country.key);
 
       this.spin.hide();
     },
@@ -219,8 +220,8 @@ export class ConsoleNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.partnerId + 'has been updated successfully' });
-          this.router.navigate(['/main/master/console']);
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.consoleId + 'has been updated successfully' });
+          this.router.navigate(['/main/airport/console']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -232,8 +233,8 @@ export class ConsoleNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + 'has been created successfully' });
-          this.router.navigate(['/main/master/console']);
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.consoleId + 'has been created successfully' });
+          this.router.navigate(['/main/airport/console']);
           this.spin.hide();
         }
         }, error: (err) => {
