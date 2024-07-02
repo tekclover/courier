@@ -11,6 +11,8 @@ public class ConsignmentEntity {
 
     private String companyId;
 
+    private String languageId;
+
     private String partnerId;
 
     private String partnerType;
@@ -324,5 +326,5 @@ public class ConsignmentEntity {
     private DestinationDetails destinationDetails;
     private OriginationDetails originDetails;
     private ReturnDetails returnDetails;
-    private List<AddPieceDetails> pieceDetails = new ArrayList<>();
+    private List<PieceDetails> pieceDetails = new ArrayList<>();
 }

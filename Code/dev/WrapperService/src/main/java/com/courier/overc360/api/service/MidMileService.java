@@ -603,7 +603,7 @@ public class MidMileService {
     }
 
     // Create new BondedManifest
-    public BondedManifest[] createBondedManifestBasedOnConsignment(List<AddConsignment> addConsignments, String loginUserID, String authToken) {
+    public BondedManifest[] createBondedManifestBasedOnConsignment(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
@@ -916,7 +916,7 @@ public class MidMileService {
      * @param authToken
      * @return
      */
-    public Console[] createConsoleConsignmentInput(List<AddConsignment> addConsignments, String loginUserID, String authToken){
+    public Console[] createConsoleConsignmentInput(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken){
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
