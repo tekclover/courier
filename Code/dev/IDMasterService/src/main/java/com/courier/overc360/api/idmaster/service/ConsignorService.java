@@ -130,6 +130,7 @@ public class ConsignorService {
                 newConsignor.setSubProductName(iKeyValuePair.getSubProductDesc());
                 newConsignor.setProductName(iKeyValuePair.getProductDesc());
                 newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
+                newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
             }
             newConsignor.setDeletionIndicator(0L);
             newConsignor.setCreatedBy(loginUserID);
@@ -156,15 +157,76 @@ public class ConsignorService {
      * @throws IllegalAccessException
      * @throws CsvException
      */
+//    public List<Consignor> createConsignorBulk(List<AddConsignor> addConsignorList, String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<Consignor> createdConsignorList = new ArrayList<>();
+//        for (AddConsignor addConsignor : addConsignorList) {
+//            Consignor newConsignor = createConsignor(addConsignor, loginUserID);
+//            createdConsignorList.add(newConsignor);
+//        }
+//        return createdConsignorList;
+//    }
     public List<Consignor> createConsignorBulk(List<AddConsignor> addConsignorList, String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        try {
+            List<Consignor> createdConsignorList = new ArrayList<>();
 
-        List<Consignor> createdConsignorList = new ArrayList<>();
-        for (AddConsignor addConsignor : addConsignorList) {
-            Consignor newConsignor = createConsignor(addConsignor, loginUserID);
-            createdConsignorList.add(newConsignor);
+            String NUM_RAN_OBJ = "CONSIGNOR";
+            String CONSIGNOR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            log.info("next Value from NumberRange for CONSIGNOR : " + CONSIGNOR_ID);
+
+            for (AddConsignor addConsignor : addConsignorList) {
+                boolean dbCustomerPresent = replicaCustomerRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndDeletionIndicator(
+                        addConsignor.getLanguageId(), addConsignor.getCompanyId(), addConsignor.getSubProductId(), addConsignor.getSubProductValue(),
+                        addConsignor.getProductId(), addConsignor.getCustomerId(), 0L);
+                if (!dbCustomerPresent) {
+                    throw new BadRequestException("CustomerId - " + addConsignor.getCustomerId() + ", productId - " + addConsignor.getProductId()
+                            + ", subProductId - " + addConsignor.getSubProductId() + ", subProductValue - " + addConsignor.getSubProductValue()
+                            + ", companyId - " + addConsignor.getCompanyId() + " and languageId - " + addConsignor.getLanguageId() + " doesn't exists");
+                }
+
+                boolean duplicateConsignorPresent = replicaConsignorRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+                        addConsignor.getLanguageId(), addConsignor.getCompanyId(), addConsignor.getSubProductId(), addConsignor.getSubProductValue(),
+                        addConsignor.getProductId(), addConsignor.getCustomerId(), addConsignor.getConsignorId(), 0L);
+                if (duplicateConsignorPresent) {
+                    throw new BadRequestException("Record is getting Duplicated with the given values : consignorId - " + addConsignor.getConsignorId());
+                }
+
+                log.info("new Consignor --> " + addConsignor);
+                IKeyValuePair iKeyValuePair = replicaCustomerRepository.getDescription(addConsignor.getLanguageId(), addConsignor.getCompanyId(),
+                        addConsignor.getSubProductId(), addConsignor.getSubProductValue(), addConsignor.getProductId(), addConsignor.getCustomerId());
+                Consignor newConsignor = new Consignor();
+                BeanUtils.copyProperties(addConsignor, newConsignor, CommonUtils.getNullPropertyNames(addConsignor));
+                if (addConsignor.getConsignorId() == null || addConsignor.getConsignorId().isBlank()) {
+                    //                String NUM_RAN_OBJ = "CONSIGNOR";
+                    //                String CONSIGNOR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    //                log.info("next Value from NumberRange for CONSIGNOR : " + CONSIGNOR_ID);
+                    newConsignor.setConsignorId(CONSIGNOR_ID);
+                }
+                if (iKeyValuePair != null) {
+                    newConsignor.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newConsignor.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newConsignor.setSubProductName(iKeyValuePair.getSubProductDesc());
+                    newConsignor.setProductName(iKeyValuePair.getProductDesc());
+                    newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
+                    newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
+                }
+                newConsignor.setDeletionIndicator(0L);
+                newConsignor.setCreatedBy(loginUserID);
+                newConsignor.setCreatedOn(new Date());
+                newConsignor.setUpdatedBy(loginUserID);
+                newConsignor.setUpdatedOn(new Date());
+                Consignor consignor = consignorRepository.save(newConsignor);
+                createdConsignorList.add(consignor);
+            }
+            return createdConsignorList;
+        } catch (Exception e) {
+            // Error Log
+            createConsignorLog3(addConsignorList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return createdConsignorList;
     }
 
     /**
@@ -381,6 +443,28 @@ public class ConsignorService {
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createConsignorLog3(List<AddConsignor> addConsignorList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (AddConsignor addConsignor : addConsignorList) {
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(addConsignor.getLanguageId());
+            errorLog.setCompanyId(addConsignor.getCompanyId());
+            errorLog.setRefDocNumber(addConsignor.getConsignorId());
+            errorLog.setMethod("Exception thrown in createConsignor");
+            errorLog.setReferenceField1(addConsignor.getSubProductId());
+            errorLog.setReferenceField2(addConsignor.getProductId());
+            errorLog.setReferenceField3(addConsignor.getCustomerId());
+            errorLog.setReferenceField4(addConsignor.getSubProductValue());
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
         errorLogService.writeLog(errorLogList);
     }
 

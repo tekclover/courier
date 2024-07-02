@@ -22,7 +22,6 @@ public interface IKeyValuePair {
 
     String getRateParameterDesc();
 
-
     String getCityDesc();
 
     String getHubDesc();

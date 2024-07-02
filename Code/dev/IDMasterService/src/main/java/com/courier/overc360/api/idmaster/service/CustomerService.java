@@ -126,6 +126,7 @@ public class CustomerService {
                 newCustomer.setCompanyName(iKeyValuePair.getCompanyDesc());
                 newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
                 newCustomer.setProductName(iKeyValuePair.getProductDesc());
+                newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
             }
             newCustomer.setDeletionIndicator(0L);
             newCustomer.setCreatedBy(loginUserID);
@@ -152,15 +153,75 @@ public class CustomerService {
      * @throws IllegalAccessException
      * @throws CsvException
      */
+//    public List<Customer> createCustomerBulk(List<AddCustomer> addCustomerList, String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<Customer> createdCustomerList = new ArrayList<>();
+//        for (AddCustomer addCustomer : addCustomerList) {
+//            Customer newCustomer = createCustomer(addCustomer, loginUserID);
+//            createdCustomerList.add(newCustomer);
+//        }
+//        return createdCustomerList;
+//    }
     public List<Customer> createCustomerBulk(List<AddCustomer> addCustomerList, String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        try {
+            List<Customer> createdCustomerList = new ArrayList<>();
 
-        List<Customer> createdCustomerList = new ArrayList<>();
-        for (AddCustomer addCustomer : addCustomerList) {
-            Customer newCustomer = createCustomer(addCustomer, loginUserID);
-            createdCustomerList.add(newCustomer);
+            String NUM_RAN_OBJ = "CUSTOMER";
+            String CUSTOMER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            log.info("next Value from NumberRange for CUSTOMER : " + CUSTOMER_ID);
+
+            for (AddCustomer addCustomer : addCustomerList) {
+                boolean productPresent = replicaProductRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndSubProductValueAndDeletionIndicator(
+                        addCustomer.getLanguageId(), addCustomer.getCompanyId(), addCustomer.getSubProductId(),
+                        addCustomer.getProductId(), addCustomer.getSubProductValue(), 0L);
+                if (!productPresent) {
+                    throw new BadRequestException("ProductId - " + addCustomer.getProductId() + ", subProductId - " + addCustomer.getSubProductId()
+                            + ", subProductValue - " + addCustomer.getSubProductValue() + ", companyId - " + addCustomer.getCompanyId()
+                            + " and languageId - " + addCustomer.getLanguageId() + " doesn't exists");
+                }
+
+                boolean duplicateCustomerPresent = replicaCustomerRepository.existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndDeletionIndicator(
+                        addCustomer.getLanguageId(), addCustomer.getCompanyId(), addCustomer.getSubProductId(), addCustomer.getSubProductValue(),
+                        addCustomer.getProductId(), addCustomer.getCustomerId(), 0L);
+                if (duplicateCustomerPresent) {
+                    throw new BadRequestException("Record is getting Duplicated with the given values : customerId - " + addCustomer.getCustomerId());
+                }
+
+                log.info("new Customer --> " + addCustomer);
+                IKeyValuePair iKeyValuePair = replicaProductRepository.getDescription(addCustomer.getLanguageId(), addCustomer.getCompanyId(),
+                        addCustomer.getSubProductId(), addCustomer.getSubProductValue(), addCustomer.getProductId());
+                Customer newCustomer = new Customer();
+                BeanUtils.copyProperties(addCustomer, newCustomer, CommonUtils.getNullPropertyNames(addCustomer));
+                if (addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
+//                    String NUM_RAN_OBJ = "CUSTOMER";
+//                    String CUSTOMER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    log.info("next Value from NumberRange for CUSTOMER : " + CUSTOMER_ID);
+                    newCustomer.setCustomerId(CUSTOMER_ID);
+                }
+                if (iKeyValuePair != null) {
+                    newCustomer.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newCustomer.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
+                    newCustomer.setProductName(iKeyValuePair.getProductDesc());
+                    newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
+                }
+                newCustomer.setDeletionIndicator(0L);
+                newCustomer.setCreatedBy(loginUserID);
+                newCustomer.setCreatedOn(new Date());
+                newCustomer.setUpdatedBy(loginUserID);
+                newCustomer.setUpdatedOn(new Date());
+                Customer customer = customerRepository.save(newCustomer);
+                createdCustomerList.add(customer);
+            }
+            return createdCustomerList;
+        } catch (Exception e) {
+            // Error Log
+            createCustomerLog3(addCustomerList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return createdCustomerList;
     }
 
     /**
@@ -386,6 +447,27 @@ public class CustomerService {
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createCustomerLog3(List<AddCustomer> addCustomerList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (AddCustomer addCustomer : addCustomerList) {
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(addCustomer.getLanguageId());
+            errorLog.setCompanyId(addCustomer.getCompanyId());
+            errorLog.setRefDocNumber(addCustomer.getCustomerId());
+            errorLog.setMethod("Exception thrown in createCustomer");
+            errorLog.setReferenceField1(addCustomer.getSubProductId());
+            errorLog.setReferenceField2(addCustomer.getProductId());
+            errorLog.setReferenceField3(addCustomer.getSubProductValue());
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
         errorLogService.writeLog(errorLogList);
     }
 
