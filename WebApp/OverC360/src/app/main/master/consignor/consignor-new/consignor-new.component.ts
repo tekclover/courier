@@ -11,6 +11,7 @@ import { AuthService } from '../../../../core/core';
 import { CustomerService } from '../../customer/customer.service';
 import { ProductService } from '../../../id-masters/product/product.service';
 import { SubProductService } from '../../../id-masters/sub-product/sub-product.service';
+import { NumberrangeService } from '../../numberrange/numberrange.service';
 
 @Component({
   selector: 'app-consignor-new',
@@ -30,6 +31,7 @@ export class ConsignorNewComponent {
     private fb: FormBuilder,
     private service: ConsignorService,
     private subProductService: SubProductService,
+    private numberRangeService: NumberrangeService,
     private productService: ProductService,
     private customerService: CustomerService,
     private messageService: MessageService,
@@ -37,7 +39,9 @@ export class ConsignorNewComponent {
     private auth: AuthService
   ) { }
 
+  numCondition: any;
   pageToken: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -82,6 +86,7 @@ export class ConsignorNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -104,6 +109,27 @@ export class ConsignorNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['CONSIGNOR'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.consignorId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.consignorId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

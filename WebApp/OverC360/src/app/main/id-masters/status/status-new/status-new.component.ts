@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { StatusService } from '../status.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-status-new',
@@ -17,10 +18,20 @@ import { AuthService } from '../../../../core/Auth/auth.service';
 export class StatusNewComponent {
   active: number | undefined = 0;
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: StatusService,  private cas: CommonAPIService,  private auth: AuthService, private messageService: MessageService,) { }
+  constructor(private cs: CommonServiceService, 
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private path: PathNameService, 
+    private fb: FormBuilder,
+    private service: StatusService,  
+    private cas: CommonAPIService,  
+    private numberRangeService: NumberrangeService,
+    private auth: AuthService, 
+    private messageService: MessageService,
+  ) { }
 
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
@@ -58,7 +69,7 @@ export class StatusNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -78,7 +89,29 @@ export class StatusNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['STATUS'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.statusId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.statusId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
+
   languageIdList: any[] = [];
   dropdownlist(){
     this.spin.show();

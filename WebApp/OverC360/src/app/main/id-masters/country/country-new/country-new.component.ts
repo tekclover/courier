@@ -8,6 +8,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { CountryService } from '../country.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-country-new',
@@ -16,18 +17,27 @@ import { CountryService } from '../country.service';
 })
 export class CountryNewComponent {
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CountryService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
+  constructor(private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: CountryService,
+    private numberRangeService: NumberrangeService,
+    private messageService: MessageService,
+    private auth: AuthService,
+    private cas: CommonAPIService) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
     ];
-    
-     }
-       
+
+  }
+
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
@@ -39,7 +49,7 @@ export class CountryNewComponent {
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
     remark: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -49,11 +59,11 @@ export class CountryNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-    statusId:["1", ],
+    updatedOn: ['',],
+    statusId: ["1",],
     statusDescription: [],
   });
 
@@ -70,7 +80,7 @@ export class CountryNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -79,41 +89,61 @@ export class CountryNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['COUNTRY'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.countryId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.countryId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -146,11 +176,11 @@ export class CountryNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.countryId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/country']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.countryId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/country']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

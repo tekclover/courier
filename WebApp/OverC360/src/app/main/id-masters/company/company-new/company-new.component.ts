@@ -27,7 +27,7 @@ export class CompanyNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: CompanyService,
-    private numberrangeService: NumberrangeService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
@@ -37,8 +37,9 @@ export class CompanyNewComponent {
       { value: '1', label: 'Active' }
     ];
   }
-  numCondition:any;
+  numCondition: any;
   pageToken: any;
+
   // form builder initialize
   form = this.fb.group({
     addressLine1: [, Validators.required],
@@ -87,6 +88,7 @@ export class CompanyNewComponent {
     }
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
+
   nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
@@ -101,7 +103,6 @@ export class CompanyNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
@@ -112,16 +113,15 @@ export class CompanyNewComponent {
       this.spin.show();
       let obj: any = {};
       obj.numberRangeObject = ['COMPANY'];
-      this.numberrangeService.search(obj).subscribe({
+      this.numberRangeService.search(obj).subscribe({
         next: (res: any) => {
-          if (res) {
+          if (res.length > 0) {
             this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
             this.form.controls.companyId.patchValue(this.nextNumber);
-            this.numCondition='true';
+            this.numCondition = 'true';
             this.form.controls.referenceField10.patchValue(this.numCondition);
             this.form.controls.companyId.disable();
           }
-
           this.spin.hide();
         },
         error: (err) => {

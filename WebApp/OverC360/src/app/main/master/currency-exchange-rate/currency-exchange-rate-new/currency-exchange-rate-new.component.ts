@@ -8,6 +8,7 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-currency-exchange-rate-new',
@@ -16,13 +17,19 @@ import { AuthService } from '../../../../core/core';
 })
 export class CurrencyExchangeRateNewComponent {
 
-
-
   active: number | undefined = 0;
   status: any[] = []
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CurrencyExchangeRateService, private messageService: MessageService, private cas: CommonAPIService,
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: CurrencyExchangeRateService,
+    private numberRangeService: NumberrangeService,
+    private messageService: MessageService,
+    private cas: CommonAPIService,
     private auth: AuthService) {
     this.status = [
       { value: '2', label: 'Inactive' },
@@ -31,6 +38,7 @@ export class CurrencyExchangeRateNewComponent {
   }
 
   pageToken: any;
+  numCondition: any;
 
   //form builder initialize
   form = this.fb.group({
@@ -77,7 +85,7 @@ export class CurrencyExchangeRateNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -90,18 +98,35 @@ export class CurrencyExchangeRateNewComponent {
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
-
-
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.fromCurrencyId.disable();
       this.form.controls.toCurrencyId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['CURRENCYEXCHANGERATE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.fromCurrencyId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.fromCurrencyId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

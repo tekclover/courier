@@ -9,6 +9,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { MenuService } from '../../menu/menu.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-module-new',
@@ -32,11 +33,14 @@ export class ModuleNewComponent {
     private service: ModuleService,
     private messageService: MessageService,
     private cas: CommonAPIService,
+    private numberRangeService: NumberrangeService,
     private auth: AuthService,
     private menuService: MenuService,
   ) {}
 
   pageToken: any;
+  numCondition: any;
+
   // form builder initialize
   form = this.fb.group({
     companyId: [this.auth.companyId,],
@@ -85,6 +89,7 @@ export class ModuleNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -97,7 +102,6 @@ export class ModuleNewComponent {
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
-
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.moduleId.disable();
@@ -105,6 +109,27 @@ export class ModuleNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['MODULE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.moduleId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.moduleId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

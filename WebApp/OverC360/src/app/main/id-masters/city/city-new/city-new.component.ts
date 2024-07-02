@@ -10,6 +10,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { ProvinceService } from '../../province/province.service';
 import { DistrictService } from '../../district/district.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-city-new',
@@ -18,41 +19,52 @@ import { DistrictService } from '../../district/district.service';
 })
 export class CityNewComponent {
 
-  
-  active: number | undefined = 0;
-  status:any[] = []
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CityService, private messageService: MessageService,private cas: CommonAPIService,
-    private auth: AuthService, private provinceService: ProvinceService, private districtService: DistrictService) { 
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
-        ];
-    }
 
+  active: number | undefined = 0;
+  status: any[] = []
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: CityService,
+    private numberRangeService: NumberrangeService,
+    private messageService: MessageService,
+    private cas: CommonAPIService,
+    private auth: AuthService,
+    private provinceService: ProvinceService,
+    private districtService: DistrictService) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
+    ];
+  }
+
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
   form = this.fb.group({
-    cityId:[, Validators.required],
-    cityName:[, Validators.required],
+    cityId: [, Validators.required],
+    cityName: [, Validators.required],
     districtId: [, Validators.required],
     districtName: [],
     languageId: [this.auth.languageId, Validators.required],
-    languageDescription:[],
-    companyId:[this.auth.companyId, Validators.required],
-    companyName:[],
-    countryId:[, Validators.required],
-    countryName:[],
-    provinceId:[, Validators.required],
-    provinceName:[],
-    statusDescription:[],
-    createdOn: ['', ],
+    languageDescription: [],
+    companyId: [this.auth.companyId, Validators.required],
+    companyName: [],
+    countryId: [, Validators.required],
+    countryName: [],
+    provinceId: [, Validators.required],
+    provinceName: [],
+    statusDescription: [],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-    referenceField1: [], 
+    updatedOn: ['',],
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -62,9 +74,9 @@ export class CityNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    remark:[],
-    statusId:["1",],
-   
+    remark: [],
+    statusId: ["1",],
+
   });
 
   submitted = false;
@@ -80,7 +92,7 @@ export class CityNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -89,14 +101,12 @@ export class CityNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.cityId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.provinceId.disable();
@@ -106,15 +116,36 @@ export class CityNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['CITY'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.cityId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.cityId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  countryIdList: any[] =[];
-  provinceIdList: any[] =[];
-  districtIdList: any[] =[];
+  countryIdList: any[] = [];
+  provinceIdList: any[] = [];
+  districtIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
@@ -123,21 +154,22 @@ export class CityNewComponent {
       this.cas.dropdownlist.setup.province.url,
       this.cas.dropdownlist.setup.district.url,
 
-    ]).subscribe({next: (results: any) => {
-      console.log(this.cas.dropdownlist.setup.language.key);
-      console.log(this.cas.dropdownlist.setup.company.key);
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
-      this.provinceIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.province.key);
-      this.districtIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.district.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        console.log(this.cas.dropdownlist.setup.language.key);
+        console.log(this.cas.dropdownlist.setup.company.key);
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.province.key);
+        this.districtIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.district.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
   fill(line: any) {
@@ -169,11 +201,11 @@ export class CityNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.cityId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/city']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.cityId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/city']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
@@ -182,7 +214,7 @@ export class CityNewComponent {
     }
   }
 
-  countryChanged(){
+  countryChanged() {
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -191,15 +223,17 @@ export class CityNewComponent {
 
     this.provinceIdList = [];
     this.spin.show();
-    this.provinceService.search(obj).subscribe({next: (result) => {
-      this.provinceIdList = this.cas.foreachlist(result, {key: 'provinceId', value: 'provinceName'});
-      this.spin.hide();
-    }, error: (err) =>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }})
+    this.provinceService.search(obj).subscribe({
+      next: (result) => {
+        this.provinceIdList = this.cas.foreachlist(result, { key: 'provinceId', value: 'provinceName' });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
-  provinceChanged(){
+  provinceChanged() {
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -210,13 +244,15 @@ export class CityNewComponent {
 
     this.districtIdList = [];
     this.spin.show();
-    this.districtService.search(obj).subscribe({next: (result) => {
-      this.districtIdList = this.cas.foreachlist(result, {key: 'districtId', value: 'districtName'});
-      this.spin.hide();
-    }, error: (err) =>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }})
+    this.districtService.search(obj).subscribe({
+      next: (result) => {
+        this.districtIdList = this.cas.foreachlist(result, { key: 'districtId', value: 'districtName' });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 }
 

@@ -8,6 +8,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { HsCodeService } from '../hs-code.service';
+import { NumberrangeService } from '../../numberrange/numberrange.service';
 
 @Component({
   selector: 'app-hs-code-new',
@@ -26,12 +27,15 @@ export class HsCodeNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: HsCodeService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
   ) { }
 
+  numCondition: any;
   pageToken: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -55,9 +59,9 @@ export class HsCodeNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     updatedBy: [],
   });
 
@@ -74,6 +78,7 @@ export class HsCodeNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -94,11 +99,32 @@ export class HsCodeNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['HSCODE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.hsCode.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.hsCode.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  specialApprovalIdList: any[] =[];
+  specialApprovalIdList: any[] = [];
 
   dropdownlist() {
     this.spin.show();

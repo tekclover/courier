@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -8,40 +7,50 @@ import { CurrencyService } from '../currency.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
-
+import { Component } from '@angular/core';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 @Component({
   selector: 'app-currency-new',
   templateUrl: './currency-new.component.html',
   styleUrl: './currency-new.component.scss'
+
 })
 export class CurrencyNewComponent {
 
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CurrencyService, private messageService: MessageService,private cas: CommonAPIService,
-    private auth: AuthService) { 
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
-        ];
-      
-    }
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: CurrencyService,
+    private messageService: MessageService,
+    private cas: CommonAPIService,
+    private numberRangeService: NumberrangeService,
+    private auth: AuthService) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
+    ];
+  }
 
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
   form = this.fb.group({
     currencyId: [, Validators.required],
-    currencyDescription: [,  Validators.required],
-    createdOn: ['', ],
+    currencyDescription: [, Validators.required],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     statusDescription: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -51,8 +60,7 @@ export class CurrencyNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    statusId:["1",],
-   
+    statusId: ["1",],
   });
 
   submitted = false;
@@ -68,7 +76,7 @@ export class CurrencyNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -78,7 +86,28 @@ export class CurrencyNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
-        this.form.controls.currencyId.disable();
+      this.form.controls.currencyId.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['CURRENCY'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.currencyId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.currencyId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 
@@ -111,11 +140,11 @@ export class CurrencyNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.currencyId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/currency']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.currencyId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/currency']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

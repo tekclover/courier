@@ -8,6 +8,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { ProductService } from '../product.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-product-new',
@@ -26,6 +27,7 @@ export class ProductNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: ProductService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
@@ -36,7 +38,9 @@ export class ProductNewComponent {
     ];
   }
 
+  numCondition: any;
   pageToken: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -60,9 +64,9 @@ export class ProductNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     updatedBy: [],
   });
 
@@ -79,6 +83,7 @@ export class ProductNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -99,6 +104,27 @@ export class ProductNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['PRODUCT'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.productId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.productId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

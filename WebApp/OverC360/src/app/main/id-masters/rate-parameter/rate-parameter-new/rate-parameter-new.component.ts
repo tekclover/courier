@@ -8,6 +8,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { RateParameterService } from '../rate-parameter.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-rate-parameter-new',
@@ -28,6 +29,7 @@ export class RateParameterNewComponent {
     private fb: FormBuilder,
     private service: RateParameterService,
     private messageService: MessageService,
+    private numberRangeService: NumberrangeService,
     private cas: CommonAPIService,
     private auth: AuthService
   ) {
@@ -37,7 +39,9 @@ export class RateParameterNewComponent {
     ];
   }
 
+  numCondition: any;
   pageToken: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -47,7 +51,7 @@ export class RateParameterNewComponent {
     rateParameterId: [],
     rateParameterDescription: [, Validators.required],
     remark: [],
-    statusId: ['1', ],
+    statusId: ['1',],
     statusDescription: [],
     referenceField1: [],
     referenceField10: [],
@@ -78,6 +82,7 @@ export class RateParameterNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -97,6 +102,27 @@ export class RateParameterNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['RATEPARAMETER'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.rateParameterId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.rateParameterId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

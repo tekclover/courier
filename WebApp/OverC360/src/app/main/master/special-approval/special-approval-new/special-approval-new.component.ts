@@ -8,6 +8,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { SpecialApprovalService } from '../special-approval.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-special-approval-new',
@@ -26,12 +27,15 @@ export class SpecialApprovalNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: SpecialApprovalService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
   ) { }
 
   pageToken: any;
+  numCondition: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -51,9 +55,9 @@ export class SpecialApprovalNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     updatedBy: [],
   });
 
@@ -70,6 +74,7 @@ export class SpecialApprovalNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -89,6 +94,27 @@ export class SpecialApprovalNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['SPECIALAPPROVAL'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.specialApprovalId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.specialApprovalId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

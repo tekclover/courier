@@ -21,7 +21,7 @@
 
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Language </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Company </p>
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
@@ -70,7 +70,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="shipper">
                                 <p class="formControlLabel f600 textBlack mb-0">Shipper</p>
-                                <p-dropdown [options]="shipperIdList" formControlName="shipper" appendTo="body"
+                                <p-dropdown formControlName="shipper" appendTo="body"
                                 [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
                                 <mat-error *ngIf="errorHandling('shipperName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

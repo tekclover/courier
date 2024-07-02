@@ -6,6 +6,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { LanguageService } from '../language.service';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-language-new',
@@ -15,9 +16,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class LanguageNewComponent {
   active: number | undefined = 0;
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: LanguageService, private messageService: MessageService,) { }
+  constructor(private cs: CommonServiceService, 
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private path: PathNameService, 
+    private fb: FormBuilder,
+    private service: LanguageService,
+    private numberRangeService: NumberrangeService, 
+    private messageService: MessageService,) { }
 
   pageToken: any;
 
@@ -25,12 +32,23 @@ export class LanguageNewComponent {
   form = this.fb.group({
     languageId: [, [Validators.required, Validators.maxLength(50)]],
     languageDescription: [, [Validators.required, Validators.maxLength(100)]],
-    createdOn: ['', ],
+    referenceField1: [],
+    referenceField2: [],
+    referenceField3: [],
+    referenceField4: [],
+    referenceField5: [],
+    referenceField6: [],
+    referenceField7: [],
+    referenceField8: [],
+    referenceField9: [],
+    referenceField10: [],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
   });
 
+  numCondition: any;
   submitted = false;
   email = new FormControl('', [Validators.required, Validators.email]);
   errorHandling(control: string, error: string = "required") {
@@ -45,12 +63,14 @@ export class LanguageNewComponent {
   }
 
   btnText = 'Save'
+  nextNumber: any;
+
   ngOnInit() {
-  
+
 
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
-console.log(this.pageToken)
+    console.log(this.pageToken)
     const dataToSend = ['Setup', 'Language', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
@@ -58,6 +78,27 @@ console.log(this.pageToken)
       this.btnText = 'Update';
       console.log(this.btnText)
       this.fill(this.pageToken.line)
+    } else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['LANGUAGE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.languageId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.languageId.disable();
+          }
+
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 
@@ -91,11 +132,11 @@ console.log(this.pageToken)
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/language']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.languageId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/language']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

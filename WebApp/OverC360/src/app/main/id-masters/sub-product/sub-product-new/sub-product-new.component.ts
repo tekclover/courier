@@ -8,6 +8,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { SubProductService } from '../sub-product.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-sub-product-new',
@@ -26,6 +27,7 @@ export class SubProductNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: SubProductService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
@@ -37,6 +39,8 @@ export class SubProductNewComponent {
   }
 
   pageToken: any;
+  numCondition: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -78,6 +82,7 @@ export class SubProductNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -97,6 +102,27 @@ export class SubProductNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['COMPANY'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.companyId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.companyId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

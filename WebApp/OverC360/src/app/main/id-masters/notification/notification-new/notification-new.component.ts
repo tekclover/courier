@@ -10,6 +10,7 @@ import { AuthService } from '../../../../core/core';
 import { NotificationService } from '../notification.service';
 import { SubProductService } from '../../sub-product/sub-product.service';
 import { ProductService } from '../../product/product.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-notification-new',
@@ -20,16 +21,26 @@ export class NotificationNewComponent {
 
   active: number | undefined = 0;
   status: any[] = []
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: NotificationService, private productService: ProductService, private messageService: MessageService, private auth: AuthService, private cas: CommonAPIService) {
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private numberRangeService: NumberrangeService,
+    private service: NotificationService,
+    private productService: ProductService,
+    private messageService: MessageService,
+    private auth: AuthService,
+    private cas: CommonAPIService) {
     this.status = [
       { value: '2', label: 'Inactive' },
       { value: '1', label: 'Active' }
     ];
-
   }
 
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
@@ -80,7 +91,7 @@ export class NotificationNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -95,13 +106,32 @@ export class NotificationNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.notificationId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['NOTIFICATION'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.notificationId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.notificationId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

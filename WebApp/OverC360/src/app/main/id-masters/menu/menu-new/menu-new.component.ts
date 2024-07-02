@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-menu-new',
@@ -18,19 +19,22 @@ export class MenuNewComponent {
   active: number | undefined = 0;
 
   constructor(
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private spin: NgxSpinnerService,
-    private route: ActivatedRoute, 
-    private router: Router, 
+    private route: ActivatedRoute,
+    private router: Router,
     private path: PathNameService,
     private fb: FormBuilder,
-    private service: MenuService, 
+    private service: MenuService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
   ) { }
-  
+
   pageToken: any;
+  numCondition: any;
+
   // Form builder Initialize
   form = this.fb.group({
     languageId: [this.auth.languageId, Validators.required],
@@ -54,10 +58,10 @@ export class MenuNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -73,7 +77,7 @@ export class MenuNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -88,8 +92,6 @@ export class MenuNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.menuId.disable();
       this.form.controls.menuName.disable();
       this.form.controls.subMenuId.disable();
@@ -100,6 +102,46 @@ export class MenuNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.updatedBy.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['MENU'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.menuId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.menuId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+      this.spin.show();
+      let obj1: any = {};
+      obj1.numberRangeObject = ['SUB_MENU'];
+      this.numberRangeService.search(obj1).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.subMenuId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.subMenuId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
 
   languageIdList: any[] = [];
@@ -109,16 +151,17 @@ export class MenuNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   fill(line: any) {
@@ -150,11 +193,11 @@ export class MenuNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created',  key: 'br', detail: res.menuId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/menu']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.menuId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/menu']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
@@ -162,6 +205,6 @@ export class MenuNewComponent {
       })
     }
   }
-  
+
 
 }

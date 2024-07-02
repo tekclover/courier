@@ -8,6 +8,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { ConsignmentTypeService } from '../consignment-type.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-consignment-type-new',
@@ -17,18 +18,27 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 export class ConsignmentTypeNewComponent {
 
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: ConsignmentTypeService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: ConsignmentTypeService,
+    private messageService: MessageService,
+    private numberRangeService: NumberrangeService,
+    private auth: AuthService,
+    private cas: CommonAPIService) {
+    this.status = [
+      { value: '2', label: 'Inactive' },
+      { value: '1', label: 'Active' }
     ];
-    
-     }
-       
+  }
+
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
@@ -41,7 +51,7 @@ export class ConsignmentTypeNewComponent {
     companyName: [],
     remark: [],
     statusDescription: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -51,11 +61,11 @@ export class ConsignmentTypeNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-    statusId:["1", ],
+    updatedOn: ['',],
+    statusId: ["1",],
   });
 
   submitted = false;
@@ -71,7 +81,7 @@ export class ConsignmentTypeNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -80,7 +90,7 @@ export class ConsignmentTypeNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -94,27 +104,49 @@ export class ConsignmentTypeNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['CONSIGNMENTTYPE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.consignmentTypeId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.consignmentTypeId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -147,11 +179,11 @@ export class ConsignmentTypeNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.consignmentTypeId + ' has been created successfully' });
-          this.router.navigate(['/main/idMaster/consignmentType']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.consignmentTypeId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/consignmentType']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

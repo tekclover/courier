@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ProvinceService } from '../province.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-province-new',
@@ -17,7 +18,7 @@ import { AuthService } from '../../../../core/core';
 export class ProvinceNewComponent {
 
   active: number | undefined = 0;
-  status:any[] = [];
+  status: any[] = [];
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -27,16 +28,19 @@ export class ProvinceNewComponent {
     private fb: FormBuilder,
     private service: ProvinceService,
     private messageService: MessageService,
+    private numberRangeService: NumberrangeService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { 
+  ) {
     this.status = [
       { value: '2', label: 'Inactive' },
       { value: '1', label: 'Active' }
-  ];
+    ];
   }
 
+  numCondition: any;
   pageToken: any;
+
   // Form builder Initialize
   form = this.fb.group({
     languageId: [this.auth.languageId, Validators.required],
@@ -60,10 +64,10 @@ export class ProvinceNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -78,6 +82,8 @@ export class ProvinceNewComponent {
     }
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
+
+  nextNumber: any;
 
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
@@ -94,14 +100,33 @@ export class ProvinceNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.countryId.disable();
       this.form.controls.provinceId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['PROVINCE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.provinceId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.provinceId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 
@@ -116,18 +141,19 @@ export class ProvinceNewComponent {
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.province.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
-      this.provinceIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.province.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.province.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   fill(line: any) {
@@ -147,7 +173,7 @@ export class ProvinceNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail:  res.provinceId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.provinceId + ' has been updated successfully' });
           this.router.navigate(['/main/idMaster/province']);
           this.spin.hide();
         }, error: (err) => {
@@ -159,11 +185,11 @@ export class ProvinceNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.provinceId +' has been created successfully' });
-          this.router.navigate(['/main/idMaster/province']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.provinceId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/province']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

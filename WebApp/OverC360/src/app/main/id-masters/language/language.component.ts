@@ -50,6 +50,11 @@ export class LanguageComponent {
       { field: 'referenceField3', header: 'Reference Field 3' },
       { field: 'referenceField4', header: 'Reference Field 4' },
       { field: 'referenceField5', header: 'Reference Field 5' },
+      { field: 'referenceField1', header: 'Reference Field 6' },
+      { field: 'referenceField2', header: 'Reference Field 7' },
+      { field: 'referenceField3', header: 'Reference Field 8' },
+      { field: 'referenceField4', header: 'Reference Field 9' },
+      { field: 'referenceField5', header: 'Reference Field 10' },
     ];
   }
 
