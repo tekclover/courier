@@ -11,6 +11,8 @@ public class ConsignmentEntity {
 
     private String companyId;
 
+    private String languageId;
+
     private String partnerId;
 
     private String partnerType;

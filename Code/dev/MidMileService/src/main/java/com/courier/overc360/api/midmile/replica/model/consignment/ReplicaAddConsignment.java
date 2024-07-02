@@ -14,6 +14,8 @@ public class ReplicaAddConsignment {
 
     private String companyId;
 
+    private String languageId;
+
     private String partnerId;
 
     private String partnerType;
