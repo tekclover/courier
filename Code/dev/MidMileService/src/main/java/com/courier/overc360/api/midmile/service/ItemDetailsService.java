@@ -494,6 +494,7 @@ public class ItemDetailsService {
         List<AddItemDetails> itemDetailsList = new ArrayList<>();
         try {
 
+            Long itemDetails = 1L;
             for (AddItemDetails addItemDetails : addItemDetailsList) {
                 Optional<ItemDetails> duplicateItemDetails =
                         itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
@@ -502,8 +503,10 @@ public class ItemDetailsService {
                 if (duplicateItemDetails.isPresent()) {
                     throw new BadRequestException("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
                 } else {
+
+                    String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
                     ItemDetails newItemDetails = new ItemDetails();
-                    String PIECE_ITEM_ID = pieceId + "01";
+//                    String PIECE_ITEM_ID = pieceId + "01";
                     BeanUtils.copyProperties(addItemDetails, newItemDetails, CommonUtils.getNullPropertyNames(addItemDetails));
                     newItemDetails.setPieceItemId(PIECE_ITEM_ID);
                     newItemDetails.setCompanyId(companyId);
