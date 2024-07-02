@@ -30,7 +30,7 @@ export class CompanyComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private spin: NgxSpinnerService
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
@@ -45,7 +45,7 @@ export class CompanyComponent {
 
   callTableHeader() {
     this.cols = [
-      
+
       { field: 'companyId', header: 'Company ID' },
       { field: 'companyName', header: 'Company Name' },
       { field: 'languageDescription', header: 'Language' },

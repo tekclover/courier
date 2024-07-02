@@ -49,7 +49,7 @@ export class SubProductNewComponent {
     remark: [],
     statusId: ['1',],
     statusDescription: [],
-    referenceField1: [],
+    referenceField1: [, Validators.required],
     referenceField10: [],
     referenceField2: [],
     referenceField3: [],
