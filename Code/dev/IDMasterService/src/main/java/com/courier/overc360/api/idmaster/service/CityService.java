@@ -193,7 +193,7 @@ public class CityService {
 //                }
 //            }
             BeanUtils.copyProperties(updateCity, dbCity, CommonUtils.getNullPropertyNames(updateCity));
-            if (updateCity.getStatusId() != null) {
+            if (updateCity.getStatusId() != null && !updateCity.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCity.getStatusId());
                 if (statusDesc != null) {
                     dbCity.setStatusDescription(statusDesc);

@@ -51,6 +51,10 @@ public class ReplicaCustomerSpecification implements Specification<ReplicaCustom
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("subProductValue");
             predicates.add(group.in(findCustomer.getSubProductValue()));
         }
+        if (findCustomer.getStatusId() != null && !findCustomer.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findCustomer.getStatusId()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

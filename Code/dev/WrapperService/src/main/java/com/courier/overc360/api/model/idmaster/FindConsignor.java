@@ -14,5 +14,6 @@ public class FindConsignor {
     private List<String> customerId;
     private List<String> consignorId;
     private List<String> subProductValue;
+    private List<String> statusId;
 
 }

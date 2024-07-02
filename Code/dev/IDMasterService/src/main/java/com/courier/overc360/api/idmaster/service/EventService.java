@@ -69,9 +69,14 @@ public class EventService {
      */
 
     public Event getEvent(String languageId, String companyId, String statusCode, String eventCode) {
-        Optional<Event> dbEvent = eventRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(languageId, companyId, statusCode, eventCode, 0L);
+        Optional<Event> dbEvent = eventRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(
+                languageId, companyId, statusCode, eventCode, 0L);
         if (dbEvent.isEmpty()) {
-            throw new BadRequestException("The given values - " + " LanguageId: " + languageId + " CompanyId: " + companyId + " StatusCode: " + statusCode + "EventCode: " + eventCode + " and given values doesn't exists");
+            String errMsg = "The given values - languageId - " + languageId + ", companyId -  " + companyId
+                    + ", statusCode - " + statusCode + " and eventCode - " + eventCode + " doesn't exists";
+            // Error Log
+            createEventLog1(languageId, companyId, statusCode, eventCode, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbEvent.get();
     }
@@ -184,8 +189,8 @@ public class EventService {
             eventRepository.save(dbEvent);
         } else {
             // Error Log
-            createEventLog1(languageId, companyId, statusCode, eventCode, "Error in deleting EventId - " + eventCode);
-            throw new BadRequestException("Error in deleting EventId - " + eventCode);
+            createEventLog1(languageId, companyId, statusCode, eventCode, "Error in deleting eventCode - " + eventCode);
+            throw new BadRequestException("Error in deleting eventCode - " + eventCode);
         }
     }
 
@@ -216,8 +221,11 @@ public class EventService {
         Optional<ReplicaEvent> dbEvent = replicaEventRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(
                 languageId, companyId, statusCode, eventCode, 0L);
         if (dbEvent.isEmpty()) {
-            throw new BadRequestException("The given values - " + " LanguageId: " + languageId + " CompanyId: " + companyId +
-                    " StatusCode: " + statusCode + "EventCode: " + eventCode + " and given values doesn't exists");
+            String errMsg = "The given values - languageId - " + languageId + ", companyId -  " + companyId
+                    + ", statusCode - " + statusCode + " and eventCode - " + eventCode + " doesn't exists";
+            // Error Log
+            createEventLog1(languageId, companyId, statusCode, eventCode, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbEvent.get();
     }

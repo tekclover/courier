@@ -165,7 +165,7 @@ public class ServiceTypeService {
         try {
             ServiceType dbServicetype = getServiceType(companyId, languageId, serviceTypeId);
             BeanUtils.copyProperties(updateServiceType, dbServicetype, CommonUtils.getNullPropertyNames(updateServiceType));
-            if (updateServiceType.getStatusId() != null) {
+            if (updateServiceType.getStatusId() != null && !updateServiceType.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateServiceType.getStatusId());
                 if (statusDesc != null) {
                     dbServicetype.setStatusDescription(statusDesc);

@@ -276,7 +276,7 @@ public class ProductService {
 //                }
 //            }
             BeanUtils.copyProperties(updateProduct, dbProduct, CommonUtils.getNullPropertyNames(updateProduct));
-            if (updateProduct.getStatusId() != null) {
+            if (updateProduct.getStatusId() != null && !updateProduct.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateProduct.getStatusId());
                 if (statusDesc != null) {
                     dbProduct.setStatusDescription(statusDesc);

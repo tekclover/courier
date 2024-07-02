@@ -204,7 +204,7 @@ public class NotificationService {
                     dbNotification.setProductName(productDesc);
                 }
             }
-            if (updateNotification.getStatusId() != null) {
+            if (updateNotification.getStatusId() != null && !updateNotification.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateNotification.getStatusId());
                 if (statusDesc != null) {
                     dbNotification.setStatusDescription(statusDesc);

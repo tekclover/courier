@@ -154,7 +154,7 @@ public class LoadTypeService {
         try {
             LoadType dbLoadType = getLoadType(loadTypeId, languageId, companyId);
             BeanUtils.copyProperties(updateLoadType, dbLoadType, CommonUtils.getNullPropertyNames(updateLoadType));
-            if (updateLoadType.getStatusId() != null) {
+            if (updateLoadType.getStatusId() != null && !updateLoadType.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateLoadType.getStatusId());
                 if (statusDesc != null) {
                     dbLoadType.setStatusDescription(statusDesc);

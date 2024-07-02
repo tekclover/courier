@@ -180,7 +180,7 @@ public class CountryService {
 //                }
 //            }
             BeanUtils.copyProperties(updateCountry, dbCountry, CommonUtils.getNullPropertyNames(updateCountry));
-            if (updateCountry.getStatusId() != null) {
+            if (updateCountry.getStatusId() != null && !updateCountry.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCountry.getStatusId());
                 if (statusDesc != null) {
                     dbCountry.setStatusDescription(statusDesc);

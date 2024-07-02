@@ -19,6 +19,10 @@ public interface ReplicaPartnerHubMappingRepository extends JpaRepository<Replic
     Optional<ReplicaPartnerHubMapping> findByLanguageIdAndCompanyIdAndHubCodeAndPartnerTypeAndPartnerIdAndDeletionIndicator(
             String languageId, String companyId, String hubCode, String partnerType, String partnerId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndHubCodeAndPartnerTypeAndPartnerIdAndDeletionIndicator(
+            String languageId, String companyId, String hubCode, String partnerType, String partnerId, Long deletionIndicator);
+
+
     // Get Description
     @Query(value = "Select \n" +
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +
@@ -37,5 +41,17 @@ public interface ReplicaPartnerHubMappingRepository extends JpaRepository<Replic
     IKeyValuePair getDescription(@Param(value = "languageId") String languageId,
                                  @Param(value = "companyId") String companyId,
                                  @Param(value = "hubCode") String hubCode);
+
+    // Get Hub Category
+    @Query(value = "Select th.HUB_CATEGORY \n" +
+            "From tblhub th \n" +
+            "Where\n" +
+            "th.LANG_ID IN (:languageId) and \n" +
+            "th.C_ID IN (:companyId) and \n" +
+            "th.HUB_CODE IN (:hubCode) and \n" +
+            "th.IS_DELETED = 0", nativeQuery = true)
+    Optional<String> getHubCategory(@Param(value = "languageId") String languageId,
+                                    @Param(value = "companyId") String companyId,
+                                    @Param(value = "hubCode") String hubCode);
 
 }

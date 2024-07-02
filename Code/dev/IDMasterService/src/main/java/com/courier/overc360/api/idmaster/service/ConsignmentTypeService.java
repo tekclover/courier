@@ -166,7 +166,7 @@ public class ConsignmentTypeService {
         try {
             ConsignmentType dbConsignmentType = getConsignmentType(companyId, languageId, consignmentTypeId);
             BeanUtils.copyProperties(updateConsignmentType, dbConsignmentType, CommonUtils.getNullPropertyNames(updateConsignmentType));
-            if (updateConsignmentType.getStatusId() != null) {
+            if (updateConsignmentType.getStatusId() != null && !updateConsignmentType.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignmentType.getStatusId());
                 if (statusDesc != null) {
                     dbConsignmentType.setStatusDescription(statusDesc);

@@ -133,7 +133,7 @@ public class CurrencyService {
         try {
             Currency dbCurrency = getCurrency(currencyId);
             BeanUtils.copyProperties(updateCurrency, dbCurrency, CommonUtils.getNullPropertyNames(updateCurrency));
-            if (updateCurrency.getStatusId() != null) {
+            if (updateCurrency.getStatusId() != null && !updateCurrency.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCurrency.getStatusId());
                 if (statusDesc != null) {
                     dbCurrency.setStatusDescription(statusDesc);

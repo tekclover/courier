@@ -19,6 +19,8 @@ public class AddCustomer {
 
     private String customerName;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

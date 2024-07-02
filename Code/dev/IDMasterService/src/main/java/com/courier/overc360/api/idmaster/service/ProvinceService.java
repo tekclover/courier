@@ -183,7 +183,7 @@ public class ProvinceService {
 //                }
 //            }
             BeanUtils.copyProperties(updateProvince, dbProvince, CommonUtils.getNullPropertyNames(updateProvince));
-            if (updateProvince.getStatusId() != null) {
+            if (updateProvince.getStatusId() != null && !updateProvince.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateProvince.getStatusId());
                 if (statusDesc != null) {
                     dbProvince.setStatusDescription(statusDesc);

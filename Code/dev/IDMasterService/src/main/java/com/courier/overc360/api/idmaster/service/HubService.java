@@ -53,9 +53,6 @@ public class HubService {
     private ReplicaHubRepository replicaHubRepository;
 
     @Autowired
-    private ProvinceRepository provinceRepository;
-
-    @Autowired
     private NumberRangeService numberRangeService;
 
     @Autowired

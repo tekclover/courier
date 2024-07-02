@@ -173,7 +173,7 @@ public class CurrencyExchangeRateService {
         try {
             CurrenyExchangeRate dbCurrencyExchangeRate = getCurrencyExchangeRate(languageId, companyId, fromCurrencyId, toCurrencyId);
             BeanUtils.copyProperties(updateCurrencyExchangeRate, dbCurrencyExchangeRate, CommonUtils.getNullPropertyNames(updateCurrencyExchangeRate));
-            if (updateCurrencyExchangeRate.getStatusId() != null) {
+            if (updateCurrencyExchangeRate.getStatusId() != null && !updateCurrencyExchangeRate.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCurrencyExchangeRate.getStatusId());
                 if (statusDesc != null) {
                     dbCurrencyExchangeRate.setStatusDescription(statusDesc);

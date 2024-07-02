@@ -162,7 +162,7 @@ public class RateParameterService {
         try {
             RateParameter dbRateParameter = getRateParameter(rateParameterId, companyId, languageId);
             BeanUtils.copyProperties(updateRateParameter, dbRateParameter, CommonUtils.getNullPropertyNames(updateRateParameter));
-            if (updateRateParameter.getStatusId() != null) {
+            if (updateRateParameter.getStatusId() != null && !updateRateParameter.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateRateParameter.getStatusId());
                 if (statusDesc != null) {
                     dbRateParameter.setStatusDescription(statusDesc);

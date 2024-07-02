@@ -101,7 +101,7 @@ public class SpecialApprovalService {
                     addSpecialApproval.getCompanyId(), addSpecialApproval.getLanguageId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("The given values- CompanyId: " + addSpecialApproval.getCompanyId() + " and LanguageId" + addSpecialApproval.getLanguageId() + "  doesn't exists");
+                throw new BadRequestException("CompanyId: " + addSpecialApproval.getCompanyId() + " and languageId" + addSpecialApproval.getLanguageId() + "  doesn't exists");
             } else if (duplicateSpecialApproval.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : specialApprovalId - " + addSpecialApproval.getSpecialApprovalId());
             } else {

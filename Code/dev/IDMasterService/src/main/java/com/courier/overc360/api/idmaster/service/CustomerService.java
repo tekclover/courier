@@ -14,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.customer.FindCustomer;
 import com.courier.overc360.api.idmaster.replica.model.customer.ReplicaCustomer;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCustomerRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaProductRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCustomerSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CustomerService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -130,6 +134,10 @@ public class CustomerService {
                 newCustomer.setProductName(iKeyValuePair.getProductDesc());
                 newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
             }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addCustomer.getStatusId());
+            if (statusDesc != null) {
+                newCustomer.setStatusDescription(statusDesc);
+            }
             newCustomer.setDeletionIndicator(0L);
             newCustomer.setCreatedBy(loginUserID);
             newCustomer.setCreatedOn(new Date());
@@ -211,6 +219,10 @@ public class CustomerService {
                     newCustomer.setProductName(iKeyValuePair.getProductDesc());
                     newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
                 }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addCustomer.getStatusId());
+                if (statusDesc != null) {
+                    newCustomer.setStatusDescription(statusDesc);
+                }
                 newCustomer.setDeletionIndicator(0L);
                 newCustomer.setCreatedBy(loginUserID);
                 newCustomer.setCreatedOn(new Date());
@@ -269,6 +281,12 @@ public class CustomerService {
 //                }
 //            }
             BeanUtils.copyProperties(updateCustomer, dbCustomer, CommonUtils.getNullPropertyNames(updateCustomer));
+            if (updateCustomer.getStatusId() != null && !updateCustomer.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateCustomer.getStatusId());
+                if (statusDesc != null) {
+                    dbCustomer.setStatusDescription(statusDesc);
+                }
+            }
             dbCustomer.setUpdatedBy(loginUserID);
             dbCustomer.setUpdatedOn(new Date());
             return customerRepository.save(dbCustomer);

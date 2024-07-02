@@ -27,6 +27,9 @@ public class AddCustomer {
     @NotBlank(message = "Customer Name is mandatory")
     private String customerName;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

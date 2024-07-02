@@ -19,6 +19,8 @@ public class UpdateCustomer {
 
     private String customerName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

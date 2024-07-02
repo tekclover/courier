@@ -175,7 +175,7 @@ public class DistrictService {
         try {
             District dbDistrict = getDistrict(languageId, companyId, countryId, provinceId, districtId);
             BeanUtils.copyProperties(updateDistrict, dbDistrict, CommonUtils.getNullPropertyNames(updateDistrict));
-            if (updateDistrict.getStatusId() != null) {
+            if (updateDistrict.getStatusId() != null && !updateDistrict.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateDistrict.getStatusId());
                 if (statusDesc != null) {
                     dbDistrict.setStatusDescription(statusDesc);

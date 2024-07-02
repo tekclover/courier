@@ -259,7 +259,7 @@ public class SubProductService {
 //                }
 //            }
             BeanUtils.copyProperties(updateSubProduct, dbSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
-            if (updateSubProduct.getStatusId() != null) {
+            if (updateSubProduct.getStatusId() != null && !updateSubProduct.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateSubProduct.getStatusId());
                 if (statusDesc != null) {
                     dbSubProduct.setStatusDescription(statusDesc);

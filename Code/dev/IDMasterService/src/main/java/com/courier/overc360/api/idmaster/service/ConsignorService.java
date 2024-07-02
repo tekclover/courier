@@ -14,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.consignor.FindConsignor;
 import com.courier.overc360.api.idmaster.replica.model.consignor.ReplicaConsignor;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaConsignorRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCustomerRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaConsignorSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ConsignorService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaCustomerRepository replicaCustomerRepository;
@@ -134,6 +138,10 @@ public class ConsignorService {
                 newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
                 newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
             }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addConsignor.getStatusId());
+            if (statusDesc != null) {
+                newConsignor.setStatusDescription(statusDesc);
+            }
             newConsignor.setDeletionIndicator(0L);
             newConsignor.setCreatedBy(loginUserID);
             newConsignor.setCreatedOn(new Date());
@@ -203,9 +211,6 @@ public class ConsignorService {
                 if ((addConsignor.getConsignorId() != null &&
                         (addConsignor.getReferenceField10() != null && addConsignor.getReferenceField10().equalsIgnoreCase("true"))) ||
                         addConsignor.getConsignorId() == null || addConsignor.getConsignorId().isBlank()) {
-                    //                String NUM_RAN_OBJ = "CONSIGNOR";
-                    //                String CONSIGNOR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    //                log.info("next Value from NumberRange for CONSIGNOR : " + CONSIGNOR_ID);
                     newConsignor.setConsignorId(CONSIGNOR_ID);
                 }
                 if (iKeyValuePair != null) {
@@ -215,6 +220,10 @@ public class ConsignorService {
                     newConsignor.setProductName(iKeyValuePair.getProductDesc());
                     newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
                     newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addConsignor.getStatusId());
+                if (statusDesc != null) {
+                    newConsignor.setStatusDescription(statusDesc);
                 }
                 newConsignor.setDeletionIndicator(0L);
                 newConsignor.setCreatedBy(loginUserID);
@@ -257,6 +266,12 @@ public class ConsignorService {
         try {
             Consignor dbConsignor = getConsignor(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId);
             BeanUtils.copyProperties(updateConsignor, dbConsignor, CommonUtils.getNullPropertyNames(updateConsignor));
+            if (updateConsignor.getStatusId() != null && !updateConsignor.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignor.getStatusId());
+                if (statusDesc != null) {
+                    dbConsignor.setStatusDescription(statusDesc);
+                }
+            }
             dbConsignor.setUpdatedBy(loginUserID);
             dbConsignor.setUpdatedOn(new Date());
             return consignorRepository.save(dbConsignor);

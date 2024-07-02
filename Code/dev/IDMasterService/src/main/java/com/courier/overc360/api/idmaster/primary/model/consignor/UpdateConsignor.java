@@ -30,6 +30,8 @@ public class UpdateConsignor {
 
     private String consignorName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

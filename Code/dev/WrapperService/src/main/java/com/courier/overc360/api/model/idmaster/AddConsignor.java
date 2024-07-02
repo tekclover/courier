@@ -21,6 +21,8 @@ public class AddConsignor {
 
     private String consignorName;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

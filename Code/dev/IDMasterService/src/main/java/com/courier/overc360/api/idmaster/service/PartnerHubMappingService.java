@@ -2,7 +2,6 @@ package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.idmaster.primary.model.hub.Hub;
 import com.courier.overc360.api.idmaster.primary.model.partnerhubmapping.AddPartnerHubMapping;
 import com.courier.overc360.api.idmaster.primary.model.partnerhubmapping.PartnerHubMapping;
 import com.courier.overc360.api.idmaster.primary.model.partnerhubmapping.UpdatePartnerHubMapping;
@@ -13,6 +12,7 @@ import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.partnerhubmapping.FindPartnerHubMapping;
 import com.courier.overc360.api.idmaster.replica.model.partnerhubmapping.ReplicaPartnerHubMapping;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaHubRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaPartnerHubMappingRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaPartnerHubMappingSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -36,13 +36,13 @@ import java.util.stream.Collectors;
 public class PartnerHubMappingService {
 
     @Autowired
+    private ReplicaHubRepository replicaHubRepository;
+
+    @Autowired
     private PartnerHubMappingRepository partnerHubMappingRepository;
 
     @Autowired
     private ReplicaPartnerHubMappingRepository replicaPartnerHubMappingRepository;
-
-    @Autowired
-    private HubRepository hubRepository;
 
     @Autowired
     private ErrorLogRepository errorLogRepository;
@@ -91,37 +91,42 @@ public class PartnerHubMappingService {
     public PartnerHubMapping createPartnerHubMapping(AddPartnerHubMapping addPartnerHubMapping, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Hub> dbHub = hubRepository.findByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
+            boolean dbHubPresent = replicaHubRepository.existsByLanguageIdAndCompanyIdAndHubCodeAndDeletionIndicator(
                     addPartnerHubMapping.getLanguageId(), addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode(), 0L);
+            if (!dbHubPresent) {
+                throw new BadRequestException("HubCode - " + addPartnerHubMapping.getHubCode() + ", companyId - " + addPartnerHubMapping.getCompanyId() +
+                        " and languageId - " + addPartnerHubMapping.getLanguageId() + " doesn't exists");
+            }
 
-            Optional<PartnerHubMapping> duplicatePartnerHubMapping =
-                    partnerHubMappingRepository.findByLanguageIdAndCompanyIdAndHubCodeAndPartnerTypeAndPartnerIdAndDeletionIndicator(
+            boolean duplicatePartnerHubMappingPresent =
+                    replicaPartnerHubMappingRepository.existsByLanguageIdAndCompanyIdAndHubCodeAndPartnerTypeAndPartnerIdAndDeletionIndicator(
                             addPartnerHubMapping.getLanguageId(), addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode(),
                             addPartnerHubMapping.getPartnerType(), addPartnerHubMapping.getPartnerId(), 0L);
 
-            if (dbHub.isEmpty()) {
-                throw new BadRequestException("HubCode - " + addPartnerHubMapping.getHubCode() + ", companyId - " + addPartnerHubMapping.getCompanyId() +
-                        " and languageId - " + addPartnerHubMapping.getLanguageId() + " doesn't exists");
-            } else if (duplicatePartnerHubMapping.isPresent()) {
+            if (duplicatePartnerHubMappingPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : partnerId - " + addPartnerHubMapping.getPartnerId());
-            } else {
-                log.info("new PartnerHubMapping --> " + addPartnerHubMapping);
-                IKeyValuePair iKeyValuePair = replicaPartnerHubMappingRepository.getDescription(addPartnerHubMapping.getLanguageId(),
-                        addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode());
-                PartnerHubMapping newPartnerHubMapping = new PartnerHubMapping();
-                BeanUtils.copyProperties(addPartnerHubMapping, newPartnerHubMapping, CommonUtils.getNullPropertyNames(addPartnerHubMapping));
-                if (iKeyValuePair != null) {
-                    newPartnerHubMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newPartnerHubMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    newPartnerHubMapping.setHubName(iKeyValuePair.getHubDesc());
-                }
-                newPartnerHubMapping.setDeletionIndicator(0L);
-                newPartnerHubMapping.setCreatedBy(loginUserID);
-                newPartnerHubMapping.setCreatedOn(new Date());
-                newPartnerHubMapping.setUpdatedBy(loginUserID);
-                newPartnerHubMapping.setUpdatedOn(new Date());
-                return partnerHubMappingRepository.save(newPartnerHubMapping);
             }
+
+            log.info("new PartnerHubMapping --> " + addPartnerHubMapping);
+            IKeyValuePair iKeyValuePair = replicaPartnerHubMappingRepository.getDescription(addPartnerHubMapping.getLanguageId(),
+                    addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode());
+            PartnerHubMapping newPartnerHubMapping = new PartnerHubMapping();
+            BeanUtils.copyProperties(addPartnerHubMapping, newPartnerHubMapping, CommonUtils.getNullPropertyNames(addPartnerHubMapping));
+            if (iKeyValuePair != null) {
+                newPartnerHubMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newPartnerHubMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
+                newPartnerHubMapping.setHubName(iKeyValuePair.getHubDesc());
+            }
+            Optional<String> hubCategory = replicaPartnerHubMappingRepository.getHubCategory(addPartnerHubMapping.getLanguageId(),
+                    addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode());
+            hubCategory.ifPresent(newPartnerHubMapping::setHubCategory);
+
+            newPartnerHubMapping.setDeletionIndicator(0L);
+            newPartnerHubMapping.setCreatedBy(loginUserID);
+            newPartnerHubMapping.setCreatedOn(new Date());
+            newPartnerHubMapping.setUpdatedBy(loginUserID);
+            newPartnerHubMapping.setUpdatedOn(new Date());
+            return partnerHubMappingRepository.save(newPartnerHubMapping);
         } catch (Exception e) {
             // Error Log
             createPartnerHubMappingLog2(addPartnerHubMapping, e.toString());

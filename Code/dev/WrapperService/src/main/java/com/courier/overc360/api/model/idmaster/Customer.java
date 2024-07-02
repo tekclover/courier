@@ -29,9 +29,9 @@ public class Customer {
 
     private String customerName;
 
-//    private String statusId;
-//
-//    private String statusDescription;
+    private String statusId;
+
+    private String statusDescription;
 
     private String remark;
 

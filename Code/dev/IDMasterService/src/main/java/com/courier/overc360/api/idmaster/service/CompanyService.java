@@ -257,7 +257,7 @@ public class CompanyService {
                 districtDesc = replicaCityRepository.getDistrictDesc(updateCompany.getDistrictId());
                 dbCompany.setDistrictName(updateCompany.getDistrictId() + districtDesc);
             }
-            if (updateCompany.getStatusId() != null) {
+            if (updateCompany.getStatusId() != null && !updateCompany.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCompany.getStatusId());
                 if (statusDesc != null) {
                     dbCompany.setStatusDescription(statusDesc);
