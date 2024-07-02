@@ -9,30 +9,30 @@ import java.util.List;
 public class AddItemDetails {
 
 //    @NotBlank(message = "Language Id is mandatory")
-//    private String languageId;
+    private String languageId;
 
 //    @NotBlank(message = "CompanyId is mandatory")
-//    private String companyId;
+    private String companyId;
 
 //    @NotBlank(message = "Partner Id is mandatory")
-//    private String partnerId;
+    private String partnerId;
 
 //    @NotBlank(message = "MasterAirwayBill is mandatory")
-//    private String masterAirwayBill;
+    private String masterAirwayBill;
 
 //    @NotBlank(message = "HouseAirwayBill is mandatory")
-//    private String houseAirwayBill;
+    private String houseAirwayBill;
 
 //    @NotBlank(message = "Piece Id is mandatory")
-//    private String pieceId;
+    private String pieceId;
 
     private String pieceItemId;
 
     //    @NotBlank(message = " PartnerMasterAirwayBill  is mandatory")
-//    private String partnerMasterAirwayBill;
+    private String partnerMasterAirwayBill;
 
     //    @NotBlank(message = " PartnerHouseAirwayBill  is mandatory")
-//    private String partnerHouseAirwayBill;
+    private String partnerHouseAirwayBill;
 
     private String imageRefId;
 

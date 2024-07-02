@@ -324,5 +324,5 @@ public class ConsignmentEntity {
     private DestinationDetails destinationDetails;
     private OriginationDetails originDetails;
     private ReturnDetails returnDetails;
-    private List<AddPieceDetails> pieceDetails = new ArrayList<>();
+    private List<PieceDetails> pieceDetails = new ArrayList<>();
 }

@@ -8,21 +8,31 @@ import java.util.List;
 @Data
 public class ItemDetails {
 
+    private String languageId;
+
+    private String companyId;
+
+    private String partnerId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
+    private String pieceId;
+
     private String pieceItemId;
 
-    private String imageRefId;
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
 
     private String partnerType;
 
     private String partnerName;
 
-    private List<String> referenceImageList;
-
     private String itemCode;
 
     private String hsCode;
-
-    private String description;
 
     private String declaredValue;
 
@@ -43,6 +53,12 @@ public class ItemDetails {
     private String volume;
 
     private String volumeUnit;
+
+    private List<ReferenceImageList> referenceImageList;
+
+    private String imageReferenceId;
+
+    private String description;
 
     private String referenceField1;
 
@@ -83,4 +99,5 @@ public class ItemDetails {
     private String referenceField19;
 
     private String referenceField20;
+
 }

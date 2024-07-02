@@ -10,15 +10,35 @@ import java.util.List;
 
 public class PieceDetails {
 
+    private String languageId;
+
+    private String companyId;
+
+    private String partnerId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String pieceId;
 
     private String partnerType;
 
+    private String partnerName;
+
+    private String pieceProductCode;
+
     private String description;
+
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
 
     private String declaredValue;
 
     private String codAmount;
+
+    private String hsCode;
 
     private String length;
 
@@ -36,16 +56,15 @@ public class PieceDetails {
 
     private String volumeUnit;
 
-    private List<String> referenceImageList;
+    private List<ReferenceImageList> referenceImageList;
 
     private String packReferenceNumber;
 
     private String tags;
 
     private String pieceStatusId;
-    private Date pieceStatusTimestamp;
 
-    private String hsCode;
+    private Date pieceStatusTimestamp;
 
     private String referenceField1;
 
@@ -88,7 +107,6 @@ public class PieceDetails {
     private String referenceField20;
 
     private List<ItemDetails> itemDetails = new ArrayList<>();
-
 }
 
 
