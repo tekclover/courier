@@ -94,7 +94,9 @@ public class StatusService {
                 Status dbStatus = new Status();
                 IKeyValuePair iKeyValuePair = replicaLanguageRepository.getDescription(newStatus.getLanguageId());
                 BeanUtils.copyProperties(newStatus, dbStatus, CommonUtils.getNullPropertyNames(newStatus));
-                if (newStatus.getStatusId() == null || newStatus.getStatusId().isBlank()) {
+                if ((newStatus.getStatusId() != null &&
+                        (newStatus.getReferenceField10() != null && newStatus.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        newStatus.getStatusId() == null || newStatus.getStatusId().isBlank()) {
                     String NUM_RANGE_OBJ = "STATUS";
                     String STATUS_ID = numberRangeService.getNextNumberRange(NUM_RANGE_OBJ);
                     log.info("next Value from NumberRange for STATUS_ID : " + STATUS_ID);
@@ -108,7 +110,7 @@ public class StatusService {
                 dbStatus.setUpdatedBy(loginUserID);
                 dbStatus.setCreatedOn(new Date());
                 dbStatus.setUpdatedOn(new Date());
-                log.info("Status Id created Time "  + new Date());
+                log.info("Status Id created Time " + new Date());
                 return statusRepository.save(dbStatus);
             }
         } catch (Exception e) {

@@ -121,12 +121,6 @@ public class RateService {
                 Rate dbRate = new Rate();
                 IKeyValuePair iKeyValuePair = replicaRateRepository.getDescription(addRate.getLanguageId(), addRate.getCompanyId(), addRate.getRateParameterId());
                 BeanUtils.copyProperties(addRate, dbRate, CommonUtils.getNullPropertyNames(addRate));
-//                if (addRate.getRateParameterId() == null) {
-//                    String NUM_RAN_OBJ = "RATE";
-//                    String RATE_PARAMETER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for RATE_PARAMETER_ID : " + RATE_PARAMETER_ID);
-//                    dbRate.setRateParameterId(RATE_PARAMETER_ID);
-//                }
                 if (iKeyValuePair != null) {
                     dbRate.setLanguageDescription(iKeyValuePair.getLangDesc());
                     dbRate.setCompanyName(iKeyValuePair.getCompanyDesc());

@@ -107,7 +107,9 @@ public class EventService {
                         addEvent.getCompanyId(), addEvent.getStatusCode());
                 Event newEvent = new Event();
                 BeanUtils.copyProperties(addEvent, newEvent, CommonUtils.getNullPropertyNames(addEvent));
-                if (addEvent.getEventCode() == null || addEvent.getEventCode().isBlank()) {
+                if ((addEvent.getEventCode() != null &&
+                        (addEvent.getReferenceField10() != null && addEvent.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addEvent.getEventCode() == null || addEvent.getEventCode().isBlank()) {
                     String NUM_RAN_OBJ = "EVENT";
                     String EVENT_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for EVENT_CODE : " + EVENT_CODE);

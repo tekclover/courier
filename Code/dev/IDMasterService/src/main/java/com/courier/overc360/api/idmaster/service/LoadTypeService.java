@@ -108,7 +108,9 @@ public class LoadTypeService {
                 LoadType newLoadType = new LoadType();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addLoadType.getLanguageId(), addLoadType.getCompanyId());
                 BeanUtils.copyProperties(addLoadType, newLoadType, CommonUtils.getNullPropertyNames(addLoadType));
-                if (addLoadType.getLoadTypeId() == null || addLoadType.getLoadTypeId().isBlank()) {
+                if ((addLoadType.getLoadTypeId() != null &&
+                        (addLoadType.getReferenceField10() != null && addLoadType.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addLoadType.getLoadTypeId() == null || addLoadType.getLoadTypeId().isBlank()) {
                     String NUM_RAN_OBJ = "LOADTYPE";
                     String LOAD_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for LOAD_TYPE_ID : " + LOAD_TYPE_ID);

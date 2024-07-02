@@ -117,7 +117,9 @@ public class ProductService {
                     addProduct.getCompanyId(), addProduct.getSubProductId(), addProduct.getSubProductValue());
             Product newProduct = new Product();
             BeanUtils.copyProperties(addProduct, newProduct, CommonUtils.getNullPropertyNames(addProduct));
-            if (addProduct.getProductId() == null || addProduct.getProductId().isBlank()) {
+            if ((addProduct.getProductId() != null &&
+                    (addProduct.getReferenceField10() != null && addProduct.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addProduct.getProductId() == null || addProduct.getProductId().isBlank()) {
                 String NUM_RAN_OBJ = "PRODUCT";
                 String PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for PRODUCT_ID : " + PRODUCT_ID);
@@ -199,7 +201,9 @@ public class ProductService {
                         addProduct.getCompanyId(), addProduct.getSubProductId(), addProduct.getSubProductValue());
                 Product newProduct = new Product();
                 BeanUtils.copyProperties(addProduct, newProduct, CommonUtils.getNullPropertyNames(addProduct));
-                if (addProduct.getProductId() == null || addProduct.getProductId().isBlank()) {
+                if ((addProduct.getProductId() != null &&
+                        (addProduct.getReferenceField10() != null && addProduct.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addProduct.getProductId() == null || addProduct.getProductId().isBlank()) {
 //                    String NUM_RAN_OBJ = "PRODUCT";
 //                    String PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 //                    log.info("next Value from NumberRange for PRODUCT_ID : " + PRODUCT_ID);

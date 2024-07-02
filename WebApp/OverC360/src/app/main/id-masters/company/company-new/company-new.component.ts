@@ -117,8 +117,9 @@ export class CompanyNewComponent {
           if (res) {
             this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
             this.form.controls.companyId.patchValue(this.nextNumber);
-            this.numCondition='true;'
+            this.numCondition='true';
             this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.companyId.disable();
           }
 
           this.spin.hide();

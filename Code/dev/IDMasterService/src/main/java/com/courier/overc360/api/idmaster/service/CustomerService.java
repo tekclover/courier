@@ -115,7 +115,9 @@ public class CustomerService {
                     addCustomer.getSubProductId(), addCustomer.getSubProductValue(), addCustomer.getProductId());
             Customer newCustomer = new Customer();
             BeanUtils.copyProperties(addCustomer, newCustomer, CommonUtils.getNullPropertyNames(addCustomer));
-            if (addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
+            if ((addCustomer.getCustomerId() != null &&
+                    (addCustomer.getReferenceField10() != null && addCustomer.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
                 String NUM_RAN_OBJ = "CUSTOMER";
                 String CUSTOMER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for CUSTOMER : " + CUSTOMER_ID);
@@ -194,7 +196,9 @@ public class CustomerService {
                         addCustomer.getSubProductId(), addCustomer.getSubProductValue(), addCustomer.getProductId());
                 Customer newCustomer = new Customer();
                 BeanUtils.copyProperties(addCustomer, newCustomer, CommonUtils.getNullPropertyNames(addCustomer));
-                if (addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
+                if ((addCustomer.getCustomerId() != null &&
+                        (addCustomer.getReferenceField10() != null && addCustomer.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
 //                    String NUM_RAN_OBJ = "CUSTOMER";
 //                    String CUSTOMER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 //                    log.info("next Value from NumberRange for CUSTOMER : " + CUSTOMER_ID);
