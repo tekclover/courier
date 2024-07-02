@@ -110,7 +110,9 @@ public class SubProductService {
             IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSubProduct.getLanguageId(), addSubProduct.getCompanyId());
             SubProduct newSubProduct = new SubProduct();
             BeanUtils.copyProperties(addSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(addSubProduct));
-            if (addSubProduct.getSubProductId() == null || addSubProduct.getSubProductId().isBlank()) {
+            if ((addSubProduct.getCompanyId() != null &&
+                    (addSubProduct.getReferenceField10() != null && addSubProduct.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addSubProduct.getSubProductId() == null || addSubProduct.getSubProductId().isBlank()) {
                 String NUM_RAN_OBJ = "SUBPRODUCT";
                 String SUB_PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for SUB_PRODUCT_ID : " + SUB_PRODUCT_ID);
@@ -187,7 +189,9 @@ public class SubProductService {
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSubProduct.getLanguageId(), addSubProduct.getCompanyId());
                 SubProduct newSubProduct = new SubProduct();
                 BeanUtils.copyProperties(addSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(addSubProduct));
-                if (addSubProduct.getSubProductId() == null || addSubProduct.getSubProductId().isBlank()) {
+                if ((addSubProduct.getCompanyId() != null &&
+                        (addSubProduct.getReferenceField10() != null && addSubProduct.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addSubProduct.getSubProductId() == null || addSubProduct.getSubProductId().isBlank()) {
 //                    String NUM_RAN_OBJ = "SUBPRODUCT";
 //                    String SUB_PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 //                    log.info("next Value from NumberRange for SUB_PRODUCT_ID : " + SUB_PRODUCT_ID);

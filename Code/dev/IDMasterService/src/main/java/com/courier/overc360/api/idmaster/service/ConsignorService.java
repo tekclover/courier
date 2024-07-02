@@ -118,7 +118,9 @@ public class ConsignorService {
                     addConsignor.getSubProductId(), addConsignor.getSubProductValue(), addConsignor.getProductId(), addConsignor.getCustomerId());
             Consignor newConsignor = new Consignor();
             BeanUtils.copyProperties(addConsignor, newConsignor, CommonUtils.getNullPropertyNames(addConsignor));
-            if (addConsignor.getConsignorId() == null || addConsignor.getConsignorId().isBlank()) {
+            if ((addConsignor.getConsignorId() != null &&
+                    (addConsignor.getReferenceField10() != null && addConsignor.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addConsignor.getConsignorId() == null || addConsignor.getConsignorId().isBlank()) {
                 String NUM_RAN_OBJ = "CONSIGNOR";
                 String CONSIGNOR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for CONSIGNOR : " + CONSIGNOR_ID);
@@ -198,7 +200,9 @@ public class ConsignorService {
                         addConsignor.getSubProductId(), addConsignor.getSubProductValue(), addConsignor.getProductId(), addConsignor.getCustomerId());
                 Consignor newConsignor = new Consignor();
                 BeanUtils.copyProperties(addConsignor, newConsignor, CommonUtils.getNullPropertyNames(addConsignor));
-                if (addConsignor.getConsignorId() == null || addConsignor.getConsignorId().isBlank()) {
+                if ((addConsignor.getConsignorId() != null &&
+                        (addConsignor.getReferenceField10() != null && addConsignor.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addConsignor.getConsignorId() == null || addConsignor.getConsignorId().isBlank()) {
                     //                String NUM_RAN_OBJ = "CONSIGNOR";
                     //                String CONSIGNOR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     //                log.info("next Value from NumberRange for CONSIGNOR : " + CONSIGNOR_ID);

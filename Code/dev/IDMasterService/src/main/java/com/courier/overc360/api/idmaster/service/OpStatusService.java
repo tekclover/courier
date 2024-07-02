@@ -107,7 +107,9 @@ public class OpStatusService {
                 OpStatus dbOpStatus = new OpStatus();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addOpStatus.getLanguageId(), addOpStatus.getCompanyId());
                 BeanUtils.copyProperties(addOpStatus, dbOpStatus, CommonUtils.getNullPropertyNames(addOpStatus));
-                if (addOpStatus.getStatusCode() == null || addOpStatus.getStatusCode().isBlank()) {
+                if ((addOpStatus.getStatusCode() != null &&
+                        (addOpStatus.getReferenceField10() != null && addOpStatus.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addOpStatus.getStatusCode() == null || addOpStatus.getStatusCode().isBlank()) {
                     String NUM_RAN_OBJ = "OPSTATUS";
                     String STATUS_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for STATUS_CODE : " + STATUS_CODE);

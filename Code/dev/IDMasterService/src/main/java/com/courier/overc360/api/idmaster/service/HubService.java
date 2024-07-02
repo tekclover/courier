@@ -121,7 +121,9 @@ public class HubService {
             IKeyValuePair iKeyValuePair = replicaHubRepository.getDescription(addHub.getLanguageId(), addHub.getCompanyId(),
                     addHub.getCountryId(), addHub.getCityId());
             BeanUtils.copyProperties(addHub, newHub, CommonUtils.getNullPropertyNames(addHub));
-            if (addHub.getHubCode() == null || addHub.getHubCode().isBlank()) {
+            if ((addHub.getHubCode() != null &&
+                    (addHub.getReferenceField10() != null && addHub.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addHub.getHubCode() == null || addHub.getHubCode().isBlank()) {
                 String NUM_RAN_OBJ = "HUB";
                 String HUB_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for HUB_CODE : " + HUB_CODE);

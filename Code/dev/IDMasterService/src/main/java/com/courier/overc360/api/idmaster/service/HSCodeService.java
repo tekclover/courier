@@ -103,16 +103,18 @@ public class HSCodeService {
             if (duplicateHsCodePresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : hsCode - " + addHSCode.getHsCode());
             }
-            log.info("new HSCode --> " + addHSCode);
+            log.info("new HSCode --> {}", addHSCode);
             IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addHSCode.getLanguageId(), addHSCode.getCompanyId());
             HSCode newHsCode = new HSCode();
             BeanUtils.copyProperties(addHSCode, newHsCode, CommonUtils.getNullPropertyNames(addHSCode));
-//                if (addHSCode.getHsCode() == null || addHSCode.getHsCode().isBlank()) {
-//                    String NUM_RAN_OBJ = "HSCODE";
-//                    String HS_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for HS_CODE : " + HS_CODE);
-//                    newHsCode.setHsCode(HS_CODE);
-//                }
+            if ((addHSCode.getHsCode() != null &&
+                    (addHSCode.getReferenceField10() != null && addHSCode.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addHSCode.getHsCode() == null || addHSCode.getHsCode().isBlank()) {
+                String NUM_RAN_OBJ = "HSCODE";
+                String HS_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for HS_CODE : " + HS_CODE);
+                newHsCode.setHsCode(HS_CODE);
+            }
             if (iKeyValuePair != null) {
                 newHsCode.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newHsCode.setCompanyName(iKeyValuePair.getCompanyDesc());

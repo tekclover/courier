@@ -72,6 +72,7 @@ public class NumberRangeService {
 //            log.info("Current record --> " + numberRange);
 
             String strCurrentValue = numberRange.getNumberRangeCurrent();
+            log.info("current Value --> {}", strCurrentValue);
             Long currentValue = 0L;
 //        if (strCurrentValue.startsWith("AL")) { // Increment logic for AuditLog Insert
 //            strCurrentValue = strCurrentValue.substring(2); // AL1000002
@@ -83,8 +84,8 @@ public class NumberRangeService {
 //        } else {
             currentValue = Long.valueOf(strCurrentValue);
             currentValue++;
-            log.info("currentValue --> " + currentValue);
             numberRange.setNumberRangeCurrent(String.valueOf(currentValue));
+            log.info("new Value --> {}", currentValue);
             strCurrentValue = String.valueOf(currentValue);
 //        }
 //            log.info("New value NumberRange --> " + numberRange);

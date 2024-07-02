@@ -90,12 +90,14 @@ public class CurrencyService {
                 log.info("new Currency --> " + addCurrency);
                 Currency newCurrency = new Currency();
                 BeanUtils.copyProperties(addCurrency, newCurrency, CommonUtils.getNullPropertyNames(addCurrency));
-//                if (addCurrency.getCurrencyId() == null || addCurrency.getCurrencyId().isBlank()) {
-//                    String NUM_RAN_OBJ = "CURRENCY";
-//                    String CURRENCY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for CURRENCY_ID : " + CURRENCY_ID);
-//                    addCurrency.setCurrencyId(CURRENCY_ID);
-//                }
+                if ((addCurrency.getCurrencyId() != null &&
+                        (addCurrency.getReferenceField10() != null && addCurrency.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addCurrency.getCurrencyId() == null || addCurrency.getCurrencyId().isBlank()) {
+                    String NUM_RAN_OBJ = "CURRENCY";
+                    String CURRENCY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for CURRENCY_ID : " + CURRENCY_ID);
+                    addCurrency.setCurrencyId(CURRENCY_ID);
+                }
                 String statusDesc = replicaStatusRepository.getStatusDescription(addCurrency.getStatusId());
                 if (statusDesc != null) {
                     newCurrency.setStatusDescription(statusDesc);

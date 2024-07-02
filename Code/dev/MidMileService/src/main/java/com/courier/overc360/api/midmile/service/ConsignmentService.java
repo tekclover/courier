@@ -103,7 +103,6 @@ public class ConsignmentService {
 
             // Fetching the description for a company
             IKeyValuePair iKeyValuePair = replicaConsignmentEntityRepository.getDescription(consignmentEntity.getCompanyId());
-//            IKeyValuePair iKeyValuePair1 = replicaConsignmentEntityRepository.getStatusDescription(consignmentEntity.getStatusId());
 
             // Fetching the product ID for the shipper
             IKeyValuePair shipperData = bondedManifestRepository.getProductId(
@@ -201,6 +200,8 @@ public class ConsignmentService {
 
             newConsignment.setHouseAirwayBill(houseAirwayBill);
             newConsignment.setMasterAirwayBill(masterAirwayBill);
+            newConsignment.setStatusId("1");
+            newConsignment.setStatusDescription("CONSIGNMENT CREATED");
             newConsignment.setCreatedBy(loginUserId);
             newConsignment.setUpdatedBy(loginUserId);
             newConsignment.setCreatedOn(new Date());
@@ -330,6 +331,8 @@ public class ConsignmentService {
 
                 UpdateConsignment addConsignment = new UpdateConsignment();
                 BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
+                dbConsignmentEntity.setStatusId("2");
+                dbConsignmentEntity.setStatusDescription("CONSIGNMENT UPDATED ");
                 dbConsignmentEntity.setUpdatedBy(loginUserID);
                 dbConsignmentEntity.setUpdatedOn(new Date());
 
@@ -355,6 +358,7 @@ public class ConsignmentService {
                         CommonUtils.getNullPropertyNames(dbConsignment.getOriginDetails()));
                 dbConsignmentEntity.getOriginDetails().setUpdatedOn(new Date());
                 dbConsignmentEntity.getOriginDetails().setUpdatedBy(loginUserID);
+
 
                 ConsignmentEntity savedConsignment = consignmentEntityRepository.save(dbConsignmentEntity);
 

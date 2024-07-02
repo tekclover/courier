@@ -105,7 +105,7 @@ public class RateParameterService {
                     addRateParameter.getCompanyId(), addRateParameter.getLanguageId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("CompanyId - " + addRateParameter.getCompanyId() + " , LanguageId - " + addRateParameter.getLanguageId() + " doesn't exists");
+                throw new BadRequestException("CompanyId - " + addRateParameter.getCompanyId() + ", languageId - " + addRateParameter.getLanguageId() + " doesn't exists");
             } else if (duplicateRateParameter.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : rateParameterId - " + addRateParameter.getRateParameterId());
             } else {
@@ -113,7 +113,9 @@ public class RateParameterService {
                 RateParameter newRateParameter = new RateParameter();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addRateParameter.getLanguageId(), addRateParameter.getCompanyId());
                 BeanUtils.copyProperties(addRateParameter, newRateParameter, CommonUtils.getNullPropertyNames(addRateParameter));
-                if (addRateParameter.getRateParameterId() == null || addRateParameter.getRateParameterId().isBlank()) {
+                if ((addRateParameter.getRateParameterId() != null &&
+                        (addRateParameter.getReferenceField10() != null && addRateParameter.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addRateParameter.getRateParameterId() == null || addRateParameter.getRateParameterId().isBlank()) {
                     String NUM_RAN_OBJ = "RATEPARAMETER";
                     String RATE_PARAMETER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for RATE_PARAMETER_ID : " + RATE_PARAMETER_ID);

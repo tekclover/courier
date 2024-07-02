@@ -123,7 +123,7 @@ public class UserManagementService {
             } else if (duplicateCheck.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with given values : userId - " + addUserManagement.getUserId());
             } else {
-                log.info("new User --> " + addUserManagement);
+                log.info("new User --> {}", addUserManagement);
                 UserManagement userManagement = new UserManagement();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addUserManagement.getLanguageId(), addUserManagement.getCompanyId());
                 BeanUtils.copyProperties(addUserManagement, userManagement, CommonUtils.getNullPropertyNames(addUserManagement));
