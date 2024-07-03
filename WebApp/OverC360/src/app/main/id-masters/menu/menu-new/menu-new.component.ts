@@ -124,7 +124,7 @@ export class MenuNewComponent {
       });
       this.spin.show();
       let obj1: any = {};
-      obj1.numberRangeObject = ['SUB_MENU'];
+      obj1.numberRangeObject = ['SUBMENU'];
       this.numberRangeService.search(obj1).subscribe({
         next: (res: any) => {
           if (res.length > 0) {
