@@ -482,13 +482,15 @@ public class ConsoleService {
                             IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
                                     console.getLanguageId(), console.getCompanyId());
 
-                            Double freightCharge = Double.valueOf(console.getFreightCharges());
-
+                            Double freightCharge = null;
+                            if(console.getFreightCharges() != null) {
+                                 freightCharge = Double.valueOf(console.getFreightCharges());
+                            }
                             // Set TotalDuty Value
                             double totalDuty = 0;
                             if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
                                 double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
-                                if (toCurrencyValue != 0 && freightCharge != 0) {
+                                if (toCurrencyValue != 0 && freightCharge != 0 && freightCharge != null) {
                                     totalDuty = toCurrencyValue * freightCharge;
                                     if (totalDuty > 100) {
                                         totalDuty += totalDuty * 0.05;
@@ -530,7 +532,7 @@ public class ConsoleService {
                 Double currentSubGroupValue = 0.0;
 
                 for (AddConsole console : smallerGroups) {
-                    Double freightCharge = Double.parseDouble(console.getFreightCharges());
+                    Double freightCharge = Double.parseDouble(String.valueOf(console.getFreightCharges() != null));
                     IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getFreightCurrency());
 
                     Double toCurrencyValue = 0.0;
@@ -610,12 +612,15 @@ public class ConsoleService {
                         IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
                                 console.getLanguageId(), console.getCompanyId());
 
-                        Double freightCharge = Double.valueOf(console.getFreightCharges());
+                        Double freightCharge = null;
+                        if(console.getFreightCharges() != null) {
+                             freightCharge = Double.valueOf(console.getFreightCharges());
+                        }
                         // Set TotalDuty Value
                         double totalDuty = 0;
                         if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
                             double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
-                            if (toCurrencyValue != 0 && freightCharge != 0) {
+                            if (toCurrencyValue != 0 && freightCharge != 0 && freightCharge != null) {
                                 totalDuty = toCurrencyValue * freightCharge;
                                 if (totalDuty > 100) {
                                     totalDuty += totalDuty * 0.05;
