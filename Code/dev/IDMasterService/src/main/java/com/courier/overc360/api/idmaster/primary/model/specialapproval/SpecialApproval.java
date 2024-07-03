@@ -16,8 +16,7 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(
-        name = "tblspecialapproval",
+@Table(name = "tblspecialapproval",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_specialapproval",
@@ -47,6 +46,12 @@ public class SpecialApproval {
 
     @Column(name = "SPECIAL_APPROVAL_TEXT", columnDefinition = "nvarchar(100)")
     private String specialApprovalText;
+
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;

@@ -18,4 +18,7 @@ public interface ReplicaDistrictRepository extends JpaRepository<ReplicaDistrict
     boolean existsByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndDeletionIndicator(
             String languageId, String companyId, String countryId, String provinceId, String districtId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndDistrictIdAndDeletionIndicator(
+            String languageId, String companyId, String districtId, Long deletionIndicator);
+
 }

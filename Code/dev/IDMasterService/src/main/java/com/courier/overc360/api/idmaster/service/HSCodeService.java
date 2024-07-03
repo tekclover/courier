@@ -13,6 +13,7 @@ import com.courier.overc360.api.idmaster.replica.model.hsCode.FindHSCode;
 import com.courier.overc360.api.idmaster.replica.model.hsCode.ReplicaHSCode;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaHSCodeRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaHSCodeSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class HSCodeService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaCompanyRepository replicaCompanyRepository;
@@ -119,6 +123,10 @@ public class HSCodeService {
                 newHsCode.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newHsCode.setCompanyName(iKeyValuePair.getCompanyDesc());
             }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addHSCode.getStatusId());
+            if (statusDesc != null) {
+                newHsCode.setStatusDescription(statusDesc);
+            }
             if (addHSCode.getSpecialApprovalId() != null) {
                 String specialApprovalDesc = replicaHSCodeRepository.getSpecialApprovalDesc(addHSCode.getSpecialApprovalId(),
                         addHSCode.getLanguageId(), addHSCode.getCompanyId());
@@ -160,6 +168,12 @@ public class HSCodeService {
         try {
             HSCode dbHSCode = getHsCode(languageId, companyId, hsCode);
             BeanUtils.copyProperties(updateHSCode, dbHSCode, CommonUtils.getNullPropertyNames(updateHSCode));
+            if (updateHSCode.getStatusId() != null && !updateHSCode.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateHSCode.getStatusId());
+                if (statusDesc != null) {
+                    dbHSCode.setStatusDescription(statusDesc);
+                }
+            }
             dbHSCode.setUpdatedBy(loginUserID);
             dbHSCode.setUpdatedOn(new Date());
             return hsCodeRepository.save(dbHSCode);

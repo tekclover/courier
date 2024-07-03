@@ -8,6 +8,8 @@ public class UpdateUserType {
 
     private String userTypeDescription;
 
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String referenceField1;

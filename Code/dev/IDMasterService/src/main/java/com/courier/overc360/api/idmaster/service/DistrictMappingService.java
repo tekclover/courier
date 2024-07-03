@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.district.District;
 import com.courier.overc360.api.idmaster.primary.model.districtMapping.AddDistrictMapping;
 import com.courier.overc360.api.idmaster.primary.model.districtMapping.DistrictMapping;
 import com.courier.overc360.api.idmaster.primary.model.districtMapping.UpdateDistrictMapping;
@@ -14,6 +13,8 @@ import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.districtMapping.FindDistrictMapping;
 import com.courier.overc360.api.idmaster.replica.model.districtMapping.ReplicaDistrictMapping;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaDistrictMappingRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaDistrictRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaDistrictMappingSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class DistrictMappingService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
+    private ReplicaDistrictRepository replicaDistrictRepository;
 
     @Autowired
     private DistrictMappingRepository districtMappingRepository;
@@ -90,40 +97,43 @@ public class DistrictMappingService {
     public DistrictMapping createDistrictMapping(AddDistrictMapping addDistrictMapping, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<District> dbDistrict = districtRepository.findByLanguageIdAndCompanyIdAndDistrictIdAndDeletionIndicator
-                    (addDistrictMapping.getLanguageId(), addDistrictMapping.getCompanyId(), addDistrictMapping.getDistrictId(), 0L);
-
-            Optional<DistrictMapping> duplicateDistrictMapping = districtMappingRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator(
-                    addDistrictMapping.getLanguageId(), addDistrictMapping.getCompanyId(),
-                    addDistrictMapping.getPartnerId(), addDistrictMapping.getDistrictId(), 0L);
-
-            if (dbDistrict.isEmpty()) {
+            boolean dbDistrictPresent = replicaDistrictRepository.existsByLanguageIdAndCompanyIdAndDistrictIdAndDeletionIndicator(
+                    addDistrictMapping.getLanguageId(), addDistrictMapping.getCompanyId(), addDistrictMapping.getDistrictId(), 0L);
+            if (!dbDistrictPresent) {
                 throw new BadRequestException("DistrictId - " + addDistrictMapping.getDistrictId() + ", companyId - " + addDistrictMapping.getCompanyId() +
                         " , languageId - " + addDistrictMapping.getLanguageId() + " doesn't exists");
-            } else if (duplicateDistrictMapping.isPresent()) {
+            }
+
+            boolean duplicateDistrictMappingPresent = replicaDistrictMappingRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator(
+                    addDistrictMapping.getLanguageId(), addDistrictMapping.getCompanyId(),
+                    addDistrictMapping.getPartnerId(), addDistrictMapping.getDistrictId(), 0L);
+            if (duplicateDistrictMappingPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : partnerId - " +
                         addDistrictMapping.getPartnerId() + " districtId - " + addDistrictMapping.getDistrictId() + ", companyId - " + addDistrictMapping.getCompanyId() +
                         " and languageId - " + addDistrictMapping.getLanguageId());
-            } else {
-                log.info("new DistrictMapping --> " + addDistrictMapping);
-                IKeyValuePair iKeyValuePair = replicaDistrictMappingRepository.getDescription(addDistrictMapping.getLanguageId(),
-                        addDistrictMapping.getCompanyId(), addDistrictMapping.getDistrictId());
-
-                DistrictMapping newDistrictMapping = new DistrictMapping();
-                BeanUtils.copyProperties(addDistrictMapping, newDistrictMapping, CommonUtils.getNullPropertyNames(addDistrictMapping));
-
-                if (iKeyValuePair != null) {
-                    newDistrictMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newDistrictMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    newDistrictMapping.setDistrictName(iKeyValuePair.getDistrictDesc());
-                }
-                newDistrictMapping.setDeletionIndicator(0L);
-                newDistrictMapping.setCreatedBy(loginUserID);
-                newDistrictMapping.setCreatedOn(new Date());
-                newDistrictMapping.setUpdatedBy(loginUserID);
-                newDistrictMapping.setUpdatedOn(new Date());
-                return districtMappingRepository.save(newDistrictMapping);
             }
+            log.info("new DistrictMapping --> " + addDistrictMapping);
+            IKeyValuePair iKeyValuePair = replicaDistrictMappingRepository.getDescription(addDistrictMapping.getLanguageId(),
+                    addDistrictMapping.getCompanyId(), addDistrictMapping.getDistrictId());
+
+            DistrictMapping newDistrictMapping = new DistrictMapping();
+            BeanUtils.copyProperties(addDistrictMapping, newDistrictMapping, CommonUtils.getNullPropertyNames(addDistrictMapping));
+
+            if (iKeyValuePair != null) {
+                newDistrictMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newDistrictMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
+                newDistrictMapping.setDistrictName(iKeyValuePair.getDistrictDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addDistrictMapping.getStatusId());
+            if (statusDesc != null) {
+                newDistrictMapping.setStatusDescription(statusDesc);
+            }
+            newDistrictMapping.setDeletionIndicator(0L);
+            newDistrictMapping.setCreatedBy(loginUserID);
+            newDistrictMapping.setCreatedOn(new Date());
+            newDistrictMapping.setUpdatedBy(loginUserID);
+            newDistrictMapping.setUpdatedOn(new Date());
+            return districtMappingRepository.save(newDistrictMapping);
         } catch (Exception e) {
             // Error Log
             createDistrictMappingLog2(addDistrictMapping, e.toString());
@@ -155,6 +165,12 @@ public class DistrictMappingService {
         try {
             DistrictMapping dbDistrictMapping = getDistrictMapping(languageId, companyId, partnerId, districtId);
             BeanUtils.copyProperties(updateDistrictMapping, dbDistrictMapping, CommonUtils.getNullPropertyNames(updateDistrictMapping));
+            if (updateDistrictMapping.getStatusId() != null && !updateDistrictMapping.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateDistrictMapping.getStatusId());
+                if (statusDesc != null) {
+                    dbDistrictMapping.setStatusDescription(statusDesc);
+                }
+            }
             dbDistrictMapping.setUpdatedBy(loginUserID);
             dbDistrictMapping.setUpdatedOn(new Date());
             return districtMappingRepository.save(dbDistrictMapping);

@@ -18,6 +18,9 @@ public interface ReplicaMenuRepository extends JpaRepository<ReplicaMenu, Long>,
     Optional<ReplicaMenu> findByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndAuthorizationObjectIdAndDeletionIndicator(
             String languageId, String companyCode, Long menuId, Long subMenuId, Long authorizationObjectId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+            String languageId, String companyCode, Long menuId, Long subMenuId, Long deletionIndicator);
+
     List<ReplicaMenu> findByMenuId(Long menuId);
 
     List<ReplicaMenu> findBySubMenuId(Long subMenuId);

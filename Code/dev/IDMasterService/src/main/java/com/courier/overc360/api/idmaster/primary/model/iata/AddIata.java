@@ -27,6 +27,9 @@ public class AddIata {
 
     private String iataCharge;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

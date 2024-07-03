@@ -11,6 +11,8 @@ public class UpdateProvinceMapping {
 
     private String partnerProvinceName;
 
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String remark;

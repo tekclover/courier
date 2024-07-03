@@ -12,5 +12,6 @@ public class FindMenu {
     private List<Long> menuId;
     private List<Long> subMenuId;
     private List<Long> authorizationObjectId;
+    private List<String> statusId;
 
 }

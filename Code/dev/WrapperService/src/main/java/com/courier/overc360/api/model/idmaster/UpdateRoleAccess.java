@@ -15,6 +15,8 @@ public class UpdateRoleAccess {
 
 	private String moduleId;
 
+	private String statusId;
+
 	private String referenceField1;
 
 	private String referenceField2;

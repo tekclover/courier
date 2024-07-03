@@ -19,6 +19,10 @@ public class SpecialApproval {
 
     private String specialApprovalText;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
 
     private Long deletionIndicator;

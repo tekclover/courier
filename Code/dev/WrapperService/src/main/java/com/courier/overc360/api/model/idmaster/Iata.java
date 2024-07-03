@@ -27,9 +27,13 @@ public class Iata {
 
     private String currencyDescription;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
 
-    private Long deletionIndicator ;
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -53,11 +57,11 @@ public class Iata {
 
     private String createdBy;
 
-    private Date createdOn ;
+    private Date createdOn;
 
     private String updatedBy;
 
-    private Date updatedOn ;
+    private Date updatedOn;
 
 }
 

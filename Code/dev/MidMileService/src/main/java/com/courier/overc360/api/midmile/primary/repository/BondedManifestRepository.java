@@ -69,7 +69,10 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
             "TO_CURRENCY_ID currencyId \n " +
             "From tblcurrencyexchangerate  \n" +
             "Where \n" +
+            "C_ID IN (:companyId) and \n" +
             "FROM_CURRENCY_ID IN (:freightCurrency) and \n" +
             "is_deleted = 0", nativeQuery = true)
-    IKeyValuePair getToCurrencyValue(@Param(value = "freightCurrency") String freightCurrency);
+    IKeyValuePair getToCurrencyValue(@Param(value = "companyId") String companyId,
+            @Param(value = "freightCurrency") String freightCurrency);
+
 }

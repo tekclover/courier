@@ -29,6 +29,10 @@ public class Menu {
 
     private String companyIdAndDescription;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private Long deletionIndicator;
 
     private String referenceField1;

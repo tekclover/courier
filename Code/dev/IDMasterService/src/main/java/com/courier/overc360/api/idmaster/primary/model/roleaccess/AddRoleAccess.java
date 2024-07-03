@@ -34,6 +34,9 @@ public class AddRoleAccess {
 
     private String description;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;

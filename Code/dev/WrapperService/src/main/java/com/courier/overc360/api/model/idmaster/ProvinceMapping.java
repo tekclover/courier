@@ -29,6 +29,10 @@ public class ProvinceMapping {
 
     private String partnerProvinceName;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
 
     private Long deletionIndicator;

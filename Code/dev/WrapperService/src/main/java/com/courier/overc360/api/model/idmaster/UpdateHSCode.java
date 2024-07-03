@@ -13,6 +13,8 @@ public class UpdateHSCode {
 
     private String specialApprovalId;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

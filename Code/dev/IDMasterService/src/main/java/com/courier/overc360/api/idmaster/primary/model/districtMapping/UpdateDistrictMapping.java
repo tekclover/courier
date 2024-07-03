@@ -9,6 +9,8 @@ public class UpdateDistrictMapping {
 
     private String partnerType;
 
+    private String statusId;
+
     private String remark;
 
     private String partnerDistrictId;
