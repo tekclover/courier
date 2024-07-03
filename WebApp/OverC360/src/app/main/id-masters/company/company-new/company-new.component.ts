@@ -33,8 +33,8 @@ export class CompanyNewComponent {
     private auth: AuthService
   ) {
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
   }
   numCondition: any;
@@ -58,7 +58,7 @@ export class CompanyNewComponent {
     languageDescription: [],
     provinceId: [],
     provinceName: [],
-    statusId: ['1',],
+    statusId: ["16", ],
     statusDescription: [],
     referenceField1: [],
     referenceField2: [],

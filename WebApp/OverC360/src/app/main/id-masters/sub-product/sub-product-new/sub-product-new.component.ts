@@ -33,8 +33,8 @@ export class SubProductNewComponent {
     private auth: AuthService
   ) {
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
   }
 
@@ -51,7 +51,7 @@ export class SubProductNewComponent {
     subProductName: [, Validators.required],
     subProductValue: [, Validators.required],
     remark: [],
-    statusId: ['1',],
+    statusId: ["16", ],
     statusDescription: [],
     referenceField1: [, Validators.required],
     referenceField10: [],
