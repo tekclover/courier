@@ -32,7 +32,7 @@ export class ConsignorComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
@@ -53,6 +53,7 @@ export class ConsignorComponent {
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'productName', header: 'Product' },
       { field: 'customerName', header: 'Customer' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remarks' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -64,6 +65,7 @@ export class ConsignorComponent {
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'productId', header: 'Product ID' },
       { field: 'customerId', header: 'Customer ID' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
