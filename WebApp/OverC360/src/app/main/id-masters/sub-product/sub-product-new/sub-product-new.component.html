@@ -2,132 +2,94 @@
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">Sub Product - {{this.pageToken.pageflow}}</p>
     </div>
-    <div class="w-75 mt-4 mx-auto">
+    <div class="mx-auto mt-4">
         <form [formGroup]="form">
-            <p-stepper [(activeStep)]="active">
-                <p-stepperPanel>
-                    <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-                        <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
-                            <div class=" d-flex justify-content-center align-items-center">
-                                <p *ngIf="active == 0;" class="circle borderCircle mb-0">1</p>
-                                <img *ngIf="active != 0;" src="./assets/dashboard/tick.png" alt="" srcset="">
-                            </div>
-                            <div>
-                                <p class="mb-0 mt-2 f600 textBlack">General</p>
-                            </div>
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="content" let-nextCallback="nextCallback">
-                        <div class="row scrollNew">
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
-                                <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
-                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('languageId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
-                                <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
-                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('companyId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Sub Product ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="subProductId"
-                                    class="w-100" pInputText placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Sub Product Name</p>
-                                <input maxlength="100" pInputText formControlName="subProductName"
-                                    [ngClass]="form.get('subProductName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class=" w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('subProductName')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Sub Product Value</p>
-                                <input maxlength="100" pInputText formControlName="subProductValue"
-                                    [ngClass]="form.get('subProductValue')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class=" w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('subProductValue')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Value Description</p>
-                                <input maxlength="100" pInputText formControlName="referenceField1"
-                                    [ngClass]="form.get('referenceField1')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class=" w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('referenceField1')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
-                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
-                                    formControlName="statusId" placeholder="Select " />
+            <div class="d-flex-row">
+                <div class="row scrollNew">
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Language</p>
+                        <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
+                            [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                        <mat-error *ngIf="errorHandling('languageId')"
+                            class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Company</p>
+                        <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
+                            [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                        <mat-error *ngIf="errorHandling('companyId')"
+                            class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Sub Product ID</p>
+                        <input maxlength="50" pInputText pKeyFilter="alphanum"
+                            formControlName="subProductId" class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0 required">Sub Product Name</p>
+                        <input maxlength="100" pInputText formControlName="subProductName"
+                            [ngClass]="form.get('subProductName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            class=" w-100" pInputText placeholder="Enter" />
+                        <mat-error *ngIf="errorHandling('subProductName')"
+                            class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                        <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                            formControlName="statusId" placeholder="Select " />
 
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Remark</p>
-                                <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
-                                    placeholder="Enter" />
-                            </div>
-                        </div>
-                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
-                            <button class="buttom1 textBlack mx-1"
-                                routerLink="/main/idMaster/subProduct">Cancel</button>
-                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
-                                !=
-                                'New' ? 'Update': 'Save'}}</button>
-                        </div>
-                    </ng-template>
-                </p-stepperPanel>
-                <p-stepperPanel *ngIf="this.pageToken.pageflow != 'New'">
-                    <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-                        <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <p class="circle mb-0" [ngClass]="active == 2 ? 'borderCircle' : 'disabled text-muted'">
-                                    2</p>
-                            </div>
-                            <div>
-                                <p class="mb-0 mt-2 f600" [ngClass]="active == 2 ? 'textBlack f600' : 'text-muted'">
-                                    Admin</p>
-                            </div>
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="content" let-prevCallback="prevCallback">
-                        <div class="row">
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Created By</p>
-                                <input type="text" formControlName="createdBy" class=" w-100" pInputText
-                                    placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Created On</p>
-                                <input type="text" formControlName="createdOn" class=" w-100" pInputText
-                                    placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Updated By</p>
-                                <input type="text" formControlName="updatedBy" class=" w-100" pInputText
-                                    placeholder="Enter" />
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Updated On</p>
-                                <input type="text" formControlName="updatedOn" class=" w-100" pInputText
-                                    placeholder="Enter" />
-                            </div>
-                        </div>
-                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
-                            <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
-                            <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
-                                !=
-                                'New' ? 'Update': 'Save'}}</button>
-                        </div>
-                    </ng-template>
-                </p-stepperPanel>
-            </p-stepper>
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Remark</p>
+                        <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
+                            placeholder="Enter" />
+                    </div>
+                </div>                                
+                <div class="d-flex justify-content-end mb-3">
+                    <button (click)="add()" type="button"
+                        class="btn ml-2 addNewbuttom bgBlack text-white"><i
+                            class="bi bi-plus-square pr-2"></i>Add Values</button>
+                </div>
+
+                <div class="d-flex-row">
+                    <form [formGroup]="piece" class="mt-1">
+                        <p-table [scrollable]="true" scrollHeight="calc(100vh - 31.8rem)"
+                            [value]="subProductArray">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Sub Product Value</th>
+                                    <th>Value Description</th>
+                                    <th style="text-align: center;">Actions</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
+                                <tr>
+                                    <td>
+                                        <!-- <input class="inputborderLess pl-3" placeholder="Enter" [value]="i"
+                                            formControlName="subProductValue"> -->
+                                        <p class="w-100 pl-2"  formControlName="subProductValue">{{ i }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="w-100 pl-2"  formControlName="referenceField1">{{ i }}</p>
+                                    </td>
+                                    <td>
+                                        <img src="./assets/common/edit.png" alt="" width="24px" height="24px" >
+                                        <img type="button" (click)="removeItem(i)"
+                                            src="./assets/common/deletetool.png" alt="" srcset=""
+                                         width="24px" height="24px">
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                <button class="buttom1 textBlack mx-1"
+                    routerLink="/main/idMaster/subProduct">Cancel</button>
+                <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                    != 'New' ? 'Update': 'Save'}}</button>
+            </div>
         </form>
     </div>
 </div>

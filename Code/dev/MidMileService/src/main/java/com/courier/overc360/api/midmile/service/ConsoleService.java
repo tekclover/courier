@@ -495,7 +495,9 @@ public class ConsoleService {
                                 }
                             }
 
-                            newConsole.setIataKd(iataData.getCurrencyValue());
+                            if(iataData.getIataKd() != null) {
+                                newConsole.setIataKd(iataData.getCurrencyValue());
+                            }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setCustomsValue(CUS_VAL);
                             newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
@@ -536,8 +538,12 @@ public class ConsoleService {
                         totalDuty += 4;
                     }
 
-                    Double iataValue = Double.parseDouble(ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId()).getIataKd());
-                    Double recordValue = iataValue + totalDuty;
+                    IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
+                    Double iataKd = 0.0;
+                    if(iataValue != null && iataValue.getIataKd() != null) {
+                         iataKd = Double.valueOf(iataValue.getIataKd());
+                    }
+                    Double recordValue = iataKd + totalDuty;
 
                     if (currentSubGroupValue + recordValue > 5000) { // 5000
                         subGroups.add(currentSubGroup);
@@ -556,7 +562,7 @@ public class ConsoleService {
                 // Process each subgroup
                 for (List<AddConsole> subGroup : subGroups) {
                     // Generate a new CONSOLE_ID for each subgroup
-                    String NUM_RAN_OBJ = "CONSOLE_ID";
+                    String NUM_RAN_OBJ = "CONSOLEID";
                     String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 
                     for (AddConsole console : subGroup) {
@@ -585,10 +591,11 @@ public class ConsoleService {
 
                         // Customs Value set multiply formula
                         String CUS_VAL = null;
-                        if (console.getConsignmentValue() != null && iKeyValuePair.getCurrencyValue() != null) {
+                        if (console.getConsignmentValue() != null && iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
                             Double CON_VAL = Double.valueOf(console.getConsignmentValue());
                             Double CURR_VAL = Double.valueOf(iKeyValuePair.getCurrencyValue());
                             CUS_VAL = String.valueOf(CON_VAL * CURR_VAL);
+                            newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
                         }
 
                         // Get Iatakd
@@ -598,7 +605,7 @@ public class ConsoleService {
                         Double freightCharge = Double.valueOf(console.getFreightCharges());
                         // Set TotalDuty Value
                         double totalDuty = 0;
-                        if (iKeyValuePair.getCurrencyValue() != null) {
+                        if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
                             double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
                             if (toCurrencyValue != 0 && freightCharge != 0) {
                                 totalDuty = toCurrencyValue * freightCharge;
@@ -611,10 +618,12 @@ public class ConsoleService {
                             }
                         }
 
-                        newConsole.setIataKd(iataData.getCurrencyValue());
+                        if(iataData != null && iataData.getIataKd() != null) {
+                            newConsole.setIataKd(iataData.getCurrencyValue());
+                        }
+
                         newConsole.setExpectedDuty(String.valueOf(totalDuty));
                         newConsole.setCustomsValue(CUS_VAL);
-                        newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
                         newConsole.setConsoleId(CONSOLE_ID);
                         newConsole.setStatusId(STATUS_ID);
                         newConsole.setDeletionIndicator(0L);
@@ -730,7 +739,7 @@ public class ConsoleService {
 
                 if ((updatedConsole.getEventCode()).equalsIgnoreCase("8")) {
                     //Fetch the console records based on houseAirwayBill
-                    List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getHouseAirwayBill());
+                    List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
                     //Check whether all the consoleData's eventcode is equal to 8
                     boolean allEventCodes = consoleData.stream()

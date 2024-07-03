@@ -14,7 +14,7 @@ export class CcrService {
   }
 
   Create(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/ccr/create/list', obj);
+    return this.http.post<any>('/overc-midmile-service/ccr/create/list', obj);  
   }
 
   Update(obj: any) {

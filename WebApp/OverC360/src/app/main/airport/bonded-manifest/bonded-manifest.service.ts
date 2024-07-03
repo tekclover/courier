@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../../core/core';
 
-@Injectable({
+@Injectable({ 
   providedIn: 'root'
 })
 export class BondedManifestService {
@@ -10,20 +10,20 @@ export class BondedManifestService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
  
-  Get(partnerId: string) {
-    return this.http.get<any>('/overc-midmile-service/console/' + partnerId);
+  Get(obj: any) {
+    return this.http.get<any>('/overc-midmile-service/bondedManifest/' + obj);
   }
-
+ 
   Create(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/bondedManifest/create/list', obj);
+    return this.http.post<any>('/overc-midmile-service/bondedManifest/create', obj);
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/console/'+ obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId, obj);
+    return this.http.patch<any>('/overc-midmile-service/bondedManifest/', obj);
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/console/' + obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId);
+    return this.http.delete<any>('/overc-midmile-service/bondedManifest/' + obj);
   }
 
   search(obj: any) {

@@ -18,6 +18,10 @@ public interface ReplicaCityMappingRepository extends JpaRepository<ReplicaCityM
     Optional<ReplicaCityMapping> findByLanguageIdAndCompanyIdAndCityIdAndPartnerIdAndDeletionIndicator(
             String languageId, String companyId, String cityId, String partnerId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndCityIdAndPartnerIdAndDeletionIndicator(
+            String languageId, String companyId, String cityId, String partnerId, Long deletionIndicator);
+
+
     // Get Description
     @Query(value = "Select \n" +
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +

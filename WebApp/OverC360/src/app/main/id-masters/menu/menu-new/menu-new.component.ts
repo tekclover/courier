@@ -46,7 +46,7 @@ export class MenuNewComponent {
     subMenuId: [, Validators.required],
     subMenuName: [, Validators.required],
     authorizationObject: [],
-    authorizationObjectId: [, Validators.required],
+    authorizationObjectId: [],
     authorizationObjectValue: [],
     referenceField1: [],
     referenceField10: [],

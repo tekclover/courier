@@ -5,10 +5,8 @@ import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.hub.AddHub;
 import com.courier.overc360.api.idmaster.primary.model.hub.Hub;
 import com.courier.overc360.api.idmaster.primary.model.hub.UpdateHub;
-import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.HubRepository;
-import com.courier.overc360.api.idmaster.primary.repository.ProvinceRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.hub.FindHub;
@@ -16,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.hub.ReplicaHub;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaHubRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaProvinceRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaHubSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +37,9 @@ import java.util.stream.Collectors;
 public class HubService {
 
     @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
     private ReplicaCompanyRepository replicaCompanyRepository;
 
     @Autowired
@@ -45,9 +47,6 @@ public class HubService {
 
     @Autowired
     private HubRepository hubRepository;
-
-    @Autowired
-    private CompanyRepository companyRepository;
 
     @Autowired
     private ReplicaHubRepository replicaHubRepository;
@@ -132,6 +131,10 @@ public class HubService {
                 newHub.setCountryName(iKeyValuePair.getCountryDesc());
                 newHub.setCityName(iKeyValuePair.getCityDesc());
             }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addHub.getStatusId());
+            if (statusDesc != null) {
+                newHub.setStatusDescription(statusDesc);
+            }
             if (addHub.getProvinceId() != null) {
                 String provinceName = replicaProvinceRepository.getProvinceName(addHub.getLanguageId(), addHub.getCompanyId(),
                         addHub.getCountryId(), addHub.getProvinceId());
@@ -173,6 +176,12 @@ public class HubService {
         try {
             Hub dbHub = getHub(languageId, companyId, hubCode);
             BeanUtils.copyProperties(updateHub, dbHub, CommonUtils.getNullPropertyNames(updateHub));
+            if (updateHub.getStatusId() != null && !updateHub.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateHub.getStatusId());
+                if (statusDesc != null) {
+                    dbHub.setStatusDescription(statusDesc);
+                }
+            }
             dbHub.setUpdatedBy(loginUserID);
             dbHub.setUpdatedOn(new Date());
             return hubRepository.save(dbHub);

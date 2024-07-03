@@ -92,6 +92,12 @@ public class CcrService {
                         addCcr.getPartnerId(), addCcr.getMasterAirwayBill(),
                         addCcr.getHouseAirwayBill(), addCcr.getConsoleId()) == 1;
 
+                Optional<Ccr> duplicateConsole =  ccrRepository.findByHouseAirwayBill(addCcr.getHouseAirwayBill());
+                if(duplicateConsole.isPresent())
+                {
+                    throw new BadRequestException("Record is getting Duplicated with given value: houseAirwayBill - " + addCcr.getHouseAirwayBill());
+                }
+
                 //Check IsExempted status and throw error
 //                if (addCcr.getIsExempted().equalsIgnoreCase("Yes")) {
 //                    if (addCcr.getExemptionFor() == null || addCcr.getExemptionBeneficiary() == null || addCcr.getExemptionReference() == null) {
@@ -140,7 +146,7 @@ public class CcrService {
 
 
                 String STATUS_ID = "2 - Ccr Created";
-                String NUM_RAN_OBJ = "CCR_ID";
+                String NUM_RAN_OBJ = "CCRID";
                 String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
                 newCcr.setCcrId(CCR_ID);

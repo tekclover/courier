@@ -336,9 +336,9 @@ public class MidMileController {
     public ResponseEntity<?> getCcr(@PathVariable String ccrId, @RequestParam String languageId,
                                     @RequestParam String companyId, @RequestParam String partnerId,
                                     @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
-                                    @RequestParam String consoleId, @RequestParam String customsCcrNo, @RequestParam String authToken) {
+                                    @RequestParam String consoleId, @RequestParam String authToken) {
         Ccr ccr = midMileService.getCcr(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId, customsCcrNo, authToken);
+                masterAirwayBill, houseAirwayBill, consoleId, ccrId, authToken);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 

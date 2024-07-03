@@ -25,6 +25,8 @@ public class AddPartnerHubMapping {
     @NotBlank(message = "Partner Type is mandatory")
     private String partnerType;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;
