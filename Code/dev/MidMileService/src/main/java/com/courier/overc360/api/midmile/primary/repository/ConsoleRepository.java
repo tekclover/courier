@@ -39,9 +39,9 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
 
     @Query(value = "Select * From tblconsole tc \n" +
             "Where \n"+
-            "tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill) and \n" +
+            "tc.CONSOLE_ID IN (:consoleId) and \n" +
             "tc.is_deleted = 0 ", nativeQuery =  true)
-    List<Console> getConsoleData(@Param(value = "houseAirwayBill") String houseAirwayBill);
+    List<Console> getConsoleData(@Param(value = "consoleId") String consoleId);
 
     Console findByHouseAirwayBillAndConsoleIdAndDeletionIndicator(String houseAirwayBill, String fromConsole, Long deletionIndicator);
 

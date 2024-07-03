@@ -61,7 +61,7 @@ export class ConsignmentNewComponent {
     partnerType: [],
     partnerId: [, Validators.required],
     partnerName: [,],
-    statusId: [, ],
+    statusId: [,],
     paymentType: [,],
     productId: [],
     productName: [],
@@ -89,7 +89,7 @@ export class ConsignmentNewComponent {
   });
 
   carrierInfo = this.fb.group({
-   
+
   })
 
 
@@ -119,7 +119,7 @@ export class ConsignmentNewComponent {
     addressLine1: [],
     addressLine2: [],
     alternatePhone: [],
-    city: [, ],
+    city: [,],
     companyName: [],
     country: [],
     district: [],
@@ -140,13 +140,14 @@ export class ConsignmentNewComponent {
   })
 
   deliveryInfo = this.fb.group({
-    consigneeName: [, ],
+    consigneeName: [,],
     consigneeCivilId: [],
     destinationDetails: this.DestinationDetails
   })
 
   billing = this.fb.group({
     incoTerms: [],
+    paymentType: [],
     currency: [],
     freightCurrency: [],
     freightCharges: [],
@@ -206,7 +207,7 @@ export class ConsignmentNewComponent {
     updatedOn: ['',],
     createdOn: ['',],
     createdBy: [,],
-  originDetails: [],
+    originDetails: [],
   });
 
 
@@ -218,7 +219,7 @@ export class ConsignmentNewComponent {
   }
   createItemFormGroup(): FormGroup {
     return this.fb.group({
-      id: [this.pieceDetails.value.length, ],
+      id: [this.pieceDetails.value.length,],
       tags: [],
       volume: [],
       pieceValue: [],
@@ -260,7 +261,7 @@ export class ConsignmentNewComponent {
   errorHandlingDelivery(control: string, error: string = 'required') {
     const controlInstance = this.deliveryInfo.get(control);
     return controlInstance && controlInstance.hasError(error) && this.submitted;
-  }  
+  }
   errorHandlingBilling(control: string, error: string = 'required') {
     const controlInstance = this.billing.get(control);
     return controlInstance && controlInstance.hasError(error) && this.submitted;
@@ -293,12 +294,6 @@ export class ConsignmentNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
-
-     this.disabledConsignment = true;
-     this.disabledPiece = true;
-     this.disabledSender = true;
-     this.disabledDelivery = true;
-     this.disabledBilling = true;
     }
   }
 
@@ -314,10 +309,11 @@ export class ConsignmentNewComponent {
       next: (results: any) => {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
         this.districtList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
-
         this.spin.hide();
+        console.log(2)
       },
       error: (err: any) => {
+        console.log(2)
         this.spin.hide();
         this.cs.commonerrorNew(err);
       },
@@ -330,23 +326,32 @@ export class ConsignmentNewComponent {
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
 
+    this.disabledConsignment = false;
+    this.disabledPiece = false;
+    this.disabledSender = false;
+    this.disabledDelivery = false;
+    this.disabledBilling = false;
 
     this.shipmentInfo.patchValue(line),
+      this.consignment.patchValue(line),
+      this.senderInfo.patchValue(line),
+      this.deliveryInfo.patchValue(line),
+      this.billing.patchValue(line),
 
 
-    line.forEach((res:any) => {
-      this.pieceDetails.push(this.fb.group(res));
-    });
+      line.pieceDetails.forEach((res: any) => {
+        this.pieceDetails.push(this.fb.group(res));
+      });
   }
 
-  opendialog(type: any = 'New', data: any){
+  opendialog(type: any = 'New', data: any) {
     console.log(data)
     const dialogRef = this.dialog.open(PieceDetailsComponent, {
       disableClose: true,
       width: '90%',
       maxWidth: '95%',
       position: { top: '6.5%', left: '10%' },
-      data: data,
+      data: { pageflow: type, line: this.pageToken.pageflow != 'New' ? this.pageToken.line.pieceDetails : data },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -357,7 +362,7 @@ export class ConsignmentNewComponent {
   }
 
   selectedFiles: any[] = [];
-  selectFiles(event:any): void {
+  selectFiles(event: any): void {
     this.selectedFiles = event.target.files;
   }
 
@@ -428,9 +433,9 @@ export class ConsignmentNewComponent {
       });
     }
   }
-  
-  calculateVolume(formName: any){
-    const volume =  formName.controls.length.value as number *  formName.controls.width.value as number *  formName.controls.height.value as number;
+
+  calculateVolume(formName: any) {
+    const volume = formName.controls.length.value as number * formName.controls.width.value as number * formName.controls.height.value as number;
     formName.controls.volume.patchValue(volume);
   }
 
@@ -493,7 +498,7 @@ export class ConsignmentNewComponent {
       this.disabledPiece = false;
     }
   }
-  savePiece(){
+  savePiece() {
     this.activeIndex = 3;
     this.submitted = false;
     this.disabledSender = false;
@@ -551,10 +556,15 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      // this.activeIndex = 5;
-      // this.submitted = false;
-      // this.disabledBilling = false;
-      this.saveFinal();
+      if (this.pageToken.pageflow != 'New') {
+        this.activeIndex = 5;
+        this.submitted = false;
+        this.disabledBilling = false;
+      } else {
+        this.saveFinal();
+      }
+
+
     }
   }
   saveBilling() {
@@ -571,7 +581,6 @@ export class ConsignmentNewComponent {
         }
       }
     }
-
     if (this.billing.invalid) {
       this.messageService.add({
         severity: 'error',
@@ -581,44 +590,61 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      // this.activeIndex = 7;
-      // this.submitted = false;
       this.saveFinal();
     }
   }
 
-mainForm: FormGroup = new FormGroup({
+  mainForm: FormGroup = new FormGroup({
 
-});
-
-saveFinal(){
-  this.mainForm = this.fb.group({
-    ...this.shipmentInfo.value,
-    ...this.consignment.value,
-    ...this.senderInfo.value,
-    ...this.deliveryInfo.value,
-    ...this.billing.value,
-    pieceDetails: this.pieceDetails,
-    updatedBy: [,],
-    updatedOn: ['',],
-    createdOn: ['',],
-    createdBy: [,],
-    companyId: [this.auth.companyId,]
   });
 
-  this.service.Create([this.mainForm.getRawValue()]).subscribe({next: (res) => {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Updated',
-      key: 'br',
-      detail: res.consignmentId + ' has been created successfully',
+  saveFinal() {
+    this.mainForm = this.fb.group({
+      ...this.shipmentInfo.value,
+      ...this.consignment.value,
+      ...this.senderInfo.value,
+      ...this.deliveryInfo.value,
+      ...this.billing.value,
+      pieceDetails: this.pieceDetails,
+      updatedBy: [,],
+      updatedOn: ['',],
+      createdOn: ['',],
+      createdBy: [,],
+      companyId: [this.auth.companyId,]
     });
-    this.router.navigate(['/main/operation/consignment']);
-  }, error: (err) =>{
-    this.spin.hide();
-    this.cs.commonerrorNew(err);
-  }})
-}
+
+   if(this.pageToken.pageflow != 'New'){
+    this.service.Update([this.mainForm.getRawValue()]).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: res[0].consignmentId + ' has been updated successfully',
+        });
+        this.router.navigate(['/main/operation/consignment']);
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
+   }else{
+    this.service.Create([this.mainForm.getRawValue()]).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: res[0].consignmentId + ' has been created successfully',
+        });
+        this.router.navigate(['/main/operation/consignment']);
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
+   }
+  }
 }
 
 

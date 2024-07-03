@@ -46,7 +46,7 @@ export class BondedManifestComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'shipperName', header: 'shipper Name' },
+      { field: 'shipperName', header: 'Shipper Name' },
       { field: 'consigneeName', header: 'Consignee Name' },
       { field: 'statusId', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },

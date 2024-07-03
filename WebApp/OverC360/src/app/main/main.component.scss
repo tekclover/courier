@@ -289,7 +289,7 @@ mat-sidenav-container {
     z-index: 1000;
     flex-direction: column;
     width: 180px;
-  height: 250px;
+    height: 250px;
     overflow-x: hidden;
     overflow-y: hidden;
     transition: all .4s ease-in;
@@ -297,7 +297,7 @@ mat-sidenav-container {
     .listSelector {
       width: 5px;
       height: 34.4px;
-      background: #181717;
+      background: white;
       margin-left: 5px;
       border-radius: 20px;
     }
@@ -320,7 +320,7 @@ mat-sidenav-container {
     }
   
     .sublevel-link-text {
-      margin-left: 0.2rem;
+      margin-left: 1.2rem;
     }
   
     .sublevel-nav-item:hover {

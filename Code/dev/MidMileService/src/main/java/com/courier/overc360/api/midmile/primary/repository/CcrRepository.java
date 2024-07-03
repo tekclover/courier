@@ -50,6 +50,7 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
                             @Param(value = "languageId") String languageId,
                             @Param(value = "companyId") String companyId);
 
+    Optional<Ccr> findByHouseAirwayBill(String houseAirwayBill);
 
 }
 

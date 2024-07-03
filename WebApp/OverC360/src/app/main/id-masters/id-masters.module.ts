@@ -59,6 +59,7 @@ import { UsersNewComponent } from './users/users-new/users-new.component';
 import { RateParameterComponent } from './rate-parameter/rate-parameter.component';
 import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/rate-parameter-new.component';
 import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
+import { SubProductsValuesComponent } from './sub-product/sub-products-values/sub-products-values.component';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.co
     RateParameterComponent,
     RateParameterNewComponent,
     UserRoleNewComponent,
+    SubProductsValuesComponent,
   ],
   imports: [
     CommonModule,

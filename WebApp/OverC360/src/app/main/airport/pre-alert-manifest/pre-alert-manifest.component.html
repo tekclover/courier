@@ -31,14 +31,14 @@
 
     <div class="tableProperties">
         <p-table #preAlertManifestTag [columns]="cols" [value]="preAlertManifestTable" class="custom-table" [scrollable]="true"
-            selectionMode="single" sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
+            selectionMode="single" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedPreAlertManifest" scrollHeight="calc(100vh - 19.8rem)"
             [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
             (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consignmentId"  rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
-                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                        <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
                     </th>
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3 invisible" [disabled]="true"></p-tableHeaderCheckbox>
@@ -49,10 +49,11 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                <tr [class.selectedRow]="selectedPreAlertManifest[0] === rowData">
+                <tr ><!--[class.selectedRow]="selectedPreAlertManifest[0] === rowData"-->
                     <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-3"
-                            [value]="rowData"></p-checkbox>
+                        <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-3"
+                            [value]="rowData"></p-checkbox> -->
+                            <p-tableCheckbox  class="pl-3" [value]="rowData" />
                     </td>
                     <td style="width: 5rem; justify-content: center;">
                         <i style="font-size: 14px;" [pRowToggler]="rowData" [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>

@@ -514,7 +514,6 @@
                                 <th>HS Code</th>
                                 <th>Piece Value</th>
                                 <th>Piece Currency</th>
-                                <th>HS code</th>
                                 <th>Declared Value</th>
                                 <th>COD Amount</th>
                                 <th style="width: 10rem; justify-content: center;">Actions</th>
@@ -590,7 +589,7 @@
                                 <td class="d-flex justify-content-center">
                                     <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png"
                                         alt="" srcset="" style="height: 1.4rem;">
-                                    <i type="button" (click)="opendialog('New', item)"
+                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, item)"
                                         class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
                                     <input type="file" #fileInput multiple style="display:none"
                                         (change)="selectFiles($event)" />
@@ -922,15 +921,23 @@
                     </div>
                     <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
-                        <button class="buttom1 bgBlack text-white mx-1" (click)="saveDelivery()">Next</button>
+                        <button class="buttom1 bgBlack text-white mx-1" (click)="saveDelivery()">{{ this.pageToken.pageflow != "New" ? "Next" : "Save" }}</button>
                     </div>
                 </form>
             </p-tabPanel>
             <p-tabPanel header="Billing" [disabled]="disabledBilling" *ngIf="this.pageToken.pageflow != 'New'">
                 <form [formGroup]="billing">
                     <div class="row scrollNew22">
-                        <div class="col-3 marginFieldNew borderRadius12" id="incoTerms">
+                        <div class="col-3 marginFieldNew borderRadius12" id="paymentType">
                             <p class="formControlLabel f600 textBlack mb-0">Payment Type</p>
+                            <input maxlength="50" formControlName="paymentType"
+                                [ngClass]="senderInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingBilling('paymentType')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="incoTerms">
+                            <p class="formControlLabel f600 textBlack mb-0">Inco Terms</p>
                             <input maxlength="50" formControlName="incoTerms"
                                 [ngClass]="senderInfo.get('incoTerms')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
@@ -1059,7 +1066,7 @@
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceUrl">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice URL </p>
-                            <input maxlength="50" formControlName="invoiceUrl"
+                            <input maxlength="500" formControlName="invoiceUrl"
                                 [ngClass]="senderInfo.get('invoiceUrl')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('invoiceUrl')"
@@ -1101,7 +1108,7 @@
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
-                    <button class="buttom1 bgBlack text-white mx-1" (click)="saveBilling()">Next</button>
+                    <button class="buttom1 bgBlack text-white mx-1" (click)="saveBilling()">Save</button>
                 </div>
             </p-tabPanel>
 
