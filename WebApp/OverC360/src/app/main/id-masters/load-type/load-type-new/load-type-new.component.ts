@@ -50,6 +50,7 @@ export class LoadTypeNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
+    statusId: ["16",],
     statusDescription: [],
     createdOn: ['',],
     createdBy: [],
@@ -66,7 +67,6 @@ export class LoadTypeNewComponent {
     referenceField9: [],
     referenceField10: [],
     remark: [],
-    statusId: ["16",],
   });
 
   submitted = false;
