@@ -90,8 +90,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeName">
                                 <p class="formControlLabel f600 textBlack mb-0">Consignee Name</p>
-                                <p-dropdown [options]="consigneeList" placeholder="Select" filter="true" formControlName="consigneeName" appendTo="body"
-                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                <input maxlength="50" pInputText formControlName="consigneeName" [ngClass]="form.get('consigneeName')?.invalid && form.get('consigneeName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('consigneeName')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
@@ -104,8 +103,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="consignmentValue">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Consignment Value</p>
-                                <p-dropdown [options]="consignmentList" placeholder="Select" filter="true" formControlName="consignmentValue" appendTo="body"
-                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                <input maxlength="50" pInputText formControlName="consignmentValue" [ngClass]="form.get('consignmentValue')?.invalid && form.get('consignmentValue')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('consignmentValue')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>

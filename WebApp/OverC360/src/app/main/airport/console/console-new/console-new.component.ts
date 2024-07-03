@@ -176,8 +176,7 @@ export class ConsoleNewComponent {
   originCodeList: any[] =[];
   currencyIdList: any[] = [];
   consignorIdList: any[] = [];
-  consignmentList: any[] =[];
-  consigneeList: any[] =[];
+  
 
 
 
@@ -187,11 +186,10 @@ export class ConsoleNewComponent {
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.currency.url,
-      this.cas.dropdownlist.setup.consignee.url,
-      this.cas.dropdownlist.setup.consignment.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.consignor.url,
       this.cas.dropdownlist.setup.iata.url,
+
 
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
@@ -200,8 +198,6 @@ export class ConsoleNewComponent {
       this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
       this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
       this.iataList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.iata.key);
-      this.consigneeList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.consignee.key);
-      this.consignmentList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignment.key);
 
       this.spin.hide();
     },
@@ -287,21 +283,6 @@ export class ConsoleNewComponent {
   }
 
   hawbChanged(){
-    let obj: any = {};
-    obj.companyId = [this.auth.companyId];
-    obj.masterAirwayBill = [this.form.controls.masterAirwayBill.value]
-    obj.houseAirwayBill = [this.form.controls.houseAirwayBill.value]
-    this.spin.show();
-    this.consignmentService.search(obj).subscribe({next: (result) => {
-      this.form.patchValue(result[0]);
-      this.spin.hide();
-    }, error: (err) =>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }})
-  }
-
-  ConsignmentChanged(){
     let obj: any = {};
     obj.companyId = [this.auth.companyId];
     obj.masterAirwayBill = [this.form.controls.masterAirwayBill.value]

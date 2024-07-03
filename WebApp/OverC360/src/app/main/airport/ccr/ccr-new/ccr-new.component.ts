@@ -8,6 +8,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { CcrService } from '../ccr.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
+import { ConsignmentService } from '../../../operation/consignment/consignment.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class CcrNewComponent {
     private service: CcrService,
     private messageService: MessageService,
     private cas: CommonAPIService,
-    private auth: AuthService
+    private auth: AuthService,
+    private consignmentService: ConsignmentService,
   ) {
     this.status = [
       { value: '2', label: 'Inactive' },
@@ -160,13 +162,17 @@ export class CcrNewComponent {
 
     this.dropdownlist();
 
-    this.form.controls.masterAirwayBill.disable();
-    this.form.controls.houseAirwayBill.disable();
+    this.mawbDropdown();
+
+    this.form.controls.languageId.disable();
+    this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.houseAirwayBill.disable();
+      this.form.controls.languageId.disable();
+      this.form.controls.companyId.disable();
       this.form.controls.masterAirwayBill.disable();
+      this.form.controls.houseAirwayBill.disable();
       this.form.controls.hsCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
@@ -178,18 +184,33 @@ export class CcrNewComponent {
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   countryIdList: any[] = [];
+  mawbList: any[] = [];
+  hawbList: any[] = [];
   hsCodeList: any[] = [];
+  currencyIdList: any[] = [];
+  consignorIdList: any[] = [];
+  consignmentList: any[] =[];
+  consigneeList: any[] =[];
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.currency.url,
+      // this.cas.dropdownlist.setup.consignee.url,
+      // this.cas.dropdownlist.setup.consignment.url,
       this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.consignor.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);  
+        this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
+        this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
+        // this.consigneeList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.consignee.key);
+        // this.consignmentList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignment.key);
+  
         this.spin.hide();
       },
       error: (err: any) => {
@@ -256,5 +277,52 @@ export class CcrNewComponent {
         },
       });
     }
+  }
+
+  mawbDropdown(){
+
+    let obj: any = {};
+    obj.companyId = [this.auth.companyId];
+
+    this.mawbList = [];
+    this.spin.show();
+    this.consignmentService.search(obj).subscribe({next: (result) => {
+    this.mawbList = this.cas.foreachlist(result, {key: 'masterAirwayBill', value: 'masterAirwayBill'});
+    this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
+
+  mawbChanged(){
+    let obj: any = {};
+    obj.companyId = [this.auth.companyId];
+    obj.masterAirwayBill = [this.form.controls.masterAirwayBill.value]
+
+    this.hawbList = [];
+    this.spin.show();
+    this.consignmentService.search(obj).subscribe({next: (result) => {
+      this.hawbList = this.cas.foreachlist(result, {key: 'houseAirwayBill', value: 'houseAirwayBill'});
+      this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
+
+  hawbChanged(){
+    let obj: any = {};
+    obj.companyId = [this.auth.companyId];
+    obj.masterAirwayBill = [this.form.controls.masterAirwayBill.value]
+    obj.houseAirwayBill = [this.form.controls.houseAirwayBill.value]
+    this.spin.show();
+    this.consignmentService.search(obj).subscribe({next: (result) => {
+      this.form.patchValue(result[0]);
+      this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
   }
 }

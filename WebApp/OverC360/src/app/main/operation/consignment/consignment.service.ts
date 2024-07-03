@@ -18,7 +18,7 @@ export class ConsignmentService {
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/consignment/'+ obj.languageId, obj);
+    return this.http.patch<any>('/overc-midmile-service/consignment', obj);
   }
 
   UpdatePreAlertManifest(obj: any) {

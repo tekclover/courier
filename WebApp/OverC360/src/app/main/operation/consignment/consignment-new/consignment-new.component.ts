@@ -581,7 +581,6 @@ export class ConsignmentNewComponent {
         }
       }
     }
-
     if (this.billing.invalid) {
       this.messageService.add({
         severity: 'error',
@@ -621,7 +620,7 @@ export class ConsignmentNewComponent {
           severity: 'success',
           summary: 'Updated',
           key: 'br',
-          detail: res.consignmentId + ' has been updated successfully',
+          detail: res[0].consignmentId + ' has been updated successfully',
         });
         this.router.navigate(['/main/operation/consignment']);
       }, error: (err) => {
@@ -636,7 +635,7 @@ export class ConsignmentNewComponent {
           severity: 'success',
           summary: 'Updated',
           key: 'br',
-          detail: res.consignmentId + ' has been created successfully',
+          detail: res[0].consignmentId + ' has been created successfully',
         });
         this.router.navigate(['/main/operation/consignment']);
       }, error: (err) => {
