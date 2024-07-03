@@ -55,6 +55,10 @@ public class FileStorageService {
 	 */
 	public String storeFile(MultipartFile file, String filePath) throws Exception {
 
+		if(!filePath.startsWith("/")){
+			filePath = "/" + filePath;
+		}
+
 		this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
 		if (!Files.exists(fileStorageLocation)) {
 			try {
