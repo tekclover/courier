@@ -333,10 +333,10 @@ export class ConsignmentNewComponent {
     this.disabledBilling = false;
 
     this.shipmentInfo.patchValue(line),
-      this.consignment.patchValue(line),
-      this.senderInfo.patchValue(line),
-      this.deliveryInfo.patchValue(line),
-      this.billing.patchValue(line),
+    this.consignment.patchValue(line),
+    this.senderInfo.patchValue(line),
+    this.deliveryInfo.patchValue(line),
+    this.billing.patchValue(line),
 
 
       line.pieceDetails.forEach((res: any) => {
@@ -613,37 +613,37 @@ export class ConsignmentNewComponent {
       companyId: [this.auth.companyId,]
     });
 
-   if(this.pageToken.pageflow != 'New'){
-    this.service.Update([this.mainForm.getRawValue()]).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          key: 'br',
-          detail: res[0].consignmentId + ' has been updated successfully',
-        });
-        this.router.navigate(['/main/operation/consignment']);
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-   }else{
-    this.service.Create([this.mainForm.getRawValue()]).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          key: 'br',
-          detail: res[0].consignmentId + ' has been created successfully',
-        });
-        this.router.navigate(['/main/operation/consignment']);
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-   }
+    if (this.pageToken.pageflow != 'New') {
+      this.service.Update([this.mainForm.getRawValue()]).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            key: 'br',
+            detail: res[0].consignmentId + ' has been updated successfully',
+          });
+          this.router.navigate(['/main/operation/consignment']);
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    } else {
+      this.service.Create([this.mainForm.getRawValue()]).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            key: 'br',
+            detail: res[0].consignmentId + ' has been created successfully',
+          });
+          this.router.navigate(['/main/operation/consignment']);
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
   }
 }
 
