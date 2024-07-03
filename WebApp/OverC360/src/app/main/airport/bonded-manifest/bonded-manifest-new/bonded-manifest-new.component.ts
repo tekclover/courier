@@ -56,11 +56,11 @@ export class BondedManifestNewComponent {
   pageToken: any;
   // form builder initialize
   form = this.fb.group({
-    bondedId: [,Validators.required],
+    bondedId: [],
     // billOfLandingNumber: [,Validators.required],
     billOfLandingDate: [],
     description: [],
-    billOfLadingFor: [],
+    billOfLandingFor: [],
     netWeigth: [],
     manifestedGrossWeight: [],
     grossWeight: [],
@@ -77,8 +77,8 @@ export class BondedManifestNewComponent {
     shipper: [, Validators.required],
     remark: [],
     isConsolidatedShipment: [],
-    isSplitBillOfLading: [],
-    consolidatedBillNumber: [],
+    isSplitBillOfLanding: [],
+    consolidatedBillNo: [],
     isPendingShipment: [],  
     bwhInvestor: [],
     createdOn: ['',],
@@ -89,10 +89,9 @@ export class BondedManifestNewComponent {
     actualCurrency: [],
     billOfLoadingFor: [],
     chasisNo: [],
-    companyId: [],
+    companyId: [this.auth.companyId],
     consignmentCurrency: [],
     consignmentValue: [],
-    consolidatedBillNo: [],
     containerNo: [],
     containerSize: [],
     containerType: [],
@@ -117,7 +116,7 @@ export class BondedManifestNewComponent {
     invoiceSupplierName: [],
     invoiceType: [],
     kind: [],
-    languageId: [],
+    languageId: [this.auth.languageId],
     load: [],
     markId: [],
     markType: [],
@@ -176,14 +175,16 @@ export class BondedManifestNewComponent {
 
     this.dropdownlist();
 
-    this.form.controls.consigneeCivilId.disable();
+    this.form.controls.languageId.disable();
+    this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.consigneeCivilId.disable();
+      this.form.controls.languageId.disable();
+      this.form.controls.companyId.disable();
       this.form.controls.shipper.disable();
       this.form.controls.isConsolidatedShipment.disable();
-      this.form.controls.isSplitBillOfLading.disable();
+      this.form.controls.isSplitBillOfLanding.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -195,17 +196,21 @@ export class BondedManifestNewComponent {
   companyIdList: any[] = [];
   countryIdList: any[] = [];
   consigneeCivilIdList: any[] = [];
+  consignorIdList: any[] = [];
+  consigneeList: any[] =[];
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.consignor.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);  
+        this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key); 
+        this.consignorIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
         this.spin.hide();
       },
       error: (err: any) => {

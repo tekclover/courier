@@ -56,6 +56,7 @@ export class CcrNewComponent {
   pageToken: any;
   // form builder initialize
   form = this.fb.group({
+
     masterAirwayBill: [, Validators.required],
     houseAirwayBill: [, Validators.required],
     consigneeName: [, Validators.required],
@@ -92,7 +93,7 @@ export class CcrNewComponent {
     
     airportOriginCode: [],
     actualCurrency: [],
-    companyId: [],
+    companyId: [this.auth.companyId],
     consignmentCurrency: [],
     consignmentValue: [],
     consoleId: [],
@@ -112,7 +113,7 @@ export class CcrNewComponent {
     isPendingShipment: [],
     isSplitBillOfLading: [],
     landedQuantity: [],
-    languageId: [],
+    languageId: [this.auth.languageId],
     manifestedGrossWeight: [],
     manifestedQuantity: [],
     noOfPackageMawb: [],
@@ -197,8 +198,6 @@ export class CcrNewComponent {
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.currency.url,
-      // this.cas.dropdownlist.setup.consignee.url,
-      // this.cas.dropdownlist.setup.consignment.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.consignor.url,
     ]).subscribe({
@@ -208,9 +207,7 @@ export class CcrNewComponent {
         this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
         this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
         this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
-        // this.consigneeList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.consignee.key);
-        // this.consignmentList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignment.key);
-  
+
         this.spin.hide();
       },
       error: (err: any) => {

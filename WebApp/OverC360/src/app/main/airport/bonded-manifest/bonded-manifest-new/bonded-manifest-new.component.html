@@ -21,6 +21,21 @@
                     </ng-template>
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Language</p>
+                                <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
+                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Company</p>
+                                <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
+                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="bondedId">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Manifest Number</p>
                                 <input formControlName="bondedId" [ngClass]="
@@ -193,8 +208,9 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeCivilId">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Consignee ID</p>
-                                <p-dropdown formControlName="consigneeCivilId"
-                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                <p-dropdown [options]="consigneeList" placeholder="Select" filter="true" formControlName="consigneeCivilId" appendTo="body"
+                                    [ngClass]="form.get('consigneeCivilId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                      [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}"/>
                                 <mat-error *ngIf="errorHandling('consigneeCivilId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
@@ -220,12 +236,11 @@
                                   : ''
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="shipper">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Shipper</p>
-                                <p-dropdown formControlName="shipper" appendTo="body"
-                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('shipper')" class="text-danger"><small>{{
-                                        getErrorMessage()}}</small></mat-error>
+                            <div class="col-6 marginFieldNew borderRadius12" id="shipperId">
+                                <p class="formControlLabel f600 textBlack mb-0">Shipper</p>
+                                <p-dropdown [options]="consignorIdList" formControlName="shipperId" appendTo="body"
+                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
+                                <mat-error *ngIf="errorHandling('shipperId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="remark">
                                 <p class="formControlLabel f600 textBlack mb-0">
@@ -248,13 +263,13 @@
                                 <p-dropdown [options]="flag" [style]="{'width': '100%'}" appendTo="body"
                                     formControlName="isSplitBillOfLanding" placeholder="Select "   />
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="consolidateBillNumber">
+                            <div class="col-6 marginFieldNew borderRadius12" id="consolidatedBillNo">
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     Consolidated Bill Number
                                 </p>
-                                <input formControlName="consolidateBillNumber" [ngClass]="
-                                form.get('consolidatedBillNumber')?.invalid &&
-                                form.get('consolidatedBillNumber')?.dirty
+                                <input formControlName="consolidatedBillNo" [ngClass]="
+                                form.get('consolidatedBillNo')?.invalid &&
+                                form.get('consolidatedBillNo')?.dirty
                                   ? 'invalid'
                                   : ''
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
