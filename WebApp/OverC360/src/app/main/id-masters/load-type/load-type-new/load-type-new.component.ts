@@ -18,19 +18,19 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 })
 export class LoadTypeNewComponent {
 
-
   active: number | undefined = 0;
   status: any[] = []
+
   constructor(
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private spin: NgxSpinnerService,
-    private route: ActivatedRoute, 
-    private router: Router, 
-    private path: PathNameService, 
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
     private fb: FormBuilder,
-    private service: LoadTypeService, 
+    private service: LoadTypeService,
     private numberRangeService: NumberrangeService,
-    private messageService: MessageService, 
+    private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService) {
     this.status = [
@@ -50,6 +50,7 @@ export class LoadTypeNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
+    statusId: ["16",],
     statusDescription: [],
     createdOn: ['',],
     createdBy: [],
@@ -66,8 +67,6 @@ export class LoadTypeNewComponent {
     referenceField9: [],
     referenceField10: [],
     remark: [],
-    statusId: ["16",],
-
   });
 
   submitted = false;

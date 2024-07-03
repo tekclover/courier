@@ -20,6 +20,7 @@ import { NumberrangeService } from '../../numberrange/numberrange.service';
 export class CustomerNewComponent {
 
   active: number | undefined = 0;
+  status: any[] = []
 
   constructor(
     private cs: CommonServiceService,
@@ -35,7 +36,12 @@ export class CustomerNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
 
   pageToken: any;
   numCondition: any;
@@ -52,6 +58,8 @@ export class CustomerNewComponent {
     productName: [],
     customerId: [],
     customerName: [, Validators.required],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
     referenceField1: [],
     referenceField10: [],

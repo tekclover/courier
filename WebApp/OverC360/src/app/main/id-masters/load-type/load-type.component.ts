@@ -54,7 +54,7 @@ export class LoadTypeComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'languageId', header: 'Language Id' },
       { field: 'companyId', header: 'Company Id' },
-      { field: 'statusId', header: 'Status Id' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

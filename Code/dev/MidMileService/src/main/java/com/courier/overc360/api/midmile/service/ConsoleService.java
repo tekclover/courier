@@ -431,8 +431,13 @@ public class ConsoleService {
         for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
             List<AddConsole> consoleList = entry.getValue();
             String hsCode = entry.getKey();
-            String specialApproval = replicaConsoleRepository.getSpecialApproval(hsCode);
 
+//            String specialApproval = replicaConsoleRepository.getSpecialApproval(hsCode);
+
+            String specialApproval = null;
+            for(AddConsole getCompany : consoleList) {
+                 specialApproval = replicaConsoleRepository.getSpecialApproval(getCompany.getCompanyId(), hsCode);
+            }
             if (specialApproval != null) {
                 if (specialApproval != null && !specialApproval.isBlank()) {
                     groupedBySpecialApproval
@@ -441,14 +446,12 @@ public class ConsoleService {
                             .addAll(consoleList);
                 }
                 for (Map.Entry<String, Map<String, List<AddConsole>>> hsCodeEntry : groupedBySpecialApproval.entrySet()) {
-//                String hsCode = hsCodeEntry.getKey();
                     Map<String, List<AddConsole>> specialApprovalGroup = hsCodeEntry.getValue();
 
                     for (Map.Entry<String, List<AddConsole>> specialApprovalEntry : specialApprovalGroup.entrySet()) {
                         List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
-//                    String specialApproval = specialApprovalEntry.getKey();
 
-                        String NUM_RAN_OBJ = "CONSOLE_ID";
+                        String NUM_RAN_OBJ = "CONSOLEID";
                         String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                         for (AddConsole console : consoleEntryList) {
                             // Pass ConsignmentCurrency
@@ -495,7 +498,7 @@ public class ConsoleService {
                                 }
                             }
 
-                            if(iataData.getIataKd() != null) {
+                            if(iataData != null && iataData.getIataKd() != null) {
                                 newConsole.setIataKd(iataData.getCurrencyValue());
                             }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
@@ -529,14 +532,19 @@ public class ConsoleService {
                 for (AddConsole console : smallerGroups) {
                     Double freightCharge = Double.parseDouble(console.getFreightCharges());
                     IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getFreightCurrency());
-                    Double toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
-                    Double totalDuty = toCurrencyValue * freightCharge;
-                    if (totalDuty > 100) {
-                        totalDuty += totalDuty * 0.05;
+
+                    Double toCurrencyValue = 0.0;
+                    if(iKeyValue != null & iKeyValue.getCurrencyValue() != null) {
+                         toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
                     }
-                    if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
-                        totalDuty += 4;
-                    }
+
+                        Double totalDuty = toCurrencyValue * freightCharge;
+                        if (totalDuty > 100) {
+                            totalDuty += totalDuty * 0.05;
+                        }
+                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+                            totalDuty += 4;
+                        }
 
                     IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
                     Double iataKd = 0.0;
