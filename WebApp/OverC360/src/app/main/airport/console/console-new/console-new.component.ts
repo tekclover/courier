@@ -37,6 +37,7 @@ export class ConsoleNewComponent {
       actualValue: [],
       airportOriginCode: [],
       bondedId: [],
+      consoleId: [],
       languageId: [this.auth.languageId],
       companyName: [],
       consigneeCivilId: [],
@@ -223,7 +224,7 @@ export class ConsoleNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show()
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.Update([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.consoleId + 'has been updated successfully' });
           this.router.navigate(['/main/airport/console']);
@@ -235,7 +236,7 @@ export class ConsoleNewComponent {
       })
     } else {
       this.spin.show()
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
         if(res){
           this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.consoleId + 'has been created successfully' });
@@ -259,6 +260,7 @@ export class ConsoleNewComponent {
     this.spin.show();
     this.consignmentService.search(obj).subscribe({next: (result) => {
     this.mawbList = this.cas.foreachlist(result, {key: 'masterAirwayBill', value: 'masterAirwayBill'});
+    this.hawbList = this.cas.foreachlist(result, {key: 'houseAirwayBill', value: 'houseAirwayBill'});
     this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();

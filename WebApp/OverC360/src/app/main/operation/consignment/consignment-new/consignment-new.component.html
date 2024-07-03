@@ -288,20 +288,20 @@
             <p-tabPanel header="Consignment" [disabled]="disabledConsignment">
                 <form [formGroup]="consignment">
                     <div class="row scrollNew22">
+                        <div class="col-3 marginFieldNew borderRadius12" id="partnerMasterAirwayBill">
+                            <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
+                            <input maxlength="50" formControlName="partnerMasterAirwayBill"
+                                [ngClass]="carrierInfo.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('partnerMasterAirwayBill')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerHouseAirwayBill">
                             <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
                             <input maxlength="50" formControlName="partnerHouseAirwayBill"
                                 [ngClass]="carrierInfo.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingConsignment('partnerHouseAirwayBill')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="partnerMasterAirwayBill">
-                            <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
-                            <input maxlength="50" formControlName="partnerMasterAirwayBill"
-                                [ngClass]="carrierInfo.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingConsignment('partnerMasterAirwayBill')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="airportOriginCode">

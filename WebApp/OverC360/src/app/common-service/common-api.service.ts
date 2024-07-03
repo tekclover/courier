@@ -62,7 +62,7 @@ export class CommonAPIService {
       hub: { url: this.setup + 'hub', key: { key: 'hubCode', value: 'hubName', languageId: 'languageId', companyId: 'companyId' } },
       consignor: { url: this.setup + 'consignor', key: { key: 'consignorId', value: 'consignorName', languageId: 'languageId', companyId: 'companyId' } },
       iata: { url: this.setup + 'iata', key: { key: 'iataKd', value: 'iataKd', languageId: 'languageId', companyId: 'companyId' } },
-      
+      hsCode: { url: this.setup + 'hsCode', key: { key: 'hsCode', value: 'hsCode', languageId: 'languageId', companyId: 'companyId' } },
 
     },
   }
