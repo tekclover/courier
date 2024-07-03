@@ -124,7 +124,7 @@ public class MenuService {
                 if ((addMenu.getSubMenuId() != null &&
                         (addMenu.getReferenceField10() != null && addMenu.getReferenceField10().equalsIgnoreCase("true"))) ||
                         addMenu.getSubMenuId() == null) {
-                    String NUM_RAN_OBJ = "SUB_MENU";
+                    String NUM_RAN_OBJ = "SUBMENU";
                     String SUB_MENU_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for SUB_MENU_ID : " + SUB_MENU_ID);
                     newMenu.setSubMenuId(Long.valueOf(SUB_MENU_ID));

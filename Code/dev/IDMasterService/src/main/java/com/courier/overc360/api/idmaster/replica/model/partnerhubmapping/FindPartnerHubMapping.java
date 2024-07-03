@@ -12,5 +12,6 @@ public class FindPartnerHubMapping {
     private List<String> hubCode;
     private List<String> partnerId;
     private List<String> partnerType;
+    private List<String> statusId;
 
 }

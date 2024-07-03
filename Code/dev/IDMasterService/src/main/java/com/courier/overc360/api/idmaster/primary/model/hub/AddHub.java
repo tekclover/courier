@@ -28,6 +28,9 @@ public class AddHub {
     @NotBlank(message = "CityId is mandatory")
     private String cityId;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String addressLine1;
 
     private String addressLine2;
