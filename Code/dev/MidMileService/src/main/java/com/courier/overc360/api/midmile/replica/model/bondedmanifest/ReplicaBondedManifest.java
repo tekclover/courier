@@ -50,6 +50,12 @@ public class ReplicaBondedManifest {
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
+    private String pieceId;
+
+    @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
+    private String pieceItemId;
+
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
