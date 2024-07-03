@@ -182,7 +182,7 @@ public class ConsoleService {
                 }
 
                 // Pass ConsignmentCurrency
-                IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getConsignmentCurrency());
+                IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                 Console newConsole = new Console();
                 BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
@@ -205,7 +205,7 @@ public class ConsoleService {
                 }
 
                 // Set TotalDuty Value
-                IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getFreightCurrency());
+                IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getFreightCurrency());
                 Double freightCharge = Double.valueOf(console.getFreightCharges());
                 String incoTerms = console.getIncoTerms();
 
@@ -455,7 +455,7 @@ public class ConsoleService {
                         String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                         for (AddConsole console : consoleEntryList) {
                             // Pass ConsignmentCurrency
-                            IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getConsignmentCurrency());
+                            IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                             Console newConsole = new Console();
                             BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
@@ -531,7 +531,7 @@ public class ConsoleService {
 
                 for (AddConsole console : smallerGroups) {
                     Double freightCharge = Double.parseDouble(console.getFreightCharges());
-                    IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getFreightCurrency());
+                    IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getFreightCurrency());
 
                     Double toCurrencyValue = 0.0;
                     if(iKeyValue != null & iKeyValue.getCurrencyValue() != null) {
@@ -583,7 +583,7 @@ public class ConsoleService {
                         }
 
                         // Pass ConsignmentCurrency
-                        IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getConsignmentCurrency());
+                        IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                         Console newConsole = new Console();
                         BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));

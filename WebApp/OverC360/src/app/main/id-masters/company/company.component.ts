@@ -88,7 +88,6 @@ export class CompanyComponent {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
