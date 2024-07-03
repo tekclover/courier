@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
+import { AuthService } from '../../../core/core';
 
 @Component({
   selector: 'app-district',
@@ -25,7 +26,7 @@ export class DistrictComponent {
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router,
      private path: PathNameService, private service: DistrictService,
-     public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -77,7 +78,10 @@ export class DistrictComponent {
   
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.districtTable = res;

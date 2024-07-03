@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 
@@ -29,7 +30,7 @@ export class MenuComponent {
     private path: PathNameService, 
     private service: MenuService,
     public dialog: MatDialog, 
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -76,7 +77,10 @@ export class MenuComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.menuTable = res;

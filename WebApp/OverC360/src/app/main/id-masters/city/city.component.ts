@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -24,7 +25,7 @@ export class CityComponent {
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router,
      private path: PathNameService, private service: CityService,
-     public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -77,7 +78,10 @@ export class CityComponent {
   
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.cityTable = res;

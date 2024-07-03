@@ -8,10 +8,10 @@ import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../../core/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -33,7 +33,7 @@ export class UserRoleComponent {
     private path: PathNameService,
     private service: UserRoleService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -82,7 +82,10 @@ export class UserRoleComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.userRoleTable = res;

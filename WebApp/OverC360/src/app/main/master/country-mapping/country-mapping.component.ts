@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -25,7 +26,7 @@ export class CountryMappingComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CountryMappingService,
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -76,7 +77,10 @@ export class CountryMappingComponent {
   
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.countryMappingTable = res;

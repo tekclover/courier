@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 
@@ -23,7 +24,7 @@ export class LanguageComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: LanguageService,
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -60,7 +61,10 @@ export class LanguageComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.languageTable = res;
