@@ -200,8 +200,7 @@ export class ConsignmentNewComponent {
 
   piece = this.fb.group({
     pieceDetails: this.fb.array([
-      this.initPieceDetail()
-    ]) 
+    ])
   });
 
   initPieceDetail() {
@@ -249,7 +248,10 @@ export class ConsignmentNewComponent {
       volumeUnit: [''],
       weight: [''],
       weightUnit: [''],
-      width: ['']
+      width: [''],
+      hsCode: [''],
+      pieceValue: [''],
+      pieceCurrency: [''],
     });
   }
 
@@ -302,6 +304,134 @@ export class ConsignmentNewComponent {
     });
   }
 
+  addPieceDetail() {
+    const control = this.piece.controls.pieceDetails as FormArray;
+    control.push(this.initPieceDetail());
+  }
+
+  removePieceDetail(index: number) {
+    const control = this.piece.controls.pieceDetails as FormArray;
+    control.removeAt(index);
+  }
+
+  addItemDetail(pieceIndex: number) {
+    const control = (this.piece.controls.pieceDetails as FormArray).at(pieceIndex).get('itemDetails') as FormArray;
+    control.push(this.initItemDetail());
+  }
+
+  removeItemDetail(pieceIndex: number, itemIndex: number) {
+    const control = (this.piece.controls.pieceDetails as FormArray).at(pieceIndex).get('itemDetails') as FormArray;
+    control.removeAt(itemIndex);
+  }
+
+
+  patchForm(shipmentData: any) {
+    const piecesArray = this.piece.get('pieceDetails') as FormArray;
+    shipmentData.pieceDetails.forEach((piece:any) => {
+      piecesArray.push(this.patchPieceDetail(piece));
+    });
+  }
+
+  patchPieceDetail(piece: any) {
+    return this.fb.group({
+      codAmount: [piece.codAmount],
+      declaredValue: [piece.declaredValue],
+      description: [piece.description],
+      dimensionUnit: [piece.dimensionUnit],
+      height: [piece.height],
+      itemDetails: this.patchItemDetails(piece.itemDetails),
+      length: [piece.length],
+      packReferenceNumber: [piece.packReferenceNumber],
+      partnerType: [piece.partnerType],
+      pieceId: [piece.pieceId],
+      referenceField1: [piece.referenceField1],
+      referenceField10: [piece.referenceField10],
+      referenceField11: [piece.referenceField11],
+      referenceField12: [piece.referenceField12],
+      referenceField13: [piece.referenceField13],
+      referenceField14: [piece.referenceField14],
+      referenceField15: [piece.referenceField15],
+      referenceField16: [piece.referenceField16],
+      referenceField17: [piece.referenceField17],
+      referenceField18: [piece.referenceField18],
+      referenceField19: [piece.referenceField19],
+      referenceField2: [piece.referenceField2],
+      referenceField20: [piece.referenceField20],
+      referenceField3: [piece.referenceField3],
+      referenceField4: [piece.referenceField4],
+      referenceField5: [piece.referenceField5],
+      referenceField6: [piece.referenceField6],
+      referenceField7: [piece.referenceField7],
+      referenceField8: [piece.referenceField8],
+      referenceField9: [piece.referenceField9],
+      referenceImageList: this.patchReferenceImages(piece.referenceImageList),
+      volume: [piece.volume],
+      volumeUnit: [piece.volumeUnit],
+      weight: [piece.weight],
+      weightUnit: [piece.weightUnit],
+      width: [piece.width],
+      hsCode: [piece.hsCode],
+      pieceValue: [piece.pieceValue],
+      pieceCurrency: [piece.pieceCurrency],
+    });
+  }
+
+  patchItemDetails(itemDetails: any[]) {
+    return this.fb.array(itemDetails.map(item => this.patchItemDetail(item)));
+  }
+
+  patchItemDetail(item: any) {
+    return this.fb.group({
+      codAmount: [item.codAmount],
+      declaredValue: [item.declaredValue],
+      description: [item.description],
+      dimensionUnit: [item.dimensionUnit],
+      height: [item.height],
+      hsCode: [item.hsCode],
+      imageRefId: [item.imageRefId],
+      itemCode: [item.itemCode],
+      length: [item.length],
+      partnerName: [item.partnerName],
+      partnerType: [item.partnerType],
+      pieceItemId: [item.pieceItemId],
+      referenceField1: [item.referenceField1],
+      referenceField10: [item.referenceField10],
+      referenceField11: [item.referenceField11],
+      referenceField12: [item.referenceField12],
+      referenceField13: [item.referenceField13],
+      referenceField14: [item.referenceField14],
+      referenceField15: [item.referenceField15],
+      referenceField16: [item.referenceField16],
+      referenceField17: [item.referenceField17],
+      referenceField18: [item.referenceField18],
+      referenceField19: [item.referenceField19],
+      referenceField2: [item.referenceField2],
+      referenceField20: [item.referenceField20],
+      referenceField3: [item.referenceField3],
+      referenceField4: [item.referenceField4],
+      referenceField5: [item.referenceField5],
+      referenceField6: [item.referenceField6],
+      referenceField7: [item.referenceField7],
+      referenceField8: [item.referenceField8],
+      referenceField9: [item.referenceField9],
+      referenceImageList: this.patchReferenceImages(item.referenceImageList),
+      volume: [item.volume],
+      volumeUnit: [item.volumeUnit],
+      weight: [item.weight],
+      weightUnit: [item.weightUnit],
+      width: [item.width]
+    });
+  }
+
+  patchReferenceImages(referenceImageList: any[]) {
+    return this.fb.array(referenceImageList.map(image => this.fb.group({
+      imageRefId: [image.imageRefId],
+      pdfUrl: [image.pdfUrl],
+      referenceImageUrl: [image.referenceImageUrl]
+    })));
+  }
+
+
   form = this.fb.group({
     updatedBy: [,],
     updatedOn: ['',],
@@ -311,39 +441,7 @@ export class ConsignmentNewComponent {
   });
 
 
-  get pieceDetails(): FormArray {
-    return this.piece.get('pieceDetails') as FormArray;
-  }
-  addItem() {
-    this.pieceDetails.push(this.createItemFormGroup());
-  }
-  createItemFormGroup(): FormGroup {
-    return this.fb.group({
-      id: [this.pieceDetails.value.length,],
-      tags: [],
-      volume: [],
-      pieceValue: [],
-      pieceCurrency: [],
-      volumeUnit: [],
-      weight: [],
-      weight_unit: [],
-      width: [],
-      codAmount: [],
-      declaredValue: [],
-      hsCode: [],
-      description: [],
-      dimensionUnit: [],
-      height: [],
-      length: [],
-      packReferenceNumber: [],
-      partnerType: [],
-      pieceId: [],
-      itemDetails: [],
-    });
-  }
-  removeItem(index: number) {
-    this.pieceDetails.removeAt(index);
-  }
+
   submitted = false;
   email = new FormControl('', [Validators.required, Validators.email]);
   errorHandlingShipment(control: string, error: string = 'required') {
@@ -410,10 +508,8 @@ export class ConsignmentNewComponent {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
         this.districtList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
         this.spin.hide();
-        console.log(2)
       },
       error: (err: any) => {
-        console.log(2)
         this.spin.hide();
         this.cs.commonerrorNew(err);
       },
@@ -436,12 +532,11 @@ export class ConsignmentNewComponent {
     this.consignment.patchValue(line),
     this.senderInfo.patchValue(line),
     this.deliveryInfo.patchValue(line),
-    this.billing.patchValue(line),
+    this.billing.patchValue(line)
 
+    this.patchForm(line);
+    console.log(this.piece)
 
-      line.pieceDetails.forEach((res: any) => {
-        this.pieceDetails.push(this.fb.group(res));
-      });
   }
 
   opendialog(type: any = 'New', data: any) {
@@ -704,8 +799,8 @@ export class ConsignmentNewComponent {
       ...this.consignment.value,
       ...this.senderInfo.value,
       ...this.deliveryInfo.value,
-      ...this.billing.value,
-      pieceDetails: this.pieceDetails,
+      ...this.billing.value,  
+      pieceDetails: this.piece.controls.pieceDetails as FormArray,
       updatedBy: [,],
       updatedOn: ['',],
       createdOn: ['',],
@@ -720,7 +815,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res[0].consignmentId + ' has been updated successfully',
+            detail: 'Consignment has been updated successfully',
           });
           this.router.navigate(['/main/operation/consignment']);
         }, error: (err) => {
@@ -735,7 +830,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res[0].consignmentId + ' has been created successfully',
+            detail:  'Consignment has been created successfully',
           });
           this.router.navigate(['/main/operation/consignment']);
         }, error: (err) => {
