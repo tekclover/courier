@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
@@ -8,6 +8,8 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { SubProductService } from '../sub-product.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
+import { SubProductsValuesComponent } from '../sub-products-values/sub-products-values.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sub-product-new',
@@ -16,7 +18,7 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 })
 export class SubProductNewComponent {
   active: number | undefined = 0;
-  status:any[] = [];
+  status: any[] = [];
 
   constructor(
     private cs: CommonServiceService,
@@ -28,7 +30,8 @@ export class SubProductNewComponent {
     private service: SubProductService,
     private messageService: MessageService,
     private cas: CommonAPIService,
-    private auth: AuthService
+    private auth: AuthService,
+    public dialog: MatDialog,
   ) {
     this.status = [
       { value: '2', label: 'Inactive' },
@@ -45,6 +48,7 @@ export class SubProductNewComponent {
     companyName: [],
     subProductId: [],
     subProductName: [, Validators.required],
+    subProductValue: [],
     remark: [],
     statusId: ['1',],
     statusDescription: [],
@@ -58,9 +62,9 @@ export class SubProductNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     updatedBy: [],
   });
 
@@ -102,22 +106,89 @@ export class SubProductNewComponent {
   languageIdList: any[] = [];
   companyIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+
+  }
+
+  addValues() { }
+
+  //   add() {
+  //     const dialogRef = this.dialog.open(MasterchildComponent, {
+  //       disableClose: true,
+  //       width: '50%',
+  //       maxWidth: '80%',
+  //       data: this.resultTable.length + 1
+  //     });
+
+  //     dialogRef.afterClosed().subscribe(result => {
+  //      console.log(result.length);
+  //      if(result){
+  //       this.resultTable
+
+  //       if (result.length > 0) {
+  //         this.resultTable.push(result);
+  //       }
+
+  //       this.resultTable.push(result);
+  //     }
+  //      this.resultTable=[...this.resultTable];
+  //     });
+  //   }
+
+
+  add() {
+    const dialogRef = this.dialog.open(SubProductsValuesComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: this.pieceDetails.length + 1,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(result.length);
+      if (result) {
+        this.pieceDetails
+
+        if (result.length > 0) {
+          this.pieceDetails.push(result);
+        }
+
+        this.subProductArray.push(result);
+      }
+      this.subProductArray.push(result);
+     });
+  }
+
+  subProductArray: any[] = [];
+
+  piece = this.fb.group({
+    pieceDetails: this.fb.array([]) // Initialize an empty FormArray
   });
 
+
+  get pieceDetails(): FormArray {
+    return this.piece.get('pieceDetails') as FormArray;
+  }
+
+  removeItem(index: number) {
+    this.pieceDetails.removeAt(index);
   }
 
   fill(line: any) {

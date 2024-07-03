@@ -53,7 +53,7 @@ export class UsersComponent {
       { field: 'emailId', header: 'Email Id'},
       { field: 'statusId', header: 'Status ID' },
       { field: 'createdBy', header: 'Created By'},
-      { field: 'createdOn', header: 'Created On'},
+      { field: 'createdOn', header: 'Created On', format: 'date'},
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },

@@ -5,25 +5,23 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
-import { BondedManifestService } from '../bonded-manifest.service';
+import { CcrService } from '../ccr.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
 
 
 @Component({
-  selector: 'app-bonded-manifest-new',
-  templateUrl: './bonded-manifest-new.component.html',
-  styleUrl: './bonded-manifest-new.component.scss'
+  selector: 'app-ccr-new',
+  templateUrl: './ccr-new.component.html',
+  styleUrl: './ccr-new.component.scss'
 })
-export class BondedManifestNewComponent {
+export class CcrNewComponent {
 
   active: number | undefined = 0;
 
   status: any[] = [];
 
   flag: any[] = [];
-
-  value: any[] = [];
 
   constructor(
     private cs: CommonServiceService,
@@ -32,7 +30,7 @@ export class BondedManifestNewComponent {
     private router: Router,
     private path: PathNameService,
     private fb: FormBuilder,
-    private service: BondedManifestService,
+    private service: CcrService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
@@ -44,114 +42,94 @@ export class BondedManifestNewComponent {
     this.flag = [
       { value: '0', label: 'False'},
       { value: '1', label: 'True'}
-    ];
-    this.value = [
-      { value: 'I', label: 'Import' },
-      { value: 'E', label: 'Export' },
-      { value: 'F', label: 'Free Zone' },
-      { value: 'T', label: 'Transit' },
     ]
   }
 
   pageToken: any;
   // form builder initialize
   form = this.fb.group({
-    bondedId: [,Validators.required],
-    // billOfLandingNumber: [,Validators.required],
-    billOfLandingDate: [],
-    description: [],
-    billOfLadingFor: [],
-    netWeigth: [],
-    manifestedGrossWeight: [],
+    masterAirwayBill: [, Validators.required],
+    houseAirwayBill: [, Validators.required],
+    consigneeName: [, Validators.required],
+    consigneeCivilId: [],
+    invoiceNumber: [],
+    invoiceDate: [],
+    invoiceType: [],
+    currency: [],
+    invoiceSupplierName: [],
+    freightCurrency: [],
+    freightCharges: [],
+    countryOfSupply: [],
+    billNumber: [],
+    hsCode: [, Validators.required],
+    goodsDescription: [],
+    countryOfOrigin: [],
+    manufacturer: [],
+    noOfPackages: [],
+    itemTotalPrice: [],
+    packageType: [],
+    quantity: [],
+    netWeight: [],
     grossWeight: [],
-    tareWeight: [],
-    manifestedQuantity: [],
-    landedQuantity: [],
-    totalQuantity: [],
-    volume: [],
-    portOfShipping: [],
-    finalDestination: [],
-    consigneeCivilId: [, Validators.required],
-    notifyParty: [],
-    consigneeName: [],
-    shipper: [, Validators.required],
-    remark: [],
-    isConsolidatedShipment: [],
-    isSplitBillOfLading: [],
-    consolidatedBillNumber: [],
-    isPendingShipment: [],  
-    bwhInvestor: [],
+    isExempted: [],
+    exemptionFor: [],
+    exemptionBeneficiary: [],
+    exemptionReference: [],
+    partnerHouseAirwayBil: [],
+    partnerMasterAirwayBill: [],
     createdOn: ['',],
     createdBy: [],
     updatedOn: ['',],
     updatedBy: [],
-
+    
+    airportOriginCode: [],
     actualCurrency: [],
-    billOfLoadingFor: [],
-    chasisNo: [],
     companyId: [],
     consignmentCurrency: [],
     consignmentValue: [],
-    consolidatedBillNo: [],
-    containerNo: [],
-    containerSize: [],
-    containerType: [],
-    countryOfOrigin: [],
-    currency: [],
+    consoleId: [],
+    customsCcrNo: [],
+    customsKd: [],
     declaredValue: [],
-    engineNo: [],
-    enginePower: [],
+    description: [],
     eventCode: [],
     eventText: [],
     eventTimestamp: [],
-    fclLcl: [],
-    freightCharges: [],
-    freightCurrency: [],
-    goodsDescription: [],
-    goodsType: [],
-    houseAirwayBill: [],
-    hsCode: [],
+    finalDestination: [],
+    flightArrivalTime: [],
+    flightNo: [],
+    iataKd: [],
     incoTerms: [],
-    invoiceDate: [],
-    invoiceNumber: [],
-    invoiceSupplierName: [],
-    invoiceType: [],
-    kind: [],
+    isConsolidatedShipment: [],
+    isPendingShipment: [],
+    isSplitBillOfLading: [],
+    landedQuantity: [],
     languageId: [],
-    load: [],
-    markId: [],
-    markType: [],
-    masterAirwayBill: [],
-    netWeight: [],
-    noOfPackagesMawb: [],
-    noOfPiecesHawb:[],
-    numberOfCylinders: [],
-    partnerHouseAirwayBill: [, Validators.required],
+    manifestedGrossWeight: [],
+    manifestedQuantity: [],
+    noOfPackageMawb: [],
+    noOfPieceHawb: [],
+    notifyParty: [],
+    partnerHouseAirwayBill: [],
     partnerId: [],
-    partnerMasterAirwayBill: [, Validators.required],
-    partnerName:[],
+    partnerName: [],
     partnerType: [],
-    passenger: [],
     paymentType: [],
     productId: [],
     productName: [],
-    quantity: [],
     remarks: [],
-    sealNo: [],
     serviceTypeId: [],
     serviceTypeName: [],
     shipperId: [],
     shipperName: [],
+    specialApprovalValue: [],
     statusTimestamp: [],
     subProductId: [],
     subProductName: [],
+    tareWeight: [],
     totalDuty: [],
-    vehicleBodyColor: [],
-    vehicleBrand: [],
-    vehicleModel: [],
-    vehicleNationality: [],
-    vehicleType: [],
-    yearOfManufacture: [],
+    totalQuantity: [],
+    volume: [],
   });
 
   submitted = false;
@@ -167,23 +145,23 @@ export class BondedManifestNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Airport', 'BondedManifest', this.pageToken.pageflow];
+    const dataToSend = ['Airport', 'CCR', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
 
-    this.form.controls.consigneeCivilId.disable();
+    this.form.controls.masterAirwayBill.disable();
+    this.form.controls.houseAirwayBill.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.consigneeCivilId.disable();
-      this.form.controls.shipper.disable();
-      this.form.controls.isConsolidatedShipment.disable();
-      this.form.controls.isSplitBillOfLading.disable();
+      this.form.controls.houseAirwayBill.disable();
+      this.form.controls.masterAirwayBill.disable();
+      this.form.controls.hsCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -194,7 +172,7 @@ export class BondedManifestNewComponent {
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   countryIdList: any[] = [];
-  consigneeCivilIdList: any[] = [];
+  hsCodeList: any[] = [];
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
@@ -213,7 +191,6 @@ export class BondedManifestNewComponent {
         this.cs.commonerrorNew(err);
       },
     });
-
   }
 
   fill(line: any) {
@@ -242,9 +219,9 @@ export class BondedManifestNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.consigneeCivilId + ' has been updated successfully',
+            detail: res.partnerId + ' has been updated successfully',
           });
-          this.router.navigate(['/main/airport/bondedManifest']);
+          this.router.navigate(['/main/airport/ccr']);
           this.spin.hide();
         },
         error: (err) => {
@@ -261,9 +238,9 @@ export class BondedManifestNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.consigneeCivilId + ' has been created successfully',
+              detail: res.partnerId + ' has been created successfully',
             });
-            this.router.navigate(['/main/airport/bondedManifest']);
+            this.router.navigate(['/main/airport/ccr']);
             this.spin.hide();
           }
         },
