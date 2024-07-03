@@ -336,29 +336,35 @@ public class ConsignmentService {
                 dbConsignmentEntity.setUpdatedBy(loginUserID);
                 dbConsignmentEntity.setUpdatedOn(new Date());
 
-                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo(), CommonUtils.getNullPropertyNames(dbConsignment));
+
+                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo() != null, CommonUtils.getNullPropertyNames(dbConsignment));
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedBy(loginUserID);
 
-                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentRefs(), CommonUtils.getNullPropertyNames(dbConsignment));
+                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentRefs() !=null, CommonUtils.getNullPropertyNames(dbConsignment));
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedBy(loginUserID);
 
-                BeanUtils.copyProperties(dbConsignment.getDestinationDetails(), dbConsignmentEntity.getDestinationDetails(),
-                        CommonUtils.getNullPropertyNames(dbConsignment.getDestinationDetails()));
-                dbConsignmentEntity.getDestinationDetails().setUpdatedOn(new Date());
-                dbConsignmentEntity.getDestinationDetails().setUpdatedBy(loginUserID);
+                if (dbConsignment.getDestinationDetails() != null) {
+                    BeanUtils.copyProperties(dbConsignment.getDestinationDetails(), dbConsignmentEntity.getDestinationDetails(),
+                            CommonUtils.getNullPropertyNames(dbConsignment.getDestinationDetails()));
+                    dbConsignmentEntity.getDestinationDetails().setUpdatedOn(new Date());
+                    dbConsignmentEntity.getDestinationDetails().setUpdatedBy(loginUserID);
+                }
 
-                BeanUtils.copyProperties(dbConsignment.getReturnDetails(), dbConsignmentEntity.getReturnDetails(),
-                        CommonUtils.getNullPropertyNames(dbConsignment.getReturnDetails()));
-                dbConsignmentEntity.getReturnDetails().setUpdatedOn(new Date());
-                dbConsignmentEntity.getReturnDetails().setUpdatedBy(loginUserID);
+                if (dbConsignment.getReturnDetails() != null) {
+                    BeanUtils.copyProperties(dbConsignment.getReturnDetails(), dbConsignmentEntity.getReturnDetails(),
+                            CommonUtils.getNullPropertyNames(dbConsignment.getReturnDetails()));
+                    dbConsignmentEntity.getReturnDetails().setUpdatedOn(new Date());
+                    dbConsignmentEntity.getReturnDetails().setUpdatedBy(loginUserID);
+                }
 
-                BeanUtils.copyProperties(dbConsignment.getOriginDetails(), dbConsignmentEntity.getOriginDetails(),
-                        CommonUtils.getNullPropertyNames(dbConsignment.getOriginDetails()));
-                dbConsignmentEntity.getOriginDetails().setUpdatedOn(new Date());
-                dbConsignmentEntity.getOriginDetails().setUpdatedBy(loginUserID);
-
+                if (dbConsignment.getOriginDetails() != null) {
+                    BeanUtils.copyProperties(dbConsignment.getOriginDetails(), dbConsignmentEntity.getOriginDetails(),
+                            CommonUtils.getNullPropertyNames(dbConsignment.getOriginDetails()));
+                    dbConsignmentEntity.getOriginDetails().setUpdatedOn(new Date());
+                    dbConsignmentEntity.getOriginDetails().setUpdatedBy(loginUserID);
+                }
 
                 ConsignmentEntity savedConsignment = consignmentEntityRepository.save(dbConsignmentEntity);
 
@@ -366,17 +372,20 @@ public class ConsignmentService {
                 List<ReferenceImageList> referenceImageLists = new ArrayList<>();
                 for (ReferenceImageList image : dbConsignment.getReferenceImageList()) {
 
-                    ReferenceImageList newRefImageList = new ReferenceImageList();
-                    String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
-                    ImageReference imageReference = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
+                    if (image != null) {
+                        ReferenceImageList newRefImageList = new ReferenceImageList();
+                        String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
+                        ImageReference imageReference = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
 
-                    imageReference.setReferenceImageUrl(image.getReferenceImageUrl());
-                    imageReference.setReferenceField2(downloadDocument);
-                    imageReference.setUpdatedBy(loginUserID);
-                    imageReference.setUpdatedOn(new Date());
-                    ImageReference imageRef = imageReferenceRepository.save(imageReference);
-                    BeanUtils.copyProperties(imageRef, newRefImageList);
-                    referenceImageLists.add(newRefImageList);
+                        imageReference.setReferenceImageUrl(image.getReferenceImageUrl());
+                        imageReference.setReferenceField2(downloadDocument);
+                        imageReference.setUpdatedBy(loginUserID);
+                        imageReference.setUpdatedOn(new Date());
+                        ImageReference imageRef = imageReferenceRepository.save(imageReference);
+                        BeanUtils.copyProperties(imageRef, newRefImageList);
+                        referenceImageLists.add(newRefImageList);
+                    }
+                    addConsignment.setReferenceImageList(referenceImageLists);
                 }
                 addConsignment.setReferenceImageList(referenceImageLists);
 
@@ -389,11 +398,11 @@ public class ConsignmentService {
                 }
 
                 BeanUtils.copyProperties(savedConsignment, addConsignment);
-                BeanUtils.copyProperties(savedConsignment.getConsignmentInfo(), addConsignment);
-                BeanUtils.copyProperties(savedConsignment.getConsignmentRefs(), addConsignment);
-                BeanUtils.copyProperties(savedConsignment.getDestinationDetails(), addConsignment.getDestinationDetails());
-                BeanUtils.copyProperties(savedConsignment.getReturnDetails(), addConsignment.getReturnDetails());
-                BeanUtils.copyProperties(savedConsignment.getOriginDetails(), addConsignment.getOriginDetails());
+                BeanUtils.copyProperties(savedConsignment.getConsignmentInfo() != null, addConsignment);
+                BeanUtils.copyProperties(savedConsignment.getConsignmentRefs() != null, addConsignment);
+                BeanUtils.copyProperties(savedConsignment.getDestinationDetails() != null, addConsignment.getDestinationDetails());
+                BeanUtils.copyProperties(savedConsignment.getReturnDetails() != null, addConsignment.getReturnDetails());
+                BeanUtils.copyProperties(savedConsignment.getOriginDetails() != null, addConsignment.getOriginDetails());
                 addConsignmentList.add(addConsignment);
 
             }

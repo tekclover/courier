@@ -27,7 +27,6 @@ public class AddCcr {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
-    @NotBlank(message = "CustomsCcrNo is mandatory")
     private String customsCcrNo;
 
     private String partnerType;

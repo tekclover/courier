@@ -928,6 +928,32 @@ public class MidMileService {
         return result.getBody();
     }
 
+    /**
+     *
+     * @param houseAirwayBill
+     * @param fromConsoleId
+     * @param toConsoleId
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public Console[] transferConsole(List<TransferConsole> transferConsole, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/transfer")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(transferConsole, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
     //----------------------Upload------------------------------------------------------------------
 
     // POST - Consingment Upload

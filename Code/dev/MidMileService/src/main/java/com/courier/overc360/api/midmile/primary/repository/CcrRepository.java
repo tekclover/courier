@@ -30,8 +30,8 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
 
-    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndCustomsCcrNoAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId,  String customsCcrNo, Long deletionIndicator);
+    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, Long deletionIndicator);
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndCustomsCcrNoAndDeletionIndicator(
             String languageId, String companYId, String partnerId, String masterAirwayBill, String houseAirwayBill, String customsCcrNo, Long deletionIndicator
