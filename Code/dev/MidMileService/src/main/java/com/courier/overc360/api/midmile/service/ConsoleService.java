@@ -739,7 +739,7 @@ public class ConsoleService {
 
                 if ((updatedConsole.getEventCode()).equalsIgnoreCase("8")) {
                     //Fetch the console records based on houseAirwayBill
-                    List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getHouseAirwayBill());
+                    List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
                     //Check whether all the consoleData's eventcode is equal to 8
                     boolean allEventCodes = consoleData.stream()

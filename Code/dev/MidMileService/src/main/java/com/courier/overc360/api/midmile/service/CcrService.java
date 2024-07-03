@@ -92,6 +92,12 @@ public class CcrService {
                         addCcr.getPartnerId(), addCcr.getMasterAirwayBill(),
                         addCcr.getHouseAirwayBill(), addCcr.getConsoleId()) == 1;
 
+                Optional<Ccr> duplicateConsole =  ccrRepository.findByHouseAirwayBill(addCcr.getHouseAirwayBill());
+                if(duplicateConsole.isPresent())
+                {
+                    throw new BadRequestException("Record is getting Duplicated with given value: houseAirwayBill - " + addCcr.getHouseAirwayBill());
+                }
+
                 //Check IsExempted status and throw error
 //                if (addCcr.getIsExempted().equalsIgnoreCase("Yes")) {
 //                    if (addCcr.getExemptionFor() == null || addCcr.getExemptionBeneficiary() == null || addCcr.getExemptionReference() == null) {
