@@ -471,9 +471,10 @@ public class ConsoleService {
 
                             // Customs Value set multiply formula
                             String CUS_VAL = null;
-                            if (console.getConsignmentValue() != null && iKeyValuePair.getCurrencyValue() != null) {
+                            if (iKeyValuePair != null && console.getConsignmentValue() != null && iKeyValuePair.getCurrencyValue() != null) {
                                 Double CON_VAL = Double.valueOf(console.getConsignmentValue());
                                 Double CURR_VAL = Double.valueOf(iKeyValuePair.getCurrencyValue());
+                                newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
                                 CUS_VAL = String.valueOf(CON_VAL * CURR_VAL);
                             }
 
@@ -485,7 +486,7 @@ public class ConsoleService {
 
                             // Set TotalDuty Value
                             double totalDuty = 0;
-                            if (iKeyValuePair.getCurrencyValue() != null) {
+                            if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
                                 double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
                                 if (toCurrencyValue != 0 && freightCharge != 0) {
                                     totalDuty = toCurrencyValue * freightCharge;
@@ -503,7 +504,6 @@ public class ConsoleService {
                             }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setCustomsValue(CUS_VAL);
-                            newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
                             newConsole.setConsoleId(CONSOLE_ID);
                             newConsole.setStatusId(STATUS_ID);
                             newConsole.setDeletionIndicator(0L);
