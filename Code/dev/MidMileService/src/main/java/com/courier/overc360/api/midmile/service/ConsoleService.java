@@ -498,7 +498,7 @@ public class ConsoleService {
                                 }
                             }
 
-                            if(iataData.getIataKd() != null) {
+                            if(iataData != null && iataData.getIataKd() != null) {
                                 newConsole.setIataKd(iataData.getCurrencyValue());
                             }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
@@ -532,14 +532,19 @@ public class ConsoleService {
                 for (AddConsole console : smallerGroups) {
                     Double freightCharge = Double.parseDouble(console.getFreightCharges());
                     IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getFreightCurrency());
-                    Double toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
-                    Double totalDuty = toCurrencyValue * freightCharge;
-                    if (totalDuty > 100) {
-                        totalDuty += totalDuty * 0.05;
+
+                    Double toCurrencyValue = 0.0;
+                    if(iKeyValue != null & iKeyValue.getCurrencyValue() != null) {
+                         toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
                     }
-                    if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
-                        totalDuty += 4;
-                    }
+
+                        Double totalDuty = toCurrencyValue * freightCharge;
+                        if (totalDuty > 100) {
+                            totalDuty += totalDuty * 0.05;
+                        }
+                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+                            totalDuty += 4;
+                        }
 
                     IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
                     Double iataKd = 0.0;
