@@ -99,6 +99,7 @@ public class ConsignmentService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
 
         List<AddConsignment> consignmentEntities = new ArrayList<>();
+        String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
         for (AddConsignment consignmentEntity : consignmentEntityList) {
 
             // Fetching the description for a company
@@ -162,7 +163,6 @@ public class ConsignmentService {
 
             // Generating house and master airway bills
             String houseAirwayBill = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-            String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
 
             // Duplicate Check Consignment
             Optional<ConsignmentEntity> duplicateConsignment =
