@@ -49,7 +49,7 @@ export class ConsoleComponent {
       { field: 'hsCode', header: 'HS Code' },
       { field: 'shipperName', header: 'Shipper Name' },
       { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'statusId', header: 'Status' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
