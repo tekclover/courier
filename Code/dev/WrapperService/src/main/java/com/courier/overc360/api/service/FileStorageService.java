@@ -218,7 +218,7 @@ public class FileStorageService {
 
 		for (List<String> listUploadedData : allRowsList) {
 			// Create consignment key based on consignment fields
-			String consignmentKey = String.join("_", listUploadedData.subList(0, 155));
+			String consignmentKey = String.join("_", listUploadedData.subList(0, 154));
 			// Create piece key based on piece-specific fields
 			String pieceKey = String.join("_", listUploadedData.subList(155, 168));
 
