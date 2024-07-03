@@ -209,11 +209,11 @@ public class ItemDetailsService {
 
                 //Update ReferenceImage
                 List<ReferenceImageList> referenceImageLists = new ArrayList<>();
-                for(ReferenceImageList image : itemDetails.getReferenceImageList()){
+                for (ReferenceImageList image : itemDetails.getReferenceImageList()) {
 
                     ReferenceImageList newRefImageList = new ReferenceImageList();
                     String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
-                    ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(),0L);
+                    ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
 
                     imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
                     imageReferenceRecord.setReferenceField2(downloadDocument);
@@ -493,72 +493,98 @@ public class ItemDetailsService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddItemDetails> itemDetailsList = new ArrayList<>();
         try {
-
             Long itemDetails = 1L;
-            for (AddItemDetails addItemDetails : addItemDetailsList) {
-                Optional<ItemDetails> duplicateItemDetails =
-                        itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, addItemDetails.getPieceItemId(), 0L);
+            if (addItemDetailsList != null && !addItemDetailsList.isEmpty()) {
+                for (AddItemDetails addItemDetails : addItemDetailsList) {
+                    Optional<ItemDetails> duplicateItemDetails =
+                            itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                                    languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, addItemDetails.getPieceItemId(), 0L);
 
-                if (duplicateItemDetails.isPresent()) {
-                    throw new BadRequestException("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
-                } else {
+                    if (duplicateItemDetails.isPresent()) {
+                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
+                    } else {
 
-                    String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
-                    ItemDetails newItemDetails = new ItemDetails();
+                        String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
+                        ItemDetails newItemDetails = new ItemDetails();
 //                    String PIECE_ITEM_ID = pieceId + "01";
-                    BeanUtils.copyProperties(addItemDetails, newItemDetails, CommonUtils.getNullPropertyNames(addItemDetails));
-                    newItemDetails.setPieceItemId(PIECE_ITEM_ID);
-                    newItemDetails.setCompanyId(companyId);
-                    newItemDetails.setLanguageId(languageId);
-                    newItemDetails.setPartnerId(partnerId);
-                    newItemDetails.setPieceId(pieceId);
-                    newItemDetails.setHouseAirwayBill(houseAirwayBill);
-                    newItemDetails.setMasterAirwayBill(masterAirwayBill);
-                    newItemDetails.setCompanyName(companyName);
-                    newItemDetails.setLanguageDescription(languageName);
-                    newItemDetails.setPartnerName(partnerName);
-                    newItemDetails.setPartnerHouseAirwayBill(partnerHawBill);
-                    newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
-                    newItemDetails.setConsignmentId(consignmentId);
+                        BeanUtils.copyProperties(addItemDetails, newItemDetails, CommonUtils.getNullPropertyNames(addItemDetails));
+                        newItemDetails.setPieceItemId(PIECE_ITEM_ID);
+                        newItemDetails.setCompanyId(companyId);
+                        newItemDetails.setLanguageId(languageId);
+                        newItemDetails.setPartnerId(partnerId);
+                        newItemDetails.setPieceId(pieceId);
+                        newItemDetails.setHouseAirwayBill(houseAirwayBill);
+                        newItemDetails.setMasterAirwayBill(masterAirwayBill);
+                        newItemDetails.setCompanyName(companyName);
+                        newItemDetails.setLanguageDescription(languageName);
+                        newItemDetails.setPartnerName(partnerName);
+                        newItemDetails.setPartnerHouseAirwayBill(partnerHawBill);
+                        newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
+                        newItemDetails.setConsignmentId(consignmentId);
 
-                    if(addItemDetails.getHsCode() == null && hsCode != null) {
-                        newItemDetails.setHsCode(hsCode);
-                    }
-                    //ImageReference Created
-                    List<ReferenceImageList> imageReferenceList = new ArrayList<>();
-                    if (addItemDetails.getReferenceImageList() != null) {
-                    for (ReferenceImageList imageReference : addItemDetails.getReferenceImageList()) {
-                            //CommonService
-                            String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
-                            ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
-                                    partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null, pieceId,
-                                    PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
-
-                            //ReferenceImage Set
-                            ReferenceImageList newImage = new ReferenceImageList();
-                            newImage.setImageRefId(dbImage.getImageRefId());
-                            newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
-                            newImage.setPdfUrl(dbImage.getReferenceField2());
-
-                            imageReferenceList.add(newImage);
+                        if (addItemDetails.getHsCode() == null && hsCode != null) {
+                            newItemDetails.setHsCode(hsCode);
                         }
+                        //ImageReference Created
+                        List<ReferenceImageList> imageReferenceList = new ArrayList<>();
+                        if (addItemDetails.getReferenceImageList() != null) {
+                            for (ReferenceImageList imageReference : addItemDetails.getReferenceImageList()) {
+                                //CommonService
+                                String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
+                                ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
+                                        partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null, pieceId,
+                                        PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
+
+                                //ReferenceImage Set
+                                ReferenceImageList newImage = new ReferenceImageList();
+                                newImage.setImageRefId(dbImage.getImageRefId());
+                                newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
+                                newImage.setPdfUrl(dbImage.getReferenceField2());
+
+                                imageReferenceList.add(newImage);
+                            }
+                        }
+
+                        newItemDetails.setDeletionIndicator(0L);
+                        newItemDetails.setCreatedBy(loginUserID);
+                        newItemDetails.setCreatedOn(new Date());
+                        newItemDetails.setUpdatedBy(loginUserID);
+                        newItemDetails.setUpdatedOn(new Date());
+                        AddItemDetails newAddItemDetails = new AddItemDetails();
+                        ItemDetails savedItemDetails = itemDetailsRepository.save(newItemDetails);
+                        BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
+                        newAddItemDetails.setReferenceImageList(imageReferenceList);
+                        itemDetailsList.add(newAddItemDetails);
                     }
-
-                    newItemDetails.setDeletionIndicator(0L);
-                    newItemDetails.setCreatedBy(loginUserID);
-                    newItemDetails.setCreatedOn(new Date());
-                    newItemDetails.setUpdatedBy(loginUserID);
-                    newItemDetails.setUpdatedOn(new Date());
-
-                    AddItemDetails newAddItemDetails = new AddItemDetails();
-                    ItemDetails savedItemDetails = itemDetailsRepository.save(newItemDetails);
-                    BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
-                    newAddItemDetails.setReferenceImageList(imageReferenceList);
-                    itemDetailsList.add(newAddItemDetails);
                 }
-            }
+            } else {
+                String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
+                ItemDetails newItemDetails = new ItemDetails();
+                newItemDetails.setPieceItemId(PIECE_ITEM_ID);
+                newItemDetails.setCompanyId(companyId);
+                newItemDetails.setLanguageId(languageId);
+                newItemDetails.setPartnerId(partnerId);
+                newItemDetails.setPieceId(pieceId);
+                newItemDetails.setHouseAirwayBill(houseAirwayBill);
+                newItemDetails.setMasterAirwayBill(masterAirwayBill);
+                newItemDetails.setCompanyName(companyName);
+                newItemDetails.setLanguageDescription(languageName);
+                newItemDetails.setPartnerName(partnerName);
+                newItemDetails.setPartnerHouseAirwayBill(partnerHawBill);
+                newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
+                newItemDetails.setConsignmentId(consignmentId);
 
+                newItemDetails.setDeletionIndicator(0L);
+                newItemDetails.setCreatedBy(loginUserID);
+                newItemDetails.setCreatedOn(new Date());
+                newItemDetails.setUpdatedBy(loginUserID);
+                newItemDetails.setUpdatedOn(new Date());
+
+                AddItemDetails newAddItemDetails = new AddItemDetails();
+                ItemDetails savedItemDetails = itemDetailsRepository.save(newItemDetails);
+                BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
+                itemDetailsList.add(newAddItemDetails);
+            }
         } catch (Exception e) {
             // Error Log
             for (AddItemDetails itemDetails : addItemDetailsList) {
