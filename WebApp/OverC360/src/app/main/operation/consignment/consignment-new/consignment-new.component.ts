@@ -199,8 +199,108 @@ export class ConsignmentNewComponent {
   })
 
   piece = this.fb.group({
-    pieceDetails: this.fb.array([]) // Initialize an empty FormArray
+    pieceDetails: this.fb.array([
+      this.initPieceDetail()
+    ]) 
   });
+
+  initPieceDetail() {
+    return this.fb.group({
+      codAmount: [''],
+      declaredValue: [''],
+      description: [''],
+      dimensionUnit: [''],
+      height: [''],
+      itemDetails: this.fb.array([
+        this.initItemDetail()
+      ]),
+      length: [''],
+      packReferenceNumber: [''],
+      partnerType: [''],
+      pieceId: [''],
+      referenceField1: [''],
+      referenceField10: [''],
+      referenceField11: [''],
+      referenceField12: [''],
+      referenceField13: [''],
+      referenceField14: [''],
+      referenceField15: [''],
+      referenceField16: [''],
+      referenceField17: [''],
+      referenceField18: [''],
+      referenceField19: [''],
+      referenceField2: [''],
+      referenceField20: [''],
+      referenceField3: [''],
+      referenceField4: [''],
+      referenceField5: [''],
+      referenceField6: [''],
+      referenceField7: [''],
+      referenceField8: [''],
+      referenceField9: [''],
+      referenceImageList: this.fb.array([
+        this.fb.group({
+          imageRefId: [''],
+          pdfUrl: [''],
+          referenceImageUrl: ['']
+        })
+      ]),
+      volume: [''],
+      volumeUnit: [''],
+      weight: [''],
+      weightUnit: [''],
+      width: ['']
+    });
+  }
+
+  initItemDetail() {
+    return this.fb.group({
+      codAmount: [''],
+      declaredValue: [''],
+      description: [''],
+      dimensionUnit: [''],
+      height: [''],
+      hsCode: [''],
+      imageRefId: [''],
+      itemCode: [''],
+      length: [''],
+      partnerName: [''],
+      partnerType: [''],
+      pieceItemId: [''],
+      referenceField1: [''],
+      referenceField10: [''],
+      referenceField11: [''],
+      referenceField12: [''],
+      referenceField13: [''],
+      referenceField14: [''],
+      referenceField15: [''],
+      referenceField16: [''],
+      referenceField17: [''],
+      referenceField18: [''],
+      referenceField19: [''],
+      referenceField2: [''],
+      referenceField20: [''],
+      referenceField3: [''],
+      referenceField4: [''],
+      referenceField5: [''],
+      referenceField6: [''],
+      referenceField7: [''],
+      referenceField8: [''],
+      referenceField9: [''],
+      referenceImageList: this.fb.array([
+        this.fb.group({
+          imageRefId: [''],
+          pdfUrl: [''],
+          referenceImageUrl: ['']
+        })
+      ]),
+      volume: [''],
+      volumeUnit: [''],
+      weight: [''],
+      weightUnit: [''],
+      width: ['']
+    });
+  }
 
   form = this.fb.group({
     updatedBy: [,],
