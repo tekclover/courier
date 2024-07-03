@@ -98,6 +98,7 @@ public class CcrService {
                     throw new BadRequestException("Record is getting Duplicated with given value: houseAirwayBill - " + addCcr.getHouseAirwayBill());
                 }
 
+
                 //Check IsExempted status and throw error
 //                if (addCcr.getIsExempted().equalsIgnoreCase("Yes")) {
 //                    if (addCcr.getExemptionFor() == null || addCcr.getExemptionBeneficiary() == null || addCcr.getExemptionReference() == null) {
@@ -141,9 +142,17 @@ public class CcrService {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addCcr.getHouseAirwayBill());
                 }
 
+                Double customsValue = Double.valueOf(addCcr.getCustomsValue());
+
                 Ccr newCcr = new Ccr();
                 BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
 
+
+                if(customsValue != null && customsValue < 100){
+                    newCcr.setIsExempted("yes");
+                }else {
+                    newCcr.setIsExempted("No");
+                }
 
                 String STATUS_ID = "2 - Ccr Created";
                 String NUM_RAN_OBJ = "CCRID";
@@ -158,7 +167,9 @@ public class CcrService {
                     newCcr.setLanguageDescription(lAndCDesc.getLangDesc());
                     newCcr.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                newCcr.setIataKd(iataData.getIataKd());
+                if(iataData != null && iataData.getIataKd() != null) {
+                    newCcr.setIataKd(iataData.getIataKd());
+                }
                 //   newCcr.setTotalDuty(String.valueOf(totalDuty));
                 newCcr.setStatusId(STATUS_ID);
                 newCcr.setDeletionIndicator(0L);
