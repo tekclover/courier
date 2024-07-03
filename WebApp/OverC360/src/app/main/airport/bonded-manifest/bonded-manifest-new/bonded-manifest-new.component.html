@@ -21,7 +21,7 @@
                     </ng-template>
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
-                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId">
+                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId" *ngIf="this.pageToken.pageflow != 'New'">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Manifest Number</p>
                                 <input formControlName="bondedId" [ngClass]="
                                     form.get('bondedId')?.invalid &&
