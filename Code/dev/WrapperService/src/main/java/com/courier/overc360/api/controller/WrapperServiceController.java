@@ -1,6 +1,7 @@
 package com.courier.overc360.api.controller;
 
 import com.courier.overc360.api.batch.scheduler.BatchJobScheduler;
+import com.courier.overc360.api.exception.BadRequestException;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.auth.AuthTokenRequest;
 import com.courier.overc360.api.model.dto.PDFMerger;
@@ -27,6 +28,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -131,6 +134,31 @@ public class WrapperServiceController {
                 .contentLength(file.length())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
+    }
+
+    @ApiOperation(response = Optional.class, value = "Multiple Document Storage Upload") // label for swagger
+    @PostMapping("/doc-storage/multiUpload")
+    public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam String location) {
+        String message = "";
+        String fileName = "";
+        try {
+            List<String> fileNames = new ArrayList<>();
+
+            for(MultipartFile file : files) {
+                try {
+                    fileName = fileStorageService.storeFile(file, location);
+                } catch (Exception e) {
+                    throw new BadRequestException("Exception : " + e);
+                }
+                fileNames.add(fileName);
+            }
+
+            message = "Uploaded the files successfully: " + fileNames;
+            return new ResponseEntity <> (message, HttpStatus.OK) ;
+        } catch (Exception e) {
+            message = "Fail to upload files!";
+            return new ResponseEntity <> (message, HttpStatus.EXPECTATION_FAILED) ;
+        }
     }
 
     // Consignment-Upload

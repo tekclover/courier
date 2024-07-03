@@ -19,7 +19,7 @@ export class ConsoleService {
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/console/list', obj);
+    return this.http.patch<any>('/overc-midmile-service/console/update/list', obj);
   }
 
   Delete(obj: any) {

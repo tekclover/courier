@@ -23,26 +23,20 @@
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12" id="masterAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Master Airway Bill Number</p>
-                                <input formControlName="masterAirwayBill" [ngClass]="
-                                    form.get('masterAirwayBill')?.invalid &&
-                                    form.get('masterAirwayBill')?.dirty
-                                      ? 'invalid'
-                                      : ''
-                                  " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
-                                <mat-error *ngIf="errorHandling('masterAirwayBill')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="mawbList" placeholder="Select" filter="true" formControlName="masterAirwayBill" appendTo="body"
+                                [ngClass]="form.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                  [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="mawbChanged()"/>
+                                <mat-error *ngIf="errorHandling('masterAirwayBill')" class="text-danger"><small>{{
+                                    getErrorMessage()}}</small></mat-error>
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12" id="houseAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">House Airway Bill Number</p>
-                                <input formControlName="houseAirwayBill" [ngClass]="
-                                form.get('houseAirwayBill')?.invalid &&
-                                form.get('houseAirwayBill')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
-                                <mat-error *ngIf="errorHandling('houseAirwayBill')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="hawbList" placeholder="Select" filter="true" formControlName="houseAirwayBill" appendTo="body"
+                                [ngClass]="form.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="hawbChanged()"/>
+                                <mat-error *ngIf="errorHandling('houseAirwayBill')" class="text-danger"><small>{{
+                                    getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeName">
                                 <p class="formControlLabel f600 textBlack mb-0">
@@ -63,7 +57,7 @@
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeCivilId">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Consignee ID</p>
                                 <p-dropdown formControlName="consigneeCivilId"
-                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" />
                                 <mat-error *ngIf="errorHandling('consigneeCivilId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
@@ -172,19 +166,15 @@
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     HS Code
                                 </p>
-                                <input formControlName="hsCode" [ngClass]="
-                                form.get('hsCode')?.invalid &&
-                                form.get('hsCode')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
+                                <p-dropdown formControlName="hsCode"
+                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" />
                               <mat-error *ngIf="errorHandling('hsCode')" class="text-danger"><small>{{
                                 getErrorMessage()
                                 }}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="goodsDescription">
                                 <p class="formControlLabel f600 textBlack mb-0">
-                                    goodsDescription
+                                    Goods Description
                                 </p>
                                 <input formControlName="goodsDescription" [ngClass]="
                                 form.get('goodsDescription')?.invalid &&
@@ -285,12 +275,8 @@
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     Is Exempted
                                 </p>
-                                <input formControlName="isExempted" [ngClass]="
-                                form.get('isExempted')?.invalid &&
-                                form.get('isExempted')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
+                                <p-dropdown formControlName="isExempted" [options]="value"
+                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="exemptionFor">
                                 <p class="formControlLabel f600 textBlack mb-0">

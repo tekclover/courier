@@ -30,194 +30,200 @@ import java.util.*;
 @Service
 public class FileStorageService {
 
-    @Autowired
-    PropertiesConfig propertiesConfig;
+	@Autowired
+	PropertiesConfig propertiesConfig;
 
-    private Path fileStorageLocation = null;
+	private Path fileStorageLocation = null;
 
-    @Autowired
-    private AuthTokenService authTokenService;
+	@Autowired
+	private AuthTokenService authTokenService;
 
-    @Autowired
-    private MidMileService midMileService;
+	@Autowired
+	private MidMileService midMileService;
 
 
-    private RestTemplate getRestTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate;
-    }
+	private RestTemplate getRestTemplate() {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate;
+	}
 
-    /**
-     * @param file
-     * @return
-     * @throws Exception
-     */
-    public String storeFile(MultipartFile file, String filePath) throws Exception {
+	/**
+	 *
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	public String storeFile(MultipartFile file, String filePath) throws Exception {
 
-        this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
-        if (!Files.exists(fileStorageLocation)) {
-            try {
-                Files.createDirectories(this.fileStorageLocation);
-            } catch (Exception ex) {
-                throw new BadRequestException(
-                        "Could not create the directory where the uploaded files will be stored.");
-            }
-        }
+		if(!filePath.startsWith("/")){
+			filePath = "/" + filePath;
+		}
 
-        log.info("location : " + fileStorageLocation);
+		this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
+		if (!Files.exists(fileStorageLocation)) {
+			try {
+				Files.createDirectories(this.fileStorageLocation);
+			} catch (Exception ex) {
+				throw new BadRequestException(
+						"Could not create the directory where the uploaded files will be stored.");
+			}
+		}
 
-        // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        log.info("filename before: " + fileName);
-        fileName = fileName.replace(" ", "_");
-        log.info("filename after: " + fileName);
-        try {
-            // Check if the file's name contains invalid characters
-            if (fileName.contains("..")) {
-                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
+		log.info("location : " + fileStorageLocation);
 
-            // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            log.info("Copied : " + targetLocation);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
-        }
+		// Normalize file name
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		log.info("filename before: " + fileName);
+		fileName = fileName.replace(" ", "_");
+		log.info("filename after: " + fileName);
+		try {
+			// Check if the file's name contains invalid characters
+			if (fileName.contains("..")) {
+				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+			}
+
+			// Copy file to the target location (Replacing existing file with the same name)
+			Path targetLocation = this.fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			log.info("Copied : " + targetLocation);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+		}
 //		return Collections.singletonMap("message", "File uploaded successfully!");
-        return fileName;
-    }
+		return fileName;
+	}
 
-    /**
-     * @param location
-     * @param file
-     * @return
-     * @throws Exception
-     */
-    public String getQualifiedFilePath(String location, String file) throws Exception {
-        String filePath = propertiesConfig.getDocStorageBasePath();
+	/**
+	 *
+	 * @param location
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	public String getQualifiedFilePath (String location, String file) throws Exception {
+		String filePath = propertiesConfig.getDocStorageBasePath();
 
-        log.info("getQualifiedFilePath---location------>: " + location);
-        log.info("getQualifiedFilePath---file------>: " + file);
+		log.info("getQualifiedFilePath---location------>: " + location);
+		log.info("getQualifiedFilePath---file------>: " + file);
 
-        if (location.startsWith("/")) {
-            filePath = filePath + location;
-        } else {
-            filePath = filePath + "/" + location;
-        }
+		if(location.startsWith("/")){
+			filePath = filePath + location;
+		} else {
+			filePath = filePath + "/" + location;
+		}
 
-        if (location.endsWith("/")) {
-            filePath = filePath + file;
-        } else {
-            filePath = filePath + "/" + file;
-        }
-        log.info("filePath: " + filePath);
-        return filePath;
-    }
+		if(location.endsWith("/")){
+			filePath = filePath + file;
+		} else {
+			filePath = filePath + "/" + file;
+		}
+		log.info("filePath: " + filePath);
+		return filePath;
+	}
 
-    public Map<String, String> processConsignmentOrders(MultipartFile file) {
-        this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
-        if (!Files.exists(fileStorageLocation)) {
-            try {
-                Files.createDirectories(this.fileStorageLocation);
-            } catch (Exception ex) {
-                throw new BadRequestException(
-                        "Could not create the directory where the uploaded files will be stored.");
-            }
-        }
+	public Map<String, String> processConsignmentOrders(MultipartFile file) {
+		this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
+		if (!Files.exists(fileStorageLocation)) {
+			try {
+				Files.createDirectories(this.fileStorageLocation);
+			} catch (Exception ex) {
+				throw new BadRequestException(
+						"Could not create the directory where the uploaded files will be stored.");
+			}
+		}
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        log.info("filename before: " + fileName);
-        fileName = fileName.replace("", "_");
-        log.info("filename after: " + fileName);
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		log.info("filename before: " + fileName);
+		fileName = fileName.replace("", "_");
+		log.info("filename after: " + fileName);
 
-        try {
-            if (fileName.contains("..")) {
-                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
+		try {
+			if (fileName.contains("..")) {
+				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+			}
 
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            log.info("Copied : " + targetLocation);
+			Path targetLocation = this.fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			log.info("Copied : " + targetLocation);
 
-            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
-            List<AddConsignment> consignmentOrders = prepConsignmentData(allRowsList);
-            log.info("consignmentOrders : " + consignmentOrders);
+			List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
+			List<AddConsignment> consignmentOrders = prepConsignmentData (allRowsList);
+			log.info("consignmentOrders : " + consignmentOrders);
 
-            // Uploading Orders
-            UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
-            AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Uploaded", authToken.getAccess_token());
+			// Uploading Orders
+			UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
+			AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
+			dbUploadApiResponse = midMileService.postConsignmentUpload (consignmentOrders, "Uploaded", authToken.getAccess_token());
 
-            if (dbUploadApiResponse != null) {
-                Map<String, String> mapFileProps = new HashMap<>();
-                mapFileProps.put("file", fileName);
-                mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
-                return mapFileProps;
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
-        }
-        return null;
+			if(dbUploadApiResponse != null) {
+				Map<String, String> mapFileProps = new HashMap<>();
+				mapFileProps.put("file", fileName);
+				mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
+				return mapFileProps;
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+		}
+		return null;
 
-    }
+	}
 
-    private List<List<String>> readExcelData(File file) {
-        try {
-            Workbook workbook = new XSSFWorkbook(file);
-            workbook.setMissingCellPolicy(Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
-            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+	private List<List<String>> readExcelData(File file) {
+		try {
+			Workbook workbook = new XSSFWorkbook(file);
+			workbook.setMissingCellPolicy(Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+			org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
 
-            List<List<String>> allRowsList = new ArrayList<>();
-            DataFormatter fmt = new DataFormatter();
-            for (int rn = sheet.getFirstRowNum(); rn <= sheet.getLastRowNum(); rn++) {
-                List<String> listUploadData = new ArrayList<String>();
-                Row row = sheet.getRow(rn);
-                log.info("Row:  " + row.getRowNum());
-                if (row == null) {
-                    // There is no data in this row, handle as needed
-                } else if (row.getRowNum() != 0) {
-                    for (int cn = 0; cn <= row.getLastCellNum(); cn++) {
-                        Cell cell = row.getCell(cn);
-                        if (cell == null) {
-                            log.info("cell empty: " + cell);
-                            listUploadData.add("");
-                        } else {
-                            String cellStr = fmt.formatCellValue(cell);
-                            log.info("cellStr: " + cellStr);
-                            listUploadData.add(cellStr);
-                        }
-                    }
-                    allRowsList.add(listUploadData);
-                }
-            }
+			List<List<String>> allRowsList = new ArrayList<>();
+			DataFormatter fmt = new DataFormatter();
+			for (int rn=sheet.getFirstRowNum(); rn<=sheet.getLastRowNum(); rn++) {
+				List<String> listUploadData = new ArrayList<String>();
+				Row row = sheet.getRow(rn);
+				log.info("Row:  "+ row.getRowNum());
+				if (row == null) {
+					// There is no data in this row, handle as needed
+				} else if (row.getRowNum() != 0) {
+					for (int cn = 0; cn <= row.getLastCellNum(); cn ++) {
+						Cell cell = row.getCell(cn);
+						if (cell == null) {
+							log.info("cell empty: " + cell);
+							listUploadData.add("");
+						} else {
+							String cellStr = fmt.formatCellValue(cell);
+							log.info("cellStr: " + cellStr);
+							listUploadData.add(cellStr);
+						}
+					}
+					allRowsList.add(listUploadData);
+				}
+			}
 
-            log.info("list data: " + allRowsList);
-            return allRowsList;
-        } catch (Exception ioe) {
-            ioe.printStackTrace();
-        }
-        return null;
-    }
+			log.info("list data: " + allRowsList);
+			return allRowsList;
+		} catch (Exception ioe) {
+			ioe.printStackTrace();
+		}
+		return null;
+	}
 
 
-    public List<AddConsignment> prepConsignmentData(List<List<String>> allRowsList) {
-        Map<String, AddConsignment> consignmentMap = new HashMap<>();
-        Map<String, Map<String, AddPieceDetails>> pieceMap = new HashMap<>();
+	public List<AddConsignment> prepConsignmentData(List<List<String>> allRowsList) {
+		Map<String, AddConsignment> consignmentMap = new HashMap<>();
+		Map<String, Map<String, AddPieceDetails>> pieceMap = new HashMap<>();
 
-        // DateFormat
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// DateFormat
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        for (List<String> listUploadedData : allRowsList) {
-            // Create consignment key based on consignment fields
-            String consignmentKey = String.join("_", listUploadedData.subList(0, 154));
-            // Create piece key based on piece-specific fields
-            String pieceKey = String.join("_", listUploadedData.subList(156, 168));
+		for (List<String> listUploadedData : allRowsList) {
+			// Create consignment key based on consignment fields
+			String consignmentKey = String.join("_", listUploadedData.subList(0, 155));
+			// Create piece key based on piece-specific fields
+			String pieceKey = String.join("_", listUploadedData.subList(155, 168));
 
-            AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
-            Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
+			AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
+			Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
 
             if (!consignmentMap.containsKey(consignmentKey)) {
                 // Set Consignment Details
@@ -712,6 +718,7 @@ public class FileStorageService {
 //
 //		return new ArrayList<>(consignmentMap.values());
 //	}
+
 
 
 //	this is upload program i pass 50 records in excel difference different consignment but same piece and same item ok, 50 consignment, 50 piece, 50 item create but now create 50 consginment, 50 piece, each pieace 50 item created this is wrong , i send 50 records only but save item is 2500 records
