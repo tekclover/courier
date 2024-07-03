@@ -46,7 +46,7 @@ export class ConsoleNewComponent {
       countryOfOrigin: [],
       createdBy: [],
       createdOn: ['', ],
-      currencyId: [],
+      currency: [],
       customsCurrency: [],
       customsKd: [],
       customsValue: [],
@@ -149,7 +149,7 @@ export class ConsoleNewComponent {
 
     this.dropdownlist();
     this.mawbDropdown();
-    this.originChanged();
+
 
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
@@ -173,10 +173,11 @@ export class ConsoleNewComponent {
   mawbList: any[] = [];
   hawbList: any[] = [];
   iataList: any[] = [];
-  originList: any[] =[];
   originCodeList: any[] =[];
   currencyIdList: any[] = [];
-  consignmentList: any[] = [];
+  consignorIdList: any[] = [];
+  consignmentList: any[] =[];
+  consigneeList: any[] =[];
 
 
 
@@ -186,13 +187,21 @@ export class ConsoleNewComponent {
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.currency.url,
+      this.cas.dropdownlist.setup.consignee.url,
+      this.cas.dropdownlist.setup.consignment.url,
       this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.iata.url,
 
     ]).subscribe({next: (results: any) => {
       this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
       this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
       this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
-      this.countryIdList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.country.key);
+      this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
+      this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
+      this.iataList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.iata.key);
+      this.consigneeList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.consignee.key);
+      this.consignmentList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignment.key);
 
       this.spin.hide();
     },
@@ -253,8 +262,8 @@ export class ConsoleNewComponent {
     this.mawbList = [];
     this.spin.show();
     this.consignmentService.search(obj).subscribe({next: (result) => {
-      this.mawbList = this.cas.foreachlist(result, {key: 'masterAirwayBill', value: 'masterAirwayBill'});
-      this.spin.hide();
+    this.mawbList = this.cas.foreachlist(result, {key: 'masterAirwayBill', value: 'masterAirwayBill'});
+    this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();
       this.cs.commonerrorNew(err);
@@ -282,11 +291,9 @@ export class ConsoleNewComponent {
     obj.companyId = [this.auth.companyId];
     obj.masterAirwayBill = [this.form.controls.masterAirwayBill.value]
     obj.houseAirwayBill = [this.form.controls.houseAirwayBill.value]
-
-    this.hawbList = [];
     this.spin.show();
     this.consignmentService.search(obj).subscribe({next: (result) => {
-      this.hawbList = this.cas.foreachlist(result, {key: 'houseAirwayBill', value: 'houseAirwayBill'});
+      this.form.patchValue(result[0]);
       this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();
@@ -294,24 +301,21 @@ export class ConsoleNewComponent {
     }})
   }
 
-  originChanged(){
+  ConsignmentChanged(){
     let obj: any = {};
     obj.companyId = [this.auth.companyId];
-
-    this.originList = [];
-    this.originCodeList = [];
-    this.iataList = [];
+    obj.masterAirwayBill = [this.form.controls.masterAirwayBill.value]
+    obj.houseAirwayBill = [this.form.controls.houseAirwayBill.value]
     this.spin.show();
-    this.iataService.search(obj).subscribe({next: (result) => {
-      this.originList = this.cas.foreachlist(result, {key: 'origin', value: 'origin'});
-      this.originCodeList = this.cas.foreachlist(result, {key: 'originCode', value: 'originCode'});
-      this.iataList = this.cas.foreachlist(result, {key: 'iataKd', value: 'iataKd'});
+    this.consignmentService.search(obj).subscribe({next: (result) => {
+      this.form.patchValue(result[0]);
       this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();
       this.cs.commonerrorNew(err);
     }})
   }
+
 }
 
 

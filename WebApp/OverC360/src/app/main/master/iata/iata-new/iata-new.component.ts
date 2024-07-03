@@ -44,7 +44,6 @@ export class IataNewComponent {
     companyName: [],
     originCode: [],
     origin: [, Validators.required],
-    country: [, Validators.required],
     iataKd: [, Validators.required],
     iataCharge: [],
     currencyId: [, Validators.required],
@@ -94,7 +93,6 @@ export class IataNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
-      this.form.controls.country.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();

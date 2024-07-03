@@ -36,7 +36,7 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="masterAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">MAWB</p>
                                 <p-dropdown [options]="mawbList" placeholder="Select" filter="true" formControlName="masterAirwayBill" appendTo="body"
                                 [ngClass]="form.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -45,77 +45,76 @@
                                     getErrorMessage()}}</small></mat-error>
                             </div>
                             
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="houseAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">HAWB</p>
                                 <p-dropdown [options]="hawbList" placeholder="Select" filter="true" formControlName="houseAirwayBill" appendTo="body"
                                 [ngClass]="form.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}"  (onChange)="originChanged()"/>
+                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="hawbChanged()"/>
                                 <mat-error *ngIf="errorHandling('houseAirwayBill')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
       
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Country of Origin</p>
-                                <p-dropdown [options]="originList" placeholder="Select" filter="true" formControlName="countryOfOrigin" appendTo="body"
-                                  [style]="{'width': '100%'}"  [panelStyle]="{'width':'100%'}" />
+                            <div class="col-6 marginFieldNew borderRadius12" id="countryOfOrigin">
+                                <p class="formControlLabel f600 textBlack mb-0">Origin</p>
+                                <input maxlength="50" pInputText formControlName="countryOfOrigin" [ngClass]="form.get('countryOfOrigin')?.invalid && form.get('countryOfOrigin')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('countryOfOrigin')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12"  id="country">
+                            <div class="col-6 marginFieldNew borderRadius12"  id="airportOriginCode">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Airport Origin Code</p>
-                                <p-dropdown [options]="countryIdList" formControlName="country" appendTo="body"
+                                <p-dropdown [options]="countryIdList" formControlName="airportOriginCode" appendTo="body"
                                 [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
-                                <mat-error *ngIf="errorHandling('country')"
+                                <mat-error *ngIf="errorHandling('airportOriginCode')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="shipper">
+                            <div class="col-6 marginFieldNew borderRadius12" id="shipperId">
                                 <p class="formControlLabel f600 textBlack mb-0">Shipper</p>
-                                <p-dropdown formControlName="shipper" appendTo="body"
+                                <p-dropdown [options]="consignorIdList" formControlName="shipperId" appendTo="body"
                                 [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
-                                <mat-error *ngIf="errorHandling('shipperName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <mat-error *ngIf="errorHandling('shipperId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="grossWeight">
                                 <p class="formControlLabel f600 textBlack mb-0">Weight</p>
-                                <input maxlength="50" formControlName="grossWeight" [ngClass]="form.get('grossWeight')?.invalid && form.get('grossWeight')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <input maxlength="50" pInputText formControlName="grossWeight" [ngClass]="form.get('grossWeight')?.invalid && form.get('grossWeight')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('grossWeight')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="noOfPieceHawb">
                                 <p class="formControlLabel f600 textBlack mb-0">PCS</p>
-                                <input maxlength="50" formControlName="noOfPieceHawb" [ngClass]="form.get('noOfPieceHawb')?.invalid && form.get('noOfPieceHawb')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <input maxlength="50" pInputText formControlName="noOfPieceHawb" [ngClass]="form.get('noOfPieceHawb')?.invalid && form.get('noOfPieceHawb')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('noOfPieceHawb')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="goodsDescription">
                                 <p class="formControlLabel f600 textBlack mb-0">Description</p>
-                                <input maxlength="50" formControlName="goodsDescription" [ngClass]="form.get('goodsDescription')?.invalid && form.get('goodsDescription')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <input maxlength="50" pInputText formControlName="goodsDescription" [ngClass]="form.get('goodsDescription')?.invalid && form.get('goodsDescription')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('goodsDescription')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="consigneeName">
                                 <p class="formControlLabel f600 textBlack mb-0">Consignee Name</p>
-                                <p-dropdown [options]="consignmentList" placeholder="Select" filter="true" formControlName="consigneeName" appendTo="body"
+                                <p-dropdown [options]="consigneeList" placeholder="Select" filter="true" formControlName="consigneeName" appendTo="body"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('consigneeName')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="currency">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Currency</p>
-                                <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="currencyId" appendTo="body"
+                                <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="currency" appendTo="body"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('currencyId')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('currency')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="consignmentValue">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Consignment Value</p>
                                 <p-dropdown [options]="consignmentList" placeholder="Select" filter="true" formControlName="consignmentValue" appendTo="body"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('consignmentValue')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="customsKd">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Customs KD</p>
-                                <input maxlength="50" formControlName="customsKd" [ngClass]="form.get('customsKd')?.invalid && form.get('customsKd')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                                <input maxlength="50" pInputText formControlName="customsKd" [ngClass]="form.get('customsKd')?.invalid && form.get('customsKd')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('customsKd')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12" id="iataKd">
                                 <p class="formControlLabel f600 textBlack mb-0 required">IATA</p>
                                 <p-dropdown [options]="iataList" placeholder="Select" filter="true" formControlName="iataKd" appendTo="body"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />

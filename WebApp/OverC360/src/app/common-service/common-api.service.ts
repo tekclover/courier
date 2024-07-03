@@ -60,7 +60,9 @@ export class CommonAPIService {
       opStatus: { url: this.setup + 'opStatus', key: { key: 'statusCode', value: 'opStatusDescription', languageId: 'languageId', companyId: 'companyId' } },
       rateParameter: { url: this.setup + 'rateParameter', key: { key: 'rateParameterId', value: 'rateParameterDescription', languageId: 'languageId', companyId: 'companyId' } },
       hub: { url: this.setup + 'hub', key: { key: 'hubCode', value: 'hubName', languageId: 'languageId', companyId: 'companyId' } },
-
+      consignor: { url: this.setup + 'consignor', key: { key: 'consignorId', value: 'consignorName', languageId: 'languageId', companyId: 'companyId' } },
+      iata: { url: this.setup + 'iata', key: { key: 'iataKd', value: 'iataKd', languageId: 'languageId', companyId: 'companyId' } },
+      
     },
   }
  
