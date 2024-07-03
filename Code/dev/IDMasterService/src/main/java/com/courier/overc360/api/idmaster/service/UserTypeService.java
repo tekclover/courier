@@ -12,6 +12,7 @@ import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.usertype.FindUserType;
 import com.courier.overc360.api.idmaster.replica.model.usertype.ReplicaUserType;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaUserTypeRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaUserTypeSpecification;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserTypeService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaCompanyRepository replicaCompanyRepository;
@@ -92,6 +96,10 @@ public class UserTypeService {
                 dbUserType.setLanguageIdAndDescription(iKeyValuePair.getLangDesc());
                 dbUserType.setCompanyIdAndDescription(iKeyValuePair.getCompanyDesc());
             }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addUserType.getStatusId());
+            if (statusDesc != null) {
+                dbUserType.setStatusDescription(statusDesc);
+            }
             dbUserType.setDeletionIndicator(0L);
             dbUserType.setCreatedBy(loginUserID);
             dbUserType.setUpdatedBy(loginUserID);
@@ -119,6 +127,12 @@ public class UserTypeService {
             throws IllegalAccessException, InvocationTargetException, ParseException {
         UserType dbUserType = getUserType(userTypeId, companyId, languageId);
         BeanUtils.copyProperties(updateUserType, dbUserType, CommonUtils.getNullPropertyNames(updateUserType));
+        if (updateUserType.getStatusId() != null && !updateUserType.getStatusId().isEmpty()) {
+            String statusDesc = replicaStatusRepository.getStatusDescription(updateUserType.getStatusId());
+            if (statusDesc != null) {
+                dbUserType.setStatusDescription(statusDesc);
+            }
+        }
         dbUserType.setUpdatedBy(loginUserID);
         dbUserType.setUpdatedOn(new Date());
         return userTypeRepository.save(dbUserType);

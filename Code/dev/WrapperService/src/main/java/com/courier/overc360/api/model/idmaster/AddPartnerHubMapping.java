@@ -19,6 +19,8 @@ public class AddPartnerHubMapping {
 
     private String partnerType;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

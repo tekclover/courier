@@ -13,11 +13,7 @@ import java.util.Optional;
 public interface DistrictRepository extends JpaRepository<District, String>, JpaSpecificationExecutor<District> {
 
     Optional<District> findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndDeletionIndicator
-            (String languageId, String companyId, String countryId,
-             String provinceId, String districtId, Long deletionIndicator);
-
-    Optional<District> findByLanguageIdAndCompanyIdAndDistrictIdAndDeletionIndicator
-            (String languageId,String companyId,String districtId,Long deletionIndicator);
+            (String languageId, String companyId, String countryId, String provinceId, String districtId, Long deletionIndicator);
 
 
 }

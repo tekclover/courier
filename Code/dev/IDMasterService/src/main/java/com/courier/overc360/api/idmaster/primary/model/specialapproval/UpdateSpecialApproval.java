@@ -7,6 +7,8 @@ public class UpdateSpecialApproval {
 
     private String specialApprovalText;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

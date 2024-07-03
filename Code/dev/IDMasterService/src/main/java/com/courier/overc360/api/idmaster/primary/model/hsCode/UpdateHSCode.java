@@ -13,6 +13,8 @@ public class UpdateHSCode {
 
     private String itemGroup;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

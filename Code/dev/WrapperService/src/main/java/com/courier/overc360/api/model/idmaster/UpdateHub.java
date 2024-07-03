@@ -21,6 +21,8 @@ public class UpdateHub {
 
     private String longitude;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

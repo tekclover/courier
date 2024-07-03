@@ -9,6 +9,8 @@ public class UpdateMenu {
 
     private String authorizationObjectValue;
 
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String referenceField1;

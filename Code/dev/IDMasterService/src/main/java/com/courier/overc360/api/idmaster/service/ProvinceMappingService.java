@@ -14,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.provincemapping.FindProvinceMapping;
 import com.courier.overc360.api.idmaster.replica.model.provincemapping.ReplicaProvinceMapping;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaProvinceMappingRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaProvinceMappingSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ProvinceMappingService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ProvinceMappingRepository provinceMappingRepository;
@@ -118,6 +122,10 @@ public class ProvinceMappingService {
                     newProvinceMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
                     newProvinceMapping.setProvinceName(iKeyValuePair.getProvinceDesc());
                 }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addProvinceMapping.getStatusId());
+                if (statusDesc != null) {
+                    newProvinceMapping.setStatusDescription(statusDesc);
+                }
                 newProvinceMapping.setDeletionIndicator(0L);
                 newProvinceMapping.setCreatedBy(loginUserID);
                 newProvinceMapping.setCreatedOn(new Date());
@@ -155,6 +163,12 @@ public class ProvinceMappingService {
         try {
             ProvinceMapping dbProvinceMapping = getProvinceMapping(languageId, companyId, provinceId, partnerId);
             BeanUtils.copyProperties(updateProvinceMapping, dbProvinceMapping, CommonUtils.getNullPropertyNames(updateProvinceMapping));
+            if (updateProvinceMapping.getStatusId() != null && !updateProvinceMapping.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateProvinceMapping.getStatusId());
+                if (statusDesc != null) {
+                    dbProvinceMapping.setStatusDescription(statusDesc);
+                }
+            }
             dbProvinceMapping.setUpdatedBy(loginUserID);
             dbProvinceMapping.setUpdatedOn(new Date());
             return provinceMappingRepository.save(dbProvinceMapping);

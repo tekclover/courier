@@ -10,5 +10,6 @@ public class FindUserType {
     private String companyId;
     private List<Long> userTypeId;
     private List<String> languageId;
+    private List<String> statusId;
 
 }

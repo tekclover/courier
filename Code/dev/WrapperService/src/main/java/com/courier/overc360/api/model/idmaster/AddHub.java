@@ -33,6 +33,8 @@ public class AddHub {
 
     private String longitude;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

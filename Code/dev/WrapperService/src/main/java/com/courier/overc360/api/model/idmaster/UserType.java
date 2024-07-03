@@ -19,7 +19,11 @@ public class UserType {
 
     private String companyIdAndDescription;
 
-	private String languageIdAndDescription;
+    private String languageIdAndDescription;
+
+    private String statusId;
+
+    private String statusDescription;
 
     private String referenceField1;
 
@@ -48,4 +52,5 @@ public class UserType {
     private String updatedBy;
 
     private Date updatedOn;
+
 }

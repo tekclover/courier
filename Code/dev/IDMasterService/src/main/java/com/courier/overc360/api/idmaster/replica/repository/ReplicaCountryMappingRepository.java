@@ -15,5 +15,8 @@ public interface ReplicaCountryMappingRepository extends JpaRepository<ReplicaCo
     Optional<ReplicaCountryMapping> findByLanguageIdAndCompanyIdAndCountryIdAndPartnerIdAndDeletionIndicator(
             String languageId, String companyId, String countryId, String partnerId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndCountryIdAndPartnerIdAndDeletionIndicator(
+            String languageId, String companyId, String countryId, String partnerId, Long deletionIndicator);
+
 
 }

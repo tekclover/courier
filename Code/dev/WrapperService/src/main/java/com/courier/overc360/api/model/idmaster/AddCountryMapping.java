@@ -2,9 +2,9 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 @Data
 public class AddCountryMapping {
+
     private String languageId;
 
     private String companyId;
@@ -20,6 +20,8 @@ public class AddCountryMapping {
     private String partnerCountryId;
 
     private String partnerCountryName;
+
+    private String statusId;
 
     private String remark;
 

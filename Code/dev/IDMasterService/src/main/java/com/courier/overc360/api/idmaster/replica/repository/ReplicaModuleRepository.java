@@ -19,6 +19,9 @@ public interface ReplicaModuleRepository extends JpaRepository<ReplicaModule, Lo
     Optional<ReplicaModule> findByCompanyIdAndAndLanguageIdAndModuleIdAndMenuIdAndSubMenuIdAndDeletionIndicator
             (String companyId, String languageId, String moduleId, Long menuId, Long subMenuId, Long deletionIndicator);
 
+    boolean existsByCompanyIdAndAndLanguageIdAndModuleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+            String companyId, String languageId, String moduleId, Long menuId, Long subMenuId, Long deletionIndicator);
+
     List<ReplicaModule> findByCompanyIdAndAndLanguageIdAndModuleIdAndDeletionIndicator
             (String companyId, String languageId, String moduleId, Long deletionIndicator);
 

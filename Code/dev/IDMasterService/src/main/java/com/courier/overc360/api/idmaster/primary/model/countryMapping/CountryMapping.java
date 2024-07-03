@@ -4,8 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -15,7 +21,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_countrymapping",
-                        columnNames = {"LANG_ID","C_ID","PARTNER_ID","COUNTRY_ID"})
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "COUNTRY_ID"})
         }
 )
 @IdClass(CountryMappingCompositeKey.class)
@@ -57,6 +63,12 @@ public class CountryMapping {
 
     @Column(name = "PARTNER_COUNTRY_NAME", columnDefinition = "nvarchar(50)")
     private String partnerCountryName;
+
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;

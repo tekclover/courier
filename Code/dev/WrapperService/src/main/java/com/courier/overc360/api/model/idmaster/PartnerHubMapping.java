@@ -27,6 +27,10 @@ public class PartnerHubMapping {
 
     private String companyName;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
 
     private Long deletionIndicator;
