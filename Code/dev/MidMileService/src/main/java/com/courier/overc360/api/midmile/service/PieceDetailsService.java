@@ -210,7 +210,7 @@ public class PieceDetailsService {
                     List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
                             companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
                             PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
-                            partnerHawBill, partnerMawBill, addPieceDetails.getHsCode(), loginUserID);
+                            partnerHawBill, addPieceDetails.getHsCode(), partnerMawBill, loginUserID);
 
                     //ReferenceImage Create
                     List<ReferenceImageList> referenceImageList = new ArrayList<>();
