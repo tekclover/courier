@@ -23,6 +23,8 @@ export class CcrNewComponent {
 
   flag: any[] = [];
 
+  value: any[] = [];
+
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -42,6 +44,10 @@ export class CcrNewComponent {
     this.flag = [
       { value: '0', label: 'False'},
       { value: '1', label: 'True'}
+    ];
+    this.value = [
+      { value: '', label: 'Yes' },
+      { value: '', label: 'No' },
     ]
   }
 

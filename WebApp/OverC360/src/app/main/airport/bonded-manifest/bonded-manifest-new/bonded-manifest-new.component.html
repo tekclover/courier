@@ -21,7 +21,7 @@
                     </ng-template>
                     <ng-template pTemplate="content" let-nextCallback="nextCallback">
                         <div class="row scrollNew">
-                            <div class="col-6 marginFieldNew borderRadius12" id="manifestNumber">
+                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Manifest Number</p>
                                 <input formControlName="bondedId" [ngClass]="
                                     form.get('bondedId')?.invalid &&
@@ -33,17 +33,6 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <!-- <div class="col-6 marginFieldNew borderRadius12" id="houseAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required">House Airway Bill Number</p>
-                                <input formControlName="houseAirwayBill" [ngClass]="
-                                form.get('houseAirwayBill')?.invalid &&
-                                form.get('houseAirwayBill')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
-                                <mat-error *ngIf="errorHandling('houseAirwayBill')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div> -->
                             <div class="col-6 marginFieldNew borderRadius12" id="partnerHouseAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Partner House Airway Bill</p>
                                 <input formControlName="partnerHouseAirwayBill" [ngClass]="
