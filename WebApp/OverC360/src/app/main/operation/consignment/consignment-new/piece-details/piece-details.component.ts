@@ -93,11 +93,24 @@ export class PieceDetailsComponent {
   }
 
   ngOnInit() {
-    if (this.data) {
-      this.data.controls.itemDetails.value.forEach((res: any) => {
-        this.itemDetails.push(this.fb.group(res));
-      });
-    }
+   if(this.data.pageflow != 'New'){
+    this.fill();
+   }else{
+    this.fillNew();
+   }
+  }
+
+
+  fill(){
+    this.data.line.forEach((res: any) => {
+      this.itemDetails.push(this.fb.group(res));
+    });
+  }
+
+  fillNew(){
+    this.data.line.controls.itemDetails.value.forEach((res: any) => {
+      this.itemDetails.push(this.fb.group(res));
+    });
   }
 
   selectedFiles: any[] = [];

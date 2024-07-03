@@ -17,9 +17,6 @@ public interface CityRepository extends JpaRepository<City, String>, JpaSpecific
     Optional<City> findByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndCityIdAndDeletionIndicator(
             String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId, Long deletionIndicator);
 
-    Optional<City> findByLanguageIdAndCompanyIdAndCityIdAndDeletionIndicator(
-            String languageId, String companyId, String cityId, Long deletionIndicator);
-
 
     // Updating CityName in CityMapping table
     @Transactional

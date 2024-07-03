@@ -6,7 +6,6 @@ import com.courier.overc360.api.idmaster.primary.model.partnerhubmapping.AddPart
 import com.courier.overc360.api.idmaster.primary.model.partnerhubmapping.PartnerHubMapping;
 import com.courier.overc360.api.idmaster.primary.model.partnerhubmapping.UpdatePartnerHubMapping;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
-import com.courier.overc360.api.idmaster.primary.repository.HubRepository;
 import com.courier.overc360.api.idmaster.primary.repository.PartnerHubMappingRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
@@ -14,6 +13,7 @@ import com.courier.overc360.api.idmaster.replica.model.partnerhubmapping.FindPar
 import com.courier.overc360.api.idmaster.replica.model.partnerhubmapping.ReplicaPartnerHubMapping;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaHubRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaPartnerHubMappingRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaPartnerHubMappingSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +34,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class PartnerHubMappingService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaHubRepository replicaHubRepository;
@@ -102,12 +105,11 @@ public class PartnerHubMappingService {
                     replicaPartnerHubMappingRepository.existsByLanguageIdAndCompanyIdAndHubCodeAndPartnerTypeAndPartnerIdAndDeletionIndicator(
                             addPartnerHubMapping.getLanguageId(), addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode(),
                             addPartnerHubMapping.getPartnerType(), addPartnerHubMapping.getPartnerId(), 0L);
-
             if (duplicatePartnerHubMappingPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : partnerId - " + addPartnerHubMapping.getPartnerId());
             }
 
-            log.info("new PartnerHubMapping --> " + addPartnerHubMapping);
+            log.info("new PartnerHubMapping --> {}", addPartnerHubMapping);
             IKeyValuePair iKeyValuePair = replicaPartnerHubMappingRepository.getDescription(addPartnerHubMapping.getLanguageId(),
                     addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode());
             PartnerHubMapping newPartnerHubMapping = new PartnerHubMapping();
@@ -116,6 +118,10 @@ public class PartnerHubMappingService {
                 newPartnerHubMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newPartnerHubMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
                 newPartnerHubMapping.setHubName(iKeyValuePair.getHubDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addPartnerHubMapping.getStatusId());
+            if (statusDesc != null) {
+                newPartnerHubMapping.setStatusDescription(statusDesc);
             }
             Optional<String> hubCategory = replicaPartnerHubMappingRepository.getHubCategory(addPartnerHubMapping.getLanguageId(),
                     addPartnerHubMapping.getCompanyId(), addPartnerHubMapping.getHubCode());
@@ -158,6 +164,12 @@ public class PartnerHubMappingService {
         try {
             PartnerHubMapping dbPartnerHubMapping = getPartnerHubMapping(languageId, companyId, hubCode, partnerType, partnerId);
             BeanUtils.copyProperties(updatePartnerHubMapping, dbPartnerHubMapping, CommonUtils.getNullPropertyNames(updatePartnerHubMapping));
+            if (updatePartnerHubMapping.getStatusId() != null && !updatePartnerHubMapping.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updatePartnerHubMapping.getStatusId());
+                if (statusDesc != null) {
+                    dbPartnerHubMapping.setStatusDescription(statusDesc);
+                }
+            }
             dbPartnerHubMapping.setUpdatedBy(loginUserID);
             dbPartnerHubMapping.setUpdatedOn(new Date());
             return partnerHubMappingRepository.save(dbPartnerHubMapping);
@@ -189,8 +201,8 @@ public class PartnerHubMappingService {
             partnerHubMappingRepository.save(dbPartnerHubMapping);
         } else {
             // Error Log
-            createPartnerHubMappingLog1(languageId, companyId, hubCode, partnerType, partnerId, "Error in deleting PartnerId - " + partnerId);
-            throw new BadRequestException("Error in deleting PartnerId - " + partnerId);
+            createPartnerHubMappingLog1(languageId, companyId, hubCode, partnerType, partnerId, "Error in deleting partnerId - " + partnerId);
+            throw new BadRequestException("Error in deleting partnerId - " + partnerId);
         }
     }
 

@@ -676,6 +676,7 @@ public class MidMileService {
 
 
     //===============================================Ccr====================================================
+    //===============================================Ccr====================================================
     // Get All Ccr Details
     public Ccr[] getAllCcr(String authToken) {
         try {
@@ -697,7 +698,7 @@ public class MidMileService {
 
     // Get Ccr
     public Ccr getCcr(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                      String houseAirwayBill, String consoleId, String ccrId, String customsCcrNo, String authToken) {
+                      String houseAirwayBill, String consoleId, String ccrId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -709,8 +710,7 @@ public class MidMileService {
                     .queryParam("partnerId", partnerId)
                     .queryParam("masterAirwayBill", masterAirwayBill)
                     .queryParam("houseAirwayBill", houseAirwayBill)
-                    .queryParam("consoleId", consoleId)
-                    .queryParam("customsCcrNo" , customsCcrNo);
+                    .queryParam("consoleId", consoleId);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<Ccr> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Ccr.class);
             log.info("result : " + result.getStatusCode());

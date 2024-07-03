@@ -10,5 +10,6 @@ public class FindHub {
     private List<String> languageId;
     private List<String> companyId;
     private List<String> hubCode;
+    private List<String> statusId;
 
 }

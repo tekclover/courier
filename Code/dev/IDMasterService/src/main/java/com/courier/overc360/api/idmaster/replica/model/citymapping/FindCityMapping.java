@@ -11,5 +11,6 @@ public class FindCityMapping {
     private List<String> companyId;
     private List<String> cityId;
     private List<String> partnerId;
+    private List<String> statusId;
 
 }

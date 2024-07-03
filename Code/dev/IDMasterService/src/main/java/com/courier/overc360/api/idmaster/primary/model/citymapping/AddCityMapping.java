@@ -25,6 +25,9 @@ public class AddCityMapping {
     @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String partnerCityId;
 
     private String partnerCityName;

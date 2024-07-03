@@ -323,6 +323,10 @@ public class ConsignmentEntity {
     private String referenceField48;
     private String referenceField49;
     private String referenceField50;
+    private String createdBy;
+    private Date createdOn;
+    private String updatedBy;
+    private Date updatedOn;
     private DestinationDetails destinationDetails;
     private OriginationDetails originDetails;
     private ReturnDetails returnDetails;
