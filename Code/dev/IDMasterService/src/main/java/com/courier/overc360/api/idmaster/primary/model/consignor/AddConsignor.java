@@ -16,6 +16,9 @@ public class AddConsignor {
     @NotBlank(message = "SubProductId is mandatory")
     private String subProductId;
 
+    @NotBlank(message = "SubProduct Value is mandatory")
+    private String subProductValue;
+
     @NotBlank(message = "ProductId is mandatory")
     private String productId;
 
@@ -26,6 +29,9 @@ public class AddConsignor {
 
     @NotBlank(message = "Consignor Name is mandatory")
     private String consignorName;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String remark;
 

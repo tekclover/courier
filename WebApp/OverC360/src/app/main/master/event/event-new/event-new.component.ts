@@ -8,25 +8,36 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { EventService } from '../event.service';
+import { NumberrangeService } from '../../numberrange/numberrange.service';
 
 @Component({
   selector: 'app-event-new',
   templateUrl: './event-new.component.html',
   styleUrl: './event-new.component.scss'
 })
-export class EventNewComponent {active: number | undefined = 0;
-  status:any[] = []
+export class EventNewComponent {
+    active: number | undefined = 0;
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: EventService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-      this.status = [
-        { value: '2', label: 'Inactive' },
-        { value: '1', label: 'Active' }
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: EventService,
+    private messageService: MessageService,
+    private numberRangeService: NumberrangeService,
+    private auth: AuthService,
+    private cas: CommonAPIService) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
-    
-     }
-       
+  }
+
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
@@ -34,13 +45,13 @@ export class EventNewComponent {active: number | undefined = 0;
     eventCode: [],
     eventDescription: [, Validators.required],
     statusCode: [, Validators.required],
-    opStatusDescription:[],
+    opStatusDescription: [],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
     remark: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -50,10 +61,10 @@ export class EventNewComponent {active: number | undefined = 0;
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -69,7 +80,7 @@ export class EventNewComponent {active: number | undefined = 0;
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -78,14 +89,12 @@ export class EventNewComponent {active: number | undefined = 0;
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.statusCode.disable();
       this.form.controls.eventCode.disable();
       this.form.controls.updatedBy.disable();
@@ -93,31 +102,53 @@ export class EventNewComponent {active: number | undefined = 0;
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['EVENT'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.eventCode.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.eventCode.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   statusCodeList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.opStatus.url,
 
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.opStatus.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.statusCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.opStatus.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -150,11 +181,11 @@ export class EventNewComponent {active: number | undefined = 0;
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.eventCode + ' has been created successfully' });
-          this.router.navigate(['/main/master/event']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.eventCode + ' has been created successfully' });
+            this.router.navigate(['/main/master/event']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

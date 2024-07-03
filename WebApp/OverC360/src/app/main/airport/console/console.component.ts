@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -25,7 +26,7 @@ export class ConsoleComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, 
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,  private service: ConsoleService
+    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,  private service: ConsoleService
   ) { }
 
   fullDate: any;
@@ -63,7 +64,10 @@ export class ConsoleComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.consoleTable = res;
@@ -102,7 +106,7 @@ export class ConsoleComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsole[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/language-new/' + paramdata]);
+      this.router.navigate(['/main/airport/console-new/' + paramdata]);
     }
   }
 
@@ -129,7 +133,7 @@ export class ConsoleComponent {
     this.spin.show();
     this.service.Delete(lines.languageId).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.consoleId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

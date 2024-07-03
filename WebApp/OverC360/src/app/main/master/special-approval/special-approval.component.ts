@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -29,7 +30,7 @@ export class SpecialApprovalComponent {
     private path: PathNameService,
     private service: SpecialApprovalService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -75,7 +76,10 @@ export class SpecialApprovalComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.specialApprovalTable = res;

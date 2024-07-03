@@ -1,9 +1,6 @@
 package com.courier.overc360.api.midmile.controller;
 
-import com.courier.overc360.api.midmile.primary.model.console.AddConsole;
-import com.courier.overc360.api.midmile.primary.model.console.ConsoleDeleteInput;
-import com.courier.overc360.api.midmile.primary.model.console.Console;
-import com.courier.overc360.api.midmile.primary.model.console.UpdateConsole;
+import com.courier.overc360.api.midmile.primary.model.console.*;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
@@ -79,6 +76,13 @@ public class ConsoleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //Transfer Console
+    @ApiOperation(response = Console.class, value = "Console Transfer")
+    @PostMapping("/transfer")
+    public ResponseEntity<?> consoleTransfer(@Valid @RequestBody List<TransferConsole> transferConsole, @RequestParam String loginUserID) {
+        List<Console> dbConsole = consoleService.transferConsole(transferConsole, loginUserID);
+        return new ResponseEntity<>(dbConsole, HttpStatus.OK);
+    }
     /*---------------------------------------------------REPLICA-----------------------------------------------------*/
 
     // Get All Console Details

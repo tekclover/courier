@@ -84,7 +84,7 @@ public class UserTypeService {
         } else if (duplicateUsertype.isPresent()) {
             throw new EntityNotFoundException("Record is Getting Duplicated with given values : userTypeId - " + addUserType.getUserTypeId());
         } else {
-            log.info("new UserType --> " + addUserType);
+            log.info("new UserType --> {}", addUserType);
             UserType dbUserType = new UserType();
             IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addUserType.getLanguageId(), addUserType.getCompanyId());
             BeanUtils.copyProperties(addUserType, dbUserType, CommonUtils.getNullPropertyNames(addUserType));

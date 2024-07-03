@@ -14,6 +14,7 @@ public class ReplicaConsignmentRef{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CON_REF_ID" )
     private Long consignmentRefId;
+
     @Column(name = "PACK_DETAILS", columnDefinition = "nvarchar(50)")
     private String packDetails;
 
@@ -25,9 +26,6 @@ public class ReplicaConsignmentRef{
 
     @Column(name = "STORAGE_LOCATION", columnDefinition = "nvarchar(50)")
     private String storageLocation;
-
-    @Column(name = "REF_IMAGE_LIST", columnDefinition = "nvarchar(50)")
-    private String referenceImageList;
 
     @Column(name = "IS_EXCHANGE", columnDefinition = "nvarchar(50)")
     private String isExchange;
@@ -133,7 +131,7 @@ public class ReplicaConsignmentRef{
     private String referenceField48;
     @Column(name = "REF_FIELD_49", columnDefinition = "nvarchar(200)")
     private String referenceField49;
-    @Column(name = "REF_FIELD_50", columnDefinition = "nvarchar(200)")
+    @Column(name = "Ref_FIELD_50", columnDefinition = "nvarchar(200)")
     private String referenceField50;
     @Column(name = "CTD_BY", columnDefinition = "nvarchar(50)")
     private String createdBy;

@@ -2151,7 +2151,8 @@ public class IDMasterService {
     }
 
     // Get Customer
-    public Customer getCustomer(String languageId, String companyId, String subProductId, String productId, String customerId, String authToken) {
+    public Customer getCustomer(String languageId, String companyId, String subProductId, String subProductValue,
+                                String productId, String customerId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -2161,6 +2162,7 @@ public class IDMasterService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("subProductId", subProductId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("productId", productId);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<Customer> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Customer.class);
@@ -2191,8 +2193,8 @@ public class IDMasterService {
     }
 
     // Update Customer
-    public Customer updateCustomer(String languageId, String companyId, String subProductId, String productId, String customerId,
-                                   UpdateCustomer updateCustomer, String loginUserID, String authToken) {
+    public Customer updateCustomer(String languageId, String companyId, String subProductId, String subProductValue, String productId,
+                                   String customerId, UpdateCustomer updateCustomer, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -2206,6 +2208,7 @@ public class IDMasterService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("subProductId", subProductId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("productId", productId)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<Customer> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Customer.class);
@@ -2218,7 +2221,7 @@ public class IDMasterService {
     }
 
     // Delete Customer
-    public boolean deleteCustomer(String languageId, String companyId, String subProductId, String productId,
+    public boolean deleteCustomer(String languageId, String companyId, String subProductId, String subProductValue, String productId,
                                   String customerId, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -2230,6 +2233,7 @@ public class IDMasterService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("subProductId", subProductId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("productId", productId)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
@@ -2340,7 +2344,8 @@ public class IDMasterService {
     }
 
     // Get Consignor
-    public Consignor getConsignor(String languageId, String companyId, String subProductId, String productId, String customerId, String consignorId, String authToken) {
+    public Consignor getConsignor(String languageId, String companyId, String subProductId, String subProductValue,
+                                  String productId, String customerId, String consignorId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -2350,6 +2355,7 @@ public class IDMasterService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("subProductId", subProductId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("productId", productId)
                     .queryParam("customerId", customerId);
             HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -2381,7 +2387,7 @@ public class IDMasterService {
     }
 
     // Update Consignor
-    public Consignor updateConsignor(String languageId, String companyId, String subProductId, String productId, String customerId,
+    public Consignor updateConsignor(String languageId, String companyId, String subProductId, String subProductValue, String productId, String customerId,
                                      String consignorId, UpdateConsignor updateConsignor, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -2396,6 +2402,7 @@ public class IDMasterService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("subProductId", subProductId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("productId", productId)
                     .queryParam("customerId", customerId)
                     .queryParam("loginUserID", loginUserID);
@@ -2409,7 +2416,7 @@ public class IDMasterService {
     }
 
     // Delete Consignor
-    public boolean deleteConsignor(String languageId, String companyId, String subProductId, String productId,
+    public boolean deleteConsignor(String languageId, String companyId, String subProductId, String subProductValue, String productId,
                                    String customerId, String consignorId, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -2421,6 +2428,7 @@ public class IDMasterService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("subProductId", subProductId)
+                    .queryParam("subProductValue", subProductValue)
                     .queryParam("productId", productId)
                     .queryParam("customerId", customerId)
                     .queryParam("loginUserID", loginUserID);

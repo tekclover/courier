@@ -77,9 +77,11 @@ public class CurrencyExchangeRateService {
         Optional<CurrenyExchangeRate> dbCurrencyExchangeRate = currencyExchangeRateRepository.findByLanguageIdAndCompanyIdAndFromCurrencyIdAndToCurrencyIdAndDeletionIndicator
                 (languageId, companyId, fromCurrencyId, toCurrencyId, 0L);
         if (dbCurrencyExchangeRate.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId +
+                    ", fromCurrencyId - " + fromCurrencyId + " and toCurrencyId - " + toCurrencyId + " doesn't exists";
             // Error Log
-            createCurrencyExchangeRateLog1(languageId, companyId, fromCurrencyId, toCurrencyId, "FromCurrencyId - " + fromCurrencyId + " and given values doesn't exists");
-            throw new BadRequestException("FromCurrencyId - " + fromCurrencyId + " and given values doesn't exists");
+            createCurrencyExchangeRateLog1(languageId, companyId, fromCurrencyId, toCurrencyId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbCurrencyExchangeRate.get();
     }
@@ -118,7 +120,9 @@ public class CurrencyExchangeRateService {
 
                 CurrenyExchangeRate newCurrencyExchangeRate = new CurrenyExchangeRate();
                 BeanUtils.copyProperties(addCurrencyExchangeRate, newCurrencyExchangeRate, CommonUtils.getNullPropertyNames(addCurrencyExchangeRate));
-                if (addCurrencyExchangeRate.getFromCurrencyId() == null || addCurrencyExchangeRate.getFromCurrencyId().isBlank()) {
+                if ((addCurrencyExchangeRate.getFromCurrencyId() != null &&
+                        (addCurrencyExchangeRate.getReferenceField10() != null && addCurrencyExchangeRate.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addCurrencyExchangeRate.getFromCurrencyId() == null || addCurrencyExchangeRate.getFromCurrencyId().isBlank()) {
                     String NUM_RAN_OBJ = "CURRENCYEXCHANGERATE";
                     String FROM_CURRENCY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for FROM_CURRENCY_ID : " + FROM_CURRENCY_ID);
@@ -169,7 +173,7 @@ public class CurrencyExchangeRateService {
         try {
             CurrenyExchangeRate dbCurrencyExchangeRate = getCurrencyExchangeRate(languageId, companyId, fromCurrencyId, toCurrencyId);
             BeanUtils.copyProperties(updateCurrencyExchangeRate, dbCurrencyExchangeRate, CommonUtils.getNullPropertyNames(updateCurrencyExchangeRate));
-            if (updateCurrencyExchangeRate.getStatusId() != null) {
+            if (updateCurrencyExchangeRate.getStatusId() != null && !updateCurrencyExchangeRate.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCurrencyExchangeRate.getStatusId());
                 if (statusDesc != null) {
                     dbCurrencyExchangeRate.setStatusDescription(statusDesc);
@@ -205,8 +209,8 @@ public class CurrencyExchangeRateService {
             currencyExchangeRateRepository.save(dbCurrencyExchangeRate);
         } else {
             // Error Log
-            createCurrencyExchangeRateLog1(languageId, companyId, fromCurrencyId, toCurrencyId, "Error in deleting FromCurrencyId - " + fromCurrencyId);
-            throw new BadRequestException("Error in deleting FromCurrencyId - " + fromCurrencyId);
+            createCurrencyExchangeRateLog1(languageId, companyId, fromCurrencyId, toCurrencyId, "Error in deleting fromCurrencyId - " + fromCurrencyId);
+            throw new BadRequestException("Error in deleting fromCurrencyId - " + fromCurrencyId);
         }
     }
 
@@ -237,9 +241,11 @@ public class CurrencyExchangeRateService {
         Optional<ReplicaCurrencyExchangeRate> dbCurrencyExchangeRate = replicaCurrencyExchangeRateRepository.findByLanguageIdAndCompanyIdAndFromCurrencyIdAndToCurrencyIdAndDeletionIndicator
                 (languageId, companyId, fromCurrencyId, toCurrencyId, 0L);
         if (dbCurrencyExchangeRate.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId +
+                    ", fromCurrencyId - " + fromCurrencyId + " and toCurrencyId - " + toCurrencyId + " doesn't exists";
             // Error Log
-            createCurrencyExchangeRateLog1(languageId, companyId, fromCurrencyId, toCurrencyId, "FromCurrencyId - " + fromCurrencyId + " and given values doesn't exists");
-            throw new BadRequestException("FromCurrencyId - " + fromCurrencyId + " and given values doesn't exists");
+            createCurrencyExchangeRateLog1(languageId, companyId, fromCurrencyId, toCurrencyId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbCurrencyExchangeRate.get();
     }
@@ -255,14 +261,15 @@ public class CurrencyExchangeRateService {
 
         ReplicaCurrencyExchangeRateSpecification spec = new ReplicaCurrencyExchangeRateSpecification(findCurrencyExchangeRate);
         List<ReplicaCurrencyExchangeRate> results = replicaCurrencyExchangeRateRepository.findAll(spec);
-        log.info("found CurrencyExchangeRate --> " + results);
+        log.info("found currencyExchangeRates --> " + results);
         return results;
     }
 
     //=============================================CurrencyExchangeRate_ErrorLog====================================================
 
 
-    private void createCurrencyExchangeRateLog(String languageId, String companyId, String fromCurrencyId, String toCurrencyId, String error) throws IOException, CsvException {
+    private void createCurrencyExchangeRateLog(String languageId, String companyId, String fromCurrencyId,
+                                               String toCurrencyId, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 @Transactional
 @Repository
@@ -35,4 +36,14 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             "tc.is_deleted = 0", nativeQuery = true)
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
+
+    @Query(value = "Select * From tblconsole tc \n" +
+            "Where \n"+
+            "tc.CONSOLE_ID IN (:consoleId) and \n" +
+            "tc.is_deleted = 0 ", nativeQuery =  true)
+    List<Console> getConsoleData(@Param(value = "consoleId") String consoleId);
+
+    Console findByHouseAirwayBillAndConsoleIdAndDeletionIndicator(String houseAirwayBill, String fromConsole, Long deletionIndicator);
+
+    boolean existsByConsoleIdAndDeletionIndicator(String toConsoleId, Long deletionIndicator);
 }

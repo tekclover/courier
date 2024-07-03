@@ -74,10 +74,11 @@ public class ConsignmentTypeService {
         Optional<ConsignmentType> dbConsignmentType = consignmentTypeRepository.findByCompanyIdAndLanguageIdAndConsignmentTypeIdAndDeletionIndicator(
                 companyId, languageId, consignmentTypeId, 0L);
         if (dbConsignmentType.isEmpty()) {
+            String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId +
+                    " and consignmentTypeId - " + consignmentTypeId + " doesn't exists";
             // Error Log
-            createConsignmentTypeLog1(languageId, companyId, consignmentTypeId, "ConsignmentTypeId - " + consignmentTypeId + " and given values doesn't exists");
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " ConsignmentTypeId - " + consignmentTypeId + " doesn't exists");
+            createConsignmentTypeLog1(languageId, companyId, consignmentTypeId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbConsignmentType.get();
     }
@@ -113,7 +114,9 @@ public class ConsignmentTypeService {
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addConsignmentType.getLanguageId(), addConsignmentType.getCompanyId());
                 ConsignmentType newConsignmentType = new ConsignmentType();
                 BeanUtils.copyProperties(addConsignmentType, newConsignmentType, CommonUtils.getNullPropertyNames(addConsignmentType));
-                if (addConsignmentType.getConsignmentTypeId() == null || addConsignmentType.getConsignmentTypeId().isBlank()) {
+                if ((addConsignmentType.getConsignmentTypeId() != null &&
+                        (addConsignmentType.getReferenceField10() != null && addConsignmentType.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addConsignmentType.getConsignmentTypeId() == null || addConsignmentType.getConsignmentTypeId().isBlank()) {
                     String NUM_RAN_OBJ = "CONSIGNMENTTYPE";
                     String CONSIGNMENT_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for CONSIGNMENT_TYPE_ID : " + CONSIGNMENT_TYPE_ID);
@@ -163,7 +166,7 @@ public class ConsignmentTypeService {
         try {
             ConsignmentType dbConsignmentType = getConsignmentType(companyId, languageId, consignmentTypeId);
             BeanUtils.copyProperties(updateConsignmentType, dbConsignmentType, CommonUtils.getNullPropertyNames(updateConsignmentType));
-            if (updateConsignmentType.getStatusId() != null) {
+            if (updateConsignmentType.getStatusId() != null && !updateConsignmentType.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignmentType.getStatusId());
                 if (statusDesc != null) {
                     dbConsignmentType.setStatusDescription(statusDesc);
@@ -225,10 +228,11 @@ public class ConsignmentTypeService {
         Optional<ReplicaConsignmentType> dbConsignmentType = replicaConsignmentTypeRepository.findByCompanyIdAndLanguageIdAndConsignmentTypeIdAndDeletionIndicator(
                 companyId, languageId, consignmentTypeId, 0L);
         if (dbConsignmentType.isEmpty()) {
+            String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId +
+                    " and consignmentTypeId - " + consignmentTypeId + " doesn't exists";
             // Error Log
-            createConsignmentTypeLog1(languageId, companyId, consignmentTypeId, "ConsignmentTypeId - " + consignmentTypeId + " and given values doesn't exists");
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " ConsignmentTypeId - " + consignmentTypeId + " doesn't exists");
+            createConsignmentTypeLog1(languageId, companyId, consignmentTypeId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbConsignmentType.get();
     }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HsCodeService } from './hs-code.service';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -29,7 +30,7 @@ export class HsCodeComponent {
     private path: PathNameService,
     private service: HsCodeService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -48,8 +49,6 @@ export class HsCodeComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'itemCode', header: 'Item Code' },
-      { field: 'itemDescription', header: 'Item Description' },
       { field: 'itemGroup', header: 'Item Group' },
       { field: 'specialApprovalText', header: 'Special Approval Description' },
       { field: 'remark', header: 'Remarks' },
@@ -60,7 +59,9 @@ export class HsCodeComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'specialApprovalId', header: 'Special Approval ID' },
+      { field: 'specialApprovalId', header: 'Special Approval ID' }, 
+      { field: 'itemCode', header: 'Item Code' },
+      { field: 'itemDescription', header: 'Item Description' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -78,7 +79,10 @@ export class HsCodeComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.hsCodeTable = res;

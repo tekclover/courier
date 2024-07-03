@@ -26,6 +26,7 @@ public class AddSubProduct {
 
     private String remark;
 
+    @NotBlank(message = "SubProduct Value Description is mandatory")
     private String referenceField1;
 
     private String referenceField2;

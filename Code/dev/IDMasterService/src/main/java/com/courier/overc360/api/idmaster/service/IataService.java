@@ -110,12 +110,14 @@ public class IataService {
             IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addIata.getLanguageId(), addIata.getCompanyId());
             Iata newIata = new Iata();
             BeanUtils.copyProperties(addIata, newIata, CommonUtils.getNullPropertyNames(addIata));
-//                if (addIata.getOriginCode() == null || addIata.getOriginCode().isBlank()) {
-//                    String NUM_RAN_OBJ = "ORIGINCODE";
-//                    String ORIGINCODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for ORIGINCODE : " + ORIGINCODE);
-//                    newIata.setOriginCode(ORIGINCODE);
-//                }
+            if ((addIata.getOriginCode() != null &&
+                    (addIata.getReferenceField10() != null && addIata.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addIata.getOriginCode() == null || addIata.getOriginCode().isBlank()) {
+                String NUM_RAN_OBJ = "ORIGINCODE";
+                String ORIGINCODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for ORIGINCODE : " + ORIGINCODE);
+                newIata.setOriginCode(ORIGINCODE);
+            }
             if (iKeyValuePair != null) {
                 newIata.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newIata.setCompanyName(iKeyValuePair.getCompanyDesc());

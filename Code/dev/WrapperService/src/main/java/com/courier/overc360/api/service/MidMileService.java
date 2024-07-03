@@ -602,6 +602,19 @@ public class MidMileService {
         return result.getBody();
     }
 
+    // Create new BondedManifest
+    public BondedManifest[] createBondedManifestBasedOnConsignment(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("User-Agent", "RestTemplate");
+        headers.add("Authorization", "Bearer " + authToken);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/bondedmanifest/create")
+                .queryParam("loginUserID", loginUserID);
+        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+        ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
+        return result.getBody();
+    }
+
     public BondedManifest[] updateBondedManifest(List<UpdateBondedManifest> updateBondedManifest, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -663,6 +676,7 @@ public class MidMileService {
 
 
     //===============================================Ccr====================================================
+    //===============================================Ccr====================================================
     // Get All Ccr Details
     public Ccr[] getAllCcr(String authToken) {
         try {
@@ -684,7 +698,7 @@ public class MidMileService {
 
     // Get Ccr
     public Ccr getCcr(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                      String houseAirwayBill, String consoleId, String ccrId, String customsCcrNo, String authToken) {
+                      String houseAirwayBill, String consoleId, String ccrId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -696,8 +710,7 @@ public class MidMileService {
                     .queryParam("partnerId", partnerId)
                     .queryParam("masterAirwayBill", masterAirwayBill)
                     .queryParam("houseAirwayBill", houseAirwayBill)
-                    .queryParam("consoleId", consoleId)
-                    .queryParam("customsCcrNo" , customsCcrNo);
+                    .queryParam("consoleId", consoleId);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<Ccr> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Ccr.class);
             log.info("result : " + result.getStatusCode());
@@ -903,7 +916,7 @@ public class MidMileService {
      * @param authToken
      * @return
      */
-    public Console[] createConsoleConsignmentInput(List<AddConsignment> addConsignments, String loginUserID, String authToken){
+    public Console[] createConsoleConsignmentInput(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken){
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
@@ -914,4 +927,48 @@ public class MidMileService {
         ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
         return result.getBody();
     }
+
+    /**
+     *
+     * @param houseAirwayBill
+     * @param fromConsoleId
+     * @param toConsoleId
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public Console[] transferConsole(List<TransferConsole> transferConsole, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/transfer")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(transferConsole, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    //----------------------Upload------------------------------------------------------------------
+
+    // POST - Consingment Upload
+    public UploadApiResponse[] postConsignmentUpload(List<AddConsignment> consignmentList, String loginUserID, String authToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("User-Agent", "RestTemplate");
+        headers.add("Authorization", "Bearer " + authToken);
+        UriComponentsBuilder builder =
+                UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/upload")
+                        .queryParam("loginUserID", loginUserID);
+        HttpEntity<?> entity = new HttpEntity<>(consignmentList, headers);
+        ResponseEntity<UploadApiResponse[]> result =
+                getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, UploadApiResponse[].class);
+        return result.getBody();
+    }
+
 }

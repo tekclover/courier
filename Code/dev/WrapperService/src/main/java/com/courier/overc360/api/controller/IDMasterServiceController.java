@@ -983,15 +983,17 @@ public class IDMasterServiceController {
     @ApiOperation(response = Customer.class, value = "Get Customer") // label for swagger
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<?> getCustomer(@PathVariable String customerId, @RequestParam String companyId, @RequestParam String subProductId,
-                                         @RequestParam String productId, @RequestParam String languageId, @RequestParam String authToken) {
-        Customer customer = idmasterService.getCustomer(languageId, companyId, subProductId, productId, customerId, authToken);
+                                         @RequestParam String subProductValue, @RequestParam String productId,
+                                         @RequestParam String languageId, @RequestParam String authToken) {
+        Customer customer = idmasterService.getCustomer(languageId, companyId, subProductId, subProductValue, productId, customerId, authToken);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     // Create Customer
     @ApiOperation(response = Customer.class, value = "Create new Customer") // label for swagger
     @PostMapping("/customer")
-    public ResponseEntity<?> postCustomer(@RequestBody AddCustomer addCustomer, @RequestParam String loginUserID, @RequestParam String authToken) {
+    public ResponseEntity<?> postCustomer(@RequestBody AddCustomer addCustomer, @RequestParam String loginUserID,
+                                          @RequestParam String authToken) {
         Customer customer = idmasterService.createCustomer(addCustomer, loginUserID, authToken);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
@@ -1000,9 +1002,9 @@ public class IDMasterServiceController {
     @ApiOperation(response = Customer.class, value = "Update Customer") // label for swagger
     @PatchMapping("/customer/{customerId}")
     public ResponseEntity<?> patchCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String companyId,
-                                           @RequestParam String subProductId, @RequestParam String loginUserID, @RequestBody UpdateCustomer updateCustomer,
-                                           @RequestParam String productId, @RequestParam String authToken) {
-        Customer customer = idmasterService.updateCustomer(languageId, companyId, subProductId, productId, customerId, updateCustomer, loginUserID, authToken);
+                                           @RequestParam String subProductId, @RequestParam String loginUserID, @RequestParam String subProductValue,
+                                           @RequestBody UpdateCustomer updateCustomer, @RequestParam String productId, @RequestParam String authToken) {
+        Customer customer = idmasterService.updateCustomer(languageId, companyId, subProductId, subProductValue, productId, customerId, updateCustomer, loginUserID, authToken);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
@@ -1010,9 +1012,9 @@ public class IDMasterServiceController {
     @ApiOperation(response = Customer.class, value = "Delete Customer") // label for swagger
     @DeleteMapping("/customer/{customerId}")
     public ResponseEntity<?> deleteCustomer(@PathVariable String customerId, @RequestParam String languageId, @RequestParam String companyId,
-                                            @RequestParam String subProductId, @RequestParam String productId,
+                                            @RequestParam String subProductId, @RequestParam String subProductValue, @RequestParam String productId,
                                             @RequestParam String loginUserID, @RequestParam String authToken) {
-        idmasterService.deleteCustomer(languageId, companyId, subProductId, productId, customerId, loginUserID, authToken);
+        idmasterService.deleteCustomer(languageId, companyId, subProductId, subProductValue, productId, customerId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -1064,16 +1066,17 @@ public class IDMasterServiceController {
     @ApiOperation(response = Consignor.class, value = "Get Consignor") // label for swagger
     @GetMapping("/consignor/{consignorId}")
     public ResponseEntity<?> getConsignor(@PathVariable String consignorId, @RequestParam String companyId, @RequestParam String subProductId,
-                                          @RequestParam String productId, @RequestParam String customerId,
+                                          @RequestParam String subProductValue, @RequestParam String productId, @RequestParam String customerId,
                                           @RequestParam String languageId, @RequestParam String authToken) {
-        Consignor consignor = idmasterService.getConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, authToken);
+        Consignor consignor = idmasterService.getConsignor(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId, authToken);
         return new ResponseEntity<>(consignor, HttpStatus.OK);
     }
 
     // Create Consignor
     @ApiOperation(response = Consignor.class, value = "Create new Consignor") // label for swagger
     @PostMapping("/consignor")
-    public ResponseEntity<?> postConsignor(@RequestBody AddConsignor addConsignor, @RequestParam String loginUserID, @RequestParam String authToken) {
+    public ResponseEntity<?> postConsignor(@RequestBody AddConsignor addConsignor, @RequestParam String loginUserID,
+                                           @RequestParam String authToken) {
         Consignor consignor = idmasterService.createConsignor(addConsignor, loginUserID, authToken);
         return new ResponseEntity<>(consignor, HttpStatus.OK);
     }
@@ -1082,9 +1085,10 @@ public class IDMasterServiceController {
     @ApiOperation(response = Consignor.class, value = "Update Consignor") // label for swagger
     @PatchMapping("/consignor/{consignorId}")
     public ResponseEntity<?> patchConsignor(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId,
-                                            @RequestParam String subProductId, @RequestParam String loginUserID, @RequestBody UpdateConsignor updateConsignor,
-                                            @RequestParam String productId, @RequestParam String customerId, @RequestParam String authToken) {
-        Consignor consignor = idmasterService.updateConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, updateConsignor, loginUserID, authToken);
+                                            @RequestParam String subProductId, @RequestParam String loginUserID, @RequestParam String subProductValue,
+                                            @RequestBody UpdateConsignor updateConsignor, @RequestParam String productId,
+                                            @RequestParam String customerId, @RequestParam String authToken) {
+        Consignor consignor = idmasterService.updateConsignor(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId, updateConsignor, loginUserID, authToken);
         return new ResponseEntity<>(consignor, HttpStatus.OK);
     }
 
@@ -1092,9 +1096,9 @@ public class IDMasterServiceController {
     @ApiOperation(response = Consignor.class, value = "Delete Consignor") // label for swagger
     @DeleteMapping("/consignor/{consignorId}")
     public ResponseEntity<?> deleteShipper(@PathVariable String consignorId, @RequestParam String languageId, @RequestParam String companyId,
-                                           @RequestParam String subProductId, @RequestParam String productId, @RequestParam String customerId,
-                                           @RequestParam String loginUserID, @RequestParam String authToken) {
-        idmasterService.deleteConsignor(languageId, companyId, subProductId, productId, customerId, consignorId, loginUserID, authToken);
+                                           @RequestParam String subProductId, @RequestParam String subProductValue, @RequestParam String productId,
+                                           @RequestParam String customerId, @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteConsignor(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

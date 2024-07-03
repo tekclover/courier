@@ -112,7 +112,7 @@ public class CountryMappingService {
                 throw new BadRequestException("Record is getting Duplicated with the given values : partnerId - " +
                         addCountryMapping.getPartnerId() + " and countryId - " + addCountryMapping.getCountryId());
             } else {
-                log.info("new CountryMapping --> " + addCountryMapping);
+                log.info("new CountryMapping --> {}", addCountryMapping);
                 IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addCountryMapping.getLanguageId(),
                         addCountryMapping.getCompanyId(), addCountryMapping.getCountryId());
                 CountryMapping newCountryMapping = new CountryMapping();

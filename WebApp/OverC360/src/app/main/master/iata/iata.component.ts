@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 
@@ -29,7 +30,7 @@ export class IataComponent {
     private path: PathNameService,
     private service: IataService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -47,7 +48,7 @@ export class IataComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'origin', header: 'Origin' },
-      { field: 'iataKd', header: 'IATA ' },
+      { field: 'iataKd', header: 'IATA Value ' },
       { field: 'iataCharge', header: 'IATA Charge' },
       { field: 'currencyDescription', header: 'Currency Description' },
       { field: 'createdBy', header: 'Created By' },
@@ -57,7 +58,7 @@ export class IataComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language Description' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'originCode', header: 'Origin Code' },
+      { field: 'country', header: 'Origin Code' },
       { field: 'currencyId', header: 'Currency ID' },
       { field: 'languageDescription', header: 'Language Description' },
       { field: 'referenceField1', header: 'Reference Field 1' },
@@ -77,7 +78,10 @@ export class IataComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.iataTable = res;

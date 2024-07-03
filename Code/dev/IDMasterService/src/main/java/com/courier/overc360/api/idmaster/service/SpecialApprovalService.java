@@ -101,7 +101,7 @@ public class SpecialApprovalService {
                     addSpecialApproval.getCompanyId(), addSpecialApproval.getLanguageId(), 0L);
 
             if (dbCompany.isEmpty()) {
-                throw new BadRequestException("The given values- CompanyId: " + addSpecialApproval.getCompanyId() + " and LanguageId" + addSpecialApproval.getLanguageId() + "  doesn't exists");
+                throw new BadRequestException("CompanyId: " + addSpecialApproval.getCompanyId() + " and languageId" + addSpecialApproval.getLanguageId() + "  doesn't exists");
             } else if (duplicateSpecialApproval.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : specialApprovalId - " + addSpecialApproval.getSpecialApprovalId());
             } else {
@@ -109,7 +109,9 @@ public class SpecialApprovalService {
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSpecialApproval.getLanguageId(), addSpecialApproval.getCompanyId());
                 SpecialApproval dbSpecialApproval = new SpecialApproval();
                 BeanUtils.copyProperties(addSpecialApproval, dbSpecialApproval, CommonUtils.getNullPropertyNames(addSpecialApproval));
-                if (addSpecialApproval.getSpecialApprovalId() == null || addSpecialApproval.getSpecialApprovalId().isBlank()) {
+                if ((addSpecialApproval.getSpecialApprovalId() != null &&
+                        (addSpecialApproval.getReferenceField10() != null && addSpecialApproval.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addSpecialApproval.getSpecialApprovalId() == null || addSpecialApproval.getSpecialApprovalId().isBlank()) {
                     String NUM_RAN_OBJ = "SPECIALAPPROVAL";
                     String SPECIAL_APPROVAL_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for SPECIAL_APPROVAL_ID : " + SPECIAL_APPROVAL_ID);

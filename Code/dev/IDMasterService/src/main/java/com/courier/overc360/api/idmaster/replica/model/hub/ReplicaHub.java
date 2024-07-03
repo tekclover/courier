@@ -1,11 +1,15 @@
 package com.courier.overc360.api.idmaster.replica.model.hub;
 
-import com.courier.overc360.api.idmaster.primary.model.hub.HubCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
@@ -23,7 +27,7 @@ import java.util.Date;
                 )
         }
 )
-@IdClass(HubCompositeKey.class)
+@IdClass(ReplicaHubCompositeKey.class)
 public class ReplicaHub {
 
     @Id
@@ -85,6 +89,12 @@ public class ReplicaHub {
 
     @Column(name = "LONGITUDE", columnDefinition = "nvarchar(100)")
     private String longitude;
+
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;

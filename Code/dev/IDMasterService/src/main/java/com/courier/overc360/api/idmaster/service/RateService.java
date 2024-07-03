@@ -115,18 +115,12 @@ public class RateService {
             if (dbRateParameter.isEmpty()) {
                 throw new BadRequestException("RateParameterId - " + addRate.getRateParameterId() + " doesn't exist");
             } else if (duplicateRate.isPresent()) {
-                throw new BadRequestException("Record is Getting Duplicated with given values");
+                throw new BadRequestException("Record is Getting Duplicated with given values : partnerId - " + addRate.getPartnerId());
             } else {
-                log.info("addRate : " + addRate);
+                log.info("new Rate --> " + addRate);
                 Rate dbRate = new Rate();
                 IKeyValuePair iKeyValuePair = replicaRateRepository.getDescription(addRate.getLanguageId(), addRate.getCompanyId(), addRate.getRateParameterId());
                 BeanUtils.copyProperties(addRate, dbRate, CommonUtils.getNullPropertyNames(addRate));
-//                if (addRate.getRateParameterId() == null) {
-//                    String NUM_RAN_OBJ = "RATE";
-//                    String RATE_PARAMETER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for RATE_PARAMETER_ID : " + RATE_PARAMETER_ID);
-//                    dbRate.setRateParameterId(RATE_PARAMETER_ID);
-//                }
                 if (iKeyValuePair != null) {
                     dbRate.setLanguageDescription(iKeyValuePair.getLangDesc());
                     dbRate.setCompanyName(iKeyValuePair.getCompanyDesc());
@@ -172,7 +166,7 @@ public class RateService {
         try {
             Rate dbRate = getRate(rateParameterId, companyId, languageId, partnerId);
             BeanUtils.copyProperties(updateRate, dbRate, CommonUtils.getNullPropertyNames(updateRate));
-            if (updateRate.getStatusId() != null) {
+            if (updateRate.getStatusId() != null && !updateRate.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateRate.getStatusId());
                 if (statusDesc != null) {
                     dbRate.setStatusDescription(statusDesc);

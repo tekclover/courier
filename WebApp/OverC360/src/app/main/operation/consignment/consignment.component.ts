@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ConsignmentService } from './consignment.service';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -29,7 +30,7 @@ export class ConsignmentComponent {
     private path: PathNameService,
     private service: ConsignmentService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService,
     private pdf: ConsignmentLabelComponent,
   ) {}
@@ -90,7 +91,10 @@ export class ConsignmentComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.consignmentTable = res;

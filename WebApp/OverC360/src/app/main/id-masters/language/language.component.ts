@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 
@@ -23,7 +24,7 @@ export class LanguageComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: LanguageService,
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService,
+    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -50,12 +51,20 @@ export class LanguageComponent {
       { field: 'referenceField3', header: 'Reference Field 3' },
       { field: 'referenceField4', header: 'Reference Field 4' },
       { field: 'referenceField5', header: 'Reference Field 5' },
+      { field: 'referenceField1', header: 'Reference Field 6' },
+      { field: 'referenceField2', header: 'Reference Field 7' },
+      { field: 'referenceField3', header: 'Reference Field 8' },
+      { field: 'referenceField4', header: 'Reference Field 9' },
+      { field: 'referenceField5', header: 'Reference Field 10' },
     ];
   }
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.languageTable = res;

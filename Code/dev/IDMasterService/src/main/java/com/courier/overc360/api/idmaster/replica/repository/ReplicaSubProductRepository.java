@@ -18,9 +18,6 @@ public interface ReplicaSubProductRepository extends JpaRepository<ReplicaSubPro
     Optional<ReplicaSubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String subProductValue, Long deletionIndicator);
 
-    boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, Long deletionIndicator);
-
     boolean existsByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String subProductValue, Long deletionIndicator);
 
@@ -29,7 +26,7 @@ public interface ReplicaSubProductRepository extends JpaRepository<ReplicaSubPro
             "CONCAT (tl.LANG_ID, ' - ', tl.LANG_TEXT) As langDesc, \n" +
             "CONCAT (tcm.C_ID, ' - ', tcm.C_NAME) As companyDesc, \n" +
             "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) As subProductDesc, \n" +
-//            "tsp.SUB_PRODUCT_VALUE As subProductValue \n" +
+            "tsp.REF_FIELD_1 As subProductValue \n" +
             "From tbllanguage tl \n" +
             "Join tblcompany tcm on tl.LANG_ID = tcm.LANG_ID \n" +
             "Join tblsubproduct tsp on tsp.LANG_ID = tl.LANG_ID and tsp.C_ID = tcm.C_ID \n" +
@@ -37,11 +34,13 @@ public interface ReplicaSubProductRepository extends JpaRepository<ReplicaSubPro
             "tl.LANG_ID IN (:languageId) and \n" +
             "tcm.C_ID IN (:companyId) and \n" +
             "tsp.SUB_PRODUCT_ID IN (:subProductId) and \n" +
+            "tsp.SUB_PRODUCT_VALUE IN (:subProductValue) and \n" +
             "tl.IS_DELETED = 0 and \n" +
             "tcm.IS_DELETED = 0 and \n" +
             "tsp.IS_DELETED = 0", nativeQuery = true)
     IKeyValuePair getDescription(@Param(value = "languageId") String languageId,
                                  @Param(value = "companyId") String companyId,
-                                 @Param(value = "subProductId") String subProductId);
+                                 @Param(value = "subProductId") String subProductId,
+                                 @Param(value = "subProductValue") String subProductValue);
 
 }

@@ -16,6 +16,9 @@ public class UpdateCustomer {
     @NotBlank(message = "SubProductId is mandatory")
     private String subProductId;
 
+    @NotBlank(message = "SubProduct Value is mandatory")
+    private String subProductValue;
+
     @NotBlank(message = "ProductId is mandatory")
     private String productId;
 
@@ -23,6 +26,8 @@ public class UpdateCustomer {
     private String customerId;
 
     private String customerName;
+
+    private String statusId;
 
     private String remark;
 

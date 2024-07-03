@@ -32,8 +32,8 @@ export class NumberrangeNewComponent {
     private auth: AuthService
   ) {
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
   }
 

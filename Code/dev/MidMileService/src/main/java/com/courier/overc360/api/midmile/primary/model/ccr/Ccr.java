@@ -19,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_ccr",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CUSTOMS_CCR_NO", "CCR_ID", "CONSOLE_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID"}
                 )
         }
 )
@@ -50,7 +50,6 @@ public class Ccr {
     @Column(name = "HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-    @Id
     @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
 

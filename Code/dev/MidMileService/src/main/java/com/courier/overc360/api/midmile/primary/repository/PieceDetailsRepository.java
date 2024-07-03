@@ -36,5 +36,7 @@ public interface PieceDetailsRepository extends JpaRepository<PieceDetails,Strin
 
     List<PieceDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
+
+    List<PieceDetails> findByHouseAirwayBill(String houseAirwayBill);
 }
 

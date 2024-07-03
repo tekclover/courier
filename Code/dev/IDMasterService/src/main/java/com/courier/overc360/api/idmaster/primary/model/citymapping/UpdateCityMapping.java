@@ -11,6 +11,8 @@ public class UpdateCityMapping {
 
     private String partnerCityName;
 
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String remark;

@@ -44,14 +44,14 @@
                   </div>
 
                   <div class="col-6 marginFieldNew borderRadius12">
-                    <p class="formControlLabel f600 textBlack mb-0 ">Module ID</p>
+                    <p class="formControlLabel f600 textBlack mb-0 required">Module ID</p>
                     <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="moduleId" placeholder="Enter"
                     [ngClass]="form.get('moduleId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                     <mat-error *ngIf="errorHandling('moduleId')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                 </div>
 
                 <div class="col-6 marginFieldNew borderRadius12">
-                  <p class="formControlLabel f600 textBlack mb-0 required"> Module Description</p>
+                  <p class="formControlLabel f600 textBlack mb-0 required">Module Description</p>
                   <input maxlength="100" pInputText (keydown)="space($event)" formControlName="moduleDescription" class="w-100" placeholder="Enter" 
                   [ngClass]="form.get('moduleDescription')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                   <mat-error *ngIf="errorHandling('moduleDescription')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>

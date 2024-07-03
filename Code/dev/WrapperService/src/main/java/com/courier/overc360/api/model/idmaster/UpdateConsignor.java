@@ -11,6 +11,8 @@ public class UpdateConsignor {
 
     private String subProductId;
 
+    private String subProductValue;
+
     private String productId;
 
     private String customerId;
@@ -18,6 +20,8 @@ public class UpdateConsignor {
     private String consignorId;
 
     private String consignorName;
+
+    private String statusId;
 
     private String remark;
 

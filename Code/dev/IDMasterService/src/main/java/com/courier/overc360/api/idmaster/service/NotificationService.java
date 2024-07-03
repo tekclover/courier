@@ -115,7 +115,9 @@ public class NotificationService {
 
                 Notification newNotification = new Notification();
                 BeanUtils.copyProperties(addNotification, newNotification, CommonUtils.getNullPropertyNames(addNotification));
-                if (addNotification.getNotificationId() == null || addNotification.getNotificationId().isBlank()) {
+                if ((addNotification.getNotificationId() != null &&
+                        (addNotification.getReferenceField10() != null && addNotification.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addNotification.getNotificationId() == null || addNotification.getNotificationId().isBlank()) {
                     String NUM_RAN_OBJ = "NOTIFICATION";
                     String NOTIFICATION_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for NOTIFICATION_ID : " + NOTIFICATION_ID);
@@ -197,12 +199,12 @@ public class NotificationService {
                     dbNotification.setSubProductName(subProductDesc);
                 }
                 String productDesc = replicaNotificationRepository.getProductDesc(updateNotification.getProductId(),
-                       languageId,companyId, updateNotification.getSubProductId());
+                        languageId, companyId, updateNotification.getSubProductId());
                 if (productDesc != null) {
                     dbNotification.setProductName(productDesc);
                 }
             }
-            if (updateNotification.getStatusId() != null) {
+            if (updateNotification.getStatusId() != null && !updateNotification.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateNotification.getStatusId());
                 if (statusDesc != null) {
                     dbNotification.setStatusDescription(statusDesc);

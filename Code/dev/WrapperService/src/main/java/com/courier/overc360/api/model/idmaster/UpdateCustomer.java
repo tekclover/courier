@@ -11,11 +11,15 @@ public class UpdateCustomer {
 
     private String subProductId;
 
+    private String subProductValue;
+
     private String productId;
 
     private String customerId;
 
     private String customerName;
+
+    private String statusId;
 
     private String remark;
 

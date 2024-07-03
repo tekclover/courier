@@ -120,7 +120,9 @@ public class DistrictService {
 
                 District newDistrict = new District();
                 BeanUtils.copyProperties(addDistrict, newDistrict, CommonUtils.getNullPropertyNames(addDistrict));
-                if (addDistrict.getDistrictId() == null || addDistrict.getDistrictId().isBlank()) {
+                if ((addDistrict.getDistrictId() != null &&
+                        (addDistrict.getReferenceField10() != null && addDistrict.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addDistrict.getDistrictId() == null || addDistrict.getDistrictId().isBlank()) {
                     String NUM_RAN_OBJ = "DISTRICT";
                     String DISTRICT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     newDistrict.setDistrictId(DISTRICT_ID);
@@ -173,7 +175,7 @@ public class DistrictService {
         try {
             District dbDistrict = getDistrict(languageId, companyId, countryId, provinceId, districtId);
             BeanUtils.copyProperties(updateDistrict, dbDistrict, CommonUtils.getNullPropertyNames(updateDistrict));
-            if (updateDistrict.getStatusId() != null) {
+            if (updateDistrict.getStatusId() != null && !updateDistrict.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateDistrict.getStatusId());
                 if (statusDesc != null) {
                     dbDistrict.setStatusDescription(statusDesc);

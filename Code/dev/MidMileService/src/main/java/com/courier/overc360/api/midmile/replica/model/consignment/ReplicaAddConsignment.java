@@ -14,6 +14,8 @@ public class ReplicaAddConsignment {
 
     private String companyId;
 
+    private String languageId;
+
     private String partnerId;
 
     private String partnerType;
@@ -307,7 +309,10 @@ public class ReplicaAddConsignment {
     private String referenceField48;
     private String referenceField49;
     private String referenceField50;
-
+    private String createdBy;
+    private Date createdOn;
+    private String updatedBy;
+    private Date updatedOn;
     private ReplicaDestinationDetails destinationDetails = new ReplicaDestinationDetails();
 
     private ReplicaOriginDetails originDetails = new ReplicaOriginDetails();

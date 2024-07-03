@@ -2,6 +2,7 @@ package com.courier.overc360.api.controller;
 
 import com.courier.overc360.api.model.transaction.*;
 import com.courier.overc360.api.service.MidMileService;
+import com.google.api.Http;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
@@ -284,6 +285,15 @@ public class MidMileController {
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
+    // Create new BondedManifest Based on ConsignmentInput
+    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest Based On ConsignmentInput") // label for swagger
+    @PostMapping("/bondedManifest/create")
+    public ResponseEntity<?> postBondedManifestPost(@Valid @RequestBody List<ConsignmentEntity> addConsignments,
+                                                @RequestParam String loginUserID, @RequestParam String authToken) {
+        BondedManifest[] bondedManifest = midMileService.createBondedManifestBasedOnConsignment(addConsignments, loginUserID, authToken);
+        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
+    }
+
     // Update BondedManifest
     @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for swagger
     @PatchMapping("/bondedManifest/update/list")
@@ -326,9 +336,9 @@ public class MidMileController {
     public ResponseEntity<?> getCcr(@PathVariable String ccrId, @RequestParam String languageId,
                                     @RequestParam String companyId, @RequestParam String partnerId,
                                     @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
-                                    @RequestParam String consoleId, @RequestParam String customsCcrNo, @RequestParam String authToken) {
+                                    @RequestParam String consoleId, @RequestParam String authToken) {
         Ccr ccr = midMileService.getCcr(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId, customsCcrNo, authToken);
+                masterAirwayBill, houseAirwayBill, consoleId, ccrId, authToken);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 
@@ -429,9 +439,18 @@ public class MidMileController {
     // Console Create consignmentResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on Consignment Input")
     @PostMapping("/console/consignment")
-    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<AddConsignment> addConsignment, @RequestParam String loginUserID,
+    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<ConsignmentEntity> addConsignment, @RequestParam String loginUserID,
                                                           @RequestParam String authToken) {
         Console[] createConsole = midMileService.createConsoleConsignmentInput(addConsignment, loginUserID, authToken);
         return new ResponseEntity<>(createConsole, HttpStatus.OK);
+    }
+
+    //Console Transfer
+    @ApiOperation(response = Console[].class, value = "Console Transfer")
+    @PostMapping("/console/transfer")
+    public ResponseEntity<?>consoleTransfer(@Valid @RequestBody List<TransferConsole> transferConsole, @RequestParam String loginUserID,
+                                            @RequestParam String authToken) {
+        Console[] dbtransferConsole = midMileService.transferConsole(transferConsole, loginUserID, authToken);
+        return new ResponseEntity<>(dbtransferConsole, HttpStatus.OK);
     }
 }

@@ -29,7 +29,7 @@ public class AuthTokenService {
 
 	/**
 	 * Returns RestTemplate Object
-	 * 
+	 *
 	 * @return
 	 */
 	public RestTemplate getRestTemplate() {
@@ -44,7 +44,7 @@ public class AuthTokenService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param apiUrl
 	 * @param clientId
 	 * @param clientSecretKey
@@ -54,7 +54,7 @@ public class AuthTokenService {
 	 * @return
 	 */
 	public AuthToken generateOAuthToken(String apiUrl, String clientId, String clientSecretKey, String grantType,
-			String oauthUserName, String oauthPassword) {
+										String oauthUserName, String oauthPassword) {
 		// Client Id and Client Secret Key to be sent as part of header for
 		// authentication
 		String credentials = clientId + ":" + clientSecretKey;
@@ -68,7 +68,7 @@ public class AuthTokenService {
 		String accessTokenUrl = apiUrl;
 
 		log.info("------------@@@@@@@@@@@@@@------------> " + accessTokenUrl);
-		
+
 		// AuthToken URL dynamically
 		if (apiUrl.equalsIgnoreCase("overc-idmaster-service")) {
 			accessTokenUrl = propertiesConfig.getIdmasterAccessTokenUrl();
@@ -91,7 +91,7 @@ public class AuthTokenService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param authTokenRequest
 	 * @return
 	 */
@@ -103,7 +103,7 @@ public class AuthTokenService {
 
 	/**
 	 * getSetupServiceAuthToken
-	 * 
+	 *
 	 * @return
 	 */
 	public AuthToken getIDMasterServiceAuthToken() {
@@ -120,7 +120,7 @@ public class AuthTokenService {
 
 	/**
 	 * getCommonServiceAuthToken
-	 * 
+	 *
 	 * @return
 	 */
 	public AuthToken getMastersServiceAuthToken() {
@@ -134,11 +134,11 @@ public class AuthTokenService {
 		authTokenRequest.setOauthPassword(propertiesConfig.getPassword());
 		return getAuthToken(authTokenRequest);
 	}
-	
+
 	// Generate AuthToken for MastersService
-	public AuthToken getTransactionServiceAuthToken() {
+	public AuthToken getMidMileServiceAuthToken() {
 		AuthTokenRequest authTokenRequest = new AuthTokenRequest();
-		authTokenRequest.setApiName("overc-transaction-service");
+		authTokenRequest.setApiName("overc-midmile-service");
 		authTokenRequest.setClientId(propertiesConfig.getClientId());
 		authTokenRequest.setClientSecretKey(propertiesConfig.getClientSecretKey());
 		authTokenRequest.setGrantType(propertiesConfig.getGrantType());

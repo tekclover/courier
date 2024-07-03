@@ -99,11 +99,11 @@ public class ConsignmentService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
 
         List<AddConsignment> consignmentEntities = new ArrayList<>();
+        String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
         for (AddConsignment consignmentEntity : consignmentEntityList) {
 
             // Fetching the description for a company
             IKeyValuePair iKeyValuePair = replicaConsignmentEntityRepository.getDescription(consignmentEntity.getCompanyId());
-//            IKeyValuePair iKeyValuePair1 = replicaConsignmentEntityRepository.getStatusDescription(consignmentEntity.getStatusId());
 
             // Fetching the product ID for the shipper
             IKeyValuePair shipperData = bondedManifestRepository.getProductId(
@@ -117,7 +117,7 @@ public class ConsignmentService {
                     iKeyValuePair.getLangId(),
                     consignmentEntity.getCompanyId());
 
-            if(shipperData == null && getProductIdFromCustomer == null) {
+            if (shipperData == null && getProductIdFromCustomer == null) {
                 throw new BadRequestException("PartnerId doesn't match consignorTable and Customer Table");
             }
 
@@ -132,31 +132,37 @@ public class ConsignmentService {
             String subProductId = consignmentEntity.getSubProductId();
 
             // Checking if the product ID and sub-product ID match
-            if(productId != null && subProductId != null) {
+            if (productId != null && subProductId != null) {
                 if (!productId.equalsIgnoreCase(shipperData.getProductId()) ||
                         !subProductId.equalsIgnoreCase(shipperData.getSubProductId())) {
-                    if (!subProductId.equalsIgnoreCase(getProductIdFromCustomer.getSubProductId()) ||
-                            !productId.equalsIgnoreCase(getProductIdFromCustomer.getProductId())) {
-                        throw new BadRequestException("Product ID and Sub-product ID do not match.");
+                    if (getProductIdFromCustomer != null) {
+                        if (!subProductId.equalsIgnoreCase(getProductIdFromCustomer.getSubProductId()) ||
+                                !productId.equalsIgnoreCase(getProductIdFromCustomer.getProductId())) {
+                            throw new BadRequestException("Product ID and Sub-product ID do not match.");
+                        }
                     }
                 }
             }
 
-            //Setting the number range object based on product ID
+//            //Setting the number range object based on product ID
+//            String NUM_RAN_OBJ = null;
+//            if (productId.equalsIgnoreCase("1")) {
+//                NUM_RAN_OBJ = "INTERNATIONALINBOUND";
+//            } else if (productId.equalsIgnoreCase("2")) {
+//                NUM_RAN_OBJ = "INTERNATIONALOUTBOUND";
+//            } else if (productId.equalsIgnoreCase("3")) {
+//                NUM_RAN_OBJ = "DOMESTIC";
+//            } else {
+//                log.info("ProductId given not 1 or 2 or 3");
+//            }
             String NUM_RAN_OBJ = null;
-            if (productId.equalsIgnoreCase("1")) {
-                NUM_RAN_OBJ = "INTERNATIONALINBOUND";
-            } else if (productId.equalsIgnoreCase("2")) {
-                NUM_RAN_OBJ = "INTERNATIONALOUTBOUND";
-            } else if (productId.equalsIgnoreCase("3")) {
-                NUM_RAN_OBJ = "DOMESTIC";
-            } else {
-                log.info("ProductId given not 1 or 2 or 3");
+
+            if (shipperData.getConsignorName() != null) {
+                NUM_RAN_OBJ = shipperData.getConsignorName();
             }
 
             // Generating house and master airway bills
             String houseAirwayBill = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-            String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
 
             // Duplicate Check Consignment
             Optional<ConsignmentEntity> duplicateConsignment =
@@ -178,13 +184,13 @@ public class ConsignmentService {
 //                newConsignment.setSubProductName(shipperData.getSubProductId() + " - " + shipperData.getSubProductName());
 //                newConsignment.setShipperName(shipperData.getConsignorName());
             }
-            if(shipperData != null) {
+            if (shipperData != null) {
                 newConsignment.setPartnerName(shipperData.getConsignorName());
                 newConsignment.setProductId(shipperData.getProductId());
                 newConsignment.setProductName(shipperData.getProductName());
                 newConsignment.setSubProductId(shipperData.getSubProductId());
                 newConsignment.setSubProductName(shipperData.getSubProductName());
-            } else if(getProductIdFromCustomer != null) {
+            } else if (getProductIdFromCustomer != null) {
                 newConsignment.setPartnerName(getProductIdFromCustomer.getConsignorName());
                 newConsignment.setProductId(getProductIdFromCustomer.getProductId());
                 newConsignment.setProductName(getProductIdFromCustomer.getProductName());
@@ -194,6 +200,8 @@ public class ConsignmentService {
 
             newConsignment.setHouseAirwayBill(houseAirwayBill);
             newConsignment.setMasterAirwayBill(masterAirwayBill);
+            newConsignment.setStatusId("1");
+            newConsignment.setStatusDescription("CONSIGNMENT CREATED");
             newConsignment.setCreatedBy(loginUserId);
             newConsignment.setUpdatedBy(loginUserId);
             newConsignment.setCreatedOn(new Date());
@@ -289,11 +297,11 @@ public class ConsignmentService {
             newAddConsignment.setPieceDetails(addPieceDetailsList);
             newAddConsignment.setReferenceImageList(referenceImageList);
             BeanUtils.copyProperties(saveConsignment, newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getConsignmentInfo(), newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getConsignmentRefs(), newAddConsignment);
-            BeanUtils.copyProperties(saveConsignment.getDestinationDetails(), newAddConsignment.getDestinationDetails());
-            BeanUtils.copyProperties(saveConsignment.getReturnDetails(), newAddConsignment.getReturnDetails());
-            BeanUtils.copyProperties(saveConsignment.getOriginDetails(), newAddConsignment.getOriginDetails());
+            BeanUtils.copyProperties(saveConsignment.getConsignmentInfo() != null, newAddConsignment);
+            BeanUtils.copyProperties(saveConsignment.getConsignmentRefs() != null, newAddConsignment);
+            BeanUtils.copyProperties(saveConsignment.getDestinationDetails() != null, newAddConsignment.getDestinationDetails());
+            BeanUtils.copyProperties(saveConsignment.getReturnDetails() != null, newAddConsignment.getReturnDetails());
+            BeanUtils.copyProperties(saveConsignment.getOriginDetails() != null, newAddConsignment.getOriginDetails());
 
             consignmentEntities.add(newAddConsignment);
         }
@@ -323,31 +331,40 @@ public class ConsignmentService {
 
                 UpdateConsignment addConsignment = new UpdateConsignment();
                 BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
+                dbConsignmentEntity.setStatusId("2");
+                dbConsignmentEntity.setStatusDescription("CONSIGNMENT UPDATED ");
                 dbConsignmentEntity.setUpdatedBy(loginUserID);
                 dbConsignmentEntity.setUpdatedOn(new Date());
 
-                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo(), CommonUtils.getNullPropertyNames(dbConsignment));
+
+                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo() != null, CommonUtils.getNullPropertyNames(dbConsignment));
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedBy(loginUserID);
 
-                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentRefs(), CommonUtils.getNullPropertyNames(dbConsignment));
+                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentRefs() !=null, CommonUtils.getNullPropertyNames(dbConsignment));
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedBy(loginUserID);
 
-                BeanUtils.copyProperties(dbConsignment.getDestinationDetails(), dbConsignmentEntity.getDestinationDetails(),
-                        CommonUtils.getNullPropertyNames(dbConsignment.getDestinationDetails()));
-                dbConsignmentEntity.getDestinationDetails().setUpdatedOn(new Date());
-                dbConsignmentEntity.getDestinationDetails().setUpdatedBy(loginUserID);
+                if (dbConsignment.getDestinationDetails() != null) {
+                    BeanUtils.copyProperties(dbConsignment.getDestinationDetails(), dbConsignmentEntity.getDestinationDetails(),
+                            CommonUtils.getNullPropertyNames(dbConsignment.getDestinationDetails()));
+                    dbConsignmentEntity.getDestinationDetails().setUpdatedOn(new Date());
+                    dbConsignmentEntity.getDestinationDetails().setUpdatedBy(loginUserID);
+                }
 
-                BeanUtils.copyProperties(dbConsignment.getReturnDetails(), dbConsignmentEntity.getReturnDetails(),
-                        CommonUtils.getNullPropertyNames(dbConsignment.getReturnDetails()));
-                dbConsignmentEntity.getReturnDetails().setUpdatedOn(new Date());
-                dbConsignmentEntity.getReturnDetails().setUpdatedBy(loginUserID);
+                if (dbConsignment.getReturnDetails() != null) {
+                    BeanUtils.copyProperties(dbConsignment.getReturnDetails(), dbConsignmentEntity.getReturnDetails(),
+                            CommonUtils.getNullPropertyNames(dbConsignment.getReturnDetails()));
+                    dbConsignmentEntity.getReturnDetails().setUpdatedOn(new Date());
+                    dbConsignmentEntity.getReturnDetails().setUpdatedBy(loginUserID);
+                }
 
-                BeanUtils.copyProperties(dbConsignment.getOriginDetails(), dbConsignmentEntity.getOriginDetails(),
-                        CommonUtils.getNullPropertyNames(dbConsignment.getOriginDetails()));
-                dbConsignmentEntity.getOriginDetails().setUpdatedOn(new Date());
-                dbConsignmentEntity.getOriginDetails().setUpdatedBy(loginUserID);
+                if (dbConsignment.getOriginDetails() != null) {
+                    BeanUtils.copyProperties(dbConsignment.getOriginDetails(), dbConsignmentEntity.getOriginDetails(),
+                            CommonUtils.getNullPropertyNames(dbConsignment.getOriginDetails()));
+                    dbConsignmentEntity.getOriginDetails().setUpdatedOn(new Date());
+                    dbConsignmentEntity.getOriginDetails().setUpdatedBy(loginUserID);
+                }
 
                 ConsignmentEntity savedConsignment = consignmentEntityRepository.save(dbConsignmentEntity);
 
@@ -355,17 +372,20 @@ public class ConsignmentService {
                 List<ReferenceImageList> referenceImageLists = new ArrayList<>();
                 for (ReferenceImageList image : dbConsignment.getReferenceImageList()) {
 
-                    ReferenceImageList newRefImageList = new ReferenceImageList();
-                    String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
-                    ImageReference imageReference = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
+                    if (image != null) {
+                        ReferenceImageList newRefImageList = new ReferenceImageList();
+                        String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
+                        ImageReference imageReference = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
 
-                    imageReference.setReferenceImageUrl(image.getReferenceImageUrl());
-                    imageReference.setReferenceField2(downloadDocument);
-                    imageReference.setUpdatedBy(loginUserID);
-                    imageReference.setUpdatedOn(new Date());
-                    ImageReference imageRef = imageReferenceRepository.save(imageReference);
-                    BeanUtils.copyProperties(imageRef, newRefImageList);
-                    referenceImageLists.add(newRefImageList);
+                        imageReference.setReferenceImageUrl(image.getReferenceImageUrl());
+                        imageReference.setReferenceField2(downloadDocument);
+                        imageReference.setUpdatedBy(loginUserID);
+                        imageReference.setUpdatedOn(new Date());
+                        ImageReference imageRef = imageReferenceRepository.save(imageReference);
+                        BeanUtils.copyProperties(imageRef, newRefImageList);
+                        referenceImageLists.add(newRefImageList);
+                    }
+                    addConsignment.setReferenceImageList(referenceImageLists);
                 }
                 addConsignment.setReferenceImageList(referenceImageLists);
 
@@ -378,11 +398,11 @@ public class ConsignmentService {
                 }
 
                 BeanUtils.copyProperties(savedConsignment, addConsignment);
-                BeanUtils.copyProperties(savedConsignment.getConsignmentInfo(), addConsignment);
-                BeanUtils.copyProperties(savedConsignment.getConsignmentRefs(), addConsignment);
-                BeanUtils.copyProperties(savedConsignment.getDestinationDetails(), addConsignment.getDestinationDetails());
-                BeanUtils.copyProperties(savedConsignment.getReturnDetails(), addConsignment.getReturnDetails());
-                BeanUtils.copyProperties(savedConsignment.getOriginDetails(), addConsignment.getOriginDetails());
+                BeanUtils.copyProperties(savedConsignment.getConsignmentInfo() != null, addConsignment);
+                BeanUtils.copyProperties(savedConsignment.getConsignmentRefs() != null, addConsignment);
+                BeanUtils.copyProperties(savedConsignment.getDestinationDetails() != null, addConsignment.getDestinationDetails());
+                BeanUtils.copyProperties(savedConsignment.getReturnDetails() != null, addConsignment.getReturnDetails());
+                BeanUtils.copyProperties(savedConsignment.getOriginDetails() != null, addConsignment.getOriginDetails());
                 addConsignmentList.add(addConsignment);
 
             }
@@ -448,149 +468,101 @@ public class ConsignmentService {
     }
 
 
-    // FindConsignmentEntity
-
-    /**
-     * @param findConsignment
-     * @return
-     */
-//    public List<ReplicaAddConsignment> findReplicaFindConsignment(FindConsignment findConsignment) {
+//    public List<ReplicaAddConsignment> findReplicaFindConsignmet(FindConsignment findConsignment) {
 //
 //        ReplicaConsignmentSpecification consignmentSpec = new ReplicaConsignmentSpecification(findConsignment);
 //        ReplicaConsPieceDetailsSpecification pieceSpec = new ReplicaConsPieceDetailsSpecification(findConsignment);
 //        ReplicaItemDetailsSpecification itemSpec = new ReplicaItemDetailsSpecification(findConsignment);
 //        ReplicaImageReferenceSpecification imageSpec = new ReplicaImageReferenceSpecification(findConsignment);
 //
+//        // Fetch all results
 //        List<ReplicaConsignmentEntity> consignmentResults = replicaConsignmentEntityRepository.findAll(consignmentSpec);
 //        List<ReplicaPieceDetails> pieceResults = replicaPieceDetailsRepository.findAll(pieceSpec);
 //        List<ReplicaItemDetails> itemDetailsResults = replicaItemDetailsRepository.findAll(itemSpec);
 //        List<ReplicaImageReference> imageReferenceResults = replicaImageReferenceRepository.findAll(imageSpec);
 //
-//        List<ReplicaAddConsignment> consignmentList = new ArrayList<>();
-//        for (ReplicaConsignmentEntity consignmentEntity : consignmentResults) {
-//            ReplicaAddConsignment newConsignmentEntity = new ReplicaAddConsignment();
-//            BeanUtils.copyProperties(consignmentEntity, newConsignmentEntity);
-//            BeanUtils.copyProperties(consignmentEntity.getConsignmentInfo(), newConsignmentEntity);
-//            BeanUtils.copyProperties(consignmentEntity.getConsignmentRefs(), newConsignmentEntity);
-//            BeanUtils.copyProperties(consignmentEntity.getOriginDetails(), newConsignmentEntity.getOriginDetails());
-//            BeanUtils.copyProperties(consignmentEntity.getDestinationDetails(), newConsignmentEntity.getDestinationDetails());
-//            BeanUtils.copyProperties(consignmentEntity.getReturnDetails(), newConsignmentEntity.getReturnDetails());
+//        // Use parallelStream for processing consignment results
+//        List<ReplicaAddConsignment> consignmentList = consignmentResults.parallelStream().map(consignmentEntity -> {
+//                    ReplicaAddConsignment newConsignmentEntity = new ReplicaAddConsignment();
+//                    BeanUtils.copyProperties(consignmentEntity, newConsignmentEntity);
+//                    BeanUtils.copyProperties(consignmentEntity.getConsignmentInfo() != null, newConsignmentEntity);
+//                    BeanUtils.copyProperties(consignmentEntity.getConsignmentRefs() != null, newConsignmentEntity);
+//                    BeanUtils.copyProperties(consignmentEntity.getOriginDetails() != null, newConsignmentEntity.getOriginDetails());
+//                    BeanUtils.copyProperties(consignmentEntity.getDestinationDetails() != null, newConsignmentEntity.getDestinationDetails());
+//                    BeanUtils.copyProperties(consignmentEntity.getReturnDetails() != null, newConsignmentEntity.getReturnDetails());
 //
-//            List<String> referenceImageUl = imageReferenceResults.stream()
-//                    .filter(image -> image.getReferenceField1() != null && image.getReferenceField1().equalsIgnoreCase("CON_ID"))
-//                    .map(ReplicaImageReference::getReferenceImageUrl).toList();
-//            newConsignmentEntity.setReferenceImageList(referenceImageUl);
-////            List<ReplicaImageReference> filteredImageReference = imageReferenceResults.stream().filter(image -> image.getReferenceField1().equalsIgnoreCase("CON_ID")).collect(Collectors.toList());
-////            List<String> imageList = new ArrayList<>();
-////            for(ReplicaImageReference imageUrl : filteredImageReference){
-////                imageList.add(imageUrl.getReferenceImageUrl());
-////            }
-////            newConsignmentEntity.setReferenceImageList(imageList);
+//                        List<ReplicaImageReference> referenceImageUl = imageReferenceResults.stream().filter(imageRef -> imageRef != null &&
+//                                        imageRef.getConsignmentId() != null &&
+//                                        imageRef.getConsignmentId().equals(consignmentEntity.getConsignmentId()) &&
+//                                        imageRef.getReferenceField1().equalsIgnoreCase("CON_ID"))
+//                                .collect(Collectors.toList());
 //
+//            List<ReferenceImageList> referenceImageLists = new ArrayList<>();
+//            for (ReplicaImageReference imageReference : referenceImageUl) {
+//                ReferenceImageList imageList = new ReferenceImageList();
+//                imageList.setImageRefId(imageReference.getImageRefId());
+//                imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+//                imageList.setPdfUrl(imageReference.getReferenceField2());
 //
-//            List<ReplicaAddPieceDetails> filteredPieceDetails = pieceResults.stream()
+//                referenceImageLists.add(imageList);
+//
+//            }
+//            newConsignmentEntity.setReferenceImageList(referenceImageLists);
+//            // Use parallelStream for processing piece details
+//            List<ReplicaAddPieceDetails> filteredPieceDetails = pieceResults.parallelStream()
 //                    .filter(piece -> piece.getConsignmentId().equals(consignmentEntity.getConsignmentId()))
 //                    .map(piece -> {
 //                        ReplicaAddPieceDetails pieceDetail = new ReplicaAddPieceDetails();
 //                        BeanUtils.copyProperties(piece, pieceDetail);
 //
-//                        // Filtering and mapping image references to a list of URLs
-//                        List<String> imageRef = imageReferenceResults.stream()
+//
+//                        List<ReplicaImageReference> imageRef = imageReferenceResults.stream()
 //                                .filter(image -> image != null && image.getPieceId() != null && image.getPieceId().equals(piece.getPieceId()) &&
 //                                        image.getReferenceField1().equalsIgnoreCase("P_ID"))
-//                                .map(ReplicaImageReference::getReferenceImageUrl)
+////                                .map(ReplicaImageReference::getReferenceImageUrl)
 //                                .collect(Collectors.toList());
 //
-//                        // Filtering item details
-//                        List<ReplicaAddItemDetails> filteredItemDetails = itemDetailsResults.stream()
-//                                .filter(item -> item != null && item.getPieceId() != null && item.getPieceId().equals(piece.getPieceId()))
+//                        List<ReferenceImageList> imageLists = new ArrayList<>();
+//                        if (imageRef != null) {
+//                            for (ReplicaImageReference imageReference : imageRef) {
+//                                ReferenceImageList imageList = new ReferenceImageList();
+//                                imageList.setImageRefId(imageReference.getImageRefId());
+//                                imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+//                                imageList.setPdfUrl(imageReference.getReferenceField2());
+//
+//                                imageLists.add(imageList);
+//                            }
+//                        }
+//
+//                        // Use parallelStream for processing item details
+//                        List<ReplicaAddItemDetails> filteredItemDetails = itemDetailsResults.parallelStream()
+//                                .filter(item -> item.getPieceId().equals(piece.getPieceId()))
 //                                .map(item -> {
 //                                    ReplicaAddItemDetails itemDetails = new ReplicaAddItemDetails();
 //                                    BeanUtils.copyProperties(item, itemDetails);
 //
-//                                    //Filtering and mapping image reference to list of urls
-//                                    List<String> imageRefe = imageReferenceResults.stream().filter(image -> image.getReferenceField1() != null &&
-//                                            image.getReferenceField1().equalsIgnoreCase("PI_ID"))
-//                                            .map(ReplicaImageReference::getReferenceImageUrl).collect(Collectors.toList());
-//                                    itemDetails.setReferenceImageList(imageRefe);
+//                                    List<ReplicaImageReference> imageRefe = imageReferenceResults.stream()
+//                                            .filter(image -> image != null && image.getPieceItemId() != null && image.getPieceItemId().equals(item.getPieceItemId()) &&
+//                                                    image.getReferenceField1().equalsIgnoreCase("PI_ID"))
+//                                            .collect(Collectors.toList());
+//
+//                                    List<ReferenceImageList> imageRe = new ArrayList<>();
+//                                    if(imageRefe != null) {
+//                                        for (ReplicaImageReference imageReference : imageRefe) {
+//                                            ReferenceImageList imageList = new ReferenceImageList();
+//                                            imageList.setImageRefId(imageReference.getImageRefId());
+//                                            imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+//                                            imageList.setPdfUrl(imageReference.getReferenceField2());
+//                                            imageRe.add(imageList);
+//                                        }
+//                                    }
+//                                    itemDetails.setReferenceImageList(imageRe);
+//
 //                                    return itemDetails;
 //                                })
 //                                .collect(Collectors.toList());
 //
-//                        pieceDetail.setReferenceImageList(imageRef);
-//                        pieceDetail.setItemDetails(filteredItemDetails);
-//                        return pieceDetail;
-//                    })
-//                    .collect(Collectors.toList());
-//
-//            newConsignmentEntity.setPieceDetails(filteredPieceDetails);
-//            consignmentList.add(newConsignmentEntity);
-//        }
-//        return consignmentList;
-//    }
-
-
-//    public List<ReplicaAddConsignment> findReplicaFindConsignment(FindConsignment findConsignment) {
-//
-//        ReplicaConsignmentSpecification consignmentSpec = new ReplicaConsignmentSpecification(findConsignment);
-//        ReplicaConsPieceDetailsSpecification pieceSpec = new ReplicaConsPieceDetailsSpecification(findConsignment);
-//        ReplicaItemDetailsSpecification itemSpec = new ReplicaItemDetailsSpecification(findConsignment);
-//        ReplicaImageReferenceSpecification imageSpec = new ReplicaImageReferenceSpecification(findConsignment);
-//
-//        List<ReplicaConsignmentEntity> consignmentResults = replicaConsignmentEntityRepository.findAll(consignmentSpec);
-//        List<ReplicaPieceDetails> pieceResults = replicaPieceDetailsRepository.findAll(pieceSpec);
-//        List<ReplicaItemDetails> itemDetailsResults = replicaItemDetailsRepository.findAll(itemSpec);
-//        List<ReplicaImageReference> imageReferenceResults = replicaImageReferenceRepository.findAll(imageSpec);
-//
-//        // Pre-filter image references into a map
-//        Map<String, List<String>> imageRefMap = imageReferenceResults.stream()
-//                .filter(image -> image != null && image.getReferenceField1() != null)
-//                .collect(Collectors.groupingBy(
-//                        ReplicaImageReference::getReferenceField1,
-//                        Collectors.mapping(ReplicaImageReference::getReferenceImageUrl, Collectors.toList())
-//                ));
-//
-//        // Pre-filter item details into a map
-//        Map<String, List<ReplicaItemDetails>> itemDetailsMap = itemDetailsResults.stream()
-//                .filter(item -> item != null && item.getPieceId() != null)
-//                .collect(Collectors.groupingBy(ReplicaItemDetails::getPieceId));
-//
-//        List<ReplicaAddConsignment> consignmentList = consignmentResults.stream().parallel().map(consignmentEntity -> {
-//            ReplicaAddConsignment newConsignmentEntity = new ReplicaAddConsignment();
-//            BeanUtils.copyProperties(consignmentEntity, newConsignmentEntity);
-//            BeanUtils.copyProperties(consignmentEntity.getConsignmentInfo(), newConsignmentEntity);
-//            BeanUtils.copyProperties(consignmentEntity.getConsignmentRefs(), newConsignmentEntity);
-//            BeanUtils.copyProperties(consignmentEntity.getOriginDetails(), newConsignmentEntity.getOriginDetails());
-//            BeanUtils.copyProperties(consignmentEntity.getDestinationDetails(), newConsignmentEntity.getDestinationDetails());
-//            BeanUtils.copyProperties(consignmentEntity.getReturnDetails(), newConsignmentEntity.getReturnDetails());
-//
-//            List<String> referenceImageUl = imageRefMap.getOrDefault("CON_ID", List.of());
-//            newConsignmentEntity.setReferenceImageList(referenceImageUl);
-//
-//            List<ReplicaAddPieceDetails> filteredPieceDetails = pieceResults.stream().parallel()
-//                    .filter(piece -> piece.getConsignmentId().equals(consignmentEntity.getConsignmentId()))
-//                    .map(piece -> {
-//                        ReplicaAddPieceDetails pieceDetail = new ReplicaAddPieceDetails();
-//                        BeanUtils.copyProperties(piece, pieceDetail);
-//
-//                        List<String> imageRef = imageReferenceResults.stream()
-//                                .filter(image -> image != null && image.getPieceId() != null && image.getPieceId().equals(piece.getPieceId()) &&
-//                                        image.getReferenceField1().equalsIgnoreCase("P_ID"))
-//                                .map(ReplicaImageReference::getReferenceImageUrl)
-//                                .collect(Collectors.toList());
-//
-//                        List<ReplicaAddItemDetails> filteredItemDetails = itemDetailsMap.getOrDefault(piece.getPieceId(), List.of()).stream().parallel()
-//                                .map(item -> {
-//                                    ReplicaAddItemDetails itemDetails = new ReplicaAddItemDetails();
-//                                    BeanUtils.copyProperties(item, itemDetails);
-//
-//                                    List<String> imageRefe = imageRefMap.getOrDefault("PI_ID", List.of());
-//                                    itemDetails.setReferenceImageList(imageRefe);
-//                                    return itemDetails;
-//                                })
-//                                .collect(Collectors.toList());
-//
-//                        pieceDetail.setReferenceImageList(imageRef);
+//                        pieceDetail.setReferenceImageList(imageLists);
 //                        pieceDetail.setItemDetails(filteredItemDetails);
 //                        return pieceDetail;
 //                    })
@@ -602,8 +574,15 @@ public class ConsignmentService {
 //
 //        return consignmentList;
 //    }
-    public List<ReplicaAddConsignment> findReplicaFindConsignment(FindConsignment findConsignment) {
 
+
+    /**
+     * FindConsignment
+     *
+     * @param findConsignment
+     * @return
+     */
+    public List<ReplicaAddConsignment> findReplicaFindConsignment(FindConsignment findConsignment) {
         ReplicaConsignmentSpecification consignmentSpec = new ReplicaConsignmentSpecification(findConsignment);
         ReplicaConsPieceDetailsSpecification pieceSpec = new ReplicaConsPieceDetailsSpecification(findConsignment);
         ReplicaItemDetailsSpecification itemSpec = new ReplicaItemDetailsSpecification(findConsignment);
@@ -618,18 +597,31 @@ public class ConsignmentService {
         // Use parallelStream for processing consignment results
         List<ReplicaAddConsignment> consignmentList = consignmentResults.parallelStream().map(consignmentEntity -> {
             ReplicaAddConsignment newConsignmentEntity = new ReplicaAddConsignment();
-            BeanUtils.copyProperties(consignmentEntity, newConsignmentEntity);
-            BeanUtils.copyProperties(consignmentEntity.getConsignmentInfo(), newConsignmentEntity);
-            BeanUtils.copyProperties(consignmentEntity.getConsignmentRefs(), newConsignmentEntity);
-            BeanUtils.copyProperties(consignmentEntity.getOriginDetails(), newConsignmentEntity.getOriginDetails());
-            BeanUtils.copyProperties(consignmentEntity.getDestinationDetails(), newConsignmentEntity.getDestinationDetails());
-            BeanUtils.copyProperties(consignmentEntity.getReturnDetails(), newConsignmentEntity.getReturnDetails());
 
-            List<ReplicaImageReference> referenceImageUl = imageReferenceResults.stream().filter(imageRef -> imageRef != null &&
-                            imageRef.getConsignmentId() != null &&
+            if (consignmentEntity != null) {
+                BeanUtils.copyProperties(consignmentEntity, newConsignmentEntity);
+
+                if (consignmentEntity.getConsignmentInfo() != null) {
+                    BeanUtils.copyProperties(consignmentEntity.getConsignmentInfo(), newConsignmentEntity);
+                }
+                if (consignmentEntity.getConsignmentRefs() != null) {
+                    BeanUtils.copyProperties(consignmentEntity.getConsignmentRefs(), newConsignmentEntity);
+                }
+                if (consignmentEntity.getOriginDetails() != null) {
+                    BeanUtils.copyProperties(consignmentEntity.getOriginDetails(), newConsignmentEntity.getOriginDetails());
+                }
+                if (consignmentEntity.getDestinationDetails() != null) {
+                    BeanUtils.copyProperties(consignmentEntity.getDestinationDetails(), newConsignmentEntity.getDestinationDetails());
+                }
+                if (consignmentEntity.getReturnDetails() != null) {
+                    BeanUtils.copyProperties(consignmentEntity.getReturnDetails(), newConsignmentEntity.getReturnDetails());
+                }
+            }
+
+            List<ReplicaImageReference> referenceImageUl = imageReferenceResults.stream()
+                    .filter(imageRef -> imageRef != null && imageRef.getConsignmentId() != null &&
                             imageRef.getConsignmentId().equals(consignmentEntity.getConsignmentId()) &&
                             imageRef.getReferenceField1().equalsIgnoreCase("CON_ID"))
-//                    .map(ReplicaImageReference::getReferenceImageUrl)
                     .collect(Collectors.toList());
 
             List<ReferenceImageList> referenceImageLists = new ArrayList<>();
@@ -640,9 +632,9 @@ public class ConsignmentService {
                 imageList.setPdfUrl(imageReference.getReferenceField2());
 
                 referenceImageLists.add(imageList);
-
             }
             newConsignmentEntity.setReferenceImageList(referenceImageLists);
+
             // Use parallelStream for processing piece details
             List<ReplicaAddPieceDetails> filteredPieceDetails = pieceResults.parallelStream()
                     .filter(piece -> piece.getConsignmentId().equals(consignmentEntity.getConsignmentId()))
@@ -650,23 +642,23 @@ public class ConsignmentService {
                         ReplicaAddPieceDetails pieceDetail = new ReplicaAddPieceDetails();
                         BeanUtils.copyProperties(piece, pieceDetail);
 
-
                         List<ReplicaImageReference> imageRef = imageReferenceResults.stream()
                                 .filter(image -> image != null && image.getPieceId() != null && image.getPieceId().equals(piece.getPieceId()) &&
                                         image.getReferenceField1().equalsIgnoreCase("P_ID"))
-//                                .map(ReplicaImageReference::getReferenceImageUrl)
                                 .collect(Collectors.toList());
 
                         List<ReferenceImageList> imageLists = new ArrayList<>();
-                        for (ReplicaImageReference imageReference : imageRef) {
-                            ReferenceImageList imageList = new ReferenceImageList();
-                            imageList.setImageRefId(imageReference.getImageRefId());
-                            imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
-                            imageList.setPdfUrl(imageReference.getReferenceField2());
+                        if (imageRef != null) {
+                            for (ReplicaImageReference imageReference : imageRef) {
+                                ReferenceImageList imageList = new ReferenceImageList();
+                                imageList.setImageRefId(imageReference.getImageRefId());
+                                imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+                                imageList.setPdfUrl(imageReference.getReferenceField2());
 
-                            imageLists.add(imageList);
-
+                                imageLists.add(imageList);
+                            }
                         }
+                        pieceDetail.setReferenceImageList(imageLists);
 
                         // Use parallelStream for processing item details
                         List<ReplicaAddItemDetails> filteredItemDetails = itemDetailsResults.parallelStream()
@@ -676,20 +668,20 @@ public class ConsignmentService {
                                     BeanUtils.copyProperties(item, itemDetails);
 
                                     List<ReplicaImageReference> imageRefe = imageReferenceResults.stream()
-                                            .filter(image -> image != null && image.getPieceItemId() != null && image.getPieceItemId().equals(item.getPieceItemId()) &&
+                                            .filter(image -> image != null && image.getPieceItemId() != null &&
+                                                    image.getPieceItemId().equals(item.getPieceItemId()) &&
                                                     image.getReferenceField1().equalsIgnoreCase("PI_ID"))
-//                                .map(ReplicaImageReference::getReferenceImageUrl)
                                             .collect(Collectors.toList());
 
                                     List<ReferenceImageList> imageRe = new ArrayList<>();
-                                    for (ReplicaImageReference imageReference : imageRefe) {
-                                        ReferenceImageList imageList = new ReferenceImageList();
-                                        imageList.setImageRefId(imageReference.getImageRefId());
-                                        imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
-                                        imageList.setPdfUrl(imageReference.getReferenceField2());
-
-                                        imageRe.add(imageList);
-
+                                    if (imageRefe != null) {
+                                        for (ReplicaImageReference imageReference : imageRefe) {
+                                            ReferenceImageList imageList = new ReferenceImageList();
+                                            imageList.setImageRefId(imageReference.getImageRefId());
+                                            imageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+                                            imageList.setPdfUrl(imageReference.getReferenceField2());
+                                            imageRe.add(imageList);
+                                        }
                                     }
                                     itemDetails.setReferenceImageList(imageRe);
 
@@ -697,7 +689,6 @@ public class ConsignmentService {
                                 })
                                 .collect(Collectors.toList());
 
-                        pieceDetail.setReferenceImageList(imageLists);
                         pieceDetail.setItemDetails(filteredItemDetails);
                         return pieceDetail;
                     })

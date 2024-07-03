@@ -10,8 +10,8 @@ export class ConsoleService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
 
-  Get(partnerId: string) {
-    return this.http.get<any>('/overc-midmile-service/console/' + partnerId);
+  Get(consoleId: string) {
+    return this.http.get<any>('/overc-midmile-service/console/' + consoleId);
   }
 
   Create(obj: any) {
@@ -19,11 +19,11 @@ export class ConsoleService {
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/console/'+ obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId, obj);
+    return this.http.patch<any>('/overc-midmile-service/console/list', obj);
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/console/' + obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId);
+    return this.http.delete<any>('/overc-midmile-service/console/list', obj);
   }
 
   search(obj: any) {

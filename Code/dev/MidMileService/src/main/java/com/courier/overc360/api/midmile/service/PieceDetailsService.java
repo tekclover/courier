@@ -173,6 +173,7 @@ public class PieceDetailsService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
+            Long pieceCounter = 1L;
             for (AddPieceDetails addPieceDetails : addPieceDetailsList) {
                 Optional<PieceDetails> duplicatePieceDetails =
                         pieceDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
@@ -182,7 +183,8 @@ public class PieceDetailsService {
                     throw new BadRequestException("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
                 } else {
 
-                    String PIECE_ID = houseAirwayBill + "001";
+                    String PIECE_ID = houseAirwayBill + String.format("%03d", pieceCounter++);
+//                    String PIECE_ID = houseAirwayBill + "001";
                     PieceDetails newPieceDetails = new PieceDetails();
                     BeanUtils.copyProperties(addPieceDetails, newPieceDetails, CommonUtils.getNullPropertyNames(addPieceDetails));
 

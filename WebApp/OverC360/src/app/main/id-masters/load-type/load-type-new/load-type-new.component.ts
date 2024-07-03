@@ -9,6 +9,7 @@ import { LoadTypeService } from '../load-type.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { noLeadingTrailingSpacesValidator } from '../../../../config/spaceValidator';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-load-type-new',
@@ -20,16 +21,25 @@ export class LoadTypeNewComponent {
 
   active: number | undefined = 0;
   status: any[] = []
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: LoadTypeService, private messageService: MessageService, private cas: CommonAPIService,
+  constructor(
+    private cs: CommonServiceService, 
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private path: PathNameService, 
+    private fb: FormBuilder,
+    private service: LoadTypeService, 
+    private numberRangeService: NumberrangeService,
+    private messageService: MessageService, 
+    private cas: CommonAPIService,
     private auth: AuthService) {
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
   }
 
+  numCondition: any;
   pageToken: any;
 
   //form builder initialize
@@ -56,7 +66,7 @@ export class LoadTypeNewComponent {
     referenceField9: [],
     referenceField10: [],
     remark: [],
-    statusId: ["1",],
+    statusId: ["16",],
 
   });
 
@@ -73,7 +83,7 @@ export class LoadTypeNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -88,13 +98,32 @@ export class LoadTypeNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.loadTypeId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['LOADTYPE'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.loadTypeId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.loadTypeId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

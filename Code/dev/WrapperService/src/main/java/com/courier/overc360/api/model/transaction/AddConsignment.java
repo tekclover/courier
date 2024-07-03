@@ -3,7 +3,6 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

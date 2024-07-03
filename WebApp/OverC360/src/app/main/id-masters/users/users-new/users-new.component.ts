@@ -42,8 +42,8 @@ export class UsersNewComponent {
       { value: 'App', label: 'App' }
     ];
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
     this.flag = [
       { value: '0', label: 'False'},

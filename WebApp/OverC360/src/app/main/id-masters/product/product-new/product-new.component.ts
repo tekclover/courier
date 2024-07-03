@@ -8,6 +8,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { ProductService } from '../product.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-product-new',
@@ -26,17 +27,20 @@ export class ProductNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: ProductService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
   ) {
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
   }
 
+  numCondition: any;
   pageToken: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -48,7 +52,7 @@ export class ProductNewComponent {
     productId: [],
     productName: [, Validators.required],
     remark: [],
-    statusId: ['1',],
+    statusId: ["16", ],
     statusDescription: [],
     referenceField1: [],
     referenceField10: [],
@@ -60,9 +64,9 @@ export class ProductNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     updatedBy: [],
   });
 
@@ -79,6 +83,7 @@ export class ProductNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -99,6 +104,27 @@ export class ProductNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['PRODUCT'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.productId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.productId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

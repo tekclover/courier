@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.replica.model.consignment;
 
+import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,9 @@ public class ReplicaConsignmentEntity {
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
+
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
@@ -51,41 +55,11 @@ public class ReplicaConsignmentEntity {
     @Column(name = "NO_OF_PIECE_HAWB", columnDefinition = "nvarchar(50)")
     private String noOfPieceHawb;
 
-    @Column(name = "CONS_BAG_ID")
-    private Long consignmentBagId;
-
-    @Column(name = "COUNTRY_OF_DESTINATION", columnDefinition = "nvarchar(50)")
-    private String countryOfDestination;
-
-    @Column(name = "NO_OF_CRT", columnDefinition = "nvarchar(50)")
-    private String noOfCrt;
-
-    @Column(name = "TOTAL_SHIPMENT_WEIGHT", columnDefinition = "nvarchar(50)")
-    private String totalShipmentWeight;
-
-    @Column(name = "TOTAL_WEIGHT_HAWB", columnDefinition = "nvarchar(50)")
-    private String totalWeightHawb;
-
-    @Column(name = "ESTIMATED_DEPARTURE_TIME")
-    private Date estimatedDepartureTime;
-
-    @Column(name = "SHIPPER_ID", columnDefinition = "nvarchar(50)")
-    private String shipperId;
-
-    @Column(name = "SHIPPER_NAME", columnDefinition = "nvarchar(50)")
-    private String shipperName;
-
     @Column(name = "PARTNER_MASTER_AB", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
     @Column(name = "PARTNER_HOUSE_AB", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
-
-    @Column(name = "NO_OF_PACKAGE_MAWB", columnDefinition = "nvarchar(50)")
-    private String noOfPackageMawb;
-
-    @Column(name = "NO_OF_PACKAGE_HAWB", columnDefinition = "nvarchar(50)")
-    private String noOfPackageHawb;
 
     @Column(name = "PRODUCT_ID", columnDefinition = "nvarchar(50)")
     private String productId;
@@ -99,8 +73,23 @@ public class ReplicaConsignmentEntity {
     @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(50)")
     private String subProductName;
 
-    @Column(name = "FLIGHT_DETAILS")
-    private String flightDetails;
+    @Column(name = "SERVICE_TYPE_ID", columnDefinition = "nvarchar(50)")
+    private String serviceTypeId;
+
+    @Column(name = "SERVICE_TYPE_TEXT", columnDefinition = "nvarchar(50)")
+    private String serviceTypeText;
+
+    @Column(name = "SHIPPER_ID", columnDefinition = "nvarchar(50)")
+    private String shipperId;
+
+    @Column(name = "SHIPPER_NAME", columnDefinition = "nvarchar(50)")
+    private String shipperName;
+
+    @Column(name = "NO_OF_PACKAGE_MAWB", columnDefinition = "nvarchar(50)")
+    private String noOfPackageMawb;
+
+    @Column(name = "NO_OF_PACKAGE_HAWB", columnDefinition = "nvarchar(50)")
+    private String noOfPackageHawb;
 
     @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
     private String flightNo;
@@ -156,8 +145,29 @@ public class ReplicaConsignmentEntity {
     @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
     private String totalDuty;
 
+    @Column(name = "CONS_BAG_ID")
+    private Long consignmentBagId;
+
+    @Column(name = "COUNTRY_OF_DESTINATION", columnDefinition = "nvarchar(50)")
+    private String countryOfDestination;
+
+    @Column(name = "NO_OF_CRT", columnDefinition = "nvarchar(50)")
+    private String noOfCrt;
+
+    @Column(name = "TOTAL_SHIPMENT_WEIGHT", columnDefinition = "nvarchar(50)")
+    private String totalShipmentWeight;
+
+    @Column(name = "TOTAL_WEIGHT_HAWB", columnDefinition = "nvarchar(50)")
+    private String totalWeightHawb;
+
+    @Column(name = "ESTIMATED_DEPARTURE_TIME")
+    private Date estimatedDepartureTime;
+
     @Column(name = "SPECIAL_APPROVAL_VALUE", columnDefinition = "nvarchar(50)")
     private String specialApprovalValue;
+
+    @Column(name = "AIRPORT_ORIGIN_CODE", columnDefinition = "nvarchar(50)")
+    private String airportOriginCode;
 
     @Column(name = "INVOICE_NUMBER", columnDefinition = "nvarchar(50)")
     private String invoiceNumber;
@@ -192,6 +202,9 @@ public class ReplicaConsignmentEntity {
     @Column(name = "NO_OF_Packages", columnDefinition = "nvarchar(50)")
     private String noOfPackages;
 
+    @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
+    private String notifyParty;
+
     @Column(name = "ITEM_TOTAL_PRICE", columnDefinition = "nvarchar(50)")
     private String itemTotalPrice;
 
@@ -207,14 +220,8 @@ public class ReplicaConsignmentEntity {
     @Column(name = "GROSS_WEIGHT", columnDefinition = "nvarchar(50)")
     private String grossWeight;
 
-    @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
-    private String notifyParty;
-
     @Column(name = "IS_EXEMPTED", columnDefinition = "nvarchar(50)")
     private String isExempted;
-
-    @Column(name = "AIRPORT_ORIGIN_CODE", columnDefinition = "nvarchar(50)")
-    private String airportOriginCode;
 
     @Column(name = "REFERENCE_NUMBER", columnDefinition = "nvarchar(50)")
     private String referenceNumber;
@@ -227,12 +234,6 @@ public class ReplicaConsignmentEntity {
 
     @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
     private String hubCode;
-
-    @Column(name = "SERVICE_TYPE_ID", columnDefinition = "nvarchar(50)")
-    private String serviceTypeId;
-
-    @Column(name = "SERVICE_TYPE_TEXT", columnDefinition = "nvarchar(50)")
-    private String serviceTypeText;
 
     @Column(name = "CONSIGNMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String consignmentType;
@@ -249,6 +250,21 @@ public class ReplicaConsignmentEntity {
     @Column(name = "WORKER_CODE", columnDefinition = "nvarchar(50)")
     private String workerCode;
 
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
+
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
+
+    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date eventTimestamp;
+
+    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    private Date statusTimestamp;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -264,27 +280,20 @@ public class ReplicaConsignmentEntity {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "CON_INFO_ID")
-//    private ConsignmentInfo consignmentInfo;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CON_INFO_ID")
     private ReplicaConsignmentInfo consignmentInfo;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CON_REF_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaConsignmentRef consignmentRefs;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaDestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaOriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

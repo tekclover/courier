@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 
@@ -28,9 +29,9 @@ export class CompanyComponent {
     private path: PathNameService,
     private service: CompanyService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
@@ -45,7 +46,7 @@ export class CompanyComponent {
 
   callTableHeader() {
     this.cols = [
-      
+
       { field: 'companyId', header: 'Company ID' },
       { field: 'companyName', header: 'Company Name' },
       { field: 'languageDescription', header: 'Language' },
@@ -85,7 +86,10 @@ export class CompanyComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.companyTable = res;

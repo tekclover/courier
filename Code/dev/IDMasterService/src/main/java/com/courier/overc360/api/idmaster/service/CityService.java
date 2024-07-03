@@ -118,7 +118,9 @@ public class CityService {
                         addCity.getCountryId(), addCity.getProvinceId(), addCity.getDistrictId());
                 City newCity = new City();
                 BeanUtils.copyProperties(addCity, newCity, CommonUtils.getNullPropertyNames(addCity));
-                if (addCity.getCityId() == null || addCity.getCityId().isBlank()) {
+                if (addCity.getCityId() != null &&
+                        (addCity.getReferenceField10() != null && addCity.getReferenceField10().equalsIgnoreCase("true")) ||
+                        (addCity.getCityId() == null || addCity.getCityId().isBlank())) {
                     String NUM_RAN_OBJ = "CITY";
                     String CITY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for CITY_ID : " + CITY_ID);
@@ -191,7 +193,7 @@ public class CityService {
 //                }
 //            }
             BeanUtils.copyProperties(updateCity, dbCity, CommonUtils.getNullPropertyNames(updateCity));
-            if (updateCity.getStatusId() != null) {
+            if (updateCity.getStatusId() != null && !updateCity.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCity.getStatusId());
                 if (statusDesc != null) {
                     dbCity.setStatusDescription(statusDesc);

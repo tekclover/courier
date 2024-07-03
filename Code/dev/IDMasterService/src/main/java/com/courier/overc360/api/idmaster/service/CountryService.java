@@ -108,11 +108,13 @@ public class CountryService {
             } else if (duplicateCountryPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : countryId - " + addCountry.getCountryId());
             } else {
-                log.info("new Country --> " + addCountry);
+                log.info("new Country --> {}", addCountry);
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addCountry.getLanguageId(), addCountry.getCompanyId());
                 Country newCountry = new Country();
                 BeanUtils.copyProperties(addCountry, newCountry, CommonUtils.getNullPropertyNames(addCountry));
-                if (addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
+                if ((addCountry.getCountryId() != null &&
+                        (addCountry.getReferenceField10() != null && addCountry.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addCountry.getCountryId() == null || addCountry.getCountryId().isBlank()) {
                     String NUM_RAN_OBJ = "COUNTRY";
                     String COUNTRY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for COUNTRY_ID : " + COUNTRY_ID);
@@ -178,7 +180,7 @@ public class CountryService {
 //                }
 //            }
             BeanUtils.copyProperties(updateCountry, dbCountry, CommonUtils.getNullPropertyNames(updateCountry));
-            if (updateCountry.getStatusId() != null) {
+            if (updateCountry.getStatusId() != null && !updateCountry.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCountry.getStatusId());
                 if (statusDesc != null) {
                     dbCountry.setStatusDescription(statusDesc);

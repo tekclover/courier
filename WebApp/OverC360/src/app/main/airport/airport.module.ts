@@ -10,6 +10,7 @@ import { CcrComponent } from './ccr/ccr.component';
 import { PreAlertNewComponent } from './pre-alert-manifest/pre-alert-new/pre-alert-new.component';
 import { BondedManifestNewComponent } from './bonded-manifest/bonded-manifest-new/bonded-manifest-new.component';
 import { CcrNewComponent } from './ccr/ccr-new/ccr-new.component';
+import { ConsoleNewComponent } from './console/console-new/console-new.component';
 
 
 @NgModule({
@@ -20,7 +21,10 @@ import { CcrNewComponent } from './ccr/ccr-new/ccr-new.component';
     CcrComponent,
     PreAlertNewComponent,
     BondedManifestNewComponent,
-    CcrNewComponent
+    CcrNewComponent,    
+    ConsoleNewComponent
+
+
   ],
   imports: [
     CommonModule,

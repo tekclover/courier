@@ -47,6 +47,10 @@ public class ReplicaPartnerHubMappingSpecification implements Specification<Repl
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findPartnerHubMapping.getPartnerId()));
         }
+        if (findPartnerHubMapping.getStatusId() != null && !findPartnerHubMapping.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findPartnerHubMapping.getStatusId()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

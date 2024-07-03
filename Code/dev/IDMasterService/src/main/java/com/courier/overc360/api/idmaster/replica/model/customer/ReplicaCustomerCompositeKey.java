@@ -18,4 +18,6 @@ public class ReplicaCustomerCompositeKey implements Serializable {
     private String customerId;
     private String productId;
     private String subProductId;
+    private String subProductValue;
+
 }

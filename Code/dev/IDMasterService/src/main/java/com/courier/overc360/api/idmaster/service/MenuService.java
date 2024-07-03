@@ -109,18 +109,22 @@ public class MenuService {
             } else if (duplicateMenu.isPresent()) {
                 throw new BadRequestException("Record is Getting Duplicated with the given values : menuId - " + addMenu.getMenuId());
             } else {
-                log.info("new Menu --> " + addMenu);
+                log.info("new Menu --> {}", addMenu);
                 Menu newMenu = new Menu();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addMenu.getLanguageId(), addMenu.getCompanyId());
                 BeanUtils.copyProperties(addMenu, newMenu, CommonUtils.getNullPropertyNames(addMenu));
-                if (addMenu.getMenuId() == null) {
+                if ((addMenu.getMenuId() != null &&
+                        (addMenu.getReferenceField10() != null && addMenu.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addMenu.getMenuId() == null) {
                     String NUM_RAN_OBJ = "MENU";
                     String MENU_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for MENU_ID : " + MENU_ID);
                     newMenu.setMenuId(Long.valueOf(MENU_ID));
                 }
-                if (addMenu.getSubMenuId() == null) {
-                    String NUM_RAN_OBJ = "SUB_MENU";
+                if ((addMenu.getSubMenuId() != null &&
+                        (addMenu.getReferenceField10() != null && addMenu.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addMenu.getSubMenuId() == null) {
+                    String NUM_RAN_OBJ = "SUBMENU";
                     String SUB_MENU_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for SUB_MENU_ID : " + SUB_MENU_ID);
                     newMenu.setSubMenuId(Long.valueOf(SUB_MENU_ID));

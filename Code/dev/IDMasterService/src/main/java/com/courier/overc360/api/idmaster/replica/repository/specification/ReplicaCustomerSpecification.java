@@ -5,7 +5,11 @@ import com.courier.overc360.api.idmaster.replica.model.customer.ReplicaCustomer;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +46,14 @@ public class ReplicaCustomerSpecification implements Specification<ReplicaCustom
         if (findCustomer.getCustomerId() != null && !findCustomer.getCustomerId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("customerId");
             predicates.add(group.in(findCustomer.getCustomerId()));
+        }
+        if (findCustomer.getSubProductValue() != null && !findCustomer.getSubProductValue().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("subProductValue");
+            predicates.add(group.in(findCustomer.getSubProductValue()));
+        }
+        if (findCustomer.getStatusId() != null && !findCustomer.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findCustomer.getStatusId()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));

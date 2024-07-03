@@ -15,8 +15,8 @@ import java.util.Optional;
 public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
         JpaSpecificationExecutor<ReplicaCcr> {
 
-    Optional<ReplicaCcr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndCustomsCcrNoAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, String customsCcrNo, Long deletionIndicator);
+    Optional<ReplicaCcr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, Long deletionIndicator);
 
 //    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndCustomsCcrNoAndDeletionIndicator(
 //            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String customsCcrNo, Long deletionIndicator
@@ -33,7 +33,6 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
             "h.Master_Airway_Bill = :masterAirwayBill and \n" +
             "h.HOUSE_AIRWAY_BILL = :houseAirwayBill and \n" +
             "h.CONSOLE_ID = :consoleId and \n " +
-            "h.CUSTOMS_CCR_NO = :customsCcrNo and \n" +
             "h.IS_DELETED =0) \n" +
             "Then 1 \n" +
             "Else 0 \n" +
@@ -43,7 +42,6 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
                                @Param(value = "partnerId") String partnerId,
                                @Param(value = "masterAirwayBill") String masterAirwayBill,
                                @Param(value = "houseAirwayBill") String houseAirwayBill,
-                                @Param(value = "consoleId") String consoleId,
-                                @Param(value = "customsCcrNo") String customsCcrNo);
+                                @Param(value = "consoleId") String consoleId);
 
 }

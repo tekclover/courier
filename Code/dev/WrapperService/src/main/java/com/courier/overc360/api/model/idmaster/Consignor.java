@@ -33,9 +33,9 @@ public class Consignor {
 
     private String consignorName;
 
-//    private String statusId;
-//
-//    private String statusDescription;
+    private String statusId;
+
+    private String statusDescription;
 
     private String remark;
 

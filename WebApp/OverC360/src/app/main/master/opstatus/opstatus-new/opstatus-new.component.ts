@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { OpstatusService } from '../opstatus.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-opstatus-new',
@@ -27,11 +28,14 @@ export class OpstatusNewComponent {
     private fb: FormBuilder,
     private service: OpstatusService,
     private messageService: MessageService,
+    private numberRangeService: NumberrangeService,
     private cas: CommonAPIService,
     private auth: AuthService
   ) { }
 
+  numCondition: any;
   pageToken: any;
+
   // Form builder Initialize
   form = this.fb.group({
     languageId: [this.auth.languageId, Validators.required],
@@ -70,6 +74,7 @@ export class OpstatusNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -84,13 +89,32 @@ export class OpstatusNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line)
-      this.form.controls.languageId.disable();
-      this.form.controls.companyId.disable();
       this.form.controls.statusCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['OPSTATUS'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.statusCode.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.statusCode.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

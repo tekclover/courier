@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -36,7 +37,7 @@ export class PreAlertManifestComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: ConsignmentService,
-    public dialog: MatDialog, private datePipe: DatePipe, private spin: NgxSpinnerService, private manifest: BondedManifestService, private console: ConsoleService
+    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService, private manifest: BondedManifestService, private console: ConsoleService
   ) { }
 
   fullDate: any;
@@ -52,7 +53,8 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'companyId', header: 'Company' },
+      { field: 'languageId', header: 'Language' },
+       { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -72,7 +74,10 @@ export class PreAlertManifestComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.preAlertManifestTable = res;
@@ -111,7 +116,7 @@ export class PreAlertManifestComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/language-new/' + paramdata]);
+      this.router.navigate(['/main/airport/preAlertManifest-new/' + paramdata]);
     }
   }
 
@@ -125,7 +130,7 @@ export class PreAlertManifestComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedPreAlertManifest, module: 'Language', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedPreAlertManifest, module: 'Pre Alert Manifest', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -136,9 +141,9 @@ export class PreAlertManifestComponent {
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.languageId).subscribe({
+    this.service.DeletePreAlertManifest(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
@@ -177,6 +182,7 @@ export class PreAlertManifestComponent {
   }
 
   createConsole(){
+    console.log(2)
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
       return;

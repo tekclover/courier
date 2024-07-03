@@ -10,6 +10,7 @@ import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { SubProductsValuesComponent } from '../sub-products-values/sub-products-values.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 
 @Component({
   selector: 'app-sub-product-new',
@@ -28,18 +29,21 @@ export class SubProductNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: SubProductService,
+    private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
     public dialog: MatDialog,
   ) {
     this.status = [
-      { value: '2', label: 'Inactive' },
-      { value: '1', label: 'Active' }
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
     ];
   }
 
   pageToken: any;
+  numCondition: any;
+
   // form builder initialize
   form = this.fb.group({
     languageId: [this.auth.languageId],
@@ -50,9 +54,9 @@ export class SubProductNewComponent {
     subProductName: [, Validators.required],
     subProductValue: [],
     remark: [],
-    statusId: ['1',],
+    statusId: ["16", ],
     statusDescription: [],
-    referenceField1: [],
+    referenceField1: [, Validators.required],
     referenceField10: [],
     referenceField2: [],
     referenceField3: [],
@@ -81,6 +85,7 @@ export class SubProductNewComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
+  nextNumber: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -100,6 +105,27 @@ export class SubProductNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['COMPANY'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.companyId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.companyId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

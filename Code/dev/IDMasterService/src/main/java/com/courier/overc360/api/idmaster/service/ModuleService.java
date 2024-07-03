@@ -122,12 +122,14 @@ public class ModuleService {
                         throw new IllegalAccessException("MenuId - " + addModule.getMenuId() + " and SubMenuId - "
                                 + addModule.getSubMenuId() + " doesn't exists");
                     } else {
-                        log.info("new Module --> " + addModule);
+                        log.info("new Module --> {}", addModule);
                         Module module = new Module();
                         IKeyValuePair iKeyValuePair = replicaModuleRepository.getDescription(addModule.getLanguageId(), addModule.getCompanyId(),
                                 addModule.getMenuId(), addModule.getSubMenuId());
                         BeanUtils.copyProperties(addModule, module, CommonUtils.getNullPropertyNames(addModule));
-                        if (addModule.getModuleId() == null || addModule.getModuleId().isBlank()) {
+                        if ((addModule.getModuleId() != null &&
+                                (addModule.getReferenceField10() != null && addModule.getReferenceField10().equalsIgnoreCase("true"))) ||
+                                addModule.getModuleId() == null || addModule.getModuleId().isBlank()) {
                             String NUM_RAN_OBJ = "MODULE";
                             String MODULE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                             log.info("next Value from NumberRange for MODULE_ID : " + MODULE_ID);

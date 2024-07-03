@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -16,6 +16,8 @@ import { ConsignmentService } from '../../../operation/consignment/consignment.s
   styleUrl: './pre-alert-new.component.scss'
 })
 export class PreAlertNewComponent {
+
+  active: number | undefined = 0;
 
   constructor(
     private cs: CommonServiceService,
@@ -44,12 +46,15 @@ export class PreAlertNewComponent {
     country: [],
   });
 
+  pageToken: any;
+
   form = this.fb.group({
+    companyId: [this.auth.companyId, Validators.required],
     partnerHouseAirwayBill: [],
     originDetails: this.OriginDetails,
     destinationDetails: this.DestinationDetails,
     goodsDescription: [],
-    weight: [],
+    weight: [,],
     consignmentValue: [],
     consignmentCurrency: [],
     hsCode: [],
@@ -61,6 +66,123 @@ export class PreAlertNewComponent {
     noOfCRT: [],
     totalShipmentWeight: [],
     totalValue: [],
+    createdOn: ['', ],
+    createdBy: [],
+    updatedBy: [],
+    updatedOn: ['', ],
+    partnerId: [,]
   })
+
+  submitted = false;
+  email = new FormControl('', [Validators.required, Validators.email]);
+  errorHandling(control: string, error: string = "required") {
+    const controlInstance = this.form.get(control);
+    return controlInstance && controlInstance.hasError(error) && this.submitted;
+  }
+  getErrorMessage() {
+    if (this.email.hasError('required')) {
+      return ' Field should not be blank';
+    }
+    return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+
+
+  ngOnInit() {
+    let code = this.route.snapshot.params['code'];
+    this.pageToken = this.cs.decrypt(code);
+
+    const dataToSend = ['Airport', 'Pre Alert Manifest', this.pageToken.pageflow];
+    this.path.setData(dataToSend);
+
+    this.dropdownlist();
+  
+    this.form.controls.companyId.disable();
+
+    if (this.pageToken.pageflow != 'New') {
+      this.fill(this.pageToken.line);
+      this.form.controls.companyId.disable();
+      this.form.controls.updatedBy.disable();
+      this.form.controls.createdBy.disable();
+      this.form.controls.updatedOn.disable();
+      this.form.controls.createdOn.disable();
+    }
+  }
+
+  companyIdList: any[] = [];
+  countryIdList: any[] =[];
+
+  dropdownlist(){
+    this.spin.show();
+    this.cas.getalldropdownlist([
+      this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.country.url,
+
+    ]).subscribe({next: (results: any) => {
+      this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
+      this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
+
+      this.spin.hide();
+    },
+    error: (err: any) => {
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    },
+  });
+
+  }
+  fill(line: any) {
+    this.form.patchValue(line);
+    this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
+    this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+  }
+
+  save() {
+    this.submitted = true;
+    if (this.form.invalid) {
+      for (const control in this.form.controls) {
+        const controlInstance = this.form.get(control);
+        if (controlInstance?.invalid) {
+          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
+          if (invalidControl) {
+            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            break;
+          }
+        }
+      }
+    }
+    if (this.form.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: 'Please fill required fields to continue' });
+      return;
+    }
+
+    if (this.pageToken.pageflow != 'New') {
+      this.spin.show()
+      this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
+        next: (res: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: 'It has been updated successfully' });
+          this.router.navigate(['/main/airport/preAlertManifest']);
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    } else {
+      this.spin.show()
+      console.log(this.form.getRawValue())
+      this.service.Create([this.form.getRawValue()]).subscribe({
+        next: (res) => {
+        if(res){
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:' has been created successfully' });
+          this.router.navigate(['/main/airport/preAlertManifest']);
+          this.spin.hide();
+        }
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
+  }
 
 }

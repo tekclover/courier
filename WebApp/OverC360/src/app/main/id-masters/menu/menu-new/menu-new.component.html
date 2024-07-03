@@ -35,27 +35,21 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Menu ID</p>
-                                <input maxlength="50" formControlName="menuId"
-                                    [ngClass]="form.get('menuId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('menuId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <input maxlength="50" formControlName="menuId" class="w-100" pInputText pKeyFilter="num"
+                                    placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Menu Name</p>
-                                <input maxlength="50" formControlName="menuName" class=" w-100" pInputText
-                                    placeholder="Enter"
-                                    [ngClass]="form.get('menuName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('subMenuId')"
+                                <input maxlength="50" formControlName="menuName" class=" w-100"
+                                    [ngClass]="form.get('menuName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('menuName')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu ID</p>
-                                <input maxlength="50" formControlName="subMenuId"
-                                    [ngClass]="form.get('subMenuId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText pKeyFilter="alphanum" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('subMenuId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <input maxlength="50" formControlName="subMenuId" class="w-100" pInputText
+                                    pKeyFilter="num" placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Sub Menu Name</p>
@@ -64,7 +58,7 @@
                                     placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('subMenuName')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
+                            <!-- </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Authorization Object ID</p>
                                 <input maxlength="50" formControlName="authorizationObjectId"
@@ -83,7 +77,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0">Authorization Object</p>
                                 <input maxlength="100" formControlName="authorizationObject" class=" w-100" pInputText
                                     pKeyFilter="alphanum" placeholder="Enter" />
-                            </div>
+                            </div> -->
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/menu">Cancel</button>

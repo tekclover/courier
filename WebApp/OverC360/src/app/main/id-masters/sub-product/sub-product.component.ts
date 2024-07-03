@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../core/core';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -28,7 +29,7 @@ export class SubProductComponent {
     private path: PathNameService,
     private service: SubProductService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -47,6 +48,7 @@ export class SubProductComponent {
     this.cols = [
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'subProductName', header: 'Sub Product Name' },
+      { field: 'subProductValue', header: 'Sub Product Value' },
       { field: 'companyName', header: 'Company' },
       { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
@@ -75,7 +77,10 @@ export class SubProductComponent {
 
   initialCall() {
     this.spin.show();
-    this.service.search({}).subscribe({
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
         this.subProductTable = res;
@@ -158,7 +163,7 @@ export class SubProductComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.subProductId).subscribe({
+    this.service.Delete(lines.subProductId, lines.subProductValue).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
@@ -194,7 +199,7 @@ export class SubProductComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'SubProduct');
+    this.cs.exportAsExcel(exportData, 'Sub Product');
   }
 
 }

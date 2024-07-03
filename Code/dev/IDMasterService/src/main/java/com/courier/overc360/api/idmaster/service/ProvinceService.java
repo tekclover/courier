@@ -114,7 +114,9 @@ public class ProvinceService {
             IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addProvince.getLanguageId(),
                     addProvince.getCompanyId(), addProvince.getCountryId());
             BeanUtils.copyProperties(addProvince, newProvince, CommonUtils.getNullPropertyNames(addProvince));
-            if (addProvince.getProvinceId() == null || addProvince.getProvinceId().isBlank()) {
+            if ((addProvince.getProvinceId() != null &&
+                    (addProvince.getReferenceField10() != null && addProvince.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addProvince.getProvinceId() == null || addProvince.getProvinceId().isBlank()) {
                 String NUM_RAN_OBJ = "PROVINCE";
                 String PROVINCE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for PROVINCE_ID : " + PROVINCE_ID);
@@ -181,7 +183,7 @@ public class ProvinceService {
 //                }
 //            }
             BeanUtils.copyProperties(updateProvince, dbProvince, CommonUtils.getNullPropertyNames(updateProvince));
-            if (updateProvince.getStatusId() != null) {
+            if (updateProvince.getStatusId() != null && !updateProvince.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateProvince.getStatusId());
                 if (statusDesc != null) {
                     dbProvince.setStatusDescription(statusDesc);

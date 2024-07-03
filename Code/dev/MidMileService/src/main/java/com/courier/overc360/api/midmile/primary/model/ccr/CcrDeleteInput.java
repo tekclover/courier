@@ -22,7 +22,6 @@ public class CcrDeleteInput {
     @NotBlank(message = "Ccr Id is mandatory")
     private String ccrId;
 
-    @NotBlank(message = "CustomsCcrNo is mandatory")
     private String customsCcrNo;
 
     @NotBlank(message = "House Airway Bill is mandatory")

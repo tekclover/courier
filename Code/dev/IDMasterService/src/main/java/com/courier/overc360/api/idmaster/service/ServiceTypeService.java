@@ -73,10 +73,11 @@ public class ServiceTypeService {
         Optional<ServiceType> dbServiceType = serviceTypeRepository.findByCompanyIdAndLanguageIdAndServiceTypeIdAndDeletionIndicator(
                 companyId, languageId, serviceTypeId, 0L);
         if (dbServiceType.isEmpty()) {
+            String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId +
+                    " and serviceTypeId - " + serviceTypeId + " doesn't exists";
             // Error Log
-            createServiceTypeLog1(languageId, companyId, serviceTypeId, "ServiceTypeId - " + serviceTypeId + " and given values doesn't exists");
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " serviceTypeId - " + serviceTypeId + " doesn't exists");
+            createServiceTypeLog1(languageId, companyId, serviceTypeId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbServiceType.get();
     }
@@ -108,11 +109,13 @@ public class ServiceTypeService {
             } else if (duplicateServiceType.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : serviceTypeId - " + addServiceType.getServiceTypeId());
             } else {
-                log.info("new ServiceType --> " + addServiceType);
+                log.info("new ServiceType --> {}", addServiceType);
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addServiceType.getLanguageId(), addServiceType.getCompanyId());
                 ServiceType newServiceType = new ServiceType();
                 BeanUtils.copyProperties(addServiceType, newServiceType, CommonUtils.getNullPropertyNames(addServiceType));
-                if (addServiceType.getServiceTypeId() == null || addServiceType.getServiceTypeId().isBlank()) {
+                if ((addServiceType.getServiceTypeId() != null &&
+                        (addServiceType.getReferenceField10() != null && addServiceType.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addServiceType.getServiceTypeId() == null || addServiceType.getServiceTypeId().isBlank()) {
                     String NUM_RAN_OBJ = "SERVICETYPE";
                     String SERVICE_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for SERVICE_TYPE_ID : " + SERVICE_TYPE_ID);
@@ -162,7 +165,7 @@ public class ServiceTypeService {
         try {
             ServiceType dbServicetype = getServiceType(companyId, languageId, serviceTypeId);
             BeanUtils.copyProperties(updateServiceType, dbServicetype, CommonUtils.getNullPropertyNames(updateServiceType));
-            if (updateServiceType.getStatusId() != null) {
+            if (updateServiceType.getStatusId() != null && !updateServiceType.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateServiceType.getStatusId());
                 if (statusDesc != null) {
                     dbServicetype.setStatusDescription(statusDesc);
@@ -224,10 +227,11 @@ public class ServiceTypeService {
         Optional<ReplicaServiceType> dbServiceType = replicaServiceTypeRepository.findByCompanyIdAndLanguageIdAndServiceTypeIdAndDeletionIndicator(
                 companyId, languageId, serviceTypeId, 0L);
         if (dbServiceType.isEmpty()) {
+            String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId +
+                    " and serviceTypeId - " + serviceTypeId + " doesn't exists";
             // Error Log
-            createServiceTypeLog1(languageId, companyId, serviceTypeId, "ServiceTypeId - " + serviceTypeId + " and given values doesn't exists");
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " serviceTypeId - " + serviceTypeId + " doesn't exists");
+            createServiceTypeLog1(languageId, companyId, serviceTypeId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbServiceType.get();
     }
@@ -242,7 +246,7 @@ public class ServiceTypeService {
 
         ReplicaServiceTypeSpecification spec = new ReplicaServiceTypeSpecification(findServiceType);
         List<ReplicaServiceType> results = replicaServiceTypeRepository.findAll(spec);
-        log.info("found ServiceTypes --> " + results);
+        log.info("found ServiceTypes --> {}", results);
         return results;
     }
 

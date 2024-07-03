@@ -29,7 +29,7 @@ public interface ReplicaProvinceRepository extends JpaRepository<ReplicaProvince
             "tp.LANG_ID IN (:languageId) and \n" +
             "tp.C_ID IN (:companyId) and \n" +
             "tp.COUNTRY_ID IN (:countryId) and \n" +
-            "tp.PROVINCE_ID (:provinceId) and \n" +
+            "tp.PROVINCE_ID IN (:provinceId) and \n" +
             "tp.IS_DELETED = 0", nativeQuery = true)
     String getProvinceName(@Param(value = "languageId") String languageId,
                            @Param(value = "companyId") String companyId,

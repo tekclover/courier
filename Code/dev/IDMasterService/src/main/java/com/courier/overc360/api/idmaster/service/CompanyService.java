@@ -135,7 +135,10 @@ public class CompanyService {
                 Company newCompany = new Company();
                 IKeyValuePair iKeyValuePair = replicaLanguageRepository.getDescription(addCompany.getLanguageId());
                 BeanUtils.copyProperties(addCompany, newCompany, CommonUtils.getNullPropertyNames(addCompany));
-                if (addCompany.getCompanyId() == null || addCompany.getCompanyId().isBlank()) {
+                if ((addCompany.getCompanyId() != null &&
+                        (addCompany.getReferenceField10() != null && addCompany.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        (addCompany.getCompanyId() == null || addCompany.getCompanyId().isBlank())) {
+
                     String NUM_RAN_OBJ = "COMPANY";
                     String C_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for C_ID : " + C_ID);
@@ -254,7 +257,7 @@ public class CompanyService {
                 districtDesc = replicaCityRepository.getDistrictDesc(updateCompany.getDistrictId());
                 dbCompany.setDistrictName(updateCompany.getDistrictId() + districtDesc);
             }
-            if (updateCompany.getStatusId() != null) {
+            if (updateCompany.getStatusId() != null && !updateCompany.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCompany.getStatusId());
                 if (statusDesc != null) {
                     dbCompany.setStatusDescription(statusDesc);
