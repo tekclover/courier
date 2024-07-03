@@ -47,6 +47,7 @@ export class OpstatusComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
+      { field: 'statusCode', header: 'Op Status Code' },
       { field: 'opStatusDescription', header: 'Op Status Description' },
       { field: 'remark', header: 'Remarks' },
       { field: 'createdBy', header: 'Created By' },
@@ -55,7 +56,6 @@ export class OpstatusComponent {
     this.target = [
       { field: 'companyId', header: 'Company ID' },
       { field: 'languageId', header: 'Language ID' },
-      { field: 'statusCode', header: 'Op Status Code' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },

@@ -294,8 +294,11 @@ export class ConsignmentNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
 
-      this.disabledCarrier = true;
-      this.disabledSender = true;
+     this.disabledConsignment = true;
+     this.disabledPiece = true;
+     this.disabledSender = true;
+     this.disabledDelivery = true;
+     this.disabledBilling = true;
     }
   }
 
@@ -326,6 +329,10 @@ export class ConsignmentNewComponent {
     this.form.patchValue(line);
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+
+
+    this.shipmentInfo.patchValue(line),
+
 
     line.forEach((res:any) => {
       this.pieceDetails.push(this.fb.group(res));
@@ -585,7 +592,6 @@ mainForm: FormGroup = new FormGroup({
 });
 
 saveFinal(){
-  console.log(this.piece)
   this.mainForm = this.fb.group({
     ...this.shipmentInfo.value,
     ...this.consignment.value,
