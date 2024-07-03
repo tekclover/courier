@@ -21,6 +21,9 @@ public interface ReplicaCityRepository extends JpaRepository<ReplicaCity, String
     boolean existsByLanguageIdAndCompanyIdAndCountryIdAndProvinceIdAndDistrictIdAndCityIdAndDeletionIndicator(
             String languageId, String companyId, String countryId, String provinceId, String districtId, String cityId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndCityIdAndDeletionIndicator(
+            String languageId, String companyId, String cityId, Long deletionIndicator);
+
 
     // Get Description
     @Query(value = "Select \n" +

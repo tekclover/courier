@@ -261,14 +261,15 @@ public class CurrencyExchangeRateService {
 
         ReplicaCurrencyExchangeRateSpecification spec = new ReplicaCurrencyExchangeRateSpecification(findCurrencyExchangeRate);
         List<ReplicaCurrencyExchangeRate> results = replicaCurrencyExchangeRateRepository.findAll(spec);
-        log.info("found CurrencyExchangeRate --> " + results);
+        log.info("found currencyExchangeRates --> " + results);
         return results;
     }
 
     //=============================================CurrencyExchangeRate_ErrorLog====================================================
 
 
-    private void createCurrencyExchangeRateLog(String languageId, String companyId, String fromCurrencyId, String toCurrencyId, String error) throws IOException, CsvException {
+    private void createCurrencyExchangeRateLog(String languageId, String companyId, String fromCurrencyId,
+                                               String toCurrencyId, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();

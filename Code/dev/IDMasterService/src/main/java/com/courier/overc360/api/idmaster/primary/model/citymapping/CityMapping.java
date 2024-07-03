@@ -63,6 +63,12 @@ public class CityMapping {
     @Column(name = "PARTNER_CITY_NAME", columnDefinition = "nvarchar(50)")
     private String partnerCityName;
 
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
+
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;
 

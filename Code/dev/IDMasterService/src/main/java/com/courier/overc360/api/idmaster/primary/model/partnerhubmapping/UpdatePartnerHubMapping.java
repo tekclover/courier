@@ -7,6 +7,8 @@ public class UpdatePartnerHubMapping {
 
     private String partnerName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;
