@@ -495,7 +495,7 @@ public class ConsoleService {
                                 }
                             }
 
-                            if(iataData != null) {
+                            if(iataData.getIataKd() != null) {
                                 newConsole.setIataKd(iataData.getCurrencyValue());
                             }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
@@ -613,7 +613,7 @@ public class ConsoleService {
                             }
                         }
 
-                        if(iataData != null) {
+                        if(iataData.getIataKd() != null) {
                             newConsole.setIataKd(iataData.getCurrencyValue());
                         }
                         newConsole.setExpectedDuty(String.valueOf(totalDuty));
