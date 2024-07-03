@@ -63,6 +63,7 @@ export class CommonAPIService {
       consignor: { url: this.setup + 'consignor', key: { key: 'consignorId', value: 'consignorName', languageId: 'languageId', companyId: 'companyId' } },
       iata: { url: this.setup + 'iata', key: { key: 'iataKd', value: 'iataKd', languageId: 'languageId', companyId: 'companyId' } },
       
+
     },
   }
  
