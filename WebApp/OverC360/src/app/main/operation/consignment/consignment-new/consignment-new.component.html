@@ -501,11 +501,11 @@
 
             <p-tabPanel header="Piece" [disabled]="disabledPiece">
                 <div class="d-flex justify-content-end align-items-center">
-                    <button (click)="addItem()" type="button" class="btn ml-2 addNewbuttom bgOrange text-white"><i
+                    <button (click)="addPieceDetail()" type="button" class="btn ml-2 addNewbuttom bgOrange text-white"><i
                             class="bi bi-plus-square pr-2"></i> Add New</button>
                 </div>
                 <form [formGroup]="piece" class="mt-1">
-                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)" [value]="pieceDetails.controls">
+                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)" [value]="this.piece.controls.pieceDetails.controls">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th *ngIf="this.pageToken.pageflow != 'New'">Piece ID</th>
@@ -568,9 +568,9 @@
                                                 <input maxlength="50" formControlName="weight" class=" w-100" pInputText
                                                     placeholder="Enter" />
                                             </div>
-                                            <div class="col-4 mb-2" id="weight_unit">
+                                            <div class="col-4 mb-2" id="weightUnit">
                                                 <p class="formControlLabel f600 textBlack mb-0">Weight Unit</p>
-                                                <input maxlength="50" formControlName="weight_unit" class=" w-100"
+                                                <input maxlength="50" formControlName="weightUnit" class=" w-100"
                                                     pInputText placeholder="Enter" />
                                             </div>
                                         </div>
@@ -587,7 +587,7 @@
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="codAmount">
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png"
+                                    <img type="button" (click)="removePieceDetail(i)" src="./assets/common/deletetool.png"
                                         alt="" srcset="" style="height: 1.4rem;">
                                     <i type="button" (click)="opendialog(this.pageToken.pageflow, item)"
                                         class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
