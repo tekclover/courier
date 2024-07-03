@@ -51,7 +51,7 @@ export class RateParameterNewComponent {
     rateParameterId: [],
     rateParameterDescription: [, Validators.required],
     remark: [],
-    statusId: ['1',],
+    statusId: ["16", ],
     statusDescription: [],
     referenceField1: [],
     referenceField10: [],

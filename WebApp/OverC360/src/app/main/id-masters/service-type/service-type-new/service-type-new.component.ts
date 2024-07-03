@@ -64,7 +64,7 @@ export class ServiceTypeNewComponent {
     createdBy: [],
     updatedBy: [],
     updatedOn: ['',],
-    statusId: ["1",],
+    statusId: ["16",],
   });
 
   submitted = false;

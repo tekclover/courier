@@ -51,7 +51,7 @@ export class ProvinceNewComponent {
     provinceName: [, Validators.required],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
-    statusId: ["1", Validators.required],
+    statusId: ["16", Validators.required],
     statusDescription: [],
     remark: [],
     referenceField1: [],

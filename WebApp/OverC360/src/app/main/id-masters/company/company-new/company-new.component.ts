@@ -58,7 +58,7 @@ export class CompanyNewComponent {
     languageDescription: [],
     provinceId: [],
     provinceName: [],
-    statusId: ['1',],
+    statusId: ["16", ],
     statusDescription: [],
     referenceField1: [],
     referenceField2: [],

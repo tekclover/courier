@@ -60,7 +60,7 @@ export class CurrencyNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    statusId: ["1",],
+    statusId: ["16",],
   });
 
   submitted = false;

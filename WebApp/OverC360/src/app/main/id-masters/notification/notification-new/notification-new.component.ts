@@ -75,7 +75,7 @@ export class NotificationNewComponent {
     createdBy: [],
     updatedBy: [],
     updatedOn: ['',],
-    statusId: ["1",],
+    statusId: ["16",],
   });
 
   submitted = false;

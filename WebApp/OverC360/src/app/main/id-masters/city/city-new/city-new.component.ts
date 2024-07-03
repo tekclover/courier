@@ -75,7 +75,7 @@ export class CityNewComponent {
     referenceField9: [],
     referenceField10: [],
     remark: [],
-    statusId: ["1",],
+    statusId: ["16",],
 
   });
 

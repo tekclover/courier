@@ -72,7 +72,7 @@ export class DistrictNewComponent {
     referenceField9: [],
     referenceField10: [],
     remark: [],
-    statusId: ["1",],
+    statusId: ["16",],
 
   });
 
