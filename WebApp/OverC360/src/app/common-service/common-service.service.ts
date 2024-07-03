@@ -39,77 +39,88 @@ export class CommonServiceService {
     );
   }
 
-    
+
   public commonerrorNew(msg: any) {
-    if(msg.status != 0){
-      this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: msg.error.error});
+    if (msg.status != 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: msg.error.error });
     }
-}
+  }
 
-day_callapiSearch(date: any) {
-  const del_date = this.datepipe.transform(date, 'yyyy-MM-ddT00:00:00.000');
-  return del_date;
-}
-datesearch(date: any): Date {
-  return new Date(date);
-}
+  day_callapiSearch(date: any) {
+    const del_date = this.datepipe.transform(date, 'yyyy-MM-ddT00:00:00.000');
+    return del_date;
+  }
+  datesearch(date: any): Date {
+    return new Date(date);
+  }
 
-dateExcel(date: any) {
-  const del_date = this.datepipe.transform(date, "dd-MM-yyyy HH:mm");
-  return del_date;
-}
+  dateExcel(date: any) {
+    const del_date = this.datepipe.transform(date, "dd-MM-yyyy HH:mm");
+    return del_date;
+  }
 
-public filterArray(targetArray: any[], filters: any) {
-  var filterKeys = Object.keys(filters);
-  let data = targetArray.filter(function (eachObj: any) {
-    return filterKeys.every(function (eachKey) {
-      if (!filters[eachKey])
-        return true;
-      if (!eachObj[eachKey])
-        return true;
-      if (eachObj[eachKey] === undefined)
-        return true;
-      const fo: string = String(filters[eachKey])?.toLowerCase();
-      const eo: string = String(eachObj[eachKey])?.toLowerCase();
-      if (fo == "")
-        return true;
+  public filterArray(targetArray: any[], filters: any) {
+    var filterKeys = Object.keys(filters);
+    let data = targetArray.filter(function (eachObj: any) {
+      return filterKeys.every(function (eachKey) {
+        if (!filters[eachKey])
+          return true;
+        if (!eachObj[eachKey])
+          return true;
+        if (eachObj[eachKey] === undefined)
+          return true;
+        const fo: string = String(filters[eachKey])?.toLowerCase();
+        const eo: string = String(eachObj[eachKey])?.toLowerCase();
+        if (fo == "")
+          return true;
 
-      const folist = fo.split(',');
+        const folist = fo.split(',');
 
-      return folist.includes(eo);
+        return folist.includes(eo);
+      });
     });
-  });
 
-  if (filters.createdOn_from &&
-    filters.createdOn_to) {
-    data = data.filter(x =>
-      this.datesearch(this.day_callapiSearch(new Date(x.createdOn.replace("+00:00", "")))) >= this.datesearch(this.day_callapiSearch(filters.createdOn_from))
-      && this.datesearch(this.day_callapiSearch(new Date(x.createdOn.replace("+00:00", "")))) <= this.datesearch(this.day_callapiSearch(filters.createdOn_to))
-    );
+    if (filters.createdOn_from &&
+      filters.createdOn_to) {
+      data = data.filter(x =>
+        this.datesearch(this.day_callapiSearch(new Date(x.createdOn.replace("+00:00", "")))) >= this.datesearch(this.day_callapiSearch(filters.createdOn_from))
+        && this.datesearch(this.day_callapiSearch(new Date(x.createdOn.replace("+00:00", "")))) <= this.datesearch(this.day_callapiSearch(filters.createdOn_to))
+      );
 
+    }
+    return data;
   }
-  return data;
-}
 
 
-removeDuplicatesFromArrayList(list: any = [], fieldName:any) {
-  let dataObj: any = {};
-  for (let i = 0; i < list.length; i++) {
-    dataObj[list[i][fieldName]] = list[i];
+  removeDuplicatesFromArrayList(list: any = [], fieldName: any) {
+    let dataObj: any = {};
+    for (let i = 0; i < list.length; i++) {
+      dataObj[list[i][fieldName]] = list[i];
+    }
+    list = new Array();
+    for (let key in dataObj) {
+      list.push(dataObj[key]);
+    }
+    return list;
   }
-  list = new Array();
-  for (let key in dataObj) {
-    list.push(dataObj[key]);
-  }
-  return list;
-}
 
-removeDuplicateObj(array1:any, array2:any){
-  const array1IDs = new Set(array1.map(({ subMenuId }:any) => subMenuId));
-  const combined = [
-    ...array1,
-    ...array2.filter(({ subMenuId }:any) => !array1IDs.has(subMenuId))
-  ];
-  return combined
-}
+  removeDuplicateObj(array1: any, array2: any) {
+    const array1IDs = new Set(array1.map(({ subMenuId }: any) => subMenuId));
+    const combined = [
+      ...array1,
+      ...array2.filter(({ subMenuId }: any) => !array1IDs.has(subMenuId))
+    ];
+    return combined
+  }
+
+  public findInvalidControls(form: any) {
+    const invalid: any[] = [];
+    const controls = form.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    return invalid;
+  }
 }
