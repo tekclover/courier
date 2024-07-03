@@ -130,7 +130,7 @@ export class BondedManifestComponent {
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.languageId).subscribe({
+    this.service.Delete([lines]).subscribe({
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
         this.spin.hide();

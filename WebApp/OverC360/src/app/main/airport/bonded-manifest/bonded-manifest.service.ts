@@ -23,7 +23,7 @@ export class BondedManifestService {
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/bondedManifest/' + obj);
+    return this.http.post<any>('/overc-midmile-service/bondedManifest/delete/list', obj);
   }
 
   search(obj: any) {

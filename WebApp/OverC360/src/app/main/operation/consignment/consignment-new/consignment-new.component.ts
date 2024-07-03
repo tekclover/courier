@@ -805,7 +805,8 @@ export class ConsignmentNewComponent {
       updatedOn: ['',],
       createdOn: ['',],
       createdBy: [,],
-      companyId: [this.auth.companyId,]
+      companyId: [this.auth.companyId,],
+      languageId: [this.auth.languageId,]
     });
 
     if (this.pageToken.pageflow != 'New') {

@@ -22,7 +22,7 @@ export class CcrService {
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/ccr/' + obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId);
+    return this.http.post<any>('/overc-midmile-service/ccr/delete/list', obj);
   }
 
   search(obj: any) {
