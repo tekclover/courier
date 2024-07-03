@@ -49,7 +49,7 @@ export class CcrComponent {
       { field: 'hsCode', header: 'HS Code' },
       { field: 'shipperName', header: 'shipper Name' },
       { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'statusId', header: 'Status' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
