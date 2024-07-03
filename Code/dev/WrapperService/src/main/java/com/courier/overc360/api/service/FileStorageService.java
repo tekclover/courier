@@ -396,6 +396,9 @@ public class FileStorageService {
 				destinationDetails.setLongitude(listUploadedData.get(154));
 				addConsignment.setDestinationDetails(destinationDetails);
 
+//				ReferenceImageList imageReference = new ReferenceImageList();
+//				imageReference.setReferenceImageUrl(listUploadedData.get(155));
+
 				consignmentMap.put(consignmentKey, addConsignment);
 				pieceMap.put(consignmentKey, pieceDetailsMap);
 			}

@@ -2,6 +2,7 @@ package com.courier.overc360.api.controller;
 
 import com.courier.overc360.api.model.transaction.*;
 import com.courier.overc360.api.service.MidMileService;
+import com.google.api.Http;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
@@ -442,5 +443,14 @@ public class MidMileController {
                                                           @RequestParam String authToken) {
         Console[] createConsole = midMileService.createConsoleConsignmentInput(addConsignment, loginUserID, authToken);
         return new ResponseEntity<>(createConsole, HttpStatus.OK);
+    }
+
+    //Console Transfer
+    @ApiOperation(response = Console[].class, value = "Console Transfer")
+    @PostMapping("/console/transfer")
+    public ResponseEntity<?>consoleTransfer(@Valid @RequestBody List<TransferConsole> transferConsole, @RequestParam String loginUserID,
+                                            @RequestParam String authToken) {
+        Console[] dbtransferConsole = midMileService.transferConsole(transferConsole, loginUserID, authToken);
+        return new ResponseEntity<>(dbtransferConsole, HttpStatus.OK);
     }
 }

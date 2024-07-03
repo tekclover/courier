@@ -51,10 +51,6 @@ public class CcrSpecification implements Specification<ReplicaCcr> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("ccrId");
             predicates.add(group.in(findCcrHeader.getCcrId()));
         }
-        if (findCcrHeader.getCustomsCcrNo() != null && !findCcrHeader.getCustomsCcrNo().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("customsCcrNo");
-            predicates.add(group.in(findCcrHeader.getCustomsCcrNo()));
-        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

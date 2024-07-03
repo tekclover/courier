@@ -24,7 +24,6 @@ public class UpdateCcr {
     @NotBlank(message = "Master Airway Bill is mandatory")
     private String masterAirwayBill;
 
-    @NotBlank(message = "Customs Ccr No is mandatory")
     private String customsCcrNo;
 
     @NotBlank(message = "CcrId is mandatory")

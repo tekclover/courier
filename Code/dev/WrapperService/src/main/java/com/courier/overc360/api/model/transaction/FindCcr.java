@@ -13,6 +13,5 @@ public class FindCcr {
     private List<String> masterAirwayBill;
     private List<String> houseAirwayBill;
     private List<String> ccrId;
-    private List<String> customsCcrNo;
     private List<String> consoleId;
 }

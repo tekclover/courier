@@ -19,6 +19,5 @@ public class ReplicaCcrCompositeKey implements Serializable {
     private String masterAirwayBill;
     private String houseAirwayBill;
     private String ccrId;
-    private String customsCcrNo;
 
 }
