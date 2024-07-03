@@ -30,7 +30,8 @@ export class ConsignorComponent {
     private path: PathNameService,
     private service: ConsignorService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 

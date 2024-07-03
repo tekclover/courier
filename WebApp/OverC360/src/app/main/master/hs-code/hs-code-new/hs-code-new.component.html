@@ -47,12 +47,16 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Special Approval</p>
-                                <p-dropdown [options]="specialApprovalIdList" placeholder="Select" filter="true" formControlName="specialApprovalId"
-                                    appendTo="body"
+                                <p-dropdown [options]="specialApprovalIdList" placeholder="Select" filter="true"
+                                    formControlName="specialApprovalId" appendTo="body"
                                     [ngClass]="form.get('specialApprovalId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             </div>
-                            
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select" filter="true" />
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Remark</p>
                                 <input maxlength="2000" formControlName="remark" class=" w-100" pInputText

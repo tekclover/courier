@@ -199,8 +199,108 @@ export class ConsignmentNewComponent {
   })
 
   piece = this.fb.group({
-    pieceDetails: this.fb.array([]) // Initialize an empty FormArray
+    pieceDetails: this.fb.array([
+      this.initPieceDetail()
+    ]) 
   });
+
+  initPieceDetail() {
+    return this.fb.group({
+      codAmount: [''],
+      declaredValue: [''],
+      description: [''],
+      dimensionUnit: [''],
+      height: [''],
+      itemDetails: this.fb.array([
+        this.initItemDetail()
+      ]),
+      length: [''],
+      packReferenceNumber: [''],
+      partnerType: [''],
+      pieceId: [''],
+      referenceField1: [''],
+      referenceField10: [''],
+      referenceField11: [''],
+      referenceField12: [''],
+      referenceField13: [''],
+      referenceField14: [''],
+      referenceField15: [''],
+      referenceField16: [''],
+      referenceField17: [''],
+      referenceField18: [''],
+      referenceField19: [''],
+      referenceField2: [''],
+      referenceField20: [''],
+      referenceField3: [''],
+      referenceField4: [''],
+      referenceField5: [''],
+      referenceField6: [''],
+      referenceField7: [''],
+      referenceField8: [''],
+      referenceField9: [''],
+      referenceImageList: this.fb.array([
+        this.fb.group({
+          imageRefId: [''],
+          pdfUrl: [''],
+          referenceImageUrl: ['']
+        })
+      ]),
+      volume: [''],
+      volumeUnit: [''],
+      weight: [''],
+      weightUnit: [''],
+      width: ['']
+    });
+  }
+
+  initItemDetail() {
+    return this.fb.group({
+      codAmount: [''],
+      declaredValue: [''],
+      description: [''],
+      dimensionUnit: [''],
+      height: [''],
+      hsCode: [''],
+      imageRefId: [''],
+      itemCode: [''],
+      length: [''],
+      partnerName: [''],
+      partnerType: [''],
+      pieceItemId: [''],
+      referenceField1: [''],
+      referenceField10: [''],
+      referenceField11: [''],
+      referenceField12: [''],
+      referenceField13: [''],
+      referenceField14: [''],
+      referenceField15: [''],
+      referenceField16: [''],
+      referenceField17: [''],
+      referenceField18: [''],
+      referenceField19: [''],
+      referenceField2: [''],
+      referenceField20: [''],
+      referenceField3: [''],
+      referenceField4: [''],
+      referenceField5: [''],
+      referenceField6: [''],
+      referenceField7: [''],
+      referenceField8: [''],
+      referenceField9: [''],
+      referenceImageList: this.fb.array([
+        this.fb.group({
+          imageRefId: [''],
+          pdfUrl: [''],
+          referenceImageUrl: ['']
+        })
+      ]),
+      volume: [''],
+      volumeUnit: [''],
+      weight: [''],
+      weightUnit: [''],
+      width: ['']
+    });
+  }
 
   form = this.fb.group({
     updatedBy: [,],
@@ -333,10 +433,10 @@ export class ConsignmentNewComponent {
     this.disabledBilling = false;
 
     this.shipmentInfo.patchValue(line),
-      this.consignment.patchValue(line),
-      this.senderInfo.patchValue(line),
-      this.deliveryInfo.patchValue(line),
-      this.billing.patchValue(line),
+    this.consignment.patchValue(line),
+    this.senderInfo.patchValue(line),
+    this.deliveryInfo.patchValue(line),
+    this.billing.patchValue(line),
 
 
       line.pieceDetails.forEach((res: any) => {
@@ -613,37 +713,37 @@ export class ConsignmentNewComponent {
       companyId: [this.auth.companyId,]
     });
 
-   if(this.pageToken.pageflow != 'New'){
-    this.service.Update([this.mainForm.getRawValue()]).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          key: 'br',
-          detail: res[0].consignmentId + ' has been updated successfully',
-        });
-        this.router.navigate(['/main/operation/consignment']);
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-   }else{
-    this.service.Create([this.mainForm.getRawValue()]).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          key: 'br',
-          detail: res[0].consignmentId + ' has been created successfully',
-        });
-        this.router.navigate(['/main/operation/consignment']);
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-   }
+    if (this.pageToken.pageflow != 'New') {
+      this.service.Update([this.mainForm.getRawValue()]).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            key: 'br',
+            detail: res[0].consignmentId + ' has been updated successfully',
+          });
+          this.router.navigate(['/main/operation/consignment']);
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    } else {
+      this.service.Create([this.mainForm.getRawValue()]).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            key: 'br',
+            detail: res[0].consignmentId + ' has been created successfully',
+          });
+          this.router.navigate(['/main/operation/consignment']);
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
   }
 }
 

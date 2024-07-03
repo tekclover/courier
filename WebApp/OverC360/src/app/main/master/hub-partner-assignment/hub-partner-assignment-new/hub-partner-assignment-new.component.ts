@@ -28,6 +28,10 @@ export class HubPartnerAssignmentNewComponent {
     private messageService: MessageService, 
     private auth: AuthService, 
     private cas: CommonAPIService) {
+      this.status = [
+        { value: '17', label: 'Inactive' },
+        { value: '16', label: 'Active' }
+      ];
   }
 
   pageToken: any;
@@ -39,11 +43,12 @@ export class HubPartnerAssignmentNewComponent {
     partnerName: [, Validators.required],
     hubCode: [, Validators.required],
     hubName: [],
-    // hubCategory: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
     companyName: [],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
     referenceField1: [],
     referenceField2: [],
