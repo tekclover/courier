@@ -182,14 +182,13 @@ export class PreAlertManifestComponent {
   }
 
   createConsole(){
-    console.log(2)
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
       return;
     }
     this.spin.show();
-    this.console.Create(this.selectedPreAlertManifest[0]).subscribe({next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+    this.console.Create(this.selectedPreAlertManifest).subscribe({next: (res) =>{
+      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
       this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();
@@ -202,8 +201,8 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.manifest.Create(this.selectedPreAlertManifest[0]).subscribe({next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+    this.manifest.Create(this.selectedPreAlertManifest).subscribe({next: (res) =>{
+      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
       this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();
