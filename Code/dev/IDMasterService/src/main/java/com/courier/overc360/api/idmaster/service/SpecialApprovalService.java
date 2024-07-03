@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.specialapproval.AddSpecialApproval;
 import com.courier.overc360.api.idmaster.primary.model.specialapproval.SpecialApproval;
@@ -15,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.specialapproval.FindSpeci
 import com.courier.overc360.api.idmaster.replica.model.specialapproval.ReplicaSpecialApproval;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaSpecialApprovalRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaSpecialApprovalSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class SpecialApprovalService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaCompanyRepository replicaCompanyRepository;
@@ -94,40 +97,43 @@ public class SpecialApprovalService {
     public SpecialApproval createSpecialApproval(AddSpecialApproval addSpecialApproval, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
+                    addSpecialApproval.getCompanyId(), addSpecialApproval.getLanguageId(), 0L);
+            if (!dbCompanyPresent) {
+                throw new BadRequestException("CompanyId: " + addSpecialApproval.getCompanyId() + " and languageId" + addSpecialApproval.getLanguageId() + "  doesn't exists");
+            }
+
             Optional<SpecialApproval> duplicateSpecialApproval = specialApprovalRepository.findByCompanyIdAndLanguageIdAndSpecialApprovalIdAndDeletionIndicator(
                     addSpecialApproval.getCompanyId(), addSpecialApproval.getLanguageId(), addSpecialApproval.getSpecialApprovalId(), 0L);
-
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
-                    addSpecialApproval.getCompanyId(), addSpecialApproval.getLanguageId(), 0L);
-
-            if (dbCompany.isEmpty()) {
-                throw new BadRequestException("CompanyId: " + addSpecialApproval.getCompanyId() + " and languageId" + addSpecialApproval.getLanguageId() + "  doesn't exists");
-            } else if (duplicateSpecialApproval.isPresent()) {
+            if (duplicateSpecialApproval.isPresent()) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : specialApprovalId - " + addSpecialApproval.getSpecialApprovalId());
-            } else {
-                log.info("new SpecialApproval --> " + addSpecialApproval);
-                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSpecialApproval.getLanguageId(), addSpecialApproval.getCompanyId());
-                SpecialApproval dbSpecialApproval = new SpecialApproval();
-                BeanUtils.copyProperties(addSpecialApproval, dbSpecialApproval, CommonUtils.getNullPropertyNames(addSpecialApproval));
-                if ((addSpecialApproval.getSpecialApprovalId() != null &&
-                        (addSpecialApproval.getReferenceField10() != null && addSpecialApproval.getReferenceField10().equalsIgnoreCase("true"))) ||
-                        addSpecialApproval.getSpecialApprovalId() == null || addSpecialApproval.getSpecialApprovalId().isBlank()) {
-                    String NUM_RAN_OBJ = "SPECIALAPPROVAL";
-                    String SPECIAL_APPROVAL_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for SPECIAL_APPROVAL_ID : " + SPECIAL_APPROVAL_ID);
-                    dbSpecialApproval.setSpecialApprovalId(SPECIAL_APPROVAL_ID);
-                }
-                if (iKeyValuePair != null) {
-                    dbSpecialApproval.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    dbSpecialApproval.setCompanyName(iKeyValuePair.getCompanyDesc());
-                }
-                dbSpecialApproval.setDeletionIndicator(0L);
-                dbSpecialApproval.setCreatedBy(loginUserID);
-                dbSpecialApproval.setUpdatedBy(loginUserID);
-                dbSpecialApproval.setCreatedOn(new Date());
-                dbSpecialApproval.setUpdatedOn(new Date());
-                return specialApprovalRepository.save(dbSpecialApproval);
             }
+            log.info("new SpecialApproval --> {}", addSpecialApproval);
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSpecialApproval.getLanguageId(), addSpecialApproval.getCompanyId());
+            SpecialApproval newSpecialApproval = new SpecialApproval();
+            BeanUtils.copyProperties(addSpecialApproval, newSpecialApproval, CommonUtils.getNullPropertyNames(addSpecialApproval));
+            if ((addSpecialApproval.getSpecialApprovalId() != null &&
+                    (addSpecialApproval.getReferenceField10() != null && addSpecialApproval.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addSpecialApproval.getSpecialApprovalId() == null || addSpecialApproval.getSpecialApprovalId().isBlank()) {
+                String NUM_RAN_OBJ = "SPECIALAPPROVAL";
+                String SPECIAL_APPROVAL_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for SPECIAL_APPROVAL_ID : " + SPECIAL_APPROVAL_ID);
+                newSpecialApproval.setSpecialApprovalId(SPECIAL_APPROVAL_ID);
+            }
+            if (iKeyValuePair != null) {
+                newSpecialApproval.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newSpecialApproval.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addSpecialApproval.getStatusId());
+            if (statusDesc != null) {
+                newSpecialApproval.setStatusDescription(statusDesc);
+            }
+            newSpecialApproval.setDeletionIndicator(0L);
+            newSpecialApproval.setCreatedBy(loginUserID);
+            newSpecialApproval.setUpdatedBy(loginUserID);
+            newSpecialApproval.setCreatedOn(new Date());
+            newSpecialApproval.setUpdatedOn(new Date());
+            return specialApprovalRepository.save(newSpecialApproval);
         } catch (Exception e) {
             // Error Log
             createSpecialApprovalLog2(addSpecialApproval, e.toString());
@@ -157,6 +163,12 @@ public class SpecialApprovalService {
         try {
             SpecialApproval dbSpecialApproval = getSpecialApproval(companyId, languageId, specialApprovalId);
             BeanUtils.copyProperties(updateSpecialApproval, dbSpecialApproval, CommonUtils.getNullPropertyNames(updateSpecialApproval));
+            if (updateSpecialApproval.getStatusId() != null && !updateSpecialApproval.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateSpecialApproval.getStatusId());
+                if (statusDesc != null) {
+                    dbSpecialApproval.setStatusDescription(statusDesc);
+                }
+            }
             dbSpecialApproval.setUpdatedBy(loginUserID);
             dbSpecialApproval.setUpdatedOn(new Date());
             return specialApprovalRepository.save(dbSpecialApproval);

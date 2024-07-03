@@ -2,9 +2,6 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 @Data
 public class AddMenu {
 
@@ -16,15 +13,17 @@ public class AddMenu {
 
     private Long subMenuId;
 
-    private Long authorizationObjectId;
-
-    private String authorizationObjectValue;
-
+    //    private Long authorizationObjectId;
+//
+//    private String authorizationObjectValue;
+//
     private String menuName;
 
     private String subMenuName;
 
-    private String authorizationObject;
+//    private String authorizationObject;
+
+    private String statusId;
 
     private String referenceField1;
 

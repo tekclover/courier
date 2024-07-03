@@ -67,6 +67,12 @@ public class ReplicaMenu {
     @Column(name = "COMP_ID_DESC", columnDefinition = "nvarchar(500)")
     private String companyIdAndDescription;
 
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator;
 

@@ -19,6 +19,9 @@ public class AddUserType {
 
     private String userTypeDescription;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private Long deletionIndicator;
 
     private String referenceField1;

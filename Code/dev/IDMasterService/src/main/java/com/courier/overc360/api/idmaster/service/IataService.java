@@ -14,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.iata.ReplicaIata;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCurrencyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaIataRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaIataSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class IataService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaCurrencyRepository replicaCurrencyRepository;
@@ -73,7 +77,7 @@ public class IataService {
                 languageId, companyId, origin, originCode, 0L);
         if (dbIata.isEmpty()) {
             String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId
-                    + ", origin - " + origin + ", originCode -" + originCode + " doesn't exists";
+                    + ", origin - " + origin + " and originCode - " + originCode + " doesn't exists";
             createIataLog1(companyId, languageId, origin, originCode, errMsg);
             throw new BadRequestException(errMsg);
         }
@@ -122,6 +126,10 @@ public class IataService {
                 newIata.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newIata.setCompanyName(iKeyValuePair.getCompanyDesc());
             }
+            String statusDesc = replicaStatusRepository.getStatusDescription(newIata.getStatusId());
+            if (statusDesc != null) {
+                newIata.setStatusDescription(statusDesc);
+            }
             String currencyDesc = null;
             if (addIata.getCurrencyId() != null) {
                 currencyDesc = replicaCurrencyRepository.getCurrencyDesc(addIata.getCurrencyId());
@@ -164,6 +172,12 @@ public class IataService {
         try {
             Iata dbIata = getIata(companyId, languageId, origin, originCode);
             BeanUtils.copyProperties(updateIata, dbIata, CommonUtils.getNullPropertyNames(updateIata));
+            if (updateIata.getStatusId() != null && !updateIata.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateIata.getStatusId());
+                if (statusDesc != null) {
+                    dbIata.setStatusDescription(statusDesc);
+                }
+            }
             dbIata.setUpdatedBy(loginUserID);
             dbIata.setUpdatedOn(new Date());
             return iataRepository.save(dbIata);

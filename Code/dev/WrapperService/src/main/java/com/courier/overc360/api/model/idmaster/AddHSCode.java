@@ -21,6 +21,8 @@ public class AddHSCode {
 
     private String itemGroup;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

@@ -21,6 +21,8 @@ public class AddRoleAccess {
 
 	private String authorizationObjectValue;
 
+	private String statusId;
+
 	private String userRoleName;
 
 	private String description;

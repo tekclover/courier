@@ -6,7 +6,6 @@ import com.courier.overc360.api.idmaster.primary.model.citymapping.CityMapping;
 import com.courier.overc360.api.idmaster.primary.model.citymapping.UpdateCityMapping;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.repository.CityMappingRepository;
-import com.courier.overc360.api.idmaster.primary.repository.CityRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;

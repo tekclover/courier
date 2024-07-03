@@ -30,6 +30,10 @@ public class CountryMapping {
 
     private String partnerCountryName;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
 
     private Long deletionIndicator;
