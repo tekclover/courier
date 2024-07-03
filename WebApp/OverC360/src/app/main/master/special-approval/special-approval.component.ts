@@ -47,11 +47,12 @@ export class SpecialApprovalComponent {
 
   callTableHeader() {
     this.cols = [
-      
+
       { field: 'specialApprovalId', header: 'Special Approval ID' },
       { field: 'specialApprovalText', header: 'Special Approval Name' },
       { field: 'companyName', header: 'Company' },
       { field: 'remark', header: 'Remarks' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -59,6 +60,7 @@ export class SpecialApprovalComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
