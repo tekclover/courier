@@ -1066,7 +1066,7 @@
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceUrl">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice URL </p>
-                            <input maxlength="50" formControlName="invoiceUrl"
+                            <input maxlength="500" formControlName="invoiceUrl"
                                 [ngClass]="senderInfo.get('invoiceUrl')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('invoiceUrl')"
