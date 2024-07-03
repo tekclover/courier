@@ -38,9 +38,9 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">City</p>
-                                <p-dropdown [options]="cityIdList" placeholder="Select" filter="true" formControlName="cityId"
-                                    appendTo="body" [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" filter="true"
-                                    [panelStyle]="{'width':'100%'}"
+                                <p-dropdown [options]="cityIdList" placeholder="Select" filter="true"
+                                    formControlName="cityId" appendTo="body" [style]="{'width': '100%'}"
+                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
                                     [ngClass]="form.get('cityId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('cityId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
@@ -84,8 +84,16 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Partner City</p>
-                                <input maxlength="100" pInputText pKeyFilter="alphanum" formControlName="partnerCityName" class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('partnerCityName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <input maxlength="100" pInputText pKeyFilter="alphanum"
+                                    formControlName="partnerCityName" class="w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('partnerCityName')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select" filter="true" />
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12">

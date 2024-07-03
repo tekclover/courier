@@ -51,12 +51,12 @@ export class ModuleComponent {
       { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'statusId', header: 'Status ID' },
-      { field: 'statusDescription', header: 'Status' },
       { field: 'languageId', header: 'Language ID' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'menuId', header: 'Menu ID' },
