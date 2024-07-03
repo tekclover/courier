@@ -165,7 +165,7 @@ public class BondedManifestService {
                     BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
                     String STATUS_ID = "2 - Bonded Manifest Created";
 
-                    String NUM_RAN_OBJ = "BONDED_ID";
+                    String NUM_RAN_OBJ = "BONDEDID";
                     String BONDED_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                     log.info("next Value from NumberRange for BONDED_ID : " + BONDED_ID);
                     newBondedManifest.setBondedId(BONDED_ID);

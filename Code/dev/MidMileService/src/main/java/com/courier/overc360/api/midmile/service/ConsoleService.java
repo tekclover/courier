@@ -495,7 +495,9 @@ public class ConsoleService {
                                 }
                             }
 
-                            newConsole.setIataKd(iataData.getCurrencyValue());
+                            if(iataData != null) {
+                                newConsole.setIataKd(iataData.getCurrencyValue());
+                            }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setCustomsValue(CUS_VAL);
                             newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
@@ -556,7 +558,7 @@ public class ConsoleService {
                 // Process each subgroup
                 for (List<AddConsole> subGroup : subGroups) {
                     // Generate a new CONSOLE_ID for each subgroup
-                    String NUM_RAN_OBJ = "CONSOLE_ID";
+                    String NUM_RAN_OBJ = "CONSOLEID";
                     String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 
                     for (AddConsole console : subGroup) {
@@ -611,7 +613,9 @@ public class ConsoleService {
                             }
                         }
 
-                        newConsole.setIataKd(iataData.getCurrencyValue());
+                        if(iataData != null) {
+                            newConsole.setIataKd(iataData.getCurrencyValue());
+                        }
                         newConsole.setExpectedDuty(String.valueOf(totalDuty));
                         newConsole.setCustomsValue(CUS_VAL);
                         newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());

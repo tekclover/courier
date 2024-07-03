@@ -140,7 +140,7 @@ public class CcrService {
 
 
                 String STATUS_ID = "2 - Ccr Created";
-                String NUM_RAN_OBJ = "CCR_ID";
+                String NUM_RAN_OBJ = "CCRID";
                 String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                 log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
                 newCcr.setCcrId(CCR_ID);
