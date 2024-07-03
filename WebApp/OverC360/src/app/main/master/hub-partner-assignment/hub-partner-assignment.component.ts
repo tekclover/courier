@@ -22,8 +22,16 @@ export class HubPartnerAssignmentComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: HubPartnerAssignmentService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: HubPartnerAssignmentService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -44,6 +52,7 @@ export class HubPartnerAssignmentComponent {
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'hubName', header: 'Hub Name' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -54,6 +63,7 @@ export class HubPartnerAssignmentComponent {
       { field: 'companyId', header: 'Company ID' },
       { field: 'hubCode', header: 'Hub Code' },
       { field: 'hubCategory', header: 'Hub Category' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -70,7 +80,7 @@ export class HubPartnerAssignmentComponent {
 
     ];
   }
-  
+
   initialCall() {
     this.spin.show();
     let obj: any = {};
@@ -100,7 +110,7 @@ export class HubPartnerAssignmentComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -141,11 +151,11 @@ export class HubPartnerAssignmentComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res: any) =>{
+      next: (res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.partnerId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err: any) => {
+      }, error: (err: any) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -155,19 +165,19 @@ export class HubPartnerAssignmentComponent {
   downloadExcel() {
     const exportData = this.hubPartnerAssignmentTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Hub Partner Assignment');
+    this.cs.exportAsExcel(exportData, 'Hub Partner Assignment');
   }
 }

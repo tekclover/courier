@@ -16,14 +16,25 @@ import { CountryMappingService } from '../country-mapping.service';
 })
 export class CountryMappingNewComponent {
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CountryMappingService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-    
-     }
-       
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: CountryMappingService,
+    private messageService: MessageService,
+    private auth: AuthService,
+    private cas: CommonAPIService,) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
+
   pageToken: any;
 
   //form builder initialize
@@ -39,8 +50,10 @@ export class CountryMappingNewComponent {
     companyName: [],
     partnerCountryId: [],
     partnerCountryName: [],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -50,11 +63,11 @@ export class CountryMappingNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-  
+    updatedOn: ['',],
+
   });
 
   submitted = false;
@@ -79,7 +92,7 @@ export class CountryMappingNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -96,28 +109,29 @@ export class CountryMappingNewComponent {
     }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   countryIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -150,11 +164,11 @@ export class CountryMappingNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
-          this.router.navigate(['/main/master/countryMapping']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+            this.router.navigate(['/main/master/countryMapping']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

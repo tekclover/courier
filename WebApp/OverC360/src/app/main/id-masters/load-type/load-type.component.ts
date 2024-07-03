@@ -18,15 +18,21 @@ import { LoadTypeService } from './load-type.service';
 })
 export class LoadTypeComponent {
 
-  
   loadTypeTable: any[] = [];
   selectedLoadType: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router,
-     private path: PathNameService, private service: LoadTypeService,
-     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: LoadTypeService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -70,7 +76,7 @@ export class LoadTypeComponent {
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
-  
+
   initialCall() {
     this.spin.show();
     let obj: any = {};
@@ -89,87 +95,87 @@ export class LoadTypeComponent {
   }
 
 
-onChange() {
-  const choosen = this.selectedLoadType[this.selectedLoadType.length - 1];
-  this.selectedLoadType.length = 0;
-  this.selectedLoadType.push(choosen);
-}
-
-customTable() {
-  const dialogRef = this.dialog.open(CustomTableComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '80%',
-    position: { top: '6.5%', left: '30%' },
-    data: { target: this.cols, source: this.target,},
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedLoadType[0]);
-    }
-  });
-}
-
-openCrud(type: any = 'New', linedata: any = null): void {
-  if (this.selectedLoadType.length === 0 && type != 'New') {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-  } else {
-    let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedLoadType[0] : linedata, pageflow: type });
-    this.router.navigate(['/main/idMaster/loadType-new/' + paramdata]);
+  onChange() {
+    const choosen = this.selectedLoadType[this.selectedLoadType.length - 1];
+    this.selectedLoadType.length = 0;
+    this.selectedLoadType.push(choosen);
   }
-}
 
-deleteDialog() {
-  if (this.selectedLoadType.length === 0) {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-    return;
-  }
-  const dialogRef = this.dialog.open(DeleteComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '82%',
-    position: { top: '6.5%', left: '30%' },
-    data: { line: this.selectedLoadType, module: 'Load Type', body: 'This action cannot be undone. All values associated with this field will be lost.' },
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedLoadType[0]);
-    }
-  });
-}
-deleterecord(lines: any) {
-  this.spin.show();
-  this.service.Delete(lines.loadTypeId).subscribe({
-    next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.loadTypeId + ' deleted successfully' });
-      this.spin.hide();
-      this.initialCall();
-    },error: (err) => {
-      this.cs.commonerrorNew(err);
-      this.spin.hide();
-    }
-  })
-}
-
-downloadExcel() {
-  const exportData = this.loadTypeTable.map(item => {
-    const exportItem: any = {};
-   this.cols.forEach(col => {
-    if(col.format == 'date'){
-      exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-    }else{
-      exportItem[col.field] = item[col.field];
-    }
-     
+  customTable() {
+    const dialogRef = this.dialog.open(CustomTableComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { target: this.cols, source: this.target, },
     });
-    return exportItem;
-  });
 
-  // Call ExcelService to export data to Excel
- this.cs.exportAsExcel(exportData, 'Load Type');
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedLoadType[0]);
+      }
+    });
+  }
+
+  openCrud(type: any = 'New', linedata: any = null): void {
+    if (this.selectedLoadType.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedLoadType[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/idMaster/loadType-new/' + paramdata]);
+    }
+  }
+
+  deleteDialog() {
+    if (this.selectedLoadType.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: this.selectedLoadType, module: 'Load Type', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedLoadType[0]);
+      }
+    });
+  }
+  deleterecord(lines: any) {
+    this.spin.show();
+    this.service.Delete(lines.loadTypeId).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.loadTypeId + ' deleted successfully' });
+        this.spin.hide();
+        this.initialCall();
+      }, error: (err) => {
+        this.cs.commonerrorNew(err);
+        this.spin.hide();
+      }
+    })
+  }
+
+  downloadExcel() {
+    const exportData = this.loadTypeTable.map(item => {
+      const exportItem: any = {};
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
+      });
+      return exportItem;
+    });
+
+    // Call ExcelService to export data to Excel
+    this.cs.exportAsExcel(exportData, 'Load Type');
+  }
 }
 
 

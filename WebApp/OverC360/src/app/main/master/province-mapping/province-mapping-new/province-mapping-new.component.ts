@@ -16,36 +16,44 @@ import { ProvinceMappingService } from '../province-mapping.service';
 })
 export class ProvinceMappingNewComponent {
 
-  
-  
-  
   active: number | undefined = 0;
-  status:any[] = []
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: ProvinceMappingService, private messageService: MessageService,private cas: CommonAPIService,
-    private auth: AuthService) { }
+  status: any[] = []
+
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: ProvinceMappingService,
+    private messageService: MessageService,
+    private cas: CommonAPIService,
+    private auth: AuthService) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
 
   pageToken: any;
 
   //form builder initialize
   form = this.fb.group({
-    provinceId:[, Validators.required],
-    provinceName:[],
+    provinceId: [, Validators.required],
+    provinceName: [],
     partnerProvinceId: [],
     partnerProvinceName: [],
-    partnerId:[, Validators.required],
+    partnerId: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
-    languageDescription:[],
-    companyId:[this.auth.companyId, Validators.required],
-    companyName:[],
-    partnerType:[, Validators.required],
-    partnerName:[, Validators.required],
-    createdOn: ['', ],
-    createdBy: [],
-    updatedBy: [],
-    updatedOn: ['', ],
-    referenceField1: [], 
+    languageDescription: [],
+    companyId: [this.auth.companyId, Validators.required],
+    companyName: [],
+    partnerType: [, Validators.required],
+    partnerName: [, Validators.required],
+    statusId: ["16",],
+    statusDescription: [],
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -55,9 +63,12 @@ export class ProvinceMappingNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    remark:[],
-   
-   
+    remark: [],
+    createdOn: ['',],
+    createdBy: [],
+    updatedBy: [],
+    updatedOn: ['',],
+
   });
 
   submitted = false;
@@ -82,7 +93,7 @@ export class ProvinceMappingNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -103,10 +114,10 @@ export class ProvinceMappingNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  provinceIdList: any[] =[];
+  provinceIdList: any[] = [];
 
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
@@ -114,17 +125,18 @@ export class ProvinceMappingNewComponent {
       this.cas.dropdownlist.setup.province.url,
 
 
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.provinceIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.province.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.province.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
   fill(line: any) {
@@ -156,11 +168,11 @@ export class ProvinceMappingNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + 'has been created successfully' });
-          this.router.navigate(['/main/master/provinceMapping']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + 'has been created successfully' });
+            this.router.navigate(['/main/master/provinceMapping']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

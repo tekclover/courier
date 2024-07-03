@@ -38,7 +38,7 @@ export class NumberrangeComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'Number Range - List'];
+    const dataToSend = ['Master', 'Number Series - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -131,7 +131,7 @@ export class NumberrangeComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedNumberRange, module: 'Number Range', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedNumberRange, module: 'Number Series', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -169,7 +169,7 @@ export class NumberrangeComponent {
     });
 
     // Excel service
-    this.cs.exportAsExcel(exportData, 'OpStatus');
+    this.cs.exportAsExcel(exportData, 'Number Series');
   }
 
 }
