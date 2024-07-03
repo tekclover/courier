@@ -182,6 +182,7 @@ export class PreAlertManifestComponent {
   }
 
   createConsole(){
+    console.log(2)
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
       return;
