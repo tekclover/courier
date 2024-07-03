@@ -51,9 +51,11 @@ export class PreAlertNewComponent {
   form = this.fb.group({
     companyId: [this.auth.companyId, Validators.required],
     partnerHouseAirwayBill: [],
+    partnerMasterAirwayBill: [],
     originDetails: this.OriginDetails,
     destinationDetails: this.DestinationDetails,
     goodsDescription: [],
+    description: [],
     weight: [,],
     consignmentValue: [],
     consignmentCurrency: [],
@@ -110,16 +112,23 @@ export class PreAlertNewComponent {
 
   companyIdList: any[] = [];
   countryIdList: any[] =[];
+  consignorIdList: any[] =[];
+  hsCodeList: any[] = [];
 
   dropdownlist(){
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.hsCode.url,
+
 
     ]).subscribe({next: (results: any) => {
       this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
+      this.consignorIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.consignor.key);
+      this.hsCodeList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.hsCode.key);
 
       this.spin.hide();
     },

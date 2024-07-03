@@ -29,18 +29,25 @@
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12"  id="partnerId">
-                                <p class="formControlLabel f600 textBlack mb-0 required ">Partner </p>
-                                <input maxlength="100" pInputText formControlName="partnerId" class=" w-100" pInputText
-                                placeholder="Enter"
-                                [ngClass]="form.get('partnerId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                            <div class="col-6 marginFieldNew borderRadius12" id="partnerId">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner ID</p>
+                                <p-dropdown [options]="consignorIdList" placeholder="Select" filter="true"
+                                    formControlName="partnerId" appendTo="body"
+                                    [ngClass]="form.get('partnerId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('partnerId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-
-
+                            <div class="col-6 marginFieldNew borderRadius12"  id="partnerMasterAirwayBill">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner MAWB</p>
+                                <input maxlength="100" pInputText pKeyFilter="num" formControlName="partnerMasterAirwayBill" class=" w-100" pInputText
+                                placeholder="Enter"
+                                [ngClass]="form.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('partnerMasterAirwayBill')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12"  id="partnerHouseAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required ">AWB Number</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner HAWB</p>
                                 <input maxlength="100" pInputText pKeyFilter="num" formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
@@ -56,8 +63,6 @@
                                 <mat-error *ngIf="errorHandling('name')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-
-                            
                             <div class="col-6 marginFieldNew borderRadius12" id="name" formGroupName="destinationDetails">
                                 <p class="formControlLabel f600 textBlack mb-0 required ">Receiver</p>
                                 <input maxlength="100" pInputText formControlName="name" class=" w-100" pInputText
@@ -83,9 +88,18 @@
                                 <mat-error *ngIf="errorHandling('country')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12" id="commodity">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Commodity</p>
+                                <input maxlength="100" pInputText formControlName="description" class=" w-100" pInputText
+                                placeholder="Enter"
+                                [ngClass]="form.get('description')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('description')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
                             
                             <div class="col-6 marginFieldNew borderRadius12" id="goodsDescription">
-                                <p class="formControlLabel f600 textBlack mb-0 ">GoodsDescription</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Goods Description</p>
                                 <input maxlength="100" pInputText formControlName="goodsDescription" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('goodsDescription')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
@@ -112,10 +126,11 @@
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12" id="hsCode">
-                                <p class="formControlLabel f600 textBlack mb-0 ">HS Code</p>
-                                <input maxlength="100" pInputText formControlName="hsCode" class=" w-100" pInputText
-                                placeholder="Enter"
-                                [ngClass]="form.get('hsCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <p class="formControlLabel f600 textBlack mb-0">HS Code</p>
+                                <p-dropdown [options]="hsCodeList" placeholder="Select" filter="true"
+                                    formControlName="hsCode" appendTo="body"
+                                    [ngClass]="form.get('hsCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('hsCode')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
