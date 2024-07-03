@@ -23,26 +23,20 @@
                         <div class="row scrollNew">
                             <div class="col-6 marginFieldNew borderRadius12" id="masterAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Master Airway Bill Number</p>
-                                <input formControlName="masterAirwayBill" [ngClass]="
-                                    form.get('masterAirwayBill')?.invalid &&
-                                    form.get('masterAirwayBill')?.dirty
-                                      ? 'invalid'
-                                      : ''
-                                  " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
-                                <mat-error *ngIf="errorHandling('masterAirwayBill')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="mawbList" placeholder="Select" filter="true" formControlName="masterAirwayBill" appendTo="body"
+                                [ngClass]="form.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                  [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="mawbChanged()"/>
+                                <mat-error *ngIf="errorHandling('masterAirwayBill')" class="text-danger"><small>{{
+                                    getErrorMessage()}}</small></mat-error>
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12" id="houseAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0 required">House Airway Bill Number</p>
-                                <input formControlName="houseAirwayBill" [ngClass]="
-                                form.get('houseAirwayBill')?.invalid &&
-                                form.get('houseAirwayBill')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
-                                <mat-error *ngIf="errorHandling('houseAirwayBill')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="hawbList" placeholder="Select" filter="true" formControlName="houseAirwayBill" appendTo="body"
+                                [ngClass]="form.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                  [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="hawbChanged()"/>
+                                <mat-error *ngIf="errorHandling('houseAirwayBill')" class="text-danger"><small>{{
+                                    getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeName">
                                 <p class="formControlLabel f600 textBlack mb-0">
