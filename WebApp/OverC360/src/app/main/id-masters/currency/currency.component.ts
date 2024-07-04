@@ -41,7 +41,7 @@ export class CurrencyComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Currency '];
+    const dataToSend = ['Setup', 'Currency'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
