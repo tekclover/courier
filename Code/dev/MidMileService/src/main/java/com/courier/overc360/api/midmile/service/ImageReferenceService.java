@@ -133,9 +133,21 @@ public class ImageReferenceService {
     }
 
     /**
-     * Create ImageReference
      *
-     * @param addImageReference
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param partnerName
+     * @param houseAirwayBill
+     * @param masterAirwayBillNo
+     * @param partnerHouseAirwayBill
+     * @param partnerMasterAirwayBill
+     * @param consignmentId
+     * @param pieceId
+     * @param pieceItemId
+     * @param url
+     * @param tableName
+     * @param downloadUrl
      * @param loginUserID
      * @return
      * @throws IllegalAccessException
@@ -171,8 +183,8 @@ public class ImageReferenceService {
             newImageReference.setDeletionIndicator(0L);
             newImageReference.setCreatedBy(loginUserID);
             newImageReference.setCreatedOn(new Date());
-            newImageReference.setUpdatedBy(loginUserID);
-            newImageReference.setUpdatedOn(new Date());
+            newImageReference.setUpdatedBy(null);
+            newImageReference.setUpdatedOn(null);
             return imageReferenceRepository.save(newImageReference);
         } catch (Exception e) {
 //            createImageReferenceLog2(addImageReference, e.toString());

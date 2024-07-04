@@ -262,8 +262,8 @@ public class PieceDetailsService {
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
-                newPieceDetails.setUpdatedBy(loginUserID);
-                newPieceDetails.setUpdatedOn(new Date());
+                newPieceDetails.setUpdatedBy(null);
+                newPieceDetails.setUpdatedOn(null);
 
                 //ItemDetails Create
                 List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
@@ -350,19 +350,23 @@ public class PieceDetailsService {
 
                 //Update ReferenceImage
                 List<ReferenceImageList> referenceImageLists = new ArrayList<>();
-                for (ReferenceImageList image : pieceDetails.getReferenceImageList()) {
+                if (pieceDetails.getReferenceImageList() != null && !pieceDetails.getReferenceImageList().isEmpty()) {
+                    for (ReferenceImageList image : pieceDetails.getReferenceImageList()) {
 
-                    ReferenceImageList newRefImageList = new ReferenceImageList();
-                    String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
-                    ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
-
-                    imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
-                    imageReferenceRecord.setReferenceField2(downloadDocument);
-                    imageReferenceRecord.setUpdatedBy(loginUserID);
-                    imageReferenceRecord.setUpdatedOn(new Date());
-                    ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
-                    BeanUtils.copyProperties(imageRef, newRefImageList);
-                    referenceImageLists.add(newRefImageList);
+                        ReferenceImageList newRefImageList = new ReferenceImageList();
+                        String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
+                        ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
+                        if (imageReferenceRecord == null) {
+                            throw new BadRequestException(" ImageReferenceId doesn't exist" + image.getImageRefId());
+                        }
+                        imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
+                        imageReferenceRecord.setReferenceField2(downloadDocument);
+                        imageReferenceRecord.setUpdatedBy(loginUserID);
+                        imageReferenceRecord.setUpdatedOn(new Date());
+                        ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
+                        BeanUtils.copyProperties(imageRef, newRefImageList);
+                        referenceImageLists.add(newRefImageList);
+                    }
                 }
                 addPieceDetails.setReferenceImageList(referenceImageLists);
 
@@ -431,21 +435,25 @@ public class PieceDetailsService {
         List<PieceDetails> pieceDetails = pieceDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                 languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
 
-        for (PieceDetails dbPieceDetails : pieceDetails) {
-            if (dbPieceDetails != null) {
-                dbPieceDetails.setDeletionIndicator(1L);
-                dbPieceDetails.setUpdatedBy(loginUserID);
-                dbPieceDetails.setUpdatedOn(new Date());
+        if (!pieceDetails.isEmpty() && pieceDetails != null) {
+            for (PieceDetails dbPieceDetails : pieceDetails) {
+                if (dbPieceDetails != null) {
+                    dbPieceDetails.setDeletionIndicator(1L);
+                    dbPieceDetails.setUpdatedBy(loginUserID);
+                    dbPieceDetails.setUpdatedOn(new Date());
 
-                //Delete ItemDetails
-                itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
-                pieceDetailsRepository.save(dbPieceDetails);
+                    //Delete ItemDetails
+                    itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                    pieceDetailsRepository.save(dbPieceDetails);
 
-            } else {
-                // Error Log
-                createPieceDetailsLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, dbPieceDetails.getPieceId(), "Error in deleting PieceId - " + dbPieceDetails.getPieceId());
-                throw new BadRequestException("Error in deleting PartnerId - " + partnerId);
+                } else {
+                    // Error Log
+                    createPieceDetailsLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, dbPieceDetails.getPieceId(), "Error in deleting PieceId - " + dbPieceDetails.getPieceId());
+                    throw new BadRequestException("Error in deleting PartnerId - " + partnerId);
+                }
             }
+        } else {
+            log.info("PieceDetails Doesn't exists");
         }
     }
 
