@@ -46,6 +46,10 @@ public class ReplicaModuleSpecification implements Specification<ReplicaModule> 
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("subMenuId");
             predicates.add(group.in(findModuleId.getSubMenuId()));
         }
+        if (findModuleId.getStatusId() != null && !findModuleId.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findModuleId.getStatusId()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

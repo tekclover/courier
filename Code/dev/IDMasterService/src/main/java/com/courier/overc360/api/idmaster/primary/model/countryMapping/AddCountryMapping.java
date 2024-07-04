@@ -3,8 +3,10 @@ package com.courier.overc360.api.idmaster.primary.model.countryMapping;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+
 @Data
 public class AddCountryMapping {
+
     @NotBlank(message = "Language Id is mandatory")
     private String languageId;
 
@@ -26,6 +28,9 @@ public class AddCountryMapping {
     private String partnerCountryId;
 
     private String partnerCountryName;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String remark;
 

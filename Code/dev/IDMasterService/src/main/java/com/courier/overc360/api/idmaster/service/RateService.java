@@ -118,24 +118,24 @@ public class RateService {
                 throw new BadRequestException("Record is Getting Duplicated with given values : partnerId - " + addRate.getPartnerId());
             } else {
                 log.info("new Rate --> " + addRate);
-                Rate dbRate = new Rate();
+                Rate newRate = new Rate();
                 IKeyValuePair iKeyValuePair = replicaRateRepository.getDescription(addRate.getLanguageId(), addRate.getCompanyId(), addRate.getRateParameterId());
-                BeanUtils.copyProperties(addRate, dbRate, CommonUtils.getNullPropertyNames(addRate));
+                BeanUtils.copyProperties(addRate, newRate, CommonUtils.getNullPropertyNames(addRate));
                 if (iKeyValuePair != null) {
-                    dbRate.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    dbRate.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    dbRate.setRateParameterDescription(iKeyValuePair.getRateParameterDesc());
+                    newRate.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newRate.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newRate.setRateParameterDescription(iKeyValuePair.getRateParameterDesc());
                 }
                 String statusDesc = replicaStatusRepository.getStatusDescription(addRate.getStatusId());
                 if (statusDesc != null) {
-                    dbRate.setStatusDescription(statusDesc);
+                    newRate.setStatusDescription(statusDesc);
                 }
-                dbRate.setDeletionIndicator(0L);
-                dbRate.setCreatedBy(loginUserID);
-                dbRate.setUpdatedBy(loginUserID);
-                dbRate.setCreatedOn(new Date());
-                dbRate.setUpdatedOn(new Date());
-                return rateRepository.save(dbRate);
+                newRate.setDeletionIndicator(0L);
+                newRate.setCreatedBy(loginUserID);
+                newRate.setUpdatedBy(loginUserID);
+                newRate.setCreatedOn(new Date());
+                newRate.setUpdatedOn(new Date());
+                return rateRepository.save(newRate);
             }
         } catch (Exception e) {
             // Error Log

@@ -18,6 +18,7 @@ import { NumberrangeService } from '../../numberrange/numberrange.service';
 export class HsCodeNewComponent {
 
   active: number | undefined = 0;
+  status: any[] = []
 
   constructor(
     private cs: CommonServiceService,
@@ -31,7 +32,12 @@ export class HsCodeNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
 
   numCondition: any;
   pageToken: any;
@@ -48,6 +54,8 @@ export class HsCodeNewComponent {
     itemGroup: [],
     specialApprovalId: [],
     specialApprovalText: [],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
     referenceField1: [],
     referenceField10: [],

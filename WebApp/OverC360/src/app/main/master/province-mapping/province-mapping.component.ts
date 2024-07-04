@@ -18,16 +18,21 @@ import { PathNameService } from '../../../common-service/path-name.service';
 })
 export class ProvinceMappingComponent {
 
-  
-  
   provinceMappingTable: any[] = [];
   selectedProvinceMapping: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router,
-     private path: PathNameService, private service: ProvinceMappingService,
-     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: ProvinceMappingService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -49,17 +54,19 @@ export class ProvinceMappingComponent {
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerProvinceName', header: 'Partner Province ' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      
+
       { field: 'languageDescription', header: 'Language' },
       { field: 'partnerProvinceId', header: 'Partner Province ID' },
       { field: 'provinceId', header: 'Province ID' },
       { field: 'languageId', header: 'Language Id' },
       { field: 'companyId', header: 'Company Id' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -75,7 +82,7 @@ export class ProvinceMappingComponent {
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
-  
+
   initialCall() {
     this.spin.show();
     let obj: any = {};
@@ -94,87 +101,87 @@ export class ProvinceMappingComponent {
   }
 
 
-onChange() {
-  const choosen = this.selectedProvinceMapping[this.selectedProvinceMapping.length - 1];
-  this.selectedProvinceMapping.length = 0;
-  this.selectedProvinceMapping.push(choosen);
-}
-
-customTable() {
-  const dialogRef = this.dialog.open(CustomTableComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '80%',
-    position: { top: '6.5%', left: '30%' },
-    data: { target: this.cols, source: this.target,},
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedProvinceMapping[0]);
-    }
-  });
-}
-
-openCrud(type: any = 'New', linedata: any = null): void {
-  if (this.selectedProvinceMapping.length === 0 && type != 'New') {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-  } else {
-    let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedProvinceMapping[0] : linedata, pageflow: type });
-    this.router.navigate(['/main/master/provinceMapping-new/' + paramdata]);
+  onChange() {
+    const choosen = this.selectedProvinceMapping[this.selectedProvinceMapping.length - 1];
+    this.selectedProvinceMapping.length = 0;
+    this.selectedProvinceMapping.push(choosen);
   }
-}
 
-deleteDialog() {
-  if (this.selectedProvinceMapping.length === 0) {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-    return;
-  }
-  const dialogRef = this.dialog.open(DeleteComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '82%',
-    position: { top: '6.5%', left: '30%' },
-    data: { line: this.selectedProvinceMapping, module: 'Province Mapping', body: 'This action cannot be undone. All values associated with this field will be lost.' },
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedProvinceMapping[0]);
-    }
-  });
-}
-deleterecord(lines: any) {
-  this.spin.show();
-  this.service.Delete(lines).subscribe({
-    next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' Province Mapping deleted successfully' });
-      this.spin.hide();
-      this.initialCall();
-    },error: (err) => {
-      this.cs.commonerrorNew(err);
-      this.spin.hide();
-    }
-  })
-}
-
-downloadExcel() {
-  const exportData = this.provinceMappingTable.map(item => {
-    const exportItem: any = {};
-   this.cols.forEach(col => {
-    if(col.format == 'date'){
-      exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-    }else{
-      exportItem[col.field] = item[col.field];
-    }
-     
+  customTable() {
+    const dialogRef = this.dialog.open(CustomTableComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { target: this.cols, source: this.target, },
     });
-    return exportItem;
-  });
 
-  // Call ExcelService to export data to Excel
- this.cs.exportAsExcel(exportData, 'Province Mapping');
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedProvinceMapping[0]);
+      }
+    });
+  }
+
+  openCrud(type: any = 'New', linedata: any = null): void {
+    if (this.selectedProvinceMapping.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedProvinceMapping[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/master/provinceMapping-new/' + paramdata]);
+    }
+  }
+
+  deleteDialog() {
+    if (this.selectedProvinceMapping.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: this.selectedProvinceMapping, module: 'Province Mapping', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedProvinceMapping[0]);
+      }
+    });
+  }
+  deleterecord(lines: any) {
+    this.spin.show();
+    this.service.Delete(lines).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' Province Mapping deleted successfully' });
+        this.spin.hide();
+        this.initialCall();
+      }, error: (err) => {
+        this.cs.commonerrorNew(err);
+        this.spin.hide();
+      }
+    })
+  }
+
+  downloadExcel() {
+    const exportData = this.provinceMappingTable.map(item => {
+      const exportItem: any = {};
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
+      });
+      return exportItem;
+    });
+
+    // Call ExcelService to export data to Excel
+    this.cs.exportAsExcel(exportData, 'Province Mapping');
+  }
 }
 
 

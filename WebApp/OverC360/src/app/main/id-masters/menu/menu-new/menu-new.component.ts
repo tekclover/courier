@@ -17,6 +17,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 })
 export class MenuNewComponent {
   active: number | undefined = 0;
+  status: any[] = []
 
   constructor(
     private cs: CommonServiceService,
@@ -30,7 +31,12 @@ export class MenuNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
 
   pageToken: any;
   numCondition: any;
@@ -48,8 +54,9 @@ export class MenuNewComponent {
     authorizationObject: [],
     authorizationObjectId: [],
     authorizationObjectValue: [],
+    statusId: ["16",],
+    statusDescription: [],
     referenceField1: [],
-    referenceField10: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -58,6 +65,7 @@ export class MenuNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
+    referenceField10: [],
     createdOn: ['',],
     createdBy: [],
     updatedBy: [],
@@ -131,7 +139,7 @@ export class MenuNewComponent {
             this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
             this.form.controls.subMenuId.patchValue(this.nextNumber);
             this.numCondition = 'true';
-            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.referenceField9.patchValue(this.numCondition);
             this.form.controls.subMenuId.disable();
           }
           this.spin.hide();

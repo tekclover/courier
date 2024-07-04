@@ -66,7 +66,7 @@ public class NumberRangeService {
 
         Optional<NumberRange> dbNumberRange = numberRangeRepository.findByNumberRangeObjectAndDeletionIndicator(numberRangeObject, 0L);
         if (dbNumberRange.isEmpty()) {
-            throw new BadRequestException("Record not found for given NumberRangeObject - " + dbNumberRange);
+            throw new BadRequestException("Record not found for given NumberRangeObject - " + numberRangeObject);
         } else {
             NumberRange numberRange = dbNumberRange.get();
 //            log.info("Current record --> " + numberRange);

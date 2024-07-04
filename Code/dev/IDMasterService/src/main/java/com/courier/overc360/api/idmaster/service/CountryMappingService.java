@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.country.Country;
 import com.courier.overc360.api.idmaster.primary.model.countryMapping.AddCountryMapping;
 import com.courier.overc360.api.idmaster.primary.model.countryMapping.CountryMapping;
 import com.courier.overc360.api.idmaster.primary.model.countryMapping.UpdateCountryMapping;
@@ -15,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.countryMapping.FindCountr
 import com.courier.overc360.api.idmaster.replica.model.countryMapping.ReplicaCountryMapping;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCountryMappingRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCountryRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaCountryMappingSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +37,9 @@ import java.util.stream.Collectors;
 public class CountryMappingService {
 
     @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
+
+    @Autowired
     private ReplicaCountryRepository replicaCountryRepository;
 
     @Autowired
@@ -47,9 +50,6 @@ public class CountryMappingService {
 
     @Autowired
     private ReplicaCountryMappingRepository replicaCountryMappingRepository;
-
-    @Autowired
-    private NumberRangeService numberRangeService;
 
     @Autowired
     private ErrorLogRepository errorLogRepository;
@@ -97,38 +97,41 @@ public class CountryMappingService {
     public CountryMapping createCountryMapping(AddCountryMapping addCountryMapping, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Country> dbCountry = countryRepository.findByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
+            boolean dbCountryPresent = replicaCountryRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndDeletionIndicator(
                     addCountryMapping.getLanguageId(), addCountryMapping.getCompanyId(),
                     addCountryMapping.getCountryId(), 0L);
-
-            Optional<CountryMapping> duplicateCountryMapping = countryMappingRepository.findByLanguageIdAndCompanyIdAndCountryIdAndPartnerIdAndDeletionIndicator(
-                    addCountryMapping.getLanguageId(), addCountryMapping.getCompanyId(), addCountryMapping.getCountryId(),
-                    addCountryMapping.getPartnerId(), 0L);
-
-            if (dbCountry.isEmpty()) {
+            if (!dbCountryPresent) {
                 throw new BadRequestException("CountryId - " + addCountryMapping.getCountryId() + ", companyId - " +
                         addCountryMapping.getCompanyId() + " and languageId - " + addCountryMapping.getLanguageId() + " doesn't exists");
-            } else if (duplicateCountryMapping.isPresent()) {
+            }
+
+            boolean duplicateCountryMappingPresent = replicaCountryMappingRepository.existsByLanguageIdAndCompanyIdAndCountryIdAndPartnerIdAndDeletionIndicator(
+                    addCountryMapping.getLanguageId(), addCountryMapping.getCompanyId(), addCountryMapping.getCountryId(),
+                    addCountryMapping.getPartnerId(), 0L);
+            if (duplicateCountryMappingPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : partnerId - " +
                         addCountryMapping.getPartnerId() + " and countryId - " + addCountryMapping.getCountryId());
-            } else {
-                log.info("new CountryMapping --> {}", addCountryMapping);
-                IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addCountryMapping.getLanguageId(),
-                        addCountryMapping.getCompanyId(), addCountryMapping.getCountryId());
-                CountryMapping newCountryMapping = new CountryMapping();
-                BeanUtils.copyProperties(addCountryMapping, newCountryMapping, CommonUtils.getNullPropertyNames(addCountryMapping));
-                if (iKeyValuePair != null) {
-                    newCountryMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newCountryMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    newCountryMapping.setCountryName(iKeyValuePair.getCountryDesc());
-                }
-                newCountryMapping.setDeletionIndicator(0L);
-                newCountryMapping.setCreatedBy(loginUserID);
-                newCountryMapping.setCreatedOn(new Date());
-                newCountryMapping.setUpdatedBy(loginUserID);
-                newCountryMapping.setUpdatedOn(new Date());
-                return countryMappingRepository.save(newCountryMapping);
             }
+            log.info("new CountryMapping --> {}", addCountryMapping);
+            IKeyValuePair iKeyValuePair = replicaCountryRepository.getDescription(addCountryMapping.getLanguageId(),
+                    addCountryMapping.getCompanyId(), addCountryMapping.getCountryId());
+            CountryMapping newCountryMapping = new CountryMapping();
+            BeanUtils.copyProperties(addCountryMapping, newCountryMapping, CommonUtils.getNullPropertyNames(addCountryMapping));
+            if (iKeyValuePair != null) {
+                newCountryMapping.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newCountryMapping.setCompanyName(iKeyValuePair.getCompanyDesc());
+                newCountryMapping.setCountryName(iKeyValuePair.getCountryDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addCountryMapping.getStatusId());
+            if (statusDesc != null) {
+                newCountryMapping.setStatusDescription(statusDesc);
+            }
+            newCountryMapping.setDeletionIndicator(0L);
+            newCountryMapping.setCreatedBy(loginUserID);
+            newCountryMapping.setCreatedOn(new Date());
+            newCountryMapping.setUpdatedBy(loginUserID);
+            newCountryMapping.setUpdatedOn(new Date());
+            return countryMappingRepository.save(newCountryMapping);
         } catch (Exception e) {
             // Error Log
             createCountryMappingLog2(addCountryMapping, e.toString());
@@ -159,6 +162,12 @@ public class CountryMappingService {
         try {
             CountryMapping dbCountryMapping = getCountryMapping(languageId, companyId, countryId, partnerId);
             BeanUtils.copyProperties(updateCountryMapping, dbCountryMapping, CommonUtils.getNullPropertyNames(updateCountryMapping));
+            if (updateCountryMapping.getStatusId() != null && !updateCountryMapping.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateCountryMapping.getStatusId());
+                if (statusDesc != null) {
+                    dbCountryMapping.setStatusDescription(statusDesc);
+                }
+            }
             dbCountryMapping.setUpdatedBy(loginUserID);
             dbCountryMapping.setUpdatedOn(new Date());
             return countryMappingRepository.save(dbCountryMapping);

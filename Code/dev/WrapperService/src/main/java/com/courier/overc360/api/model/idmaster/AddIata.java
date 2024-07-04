@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AddIata {
 
-    private  String iataKd;
+    private String iataKd;
 
     private String languageId;
 
@@ -18,6 +18,8 @@ public class AddIata {
     private String currencyId;
 
     private String iataCharge;
+
+    private String statusId;
 
     private String remark;
 

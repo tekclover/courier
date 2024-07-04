@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.menu.Menu;
 import com.courier.overc360.api.idmaster.primary.model.module.AddModule;
@@ -15,7 +14,9 @@ import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.module.FindModule;
 import com.courier.overc360.api.idmaster.replica.model.module.ReplicaModule;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaModuleRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaModuleSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ModuleService {
+
+    @Autowired
+    private ReplicaCompanyRepository replicaCompanyRepository;
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ModuleRepository moduleRepository;
@@ -102,23 +109,24 @@ public class ModuleService {
             List<Module> newModuleList = new ArrayList<>();
 
             for (AddModule addModule : addModuleList) {
+                boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
+                        addModule.getCompanyId(), addModule.getLanguageId(), 0L);
 
-                Optional<Module> duplicateModules = moduleRepository.findByCompanyIdAndAndLanguageIdAndModuleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+                boolean duplicateModulesPresent = replicaModuleRepository.existsByCompanyIdAndAndLanguageIdAndModuleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
                         addModule.getCompanyId(), addModule.getLanguageId(), addModule.getModuleId(),
                         addModule.getMenuId(), addModule.getSubMenuId(), 0L);
-                Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
-                        addModule.getCompanyId(), addModule.getLanguageId(), 0L);
-                if (dbCompany.isEmpty()) {
+
+                if (!dbCompanyPresent) {
                     throw new BadRequestException("CompanyId - " + addModule.getCompanyId() + " and LanguageId - " + addModule.getLanguageId() + " doesn't exists");
-                } else if (duplicateModules.isPresent()) {
+                } else if (duplicateModulesPresent) {
                     throw new EntityNotFoundException("Record is Getting Duplicated with given values : moduleId - " + addModule.getModuleId());
                 } else {
-                    Optional<Menu> duplicateMenu = menuRepository.
+                    Optional<Menu> dbMenu = menuRepository.
                             findByCompanyIdAndAndLanguageIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
                                     addModule.getCompanyId(), addModule.getLanguageId(), addModule.getMenuId(),
                                     addModule.getSubMenuId(), 0L);
 
-                    if (duplicateMenu.isEmpty()) {
+                    if (dbMenu.isEmpty()) {
                         throw new IllegalAccessException("MenuId - " + addModule.getMenuId() + " and SubMenuId - "
                                 + addModule.getSubMenuId() + " doesn't exists");
                     } else {
@@ -140,6 +148,10 @@ public class ModuleService {
                             module.setCompanyIdAndDescription(iKeyValuePair.getCompanyDesc());
                             module.setMenuName(iKeyValuePair.getMenuDesc());
                             module.setSubMenuName(iKeyValuePair.getSubMenuDesc());
+                        }
+                        String statusDesc = replicaStatusRepository.getStatusDescription(addModule.getStatusId());
+                        if (statusDesc != null) {
+                            module.setStatusDescription(statusDesc);
                         }
                         module.setDeletionIndicator(0L);
                         module.setCreatedBy(loginUserID);
@@ -211,6 +223,12 @@ public class ModuleService {
                         moduleRepository.delete(dbModule);
                     } else {
                         BeanUtils.copyProperties(newUpdateModuleId, dbModule, CommonUtils.getNullPropertyNames(newUpdateModuleId));
+                        if (newUpdateModuleId.getStatusId() != null && !newUpdateModuleId.getStatusId().isEmpty()) {
+                            String statusDesc = replicaStatusRepository.getStatusDescription(newUpdateModuleId.getStatusId());
+                            if (statusDesc != null) {
+                                dbModule.setStatusDescription(statusDesc);
+                            }
+                        }
                         dbModule.setUpdatedBy(loginUserID);
                         dbModule.setUpdatedOn(new Date());
                         moduleIdList.add(moduleRepository.save(dbModule));
@@ -223,6 +241,13 @@ public class ModuleService {
                         log.info("newModuleId : " + newUpdateModuleId);
 
                         BeanUtils.copyProperties(newUpdateModuleId, newModuleId, CommonUtils.getNullPropertyNames(newUpdateModuleId));
+
+                        if (newUpdateModuleId.getStatusId() != null && !newUpdateModuleId.getStatusId().isEmpty()) {
+                            String statusDesc = replicaStatusRepository.getStatusDescription(newUpdateModuleId.getStatusId());
+                            if (statusDesc != null) {
+                                newModuleId.setStatusDescription(statusDesc);
+                            }
+                        }
 
                         newModuleId.setModuleId(moduleId);
                         newModuleId.setCompanyId(companyId);

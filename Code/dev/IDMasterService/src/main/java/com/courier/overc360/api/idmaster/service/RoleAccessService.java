@@ -16,6 +16,7 @@ import com.courier.overc360.api.idmaster.replica.model.roleaccess.FindRoleAccess
 import com.courier.overc360.api.idmaster.replica.model.roleaccess.ReplicaRoleAccess;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaModuleRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaRoleAccessRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaRoleAccessSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +36,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class RoleAccessService {
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
     private ReplicaModuleRepository replicaModuleRepository;
@@ -114,7 +118,7 @@ public class RoleAccessService {
                     throw new IllegalAccessException("MenuId: " + addRoleAccess.getMenuId() + " and SubMenuId: "
                             + addRoleAccess.getSubMenuId() + " doesn't exists");
                 } else {
-                    log.info("new RoleAccess --> " + addRoleAccessList);
+                    log.info("new RoleAccess --> {}", addRoleAccess);
                     RoleAccess roleAccess = new RoleAccess();
                     IKeyValuePair iKeyValuePair = replicaModuleRepository.getDescription(addRoleAccess.getLanguageId(),
                             addRoleAccess.getCompanyId(), addRoleAccess.getMenuId(), addRoleAccess.getSubMenuId());
@@ -125,7 +129,11 @@ public class RoleAccessService {
                         roleAccess.setMenuName(iKeyValuePair.getMenuDesc());
                         roleAccess.setSubMenuName(iKeyValuePair.getSubMenuDesc());
                     }
-                    roleAccess.setStatusId(1L); // ACTIVE
+                    String statusDesc = replicaStatusRepository.getStatusDescription(addRoleAccess.getStatusId());
+                    if (statusDesc != null) {
+                        roleAccess.setStatusDescription(statusDesc);
+                    }
+                    roleAccess.setStatusId("1"); // ACTIVE
                     roleAccess.setRoleId(roleId);
                     roleAccess.setDeletionIndicator(0L);
                     roleAccess.setCreatedBy(loginUserID);
@@ -165,6 +173,12 @@ public class RoleAccessService {
         try {
             RoleAccess dbRoleAccess = getRoleAccess(companyId, languageId, roleId, menuId, subMenuId);
             BeanUtils.copyProperties(updateRoleAccess, dbRoleAccess, CommonUtils.getNullPropertyNames(updateRoleAccess));
+            if (updateRoleAccess.getStatusId() != null && !updateRoleAccess.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateRoleAccess.getStatusId());
+                if (statusDesc != null) {
+                    dbRoleAccess.setStatusDescription(statusDesc);
+                }
+            }
             dbRoleAccess.setUpdatedBy(loginUserID);
             dbRoleAccess.setUpdatedOn(new Date());
             return roleAccessRepository.save(dbRoleAccess);

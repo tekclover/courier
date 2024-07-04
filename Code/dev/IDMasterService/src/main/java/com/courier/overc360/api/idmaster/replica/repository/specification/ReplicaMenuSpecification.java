@@ -47,6 +47,10 @@ public class ReplicaMenuSpecification implements Specification<ReplicaMenu> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("authorizationObjectId");
             predicates.add(group.in(findMenu.getAuthorizationObjectId()));
         }
+        if (findMenu.getStatusId() != null && !findMenu.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findMenu.getStatusId()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

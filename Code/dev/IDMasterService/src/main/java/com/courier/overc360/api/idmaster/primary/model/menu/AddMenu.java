@@ -3,7 +3,6 @@ package com.courier.overc360.api.idmaster.primary.model.menu;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class AddMenu {
@@ -14,16 +13,16 @@ public class AddMenu {
     @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-//    @NotNull(message = "MenuId is mandatory")
+    //    @NotNull(message = "MenuId is mandatory")
     private Long menuId;
 
-//    @NotNull(message = "SubMenuId is mandatory")
+    //    @NotNull(message = "SubMenuId is mandatory")
     private Long subMenuId;
 
-    @NotNull(message = "Authorization Object Id is mandatory")
-    private Long authorizationObjectId;
+//    @NotNull(message = "Authorization Object Id is mandatory")
+//    private Long authorizationObjectId;
 
-    private String authorizationObjectValue;
+//    private String authorizationObjectValue;
 
     @NotBlank(message = "Menu Name is mandatory")
     private String menuName;
@@ -31,7 +30,10 @@ public class AddMenu {
     @NotBlank(message = "SubMenu Name is mandatory")
     private String subMenuName;
 
-    private String authorizationObject;
+//    private String authorizationObject;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String referenceField1;
 

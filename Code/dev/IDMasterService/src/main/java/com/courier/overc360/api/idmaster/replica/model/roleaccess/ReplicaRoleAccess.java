@@ -75,8 +75,11 @@ public class ReplicaRoleAccess {
     @Column(name = "USR_ROLE_TEXT", columnDefinition = "nvarchar(100)")
     private String description;
 
-    @Column(name = "STATUS_ID")
-    private Long statusId;
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
 
     @Column(name = "LANG_ID_DESC", columnDefinition = "nvarchar(200)")
     private String languageIdAndDescription;

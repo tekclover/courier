@@ -71,10 +71,16 @@ export class SubProductsValuesComponent {
     
     this.form.controls.subProductValue.patchValue(this.data);
 
+    if(this.data.pageflow == "Edit"){
+      this.form.patchValue(this.data.code)
+    }
+
   }
 
   save() {
-    this.dialogRef.close(this.form.getRawValue());
+      this.dialogRef.close(this.form.value);
   }
+
+
 
 }

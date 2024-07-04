@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class  AddDistrictMapping {
+public class AddDistrictMapping {
 
     @NotBlank(message = "District id is mandatory")
     private String districtId;
@@ -26,6 +26,10 @@ public class  AddDistrictMapping {
     private String partnerType;
 
     private String partnerDistrictId;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String partnerDistrictName;

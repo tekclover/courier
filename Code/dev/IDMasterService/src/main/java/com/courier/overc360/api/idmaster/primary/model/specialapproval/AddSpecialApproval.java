@@ -18,6 +18,9 @@ public class AddSpecialApproval {
     @NotBlank(message = "SpecialApprovalText is mandatory")
     private String specialApprovalText;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

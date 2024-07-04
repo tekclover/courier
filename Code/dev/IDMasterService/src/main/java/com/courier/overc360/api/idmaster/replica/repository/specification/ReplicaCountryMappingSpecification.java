@@ -5,7 +5,11 @@ import com.courier.overc360.api.idmaster.replica.model.countryMapping.ReplicaCou
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +17,11 @@ import java.util.List;
 public class ReplicaCountryMappingSpecification implements Specification<ReplicaCountryMapping> {
 
     FindCountryMapping findCountryMapping;
+
     public ReplicaCountryMappingSpecification(FindCountryMapping inputSearchParams) {
         this.findCountryMapping = inputSearchParams;
     }
+
     @Override
     public Predicate toPredicate(Root<ReplicaCountryMapping> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
@@ -36,9 +42,12 @@ public class ReplicaCountryMappingSpecification implements Specification<Replica
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findCountryMapping.getPartnerId()));
         }
-
+        if (findCountryMapping.getStatusId() != null && !findCountryMapping.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findCountryMapping.getStatusId()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
-        return cb.and(predicates.toArray(new Predicate[] {}));
+        return cb.and(predicates.toArray(new Predicate[]{}));
     }
 
 }

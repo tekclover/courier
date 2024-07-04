@@ -21,6 +21,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 export class HubNewComponent {
 
   active: number | undefined = 0;
+  status: any[] = []
 
   constructor(
     private cs: CommonServiceService,
@@ -37,7 +38,12 @@ export class HubNewComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+   }
 
   pageToken: any;
   numCondition: any;
@@ -63,6 +69,8 @@ export class HubNewComponent {
     addressLine4: [],
     latitude: [],
     longitude: [],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
     referenceField1: [],
     referenceField2: [],

@@ -49,7 +49,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                <tr ><!--[class.selectedRow]="selectedPreAlertManifest[0] === rowData"-->
+                <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;">
                         <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-3"
                             [value]="rowData"></p-checkbox> -->

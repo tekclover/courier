@@ -1,6 +1,7 @@
 package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
+
 import java.util.Date;
 
 @Data
@@ -26,6 +27,10 @@ public class Module {
     private String menuName;
 
     private String subMenuName;
+
+    private String statusId;
+
+    private String statusDescription;
 
     private Long deletionIndicator;
 

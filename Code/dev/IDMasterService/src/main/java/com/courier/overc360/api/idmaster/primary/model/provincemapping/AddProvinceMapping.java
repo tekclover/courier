@@ -29,6 +29,9 @@ public class AddProvinceMapping {
 
     private String partnerProvinceName;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

@@ -8,8 +8,9 @@ import java.util.List;
 public class FindDistrictMapping {
 
     private List<String> districtId;
-    private List<String>languageId;
-    private List<String>companyId;
-    private List<String>partnerId;
+    private List<String> languageId;
+    private List<String> companyId;
+    private List<String> partnerId;
+    private List<String> statusId;
 
 }

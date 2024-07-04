@@ -26,6 +26,9 @@ public class AddModule {
     //    @NotBlank(message = "ModuleId is mandatory")
     private String moduleId;
 
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;

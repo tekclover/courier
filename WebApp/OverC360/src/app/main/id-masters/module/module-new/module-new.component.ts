@@ -19,6 +19,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 export class ModuleNewComponent {
   active: number | undefined = 0;
 
+  status: any[] = []
   moduleTable: any[] = [];
   selectedModule: any[] = [];
   cols: any[] = [];
@@ -36,7 +37,12 @@ export class ModuleNewComponent {
     private numberRangeService: NumberrangeService,
     private auth: AuthService,
     private menuService: MenuService,
-  ) {}
+  ) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
 
   pageToken: any;
   numCondition: any;
@@ -68,7 +74,7 @@ export class ModuleNewComponent {
     referenceField8: [],
     referenceField9: [],
     subMenuId: [],
-    statusId: [],
+    statusId: ["16",],
     statusDescription: [],
     subMenuName: [],
     updatedBy: [],

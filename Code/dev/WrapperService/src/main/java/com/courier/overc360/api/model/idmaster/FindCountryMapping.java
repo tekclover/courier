@@ -11,4 +11,6 @@ public class FindCountryMapping {
     private List<String> companyId;
     private List<String> countryId;
     private List<String> partnerId;
+    private List<String> statusId;
+
 }
