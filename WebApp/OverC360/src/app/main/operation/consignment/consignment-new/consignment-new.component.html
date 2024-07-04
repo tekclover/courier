@@ -527,54 +527,7 @@
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="description"></td>
                                 <td style="width: 5rem; text-align: center;">
-                                    <i style="font-size: 14px;" class='bi-chevron-up' (click)="op.toggle($event)"></i>
-                                    <p-overlayPanel #op [style]="{ width: '42rem' }">
-                                        <div class="row">
-                                            <div class="col-4 mb-2" id="length">
-                                                <p class="formControlLabel f600 textBlack mb-0">Length</p>
-                                                <input maxlength="50" pKeyFilter="num"
-                                                    (change)="calculateVolume(rowData)" formControlName="length"
-                                                    class=" w-100" pInputText placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="width">
-                                                <p class="formControlLabel f600 textBlack mb-0">Width</p>
-                                                <input maxlength="50" pKeyFilter="num"
-                                                    (change)="calculateVolume(rowData)" formControlName="width"
-                                                    class=" w-100" pInputText placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="height">
-                                                <p class="formControlLabel f600 textBlack mb-0">Height</p>
-                                                <input maxlength="50" pKeyFilter="num"
-                                                    (change)="calculateVolume(rowData)" formControlName="height"
-                                                    class=" w-100" pInputText placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="dimensionUnit">
-                                                <p class="formControlLabel f600 textBlack mb-0">Dimension Unit</p>
-                                                <input maxlength="50" formControlName="dimensionUnit" class=" w-100"
-                                                    pInputText placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="volume">
-                                                <p class="formControlLabel f600 textBlack mb-0">Volume</p>
-                                                <input maxlength="50" formControlName="volume" class=" w-100" pInputText
-                                                    placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="volume">
-                                                <p class="formControlLabel f600 textBlack mb-0">Volume Unit</p>
-                                                <input maxlength="50" formControlName="volumeUnit" class=" w-100"
-                                                    pInputText placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="weight">
-                                                <p class="formControlLabel f600 textBlack mb-0">Weight</p>
-                                                <input maxlength="50" formControlName="weight" class=" w-100" pInputText
-                                                    placeholder="Enter" />
-                                            </div>
-                                            <div class="col-4 mb-2" id="weightUnit">
-                                                <p class="formControlLabel f600 textBlack mb-0">Weight Unit</p>
-                                                <input maxlength="50" formControlName="weightUnit" class=" w-100"
-                                                    pInputText placeholder="Enter" />
-                                            </div>
-                                        </div>
-                                    </p-overlayPanel>
+                                    <i style="font-size: 14px;" class='bi-chevron-up'></i>
                                 </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode">
                                 </td>

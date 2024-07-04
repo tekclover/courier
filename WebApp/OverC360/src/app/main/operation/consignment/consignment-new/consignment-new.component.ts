@@ -529,7 +529,6 @@ return this.fb.array(referenceImageList.map(image => this.fb.group({
   }
 
   opendialog(type: any = 'New', data: any, index:any) {
-    console.log(data)
     const dialogRef = this.dialog.open(PieceDetailsComponent, {
       disableClose: true,
       width: '90%',
@@ -540,11 +539,8 @@ return this.fb.array(referenceImageList.map(image => this.fb.group({
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
- // Clear existing items and set the new ones
  const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
- itemDetailsFormArray.clear(); // Clear existing items if needed
-
- // Push all items from result array (assuming result is an array of objects)
+ itemDetailsFormArray.clear();
  result.forEach((item :any) => {
    itemDetailsFormArray.push(this.fb.group({
     description: item.description
