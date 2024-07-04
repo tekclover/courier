@@ -197,7 +197,6 @@ export class BondedManifestNewComponent {
   countryIdList: any[] = [];
   consigneeCivilIdList: any[] = [];
   consignorIdList: any[] = [];
-  consigneeList: any[] =[];
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([

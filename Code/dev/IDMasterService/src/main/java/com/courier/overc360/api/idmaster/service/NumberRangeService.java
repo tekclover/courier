@@ -1,6 +1,5 @@
 package com.courier.overc360.api.idmaster.service;
 
-
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
 import com.courier.overc360.api.idmaster.primary.model.numberange.AddNumberRange;
 import com.courier.overc360.api.idmaster.primary.model.numberange.NumberRange;
@@ -10,6 +9,7 @@ import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.numberrange.FindNumberRange;
 import com.courier.overc360.api.idmaster.replica.model.numberrange.ReplicaNumberRange;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaNumberRangeRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaNumberRangeSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,10 +28,13 @@ import java.util.stream.Collectors;
 public class NumberRangeService {
 
     @Autowired
-    NumberRangeRepository numberRangeRepository;
+    private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
-    ReplicaNumberRangeRepository replicaNumberRangeRepository;
+    private NumberRangeRepository numberRangeRepository;
+
+    @Autowired
+    private ReplicaNumberRangeRepository replicaNumberRangeRepository;
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
@@ -111,6 +114,10 @@ public class NumberRangeService {
         } else {
             NumberRange newNumberRange = new NumberRange();
             BeanUtils.copyProperties(addNumberRange, newNumberRange, CommonUtils.getNullPropertyNames(addNumberRange));
+            String statusDesc = replicaStatusRepository.getStatusDescription(addNumberRange.getNumberRangeStatus());
+            if (statusDesc != null) {
+                newNumberRange.setStatusDescription(statusDesc);
+            }
             newNumberRange.setDeletionIndicator(0L);
             newNumberRange.setCreatedBy(loginUserID);
             newNumberRange.setCreatedOn(new Date());
@@ -137,6 +144,12 @@ public class NumberRangeService {
             throws IllegalAccessException, InvocationTargetException {
         NumberRange dbNumberRange = getNumberRange(languageId, numberRangeCode, numberRangeObject);
         BeanUtils.copyProperties(updateNumberRange, dbNumberRange, CommonUtils.getNullPropertyNames(updateNumberRange));
+        if (updateNumberRange.getNumberRangeStatus() != null && !updateNumberRange.getNumberRangeStatus().isEmpty()) {
+            String statusDesc = replicaStatusRepository.getStatusDescription(updateNumberRange.getNumberRangeStatus());
+            if (statusDesc != null) {
+                dbNumberRange.setStatusDescription(statusDesc);
+            }
+        }
         dbNumberRange.setUpdatedBy(loginUserID);
         dbNumberRange.setUpdatedOn(new Date());
         return numberRangeRepository.save(dbNumberRange);
@@ -181,7 +194,7 @@ public class NumberRangeService {
 //        }
         ReplicaNumberRangeSpecification spec = new ReplicaNumberRangeSpecification(findNumberRange);
         List<ReplicaNumberRange> results = replicaNumberRangeRepository.findAll(spec);
-        log.info("found NumberRangeCodes --> " + results);
+        log.info("found NumberRangeCodes --> {}", results);
         return results;
 
     }

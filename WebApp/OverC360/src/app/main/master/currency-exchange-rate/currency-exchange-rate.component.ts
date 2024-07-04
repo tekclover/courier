@@ -125,7 +125,7 @@ export class CurrencyExchangeRateComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedCurrencyExchangeRate.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCurrencyExchangeRate[0] : linedata, pageflow: type });
       this.router.navigate(['/main/master/currencyExchangeRate-new/' + paramdata]);
@@ -134,7 +134,7 @@ export class CurrencyExchangeRateComponent {
 
   deleteDialog() {
     if (this.selectedCurrencyExchangeRate.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

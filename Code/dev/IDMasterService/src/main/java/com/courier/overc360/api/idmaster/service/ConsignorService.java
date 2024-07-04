@@ -283,6 +283,19 @@ public class ConsignorService {
         }
     }
 
+//    public List<Consignor> updateConsignorBulk(List<UpdateConsignor> updateConsignorList, String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<Consignor> updatedConsignorList = new ArrayList<>();
+//        for (UpdateConsignor updateConsignor : updateConsignorList) {
+//            Consignor dbConsignor = updateConsignor(updateConsignor.getLanguageId(), updateConsignor.getCompanyId(),
+//                    updateConsignor.getSubProductId(), updateConsignor.getSubProductValue(), updateConsignor.getProductId(),
+//                    updateConsignor.getCustomerId(), updateConsignor.getConsignorId(), updateConsignor, loginUserID);
+//            updatedConsignorList.add(dbConsignor);
+//        }
+//        return updatedConsignorList;
+//    }
+
     /**
      * Update Consignors - bulk
      *
@@ -294,17 +307,45 @@ public class ConsignorService {
      * @throws IllegalAccessException
      * @throws CsvException
      */
+    @Transactional
     public List<Consignor> updateConsignorBulk(List<UpdateConsignor> updateConsignorList, String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        try {
+            List<Consignor> updatedConsignorList = new ArrayList<>();
+            for (UpdateConsignor updateConsignor : updateConsignorList) {
+                Consignor dbConsignor =
+                        consignorRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+                                updateConsignor.getLanguageId(), updateConsignor.getCompanyId(), updateConsignor.getSubProductValue(),
+                                updateConsignor.getSubProductId(), updateConsignor.getProductId(),
+                                updateConsignor.getCustomerId(), updateConsignor.getConsignorId(), 0L);
+                if (dbConsignor != null) {
+                    consignorRepository.delete(dbConsignor);
+                }
 
-        List<Consignor> updatedConsignorList = new ArrayList<>();
-        for (UpdateConsignor updateConsignor : updateConsignorList) {
-            Consignor dbConsignor = updateConsignor(updateConsignor.getLanguageId(), updateConsignor.getCompanyId(),
-                    updateConsignor.getSubProductId(), updateConsignor.getSubProductValue(), updateConsignor.getProductId(),
-                    updateConsignor.getCustomerId(), updateConsignor.getConsignorId(), updateConsignor, loginUserID);
-            updatedConsignorList.add(dbConsignor);
+                Consignor newConsignor = new Consignor();
+                BeanUtils.copyProperties(updateConsignor, newConsignor, CommonUtils.getNullPropertyNames(updateConsignor));
+
+                if (updateConsignor.getStatusId() != null && !updateConsignor.getStatusId().isEmpty()) {
+                    String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignor.getStatusId());
+                    if (statusDesc != null) {
+                        newConsignor.setStatusDescription(statusDesc);
+                    }
+                }
+                newConsignor.setCreatedBy(loginUserID);
+                newConsignor.setCreatedOn(new Date());
+                newConsignor.setUpdatedBy(loginUserID);
+                newConsignor.setUpdatedOn(new Date());
+                Consignor consignor = consignorRepository.save(newConsignor);
+                log.info("Created Consignor --> {}", consignor);
+                updatedConsignorList.add(dbConsignor);
+            }
+            return updatedConsignorList;
+        } catch (Exception e) {
+            // Error Log
+            createConsignorLog4(updateConsignorList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return updatedConsignorList;
     }
 
     /**
@@ -479,6 +520,28 @@ public class ConsignorService {
             errorLog.setReferenceField2(addConsignor.getProductId());
             errorLog.setReferenceField3(addConsignor.getCustomerId());
             errorLog.setReferenceField4(addConsignor.getSubProductValue());
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createConsignorLog4(List<UpdateConsignor> updateConsignorList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (UpdateConsignor updateConsignor : updateConsignorList) {
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(updateConsignor.getLanguageId());
+            errorLog.setCompanyId(updateConsignor.getCompanyId());
+            errorLog.setRefDocNumber(updateConsignor.getConsignorId());
+            errorLog.setMethod("Exception thrown in createConsignor");
+            errorLog.setReferenceField1(updateConsignor.getSubProductId());
+            errorLog.setReferenceField2(updateConsignor.getProductId());
+            errorLog.setReferenceField3(updateConsignor.getCustomerId());
+            errorLog.setReferenceField4(updateConsignor.getSubProductValue());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);

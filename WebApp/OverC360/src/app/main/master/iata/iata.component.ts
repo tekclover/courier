@@ -119,7 +119,7 @@ export class IataComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedIata.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedIata[0] : linedata, pageflow: type });
       this.router.navigate(['/main/master/iata-new/' + paramdata]);
@@ -128,7 +128,7 @@ export class IataComponent {
 
   deleteDialog() {
     if (this.selectedIata.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
