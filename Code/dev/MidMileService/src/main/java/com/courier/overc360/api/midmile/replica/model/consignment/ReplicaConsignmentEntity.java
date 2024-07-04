@@ -271,6 +271,12 @@ public class ReplicaConsignmentEntity {
     @Column(name = "STATUS_TIMESTAMP")
     private Date statusTimestamp;
 
+    @Column(name = "CONSOLE_INDICATOR")
+    private Long consoleIndicator;
+
+    @Column(name = "MANIFEST_INDICATOR")
+    private Long manifestIndicator;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
