@@ -38,7 +38,7 @@ export class ProvinceComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Province '];
+    const dataToSend = ['Setup', 'Province'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

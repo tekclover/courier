@@ -73,8 +73,6 @@ export class ConsignmentTypeComponent {
       { field: 'referenceField10', header: 'Reference Field 10' },
       { field: 'updatedBy', header: 'Updated By' },
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
-
-
     ];
   }
 

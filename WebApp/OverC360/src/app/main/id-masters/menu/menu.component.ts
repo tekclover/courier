@@ -38,7 +38,7 @@ export class MenuComponent {
   today: any;
   ngOnInit(): void {
     // to pass Breadcrumbs onto the main component
-    const dataToSend = ['Setup', 'Menu '];
+    const dataToSend = ['Setup', 'Menu'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -37,7 +37,7 @@ export class SubProductComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Sub Product '];
+    const dataToSend = ['Setup', 'Sub Product'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -60,6 +60,7 @@ export class SubProductComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
+      { field: 'subProductValue', header: 'Sub Product Value' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

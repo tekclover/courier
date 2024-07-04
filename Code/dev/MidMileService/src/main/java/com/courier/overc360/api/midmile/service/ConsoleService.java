@@ -768,7 +768,7 @@ public class ConsoleService {
                         //Fetch the console records based on houseAirwayBill
                         List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
-                        if(!consoleData.isEmpty() && consoleData != null) {
+                        if(consoleData != null && !consoleData.isEmpty()) {
                             //Check whether all the consoleData's eventcode is equal to 8
                             boolean allEventCodes = consoleData.stream()
                                     .allMatch(console -> "8".equalsIgnoreCase(console.getEventCode()));

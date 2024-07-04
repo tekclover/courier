@@ -214,7 +214,6 @@ shipperType:any;
       
       this.customerIdList = [];
       this.spin.show();
-      console.log(this.form.controls.partnerType.value)
       this.customerService.search(obj).subscribe({next: (result) => {
       this.customerIdList = this.cas.foreachlist(result, {key: 'customerId', value: 'customerName'});
       this.shipperType="Customer";
@@ -230,7 +229,6 @@ shipperType:any;
   
       this.customerIdList = [];
       this.spin.show();
-      console.log(this.form.controls.partnerType.value)
       this.consignorService.search(obj).subscribe({next: (result) => {
       this.customerIdList = this.cas.foreachlist(result, {key: 'consignorId', value: 'consignorName'});
       this.shipperType="Consignor";

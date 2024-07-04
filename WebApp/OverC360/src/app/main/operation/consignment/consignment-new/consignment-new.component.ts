@@ -24,7 +24,7 @@ export class ConsignmentNewComponent {
   status: any[] = [];
   paymentType: any[] = [];
   incoTerms: any[] = [];
-
+  codCollectionMode: any[] = [];
   disabledCarrier = true;
   disabledSender = true;
   disabledDelivery = true;
@@ -61,6 +61,12 @@ export class ConsignmentNewComponent {
       { value: 'ddu', label: 'DDU' },
       { value: 'ddp', label: 'DDP' }
     ];
+    this.codCollectionMode = [
+      { value: 'cash', label: 'Cash' },
+      { value: 'cheque', label: 'Cheque' },
+      { value: 'online', label: 'Online' },
+      { value: 'card', label: 'Card' }
+    ];
   }
 
   pageToken: any;
@@ -89,6 +95,9 @@ export class ConsignmentNewComponent {
     countryOfOrigin: [],
     consignmentType: [,],
     customerCode: [],
+    codAmount: [],
+    codCollectionMode: [],
+    codFavorOf: [],
     customerReferenceNumber: [],
     actionType: [],
     movementType: [],

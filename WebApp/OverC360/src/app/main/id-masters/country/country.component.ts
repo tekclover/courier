@@ -19,15 +19,21 @@ import { CountryService } from './country.service';
 })
 export class CountryComponent {
 
-  
-
   countryTable: any[] = [];
   selectedCountry: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CountryService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: CountryService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -43,9 +49,9 @@ export class CountryComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'countryId', header: 'Country ID' },
       { field: 'countryName', header: 'Country Name' },
-      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -68,11 +74,9 @@ export class CountryComponent {
       { field: 'referenceField10', header: 'Reference Field 10' },
       { field: 'updatedBy', header: 'Updated By' },
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
-
-
     ];
   }
-  
+
   initialCall() {
     setTimeout(() => {
       this.spin.show();
@@ -105,7 +109,7 @@ export class CountryComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -146,11 +150,11 @@ export class CountryComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.countryId).subscribe({
-      next: (res: any) =>{
+      next: (res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.countryId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err: any) => {
+      }, error: (err: any) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -160,20 +164,20 @@ export class CountryComponent {
   downloadExcel() {
     const exportData = this.countryTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Country');
+    this.cs.exportAsExcel(exportData, 'Country');
   }
 
 }

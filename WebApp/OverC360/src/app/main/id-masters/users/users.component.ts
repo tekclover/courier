@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { Router } from '@angular/router';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { UsersService } from './users.service';  
+import { UsersService } from './users.service';
 import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
@@ -26,7 +26,7 @@ export class UsersComponent {
 
   constructor(
     private messageService: MessageService,
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
     private service: UsersService,
@@ -38,7 +38,7 @@ export class UsersComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Users '];
+    const dataToSend = ['Setup', 'Users'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -51,10 +51,10 @@ export class UsersComponent {
       { field: 'userRoleIdAndDescription', header: 'User Role' },
       { field: 'userTypeIdAndDescription', header: 'User Type' },
       { field: 'userName', header: 'User Name' },
-      { field: 'emailId', header: 'Email Id'},
+      { field: 'emailId', header: 'Email Id' },
       { field: 'statusId', header: 'Status ID' },
-      { field: 'createdBy', header: 'Created By'},
-      { field: 'createdOn', header: 'Created On', format: 'date'},
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
@@ -86,24 +86,26 @@ export class UsersComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.userTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.userTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
-    const choosen = this.selectedUser[this.selectedUser.length -1];
+    const choosen = this.selectedUser[this.selectedUser.length - 1];
     this.selectedUser.length = 0;
     this.selectedUser.push(choosen);
   }
@@ -153,13 +155,13 @@ export class UsersComponent {
     })
   }
   deleterecord(lines: any) {
-    this.spin.show(); 
+    this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res) =>{
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.userId + lines.companyId + lines.languageId  + ' deleted successfully' });
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.userId + lines.companyId + lines.languageId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
