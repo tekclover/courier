@@ -339,7 +339,16 @@ public class CustomerService {
 
                 Customer newCustomer = new Customer();
                 BeanUtils.copyProperties(updateCustomer, newCustomer, CommonUtils.getNullPropertyNames(updateCustomer));
+                IKeyValuePair iKeyValuePair = replicaProductRepository.getDescription(updateCustomer.getLanguageId(), updateCustomer.getCompanyId(),
+                        updateCustomer.getSubProductId(), updateCustomer.getSubProductValue(), updateCustomer.getProductId());
 
+                if (iKeyValuePair != null) {
+                    newCustomer.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newCustomer.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
+                    newCustomer.setProductName(iKeyValuePair.getProductDesc());
+                    newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
+                }
                 if (updateCustomer.getStatusId() != null && !updateCustomer.getStatusId().isEmpty()) {
                     String statusDesc = replicaStatusRepository.getStatusDescription(updateCustomer.getStatusId());
                     if (statusDesc != null) {

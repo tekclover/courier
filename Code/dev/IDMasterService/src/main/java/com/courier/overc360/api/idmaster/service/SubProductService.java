@@ -320,8 +320,6 @@ public class SubProductService {
             List<SubProduct> updatedSubProductList = new ArrayList<>();
             for (UpdateSubProduct updateSubProduct : updateSubProductList) {
 
-                long newLinesCount = updatedSubProductList.size();
-
                 SubProduct dbSubProduct = getSubProductWithoutException(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
                         updateSubProduct.getSubProductId(), updateSubProduct.getSubProductValue());
                 if (dbSubProduct != null) {
@@ -330,7 +328,12 @@ public class SubProductService {
 
                 SubProduct newSubProduct = new SubProduct();
                 BeanUtils.copyProperties(updateSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
+                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId());
 
+                if (iKeyValuePair != null) {
+                    newSubProduct.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newSubProduct.setCompanyName(iKeyValuePair.getCompanyDesc());
+                }
                 if (updateSubProduct.getStatusId() != null && !updateSubProduct.getStatusId().isEmpty()) {
                     String statusDesc = replicaStatusRepository.getStatusDescription(updateSubProduct.getStatusId());
                     if (statusDesc != null) {

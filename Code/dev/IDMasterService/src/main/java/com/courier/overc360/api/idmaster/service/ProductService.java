@@ -204,9 +204,6 @@ public class ProductService {
                 if ((addProduct.getProductId() != null &&
                         (addProduct.getReferenceField10() != null && addProduct.getReferenceField10().equalsIgnoreCase("true"))) ||
                         addProduct.getProductId() == null || addProduct.getProductId().isBlank()) {
-//                    String NUM_RAN_OBJ = "PRODUCT";
-//                    String PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for PRODUCT_ID : " + PRODUCT_ID);
                     newProduct.setProductId(PRODUCT_ID);
                 }
                 if (iKeyValuePair != null) {
@@ -323,7 +320,8 @@ public class ProductService {
             List<Product> updatedProductList = new ArrayList<>();
             for (UpdateProduct updateProduct : updateProductList) {
 
-                Product dbProduct = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(updateProduct.getLanguageId(), updateProduct.getCompanyId(),
+                Product dbProduct = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(
+                        updateProduct.getLanguageId(), updateProduct.getCompanyId(),
                         updateProduct.getProductId(), updateProduct.getSubProductId(), 0L);
                 if (dbProduct != null) {
                     productRepository.delete(dbProduct);
@@ -331,7 +329,15 @@ public class ProductService {
 
                 Product newProduct = new Product();
                 BeanUtils.copyProperties(updateProduct, newProduct, CommonUtils.getNullPropertyNames(updateProduct));
+                IKeyValuePair iKeyValuePair = replicaSubProductRepository.getDescription(updateProduct.getLanguageId(),
+                        updateProduct.getCompanyId(), updateProduct.getSubProductId(), updateProduct.getSubProductValue());
 
+                if (iKeyValuePair != null) {
+                    newProduct.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newProduct.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newProduct.setSubProductName(iKeyValuePair.getSubProductDesc());
+                    newProduct.setReferenceField1(iKeyValuePair.getSubProductValue());
+                }
                 if (updateProduct.getStatusId() != null && !updateProduct.getStatusId().isEmpty()) {
                     String statusDesc = replicaStatusRepository.getStatusDescription(updateProduct.getStatusId());
                     if (statusDesc != null) {
