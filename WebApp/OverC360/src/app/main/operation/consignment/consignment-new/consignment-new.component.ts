@@ -9,7 +9,8 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PieceDetailsComponent } from './piece-details/piece-details.component';
+import { ItemDetailsComponent } from './item-details/item-details.component';
+import { DimensionComponent } from './dimension/dimension.component';
 
 @Component({
   selector: 'app-consignment-new',
@@ -74,6 +75,7 @@ export class ConsignmentNewComponent {
   shipmentInfo = this.fb.group({
     companyId: [this.auth.companyId,],
     priority: [],
+    incoTerms: [],
     partnerType: [],
     partnerId: [, Validators.required],
     partnerName: [,],
@@ -578,12 +580,11 @@ export class ConsignmentNewComponent {
       this.billing.patchValue(line)
 
     this.patchForm(line);
-    console.log(this.piece)
 
   }
 
-  opendialog(type: any = 'New', data: any, index: any) {
-    const dialogRef = this.dialog.open(PieceDetailsComponent, {
+  opendialog(type: any = 'New', index: any) {
+    const dialogRef = this.dialog.open(ItemDetailsComponent, {
       disableClose: true,
       width: '90%',
       maxWidth: '95%',
@@ -597,15 +598,43 @@ export class ConsignmentNewComponent {
         itemDetailsFormArray.clear();
         result.forEach((item: any) => {
           itemDetailsFormArray.push(this.fb.group({
-            description: item.description
+            codAmount: item.codAmount,
+            declaredValue: item.declaredValue,
+            description: item.description,
+            dimensionUnit: item.dimensionUnit,
+            height: item.height,
+            hsCode: item.hsCode,
+            imageRefId: item.imageRefId,
+            itemCode: item.itemCode,
+            length: item.length,
+            partnerName: item.partnerName,
+            partnerType: item.partnerType,
+            pieceItemId: item.pieceItemId,
+            volume: item.volume,
+            volumeUnit: item.volumeUnit,
+            weight: item.weight,
+            weightUnit: item.weightUnit,
+            width: item.width
           }));
         });
-
-        console.log('Updated itemDetails:', itemDetailsFormArray.value);
-        console.log(this.piece)
       }
     });
   }
+
+  dimension(type: any = 'New', index: any) {
+    const dialogRef = this.dialog.open(DimensionComponent, {
+      disableClose: true,
+      width: '80%',
+      maxWidth: '90%',
+      position: { top: '6.5%', left: '25%' },
+      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index)},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const control = (this.piece.controls.pieceDetails as FormArray).at(index)
+      control.patchValue(result);
+      console.log(this.piece)
+    })}
 
 
   selectedFiles: FileList | null = null;
