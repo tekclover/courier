@@ -21,6 +21,8 @@ export class ConsignmentNewComponent {
 
   activeIndex: number = 0;
   status: any[] = [];
+  paymentType: any[] = [];
+  incoTerms: any[] = [];
 
   disabledCarrier = true;
   disabledSender = true;
@@ -49,6 +51,14 @@ export class ConsignmentNewComponent {
     this.status = [
       { value: '17', label: 'Inactive' },
       { value: '16', label: 'Active' }
+    ];
+    this.paymentType = [
+      { value: 'prepaid', label: 'Prepaid' },
+      { value: 'cod', label: 'COD' }
+    ];
+    this.incoTerms = [
+      { value: 'ddu', label: 'DDU' },
+      { value: 'ddp', label: 'DDP' }
     ];
   }
 
@@ -482,17 +492,52 @@ export class ConsignmentNewComponent {
   }
 
   companyIdList: any[] = [];
-  districtList: any[] = [];
+  districtIdList: any[] = [];
+  productIdList: any[] =[];
+  subProductIdList: any[]= [];
+  serviceTypeIdList: any[] = [];
+  consignmentTypeIdList:any[] = [];
+  loadTypeIdList: any[] = [];
+  countryIdList: any[] = [];
+  cityIdList: any[] = [];
+  provinceIdList: any[] = [];
+
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.district.url
+      this.cas.dropdownlist.setup.district.url,
+      this.cas.dropdownlist.setup.product.url,
+      this.cas.dropdownlist.setup.subProduct.url,
+      this.cas.dropdownlist.setup.serviceType.url,
+      this.cas.dropdownlist.setup.consignmentType.url,
+      this.cas.dropdownlist.setup.loadType.url,
+      this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.city.url,
+      this.cas.dropdownlist.setup.province.url
+
+
+
+
+
     ]).subscribe({
       next: (results: any) => {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
-        this.districtList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
+        this.districtIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
+        this.productIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.product.key);
+        this.subProductIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.subProduct.key);
+        this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
+        this.consignmentTypeIdList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignmentType.key);
+        this.loadTypeIdList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.loadType.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
+        this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
+
+
+
+
+
         this.spin.hide();
       },
       error: (err: any) => {
