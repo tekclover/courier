@@ -515,6 +515,12 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             Console createdConsole = consoleRepository.save(newConsole);
+                            if (createdConsole != null) {
+                                consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
+                                        createdConsole.getLanguageId(), createdConsole.getPartnerId(),
+                                        createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+                                log.info("Console Created <-----------------------> Consignment Event AND Console_Indicator Updated");
+                            }
                             createdConsoleList.add(createdConsole);
                         }
                     }

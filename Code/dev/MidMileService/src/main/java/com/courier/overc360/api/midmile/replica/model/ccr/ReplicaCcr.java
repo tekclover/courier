@@ -99,10 +99,10 @@ public class ReplicaCcr {
     @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
     private String eventText;
 
-    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "EVENT_TIMESTAMP")
     private Date eventTimestamp;
 
-    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "STATUS_TIMESTAMP")
     private Date statusTimestamp;
 
     @Column(name = "NO_OF_PACKAGE_MAWB" , columnDefinition = "nvarchar(50)")

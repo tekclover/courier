@@ -34,7 +34,7 @@ export class CountryComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Country '];
+    const dataToSend = ['Setup', 'Country'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
