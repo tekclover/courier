@@ -36,6 +36,10 @@ export class ProductService {
       +'&companyId=' +this.auth.companyId +'&languageId=' +this.auth.languageId);
   }
 
+  DeleteBulk(obj: any) {
+    return this.http.delete<any>('/overc-idmaster-service/product/delete/list', obj);
+  }
+
   search(obj: any) {
     return this.http.post<any>('/overc-idmaster-service/product/' + 'find',obj);
   }

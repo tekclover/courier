@@ -31,10 +31,10 @@ public class NumberRangeService {
     private ReplicaStatusRepository replicaStatusRepository;
 
     @Autowired
-    private NumberRangeRepository numberRangeRepository;
+    NumberRangeRepository numberRangeRepository;
 
     @Autowired
-    private ReplicaNumberRangeRepository replicaNumberRangeRepository;
+    ReplicaNumberRangeRepository replicaNumberRangeRepository;
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
@@ -194,7 +194,7 @@ public class NumberRangeService {
 //        }
         ReplicaNumberRangeSpecification spec = new ReplicaNumberRangeSpecification(findNumberRange);
         List<ReplicaNumberRange> results = replicaNumberRangeRepository.findAll(spec);
-        log.info("found NumberRangeCodes --> {}", results);
+        log.info("found NumberRangeCodes --> " + results);
         return results;
 
     }

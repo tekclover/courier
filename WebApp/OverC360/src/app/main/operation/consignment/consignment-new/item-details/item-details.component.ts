@@ -10,11 +10,11 @@ import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
 
 @Component({
-  selector: 'app-piece-details',
-  templateUrl: './piece-details.component.html',
-  styleUrl: './piece-details.component.scss'
+  selector: 'app-item-details',
+  templateUrl: './item-details.component.html',
+  styleUrl: './item-details.component.scss'
 })
-export class PieceDetailsComponent {
+export class ItemDetailsComponent {
 
 
   pieceForm = this.fb.group({
@@ -30,7 +30,7 @@ export class PieceDetailsComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
-    public dialogRef: MatDialogRef<PieceDetailsComponent>,
+    public dialogRef: MatDialogRef<ItemDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -93,21 +93,9 @@ export class PieceDetailsComponent {
   }
 
   ngOnInit() {
-    this.fillNew();
+    this.patchForm(this.data.line.value)
   }
 
-
-  // fill(){
-  //   this.data.line.forEach((res: any) => {
-  //     this.itemDetails.push(this.fb.group(res));
-  //   });
-  // }
-
-  fillNew(){
-    this.data.line.value.forEach((res: any) => {
-      this.itemDetails.push(this.fb.group(res));
-    });
-  }
 
   selectedFiles: any[] = [];
   selectFiles(event:any): void {
@@ -120,5 +108,56 @@ export class PieceDetailsComponent {
   calculateVolume(formName: any) {
     const volume = formName.controls.length.value as number * formName.controls.width.value as number * formName.controls.height.value as number;
     formName.controls.volume.patchValue(volume);
+  }
+
+  patchForm(shipmentData: any) {
+    const itemsArray = this.itemForm.get('itemDetails') as FormArray;
+    shipmentData.forEach((piece: any) => {
+      itemsArray.push(this.patchItemDetail(piece));
+    });
+  }
+
+  
+  patchItemDetail(item: any) {
+    return this.fb.group({
+      codAmount: [item.codAmount],
+      declaredValue: [item.declaredValue],
+      description: [item.description],
+      dimensionUnit: [item.dimensionUnit],
+      height: [item.height],
+      hsCode: [item.hsCode],
+      imageRefId: [item.imageRefId],
+      itemCode: [item.itemCode],
+      length: [item.length],
+      partnerName: [item.partnerName],
+      partnerType: [item.partnerType],
+      pieceItemId: [item.pieceItemId],
+      referenceField1: [item.referenceField1],
+      referenceField10: [item.referenceField10],
+      referenceField11: [item.referenceField11],
+      referenceField12: [item.referenceField12],
+      referenceField13: [item.referenceField13],
+      referenceField14: [item.referenceField14],
+      referenceField15: [item.referenceField15],
+      referenceField16: [item.referenceField16],
+      referenceField17: [item.referenceField17],
+      referenceField18: [item.referenceField18],
+      referenceField19: [item.referenceField19],
+      referenceField2: [item.referenceField2],
+      referenceField20: [item.referenceField20],
+      referenceField3: [item.referenceField3],
+      referenceField4: [item.referenceField4],
+      referenceField5: [item.referenceField5],
+      referenceField6: [item.referenceField6],
+      referenceField7: [item.referenceField7],
+      referenceField8: [item.referenceField8],
+      referenceField9: [item.referenceField9],
+    //  referenceImageList: this.patchReferenceImages(item.referenceImageList),
+      volume: [item.volume],
+      volumeUnit: [item.volumeUnit],
+      weight: [item.weight],
+      weightUnit: [item.weightUnit],
+      width: [item.width]
+    });
   }
 }
