@@ -754,16 +754,20 @@ public class ConsoleService {
 
                 Console updatedConsole = consoleRepository.save(dbConsole);
 
-                if ((updatedConsole.getEventCode()).equalsIgnoreCase("8")) {
-                    //Fetch the console records based on houseAirwayBill
-                    List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
+                if(updateConsole.getEventCode() != null) {
+                    if ((updatedConsole.getEventCode()).equalsIgnoreCase("8")) {
+                        //Fetch the console records based on houseAirwayBill
+                        List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
-                    //Check whether all the consoleData's eventcode is equal to 8
-                    boolean allEventCodes = consoleData.stream()
-                            .allMatch(console -> "8".equalsIgnoreCase(console.getEventCode()));
+                        if(!consoleData.isEmpty() && consoleData != null) {
+                            //Check whether all the consoleData's eventcode is equal to 8
+                            boolean allEventCodes = consoleData.stream()
+                                    .allMatch(console -> "8".equalsIgnoreCase(console.getEventCode()));
 
-                    if (allEventCodes) {
-                        ccrService.createConsoleCcr(consoleData, loginUserID);
+                            if (allEventCodes) {
+                                ccrService.createConsoleCcr(consoleData, loginUserID);
+                            }
+                        }
                     }
                 }
 
