@@ -166,7 +166,7 @@ export class ProductComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.productId,lines.subProductId).subscribe({
+    this.service.DeleteBulk(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',

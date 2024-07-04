@@ -54,7 +54,6 @@
                     <p-table [scrollable]="true" scrollHeight="calc(100vh - 31.8rem)" [value]="productArray">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Product Value</th>
                                 <th>Sub Product</th>
                                 <th>Sub Product Name</th>
                                 <th>Sub Product Value</th>
@@ -64,10 +63,6 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
                             <tr>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.productValue }}
-                                    </p>
-                                </td>
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.subProductId }}
                                     </p>
