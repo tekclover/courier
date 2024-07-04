@@ -210,4 +210,23 @@ export class ConsignmentComponent {
   downloadLabel(line:any){
     this.pdf.generatePdfBarocde(line);
   }
+
+  selectedFiles: File | null = null;
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    this.selectedFiles = file; 
+    this.service.uploadConsignment(this.selectedFiles).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+  }
 }

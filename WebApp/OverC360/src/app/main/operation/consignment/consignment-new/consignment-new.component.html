@@ -279,7 +279,7 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="paymentType">
                             <p class="formControlLabel f600 textBlack mb-0">Payment Type</p>
-                            <p-dropdown [options]="paymentType" placeholder="Select" filter="true"
+                            <p-dropdown [options]="paymentType" (onChange)="paymentChange()" placeholder="Select" filter="true"
                                 formControlName="paymentType"
                                 [ngClass]="shipmentInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
@@ -287,7 +287,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode">
+                        <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode" *ngIf="showPaymentTypeFields">
                             <p class="formControlLabel f600 textBlack mb-0">COD Collection Mode</p>
                             <p-dropdown [options]="codCollectionMode" placeholder="Select" filter="true"
                                 formControlName="codCollectionMode"
@@ -297,7 +297,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="codAmount">
+                        <div class="col-3 marginFieldNew borderRadius12" id="codAmount" *ngIf="showPaymentTypeFields">
                             <p class="formControlLabel f600 textBlack mb-0">COD Amount</p>
                             <input maxlength="50" formControlName="codAmount"
                                 [ngClass]="shipmentInfo.get('codAmount')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -306,7 +306,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="codFavorOf">
+                        <div class="col-3 marginFieldNew borderRadius12" id="codFavorOf" *ngIf="showPaymentTypeFields">
                             <p class="formControlLabel f600 textBlack mb-0">COD Favor Of</p>
                             <input maxlength="50" formControlName="codFavorOf"
                                 [ngClass]="shipmentInfo.get('codFavorOf')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"

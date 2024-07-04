@@ -47,6 +47,12 @@ export class ConsignmentService {
     }
     return this.http.post<any>('/doc-storage/multiUpload'+'?location='+ location , formData);
   }
+
+  uploadConsignment(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>('/consignment/Upload', formData);
+  }
 }
 
 

@@ -648,8 +648,8 @@ export class ConsignmentNewComponent {
   imageupload(type: any = 'New', index: any) {
     const dialogRef = this.dialog.open(ImageUploadComponent, {
       disableClose: true,
-      width: '80%',
-      maxWidth: '90%',
+      width: '70%',
+      maxWidth: '82%',
       position: { top: '6.5%', left: '25%' },
       data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray },
     });
@@ -938,6 +938,16 @@ export class ConsignmentNewComponent {
         }
       })
     }
+  }
+
+
+showPaymentTypeFields = false;
+  paymentChange(){
+    const paymentTypeValue = this.shipmentInfo.controls.paymentType.value;
+    if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'cod') {
+     this.showPaymentTypeFields = true;
+    }
+    
   }
 }
 
