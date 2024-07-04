@@ -30,7 +30,8 @@ export class RateParameterComponent {
     private path: PathNameService,
     private service: RateParameterService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -38,7 +39,7 @@ export class RateParameterComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Rate Parameter - List'];
+    const dataToSend = ['Setup', 'Rate Parameter'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -76,21 +77,23 @@ export class RateParameterComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.rateParameterTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.rateParameterTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {
@@ -121,7 +124,7 @@ export class RateParameterComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -138,7 +141,7 @@ export class RateParameterComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

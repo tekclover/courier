@@ -515,6 +515,12 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             Console createdConsole = consoleRepository.save(newConsole);
+                            if (createdConsole != null) {
+                                consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
+                                        createdConsole.getLanguageId(), createdConsole.getPartnerId(),
+                                        createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+                                log.info("Console Created <-----------------------> Consignment Event AND Console_Indicator Updated");
+                            }
                             createdConsoleList.add(createdConsole);
                         }
                     }
@@ -532,7 +538,10 @@ public class ConsoleService {
                 Double currentSubGroupValue = 0.0;
 
                 for (AddConsole console : smallerGroups) {
-                    Double freightCharge = Double.parseDouble(String.valueOf(console.getFreightCharges() != null));
+                    Double freightCharge = null;
+                    if(console.getFreightCharges() != null) {
+                         freightCharge = Double.parseDouble(console.getFreightCharges());
+                    }
                     IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getFreightCurrency());
 
                     Double toCurrencyValue = 0.0;
@@ -661,68 +670,68 @@ public class ConsoleService {
         return createdConsoleList;
     }
 
-    // /**
-    //     * Create Console
-    //     *
-    //     * @param addConsoleList
-    //     * @param loginUserID
-    //     * @return
-    //     * @throws IllegalAccessException
-    //     * @throws InvocationTargetException
-    //     * @throws IOException
-    //     * @throws CsvException
-    //     */
-    //    @Transactional
-    //    public List<Console> createConsole(List<AddConsole> addConsoleList, String loginUserID)
-    //            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-    //        try {
-    //            List<Console> createdConsoleList = new ArrayList<>();
-    //
-    //            for (AddConsole addConsole : addConsoleList) {
-    //
-    //                boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
-    //                        addConsole.getLanguageId(), addConsole.getCompanyId(),
-    //                        addConsole.getPartnerId(), addConsole.getMasterAirwayBill(),
-    //                        addConsole.getHouseAirwayBill()) == 1;
-    //                if (duplicateConsole) {
-    //                    throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addConsole.getHouseAirwayBill());
-    //                }
-    //
-    //                Console newConsole = new Console();
-    //                BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
-    //
-    //                String STATUS_ID = "2 - Console Created";
-    //
-    //                String NUM_RAN_OBJ = "CONSOLE_ID";
-    //                String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-    //                log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
-    //                newConsole.setConsoleId(CONSOLE_ID);
-    //
-    //                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
-    //                        addConsole.getLanguageId(), addConsole.getCompanyId());
-    //
-    //                if (lAndCDesc != null) {
-    //                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
-    //                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
-    //                }
-    //                newConsole.setStatusId(STATUS_ID);
-    //                newConsole.setDeletionIndicator(0L);
-    //                newConsole.setCreatedBy(loginUserID);
-    //                newConsole.setCreatedOn(new Date());
-    //                newConsole.setUpdatedBy(loginUserID);
-    //                newConsole.setUpdatedOn(new Date());
-    //
-    //                Console createdConsole = consoleRepository.save(newConsole);
-    //                createdConsoleList.add(createdConsole);
-    //            }
-    //            return createdConsoleList;
-    //        } catch (Exception e) {
-    //            // Error Log
-    //            createConsoleLog2(addConsoleList, e.toString());
-    //            e.printStackTrace();
-    //            throw new RuntimeException(e);
-    //        }
-    //    }
+     /**
+         * Create Console
+         *
+         * @param addConsoleList
+         * @param loginUserID
+         * @return
+         * @throws IllegalAccessException
+         * @throws InvocationTargetException
+         * @throws IOException
+         * @throws CsvException
+         */
+        @Transactional
+        public List<Console> createConsoleNormal(List<AddConsole> addConsoleList, String loginUserID)
+                throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+            try {
+                List<Console> createdConsoleList = new ArrayList<>();
+
+                for (AddConsole addConsole : addConsoleList) {
+
+                    boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
+                            addConsole.getLanguageId(), addConsole.getCompanyId(),
+                            addConsole.getPartnerId(), addConsole.getMasterAirwayBill(),
+                            addConsole.getHouseAirwayBill()) == 1;
+                    if (duplicateConsole) {
+                        throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addConsole.getHouseAirwayBill());
+                    }
+
+                    Console newConsole = new Console();
+                    BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
+
+                    String STATUS_ID = "2 - Console Created";
+
+                    String NUM_RAN_OBJ = "CONSOLEID";
+                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
+                    newConsole.setConsoleId(CONSOLE_ID);
+
+                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                            addConsole.getLanguageId(), addConsole.getCompanyId());
+
+                    if (lAndCDesc != null) {
+                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                    }
+                    newConsole.setStatusId(STATUS_ID);
+                    newConsole.setDeletionIndicator(0L);
+                    newConsole.setCreatedBy(loginUserID);
+                    newConsole.setCreatedOn(new Date());
+                    newConsole.setUpdatedBy(loginUserID);
+                    newConsole.setUpdatedOn(new Date());
+
+                    Console createdConsole = consoleRepository.save(newConsole);
+                    createdConsoleList.add(createdConsole);
+                }
+                return createdConsoleList;
+            } catch (Exception e) {
+                // Error Log
+                createConsoleLog2(addConsoleList, e.toString());
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
 
 
     /**

@@ -17,22 +17,30 @@ import { NotificationService } from './notification.service';
   styleUrl: './notification.component.scss'
 })
 export class NotificationComponent {
-  
+
 
   notificationTable: any[] = [];
   selectedNotification: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: NotificationService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: NotificationService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Notification - List'];
+    const dataToSend = ['Setup', 'Notification'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -41,9 +49,9 @@ export class NotificationComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'notificationId', header: 'Notification ID' },
       { field: 'notificationText', header: 'Description' },
-      { field: 'companyName', header: 'Company' },
       { field: 'productName', header: 'Product' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'serviceTypeText', header: 'Service Type Name' },
@@ -73,26 +81,26 @@ export class NotificationComponent {
       { field: 'referenceField10', header: 'Reference Field 10' },
       { field: 'updatedBy', header: 'Updated By' },
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
-
-
     ];
   }
-  
+
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.notificationTable = res;
-        this.spin.hide();
-      }, error: (err: any) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.notificationTable = res;
+          this.spin.hide();
+        }, error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
@@ -107,7 +115,7 @@ export class NotificationComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -119,7 +127,7 @@ export class NotificationComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedNotification.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedNotification[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/notification-new/' + paramdata]);
@@ -128,7 +136,7 @@ export class NotificationComponent {
 
   deleteDialog() {
     if (this.selectedNotification.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
@@ -148,11 +156,11 @@ export class NotificationComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.notificationId).subscribe({
-      next: (res: any) =>{
+      next: (res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.notificationId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err: any) => {
+      }, error: (err: any) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -162,19 +170,19 @@ export class NotificationComponent {
   downloadExcel() {
     const exportData = this.notificationTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Notification');
+    this.cs.exportAsExcel(exportData, 'Notification');
   }
 }

@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,6 +73,14 @@ public class ConsignmentEntity {
     private String flightNo;
 
     private String flightName;
+
+    private String primaryDo;
+
+    private String secondaryDo;
+
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
 
     private Date flightArrivalTime;
 

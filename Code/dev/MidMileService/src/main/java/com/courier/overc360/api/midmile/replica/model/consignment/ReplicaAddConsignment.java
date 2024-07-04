@@ -4,6 +4,7 @@ package com.courier.overc360.api.midmile.replica.model.consignment;
 import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +33,8 @@ public class ReplicaAddConsignment {
 
     private Long consignmentId;
 
+    private String paymentType;
+
     private String shipperName;
 
     private String noOfPieceHawb;
@@ -53,6 +56,10 @@ public class ReplicaAddConsignment {
     private String languageDescription;
 
     private String lineNo;
+
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
 
     private String flightNo;
 
@@ -183,6 +190,10 @@ public class ReplicaAddConsignment {
     private String volume;
 
     private String volumeUnit;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String upstreamCreationTime;
 

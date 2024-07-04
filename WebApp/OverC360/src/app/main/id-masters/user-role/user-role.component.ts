@@ -40,7 +40,7 @@ export class UserRoleComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'User Role - List'];
+    const dataToSend = ['Setup', 'User Role '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -121,7 +121,7 @@ export class UserRoleComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedUserRole.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedUserRole[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/userrole-new/' + paramdata]);
@@ -130,7 +130,7 @@ export class UserRoleComponent {
 
   deleteDialog() {
     if (this.selectedUserRole.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

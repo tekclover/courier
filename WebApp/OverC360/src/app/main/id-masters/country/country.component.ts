@@ -34,7 +34,7 @@ export class CountryComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Country - List'];
+    const dataToSend = ['Setup', 'Country'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -74,20 +74,23 @@ export class CountryComponent {
   }
   
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.countryTable = res;
-        this.spin.hide();
-      }, error: (err: any) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.countryTable = res;
+          this.spin.hide();
+        }, error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 500);
+
   }
 
   onChange() {
@@ -114,7 +117,7 @@ export class CountryComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedCountry.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCountry[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/country-new/' + paramdata]);
@@ -123,7 +126,7 @@ export class CountryComponent {
 
   deleteDialog() {
     if (this.selectedCountry.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

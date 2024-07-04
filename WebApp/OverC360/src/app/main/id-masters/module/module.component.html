@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Module - List</p>
+        <p class="componentHeader f600 mb-0">Module </p>
         <div class="d-flex justify-content-between align-items-center">
             <img type="button" (click)="openCrud('Edit')" src="./assets/common/edit.png" alt="" srcset="" style="margin: 0 17px; height: 1.5rem;">
             <img type="button" (click)="downloadExcel()" src="./assets/common/download.png" alt="" srcset="" style="margin: 0 17px; height: 1.5rem;">
@@ -28,7 +28,7 @@
     <div class="tableProperties">
         <p-table #moduleTag [columns]="cols" [value]="moduleTable" class="custom-table" [scrollable]="true"
             selectionMode="single" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100"
-            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
+            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>

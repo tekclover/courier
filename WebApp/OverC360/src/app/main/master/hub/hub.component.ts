@@ -38,7 +38,7 @@ export class HubComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Hub - List'];
+    const dataToSend = ['Master', 'Hub '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -134,7 +134,7 @@ export class HubComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -151,7 +151,7 @@ export class HubComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

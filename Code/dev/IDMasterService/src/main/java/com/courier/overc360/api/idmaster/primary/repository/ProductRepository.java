@@ -17,10 +17,13 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     Optional<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);
 
+    Product findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(
+            String languageId, String companyId, String productId, String subProductId, Long deletionIndicator);
+
     // Updating productName in Consignor & Customer Tables using Stored Procedure
     @Transactional
     @Procedure(procedureName = "product_desc_update_proc")
-    void productDescUpdateProc(
+    void updateProductDescProc(
             @Param(value = "languageId") String languageId,
             @Param(value = "companyId") String companyId,
             @Param(value = "subProductId") String subProductId,

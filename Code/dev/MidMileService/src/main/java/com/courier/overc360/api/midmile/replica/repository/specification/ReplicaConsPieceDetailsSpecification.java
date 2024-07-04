@@ -40,6 +40,14 @@ public class ReplicaConsPieceDetailsSpecification implements Specification<Repli
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("masterAirwayBill");
             predicates.add(group.in(findConsignment.getMasterAirwayBill()));
         }
+        if (findConsignment.getPartnerHouseAirwayBill() != null && !findConsignment.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findConsignment.getPartnerHouseAirwayBill()));
+        }
+        if (findConsignment.getPartnerMasterAirwayBill() != null && !findConsignment.getPartnerMasterAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findConsignment.getPartnerMasterAirwayBill()));
+        }
         if (findConsignment.getHouseAirwayBill() != null && !findConsignment.getHouseAirwayBill().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("houseAirwayBill");
             predicates.add(group.in(findConsignment.getHouseAirwayBill()));

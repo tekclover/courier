@@ -62,6 +62,10 @@ public class Ccr {
 
     private Date statusTimestamp;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String volume;
 
     private String finalDestination;

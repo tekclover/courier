@@ -25,19 +25,20 @@ export class ProvinceComponent {
 
   constructor(
     private messageService: MessageService,
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
     private service: ProvinceService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Province - List'];
+    const dataToSend = ['Setup', 'Province '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -46,10 +47,10 @@ export class ProvinceComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
+      { field: 'countryName', header: 'Country' },
       { field: 'provinceId', header: 'Province ID' },
       { field: 'provinceName', header: 'Province Name' },
-      { field: 'countryName', header: 'Country ' },
-      { field: 'companyName', header: 'Company ' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -77,24 +78,26 @@ export class ProvinceComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.provinceTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.provinceTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
-    const choosen = this.selectedProvince[this.selectedProvince.length -1];
+    const choosen = this.selectedProvince[this.selectedProvince.length - 1];
     this.selectedProvince.length = 0;
     this.selectedProvince.push(choosen);
   }
@@ -117,7 +120,7 @@ export class ProvinceComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedProvince.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedProvince[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/province-new/' + paramdata]);
@@ -126,7 +129,7 @@ export class ProvinceComponent {
 
   deleteDialog() {
     if (this.selectedProvince.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
@@ -144,13 +147,13 @@ export class ProvinceComponent {
     })
   }
   deleterecord(lines: any) {
-    this.spin.show(); 
+    this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.provinceId + lines.languageId + lines.countryId + lines.companyId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }

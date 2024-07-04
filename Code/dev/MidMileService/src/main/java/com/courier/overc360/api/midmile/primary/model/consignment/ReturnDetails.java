@@ -19,8 +19,6 @@ public class ReturnDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RETURN_ID")
     private Long returnId;
-    @Column(name = "RETURN_DETAILS")
-    private String returnDetails;
 
     @Column(name = "ADDRESS_HUB_CODE", columnDefinition = "nvarchar(50)")
     private String addressHubCode;

@@ -90,13 +90,19 @@ public class ReplicaCcr {
     @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
     private String eventCode;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
     private String eventText;
 
-    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "EVENT_TIMESTAMP")
     private Date eventTimestamp;
 
-    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "STATUS_TIMESTAMP")
     private Date statusTimestamp;
 
     @Column(name = "NO_OF_PACKAGE_MAWB" , columnDefinition = "nvarchar(50)")

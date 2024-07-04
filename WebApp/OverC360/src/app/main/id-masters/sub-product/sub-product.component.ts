@@ -37,7 +37,7 @@ export class SubProductComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Sub Product - List'];
+    const dataToSend = ['Setup', 'Sub Product '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -46,9 +46,10 @@ export class SubProductComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'subProductName', header: 'Sub Product Name' },
-      { field: 'companyName', header: 'Company' },
+      { field: 'subProductValue', header: 'Sub Product Value' },
       { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
@@ -76,22 +77,24 @@ export class SubProductComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        res = this.cs.removeDuplicatesFromArrayList(res , 'subProductId');
-        this.subProductTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          res = this.cs.removeDuplicatesFromArrayList(res, 'subProductId');
+          this.subProductTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {
@@ -122,7 +125,7 @@ export class SubProductComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -139,7 +142,7 @@ export class SubProductComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

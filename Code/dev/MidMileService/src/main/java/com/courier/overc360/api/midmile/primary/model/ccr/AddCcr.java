@@ -59,6 +59,10 @@ public class AddCcr {
 
     private String tareWeight;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String manifestedQuantity;
 
     private String landedQuantity;

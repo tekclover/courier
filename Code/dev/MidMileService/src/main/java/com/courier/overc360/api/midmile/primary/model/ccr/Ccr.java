@@ -78,6 +78,12 @@ public class Ccr {
     @Column(name = "STATUS_ID" , columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
@@ -87,10 +93,10 @@ public class Ccr {
     @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
     private String eventText;
 
-    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "EVENT_TIMESTAMP")
     private Date eventTimestamp;
 
-    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "STATUS_TIMESTAMP")
     private Date statusTimestamp;
 
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")

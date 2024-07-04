@@ -17,8 +17,6 @@ import { StatusService } from './status.service';
   templateUrl: './status.component.html',
   styleUrl: './status.component.scss'
 })
-
-
 export class StatusComponent {
 
   statusTable: any[] = [];
@@ -26,15 +24,23 @@ export class StatusComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: StatusService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: StatusService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Status - List'];
+    const dataToSend = ['Setup', 'Status '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -44,13 +50,13 @@ export class StatusComponent {
   callTableHeader() {
     this.cols = [
       { field: 'statusId', header: 'Status ID' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'statusDescription', header: 'Description' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'languageId', header: 'Language Id' },
+      { field: 'languageDescription', header: 'Language' },
+      { field: 'languageId', header: 'Language ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -66,106 +72,108 @@ export class StatusComponent {
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
-  
+
   initialCall() {
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.statusTable = res;
+          this.spin.hide();
+        }, error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
+  }
+
+
+  onChange() {
+    const choosen = this.selectedStatus[this.selectedStatus.length - 1];
+    this.selectedStatus.length = 0;
+    this.selectedStatus.push(choosen);
+  }
+
+  customTable() {
+    const dialogRef = this.dialog.open(CustomTableComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { target: this.cols, source: this.target, },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedStatus[0]);
+      }
+    });
+  }
+
+  openCrud(type: any = 'New', linedata: any = null): void {
+    if (this.selectedStatus.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedStatus[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/idMaster/status-new/' + paramdata]);
+    }
+  }
+
+  deleteDialog() {
+    if (this.selectedStatus.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: this.selectedStatus, module: 'Status', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedStatus[0]);
+      }
+    });
+  }
+  deleterecord(lines: any) {
     this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
+    this.service.Delete(lines.statusId).subscribe({
       next: (res: any) => {
-        console.log(res);
-        this.statusTable = res;
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.statusId + ' deleted successfully' });
         this.spin.hide();
+        this.initialCall();
       }, error: (err: any) => {
-        this.spin.hide();
         this.cs.commonerrorNew(err);
+        this.spin.hide();
       }
     })
   }
 
+  downloadExcel() {
+    const exportData = this.statusTable.map(item => {
+      const exportItem: any = {};
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
 
-onChange() {
-  const choosen = this.selectedStatus[this.selectedStatus.length - 1];
-  this.selectedStatus.length = 0;
-  this.selectedStatus.push(choosen);
-}
-
-customTable() {
-  const dialogRef = this.dialog.open(CustomTableComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '80%',
-    position: { top: '6.5%', left: '30%' },
-    data: { target: this.cols, source: this.target,},
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedStatus[0]);
-    }
-  });
-}
-
-openCrud(type: any = 'New', linedata: any = null): void {
-  if (this.selectedStatus.length === 0 && type != 'New') {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-  } else {
-    let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedStatus[0] : linedata, pageflow: type });
-    this.router.navigate(['/main/idMaster/status-new/' + paramdata]);
-  }
-}
-
-deleteDialog() {
-  if (this.selectedStatus.length === 0) {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-    return;
-  }
-  const dialogRef = this.dialog.open(DeleteComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '82%',
-    position: { top: '6.5%', left: '30%' },
-    data: { line: this.selectedStatus, module: 'Status', body: 'This action cannot be undone. All values associated with this field will be lost.' },
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedStatus[0]);
-    }
-  });
-}
-deleterecord(lines: any) {
-  this.spin.show();
-  this.service.Delete(lines.statusId).subscribe({
-    next: (res: any) =>{
-      this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.statusId + ' deleted successfully' });
-      this.spin.hide();
-      this.initialCall();
-    },error: (err: any) => {
-      this.cs.commonerrorNew(err);
-      this.spin.hide();
-    }
-  })
-}
-
-downloadExcel() {
-  const exportData = this.statusTable.map(item => {
-    const exportItem: any = {};
-   this.cols.forEach(col => {
-    if(col.format == 'date'){
-      exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-    }else{
-      exportItem[col.field] = item[col.field];
-    }
-     
+      });
+      return exportItem;
     });
-    return exportItem;
-  });
 
-  // Call ExcelService to export data to Excel
- this.cs.exportAsExcel(exportData, 'Status');
-}
+    // Call ExcelService to export data to Excel
+    this.cs.exportAsExcel(exportData, 'Status');
+  }
 }
 
 

@@ -38,7 +38,7 @@ export class OpstatusComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'Op Status - List'];
+    const dataToSend = ['Master', 'Op Status '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -114,7 +114,7 @@ export class OpstatusComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedOpstatus.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedOpstatus[0] : linedata, pageflow: type });
       this.router.navigate(['/main/master/opstatus-new/' + paramdata]);
@@ -123,7 +123,7 @@ export class OpstatusComponent {
 
   deleteDialog() {
     if (this.selectedOpstatus.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

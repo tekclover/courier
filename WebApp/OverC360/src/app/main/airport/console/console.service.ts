@@ -21,6 +21,9 @@ export class ConsoleService {
   Update(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/console/update/list', obj);
   }
+  Transfer(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/console/transfer', obj);
+  }
 
   Delete(obj: any) {
     return this.http.post<any>('/overc-midmile-service/console/delete/list', obj);

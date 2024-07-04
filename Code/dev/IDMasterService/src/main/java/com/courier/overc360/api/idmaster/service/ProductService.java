@@ -236,6 +236,25 @@ public class ProductService {
         }
     }
 
+    // Update Product Name using Stored Procedure
+    private void updateProductDescSP(String languageId, String companyId, String subProductId, String productId,
+                                     UpdateProduct updateProduct, Product dbProduct) {
+        if (updateProduct.getProductName() != null) {
+            if (updateProduct.getProductName().isBlank()) {
+                throw new BadRequestException("Product Name cannot be blank");
+            }
+            String newProductDesc = updateProduct.getProductName();
+            boolean isProductNameChanged = !dbProduct.getProductName().equalsIgnoreCase(updateProduct.getProductName());
+            if (isProductNameChanged) {
+                log.info("new Product Name --> {}", newProductDesc);
+                String oldProductDesc = dbProduct.getProductName();
+
+                // Updating productName in Consignor & Customer Tables using Stored Procedure
+                productRepository.updateProductDescProc(languageId, companyId, subProductId, productId, oldProductDesc, newProductDesc);
+            }
+        }
+    }
+
     /**
      * Update Product
      *
@@ -257,24 +276,6 @@ public class ProductService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Product dbProduct = getProduct(languageId, companyId, subProductId, productId, subProductValue);
-
-//            if (updateProduct.getProductName() != null) {
-//                if (updateProduct.getProductName().isBlank()) {
-//                    throw new BadRequestException("Product Name cannot be blank");
-//                }
-//                boolean isProductNameChanged = !dbProduct.getProductName().equalsIgnoreCase(updateProduct.getProductName());
-//                if (isProductNameChanged) {
-//                    String oldProductDesc = dbProduct.getProductName();
-//                    BeanUtils.copyProperties(updateProduct, dbProduct, CommonUtils.getNullPropertyNames(updateProduct));
-//                    dbProduct.setUpdatedBy(loginUserID);
-//                    dbProduct.setUpdatedOn(new Date());
-//                    Product updatedProduct = productRepository.save(dbProduct);
-//
-//                    // Updating productName in Consignor & Customer Tables using Stored Procedure
-//                    productRepository.productDescUpdateProc(languageId, companyId, subProductId, productId, oldProductDesc, updateProduct.getProductName());
-//                    return updatedProduct;
-//                }
-//            }
             BeanUtils.copyProperties(updateProduct, dbProduct, CommonUtils.getNullPropertyNames(updateProduct));
             if (updateProduct.getStatusId() != null && !updateProduct.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateProduct.getStatusId());
@@ -292,6 +293,18 @@ public class ProductService {
         }
     }
 
+//    public List<Product> updateProductBulk(List<UpdateProduct> updateProductList, String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<Product> updatedProductList = new ArrayList<>();
+//        for (UpdateProduct updateProduct : updateProductList) {
+//            Product dbProduct = updateProduct(updateProduct.getLanguageId(), updateProduct.getCompanyId(),
+//                    updateProduct.getSubProductId(), updateProduct.getProductId(), updateProduct.getSubProductValue(), updateProduct, loginUserID);
+//            updatedProductList.add(dbProduct);
+//        }
+//        return updatedProductList;
+//    }
+
     /**
      * Update Products - bulk
      *
@@ -303,16 +316,43 @@ public class ProductService {
      * @throws IllegalAccessException
      * @throws CsvException
      */
+    @Transactional
     public List<Product> updateProductBulk(List<UpdateProduct> updateProductList, String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        try {
+            List<Product> updatedProductList = new ArrayList<>();
+            for (UpdateProduct updateProduct : updateProductList) {
 
-        List<Product> updatedProductList = new ArrayList<>();
-        for (UpdateProduct updateProduct : updateProductList) {
-            Product dbProduct = updateProduct(updateProduct.getLanguageId(), updateProduct.getCompanyId(),
-                    updateProduct.getSubProductId(), updateProduct.getProductId(), updateProduct.getSubProductValue(), updateProduct, loginUserID);
-            updatedProductList.add(dbProduct);
+                Product dbProduct = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(updateProduct.getLanguageId(), updateProduct.getCompanyId(),
+                        updateProduct.getProductId(), updateProduct.getSubProductId(), 0L);
+                if (dbProduct != null) {
+                    productRepository.delete(dbProduct);
+                }
+
+                Product newProduct = new Product();
+                BeanUtils.copyProperties(updateProduct, newProduct, CommonUtils.getNullPropertyNames(updateProduct));
+
+                if (updateProduct.getStatusId() != null && !updateProduct.getStatusId().isEmpty()) {
+                    String statusDesc = replicaStatusRepository.getStatusDescription(updateProduct.getStatusId());
+                    if (statusDesc != null) {
+                        newProduct.setStatusDescription(statusDesc);
+                    }
+                }
+                newProduct.setCreatedBy(loginUserID);
+                newProduct.setCreatedOn(new Date());
+                newProduct.setUpdatedBy(loginUserID);
+                newProduct.setUpdatedOn(new Date());
+                Product product = productRepository.save(newProduct);
+                log.info("Created Product --> {}", product);
+                updatedProductList.add(product);
+            }
+            return updatedProductList;
+        } catch (Exception e) {
+            // Error Log
+            createProductLog4(updateProductList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return updatedProductList;
     }
 
     /**
@@ -393,7 +433,7 @@ public class ProductService {
     public List<ReplicaProduct> findProduct(FindProduct findProduct) throws ParseException {
         ReplicaProductSpecification spec = new ReplicaProductSpecification(findProduct);
         List<ReplicaProduct> results = replicaProductRepository.findAll(spec);
-        log.info("found Products --> " + results);
+        log.info("found Products --> {}", results);
         return results;
     }
 
@@ -463,6 +503,26 @@ public class ProductService {
             errorLog.setReferenceField1(addProduct.getSubProductId());
             errorLog.setReferenceField2(addProduct.getSubProductValue());
             errorLog.setMethod("Exception thrown in createProduct");
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createProductLog4(List<UpdateProduct> updateProductList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (UpdateProduct updateProduct : updateProductList) {
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(updateProduct.getLanguageId());
+            errorLog.setCompanyId(updateProduct.getCompanyId());
+            errorLog.setRefDocNumber(updateProduct.getProductId());
+            errorLog.setReferenceField1(updateProduct.getSubProductId());
+            errorLog.setReferenceField2(updateProduct.getSubProductValue());
+            errorLog.setMethod("Exception thrown in updateProduct");
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);

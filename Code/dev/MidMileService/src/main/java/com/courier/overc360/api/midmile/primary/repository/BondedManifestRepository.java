@@ -80,6 +80,7 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
     @Modifying
     @Query(value = "UPDATE tblconsignment_entity " +
             "SET event_code = 2, " +
+            "MANIFEST_INDICATOR = 1, " +
             "event_text = 'Bonded Manifest Created', " +
             "EVENT_TIMESTAMP = getDate() " +
             "WHERE c_id = :companyId " +

@@ -52,6 +52,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
     @Modifying
     @Query(value = "UPDATE tblconsignment_entity " +
             "SET event_code = 4, " +
+            "SET CONSOLE_INDICATOR = 1, " +
             "event_text = 'Console Created', " +
             "EVENT_TIMESTAMP = getDate() " +
             "WHERE c_id = :companyId " +
@@ -66,4 +67,19 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                                @Param("partnerId") String partnerId,
                                                @Param("houseAirwayBill") String houseAirwayBill,
                                                @Param("masterAirwayBill") String masterAirwayBill);
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = "UPDATE tblconsignment_entity " +
+//            "SET CONSOLE_INDICATOR = 1 WHERE c_id = :companyId " +
+//            "AND lang_id = :languageId " +
+//            "AND partner_id = :partnerId " +
+//            "AND house_airway_bill = :houseAirwayBill " +
+//            "AND master_airway_bill = :masterAirwayBill " +
+//            "AND is_deleted = 0 ", nativeQuery = true)
+//    public void updateConsoleIndicator(@Param("companyId") String companyId,
+//                                       @Param("languageId") String languageId,
+//                                       @Param("partnerId") String partnerId,
+//                                       @Param("houseAirwayBill") String houseAirwayBill,
+//                                       @Param("masterAirwayBill") String masterAirwayBill);
 }

@@ -73,6 +73,8 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-tabview-nav-link:hover{text-decoration: none !important;color: var(--black);}
 .p-tabview-nav-link{text-decoration: none !important; color:var(--black);}
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{color: var(--overcOrange) !important; border-color: var(--overcOrange) !important;}
+.p-datepicker .p-datepicker-header{padding: 0px !important;}
+.p-datepicker table td{padding: 0px !important;}
 // .p-picklist .p-picklist-list-wrapper{background-color: var(--black) !important; color: var(--white) !important; border: 0px; border-right: 1px solid #e0e0e0; border-radius: 0px;}
 // .p-picklist .p-picklist-header{color: var(--white);}
 // .p-picklist .p-picklist-list .p-picklist-item{color: var(--white);}
@@ -80,7 +82,14 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 // .p-picklist .p-picklist-list .p-picklist-item:not(.p-highlight):hover{color: var(--overcOrange) !important;}
 // .p-picklist .p-picklist-list .p-picklist-item:first-child{background-color: var(--black)}
 // .p-picklist .p-picklist-list .p-picklist-item:first-child:hover{background-color: var(--white); color: var(--overcOrange) !important;}
-
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text{
+    font-family: Nunito !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 20.8px !important;
+    text-align: left !important;
+  }
+  
 .p-picklist .p-picklist-list{height: calc(100vh - 22rem); overflow-y: scroll;}
 .p-toast .p-toast-message .p-toast-message-content .p-toast-message-text{overflow: hidden;}
 .p-calendar{width: 100% !important;}

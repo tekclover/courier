@@ -15,4 +15,7 @@ public interface ReplicaCurrencyExchangeRateRepository extends JpaRepository<Rep
     Optional<ReplicaCurrencyExchangeRate> findByLanguageIdAndCompanyIdAndFromCurrencyIdAndToCurrencyIdAndDeletionIndicator
             (String languageId, String companyId, String fromCurrencyId, String toCurrencyId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndFromCurrencyIdAndToCurrencyIdAndDeletionIndicator(
+            String languageId, String companyId, String fromCurrencyId, String toCurrencyId, Long deletionIndicator);
+
 }

@@ -2,6 +2,8 @@ package com.courier.overc360.api.midmile.primary.model.consignment;
 
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
 import lombok.Data;
+
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,6 +72,10 @@ public class UpdateConsignment {
     private String countryOfSupply;
 
     private String remark;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String invoiceAmount;
 

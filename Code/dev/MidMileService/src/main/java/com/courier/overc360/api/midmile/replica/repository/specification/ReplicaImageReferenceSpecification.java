@@ -52,6 +52,14 @@ public class ReplicaImageReferenceSpecification implements Specification<Replica
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("pieceItemId");
             predicates.add(group.in(findImageReference.getPieceItemId()));
         }
+        if (findImageReference.getPartnerHouseAirwayBill() != null && !findImageReference.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findImageReference.getPartnerHouseAirwayBill()));
+        }
+        if (findImageReference.getPartnerMasterAirwayBill() != null && !findImageReference.getPartnerMasterAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findImageReference.getPartnerMasterAirwayBill()));
+        }
         if (findImageReference.getImageRefId() != null && !findImageReference.getImageRefId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("imageRefId");
             predicates.add(group.in(findImageReference.getImageRefId()));
