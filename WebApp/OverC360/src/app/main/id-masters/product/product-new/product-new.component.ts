@@ -9,6 +9,8 @@ import { ProductService } from '../product.service';
 import { AuthService } from '../../../../core/Auth/auth.service';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductValueComponent } from '../product-value/product-value.component';
 
 @Component({
   selector: 'app-product-new',
@@ -30,7 +32,8 @@ export class ProductNewComponent {
     private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
-    private auth: AuthService
+    private auth: AuthService,
+    private dialog: MatDialog,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -47,10 +50,12 @@ export class ProductNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    subProductId: [, Validators.required],
+    subProductId: [],
     subProductName: [],
+    subProductValue: [],
     productId: [],
     productName: [, Validators.required],
+    productValue: [],
     remark: [],
     statusId: ["16", ],
     statusDescription: [],
@@ -106,26 +111,30 @@ export class ProductNewComponent {
       this.form.controls.createdOn.disable();
     }
     else {
-      this.spin.show();
-      let obj: any = {};
-      obj.numberRangeObject = ['PRODUCT'];
-      this.numberRangeService.search(obj).subscribe({
-        next: (res: any) => {
-          if (res.length > 0) {
-            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
-            this.form.controls.productId.patchValue(this.nextNumber);
-            this.numCondition = 'true';
-            this.form.controls.referenceField10.patchValue(this.numCondition);
-            this.form.controls.productId.disable();
-          }
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
+      this.checkNumberRange();
     }
+  }
+
+  checkNumberRange(){
+    this.spin.show();
+    let obj: any = {};
+    obj.numberRangeObject = ['PRODUCT'];
+    this.numberRangeService.search(obj).subscribe({
+      next: (res: any) => {
+        if (res.length > 0) {
+          this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+          this.form.controls.productId.patchValue(this.nextNumber);
+          this.numCondition = 'true';
+          this.form.controls.referenceField10.patchValue(this.numCondition);
+          this.form.controls.productId.disable();
+        }
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   languageIdList: any[] = [];
@@ -150,14 +159,30 @@ export class ProductNewComponent {
         this.cs.commonerrorNew(err);
       },
     });
-
   }
 
+  productArray: any[] = [];
 
-  fill(line: any) {
-    this.form.patchValue(line);
-    this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
-    this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+  add() {
+    const dialogRef = this.dialog.open(ProductValueComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: this.productArray.length + 1,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.productArray.push(result);
+        console.log(this.productArray)
+      }
+    });
+  }
+
+  removeItem(index: number) {
+    this.productArray.splice(index, 1);
   }
 
   save() {
@@ -174,7 +199,7 @@ export class ProductNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.UpdateBulk(this.productArray).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
@@ -185,14 +210,22 @@ export class ProductNewComponent {
           this.router.navigate(['/main/idMaster/product']);
           this.spin.hide();
         },
-        error: (err) => {
+        error: (err) => { 
           this.spin.hide();
           this.cs.commonerrorNew(err);
         },
       });
     } else {
       this.spin.show();
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.productArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.productId = this.form.controls.productId.value;
+        x.productName = this.form.controls.productName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
+      this.service.CreateBulk(this.productArray).subscribe({
         next: (res) => {
           if (res) {
             this.messageService.add({
@@ -211,5 +244,52 @@ export class ProductNewComponent {
         },
       });
     }
+  }
+
+  fill(line: any) {
+    this.form.patchValue(line);
+    this.spin.show();
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.subProductId = line.subProductId;
+    obj.productId = line.productId;
+    // obj.referenceField1 = line.referenceField1;
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.productArray = res;
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+    this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
+    this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+  }
+
+  
+
+  editItem(data: any,i: any): void {
+    const dialogRef = this.dialog.open(ProductValueComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: {pageflow: data,code:this.productArray[i]},
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.productArray.splice(i,0);
+        this.productArray.splice(i, 1, result);
+        console.log(result);
+      //this.form.patchValue(result);
+      this.productArray = [...this.productArray]
+  
+  }});
   }
 }

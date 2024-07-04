@@ -7,13 +7,16 @@
   padding: 12px 17px 11px;
   background-color: var(--white);
 }
+
 .borderCircle {
   border: solid 1.5px var(--black);
 }
+
 .marginFieldNew {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
-.scrollNew {
-  height: calc(100vh - 24rem);
-  overflow-y: scroll;
+
+.img-icon {
+  gap: 60px;
 }
+

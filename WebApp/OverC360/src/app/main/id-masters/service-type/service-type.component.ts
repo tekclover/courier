@@ -17,7 +17,7 @@ import { ServiceTypeService } from '../service-type/service-type.service';
   styleUrl: './service-type.component.scss'
 })
 export class ServiceTypeComponent {
-  
+
   serviceTypeTable: any[] = [];
   selectedServiceType: any[] = [];
   cols: any[] = [];
@@ -40,10 +40,10 @@ export class ServiceTypeComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'serviceTypeId', header: 'Service Type ID' },
       { field: 'serviceTypeText', header: 'Service Type Name' },
-      { field: 'companyName', header: 'Company' },
-      { field: 'statusDescription', header: 'Status ' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -69,22 +69,24 @@ export class ServiceTypeComponent {
 
     ];
   }
-  
+
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.serviceTypeTable = res;
-        this.spin.hide();
-      }, error: (err: any) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.serviceTypeTable = res;
+          this.spin.hide();
+        }, error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
@@ -99,7 +101,7 @@ export class ServiceTypeComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -140,11 +142,11 @@ export class ServiceTypeComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.serviceTypeId).subscribe({
-      next: (res: any) =>{
+      next: (res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.serviceTypeId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err: any) => {
+      }, error: (err: any) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -154,20 +156,20 @@ export class ServiceTypeComponent {
   downloadExcel() {
     const exportData = this.serviceTypeTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Service Type');
+    this.cs.exportAsExcel(exportData, 'Service Type');
   }
 
 }
