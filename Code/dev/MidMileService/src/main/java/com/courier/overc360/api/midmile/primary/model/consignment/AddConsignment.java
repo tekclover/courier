@@ -90,6 +90,10 @@ public class AddConsignment {
 
     private String remark;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
 //    @NotBlank(message = "InvoiceAmount is mandatory")
     private String invoiceAmount;
 
@@ -374,6 +378,7 @@ public class AddConsignment {
     private String referenceField48;
     private String referenceField49;
     private String referenceField50;
+
 
     private AddDestinationDetails destinationDetails = new AddDestinationDetails();
 

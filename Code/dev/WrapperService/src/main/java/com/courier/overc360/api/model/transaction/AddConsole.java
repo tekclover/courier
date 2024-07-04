@@ -116,6 +116,10 @@ public class AddConsole {
 
     private String eventText;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private Date eventTimestamp;
 
     private Date statusTimestamp;

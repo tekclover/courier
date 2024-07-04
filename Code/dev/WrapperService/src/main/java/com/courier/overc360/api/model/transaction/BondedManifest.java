@@ -185,6 +185,10 @@ public class BondedManifest {
 
     private String currency;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String billOfLadingFor;
 
     private String referenceField1;

@@ -44,6 +44,10 @@ public class UpdateConsole {
 
     private String netWeight;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String manifestedGrossWeight;
 
     private String grossWeight;

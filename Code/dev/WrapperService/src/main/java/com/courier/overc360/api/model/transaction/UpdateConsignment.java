@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,10 @@ public class UpdateConsignment {
     private String partnerName;
 
     private String statusId;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String masterAirwayBill;
 
