@@ -10,11 +10,11 @@ import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
 
 @Component({
-  selector: 'app-piece-details',
-  templateUrl: './piece-details.component.html',
-  styleUrl: './piece-details.component.scss'
+  selector: 'app-item-details',
+  templateUrl: './item-details.component.html',
+  styleUrl: './item-details.component.scss'
 })
-export class PieceDetailsComponent {
+export class ItemDetailsComponent {
 
 
   pieceForm = this.fb.group({
@@ -30,7 +30,7 @@ export class PieceDetailsComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
-    public dialogRef: MatDialogRef<PieceDetailsComponent>,
+    public dialogRef: MatDialogRef<ItemDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 

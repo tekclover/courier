@@ -9,7 +9,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PieceDetailsComponent } from './piece-details/piece-details.component';
+import { ItemDetailsComponent } from './item-details/item-details.component';
 import { DimensionComponent } from './dimension/dimension.component';
 
 @Component({
@@ -584,7 +584,7 @@ export class ConsignmentNewComponent {
   }
 
   opendialog(type: any = 'New', index: any) {
-    const dialogRef = this.dialog.open(PieceDetailsComponent, {
+    const dialogRef = this.dialog.open(ItemDetailsComponent, {
       disableClose: true,
       width: '90%',
       maxWidth: '95%',
@@ -624,9 +624,9 @@ export class ConsignmentNewComponent {
   dimension(type: any = 'New', index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
       disableClose: true,
-      width: '90%',
-      maxWidth: '95%',
-      position: { top: '6.5%', left: '10%' },
+      width: '80%',
+      maxWidth: '90%',
+      position: { top: '6.5%', left: '25%' },
       data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index)},
     });
 
