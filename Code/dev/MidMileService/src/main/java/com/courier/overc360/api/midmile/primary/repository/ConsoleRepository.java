@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.console.Console;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -46,4 +47,23 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
     Console findByHouseAirwayBillAndConsoleIdAndDeletionIndicator(String houseAirwayBill, String fromConsole, Long deletionIndicator);
 
     boolean existsByConsoleIdAndDeletionIndicator(String toConsoleId, Long deletionIndicator);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsignment_entity " +
+            "SET event_code = 4, " +
+            "event_text = 'Console Created', " +
+            "EVENT_TIMESTAMP = getDate() " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void updateEventCodeFromConsignment(@Param("companyId") String companyId,
+                                               @Param("languageId") String languageId,
+                                               @Param("partnerId") String partnerId,
+                                               @Param("houseAirwayBill") String houseAirwayBill,
+                                               @Param("masterAirwayBill") String masterAirwayBill);
 }

@@ -27,6 +27,10 @@ public class HSCode {
 
     private String itemGroup;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
 
     private Long deletionIndicator;

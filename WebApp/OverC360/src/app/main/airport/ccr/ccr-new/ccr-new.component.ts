@@ -48,8 +48,8 @@ export class CcrNewComponent {
       { value: '1', label: 'True'}
     ];
     this.value = [
-      { value: '', label: 'Yes' },
-      { value: '', label: 'No' },
+      { value: 'Yes', label: 'Yes' },
+      { value: 'No', label: 'No' },
     ]
   }
 
@@ -190,8 +190,7 @@ export class CcrNewComponent {
   hsCodeList: any[] = [];
   currencyIdList: any[] = [];
   consignorIdList: any[] = [];
-  consignmentList: any[] =[];
-  consigneeList: any[] =[];
+  
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
@@ -201,6 +200,7 @@ export class CcrNewComponent {
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.consignor.url,
       this.cas.dropdownlist.setup.hsCode.url,
+      this.cas.dropdownlist.setup.hsCode.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
@@ -208,8 +208,7 @@ export class CcrNewComponent {
         this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
         this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
         this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
-      this.hsCodeList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.hsCode.key);
-        
+
         this.spin.hide();
       },
       error: (err: any) => {
@@ -239,7 +238,7 @@ export class CcrNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.Update([this.form.getRawValue()]).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
@@ -257,7 +256,7 @@ export class CcrNewComponent {
       });
     } else {
       this.spin.show();
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
           if (res) {
             this.messageService.add({

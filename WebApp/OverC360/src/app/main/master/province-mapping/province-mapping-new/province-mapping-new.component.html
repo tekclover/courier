@@ -84,12 +84,19 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
 
-                              <div class="col-6 marginFieldNew borderRadius12">
+                            <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner Province</p>
-                                <input maxlength="100" pInputText formControlName="partnerProvinceName" [ngClass]="form.get('partnerProvinceName')?.invalid && form.get('partnerProvinceName')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('partnerProvinceName')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                              </div>
-
+                                <input maxlength="100" pInputText formControlName="partnerProvinceName"
+                                    [ngClass]="form.get('partnerProvinceName')?.invalid && form.get('partnerProvinceName')?.dirty ? 'invalid' : ''"
+                                    class="w-100" placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('partnerProvinceName')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select" filter="true" />
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
                                 <input maxlength="2000" formControlName="remark" class=" w-100" pInputText

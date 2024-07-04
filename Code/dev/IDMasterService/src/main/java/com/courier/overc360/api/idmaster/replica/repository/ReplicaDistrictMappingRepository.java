@@ -15,8 +15,12 @@ import java.util.Optional;
 @Transactional
 public interface ReplicaDistrictMappingRepository extends JpaRepository<ReplicaDistrictMapping, String>, JpaSpecificationExecutor<ReplicaDistrictMapping> {
 
-    Optional<ReplicaDistrictMapping> findByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator
-            (String languageId, String companyId, String partnerId, String districtId, Long deletionIndicator);
+    Optional<ReplicaDistrictMapping> findByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String districtId, Long deletionIndicator);
+
+    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String districtId, Long deletionIndicator);
+
 
     //Get Description
     @Query(value = "Select \n" +

@@ -14,7 +14,7 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
     Optional<ReplicaConsole> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, Long deletionIndicator);
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill,Long deletionIndicator);
+    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 
     // Duplicate Header Check
     @Query(value = "Select \n" +
@@ -31,14 +31,15 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "Else 0 \n" +
             "End", nativeQuery = true)
     Long duplicateExists(@Param(value = "languageId") String languageId,
-                               @Param(value = "companyId") String companyId,
-                               @Param(value = "partnerId") String partnerId,
-                               @Param(value = "masterAirwayBill") String masterAirwayBill,
-                               @Param(value = "houseAirwayBill") String houseAirwayBill);
+                         @Param(value = "companyId") String companyId,
+                         @Param(value = "partnerId") String partnerId,
+                         @Param(value = "masterAirwayBill") String masterAirwayBill,
+                         @Param(value = "houseAirwayBill") String houseAirwayBill);
 
 
-
-    @Query(value = "select special_approval_id from tblhscode where hs_code in (:hsCode) and is_deleted = 0", nativeQuery = true)
-    public String getSpecialApproval(@Param(value = "hsCode") String hsCode);
+    @Query(value = "select special_approval_id from tblhscode where " +
+            "c_id in (:companyId) and hs_code in (:hsCode) and is_deleted = 0", nativeQuery = true)
+    public String getSpecialApproval(@Param(value = "companyId") String companyId,
+                                     @Param(value = "hsCode") String hsCode);
 
 }

@@ -16,14 +16,25 @@ import { CityMappingService } from '../city-mapping.service';
 })
 export class CityMappingNewComponent {
   active: number | undefined = 0;
-  status:any[] = []
+  status: any[] = []
 
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: CityMappingService, private messageService: MessageService,  private auth: AuthService, private cas: CommonAPIService) {
-    
-     }
-       
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: CityMappingService,
+    private messageService: MessageService,
+    private auth: AuthService,
+    private cas: CommonAPIService) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+  }
+
   pageToken: any;
 
   //form builder initialize
@@ -39,8 +50,10 @@ export class CityMappingNewComponent {
     companyName: [],
     partnerCityId: [],
     partnerCityName: [],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
-    referenceField1: [], 
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -50,11 +63,10 @@ export class CityMappingNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
-  
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -79,7 +91,7 @@ export class CityMappingNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -96,28 +108,29 @@ export class CityMappingNewComponent {
     }
   }
 
-  
+
   languageIdList: any[] = [];
   companyIdList: any[] = [];
   cityIdList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.city.url,
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.cityIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.city.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.cityIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.city.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
 
@@ -150,11 +163,11 @@ export class CityMappingNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
-          this.router.navigate(['/main/master/cityMapping']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + ' has been created successfully' });
+            this.router.navigate(['/main/master/cityMapping']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

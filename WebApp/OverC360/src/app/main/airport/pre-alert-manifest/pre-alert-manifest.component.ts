@@ -89,6 +89,10 @@ export class PreAlertManifestComponent {
     })
   }
 
+  isSelected(item:any): boolean {
+    return this.selectedPreAlertManifest.includes(item);
+  }
+
   onChange() {
     const choosen = this.selectedPreAlertManifest[this.selectedPreAlertManifest.length - 1];
     this.selectedPreAlertManifest.length = 0;

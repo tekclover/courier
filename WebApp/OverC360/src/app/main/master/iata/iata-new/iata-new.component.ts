@@ -19,6 +19,8 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 export class IataNewComponent {
 
   active: number | undefined = 0;
+  status: any[] = []
+
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -31,7 +33,12 @@ export class IataNewComponent {
     private numberRangeService: NumberrangeService,
     private cas: CommonAPIService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.status = [
+      { value: '17', label: 'Inactive' },
+      { value: '16', label: 'Active' }
+    ];
+   }
 
   pageToken: any;
   numCondition: any;
@@ -48,6 +55,8 @@ export class IataNewComponent {
     iataCharge: [],
     currencyId: [, Validators.required],
     currencyDescription: [],
+    statusId: ["16",],
+    statusDescription: [],
     remark: [],
     referenceField1: [],
     referenceField10: [],

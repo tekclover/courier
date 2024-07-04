@@ -27,9 +27,9 @@ export class MenuComponent {
     private messageService: MessageService,
     private cs: CommonServiceService,
     private router: Router,
-    private path: PathNameService, 
+    private path: PathNameService,
     private service: MenuService,
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
@@ -47,19 +47,21 @@ export class MenuComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'menuId', header: 'Menu ID'},
-      { field: 'companyIdAndDescription', header: 'Company '},
-      { field: 'menuName', header: 'Menu Name'},
-      { field: 'subMenuName', header: 'Sub Menu Name'},
-      { field: 'authorizationObjectValue', header: 'Authorization Object Value'},
-      { field: 'authorizationObject', header: 'Authorization Object' },
-      { field: 'createdBy', header: 'Created By'},
+      { field: 'menuId', header: 'Menu ID' },
+      { field: 'companyIdAndDescription', header: 'Company' },
+      { field: 'menuName', header: 'Menu Name' },
+      { field: 'subMenuName', header: 'Sub Menu Name' },
+      { field: 'statusDescription', header: 'Status' },
+      { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
-    this.target =[
-      { field: 'languageIdAndDescription', header: 'Language '},
-      { field: 'subMenuId', header: 'Sub Menu ID'},
-      { field: 'authorizationObjectId', header: 'Authorization Object ID'},
+    this.target = [
+      { field: 'languageIdAndDescription', header: 'Language' },
+      { field: 'subMenuId', header: 'Sub Menu ID' },
+      { field: 'authorizationObjectId', header: 'Authorization Object ID' },
+      { field: 'authorizationObjectValue', header: 'Authorization Object Value' },
+      { field: 'authorizationObject', header: 'Authorization Object' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -93,7 +95,7 @@ export class MenuComponent {
   }
 
   onChange() {
-    const choosen = this.selectedMenu[this.selectedMenu.length -1];
+    const choosen = this.selectedMenu[this.selectedMenu.length - 1];
     this.selectedMenu.length = 0;
     this.selectedMenu.push(choosen);
   }
@@ -142,14 +144,15 @@ export class MenuComponent {
       }
     })
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.menuId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -160,7 +163,7 @@ export class MenuComponent {
     const exportData = this.menuTable.map(item => {
       const exportItem: any = {};
       this.cols.forEach(col => {
-        if(col.format == 'date') {
+        if (col.format == 'date') {
           console.log(3)
           exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {

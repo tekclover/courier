@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class UpdateRoleAccess {
 
-
     private Long authorizationObjectId;
 
     private String authorizationObjectValue;
@@ -15,6 +14,8 @@ public class UpdateRoleAccess {
     private String userRoleName;
 
     private String moduleId;
+
+    private String statusId;
 
     private String referenceField1;
 

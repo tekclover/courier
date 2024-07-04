@@ -61,10 +61,7 @@ export class LanguageComponent {
 
   initialCall() {
     this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
+    this.service.search({}).subscribe({
       next: (res: any) => {
         console.log(res);
         this.languageTable = res;

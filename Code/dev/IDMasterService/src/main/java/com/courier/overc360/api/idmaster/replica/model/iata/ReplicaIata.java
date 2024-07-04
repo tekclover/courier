@@ -1,11 +1,15 @@
 package com.courier.overc360.api.idmaster.replica.model.iata;
 
-import com.courier.overc360.api.idmaster.primary.model.iata.IataCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
@@ -15,16 +19,15 @@ import java.util.Date;
 /*
  * `LANG_ID`, `C_ID`, `ORIGIN` , `ORIGIN_CODE`, `IATA_KD`
  */
-@Table(
-        name = "tbliata",
+@Table(name = "tbliata",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_iata",
-                        columnNames = { "LANG_ID", "C_ID", "ORIGIN", "ORIGIN_CODE"}
+                        columnNames = {"LANG_ID", "C_ID", "ORIGIN", "ORIGIN_CODE"}
                 )
         }
 )
-@IdClass(IataCompositeKey.class)
+@IdClass(ReplicaIataCompositeKey.class)
 public class ReplicaIata {
 
     @Id
@@ -60,6 +63,12 @@ public class ReplicaIata {
 
     @Column(name = "CURRENCY_TEXT", columnDefinition = "nvarchar(50)")
     private String currencyDescription;
+
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;

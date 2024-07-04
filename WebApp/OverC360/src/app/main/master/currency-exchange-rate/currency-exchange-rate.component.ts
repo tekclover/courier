@@ -18,16 +18,21 @@ import { CurrencyExchangeRateService } from './currency-exchange-rate.service';
 })
 export class CurrencyExchangeRateComponent {
 
-  
-  
   currencyExchangeRateTable: any[] = [];
   selectedCurrencyExchangeRate: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router,
-     private path: PathNameService, private service: CurrencyExchangeRateService,
-     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: CurrencyExchangeRateService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -48,6 +53,7 @@ export class CurrencyExchangeRateComponent {
       { field: 'fromCurrencyValue', header: 'From Currency Value' },
       { field: 'toCurrencyValue', header: 'To Currency Value' },
       { field: 'companyName', header: 'Company' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -60,6 +66,7 @@ export class CurrencyExchangeRateComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'toCurrencyDescription', header: 'To Currency Description' },
       { field: 'fromCurrencyDescription', header: 'From Currency Description' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -75,7 +82,7 @@ export class CurrencyExchangeRateComponent {
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
-  
+
   initialCall() {
     this.spin.show();
     let obj: any = {};
@@ -94,87 +101,87 @@ export class CurrencyExchangeRateComponent {
   }
 
 
-onChange() {
-  const choosen = this.selectedCurrencyExchangeRate[this.selectedCurrencyExchangeRate.length - 1];
-  this.selectedCurrencyExchangeRate.length = 0;
-  this.selectedCurrencyExchangeRate.push(choosen);
-}
-
-customTable() {
-  const dialogRef = this.dialog.open(CustomTableComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '80%',
-    position: { top: '6.5%', left: '30%' },
-    data: { target: this.cols, source: this.target,},
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedCurrencyExchangeRate[0]);
-    }
-  });
-}
-
-openCrud(type: any = 'New', linedata: any = null): void {
-  if (this.selectedCurrencyExchangeRate.length === 0 && type != 'New') {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-  } else {
-    let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCurrencyExchangeRate[0] : linedata, pageflow: type });
-    this.router.navigate(['/main/master/currencyExchangeRate-new/' + paramdata]);
+  onChange() {
+    const choosen = this.selectedCurrencyExchangeRate[this.selectedCurrencyExchangeRate.length - 1];
+    this.selectedCurrencyExchangeRate.length = 0;
+    this.selectedCurrencyExchangeRate.push(choosen);
   }
-}
 
-deleteDialog() {
-  if (this.selectedCurrencyExchangeRate.length === 0) {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-    return;
-  }
-  const dialogRef = this.dialog.open(DeleteComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '82%',
-    position: { top: '6.5%', left: '30%' },
-    data: { line: this.selectedCurrencyExchangeRate, module: 'Currency Exchange Rate', body: 'This action cannot be undone. All values associated with this field will be lost.' },
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedCurrencyExchangeRate[0]);
-    }
-  });
-}
-deleterecord(lines: any) {
-  this.spin.show();
-  this.service.Delete(lines).subscribe({
-    next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'CurrencyExchangeRate deleted successfully' });
-      this.spin.hide();
-      this.initialCall();
-    },error: (err) => {
-      this.cs.commonerrorNew(err);
-      this.spin.hide();
-    }
-  })
-}
-
-downloadExcel() {
-  const exportData = this.currencyExchangeRateTable.map(item => {
-    const exportItem: any = {};
-   this.cols.forEach(col => {
-    if(col.format == 'date'){
-      exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-    }else{
-      exportItem[col.field] = item[col.field];
-    }
-     
+  customTable() {
+    const dialogRef = this.dialog.open(CustomTableComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { target: this.cols, source: this.target, },
     });
-    return exportItem;
-  });
 
-  // Call ExcelService to export data to Excel
- this.cs.exportAsExcel(exportData, 'CurrencyExchangeRate');
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedCurrencyExchangeRate[0]);
+      }
+    });
+  }
+
+  openCrud(type: any = 'New', linedata: any = null): void {
+    if (this.selectedCurrencyExchangeRate.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCurrencyExchangeRate[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/master/currencyExchangeRate-new/' + paramdata]);
+    }
+  }
+
+  deleteDialog() {
+    if (this.selectedCurrencyExchangeRate.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: this.selectedCurrencyExchangeRate, module: 'Currency Exchange Rate', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedCurrencyExchangeRate[0]);
+      }
+    });
+  }
+  deleterecord(lines: any) {
+    this.spin.show();
+    this.service.Delete(lines).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'CurrencyExchangeRate deleted successfully' });
+        this.spin.hide();
+        this.initialCall();
+      }, error: (err) => {
+        this.cs.commonerrorNew(err);
+        this.spin.hide();
+      }
+    })
+  }
+
+  downloadExcel() {
+    const exportData = this.currencyExchangeRateTable.map(item => {
+      const exportItem: any = {};
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
+      });
+      return exportItem;
+    });
+
+    // Call ExcelService to export data to Excel
+    this.cs.exportAsExcel(exportData, 'CurrencyExchangeRate');
+  }
 }
 
 

@@ -58,6 +58,12 @@ public class HSCode {
     @Column(name = "SPECIAL_APPROVAL_TEXT", columnDefinition = "nvarchar(100)")
     private String specialApprovalText;
 
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
+
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;
 

@@ -13,6 +13,8 @@ public class AddSpecialApproval {
 
     private String specialApprovalText;
 
+    private String statusId;
+
     private String remark;
 
     private String referenceField1;

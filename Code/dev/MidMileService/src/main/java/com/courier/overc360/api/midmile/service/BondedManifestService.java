@@ -185,6 +185,12 @@ public class BondedManifestService {
                     newBondedManifest.setUpdatedBy(loginUserID);
                     newBondedManifest.setUpdatedOn(new Date());
                     BondedManifest createdBondedManifest = bondedManifestRepository.save(newBondedManifest);
+
+                    //Update Event From consignment
+                    bondedManifestRepository.updateEventCodeFromConsignment(createdBondedManifest.getCompanyId(),
+                            createdBondedManifest.getLanguageId(), createdBondedManifest.getPartnerId(),
+                            createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getMasterAirwayBill());
+
                     createdBondedManifestList.add(createdBondedManifest);
                 }
             return createdBondedManifestList;

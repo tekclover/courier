@@ -8,6 +8,8 @@ public class UpdateIata {
 
     private String iataCharge;
 
+    private String statusId;
+
     private String remark;
 
     private String iataKd;

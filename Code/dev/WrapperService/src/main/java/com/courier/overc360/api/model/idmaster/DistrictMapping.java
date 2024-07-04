@@ -7,18 +7,17 @@ import java.util.Date;
 @Data
 public class DistrictMapping {
 
+    private String districtId;
+
+    private String languageId;
+
+    private String companyId;
 
     private String districtName;
 
     private String languageDescription;
 
     private String companyName;
-
-    private String districtId;
-
-    private String languageId;
-
-    private String companyId;
 
     private String partnerId;
 
@@ -29,6 +28,10 @@ public class DistrictMapping {
     private String partnerDistrictId;
 
     private String partnerDistrictName;
+
+    private String statusId;
+
+    private String statusDescription;
 
     private String remark;
 

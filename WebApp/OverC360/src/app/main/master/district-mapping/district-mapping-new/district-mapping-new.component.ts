@@ -16,36 +16,40 @@ import { DistrictMappingService } from '../district-mapping.service';
 })
 export class DistrictMappingNewComponent {
 
-  
-  
   active: number | undefined = 0;
-  status:any[] = []
-  constructor(private cs: CommonServiceService, private spin: NgxSpinnerService,
-    private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
-    private service: DistrictMappingService, private messageService: MessageService,private cas: CommonAPIService,
+  status: any[] = []
+
+  constructor(
+    private cs: CommonServiceService,
+    private spin: NgxSpinnerService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private path: PathNameService,
+    private fb: FormBuilder,
+    private service: DistrictMappingService,
+    private messageService: MessageService,
+    private cas: CommonAPIService,
     private auth: AuthService) { }
 
   pageToken: any;
 
   //form builder initialize
   form = this.fb.group({
-    districtId:[, Validators.required],
-    districtName:[],
+    districtId: [, Validators.required],
+    districtName: [],
     partnerDistrictId: [],
     partnerDistrictName: [],
-    partnerId:[, Validators.required],
+    partnerId: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
-    languageDescription:[],
-    companyId:[this.auth.companyId, Validators.required],
-    companyName:[],
-    partnerType:[, Validators.required],
-    partnerName:[, Validators.required],
-    createdOn: ['', ],
-    createdBy: [],
-    updatedBy: [],
-    updatedOn: ['', ],
-    referenceField1: [], 
-    remark:[],
+    languageDescription: [],
+    companyId: [this.auth.companyId, Validators.required],
+    companyName: [],
+    partnerType: [, Validators.required],
+    partnerName: [, Validators.required],
+    statusId: ["16",],
+    statusDescription: [],
+    remark: [],
+    referenceField1: [],
     referenceField2: [],
     referenceField3: [],
     referenceField4: [],
@@ -55,9 +59,10 @@ export class DistrictMappingNewComponent {
     referenceField8: [],
     referenceField9: [],
     referenceField10: [],
-   
-   
-   
+    createdOn: ['',],
+    createdBy: [],
+    updatedBy: [],
+    updatedOn: ['',],
   });
 
   submitted = false;
@@ -82,7 +87,7 @@ export class DistrictMappingNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
 
@@ -103,10 +108,10 @@ export class DistrictMappingNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  districtIdList: any[] =[];
+  districtIdList: any[] = [];
 
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
@@ -114,17 +119,18 @@ export class DistrictMappingNewComponent {
       this.cas.dropdownlist.setup.district.url,
 
 
-    ]).subscribe({next: (results: any) => {
-      this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
-      this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-      this.districtIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.district.key);
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+    ]).subscribe({
+      next: (results: any) => {
+        this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
+        this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.districtIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.district.key);
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
   fill(line: any) {
@@ -156,11 +162,11 @@ export class DistrictMappingNewComponent {
       this.spin.show()
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + 'has been created successfully' });
-          this.router.navigate(['/main/master/districtMapping']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.partnerId + 'has been created successfully' });
+            this.router.navigate(['/main/master/districtMapping']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);

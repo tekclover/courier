@@ -31,7 +31,6 @@ public class ReplicaUserTypeSpecification implements Specification<ReplicaUserTy
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("companyId");
             predicates.add(group.in(findUserType.getCompanyId()));
         }
-
         if (findUserType.getUserTypeId() != null && !findUserType.getUserTypeId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("userTypeId");
             predicates.add(group.in(findUserType.getUserTypeId()));
@@ -39,6 +38,10 @@ public class ReplicaUserTypeSpecification implements Specification<ReplicaUserTy
         if (findUserType.getLanguageId() != null && !findUserType.getLanguageId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("languageId");
             predicates.add(group.in(findUserType.getLanguageId()));
+        }
+        if (findUserType.getStatusId() != null && !findUserType.getStatusId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
+            predicates.add(group.in(findUserType.getStatusId()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));

@@ -25,6 +25,5 @@ public interface ReplicaStatusRepository extends JpaRepository<ReplicaStatus, St
             "ts.STATUS_ID IN (:statusId) and \n" +
             "ts.IS_DELETED = 0", nativeQuery = true)
     String getStatusDescription(@Param(value = "statusId") String statusId);
-    // masters count = (13+2) + 2 + 2
 
 }

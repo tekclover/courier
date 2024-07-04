@@ -11,6 +11,8 @@ public class UpdateCountryMapping {
 
     private String partnerCountryName;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;
