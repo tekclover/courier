@@ -9,6 +9,8 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
+import { CustomerService } from '../../../master/customer/customer.service';
+import { ConsignorService } from '../../../master/consignor/consignor.service';
 
 @Component({
   selector: 'app-pre-alert-new',
@@ -17,6 +19,7 @@ import { ConsignmentService } from '../../../operation/consignment/consignment.s
 })
 export class PreAlertNewComponent {
 
+  partnerType: any[] = []
   active: number | undefined = 0;
 
   constructor(
@@ -27,12 +30,19 @@ export class PreAlertNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: ConsignmentService,
+    private customerService: CustomerService,
+    private consignorService: ConsignorService,
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
     private el: ElementRef,
     public dialog: MatDialog,
-  ) {}
+  ) {
+    this.partnerType = [
+      { value: 'customer', label: 'Customer' },
+      { value: 'consignor', label: 'Consignor' },
+    ];
+  }
   
   OriginDetails = this.fb.group({
     name: [],
@@ -55,17 +65,20 @@ export class PreAlertNewComponent {
     originDetails: this.OriginDetails,
     destinationDetails: this.DestinationDetails,
     goodsDescription: [],
+    consigneeName: [],
+    shipperName: [],
     description: [],
     weight: [,],
     consignmentValue: [],
     consignmentCurrency: [],
     hsCode: [],
+    partnerType: [],
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
     estimatedDepartureTime: [],
     noOfPackageMawb: [],
-    noOfCRT: [],
+    noOfCrt: [],
     totalShipmentWeight: [],
     totalValue: [],
     createdOn: ['', ],
@@ -112,7 +125,7 @@ export class PreAlertNewComponent {
 
   companyIdList: any[] = [];
   countryIdList: any[] =[];
-  consignorIdList: any[] =[];
+  customerIdList: any[] = [];
   hsCodeList: any[] = [];
 
   dropdownlist(){
@@ -120,14 +133,14 @@ export class PreAlertNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
-      this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.customer.url,
       this.cas.dropdownlist.setup.hsCode.url,
 
 
     ]).subscribe({next: (results: any) => {
       this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
-      this.consignorIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.consignor.key);
+      this.customerIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.customer.key);
       this.hsCodeList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.hsCode.key);
 
       this.spin.hide();
@@ -193,5 +206,41 @@ export class PreAlertNewComponent {
       })
     }
   }
-
+shipperType:any;
+  partnerTypeChanged(){
+    if(this.form.controls.partnerType.value=="customer"){
+      let obj: any = {};
+      obj.companyId = [this.auth.companyId];
+      
+      this.customerIdList = [];
+      this.spin.show();
+      console.log(this.form.controls.partnerType.value)
+      this.customerService.search(obj).subscribe({next: (result) => {
+      this.customerIdList = this.cas.foreachlist(result, {key: 'customerId', value: 'customerName'});
+      this.shipperType="Customer";
+      this.form.controls.shipperName.patchValue(this.shipperType)
+      this.spin.hide();
+      }, error: (err) =>{
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }})
+    } else{
+      let obj: any = {};
+      obj.companyId = [this.auth.companyId];
+  
+      this.customerIdList = [];
+      this.spin.show();
+      console.log(this.form.controls.partnerType.value)
+      this.consignorService.search(obj).subscribe({next: (result) => {
+      this.customerIdList = this.cas.foreachlist(result, {key: 'consignorId', value: 'consignorName'});
+      this.shipperType="Consignor";
+      this.form.controls.shipperName.patchValue(this.shipperType)
+      this.spin.hide();
+      }, error: (err) =>{
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }})
+  
+    }
+}
 }

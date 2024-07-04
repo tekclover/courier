@@ -38,7 +38,7 @@ export class RateParameterComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Rate Parameter - List'];
+    const dataToSend = ['Setup', 'Rate Parameter '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -121,7 +121,7 @@ export class RateParameterComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -138,7 +138,7 @@ export class RateParameterComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

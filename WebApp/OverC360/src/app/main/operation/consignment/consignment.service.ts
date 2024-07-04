@@ -37,6 +37,14 @@ export class ConsignmentService {
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
   }
+
+  uploadFiles(files: FileList, location: any) {
+    const formData: FormData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i], files[i].name);
+    }
+    return this.http.post<any>('/doc-storage/multiUpload'+'?location='+ location , formData);
+  }
 }
 
 

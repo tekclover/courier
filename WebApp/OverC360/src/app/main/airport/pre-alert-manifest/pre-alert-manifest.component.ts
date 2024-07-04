@@ -44,7 +44,7 @@ export class PreAlertManifestComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'Pre-Alert Manifest - List'];
+    const dataToSend = ['Airport Hub', 'Pre-Alert Manifest '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -117,7 +117,7 @@ export class PreAlertManifestComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedPreAlertManifest.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
       this.router.navigate(['/main/airport/preAlertManifest-new/' + paramdata]);
@@ -126,7 +126,7 @@ export class PreAlertManifestComponent {
 
   deleteDialog() {
     if (this.selectedPreAlertManifest.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
@@ -187,7 +187,7 @@ export class PreAlertManifestComponent {
 
   createConsole(){
     if (this.selectedPreAlertManifest.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     this.spin.show();
@@ -201,7 +201,7 @@ export class PreAlertManifestComponent {
   }
   createManifest(){
     if (this.selectedPreAlertManifest.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     this.spin.show();

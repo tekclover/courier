@@ -30,7 +30,7 @@ export class CityMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'City Mapping - List'];
+    const dataToSend = ['Master', 'City Mapping '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -115,7 +115,7 @@ export class CityMappingComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedCityMapping.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCityMapping[0] : linedata, pageflow: type });
       this.router.navigate(['/main/master/cityMapping-new/' + paramdata]);
@@ -124,7 +124,7 @@ export class CityMappingComponent {
 
   deleteDialog() {
     if (this.selectedCityMapping.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

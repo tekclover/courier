@@ -37,7 +37,7 @@ export class ProvinceComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Province - List'];
+    const dataToSend = ['Setup', 'Province '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -117,7 +117,7 @@ export class ProvinceComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedProvince.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedProvince[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/province-new/' + paramdata]);
@@ -126,7 +126,7 @@ export class ProvinceComponent {
 
   deleteDialog() {
     if (this.selectedProvince.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

@@ -73,11 +73,11 @@ public class DistrictMappingService {
         Optional<DistrictMapping> dbDistrictMapping = districtMappingRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator
                 (languageId, companyId, partnerId, districtId, 0L);
         if (dbDistrictMapping.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId +
+                    ", companyId - " + companyId + " , partnerId - " + partnerId + " and districtId - " + districtId + " doesn't exists";
             // Error Log
-            createDistrictMappingLog1(languageId, companyId, partnerId, districtId, "The given values : languageId - " + languageId +
-                    ", companyId - " + companyId + " , partnerId - " + partnerId + " and districtId - " + districtId + " doesn't exists");
-            throw new BadRequestException("The given values : languageId - " + languageId + ", companyId - " + companyId +
-                    ", partnerId - " + partnerId + " and districtId - " + districtId + " doesn't exists");
+            createDistrictMappingLog1(languageId, companyId, partnerId, districtId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbDistrictMapping.get();
     }
@@ -200,8 +200,8 @@ public class DistrictMappingService {
             districtMappingRepository.save(dbDistrictMapping);
         } else {
             // Error Log
-            createDistrictMappingLog1(languageId, companyId, partnerId, districtId, "Error in deleting DistrictId - " + districtId);
-            throw new BadRequestException("Error in deleting PartnerId - " + partnerId);
+            createDistrictMappingLog1(languageId, companyId, partnerId, districtId, "Error in deleting partnerId - " + partnerId);
+            throw new BadRequestException("Error in deleting partnerId - " + partnerId);
         }
     }
 
@@ -231,13 +231,14 @@ public class DistrictMappingService {
                                                             String districtId) {
 
         Optional<ReplicaDistrictMapping> dbDistrictMapping = replicaDistrictMappingRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndDistrictIdAndDeletionIndicator
-                (languageId, companyId, partnerId, districtId, 0l);
+                (languageId, companyId, partnerId, districtId, 0L);
 
         if (dbDistrictMapping.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId +
+                    ", companyId - " + companyId + " , partnerId - " + partnerId + " and districtId - " + districtId + " doesn't exists";
             // Error Log
-            createDistrictMappingLog1(languageId, companyId, partnerId, districtId, "The given values : languageId - " + languageId +
-                    ", companyId - " + companyId + ", partnerId - " + partnerId + " and districtId - " + districtId + " doesn't exists");
-            throw new BadRequestException("The given values : languageId - " + languageId + ", companyId - " + companyId + ", partnerId - " + partnerId + " and districtId - " + districtId + " doesn't exists");
+            createDistrictMappingLog1(languageId, companyId, partnerId, districtId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbDistrictMapping.get();
     }

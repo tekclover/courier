@@ -47,7 +47,7 @@ export class NumberrangeNewComponent {
     numberRangeFrom: [, Validators.required],
     numberRangeTo: [, Validators.required],
     numberRangeCurrent: [, Validators.required],
-    numberRangeStatus: ["1", ],
+    numberRangeStatus: ["16", ],
     referenceField1: [],
     referenceField10: [],
     referenceField2: [],

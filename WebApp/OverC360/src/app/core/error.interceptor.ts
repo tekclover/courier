@@ -26,6 +26,10 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(error => {
 
             if (error.status === 401 || error.status === 400) {
+
+                if(request.url.includes('/doc-storage/multiUpload')){
+                    return throwError(error);
+                }
                 return this.handle401Error(request, next, error);
             }
             return throwError(error);
@@ -68,10 +72,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (request.url.includes('wms-idmaster-service/login') || request.url.includes('wms-idmaster-service/docchecklist/findDocCheckList'))
             return request.clone({ params: new HttpParams().append("authToken", token) });
 
-
-        if (request.url.includes('wms-idmaster-service/matterdocument/clientPortal/docsUpload')) {
-            return request.clone({ params: new HttpParams().append("authToken", token).append('loginUserID', this.auth.userID) });
-        } else {
+        else {
             return request.clone({ params: new HttpParams().append("authToken", token).append('loginUserID', this.auth.userID) });
         }
     }

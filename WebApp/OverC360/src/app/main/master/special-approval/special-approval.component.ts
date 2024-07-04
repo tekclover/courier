@@ -38,7 +38,7 @@ export class SpecialApprovalComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Special Approval - List'];
+    const dataToSend = ['Master', 'Special Approval '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -122,7 +122,7 @@ export class SpecialApprovalComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -139,7 +139,7 @@ export class SpecialApprovalComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

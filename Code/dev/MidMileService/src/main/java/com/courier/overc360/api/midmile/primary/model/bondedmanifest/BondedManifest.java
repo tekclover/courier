@@ -77,6 +77,12 @@ public class BondedManifest {
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
     private String description;
 
@@ -227,10 +233,10 @@ public class BondedManifest {
     @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
     private String eventText;
 
-    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "EVENT_TIMESTAMP")
     private Date eventTimestamp;
 
-    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+    @Column(name = "STATUS_TIMESTAMP")
     private Date statusTimestamp;
 
     @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")

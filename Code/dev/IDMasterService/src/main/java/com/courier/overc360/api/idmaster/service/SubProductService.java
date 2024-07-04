@@ -81,6 +81,20 @@ public class SubProductService {
     }
 
     /**
+     * @param languageId
+     * @param companyId
+     * @param subProductId
+     * @param subProductValue
+     * @return
+     */
+    public SubProduct getSubProductWithoutException(String languageId, String companyId, String subProductId, String subProductValue) {
+
+        SubProduct dbSubProduct = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, 0L);
+        return dbSubProduct;
+    }
+
+    /**
      * Create SubProduct
      *
      * @param addSubProduct
@@ -192,9 +206,6 @@ public class SubProductService {
                 if ((addSubProduct.getCompanyId() != null &&
                         (addSubProduct.getReferenceField10() != null && addSubProduct.getReferenceField10().equalsIgnoreCase("true"))) ||
                         addSubProduct.getSubProductId() == null || addSubProduct.getSubProductId().isBlank()) {
-//                    String NUM_RAN_OBJ = "SUBPRODUCT";
-//                    String SUB_PRODUCT_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for SUB_PRODUCT_ID : " + SUB_PRODUCT_ID);
                     newSubProduct.setSubProductId(SUB_PRODUCT_ID);
                 }
                 if (iKeyValuePair != null) {
@@ -223,6 +234,26 @@ public class SubProductService {
         }
     }
 
+    // Update SubProduct Name using Stored Procedure
+    private void updateSubProductDescSP(String languageId, String companyId, String subProductId,
+                                        UpdateSubProduct updateSubProduct, SubProduct dbSubProduct) {
+
+        if (updateSubProduct.getSubProductName() != null) {
+            if (updateSubProduct.getSubProductName().isBlank()) {
+                throw new BadRequestException("SubProduct Name cannot be blank");
+            }
+            String newSubProductDesc = updateSubProduct.getSubProductName();
+            boolean isSubProductNameChanged = !dbSubProduct.getSubProductName().equalsIgnoreCase(updateSubProduct.getSubProductName());
+            if (isSubProductNameChanged) {
+                log.info("new SubProduct Name --> {}", newSubProductDesc);
+                String oldSubProductDesc = dbSubProduct.getSubProductName();
+
+                // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure
+                subProductRepository.updateSubProductDescProc(languageId, companyId, subProductId, oldSubProductDesc, newSubProductDesc);
+            }
+        }
+    }
+
     /**
      * Update SubProduct
      *
@@ -241,23 +272,6 @@ public class SubProductService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             SubProduct dbSubProduct = getSubProduct(languageId, companyId, subProductId, subProductValue);
-//            if (updateSubProduct.getSubProductName() != null) {
-//                if (updateSubProduct.getSubProductName().isBlank()) {
-//                    throw new BadRequestException("SubProduct Name cannot be blank");
-//                }
-//                boolean isSubProductNameChanged = !dbSubProduct.getSubProductName().equalsIgnoreCase(updateSubProduct.getSubProductName());
-//                if (isSubProductNameChanged) {
-//                    String oldSubProductDesc = dbSubProduct.getSubProductName();
-//                    BeanUtils.copyProperties(updateSubProduct, dbSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
-//                    dbSubProduct.setUpdatedBy(loginUserID);
-//                    dbSubProduct.setUpdatedOn(new Date());
-//                    SubProduct updatedSubProduct = subProductRepository.save(dbSubProduct);
-//
-//                    // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure
-//                    subProductRepository.subProductDescUpdateProc(languageId, companyId, subProductId, oldSubProductDesc, updateSubProduct.getSubProductName());
-//                    return updatedSubProduct;
-//                }
-//            }
             BeanUtils.copyProperties(updateSubProduct, dbSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
             if (updateSubProduct.getStatusId() != null && !updateSubProduct.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateSubProduct.getStatusId());
@@ -276,6 +290,18 @@ public class SubProductService {
         }
     }
 
+//    public List<SubProduct> updateSubProductBulk(List<UpdateSubProduct> updateSubProductList, String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<SubProduct> updatedSubProductList = new ArrayList<>();
+//        for (UpdateSubProduct updateSubProduct : updateSubProductList) {
+//            SubProduct subProduct = updateSubProduct(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
+//                    updateSubProduct.getSubProductId(), updateSubProduct.getSubProductValue(), updateSubProduct, loginUserID);
+//            updatedSubProductList.add(subProduct);
+//        }
+//        return updatedSubProductList;
+//    }
+
     /**
      * Update SubProducts - bulk
      *
@@ -287,16 +313,46 @@ public class SubProductService {
      * @throws IllegalAccessException
      * @throws CsvException
      */
+    @Transactional
     public List<SubProduct> updateSubProductBulk(List<UpdateSubProduct> updateSubProductList, String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        try {
+            List<SubProduct> updatedSubProductList = new ArrayList<>();
+            for (UpdateSubProduct updateSubProduct : updateSubProductList) {
 
-        List<SubProduct> updatedSubProductList = new ArrayList<>();
-        for (UpdateSubProduct updateSubProduct : updateSubProductList) {
-            SubProduct dbSubProduct = updateSubProduct(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
-                    updateSubProduct.getSubProductId(), updateSubProduct.getSubProductValue(), updateSubProduct, loginUserID);
-            updatedSubProductList.add(dbSubProduct);
+                long newLinesCount = updatedSubProductList.size();
+
+                SubProduct dbSubProduct = getSubProductWithoutException(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
+                        updateSubProduct.getSubProductId(), updateSubProduct.getSubProductValue());
+                if (dbSubProduct != null) {
+                    subProductRepository.delete(dbSubProduct);
+                }
+
+                SubProduct newSubProduct = new SubProduct();
+                BeanUtils.copyProperties(updateSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
+
+                if (updateSubProduct.getStatusId() != null && !updateSubProduct.getStatusId().isEmpty()) {
+                    String statusDesc = replicaStatusRepository.getStatusDescription(updateSubProduct.getStatusId());
+                    if (statusDesc != null) {
+                        newSubProduct.setStatusDescription(statusDesc);
+                    }
+                }
+                newSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
+                newSubProduct.setCreatedBy(loginUserID);
+                newSubProduct.setCreatedOn(new Date());
+                newSubProduct.setUpdatedBy(loginUserID);
+                newSubProduct.setUpdatedOn(new Date());
+                SubProduct subProduct = subProductRepository.save(newSubProduct);
+                log.info("Created subProduct --> {}", subProduct);
+                updatedSubProductList.add(subProduct);
+            }
+            return updatedSubProductList;
+        } catch (Exception e) {
+            // Error Log
+            createSubProductLog4(updateSubProductList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return updatedSubProductList;
     }
 
     /**
@@ -382,7 +438,7 @@ public class SubProductService {
 
         ReplicaSubProductSpecification spec = new ReplicaSubProductSpecification(findSubProduct);
         List<ReplicaSubProduct> results = replicaSubProductRepository.findAll(spec);
-        log.info("found subProducts --> " + results);
+        log.info("found subProducts --> {}", results);
         return results;
     }
 
@@ -447,6 +503,25 @@ public class SubProductService {
             errorLog.setRefDocNumber(addSubProduct.getSubProductId());
             errorLog.setReferenceField1(addSubProduct.getSubProductValue());
             errorLog.setMethod("Exception thrown in createSubProduct");
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createSubProductLog4(List<UpdateSubProduct> updateSubProductList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (UpdateSubProduct updateSubProduct : updateSubProductList) {
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(updateSubProduct.getLanguageId());
+            errorLog.setCompanyId(updateSubProduct.getCompanyId());
+            errorLog.setRefDocNumber(updateSubProduct.getSubProductId());
+            errorLog.setReferenceField1(updateSubProduct.getSubProductValue());
+            errorLog.setMethod("Exception thrown in updateSubProduct");
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);
