@@ -258,6 +258,35 @@
                             <mat-error *ngIf="errorHandlingShipment('paymentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode">
+                            <p class="formControlLabel f600 textBlack mb-0">COD Collection Mode</p>
+                            <p-dropdown [options]="codCollectionMode" placeholder="Select" filter="true" formControlName="codCollectionMode"
+                            [ngClass]="shipmentInfo.get('codCollectionMode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            appendTo="body" [style]="{'width': '100%'}" 
+                            [panelStyle]="{'width':'100%'}" />
+                            <mat-error *ngIf="errorHandlingShipment('codCollectionMode')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="codAmount">
+                            <p class="formControlLabel f600 textBlack mb-0">COD Amount</p>
+                            <input maxlength="50" formControlName="codAmount"
+                                [ngClass]="shipmentInfo.get('codAmount')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('codAmount')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="codFavorOf">
+                            <p class="formControlLabel f600 textBlack mb-0">COD Favor Of</p>
+                            <input maxlength="50" formControlName="codFavorOf"
+                                [ngClass]="shipmentInfo.get('codFavorOf')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('codFavorOf')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        
                     </div>
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
