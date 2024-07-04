@@ -78,6 +78,10 @@ public class UpdateBondedManifest {
 
     private String shipperId;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String shipperName;
 
     private String remarks;

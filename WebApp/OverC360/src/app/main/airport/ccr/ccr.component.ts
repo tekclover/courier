@@ -33,7 +33,7 @@ export class CcrComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'CCR - List'];
+    const dataToSend = ['Airport Hub', 'CCR '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -103,7 +103,7 @@ export class CcrComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedCcr.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCcr[0] : linedata, pageflow: type });
       this.router.navigate(['/main/airport/ccr-new/' + paramdata]);
@@ -112,7 +112,7 @@ export class CcrComponent {
 
   deleteDialog() {
     if (this.selectedCcr.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

@@ -124,6 +124,12 @@ public class ReplicaConsignmentEntity {
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
     private String remark;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
 

@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,6 +120,10 @@ public class AddConsignment {
     private String actualCurrency;
 
     private String totalDuty;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String specialApprovalValue;
 

@@ -62,15 +62,15 @@
                         <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
                             <tr>
                                 <td>
-                                    <p class="w-100 pl-2">{{ item.subProductValue }}
+                                    <p class="w-100 pl-2 ml-2">{{ item.subProductValue }}
                                     </p>
                                 </td>
                                 <td>
-                                    <p class="w-100 pl-2">{{ item.referenceField1 }}
+                                    <p class="w-100 pl-2 ml-2">{{ item.referenceField1 }}
                                     </p>
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-around">
+                                    <div class="d-flex img-icon ml-3">
                                         <img type="button" src="./assets/common/edit.png" (click)="editItem('Edit',i)" alt="" width="24px" height="24px">
                                         <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png"
                                             alt="" srcset="" width="24px" height="24px">

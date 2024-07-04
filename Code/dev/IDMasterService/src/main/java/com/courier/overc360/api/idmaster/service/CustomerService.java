@@ -114,7 +114,7 @@ public class CustomerService {
                 throw new BadRequestException("Record is getting Duplicated with the given values : customerId - " + addCustomer.getCustomerId());
             }
 
-            log.info("new Customer --> " + addCustomer);
+            log.info("new Customer --> {}", addCustomer);
             IKeyValuePair iKeyValuePair = replicaProductRepository.getDescription(addCustomer.getLanguageId(), addCustomer.getCompanyId(),
                     addCustomer.getSubProductId(), addCustomer.getSubProductValue(), addCustomer.getProductId());
             Customer newCustomer = new Customer();
@@ -199,7 +199,7 @@ public class CustomerService {
                     throw new BadRequestException("Record is getting Duplicated with the given values : customerId - " + addCustomer.getCustomerId());
                 }
 
-                log.info("new Customer --> " + addCustomer);
+                log.info("new Customer --> {}", addCustomer);
                 IKeyValuePair iKeyValuePair = replicaProductRepository.getDescription(addCustomer.getLanguageId(), addCustomer.getCompanyId(),
                         addCustomer.getSubProductId(), addCustomer.getSubProductValue(), addCustomer.getProductId());
                 Customer newCustomer = new Customer();
@@ -207,9 +207,6 @@ public class CustomerService {
                 if ((addCustomer.getCustomerId() != null &&
                         (addCustomer.getReferenceField10() != null && addCustomer.getReferenceField10().equalsIgnoreCase("true"))) ||
                         addCustomer.getCustomerId() == null || addCustomer.getCustomerId().isBlank()) {
-//                    String NUM_RAN_OBJ = "CUSTOMER";
-//                    String CUSTOMER_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for CUSTOMER : " + CUSTOMER_ID);
                     newCustomer.setCustomerId(CUSTOMER_ID);
                 }
                 if (iKeyValuePair != null) {
@@ -240,6 +237,28 @@ public class CustomerService {
         }
     }
 
+    // Update Customer Name using SQL Query
+    private void updateCustomerDesc(String languageId, String companyId, String subProductId, String productId,
+                                    String customerId, UpdateCustomer updateCustomer, Customer dbCustomer) {
+        if (updateCustomer.getCustomerName() != null) {
+            if (updateCustomer.getCustomerName().isBlank()) {
+                throw new BadRequestException("Customer Name cannot be blank");
+            }
+            String newCustomerDesc = updateCustomer.getCustomerName();
+            boolean isCustomerNameChanged = !dbCustomer.getCustomerName().equalsIgnoreCase(updateCustomer.getCustomerName());
+            if (isCustomerNameChanged) {
+                log.info("new Customer Name --> {}", newCustomerDesc);
+                String oldCustomerDesc = dbCustomer.getCustomerName();
+                // Updating customerName in ConsignorTable using SQL Query
+                long noOfRecordsUpdated = customerRepository.updateCustomerName(languageId, companyId, subProductId, productId,
+                        customerId, oldCustomerDesc, newCustomerDesc);
+                if (noOfRecordsUpdated > 0) {
+                    log.info("{} records updated in the Consignor Table", noOfRecordsUpdated);
+                }
+            }
+        }
+    }
+
     /**
      * Update Customer
      *
@@ -262,24 +281,6 @@ public class CustomerService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId, subProductValue);
-
-//            if (updateCustomer.getCustomerName() != null) {
-//                if (updateCustomer.getCustomerName().isBlank()) {
-//                    throw new BadRequestException("Customer Name cannot be blank");
-//                }
-//                boolean isCustomerNameChanged = !dbCustomer.getCustomerName().equalsIgnoreCase(updateCustomer.getCustomerName());
-//                if (isCustomerNameChanged) {
-//                    String oldCustomerDesc = dbCustomer.getCustomerName();
-//                    BeanUtils.copyProperties(updateCustomer, dbCustomer, CommonUtils.getNullPropertyNames(updateCustomer));
-//                    dbCustomer.setUpdatedBy(loginUserID);
-//                    dbCustomer.setUpdatedOn(new Date());
-//                    Customer updatedCustomer = customerRepository.save(dbCustomer);
-//
-//                    // Updating customerName in ConsignorTable using Stored Procedure
-//                    customerRepository.customerDescUpdateProc(languageId, companyId, subProductId, productId, customerId, oldCustomerDesc, updateCustomer.getCustomerName());
-//                    return updatedCustomer;
-//                }
-//            }
             BeanUtils.copyProperties(updateCustomer, dbCustomer, CommonUtils.getNullPropertyNames(updateCustomer));
             if (updateCustomer.getStatusId() != null && !updateCustomer.getStatusId().isEmpty()) {
                 String statusDesc = replicaStatusRepository.getStatusDescription(updateCustomer.getStatusId());
@@ -298,6 +299,19 @@ public class CustomerService {
         }
     }
 
+//    public List<Customer> updateCustomerBulk(List<UpdateCustomer> updateCustomerList, String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<Customer> updatedCustomerList = new ArrayList<>();
+//        for (UpdateCustomer updateCustomer : updateCustomerList) {
+//            Customer dbCustomer = updateCustomer(updateCustomer.getLanguageId(), updateCustomer.getCompanyId(),
+//                    updateCustomer.getSubProductId(), updateCustomer.getProductId(), updateCustomer.getCustomerId(),
+//                    updateCustomer.getSubProductValue(), updateCustomer, loginUserID);
+//            updatedCustomerList.add(dbCustomer);
+//        }
+//        return updatedCustomerList;
+//    }
+
     /**
      * Update Customers - bulk
      *
@@ -309,17 +323,44 @@ public class CustomerService {
      * @throws IllegalAccessException
      * @throws CsvException
      */
+    @Transactional
     public List<Customer> updateCustomerBulk(List<UpdateCustomer> updateCustomerList, String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        try {
+            List<Customer> updatedCustomerList = new ArrayList<>();
+            for (UpdateCustomer updateCustomer : updateCustomerList) {
 
-        List<Customer> updatedCustomerList = new ArrayList<>();
-        for (UpdateCustomer updateCustomer : updateCustomerList) {
-            Customer dbCustomer = updateCustomer(updateCustomer.getLanguageId(), updateCustomer.getCompanyId(),
-                    updateCustomer.getSubProductId(), updateCustomer.getProductId(), updateCustomer.getCustomerId(),
-                    updateCustomer.getSubProductValue(), updateCustomer, loginUserID);
-            updatedCustomerList.add(dbCustomer);
+                Customer dbCustomer = customerRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
+                        updateCustomer.getLanguageId(), updateCustomer.getCompanyId(), updateCustomer.getSubProductValue(),
+                        updateCustomer.getSubProductId(), updateCustomer.getProductId(), updateCustomer.getCustomerId(), 0L);
+                if (dbCustomer != null) {
+                    customerRepository.delete(dbCustomer);
+                }
+
+                Customer newCustomer = new Customer();
+                BeanUtils.copyProperties(updateCustomer, newCustomer, CommonUtils.getNullPropertyNames(updateCustomer));
+
+                if (updateCustomer.getStatusId() != null && !updateCustomer.getStatusId().isEmpty()) {
+                    String statusDesc = replicaStatusRepository.getStatusDescription(updateCustomer.getStatusId());
+                    if (statusDesc != null) {
+                        newCustomer.setStatusDescription(statusDesc);
+                    }
+                }
+                newCustomer.setCreatedBy(loginUserID);
+                newCustomer.setCreatedOn(new Date());
+                newCustomer.setUpdatedBy(loginUserID);
+                newCustomer.setUpdatedOn(new Date());
+                Customer customer = customerRepository.save(newCustomer);
+                log.info("Created Customer --> {}", customer);
+                updatedCustomerList.add(customer);
+            }
+            return updatedCustomerList;
+        } catch (Exception e) {
+            // Error Log
+            createCustomerLog4(updateCustomerList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return updatedCustomerList;
     }
 
     /**
@@ -344,8 +385,8 @@ public class CustomerService {
         } else {
             // Error Log
             createCustomerLog1(languageId, companyId, subProductId, productId, customerId, subProductValue,
-                    "Error in deleting CustomerId - " + customerId);
-            throw new BadRequestException("Error in deleting CustomerId - " + customerId);
+                    "Error in deleting customerId - " + customerId);
+            throw new BadRequestException("Error in deleting customerId - " + customerId);
         }
     }
 
@@ -411,7 +452,7 @@ public class CustomerService {
 
         ReplicaCustomerSpecification spec = new ReplicaCustomerSpecification(findCustomer);
         List<ReplicaCustomer> results = replicaCustomerRepository.findAll(spec);
-        log.info("found Customers --> " + results);
+        log.info("found Customers --> {}", results);
         return results;
     }
 
@@ -485,6 +526,27 @@ public class CustomerService {
             errorLog.setReferenceField1(addCustomer.getSubProductId());
             errorLog.setReferenceField2(addCustomer.getProductId());
             errorLog.setReferenceField3(addCustomer.getSubProductValue());
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createCustomerLog4(List<UpdateCustomer> updateCustomerList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (UpdateCustomer updateCustomer : updateCustomerList) {
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(updateCustomer.getLanguageId());
+            errorLog.setCompanyId(updateCustomer.getCompanyId());
+            errorLog.setRefDocNumber(updateCustomer.getCustomerId());
+            errorLog.setMethod("Exception thrown in createCustomer");
+            errorLog.setReferenceField1(updateCustomer.getSubProductId());
+            errorLog.setReferenceField2(updateCustomer.getProductId());
+            errorLog.setReferenceField3(updateCustomer.getSubProductValue());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);

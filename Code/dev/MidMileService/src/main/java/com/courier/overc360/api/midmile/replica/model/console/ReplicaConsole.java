@@ -104,6 +104,12 @@ public class ReplicaConsole {
     @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
     private String eventCode;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
     private String eventText;
 

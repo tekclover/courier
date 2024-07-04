@@ -128,6 +128,48 @@ export const navbarData: INavbarData[] = [
                     },
                 ]
             },
+            {
+                routerId: 2003,
+                // routerLink: 'setup/list',
+                label: 'Business',
+                items: [
+                    {
+                        routerId: 2301,
+                        routerLink: '/main/idMaster/serviceType',
+                        label: 'Service Type'
+                    },
+                    {
+                        routerId: 2202,
+                        routerLink: '/main/idMaster/consignmentType',
+                        label: 'Consignment Type'
+                    },
+                    {
+                        routerId: 2203,
+                        routerLink: '/main/idMaster/loadType',
+                        label: 'Load Type'
+                    },
+                    {
+                        routerId: 2204,
+                        routerLink: '/main/idMaster/rateParameter',
+                        label: 'RateParameter'
+                    },
+                    {
+                        routerId: 2205,
+                        routerLink: '/main/idMaster/province',
+                        label: 'Province'
+                    },
+                    {
+                        routerId: 2206,
+                        routerLink: '/main/idMaster/district',
+                        label: 'District'
+                    },
+                    {
+                        routerId: 2207,
+                        routerLink: '/main/idMaster/city',
+                        label: 'City'
+                    },
+                ]
+            },
            
         ]
     },
@@ -139,62 +181,62 @@ export const navbarData: INavbarData[] = [
         label: 'Masters',
         items: [
             {
-                routerId: 2003,
+                routerId: 3001,
                 // routerLink: 'setup/list',
                 label: 'Operations',
                 items: [
                     {
-                        routerId: 2301,
+                        routerId: 3101,
                         routerLink: '/main/master/opStatus',
                         label: 'Op Stauts'
                     },
                     {
-                        routerId: 2302,
+                        routerId: 3102,
                         routerLink: '/main/master/event',
                         label: 'Event'
                     },
                     {
-                        routerId: 2303,
+                        routerId: 3103,
                         routerLink: '/main/master/customer',
                         label: 'Customer'
                     },
                     {
-                        routerId: 2304,
+                        routerId: 3104,
                         routerLink: '/main/master/consignor',
                         label: 'Consignor'
                     },
                     {
-                        routerId: 2305,
+                        routerId: 3105,
                         routerLink: '/main/master/hubPartnerAssignment',
                         label: 'Hub Partner Assignment'
                     },
                     {
-                        routerId: 2306,
+                        routerId: 3106,
                         routerLink: '/main/master/cityMapping',
                         label: 'City Mapping'
                     },
                     {
-                        routerId: 2307,
+                        routerId: 3107,
                         routerLink: '/main/master/districtMapping',
                         label: 'District Mapping'
                     },
                     {
-                        routerId: 2308,
+                        routerId: 3108,
                         routerLink: '/main/master/provinceMapping',
                         label: 'Province Mapping'
                     },
                     {
-                        routerId: 2309,
+                        routerId: 3109,
                         routerLink: '/main/master/countryMapping',
                         label: 'Country Mapping'
                     },
                     {
-                        routerId: 2310,
+                        routerId: 3110,
                         routerLink: '/main/idMaster/route',
                         label: 'Route'
                     },
                     {
-                        routerId: 2311,
+                        routerId: 3111,
                         routerLink: '/main/idMaster/vehicle',
                         label: 'Vehicle'
                     },

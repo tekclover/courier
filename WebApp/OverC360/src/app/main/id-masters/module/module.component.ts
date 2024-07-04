@@ -37,7 +37,7 @@ export class ModuleComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Module - List'];
+    const dataToSend = ['Setup', 'Module '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -124,7 +124,7 @@ export class ModuleComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -141,7 +141,7 @@ export class ModuleComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

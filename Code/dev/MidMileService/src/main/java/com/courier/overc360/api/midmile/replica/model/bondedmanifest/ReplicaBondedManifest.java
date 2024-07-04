@@ -104,6 +104,12 @@ public class ReplicaBondedManifest {
     @Column(name = "TOTAL_QTY", columnDefinition = "nvarchar(50)")
     private String totalQuantity;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "VOLUME", columnDefinition = "nvarchar(50)")
     private String volume;
 

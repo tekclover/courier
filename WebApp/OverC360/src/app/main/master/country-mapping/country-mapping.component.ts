@@ -33,7 +33,7 @@ export class CountryMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Country Mapping - List'];
+    const dataToSend = ['Master', 'Country Mapping '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -118,7 +118,7 @@ export class CountryMappingComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedCountryMapping.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCountryMapping[0] : linedata, pageflow: type });
       this.router.navigate(['/main/master/countryMapping-new/' + paramdata]);
@@ -127,7 +127,7 @@ export class CountryMappingComponent {
 
   deleteDialog() {
     if (this.selectedCountryMapping.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

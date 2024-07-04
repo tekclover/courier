@@ -37,3 +37,12 @@
     transition: background-color 0.3s ease;
   }
   .lineBorder {width: 8px;flex-grow: 0;margin: 10px 7px 10px 0;border-radius: 20px;background-color: var(--overcOrange);}
+
+
+
+  .small-calendar .p-datepicker {
+    font-size: 12px; /* Adjust font size */
+    width: 200px; /* Adjust width */
+    max-width: 100%; /* Ensure it doesn't exceed container width */
+    max-height: 300px; /* Example: Limit height if needed */
+}

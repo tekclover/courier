@@ -422,6 +422,8 @@ public class ConsignmentService {
      * @param masterAirwayBill
      * @param houseAirwayBill
      */
+
+
     public void deleteConsignmentEntity(String companyId, String languageId, String partnerId, String masterAirwayBill,
                                         String houseAirwayBill, String pieceId, String pieceItemId, String imageRefId, String loginUserID) {
 
@@ -432,12 +434,13 @@ public class ConsignmentService {
             if (dbConsignmentEntity == null) {
                 throw new BadRequestException(" Given values doesn't exits CompanyId - " + companyId + " LanguageId " + languageId + " PartnerId " + partnerId +
                         " MasterAirwayBill " + masterAirwayBill + " HouseAirwayBill " + houseAirwayBill);
+            } else {
+                dbConsignmentEntity.setDeletionIndicator(1L);
+                dbConsignmentEntity.setUpdatedBy(loginUserID);
+                dbConsignmentEntity.setUpdatedOn(new Date());
+                pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                consignmentEntityRepository.save(dbConsignmentEntity);
             }
-            dbConsignmentEntity.setDeletionIndicator(1L);
-            dbConsignmentEntity.setUpdatedBy(loginUserID);
-            dbConsignmentEntity.setUpdatedOn(new Date());
-            pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
-            consignmentEntityRepository.save(dbConsignmentEntity);
         }
         if (!pieceId.isEmpty() && pieceItemId == null) {
             pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);

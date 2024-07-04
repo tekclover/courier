@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.currencyExchangeRate.AddCurrencyExchangeRate;
 import com.courier.overc360.api.idmaster.primary.model.currencyExchangeRate.CurrenyExchangeRate;
 import com.courier.overc360.api.idmaster.primary.model.currencyExchangeRate.UpdateCurrencyExchangeRate;
@@ -102,47 +101,51 @@ public class CurrencyExchangeRateService {
     public CurrenyExchangeRate createCurrencyExchangeRate(AddCurrencyExchangeRate addCurrencyExchangeRate, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addCurrencyExchangeRate.getCompanyId(), addCurrencyExchangeRate.getLanguageId(), 0L);
-
-            Optional<CurrenyExchangeRate> duplicateCurrencyExchangeRate = currencyExchangeRateRepository.findByLanguageIdAndCompanyIdAndFromCurrencyIdAndToCurrencyIdAndDeletionIndicator(
-                    addCurrencyExchangeRate.getLanguageId(), addCurrencyExchangeRate.getCompanyId(), addCurrencyExchangeRate.getFromCurrencyId(), addCurrencyExchangeRate.getToCurrencyId(), 0l);
-
-            if (dbCompany.isEmpty()) {
+            if (!dbCompanyPresent) {
                 throw new BadRequestException("CompanyId - " + addCurrencyExchangeRate.getCompanyId()
                         + " and languageId - " + addCurrencyExchangeRate.getLanguageId() + " doesn't exists");
-            } else if (duplicateCurrencyExchangeRate.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values : fromCurrencyId - " + addCurrencyExchangeRate.getFromCurrencyId());
-            } else {
-                log.info("new CurrencyExchangeRate --> " + addCurrencyExchangeRate);
-                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(
-                        addCurrencyExchangeRate.getLanguageId(), addCurrencyExchangeRate.getCompanyId());
-
-                CurrenyExchangeRate newCurrencyExchangeRate = new CurrenyExchangeRate();
-                BeanUtils.copyProperties(addCurrencyExchangeRate, newCurrencyExchangeRate, CommonUtils.getNullPropertyNames(addCurrencyExchangeRate));
-                if ((addCurrencyExchangeRate.getFromCurrencyId() != null &&
-                        (addCurrencyExchangeRate.getReferenceField10() != null && addCurrencyExchangeRate.getReferenceField10().equalsIgnoreCase("true"))) ||
-                        addCurrencyExchangeRate.getFromCurrencyId() == null || addCurrencyExchangeRate.getFromCurrencyId().isBlank()) {
-                    String NUM_RAN_OBJ = "CURRENCYEXCHANGERATE";
-                    String FROM_CURRENCY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for FROM_CURRENCY_ID : " + FROM_CURRENCY_ID);
-                    newCurrencyExchangeRate.setFromCurrencyId(FROM_CURRENCY_ID);
-                }
-                if (iKeyValuePair != null) {
-                    newCurrencyExchangeRate.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newCurrencyExchangeRate.setCompanyName(iKeyValuePair.getCompanyDesc());
-                }
-                String statusDesc = replicaStatusRepository.getStatusDescription(addCurrencyExchangeRate.getStatusId());
-                if (statusDesc != null) {
-                    newCurrencyExchangeRate.setStatusDescription(statusDesc);
-                }
-                newCurrencyExchangeRate.setDeletionIndicator(0L);
-                newCurrencyExchangeRate.setCreatedBy(loginUserID);
-                newCurrencyExchangeRate.setCreatedOn(new Date());
-                newCurrencyExchangeRate.setUpdatedBy(loginUserID);
-                newCurrencyExchangeRate.setUpdatedOn(new Date());
-                return currencyExchangeRateRepository.save(newCurrencyExchangeRate);
             }
+
+            if (addCurrencyExchangeRate.getFromCurrencyId().equalsIgnoreCase(addCurrencyExchangeRate.getToCurrencyId())) {
+                throw new BadRequestException("FromCurrencyId and ToCurrencyId must not be the same");
+            }
+
+            boolean duplicateCurrencyExchangeRate = replicaCurrencyExchangeRateRepository.existsByLanguageIdAndCompanyIdAndFromCurrencyIdAndToCurrencyIdAndDeletionIndicator(
+                    addCurrencyExchangeRate.getLanguageId(), addCurrencyExchangeRate.getCompanyId(),
+                    addCurrencyExchangeRate.getFromCurrencyId(), addCurrencyExchangeRate.getToCurrencyId(), 0L);
+            if (duplicateCurrencyExchangeRate) {
+                throw new BadRequestException("Record is getting Duplicated with the given values : fromCurrencyId - " + addCurrencyExchangeRate.getFromCurrencyId());
+            }
+
+            log.info("new CurrencyExchangeRate --> {}", addCurrencyExchangeRate);
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addCurrencyExchangeRate.getLanguageId(), addCurrencyExchangeRate.getCompanyId());
+
+            CurrenyExchangeRate newCurrencyExchangeRate = new CurrenyExchangeRate();
+            BeanUtils.copyProperties(addCurrencyExchangeRate, newCurrencyExchangeRate, CommonUtils.getNullPropertyNames(addCurrencyExchangeRate));
+            if ((addCurrencyExchangeRate.getFromCurrencyId() != null &&
+                    (addCurrencyExchangeRate.getReferenceField10() != null && addCurrencyExchangeRate.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addCurrencyExchangeRate.getFromCurrencyId() == null || addCurrencyExchangeRate.getFromCurrencyId().isBlank()) {
+                String NUM_RAN_OBJ = "CURRENCYEXCHANGERATE";
+                String FROM_CURRENCY_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for FROM_CURRENCY_ID : " + FROM_CURRENCY_ID);
+                newCurrencyExchangeRate.setFromCurrencyId(FROM_CURRENCY_ID);
+            }
+            if (iKeyValuePair != null) {
+                newCurrencyExchangeRate.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newCurrencyExchangeRate.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addCurrencyExchangeRate.getStatusId());
+            if (statusDesc != null) {
+                newCurrencyExchangeRate.setStatusDescription(statusDesc);
+            }
+            newCurrencyExchangeRate.setDeletionIndicator(0L);
+            newCurrencyExchangeRate.setCreatedBy(loginUserID);
+            newCurrencyExchangeRate.setCreatedOn(new Date());
+            newCurrencyExchangeRate.setUpdatedBy(loginUserID);
+            newCurrencyExchangeRate.setUpdatedOn(new Date());
+            return currencyExchangeRateRepository.save(newCurrencyExchangeRate);
         } catch (Exception e) {
             // Error Log
             createCurrencyExchangeRateLog2(addCurrencyExchangeRate, e.toString());
