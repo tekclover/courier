@@ -11,6 +11,9 @@ import { PreAlertNewComponent } from './pre-alert-manifest/pre-alert-new/pre-ale
 import { BondedManifestNewComponent } from './bonded-manifest/bonded-manifest-new/bonded-manifest-new.component';
 import { CcrNewComponent } from './ccr/ccr-new/ccr-new.component';
 import { ConsoleNewComponent } from './console/console-new/console-new.component';
+import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
+import { ConsoleTransferComponent } from './console/console-transfer/console-transfer.component';
+import { ConsoleEditpopupComponent } from './console/console-editpopup/console-editpopup.component';
 
 
 @NgModule({
@@ -22,7 +25,7 @@ import { ConsoleNewComponent } from './console/console-new/console-new.component
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent
 
 
   ],

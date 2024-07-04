@@ -39,7 +39,7 @@ export class LoadTypeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Load Type '];
+    const dataToSend = ['Setup', 'Load Type'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -48,9 +48,9 @@ export class LoadTypeComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'loadTypeId', header: 'Load Type ID' },
       { field: 'loadTypeText', header: 'Load Type Name' },
-      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -58,8 +58,8 @@ export class LoadTypeComponent {
     ];
     this.target = [
       { field: 'languageDescription', header: 'Language' },
-      { field: 'languageId', header: 'Language Id' },
-      { field: 'companyId', header: 'Company Id' },
+      { field: 'languageId', header: 'Language ID' },
+      { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
@@ -78,20 +78,22 @@ export class LoadTypeComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.loadTypeTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.loadTypeTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
 
@@ -119,7 +121,7 @@ export class LoadTypeComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedLoadType.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedLoadType[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/loadType-new/' + paramdata]);
@@ -128,7 +130,7 @@ export class LoadTypeComponent {
 
   deleteDialog() {
     if (this.selectedLoadType.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {

@@ -420,7 +420,10 @@ export class ConsignmentNewComponent {
   }
 
   patchReferenceImages(referenceImageList: any[]) {
-    return this.fb.array(referenceImageList.map(image => this.fb.group({
+    if(referenceImageList == null){
+  return
+}    
+return this.fb.array(referenceImageList.map(image => this.fb.group({
       imageRefId: [image.imageRefId],
       pdfUrl: [image.pdfUrl],
       referenceImageUrl: [image.referenceImageUrl]
@@ -582,9 +585,19 @@ export class ConsignmentNewComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
-        itemDetailsFormArray.patchValue(result);
-        console.log(itemDetailsFormArray)
+ // Clear existing items and set the new ones
+ const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
+ itemDetailsFormArray.clear(); // Clear existing items if needed
+
+ // Push all items from result array (assuming result is an array of objects)
+ result.forEach((item :any) => {
+   itemDetailsFormArray.push(this.fb.group({
+    description: item.description
+   }));
+ });
+
+ console.log('Updated itemDetails:', itemDetailsFormArray.value);
+ console.log(this.piece)
       }
     });
   }

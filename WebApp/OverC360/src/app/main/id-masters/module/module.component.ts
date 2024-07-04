@@ -31,7 +31,7 @@ export class ModuleComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
@@ -45,10 +45,10 @@ export class ModuleComponent {
   }
 
   callTableHeader() {
-    this.cols = [     
+    this.cols = [
+      { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'moduleId', header: 'Module ID' },
       { field: 'moduleDescription', header: 'Description' },
-      { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
       { field: 'statusDescription', header: 'Status' },
@@ -78,21 +78,23 @@ export class ModuleComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        res = this.cs.removeDuplicatesFromArrayList(res, 'moduleId')
-        this.moduleTable = res;
-        this.spin.hide();
-      },
-      error: (err: any) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          res = this.cs.removeDuplicatesFromArrayList(res, 'moduleId')
+          this.moduleTable = res;
+          this.spin.hide();
+        },
+        error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {
@@ -110,7 +112,7 @@ export class ModuleComponent {
       data: { target: this.cols, source: this.target },
     });
 
-    dialogRef.afterClosed().subscribe((result:any) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.deleterecord(this.selectedModule[0]);
       }
@@ -124,7 +126,7 @@ export class ModuleComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -141,7 +143,7 @@ export class ModuleComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

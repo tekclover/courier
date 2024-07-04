@@ -19,14 +19,22 @@ import { CurrencyService } from './currency.service';
 })
 export class CurrencyComponent {
 
-  
+
   currencyTable: any[] = [];
   selectedCurrency: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CurrencyService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: CurrencyService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -49,7 +57,7 @@ export class CurrencyComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'statusId', header: 'Status Id' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -65,105 +73,107 @@ export class CurrencyComponent {
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
     ];
   }
-  
+
   initialCall() {
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.currencyTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
+  }
+
+
+  onChange() {
+    const choosen = this.selectedCurrency[this.selectedCurrency.length - 1];
+    this.selectedCurrency.length = 0;
+    this.selectedCurrency.push(choosen);
+  }
+
+  customTable() {
+    const dialogRef = this.dialog.open(CustomTableComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { target: this.cols, source: this.target, },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedCurrency[0]);
+      }
+    });
+  }
+
+  openCrud(type: any = 'New', linedata: any = null): void {
+    if (this.selectedCurrency.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCurrency[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/idMaster/currency-new/' + paramdata]);
+    }
+  }
+
+  deleteDialog() {
+    if (this.selectedCurrency.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: this.selectedCurrency, module: 'Currency', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleterecord(this.selectedCurrency[0]);
+      }
+    });
+  }
+  deleterecord(lines: any) {
     this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.currencyTable = res;
+    this.service.Delete(lines.currencyId).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.currencyId + ' deleted successfully' });
         this.spin.hide();
+        this.initialCall();
       }, error: (err) => {
-        this.spin.hide();
         this.cs.commonerrorNew(err);
+        this.spin.hide();
       }
     })
   }
 
+  downloadExcel() {
+    const exportData = this.currencyTable.map(item => {
+      const exportItem: any = {};
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
 
-onChange() {
-  const choosen = this.selectedCurrency[this.selectedCurrency.length - 1];
-  this.selectedCurrency.length = 0;
-  this.selectedCurrency.push(choosen);
-}
-
-customTable() {
-  const dialogRef = this.dialog.open(CustomTableComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '80%',
-    position: { top: '6.5%', left: '30%' },
-    data: { target: this.cols, source: this.target,},
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedCurrency[0]);
-    }
-  });
-}
-
-openCrud(type: any = 'New', linedata: any = null): void {
-  if (this.selectedCurrency.length === 0 && type != 'New') {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-  } else {
-    let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCurrency[0] : linedata, pageflow: type });
-    this.router.navigate(['/main/idMaster/currency-new/' + paramdata]);
-  }
-}
-
-deleteDialog() {
-  if (this.selectedCurrency.length === 0) {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
-    return;
-  }
-  const dialogRef = this.dialog.open(DeleteComponent, {
-    disableClose: true,
-    width: '70%',
-    maxWidth: '82%',
-    position: { top: '6.5%', left: '30%' },
-    data: { line: this.selectedCurrency, module: 'Currency', body: 'This action cannot be undone. All values associated with this field will be lost.' },
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.deleterecord(this.selectedCurrency[0]);
-    }
-  });
-}
-deleterecord(lines: any) {
-  this.spin.show();
-  this.service.Delete(lines.currencyId).subscribe({
-    next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.currencyId + ' deleted successfully' });
-      this.spin.hide();
-      this.initialCall();
-    },error: (err) => {
-      this.cs.commonerrorNew(err);
-      this.spin.hide();
-    }
-  })
-}
-
-downloadExcel() {
-  const exportData = this.currencyTable.map(item => {
-    const exportItem: any = {};
-   this.cols.forEach(col => {
-    if(col.format == 'date'){
-      exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-    }else{
-      exportItem[col.field] = item[col.field];
-    }
-     
+      });
+      return exportItem;
     });
-    return exportItem;
-  });
 
-  // Call ExcelService to export data to Excel
- this.cs.exportAsExcel(exportData, 'Currency');
-}
+    // Call ExcelService to export data to Excel
+    this.cs.exportAsExcel(exportData, 'Currency');
+  }
 }
 

@@ -29,7 +29,8 @@ export class CompanyComponent {
     private path: PathNameService,
     private service: CompanyService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -37,7 +38,7 @@ export class CompanyComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Company '];
+    const dataToSend = ['Setup', 'Company - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -46,10 +47,8 @@ export class CompanyComponent {
 
   callTableHeader() {
     this.cols = [
-
       { field: 'companyId', header: 'Company ID' },
       { field: 'companyName', header: 'Company Name' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'addressLine1', header: 'Address Line 1' },
       { field: 'addressLine2', header: 'Address Line 2' },
       { field: 'addressLine3', header: 'Address Line 3' },
@@ -61,6 +60,7 @@ export class CompanyComponent {
     this.target = [
       { field: 'statusId', header: 'Status ID' },
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageDescription', header: 'Language' },
       { field: 'countryId', header: 'Country ID' },
       { field: 'countryName', header: 'Country Name' },
       { field: 'provinceId', header: 'Province ID' },
@@ -85,20 +85,22 @@ export class CompanyComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.companyTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.companyTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {
@@ -130,7 +132,7 @@ export class CompanyComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -147,7 +149,7 @@ export class CompanyComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

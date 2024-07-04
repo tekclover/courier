@@ -31,6 +31,8 @@ public class AddConsignment {
 
     private String statusId;
 
+    private String statusDescription;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
@@ -93,6 +95,10 @@ public class AddConsignment {
     private String primaryDo;
 
     private String secondaryDo;
+
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
 
 //    @NotBlank(message = "InvoiceAmount is mandatory")
     private String invoiceAmount;
