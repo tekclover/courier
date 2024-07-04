@@ -29,12 +29,6 @@ export class ImageUploadComponent {
     private auth: AuthService,
   ) { }
 
-  form = this.fb.group({
-    imageRefId: [''],
-    pdfUrl: [''],
-    referenceImageUrl: [''],
-  })
-
   imageForm = this.fb.group({
     referenceImageList: this.fb.array([]) // Initialize an empty FormArray
   });
@@ -43,46 +37,30 @@ export class ImageUploadComponent {
     return this.imageForm.get('referenceImageList') as FormArray;
   }
 
+
   removeItem(index: number) {
     this.imageDetails.removeAt(index);
   }
 
   ngOnInit() {
-    console.log(this.data)
+    console.log(this.data.line)
     this.patchForm(this.data.line.value)
-    console.log(this.imageForm)
   }
 
-  save() {
-    this.dialogRef.close(this.form.value);
-  }
 
 
   selectedFiles: FileList | null = null;
-  selectFiles(event: any, data: any): void {
+  selectFiles(event: any): void {
     this.selectedFiles = event.target.files;
-    const files: FileList = event.target.files!;
-    const filesArray: File[] = Array.from(files);
-    let filesWithData: { name: string, referenceImageUrl: string }[] = [];
-    filesArray.forEach((file: File) => {
-      const referenceImageUrl = `path/to/images/${file.name}`;
-      const fileData = {
-        name: file.name,
-        referenceImageUrl: file.name,
-      };
-      filesWithData.push(fileData);
-    });
-    console.log(filesWithData);
-    this.uploadFile(filesWithData);
+    this.uploadFile();
   }
 
-  uploadFile(data: any) {
+  imageDetailsTable: any[] = [];
+  uploadFile() {
     if (!this.selectedFiles || this.selectedFiles.length === 0) {
       console.log('No files selected for upload.');
       return;
     }
-    //this.patchReferenceImages(data),
-
     const location = 'test'
     this.service.uploadFiles(this.selectedFiles, location).subscribe({
       next: (result) => {
@@ -92,30 +70,36 @@ export class ImageUploadComponent {
           key: 'br',
           detail: 'File uploaded successfully',
         });
+        result.forEach((x:any) => {
+          x['referenceImageUrl'] = x.filePath;
+        })
+        this.patchForm(result)
       }, error: (err) => {
         this.spin.hide();
         this.cs.commonerrorNew(err);
       }
     });
   }
+  
+  save() {
+    this.dialogRef.close(this.imageForm.controls.referenceImageList.value);
+  }
+
 
   patchForm(shipmentData: any) {
-    console.log(shipmentData)
     const itemsArray = this.imageForm.get('referenceImageList') as FormArray;
     shipmentData.forEach((piece: any) => {
       itemsArray.push(this.patchReferenceImages(piece));
     });
+    console.log(this.imageForm)
   }
 
-  patchReferenceImages(referenceImageList: any[]) {
-    if (referenceImageList == null) {
-      return
-    }
-    return this.fb.array(referenceImageList.map(image => this.fb.group({
+  patchReferenceImages(image: any) {
+    return this.fb.group({
       imageRefId: [image.imageRefId],
       pdfUrl: [image.pdfUrl],
       referenceImageUrl: [image.referenceImageUrl]
-    })));
+    });
   }
 }
 

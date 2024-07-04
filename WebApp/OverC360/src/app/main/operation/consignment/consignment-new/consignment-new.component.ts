@@ -655,7 +655,17 @@ export class ConsignmentNewComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const control = (this.piece.controls.pieceDetails as FormArray).at(index)
+      console.log(result)
+      const imageDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray;
+      imageDetailsFormArray.clear();
+      result.forEach((image: any) => {
+        imageDetailsFormArray.push(this.fb.group({
+          imageRefId: image.imageRefId,
+          pdfUrl: image.pdfUrl,
+          referenceImageUrl: image.referenceImageUrl,
+        }));
+      });
+      console.log(this.piece)
     })
   }
 
