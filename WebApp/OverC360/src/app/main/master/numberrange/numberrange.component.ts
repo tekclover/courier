@@ -49,15 +49,16 @@ export class NumberrangeComponent {
     this.cols = [
       { field: 'numberRangeCode', header: 'Number Range Code' },
       { field: 'numberRangeObject', header: 'Number Range Object' },
-      { field: 'numberRangeStatus', header: 'Number Range Status' },
+      { field: 'numberRangeFrom', header: 'Number Range From' },
+      { field: 'numberRangeTo', header: 'Number Range To' },
+      { field: 'numberRangeCurrent', header: 'Number Range Current' },
+      { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
       
     ];
     this.target = [
-      { field: 'numberRangeFrom', header: 'Number Range From' },
-      { field: 'numberRangeTo', header: 'Number Range To' },
-      { field: 'numberRangeCurrent', header: 'Number Range Current' },
+      { field: 'numberRangeStatus', header: 'Number Range Status' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
