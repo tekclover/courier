@@ -5,6 +5,7 @@ import pdfFonts from "../../../../assets/font/vfs_fonts.js"
 // @ts-ignore
 import { iwExpressLogo } from "../../../../assets/font/iwExpress.js";
 import JsBarcode from 'jsbarcode';
+import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 //pdfMake.fonts = fonts;
 pdfMake.fonts = {
@@ -25,13 +26,15 @@ pdfMake.fonts = {
   styleUrl: './consignment-label.component.scss'
 })
 export class ConsignmentLabelComponent {
-
+  constructor(
+    public datePipe: DatePipe){}
   generateBarcode(text: string) {
     const canvas = document.createElement('canvas');
-    JsBarcode(canvas, text);
+    JsBarcode(canvas, text,{height:80});
     return canvas.toDataURL('image/png');
   }
   generatePdfBarocde(line:any){
+    let createdOn = this.datePipe.transform(line.createdOn, 'dd-MMM-yyyy HH:mm')
     var dd: any;
     let headerTable: any[] = [];
 
@@ -74,7 +77,7 @@ export class ConsignmentLabelComponent {
 
 
     let barcodeAWB: any[] = [];
-    const barcodeImageData1 = this.generateBarcode('AWB - BOQ000010213');
+    const barcodeImageData1 = this.generateBarcode(line.houseAirwayBill);
     barcodeAWB.push([      
       { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0],fit: [80, 80], alignment: 'left',  bold: false, fontSize: 12, border: [false, false, false, false] },
             { image: barcodeImageData1,  margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center',  bold: false, fontSize: 12, border: [false, false, false, false] },
@@ -93,73 +96,73 @@ export class ConsignmentLabelComponent {
         let bodyArray: any[] = [];
         bodyArray.push([
           { text: 'Label Date', bold: true, fontSize: 6, border: [false, false, false, true] },
-          { text: '11-06-2024', bold: false, fontSize: 6, border: [false, false, false, true] },
+          { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
           { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
-          { text: 'BOQ4OI3U48', bold: false, fontSize: 6, border: [false, false, false, true] }
+          { text: (line.originDetails.country), bold: false, fontSize: 6, border: [false, false, false, true] }
         ]);
         bodyArray.push([
           { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-          { text: 'Kuwait', bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+          { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
           { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-          { text: 'Iraq', bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
+          { text: (line.destinationDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
         ]);
         bodyArray.push([
           { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Mohammed Aslam', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.consigneeName), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Baghdad', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.destinationDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);      
         bodyArray.push([
           { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Airways', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.subProductName), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Baghdad', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.destinationDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);        
         bodyArray.push([
           { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '10.5', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.declaredValue), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Inco-Terms', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Terms', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.incoTerms), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);       
         bodyArray.push([
           { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Document', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '1 Kg', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);        
         bodyArray.push([
           { text: 'COD', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Yes', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: ((line.paymentType)=="COD" ?'Yes':'No'), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Service Type', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Express', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.serviceTypeText), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);        
         bodyArray.push([
           { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Yes', bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'NIL', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.customsValue), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);        
         bodyArray.push([
           { text: 'Piece Count', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '10', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Currency Code', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'KWD', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.currency), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         bodyArray.push([
           { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '5', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.noOfItemPiece), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Item Description available here eg:Gift articles', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text:(line.goodsDescription), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         dd.content.push(
           {
@@ -174,24 +177,24 @@ export class ConsignmentLabelComponent {
         let bodyArray2: any[] = [];
         bodyArray2.push([
           { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-          { text: 'The Hut Group', bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+          { text: (line.shipperName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-          { text: 'Kuwait', bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+          { text: (line.originDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
         ]);
         bodyArray2.push([
           { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Kuwait', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.originDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Kuwait', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.originDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         bodyArray2.push([
           { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '9717850160', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.originDetails.phone), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '9717850161', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text:(line.originDetails.alternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         dd.content.push(
           {
@@ -205,7 +208,7 @@ export class ConsignmentLabelComponent {
         let bodyArray3: any[] = [];
         bodyArray3.push([
           { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'LF Logistics/Mohebi Logistics, Plot, Mohebi Logistics', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.originDetails.addressLine1 != null ?line.originDetails.addressLine1 : '')+' '+''+(line.originDetails.addressLine2 != null ?line.originDetails.addressLine2 : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         dd.content.push(
           {
@@ -220,24 +223,24 @@ export class ConsignmentLabelComponent {
         let bodyArray4: any[] = [];
         bodyArray4.push([
           { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-          { text: 'Mohammed Aslam', bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+          { text: (line.consigneeName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-          { text: 'Iraq', bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+          { text: (line.destinationDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
         ]);
         bodyArray4.push([
           { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Baghdad', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.destinationDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: 'Baghdad', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.destinationDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         bodyArray4.push([
           { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '9787475727', bold: false, fontSize: 6, border: [false, false, false, false] },
+          { text: (line.destinationDetails.phone), bold: false, fontSize: 6, border: [false, false, false, false] },
           { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
           { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: '9787475728', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text: (line.destinationDetails.alternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         dd.content.push(
           {
@@ -251,7 +254,7 @@ export class ConsignmentLabelComponent {
         let bodyArray5: any[] = [];
         bodyArray5.push([
           { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-          { text: ' House 61 Block 5, Street 517, Plot, Mohebi Logistics;', bold: false, fontSize: 6, border: [false, false, false, false] }
+          { text:(line.destinationDetails.addressLine1 != null ?line.destinationDetails.addressLine1 : '')+''+(line.destinationDetails.addressLine1 != null ?line.destinationDetails.addressLine1 : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
         ]);
         dd.content.push(
           {
@@ -265,8 +268,8 @@ export class ConsignmentLabelComponent {
 
 
     let pieceId: any[] = [];
-    const pieceIdcode = this.generateBarcode('707787104528');
-    const partnercode = this.generateBarcode('80716745287');
+    const pieceIdcode = this.generateBarcode(line.pieceDetails.length>0?line.pieceDetails[0].pieceId:null);
+    const partnercode = this.generateBarcode(line.partnerHouseAirwayBill);
     pieceId.push([        
       { text: 'Piece Id', bold: true, alignment: 'left',  margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },   
       { text: 'Partner AWB', bold: true, alignment: 'right',  margin: [0, 5, 0, 0],  fontSize: 6, border: [false, true, false, false] },
