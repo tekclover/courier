@@ -338,21 +338,21 @@ public class ConsignmentService {
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedBy(loginUserID);
             }
 
-            if (dbConsignment.getDestinationDetails() != null) {
+            if (dbConsignment.getDestinationDetails() != null && dbConsignmentEntity.getDestinationDetails() != null) {
                 BeanUtils.copyProperties(dbConsignment.getDestinationDetails(), dbConsignmentEntity.getDestinationDetails(),
                         CommonUtils.getNullPropertyNames(dbConsignment.getDestinationDetails()));
                 dbConsignmentEntity.getDestinationDetails().setUpdatedOn(new Date());
                 dbConsignmentEntity.getDestinationDetails().setUpdatedBy(loginUserID);
             }
 
-            if (dbConsignment.getReturnDetails() != null) {
+            if (dbConsignment.getReturnDetails() != null && dbConsignmentEntity.getReturnDetails() != null) {
                 BeanUtils.copyProperties(dbConsignment.getReturnDetails(), dbConsignmentEntity.getReturnDetails(),
                         CommonUtils.getNullPropertyNames(dbConsignment.getReturnDetails()));
                 dbConsignmentEntity.getReturnDetails().setUpdatedOn(new Date());
                 dbConsignmentEntity.getReturnDetails().setUpdatedBy(loginUserID);
             }
 
-            if (dbConsignment.getOriginDetails() != null) {
+            if (dbConsignment.getOriginDetails() != null && dbConsignmentEntity.getOriginDetails() != null) {
                 BeanUtils.copyProperties(dbConsignment.getOriginDetails(), dbConsignmentEntity.getOriginDetails(),
                         CommonUtils.getNullPropertyNames(dbConsignment.getOriginDetails()));
                 dbConsignmentEntity.getOriginDetails().setUpdatedOn(new Date());
@@ -363,7 +363,7 @@ public class ConsignmentService {
 
             //Update ReferenceImage
             List<ReferenceImageList> referenceImageLists = new ArrayList<>();
-            if (!dbConsignment.getReferenceImageList().isEmpty() && dbConsignment.getReferenceImageList() != null) {
+            if (dbConsignment.getReferenceImageList() != null && !dbConsignment.getReferenceImageList().isEmpty()) {
                 for (ReferenceImageList image : dbConsignment.getReferenceImageList()) {
 
                     ReferenceImageList newRefImageList = new ReferenceImageList();
@@ -381,8 +381,8 @@ public class ConsignmentService {
                     referenceImageLists.add(newRefImageList);
                     addConsignment.setReferenceImageList(referenceImageLists);
                 }
+                addConsignment.setReferenceImageList(referenceImageLists);
             }
-            addConsignment.setReferenceImageList(referenceImageLists);
 
             //PieceDetails Update
             if (dbConsignment.getPieceDetails() != null && !dbConsignment.getPieceDetails().isEmpty()) {

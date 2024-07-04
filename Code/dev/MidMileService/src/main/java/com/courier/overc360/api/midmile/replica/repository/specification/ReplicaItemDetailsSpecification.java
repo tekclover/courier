@@ -43,16 +43,24 @@ public class ReplicaItemDetailsSpecification implements Specification<ReplicaIte
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findItemDetails.getPartnerId()));
         }
-        if (findItemDetails.getPieceId() != null && !findItemDetails.getPieceId() .isEmpty()) {
+        if (findItemDetails.getPieceId() != null && !findItemDetails.getPieceId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("pieceId");
-            predicates.add(group.in(findItemDetails.getPieceId() ));
+            predicates.add(group.in(findItemDetails.getPieceId()));
         }
-        if (findItemDetails.getPieceItemId() != null && !findItemDetails.getPieceItemId() .isEmpty()) {
+        if (findItemDetails.getPieceItemId() != null && !findItemDetails.getPieceItemId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("pieceItemId");
-            predicates.add(group.in(findItemDetails.getPieceItemId() ));
+            predicates.add(group.in(findItemDetails.getPieceItemId()));
+        }
+        if (findItemDetails.getPartnerHouseAirwayBill() != null && !findItemDetails.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findItemDetails.getPartnerHouseAirwayBill()));
+        }
+        if (findItemDetails.getPartnerMasterAirwayBill() != null && !findItemDetails.getPartnerMasterAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findItemDetails.getPartnerMasterAirwayBill()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }
-
 }
+
