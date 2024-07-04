@@ -38,7 +38,7 @@ export class MenuComponent {
   today: any;
   ngOnInit(): void {
     // to pass Breadcrumbs onto the main component
-    const dataToSend = ['Setup', 'Menu '];
+    const dataToSend = ['Setup', 'Menu'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,8 +47,8 @@ export class MenuComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'menuId', header: 'Menu ID' },
       { field: 'companyIdAndDescription', header: 'Company' },
+      { field: 'menuId', header: 'Menu ID' },
       { field: 'menuName', header: 'Menu Name' },
       { field: 'subMenuName', header: 'Sub Menu Name' },
       { field: 'statusDescription', header: 'Status' },
@@ -56,6 +56,8 @@ export class MenuComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'companyId', header: 'Company ID' },
+      { field: 'languageId', header: 'Language ID' },
       { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'subMenuId', header: 'Sub Menu ID' },
       { field: 'authorizationObjectId', header: 'Authorization Object ID' },
@@ -78,20 +80,22 @@ export class MenuComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.menuTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.menuTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {

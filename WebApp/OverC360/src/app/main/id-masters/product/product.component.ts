@@ -32,13 +32,13 @@ export class ProductComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Product '];
+    const dataToSend = ['Setup', 'Product'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,10 +47,9 @@ export class ProductComponent {
 
   callTableHeader() {
     this.cols = [
-      
+      { field: 'companyName', header: 'Company' },
       { field: 'productId', header: 'Product ID' },
       { field: 'productName', header: 'Product Name' },
-      { field: 'companyName', header: 'Company' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'remark', header: 'Remarks' },
       { field: 'statusDescription', header: 'Status' },
@@ -79,21 +78,23 @@ export class ProductComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.productTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.productTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 500);
   }
 
   onChange() {
@@ -166,7 +167,7 @@ export class ProductComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.productId,lines.subProductId).subscribe({
+    this.service.DeleteBulk(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',

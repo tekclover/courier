@@ -270,6 +270,12 @@ public class ConsignmentEntity {
     @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
     private String secondaryDo;
 
+    @Column(name = "CONSOLE_INDICATOR")
+    private Long consoleIndicator;
+
+    @Column(name = "MANIFEST_INDICATOR")
+    private Long manifestIndicator;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

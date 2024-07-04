@@ -515,6 +515,12 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             Console createdConsole = consoleRepository.save(newConsole);
+                            if (createdConsole != null) {
+                                consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
+                                        createdConsole.getLanguageId(), createdConsole.getPartnerId(),
+                                        createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+                                log.info("Console Created <-----------------------> Consignment Event AND Console_Indicator Updated");
+                            }
                             createdConsoleList.add(createdConsole);
                         }
                     }
@@ -762,7 +768,7 @@ public class ConsoleService {
                         //Fetch the console records based on houseAirwayBill
                         List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
-                        if(!consoleData.isEmpty() && consoleData != null) {
+                        if(consoleData != null && !consoleData.isEmpty()) {
                             //Check whether all the consoleData's eventcode is equal to 8
                             boolean allEventCodes = consoleData.stream()
                                     .allMatch(console -> "8".equalsIgnoreCase(console.getEventCode()));

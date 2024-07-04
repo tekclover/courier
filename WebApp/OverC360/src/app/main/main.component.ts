@@ -33,7 +33,7 @@ interface SideNavToggle {
       state('fade-in', style({ opacity: 1, transform: 'translateX(0)' })),
       state('fade-out', style({ opacity: 0, transform: 'translateX(70px)' })),
       transition('fade-in <=> fade-out', animate('0.7s ease-in-out'))
-      ]),
+    ]),
   ]
 })
 export class MainComponent {
@@ -51,9 +51,9 @@ export class MainComponent {
 
 
   constructor(private observer: BreakpointObserver, private path: PathNameService, private router: Router,
-    private cdRef: ChangeDetectorRef, private auth: AuthService,  private titleService: Title,      private activatedRoute: ActivatedRoute,
-  ) { 
-    
+    private cdRef: ChangeDetectorRef, private auth: AuthService, private titleService: Title, private activatedRoute: ActivatedRoute,
+  ) {
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
     )
@@ -79,7 +79,7 @@ export class MainComponent {
     }
 
   }
-  
+
   ngOnInit() {
 
     this.dataSubscription = this.path.dataArray$.subscribe(data => {
@@ -164,7 +164,7 @@ export class MainComponent {
   // isActive(index: number): boolean {
   //   return this.activeIcons[index];
   // }
-   
+
   handleClick(item: INavbarData, index: number): void {
     if (!this.multiple) {
       this.navData.forEach(modelItem => {
@@ -183,7 +183,7 @@ export class MainComponent {
 
   isActive(index: number): boolean {
     return this.activeLinkIndex === index;
-      }
+  }
 
   private updateActiveLink() {
     const currentUrl = this.router.url;
@@ -197,7 +197,7 @@ export class MainComponent {
     }
   }
 
-  logout(){
+  logout() {
     this.auth.logout();
   }
 }

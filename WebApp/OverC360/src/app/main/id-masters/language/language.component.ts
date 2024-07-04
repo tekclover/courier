@@ -23,15 +23,23 @@ export class LanguageComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: LanguageService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: LanguageService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Language '];
+    const dataToSend = ['Setup', 'Language'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -60,17 +68,19 @@ export class LanguageComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    this.service.search({}).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.languageTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      this.service.search({}).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.languageTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 500);
   }
 
   onChange() {
@@ -85,7 +95,7 @@ export class LanguageComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -126,11 +136,11 @@ export class LanguageComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.languageId).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -140,19 +150,19 @@ export class LanguageComponent {
   downloadExcel() {
     const exportData = this.languageTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Language');
+    this.cs.exportAsExcel(exportData, 'Language');
   }
 }

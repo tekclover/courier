@@ -78,7 +78,6 @@ public class BondedManifestService {
 
 
     /**
-     *
      * @param addConsignments
      * @param loginUserID
      * @return
@@ -90,10 +89,10 @@ public class BondedManifestService {
     public List<BondedManifest> createBondedManifestBasedOnConsignmentInput(List<AddConsignment> addConsignments, String loginUserID) throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
 
         List<AddBondedManifest> addBondedManifest = new ArrayList<>();
-        for(AddConsignment consignment : addConsignments) {
+        for (AddConsignment consignment : addConsignments) {
             AddBondedManifest bondedManifest = new AddBondedManifest();
-            for(AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
-                for(AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
+                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
                     BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
                 }
             }
@@ -133,13 +132,13 @@ public class BondedManifestService {
 //                                + " and companyId - " + addBondedManifestHeader.getCompanyId() + " doesn't exists");
 //                    }
 
-                    //Check Duplicate
-                    boolean duplicateRecord = replicaBondedManifestRepository.duplicateExists(
-                            addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(),
-                            addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(),
-                            addBondedManifest.getHouseAirwayBill()) == 1;
+                //Check Duplicate
+                boolean duplicateRecord = replicaBondedManifestRepository.duplicateExists(
+                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(),
+                        addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(),
+                        addBondedManifest.getHouseAirwayBill()) == 1;
 
-                    // Set TotalDuty Value
+                // Set TotalDuty Value
 //                        IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(addBondedManifest.getFreightCurrency());
 //                        Double freightCharge = Double.valueOf(addBondedManifest.getFreightCharges());
 //                        String incoTerms = addBondedManifest.getIncoTerms();
@@ -158,41 +157,42 @@ public class BondedManifestService {
 //                            }
 //                        }
 
-                    if (duplicateRecord) {
-                        throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());
-                    }
-                    BondedManifest newBondedManifest = new BondedManifest();
-                    BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
-                    String STATUS_ID = "2 - Bonded Manifest Created";
+                if (duplicateRecord) {
+                    throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());
+                }
+                BondedManifest newBondedManifest = new BondedManifest();
+                BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
+                String STATUS_ID = "2 - Bonded Manifest Created";
 
-                    String NUM_RAN_OBJ = "BONDEDID";
-                    String BONDED_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for BONDED_ID : " + BONDED_ID);
-                    newBondedManifest.setBondedId(BONDED_ID);
+                String NUM_RAN_OBJ = "BONDEDID";
+                String BONDED_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for BONDED_ID : " + BONDED_ID);
+                newBondedManifest.setBondedId(BONDED_ID);
 
-                    IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(
-                            addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
+                IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(
+                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
 
-                    //   newBondedManifest.setTotalDuty(String.valueOf(totalDuty));
-                    if (lAndCDesc != null) {
-                        newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
-                        newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
-                    }
-                    newBondedManifest.setStatusId(STATUS_ID);
-                    newBondedManifest.setDeletionIndicator(0L);
-                    newBondedManifest.setCreatedBy(loginUserID);
-                    newBondedManifest.setCreatedOn(new Date());
-                    newBondedManifest.setUpdatedBy(loginUserID);
-                    newBondedManifest.setUpdatedOn(new Date());
-                    BondedManifest createdBondedManifest = bondedManifestRepository.save(newBondedManifest);
+                //   newBondedManifest.setTotalDuty(String.valueOf(totalDuty));
+                if (lAndCDesc != null) {
+                    newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
+                    newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
+                }
+                newBondedManifest.setStatusId(STATUS_ID);
+                newBondedManifest.setDeletionIndicator(0L);
+                newBondedManifest.setCreatedBy(loginUserID);
+                newBondedManifest.setCreatedOn(new Date());
+                newBondedManifest.setUpdatedBy(loginUserID);
+                newBondedManifest.setUpdatedOn(new Date());
+                BondedManifest createdBondedManifest = bondedManifestRepository.save(newBondedManifest);
 
+                if (createdBondedManifest != null) {
                     //Update Event From consignment
                     bondedManifestRepository.updateEventCodeFromConsignment(createdBondedManifest.getCompanyId(),
                             createdBondedManifest.getLanguageId(), createdBondedManifest.getPartnerId(),
                             createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getMasterAirwayBill());
-
-                    createdBondedManifestList.add(createdBondedManifest);
                 }
+                createdBondedManifestList.add(createdBondedManifest);
+            }
             return createdBondedManifestList;
         } catch (Exception e) {
             // Error Log

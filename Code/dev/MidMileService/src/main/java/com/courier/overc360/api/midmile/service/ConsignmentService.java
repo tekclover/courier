@@ -194,6 +194,8 @@ public class ConsignmentService {
             newConsignment.setCreatedOn(new Date());
             newConsignment.setUpdatedBy(null);
             newConsignment.setUpdatedOn(null);
+            newConsignment.setConsoleIndicator(0L);
+            newConsignment.setManifestIndicator(0L);
 
             // ConsignmentInfo
             ConsignmentInfo consignmentInfo = new ConsignmentInfo();

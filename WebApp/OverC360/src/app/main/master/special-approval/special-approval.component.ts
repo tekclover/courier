@@ -30,7 +30,8 @@ export class SpecialApprovalComponent {
     private path: PathNameService,
     private service: SpecialApprovalService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -38,7 +39,7 @@ export class SpecialApprovalComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Special Approval '];
+    const dataToSend = ['Master', 'Special Approval'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,10 +48,9 @@ export class SpecialApprovalComponent {
 
   callTableHeader() {
     this.cols = [
-
+      { field: 'companyName', header: 'Company' },
       { field: 'specialApprovalId', header: 'Special Approval ID' },
       { field: 'specialApprovalText', header: 'Special Approval Name' },
-      { field: 'companyName', header: 'Company' },
       { field: 'remark', header: 'Remarks' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
@@ -77,21 +77,23 @@ export class SpecialApprovalComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.specialApprovalTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.specialApprovalTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {

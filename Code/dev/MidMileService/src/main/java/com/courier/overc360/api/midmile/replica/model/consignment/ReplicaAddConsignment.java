@@ -33,6 +33,8 @@ public class ReplicaAddConsignment {
 
     private Long consignmentId;
 
+    private String paymentType;
+
     private String shipperName;
 
     private String noOfPieceHawb;
@@ -54,6 +56,10 @@ public class ReplicaAddConsignment {
     private String languageDescription;
 
     private String lineNo;
+
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
 
     private String flightNo;
 
