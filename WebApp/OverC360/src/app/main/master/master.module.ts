@@ -35,6 +35,7 @@ import { ConsignorNewComponent } from './consignor/consignor-new/consignor-new.c
 import { ConsignorComponent } from './consignor/consignor.component';
 import { CustomerNewComponent } from './customer/customer-new/customer-new.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CustomerValueComponent } from './customer/customer-value/customer-value.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { CustomerComponent } from './customer/customer.component';
     ConsignorNewComponent,
     CustomerComponent,
     CustomerNewComponent,
+    CustomerValueComponent,
 
   ],
   imports: [

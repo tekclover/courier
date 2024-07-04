@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
@@ -8,6 +8,7 @@ import { CommonAPIService } from '../../../../../common-service/common-api.servi
 import { CommonServiceService } from '../../../../../common-service/common-service.service';
 import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
+import { DimensionComponent } from '../dimension/dimension.component';
 
 @Component({
   selector: 'app-item-details',
@@ -17,9 +18,6 @@ import { ConsignmentService } from '../../consignment.service';
 export class ItemDetailsComponent {
 
 
-  pieceForm = this.fb.group({
-    items: this.fb.array([])
-  });
 
   constructor(
     private cs: CommonServiceService,
@@ -31,6 +29,7 @@ export class ItemDetailsComponent {
     private cas: CommonAPIService,
     private auth: AuthService,
     public dialogRef: MatDialogRef<ItemDetailsComponent>,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -59,28 +58,7 @@ export class ItemDetailsComponent {
       partnerName: [],
       partnerType: [],
       pieceItemId: [],
-      referenceField1: [],
-      referenceField10: [],
-      referenceField11: [],
-      referenceField12: [],
-      referenceField13: [],
-      referenceField14: [],
-      referenceField15: [],
-      referenceField16: [],
-      referenceField17: [],
-      referenceField18: [],
-      referenceField19: [],
-      referenceField2: [],
-      referenceField20: [],
-      referenceField3: [],
-      referenceField4: [],
-      referenceField5: [],
-      referenceField6: [],
-      referenceField7: [],
-      referenceField8: [],
-      referenceField9: [],
       pdfUrl: [],
-      //referenceImageList: ReferenceImageList[]
       volume: [],
       volumeUnit: [],
       weight: [],
@@ -91,16 +69,53 @@ export class ItemDetailsComponent {
   removeItem(index: number) {
     this.itemDetails.removeAt(index);
   }
-
   ngOnInit() {
     this.patchForm(this.data.line.value)
   }
 
-
-  selectedFiles: any[] = [];
-  selectFiles(event:any): void {
+  selectedFiles: FileList | null = null;
+  selectFiles(event: any, data: any): void {
     this.selectedFiles = event.target.files;
+    const files: FileList = event.target.files!;
+    const filesArray: File[] = Array.from(files);
+    let filesWithData: { name: string, referenceImageUrl: string }[] = [];
+    filesArray.forEach((file: File) => {
+      const referenceImageUrl = `path/to/images/${file.name}`;
+      const fileData = {
+        name: file.name,
+        referenceImageUrl: file.name,
+      };
+      filesWithData.push(fileData);
+    });
+    console.log(filesWithData);
+    this.uploadFile(filesWithData);
   }
+
+  uploadFile(data: any) {
+    if (!this.selectedFiles || this.selectedFiles.length === 0) {
+      console.log('No files selected for upload.');
+      return;
+    }
+    console.log(data)
+    //this.patchReferenceImages(data)
+
+    const location = 'test'
+    this.service.uploadFiles(this.selectedFiles, location).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+
+  }
+
   
   save() {
     this.dialogRef.close(this.itemForm.controls.itemDetails.value)
@@ -160,4 +175,19 @@ export class ItemDetailsComponent {
       width: [item.width]
     });
   }
+
+  dimension(type: any = 'New', module: any, index: any) {
+    const dialogRef = this.dialog.open(DimensionComponent, {
+      disableClose: true,
+      width: '80%',
+      maxWidth: '90%',
+      position: { top: '6.5%', left: '25%' },
+      data: { pageflow: type, module: module, line: (this.itemForm.controls.itemDetails as FormArray).at(index)},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const control = (this.itemForm.controls.itemDetails as FormArray).at(index)
+      control.patchValue(result);
+      console.log(this.itemForm)
+    })}
 }

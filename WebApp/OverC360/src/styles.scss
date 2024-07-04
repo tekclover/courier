@@ -93,7 +93,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-picklist .p-picklist-list{height: calc(100vh - 22rem); overflow-y: scroll;}
 .p-toast .p-toast-message .p-toast-message-content .p-toast-message-text{overflow: hidden;}
 .p-calendar{width: 100% !important;}
-
+.p-overlaypanel .p-overlaypanel-content{padding: 0rem !important;}
 
 
 
@@ -115,6 +115,9 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .required:after {content:" *"; color: red;}
 .invalid{border-color: red !important;}
 .disabledButton{background-color: rgb(95, 95, 95) !important; border-color: transparent !important;} 
+.listItems {padding-left: 20px !important;padding-top: 10px !important;padding-bottom: 10px !important;padding-right: 47px !important;}
+  
+
 
 
 ::-webkit-scrollbar {width: 8px !important;overflow-y: scroll;background: #f1f1f1;border-radius: 10px;}
