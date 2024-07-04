@@ -109,7 +109,7 @@ customTable() {
 
 openCrud(type: any = 'New', linedata: any = null): void {
   if (this.selectedStatus.length === 0 && type != 'New') {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
   } else {
     let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedStatus[0] : linedata, pageflow: type });
     this.router.navigate(['/main/idMaster/status-new/' + paramdata]);
@@ -118,7 +118,7 @@ openCrud(type: any = 'New', linedata: any = null): void {
 
 deleteDialog() {
   if (this.selectedStatus.length === 0) {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+    this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     return;
   }
   const dialogRef = this.dialog.open(DeleteComponent, {

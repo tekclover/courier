@@ -37,7 +37,7 @@ export class CompanyComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Company '];
+    const dataToSend = ['Setup', 'Company - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -49,7 +49,6 @@ export class CompanyComponent {
 
       { field: 'companyId', header: 'Company ID' },
       { field: 'companyName', header: 'Company Name' },
-      { field: 'languageDescription', header: 'Language' },
       { field: 'addressLine1', header: 'Address Line 1' },
       { field: 'addressLine2', header: 'Address Line 2' },
       { field: 'addressLine3', header: 'Address Line 3' },
@@ -130,7 +129,7 @@ export class CompanyComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
     } else {
       let paramdata = this.cs.encrypt({
@@ -147,7 +146,7 @@ export class CompanyComponent {
         severity: 'warn',
         summary: 'Warning',
         key: 'br',
-        detail: 'Kindly select any Row',
+        detail: 'Kindly select any row',
       });
       return;
     }

@@ -118,7 +118,7 @@ export class MenuComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedMenu.length === 0 && type != 'New') {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedMenu[0] : linedata, pageflow: type });
       this.router.navigate(['/main/idMaster/menu-new/' + paramdata]);
@@ -127,7 +127,7 @@ export class MenuComponent {
 
   deleteDialog() {
     if (this.selectedMenu.length === 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
