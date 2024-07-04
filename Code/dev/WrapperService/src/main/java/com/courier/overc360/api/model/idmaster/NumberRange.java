@@ -21,6 +21,8 @@ public class NumberRange {
 
     private String numberRangeStatus;
 
+    private String statusDescription;
+
     private Long deletionIndicator;
 
     private String referenceField1;

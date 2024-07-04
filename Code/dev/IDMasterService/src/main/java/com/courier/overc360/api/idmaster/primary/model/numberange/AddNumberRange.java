@@ -26,6 +26,7 @@ public class AddNumberRange {
     @NotBlank(message = "NumberRangeCurrent is mandatory")
     private String numberRangeCurrent;
 
+    @NotBlank(message = "NumberRange Status is mandatory")
     private String numberRangeStatus;
 
     private String referenceField1;
