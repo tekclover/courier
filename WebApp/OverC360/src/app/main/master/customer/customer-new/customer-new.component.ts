@@ -11,6 +11,8 @@ import { AuthService } from '../../../../core/core';
 import { SubProductService } from '../../../id-masters/sub-product/sub-product.service';
 import { ProductService } from '../../../id-masters/product/product.service';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CustomerValueComponent } from '../customer-value/customer-value.component';
 
 @Component({
   selector: 'app-customer-new',
@@ -35,7 +37,8 @@ export class CustomerNewComponent {
     private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
-    private auth: AuthService
+    private auth: AuthService,
+    public dialog: MatDialog,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -108,32 +111,37 @@ export class CustomerNewComponent {
       this.form.controls.subProductId.disable();
       this.form.controls.productId.disable();
       this.form.controls.customerId.disable();
+      this.form.controls.customerId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
     else {
-      this.spin.show();
-      let obj: any = {};
-      obj.numberRangeObject = ['CUSTOMER'];
-      this.numberRangeService.search(obj).subscribe({
-        next: (res: any) => {
-          if (res.length > 0) {
-            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
-            this.form.controls.customerId.patchValue(this.nextNumber);
-            this.numCondition = 'true';
-            this.form.controls.referenceField10.patchValue(this.numCondition);
-            this.form.controls.customerId.disable();
-          }
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
+      this.checkNumberRange();
     }
+  }
+
+  checkNumberRange(){
+    this.spin.show();
+    let obj: any = {};
+    obj.numberRangeObject = ['CUSTOMER'];
+    this.numberRangeService.search(obj).subscribe({
+      next: (res: any) => {
+        if (res.length > 0) {
+          this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+          this.form.controls.customerId.patchValue(this.nextNumber);
+          this.numCondition = 'true';
+          this.form.controls.referenceField10.patchValue(this.numCondition);
+          this.form.controls.customerId.disable();
+        }
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   languageIdList: any[] = [];
@@ -163,9 +171,48 @@ export class CustomerNewComponent {
     });
   }
 
+  customerArray: any[] = [];
+
+  add() {
+    const dialogRef = this.dialog.open(CustomerValueComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: this.customerArray.length + 1,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.customerArray.push(result);
+      }
+    });
+  }
+
+  removeItem(index: number) {
+    this.customerArray.splice(index, 1);
+  }
 
   fill(line: any) {
     this.form.patchValue(line);
+    this.spin.show();
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.subProductId = [line.subProductId];
+    obj.productId = [line.productId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.customerArray = res;
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }
@@ -202,7 +249,7 @@ export class CustomerNewComponent {
       });
     } else {
       this.spin.show();
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.service.CreateBulk(this.customerArray).subscribe({
         next: (res) => {
           if (res) {
             this.messageService.add({
@@ -221,6 +268,27 @@ export class CustomerNewComponent {
         },
       });
     }
+  }
+
+  editItem(data: any,i: any): void {
+    const dialogRef = this.dialog.open(CustomerValueComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: {pageflow: data,code:this.customerArray[i]},
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.customerArray.splice(i,0);
+        this.customerArray.splice(i, 1, result);
+        console.log(result);
+      //this.form.patchValue(result);
+      this.customerArray = [...this.customerArray]
+  
+  }});
   }
 
   productChanged() {
