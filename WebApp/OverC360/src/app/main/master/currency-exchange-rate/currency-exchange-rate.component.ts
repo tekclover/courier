@@ -48,11 +48,11 @@ export class CurrencyExchangeRateComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'fromCurrencyId', header: 'From Currency ID' },
       { field: 'toCurrencyId', header: 'To Currency ID' },
       { field: 'fromCurrencyValue', header: 'From Currency Value' },
       { field: 'toCurrencyValue', header: 'To Currency Value' },
-      { field: 'companyName', header: 'Company' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -61,7 +61,6 @@ export class CurrencyExchangeRateComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
-      { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'toCurrencyDescription', header: 'To Currency Description' },
@@ -84,20 +83,22 @@ export class CurrencyExchangeRateComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.currencyExchangeRateTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.currencyExchangeRateTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
 

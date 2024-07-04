@@ -33,7 +33,7 @@
     <div class="tableProperties">
         <p-table #hubTag [columns]="cols" [value]="hubTable" class="custom-table" [scrollable]="true"
             selectionMode="single" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100"
-            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
+            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>

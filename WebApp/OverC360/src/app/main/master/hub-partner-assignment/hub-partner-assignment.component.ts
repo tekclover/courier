@@ -47,8 +47,8 @@ export class HubPartnerAssignmentComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'partnerId', header: 'Partner ID' },
       { field: 'companyName', header: 'Company' },
+      { field: 'partnerId', header: 'Partner ID' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'hubName', header: 'Hub Name' },
@@ -82,20 +82,22 @@ export class HubPartnerAssignmentComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.hubPartnerAssignmentTable = res;
-        this.spin.hide();
-      }, error: (err: any) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.hubPartnerAssignmentTable = res;
+          this.spin.hide();
+        }, error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
