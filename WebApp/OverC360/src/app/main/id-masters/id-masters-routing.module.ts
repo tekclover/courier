@@ -100,11 +100,13 @@ const routes: Routes = [
 
   { path: 'product', component: ProductComponent, data: { title: 'Setup', module: 'Product' } },
   { path: 'product-new/:code', component: ProductNewComponent, data: { title: 'Setup', module: 'Product - Add New' } },
+ 
   { path: 'country', component: CountryComponent, data: { title: 'Setup', module: 'Country' } },
   { path: 'country-new/:code', component: CountryNewComponent, data: { title: 'Setup', module: 'Country - Add New' } },
 
   { path: 'notification', component: NotificationComponent, data: { title: 'Setup', module: 'Notification' } },
   { path: 'notification-new/:code', component: NotificationNewComponent, data: { title: 'Setup', module: 'Notification - Add New' } },
+ 
   { path: 'users', component: UsersComponent, data: { title: 'Master', module: 'Users' } },
   { path: 'users-new/:code', component: UsersNewComponent, data: { title: 'Master', module: 'Users - Add New' } },
 

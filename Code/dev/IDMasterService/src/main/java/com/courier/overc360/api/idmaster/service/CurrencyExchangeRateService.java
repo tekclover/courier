@@ -120,7 +120,8 @@ public class CurrencyExchangeRateService {
             }
 
             log.info("new CurrencyExchangeRate --> {}", addCurrencyExchangeRate);
-            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addCurrencyExchangeRate.getLanguageId(), addCurrencyExchangeRate.getCompanyId());
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(
+                    addCurrencyExchangeRate.getLanguageId(), addCurrencyExchangeRate.getCompanyId());
 
             CurrenyExchangeRate newCurrencyExchangeRate = new CurrenyExchangeRate();
             BeanUtils.copyProperties(addCurrencyExchangeRate, newCurrencyExchangeRate, CommonUtils.getNullPropertyNames(addCurrencyExchangeRate));

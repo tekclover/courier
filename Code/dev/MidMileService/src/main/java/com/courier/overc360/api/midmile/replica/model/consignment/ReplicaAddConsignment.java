@@ -37,6 +37,18 @@ public class ReplicaAddConsignment {
 
     private String shipperName;
 
+    private String exchangeRate;
+
+    private String customsCurrency;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
     private String noOfPieceHawb;
 
     private String noOfPackageMawb;

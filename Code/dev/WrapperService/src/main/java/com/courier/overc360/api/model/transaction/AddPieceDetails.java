@@ -66,6 +66,10 @@ public class AddPieceDetails {
 
         private Date pieceStatusTimestamp;
 
+        private String pieceValue;
+
+        private String pieceCurrency;
+
         private String referenceField1;
 
         private String referenceField2;

@@ -18,6 +18,10 @@ export class CustomerService {
     return this.http.post<any>('/overc-idmaster-service/customer', obj);
   }
 
+  CreateBulk(obj: any) {
+    return this.http.post<any>('/overc-idmaster-service/customer/create/list', obj);
+  }
+
   Update(obj: any) {
     return this.http.patch<any>('/overc-idmaster-service/customer/' + obj.customerId + '?productId=' + obj.productId
       + '&subProductId=' + obj.subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId, obj);

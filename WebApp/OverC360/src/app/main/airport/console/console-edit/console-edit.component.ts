@@ -261,7 +261,7 @@ lineSentforFill:any;
      }
 
     if (this.pageToken.pageflow != 'New') {
-      if (this.selectedConsole.length!=0) {
+      if (this.selectedConsole.length==0) {
         this.messageService.add({
          severity: 'error',
          summary: 'Error',
@@ -271,6 +271,10 @@ lineSentforFill:any;
          return;
        }
       this.spin.show();
+      this.selectedConsole.forEach((x: any) => {
+        x.eventCode = 8;
+      });
+console.log(this.selectedConsole)
       this.service.Update(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({

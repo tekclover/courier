@@ -250,13 +250,15 @@ public class UpdateConsignment {
     private String isCustomsDeclarable;
 
     private String storageLocation;
-
     private List<ReferenceImageList> referenceImageList;
-
     private String isExchange;
-
     private String reverseReason;
-
+    private String exchangeRate;
+    private String customsCurrency;
+    private String dutyPercentage;
+    private String iataCharge;
+    private String dduCharge;
+    private String specialApprovalCharge;
     private String referenceField1;
     private String referenceField2;
     private String referenceField3;

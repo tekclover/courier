@@ -64,6 +64,10 @@ public class PieceDetails {
 
     private String pieceStatusId;
 
+    private String pieceValue;
+
+    private String pieceCurrency;
+
     private Date pieceStatusTimestamp;
 
     private String referenceField1;
