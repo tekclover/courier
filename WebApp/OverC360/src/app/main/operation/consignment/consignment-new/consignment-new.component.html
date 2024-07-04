@@ -445,9 +445,9 @@
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceDate">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Date</p>
-                            <p-calendar formControlName="invoiceDate"
+                            <p-calendar formControlName="invoiceDate" appendTo="body"
                                 [ngClass]="senderInfo.get('invoiceDate')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" placeholder="Filter by Date" [iconDisplay]="'input'" [showIcon]="true" />
+                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'" [showIcon]="true" />
                             <mat-error *ngIf="errorHandlingConsignment('invoiceDate')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -589,10 +589,10 @@
                                 <td class="d-flex justify-content-center">
                                     <img type="button" (click)="removePieceDetail(i)" src="./assets/common/deletetool.png"
                                         alt="" srcset="" style="height: 1.4rem;">
-                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, item)"
+                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, item, i)"
                                         class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
                                     <input type="file" #fileInput multiple style="display:none"
-                                        (change)="selectFiles($event)" />
+                                        (change)="selectFiles($event, rowData)" />
                                     <i type="button" class="bi bi-card-image textBlack pl-3" style="font-size: 1.2rem;"
                                         (click)="fileInput.click()"></i>
 

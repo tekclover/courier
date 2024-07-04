@@ -4,8 +4,8 @@ import { ConsignmentComponent } from './consignment/consignment.component';
 import { ConsignmentNewComponent } from './consignment/consignment-new/consignment-new.component';
 
 const routes: Routes = [
-  {path:'consignment',component: ConsignmentComponent, data: { title: 'Operation', module: 'Consignment' } },
-  {path:'consignment-new/:code',component: ConsignmentNewComponent, data: { title: 'Operation', module: 'Consignment' } },
+  {path:'consignment',component: ConsignmentComponent, data: { title: 'Operations', module: 'Consignment' } },
+  {path:'consignment-new/:code',component: ConsignmentNewComponent, data: { title: 'Operations', module: 'Consignment' } },
 
 ];
 

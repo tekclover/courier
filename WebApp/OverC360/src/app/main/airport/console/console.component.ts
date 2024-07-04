@@ -33,7 +33,7 @@ export class ConsoleComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'Console - List'];
+    const dataToSend = ['Airport Hub', 'Console '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

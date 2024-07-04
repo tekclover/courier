@@ -44,7 +44,7 @@ export class PreAlertManifestComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'Pre-Alert Manifest - List'];
+    const dataToSend = ['Airport Hub', 'Pre-Alert Manifest '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

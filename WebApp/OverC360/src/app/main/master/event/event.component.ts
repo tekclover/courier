@@ -32,7 +32,7 @@ export class EventComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Event - List'];
+    const dataToSend = ['Master', 'Event '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -38,7 +38,7 @@ export class ProductComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Product - List'];
+    const dataToSend = ['Setup', 'Product '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

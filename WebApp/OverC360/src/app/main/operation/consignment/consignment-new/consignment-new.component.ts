@@ -210,9 +210,7 @@ export class ConsignmentNewComponent {
       description: [''],
       dimensionUnit: [''],
       height: [''],
-      itemDetails: this.fb.array([
-        this.initItemDetail()
-      ]),
+      itemDetails: this.fb.array([]),
       length: [''],
       packReferenceNumber: [''],
       partnerType: [''],
@@ -237,13 +235,7 @@ export class ConsignmentNewComponent {
       referenceField7: [''],
       referenceField8: [''],
       referenceField9: [''],
-      referenceImageList: this.fb.array([
-        this.fb.group({
-          imageRefId: [''],
-          pdfUrl: [''],
-          referenceImageUrl: ['']
-        })
-      ]),
+      referenceImageList: this.fb.array([]),
       volume: [''],
       volumeUnit: [''],
       weight: [''],
@@ -289,13 +281,7 @@ export class ConsignmentNewComponent {
       referenceField7: [''],
       referenceField8: [''],
       referenceField9: [''],
-      referenceImageList: this.fb.array([
-        this.fb.group({
-          imageRefId: [''],
-          pdfUrl: [''],
-          referenceImageUrl: ['']
-        })
-      ]),
+      referenceImageList: this.fb.array([]),
       volume: [''],
       volumeUnit: [''],
       weight: [''],
@@ -479,7 +465,7 @@ export class ConsignmentNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Operation', 'Consignment', this.pageToken.pageflow];
+    const dataToSend = ['Operations', 'Consignment', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -539,26 +525,87 @@ export class ConsignmentNewComponent {
 
   }
 
-  opendialog(type: any = 'New', data: any) {
+  opendialog(type: any = 'New', data: any, index:any) {
     console.log(data)
     const dialogRef = this.dialog.open(PieceDetailsComponent, {
       disableClose: true,
       width: '90%',
       maxWidth: '95%',
-      position: { top: '6.5%', left: '10%' },
-      data: { pageflow: type, line: this.pageToken.pageflow != 'New' ? this.pageToken.line.pieceDetails : data },
+      position: { top: '6.5%', left: '10%' }, 
+      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        data.controls.itemDetails.patchValue(result);
+        const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
+        itemDetailsFormArray.patchValue(result);
+        console.log(itemDetailsFormArray)
       }
     });
   }
 
-  selectedFiles: any[] = [];
-  selectFiles(event: any): void {
+
+  selectedFiles: FileList | null = null;
+  selectFiles(event: any, data:any): void {
     this.selectedFiles = event.target.files;
+
+    // Assuming you have an event object, such as from an input file change event
+const files: FileList = event.target.files!; // Explicitly type files as FileList
+
+// Convert FileList to an array of File objects
+const filesArray: File[] = Array.from(files);
+
+// Array to hold objects with name and referenceImageUrl
+let filesWithData: { name: string, referenceImageUrl: string }[] = [];
+
+// Iterate over each file using forEach
+filesArray.forEach((file: File) => {
+    // Perform actions with each file here
+    console.log(file.name); // Example action: logging the file name
+
+    // Set reference image URL for each file
+    const referenceImageUrl = `path/to/images/${file.name}`;
+
+    // Create an object with file name and reference image URL
+    const fileData = {
+        name: file.name,
+        referenceImageUrl: file.name,
+    };
+
+    // Push the object into the array
+    filesWithData.push(fileData);
+});
+
+// Now filesWithData array contains objects with both name and referenceImageUrl
+console.log(filesWithData);
+
+
+
+   this.uploadFile(filesWithData);
+  }
+
+  uploadFile(data: any){
+    if (!this.selectedFiles || this.selectedFiles.length === 0) {
+      console.log('No files selected for upload.');
+      return;
+    }
+    console.log(data)
+    this.patchReferenceImages(data),
+    console.log(this.piece)
+
+    const location = 'test'
+    this.service.uploadFiles(this.selectedFiles, location).subscribe({next: (result) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Updated',
+        key: 'br',
+        detail: 'File uploaded successfully',
+      });
+    },error: (err)=>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }});
+  
   }
 
   save() {

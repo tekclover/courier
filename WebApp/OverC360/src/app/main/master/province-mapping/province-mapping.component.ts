@@ -39,7 +39,7 @@ export class ProvinceMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Province Mapping - List'];
+    const dataToSend = ['Master', 'Province Mapping '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

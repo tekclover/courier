@@ -38,7 +38,7 @@ export class NumberrangeComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'Number Series - List'];
+    const dataToSend = ['Master', 'Number Series '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -38,7 +38,7 @@ export class HubPartnerAssignmentComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Hub Partner Assignment - List'];
+    const dataToSend = ['Master', 'Hub Partner Assignment '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -39,7 +39,7 @@ export class ConsignorComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Consignor - List'];
+    const dataToSend = ['Master', 'Consignor '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
