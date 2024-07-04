@@ -239,6 +239,23 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
+                        <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
+                            <p class="formControlLabel f600 textBlack mb-0">Invoice Amount </p>
+                            <input maxlength="50" formControlName="invoiceAmount"
+                                [ngClass]="shipmentInfo.get('invoiceAmount')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('invoiceAmount')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="invoiceUrl">
+                            <p class="formControlLabel f600 textBlack mb-0">Invoice URL </p>
+                            <input maxlength="500" formControlName="invoiceUrl"
+                                [ngClass]="shipmentInfo.get('invoiceUrl')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('invoiceUrl')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
                         <div class="col-3 marginFieldNew borderRadius12" id="incoTerms">
                             <p class="formControlLabel f600 textBlack mb-0">Inco Terms</p>
                             <p-dropdown [options]="incoTerms" placeholder="Select" filter="true" formControlName="incoTerms"
@@ -258,6 +275,35 @@
                             <mat-error *ngIf="errorHandlingShipment('paymentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode">
+                            <p class="formControlLabel f600 textBlack mb-0">COD Collection Mode</p>
+                            <p-dropdown [options]="codCollectionMode" placeholder="Select" filter="true" formControlName="codCollectionMode"
+                            [ngClass]="shipmentInfo.get('codCollectionMode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            appendTo="body" [style]="{'width': '100%'}" 
+                            [panelStyle]="{'width':'100%'}" />
+                            <mat-error *ngIf="errorHandlingShipment('codCollectionMode')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="codAmount">
+                            <p class="formControlLabel f600 textBlack mb-0">COD Amount</p>
+                            <input maxlength="50" formControlName="codAmount"
+                                [ngClass]="shipmentInfo.get('codAmount')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('codAmount')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
+                        <div class="col-3 marginFieldNew borderRadius12" id="codFavorOf">
+                            <p class="formControlLabel f600 textBlack mb-0">COD Favor Of</p>
+                            <input maxlength="50" formControlName="codFavorOf"
+                                [ngClass]="shipmentInfo.get('codFavorOf')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingShipment('codFavorOf')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        
                     </div>
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
@@ -508,7 +554,7 @@
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="description"></td>
                                 <td style="width: 5rem; text-align: center;">
-                                    <i style="font-size: 14px;" class='bi-chevron-up'></i>
+                                    <i style="font-size: 14px;" class='bi-chevron-up' (click)="dimension(this.pageToken.pageflow, i)"></i>
                                 </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode">
                                 </td>
@@ -523,7 +569,7 @@
                                 <td class="d-flex justify-content-center">
                                     <img type="button" (click)="removePieceDetail(i)" src="./assets/common/deletetool.png"
                                         alt="" srcset="" style="height: 1.4rem;">
-                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, item, i)"
+                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, i)"
                                         class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
                                     <input type="file" #fileInput multiple style="display:none"
                                         (change)="selectFiles($event, rowData)" />
@@ -885,14 +931,14 @@
                             <mat-error *ngIf="errorHandlingBilling('incoTerms')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentValue">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="consignmentValue">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Value</p>
                             <input maxlength="50" formControlName="consignmentValue"
                                 [ngClass]="senderInfo.get('consignmentValue')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('consignmentValue')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
                         <div class="col-3 marginFieldNew borderRadius12" id="actualCurrency">
                             <p class="formControlLabel f600 textBlack mb-0">Actual Currency</p>
                             <input maxlength="50" formControlName="actualCurrency"
@@ -941,14 +987,14 @@
                             <mat-error *ngIf="errorHandlingBilling('declaredValue')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
                             <input maxlength="50" formControlName="consignmentCurrency"
                                 [ngClass]="senderInfo.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('consignmentCurrency')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
                         <div class="col-3 marginFieldNew borderRadius12" id="totalDuty">
                             <p class="formControlLabel f600 textBlack mb-0">Total Duty</p>
                             <input maxlength="50" formControlName="totalDuty"
@@ -997,7 +1043,7 @@
                             <mat-error *ngIf="errorHandlingBilling('declaredValueWithoutTax')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Amount </p>
                             <input maxlength="50" formControlName="invoiceAmount"
                                 [ngClass]="senderInfo.get('invoiceAmount')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -1012,7 +1058,7 @@
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('invoiceUrl')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
                         <div class="col-3 marginFieldNew borderRadius12" id="productCode">
                             <p class="formControlLabel f600 textBlack mb-0">Product Code</p>
                             <input maxlength="50" formControlName="productCode"

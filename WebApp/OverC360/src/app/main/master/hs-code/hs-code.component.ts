@@ -30,7 +30,8 @@ export class HsCodeComponent {
     private path: PathNameService,
     private service: HsCodeService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -38,7 +39,7 @@ export class HsCodeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'HS Code '];
+    const dataToSend = ['Master', 'HS Code'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -80,21 +81,23 @@ export class HsCodeComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.hsCodeTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.hsCodeTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {

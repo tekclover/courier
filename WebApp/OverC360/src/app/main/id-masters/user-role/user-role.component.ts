@@ -3,7 +3,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { Router } from '@angular/router';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { UserRoleService } from './user-role.service';   
+import { UserRoleService } from './user-role.service';
 import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
@@ -28,7 +28,7 @@ export class UserRoleComponent {
 
   constructor(
     private messageService: MessageService,
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
     private service: UserRoleService,
@@ -40,7 +40,7 @@ export class UserRoleComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'User Role '];
+    const dataToSend = ['Setup', 'User Role'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -49,14 +49,14 @@ export class UserRoleComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'roleId', header: 'Role ID' },
       { field: 'userRoleName', header: 'User Role' },
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
-      { field: 'description', header: 'Role Description'},
-      { field: 'languageIdAndDescription', header: 'Language'},
-      { field: 'companyIdAndDescription', header: 'Company'},
-      { field: 'authorizationObjectValue', header: 'Authorization Object Value'}
+      { field: 'description', header: 'Role Description' },
+      { field: 'languageIdAndDescription', header: 'Language' },
+      { field: 'authorizationObjectValue', header: 'Authorization Object Value' }
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
@@ -66,7 +66,7 @@ export class UserRoleComponent {
       { field: 'subMenuId', header: 'Sub Menu ID' },
       { field: 'moduleId', header: 'Module ID' },
       { field: 'statusId', header: 'Status ID' },
-      { field: 'authorizationObjectId', header: 'Authorization Object ID'},
+      { field: 'authorizationObjectId', header: 'Authorization Object ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -81,20 +81,22 @@ export class UserRoleComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.userRoleTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.userRoleTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
@@ -148,13 +150,13 @@ export class UserRoleComponent {
     })
   }
   deleterecord(lines: any) {
-    this.spin.show(); 
+    this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res) =>{
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.roleId + lines.companyId + lines.languageId  + ' deleted successfully' });
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.roleId + lines.companyId + lines.languageId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }

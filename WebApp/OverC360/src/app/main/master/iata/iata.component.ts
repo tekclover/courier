@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { Router } from '@angular/router';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { IataService } from './iata.service';  
+import { IataService } from './iata.service';
 import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
@@ -25,7 +25,7 @@ export class IataComponent {
 
   constructor(
     private messageService: MessageService,
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
     private service: IataService,
@@ -37,7 +37,7 @@ export class IataComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'IATA '];
+    const dataToSend = ['Master', 'IATA'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -79,24 +79,26 @@ export class IataComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.iataTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.iataTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
-    const choosen = this.selectedIata[this.selectedIata.length -1];
+    const choosen = this.selectedIata[this.selectedIata.length - 1];
     this.selectedIata.length = 0;
     this.selectedIata.push(choosen);
   }
@@ -146,13 +148,13 @@ export class IataComponent {
     })
   }
   deleterecord(lines: any) {
-    this.spin.show(); 
+    this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.origin + lines.originCode + lines.companyId + lines.languageId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }

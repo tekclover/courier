@@ -6,13 +6,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { ConsignmentComponent } from './consignment/consignment.component';
 import { ConsignmentNewComponent } from './consignment/consignment-new/consignment-new.component';
 import { PieceDetailsComponent } from './consignment/consignment-new/piece-details/piece-details.component';
+import { DimensionComponent } from './consignment/consignment-new/dimension/dimension.component';
 
 
 @NgModule({
   declarations: [
     ConsignmentComponent,
     ConsignmentNewComponent,
-    PieceDetailsComponent
+    PieceDetailsComponent,
+    DimensionComponent
   ],
   imports: [
     CommonModule,
