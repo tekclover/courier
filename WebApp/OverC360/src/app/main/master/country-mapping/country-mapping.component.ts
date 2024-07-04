@@ -25,15 +25,23 @@ export class CountryMappingComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CountryMappingService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: CountryMappingService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Country Mapping '];
+    const dataToSend = ['Master', 'Country Mapping'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -42,8 +50,8 @@ export class CountryMappingComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'partnerId', header: 'Partner ID' },
       { field: 'companyName', header: 'Company' },
+      { field: 'partnerId', header: 'Partner ID' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerCountryName', header: 'Partner Country' },
@@ -72,26 +80,26 @@ export class CountryMappingComponent {
       { field: 'referenceField10', header: 'Reference Field 10' },
       { field: 'updatedBy', header: 'Updated By' },
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
-
-
     ];
   }
-  
+
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.countryMappingTable = res;
-        this.spin.hide();
-      }, error: (err: any) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.countryMappingTable = res;
+          this.spin.hide();
+        }, error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
@@ -106,7 +114,7 @@ export class CountryMappingComponent {
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: { target: this.cols, source: this.target,},
+      data: { target: this.cols, source: this.target, },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -147,11 +155,11 @@ export class CountryMappingComponent {
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res: any) =>{
+      next: (res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.partnerId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err: any) => {
+      }, error: (err: any) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -161,20 +169,20 @@ export class CountryMappingComponent {
   downloadExcel() {
     const exportData = this.countryMappingTable.map(item => {
       const exportItem: any = {};
-     this.cols.forEach(col => {
-      if(col.format == 'date'){
-        console.log(3)
-        exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-      }else{
-        exportItem[col.field] = item[col.field];
-      }
-       
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          console.log(3)
+          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.field] = item[col.field];
+        }
+
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-   this.cs.exportAsExcel(exportData, 'Country Mapping');
+    this.cs.exportAsExcel(exportData, 'Country Mapping');
   }
 
 }

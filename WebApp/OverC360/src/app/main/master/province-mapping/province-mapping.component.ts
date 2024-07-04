@@ -39,7 +39,7 @@ export class ProvinceMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Province Mapping '];
+    const dataToSend = ['Master', 'Province Mapping'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -48,12 +48,12 @@ export class ProvinceMappingComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'partnerId', header: 'Partner ID' },
-      { field: 'provinceName', header: 'Province' },
       { field: 'companyName', header: 'Company' },
+      { field: 'provinceName', header: 'Province' },
+      { field: 'partnerId', header: 'Partner ID' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
-      { field: 'partnerProvinceName', header: 'Partner Province ' },
+      { field: 'partnerProvinceName', header: 'Partner Province' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -64,8 +64,8 @@ export class ProvinceMappingComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'partnerProvinceId', header: 'Partner Province ID' },
       { field: 'provinceId', header: 'Province ID' },
-      { field: 'languageId', header: 'Language Id' },
-      { field: 'companyId', header: 'Company Id' },
+      { field: 'languageId', header: 'Language ID' },
+      { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
@@ -84,20 +84,22 @@ export class ProvinceMappingComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.provinceMappingTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.provinceMappingTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { Router } from '@angular/router';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { OpstatusService } from './opstatus.service'; 
+import { OpstatusService } from './opstatus.service';
 import { MessageService } from 'primeng/api';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
@@ -26,19 +26,20 @@ export class OpstatusComponent {
 
   constructor(
     private messageService: MessageService,
-    private cs: CommonServiceService, 
+    private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
     private service: OpstatusService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'Op Status '];
+    const dataToSend = ['Master', 'Op Status'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -74,24 +75,26 @@ export class OpstatusComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.opstatusTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.opstatusTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
 
   onChange() {
-    const choosen = this.selectedOpstatus[this.selectedOpstatus.length -1];
+    const choosen = this.selectedOpstatus[this.selectedOpstatus.length - 1];
     this.selectedOpstatus.length = 0;
     this.selectedOpstatus.push(choosen);
   }
@@ -141,13 +144,13 @@ export class OpstatusComponent {
     })
   }
   deleterecord(lines: any) {
-    this.spin.show(); 
+    this.spin.show();
     this.service.Delete(lines).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.provinceId + lines.languageId + lines.countryId + lines.companyId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
-      },error: (err) => {
+      }, error: (err) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }

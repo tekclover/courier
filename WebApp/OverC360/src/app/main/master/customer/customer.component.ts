@@ -32,13 +32,13 @@ export class CustomerComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Customer '];
+    const dataToSend = ['Master', 'Customer'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,10 +47,9 @@ export class CustomerComponent {
 
   callTableHeader() {
     this.cols = [
-      
+      { field: 'companyName', header: 'Company' },
       { field: 'customerId', header: 'Customer ID' },
       { field: 'customerName', header: 'Customer Name' },
-      { field: 'companyName', header: 'Company' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'productName', header: 'Product' },
       { field: 'statusDescription', header: 'Status' },
@@ -81,21 +80,23 @@ export class CustomerComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.customerTable = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.customerTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }, 600);
   }
 
   onChange() {
