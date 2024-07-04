@@ -90,6 +90,12 @@ public class ReplicaPieceDetails {
     @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
     private String pieceStatusId;
 
+    @Column(name = "PIECE_VALUE", columnDefinition = "nvarchar(50)")
+    private String pieceValue;
+
+    @Column(name = "PIECE_CURRENCY", columnDefinition = "nvarchar(50)")
+    private String pieceCurrency;
+
     @Column(name = "PIECE_STATUS_TIMESTAMP")
     private Date pieceStatusTimestamp;
 

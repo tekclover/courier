@@ -277,6 +277,24 @@ public class ReplicaConsignmentEntity {
     @Column(name = "MANIFEST_INDICATOR")
     private Long manifestIndicator;
 
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
+
+    @Column(name = "CUSTOMS_CURRENCY", columnDefinition = "nvarchar(50)")
+    private String customsCurrency;
+
+    @Column(name = "DUTY_PERCENTAGE", columnDefinition = "nvarchar(50)")
+    private String dutyPercentage;
+
+    @Column(name = "IATA_CHARGE", columnDefinition = "nvarchar(50)")
+    private String iataCharge;
+
+    @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
+    private String dduCharge;
+
+    @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
+    private String specialApprovalCharge;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

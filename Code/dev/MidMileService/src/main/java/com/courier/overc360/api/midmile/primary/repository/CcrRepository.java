@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -51,6 +52,7 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
                             @Param(value = "companyId") String companyId);
 
     Optional<Ccr> findByHouseAirwayBill(String houseAirwayBill);
+    List<Ccr> findAllByCcrIdAndDeletionIndicator(String ccrId, Long deletionIndicator);
 
 }
 

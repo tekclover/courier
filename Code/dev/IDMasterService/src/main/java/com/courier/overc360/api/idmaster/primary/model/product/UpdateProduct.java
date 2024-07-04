@@ -24,9 +24,9 @@ public class UpdateProduct {
 
     private String productName;
 
-    private String remark;
-
     private String statusId;
+
+    private String remark;
 
     private Long deletionIndicator;
 

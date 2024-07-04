@@ -186,6 +186,18 @@ public class ConsignmentEntity {
 
     private String dimensionUnit;
 
+    private String exchangeRate;
+
+    private String customsCurrency;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
     private String width;
 
     private String height;

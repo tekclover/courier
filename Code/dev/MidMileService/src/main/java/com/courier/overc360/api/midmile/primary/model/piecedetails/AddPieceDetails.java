@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImage
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,10 @@ public class AddPieceDetails {
     private String partnerName;
 
     private String hsCode;
+
+    private String pieceValue;
+
+    private String pieceCurrency;
 
     private String partnerMasterAirwayBill;
 

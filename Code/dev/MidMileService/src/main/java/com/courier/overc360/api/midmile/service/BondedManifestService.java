@@ -117,6 +117,10 @@ public class BondedManifestService {
         try {
             List<BondedManifest> createdBondedManifestList = new ArrayList<>();
 
+            String NUM_RAN_OBJ = "BONDEDID";
+            String BONDED_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            log.info("next Value from NumberRange for BONDED_ID : " + BONDED_ID);
+
             for (AddBondedManifest addBondedManifest : addBondedManifestList) {
                 // If ShipperId matches with consignorId then create
 //                IKeyValuePair shipperData = bondedManifestRepository.getProductId(addBondedManifest.getShipperId(),
@@ -138,35 +142,12 @@ public class BondedManifestService {
                         addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(),
                         addBondedManifest.getHouseAirwayBill()) == 1;
 
-                // Set TotalDuty Value
-//                        IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(addBondedManifest.getFreightCurrency());
-//                        Double freightCharge = Double.valueOf(addBondedManifest.getFreightCharges());
-//                        String incoTerms = addBondedManifest.getIncoTerms();
-//
-//                        Double totalDuty = null;
-//                        if (iKeyValuePair.getCurrencyValue() != null) {
-//                            Double toCurrencyValue = Double.valueOf(iKeyValuePair.getCurrencyValue());
-//                            if (toCurrencyValue != null && freightCharge != null) {
-//                                totalDuty = toCurrencyValue * freightCharge;
-//                                if (totalDuty > 100) {
-//                                    totalDuty += totalDuty * 0.05;
-//                                }
-//                                if (incoTerms != null && incoTerms.equalsIgnoreCase("DDU")) {
-//                                    totalDuty += 4;
-//                                }
-//                            }
-//                        }
-
                 if (duplicateRecord) {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());
                 }
                 BondedManifest newBondedManifest = new BondedManifest();
                 BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
                 String STATUS_ID = "2 - Bonded Manifest Created";
-
-                String NUM_RAN_OBJ = "BONDEDID";
-                String BONDED_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                log.info("next Value from NumberRange for BONDED_ID : " + BONDED_ID);
                 newBondedManifest.setBondedId(BONDED_ID);
 
                 IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(

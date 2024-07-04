@@ -4,7 +4,9 @@ import com.courier.overc360.api.batch.scheduler.BatchJobScheduler;
 import com.courier.overc360.api.exception.BadRequestException;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.auth.AuthTokenRequest;
+import com.courier.overc360.api.model.dto.MultipleUpload;
 import com.courier.overc360.api.model.dto.PDFMerger;
+import com.courier.overc360.api.model.dto.UpdateCCR;
 import com.courier.overc360.api.model.transaction.UploadApiResponse;
 import com.courier.overc360.api.service.CommonService;
 import com.courier.overc360.api.service.FileStorageService;
@@ -78,11 +80,10 @@ public class WrapperServiceController {
     public ResponseEntity<?> extractPdf(@RequestParam("file") MultipartFile file, @RequestParam String filePath) throws Exception {
 
         try {
-            String response = fileStorageService.storeFile(file, filePath);
-            String fileWithPath = filePath + "/" + response;
-            commonService.extractPdf(fileWithPath);
-//            return ResponseEntity.ok(response + " - Extracted Successfully");
-            return new ResponseEntity <> (response + " - Extracted Successfully", HttpStatus.OK) ;
+            String storedFileResponse = fileStorageService.storeFile(file, filePath);
+            String fileWithPath = filePath + "/" + storedFileResponse;
+            UpdateCCR[] response = commonService.extractPdf(fileWithPath);
+            return new ResponseEntity <> (response, HttpStatus.OK) ;
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to Extract PDF" + e.getMessage());
         }
@@ -90,16 +91,37 @@ public class WrapperServiceController {
 
     @ApiOperation(response = Optional.class, value = "PDF Merge") // label for swagger
     @PostMapping("/pdf/merge")
-    public ResponseEntity<byte[]> mergePdf(@RequestBody PDFMerger pdfMerger) throws Exception {
+    public ResponseEntity<?> mergePdf(@RequestBody PDFMerger pdfMerger) throws Exception {
 
         try {
+            String outputPath = null;
+
+            if(pdfMerger.getOutputPath() == null) {
+                throw new BadRequestException("Output Path should be specified");
+            }
+            if(pdfMerger.getOutputPath() != null) {
+                outputPath = pdfMerger.getOutputPath();
+            }
+            if(outputPath != null && outputPath.length() == 0) {
+                throw new BadRequestException("Invalid Output Path");
+            }
+            if(outputPath != null && outputPath.endsWith("/")) {
+                throw new BadRequestException("Output Path specified without fileName and extension");
+            }
+            if(outputPath != null && !outputPath.contains(".")) {
+                throw new BadRequestException("Output fileName not mentioned with extension");
+            }
+
             byte[] mergePdf = commonService.mergePdf(pdfMerger);
+            int fileNameIndex = outputPath.lastIndexOf("/");
+            String fileName = outputPath.substring(fileNameIndex,pdfMerger.getOutputPath().length());
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"merged.pdf\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ fileName + "\"")
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(mergePdf);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(("Failed to Merge PDF" + e.getMessage()).getBytes());
+            e.printStackTrace();
+            throw new BadRequestException("Exception: " + e);
         }
     }
 
@@ -139,25 +161,26 @@ public class WrapperServiceController {
     @ApiOperation(response = Optional.class, value = "Multiple Document Storage Upload") // label for swagger
     @PostMapping("/doc-storage/multiUpload")
     public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam String location) {
-        String message = "";
-        String fileName = "";
+        String[] fileName;
+
         try {
-            List<String> fileNames = new ArrayList<>();
+            List<MultipleUpload> fileNames = new ArrayList<>();
 
             for(MultipartFile file : files) {
                 try {
-                    fileName = fileStorageService.storeFile(file, location);
+                    MultipleUpload multipleUpload = new MultipleUpload();
+                    fileName = fileStorageService.storeFileWithReturnLocation(file, location);
+                    multipleUpload.setFileName(fileName[0]);
+                    multipleUpload.setFilePath(fileName[1]);
+                    multipleUpload.setResponse("Uploaded Successfully");
+                    fileNames.add(multipleUpload);
                 } catch (Exception e) {
                     throw new BadRequestException("Exception : " + e);
                 }
-                fileNames.add(fileName);
             }
-
-            message = "Uploaded the files successfully: " + fileNames;
-            return new ResponseEntity <> (message, HttpStatus.OK) ;
+            return new ResponseEntity <> (fileNames, HttpStatus.OK) ;
         } catch (Exception e) {
-            message = "Fail to upload files!";
-            return new ResponseEntity <> (message, HttpStatus.EXPECTATION_FAILED) ;
+            return new ResponseEntity <> ("Fail to upload files!", HttpStatus.EXPECTATION_FAILED) ;
         }
     }
 
