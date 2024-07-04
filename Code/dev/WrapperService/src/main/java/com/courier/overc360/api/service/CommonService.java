@@ -3,6 +3,7 @@ package com.courier.overc360.api.service;
 import com.courier.overc360.api.config.PropertiesConfig;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.dto.PDFMerger;
+import com.courier.overc360.api.model.dto.UpdateCCR;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -31,17 +32,17 @@ public class CommonService {
 		return propertiesConfig.getCommonServiceUrl();
 		}
 		
-	public String extractPdf(String fileName) {
+	public UpdateCCR[] extractPdf(String fileName) {
 		HttpHeaders headers = new HttpHeaders();
 		AuthToken authTokenForCommonService = authTokenService.getCommonServiceAuthToken();
 		String authToken = authTokenForCommonService.getAccess_token();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("User-Agent", "RestTemplate");
 		headers.add("Authorization", "Bearer " + authToken);
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "pdf/extract")
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "pdf/extract/v2")
 				.queryParam("fileName", fileName);
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+		ResponseEntity<UpdateCCR[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, UpdateCCR[].class);
 		return result.getBody();
 	}
 	
@@ -52,7 +53,7 @@ public class CommonService {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("User-Agent", "RestTemplate");
 		headers.add("Authorization", "Bearer " + authToken);
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "pdf/merge");
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "pdf/merge/v2");
 		HttpEntity<?> entity = new HttpEntity<>(pdfMerger, headers);
 		ResponseEntity<byte[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, byte[].class);
 		return result.getBody();

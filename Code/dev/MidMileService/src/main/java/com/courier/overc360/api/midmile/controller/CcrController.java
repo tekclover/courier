@@ -6,6 +6,7 @@ import com.courier.overc360.api.midmile.primary.model.ccr.Ccr;
 import com.courier.overc360.api.midmile.primary.model.ccr.UpdateCcr;
 import com.courier.overc360.api.midmile.replica.model.ccr.FindCcr;
 import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcr;
+import com.courier.overc360.api.midmile.replica.model.ccr.UpdateCCR;
 import com.courier.overc360.api.midmile.service.CcrService;
 import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
@@ -97,5 +98,13 @@ public class CcrController {
         return new ResponseEntity<>(ccrList, HttpStatus.OK);
     }
 
+    /*---------------------------------------------------UPDATE CCR from PDF - BAYAN-----------------------------------------------------*/
+    // Update Ccr from Bayan
+    @ApiOperation(response = Ccr.class, value = "Update Ccr from Bayan PDF") // label for Swagger
+    @PostMapping("/update/pdf")
+    public ResponseEntity<?> patchCcrFromPdf(@RequestBody List<UpdateCCR> updateCcrList) throws IOException, CsvException {
+        String ccr = ccrService.updateCCRFromBayan(updateCcrList);
+        return new ResponseEntity<>(ccr, HttpStatus.OK);
+    }
 
 }

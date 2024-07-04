@@ -3,6 +3,7 @@ package com.courier.overc360.api.common.controller;
 import com.courier.overc360.api.common.config.PropertiesConfig;
 import com.courier.overc360.api.common.controller.exception.BadRequestException;
 import com.courier.overc360.api.common.model.pdf.PDFMerger;
+import com.courier.overc360.api.common.model.pdf.UpdateCCR;
 import com.courier.overc360.api.common.service.DownloadService;
 import com.courier.overc360.api.common.service.PDFApacheExtractionService;
 import com.courier.overc360.api.common.service.PDFMergeService;
@@ -26,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Validated
@@ -65,6 +67,19 @@ public class PdfController {
         }
     }
 
+    @PostMapping("/extract/v2")
+    public ResponseEntity<?> extractPdfDetails(@RequestParam String fileName) {
+        try {
+            // Extract details from the PDF
+            Set<UpdateCCR> details = pdfApacheExtractionService.pdfExtractDetails(fileName.trim());
+
+            return new ResponseEntity<>(details, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/merge")
     public ResponseEntity<byte[]> mergePdfs(@RequestBody PDFMerger request) throws IOException {
         System.out.println("Received filePaths: " + request.getFilePaths());
@@ -96,6 +111,17 @@ public class PdfController {
                     }
 
         byte[] mergePdf = pdfMergeService.mergePdfs(pdfStreams, fileOuputStoragePath);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"merged.pdf\"")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(mergePdf);
+    }
+
+    @PostMapping("/merge/v2")
+    public ResponseEntity<byte[]> pdfMerge(@RequestBody PDFMerger request) throws IOException {
+
+        byte[] mergePdf = pdfMergeService.pdfMerge(request);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"merged.pdf\"")
