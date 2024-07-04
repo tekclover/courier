@@ -264,6 +264,12 @@ public class ConsignmentEntity {
     @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
     private Date statusTimestamp;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

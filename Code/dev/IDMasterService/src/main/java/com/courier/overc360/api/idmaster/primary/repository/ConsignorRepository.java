@@ -13,7 +13,12 @@ import java.util.Optional;
 public interface ConsignorRepository extends JpaRepository<Consignor, String>, JpaSpecificationExecutor<Consignor> {
 
     Optional<Consignor> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String subProductValue, String productId, String customerId, String consignorId, Long deletionIndicator);
+            String languageId, String companyId, String subProductId, String subProductValue,
+            String productId, String customerId, String consignorId, Long deletionIndicator);
+
+    Consignor findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductValue, String subProductId,
+            String productId, String customerId, String consignorId, Long deletionIndicator);
 
 
 }

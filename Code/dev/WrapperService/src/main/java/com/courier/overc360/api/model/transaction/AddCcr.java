@@ -33,6 +33,10 @@ public class AddCcr {
 
     private String partnerName;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;

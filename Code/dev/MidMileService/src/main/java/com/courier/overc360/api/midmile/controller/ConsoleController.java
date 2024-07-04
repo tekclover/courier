@@ -43,7 +43,7 @@ public class ConsoleController {
     public ResponseEntity<?> postConsole(@Valid @RequestBody List<AddConsole> addConsoleList,
                                          @RequestParam String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        List<Console> console = consoleService.createConsoleList(addConsoleList, loginUserID);
+        List<Console> console = consoleService.createConsoleNormal(addConsoleList, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 

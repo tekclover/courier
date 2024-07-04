@@ -46,6 +46,10 @@ public class AddConsole {
 
     private String manifestedQuantity;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String landedQuantity;
 
     private String totalQuantity;

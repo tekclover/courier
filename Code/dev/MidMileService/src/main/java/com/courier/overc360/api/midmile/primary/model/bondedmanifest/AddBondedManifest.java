@@ -52,6 +52,10 @@ public class AddBondedManifest {
 
     private String volume;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String finalDestination;
 
     private String notifyParty;

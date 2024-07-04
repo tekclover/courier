@@ -78,6 +78,12 @@ public class Ccr {
     @Column(name = "STATUS_ID" , columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
