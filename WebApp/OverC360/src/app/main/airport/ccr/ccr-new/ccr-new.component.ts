@@ -200,6 +200,7 @@ export class CcrNewComponent {
       this.cas.dropdownlist.setup.currency.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.hsCode.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
@@ -207,7 +208,8 @@ export class CcrNewComponent {
         this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
         this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
         this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
-
+      this.hsCodeList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.hsCode.key);
+        
         this.spin.hide();
       },
       error: (err: any) => {

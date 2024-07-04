@@ -56,7 +56,7 @@ export class SubProductNewComponent {
     remark: [],
     statusId: ["16", ],
     statusDescription: [],
-    referenceField1: [, Validators.required],
+    referenceField1: [],
     referenceField10: [],
     referenceField2: [],
     referenceField3: [],
@@ -107,26 +107,30 @@ export class SubProductNewComponent {
       this.form.controls.createdOn.disable();
     }
     else {
-      this.spin.show();
-      let obj: any = {};
-      obj.numberRangeObject = ['COMPANY'];
-      this.numberRangeService.search(obj).subscribe({
-        next: (res: any) => {
-          if (res.length > 0) {
-            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
-            this.form.controls.companyId.patchValue(this.nextNumber);
-            this.numCondition = 'true';
-            this.form.controls.referenceField10.patchValue(this.numCondition);
-            this.form.controls.companyId.disable();
-          }
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
+      this.checkNumberRange();
     }
+  }
+
+  checkNumberRange(){
+    this.spin.show();
+    let obj: any = {};
+    obj.numberRangeObject = ['SUBPRODUCT'];
+    this.numberRangeService.search(obj).subscribe({
+      next: (res: any) => {
+        if (res.length > 0) {
+          this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+          this.form.controls.subProductId.patchValue(this.nextNumber);
+          this.numCondition = 'true';
+          this.form.controls.referenceField10.patchValue(this.numCondition);
+          this.form.controls.subProductId.disable();
+        }
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   languageIdList: any[] = [];
@@ -153,29 +157,7 @@ export class SubProductNewComponent {
 
   addValues() { }
 
-  //   add() {
-  //     const dialogRef = this.dialog.open(MasterchildComponent, {
-  //       disableClose: true,
-  //       width: '50%',
-  //       maxWidth: '80%',
-  //       data: this.resultTable.length + 1
-  //     });
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //      console.log(result.length);
-  //      if(result){
-  //       this.resultTable
-
-  //       if (result.length > 0) {
-  //         this.resultTable.push(result);
-  //       }
-
-  //       this.resultTable.push(result);
-  //     }
-  //      this.resultTable=[...this.resultTable];
-  //     });
-  //   }
-
+  subProductArray: any[] = [];
 
   add() {
     const dialogRef = this.dialog.open(SubProductsValuesComponent, {
@@ -184,41 +166,39 @@ export class SubProductNewComponent {
       height: '50%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: this.pieceDetails.length + 1,
+      data: this.subProductArray.length + 1,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result.length);
+      console.log(result)
       if (result) {
-        this.pieceDetails
-
-        if (result.length > 0) {
-          this.pieceDetails.push(result);
-        }
-
         this.subProductArray.push(result);
       }
-      this.subProductArray.push(result);
-     });
-  }
-
-  subProductArray: any[] = [];
-
-  piece = this.fb.group({
-    pieceDetails: this.fb.array([]) // Initialize an empty FormArray
-  });
-
-
-  get pieceDetails(): FormArray {
-    return this.piece.get('pieceDetails') as FormArray;
+    });
   }
 
   removeItem(index: number) {
-    this.pieceDetails.removeAt(index);
+    this.subProductArray.splice(index, 1);
   }
 
   fill(line: any) {
     this.form.patchValue(line);
+    this.spin.show();
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.subProductId = [line.subProductId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.subProductArray = res;
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }
@@ -237,7 +217,7 @@ export class SubProductNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.UpdateBulk(this.subProductArray).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
@@ -255,7 +235,15 @@ export class SubProductNewComponent {
       });
     } else {
       this.spin.show();
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.subProductArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.subProductId = this.form.controls.subProductId.value;
+        x.subProductName = this.form.controls.subProductName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
+      this.service.CreateBulk(this.subProductArray).subscribe({
         next: (res) => {
           if (res) {
             this.messageService.add({
@@ -274,5 +262,26 @@ export class SubProductNewComponent {
         },
       });
     }
+  }
+
+  editItem(data: any,i: any): void {
+    const dialogRef = this.dialog.open(SubProductsValuesComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: {pageflow: data,code:this.subProductArray[i]},
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.subProductArray.splice(i,0);
+        this.subProductArray.splice(i, 1, result);
+        console.log(result);
+      //this.form.patchValue(result);
+      this.subProductArray = [...this.subProductArray]
+  
+  }});
   }
 }

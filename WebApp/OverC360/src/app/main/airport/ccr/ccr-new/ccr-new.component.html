@@ -37,7 +37,7 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="masterAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Master Airway Bill Number</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">MAWB</p>
                                 <p-dropdown [options]="mawbList" placeholder="Select" filter="true" formControlName="masterAirwayBill" appendTo="body"
                                 [ngClass]="form.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                   [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="mawbChanged()"/>
@@ -46,7 +46,7 @@
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12" id="houseAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required">House Airway Bill Number</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">HAWB</p>
                                 <p-dropdown [options]="hawbList" placeholder="Select" filter="true" formControlName="houseAirwayBill" appendTo="body"
                                 [ngClass]="form.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="hawbChanged()"/>
@@ -175,14 +175,13 @@
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="num" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="hsCode">
-                                <p class="formControlLabel f600 textBlack mb-0">
-                                    HS Code
-                                </p>
-                                <p-dropdown formControlName="hsCode"
-                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" />
-                              <mat-error *ngIf="errorHandling('hsCode')" class="text-danger"><small>{{
-                                getErrorMessage()
-                                }}</small></mat-error>
+                                <p class="formControlLabel f600 textBlack mb-0">HS Code</p>
+                                <p-dropdown [options]="hsCodeList" placeholder="Select" filter="true"
+                                    formControlName="hsCode" appendTo="body"
+                                    [ngClass]="form.get('hsCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('hsCode')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="goodsDescription">
                                 <p class="formControlLabel f600 textBlack mb-0">

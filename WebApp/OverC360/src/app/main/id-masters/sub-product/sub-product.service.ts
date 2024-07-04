@@ -17,9 +17,18 @@ export class SubProductService {
     return this.http.post<any>('/overc-idmaster-service/subProduct', obj);
   }
 
+  CreateBulk(obj: any) {
+    return this.http.post<any>('/overc-idmaster-service/subProduct/create/list', obj);
+  }
+
   Update(obj: any) {
     return this.http.patch<any>(
       '/overc-idmaster-service/subProduct/' + obj.subProductId + "?subProductValue=" + obj.subProductValue + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId, obj);
+  }
+
+  UpdateBulk(obj: any) {
+    return this.http.patch<any>(
+      '/overc-idmaster-service/subProduct/update/list', obj);
   }
 
   Delete(subProductId: string, subProductValue: string) {

@@ -37,7 +37,7 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="bondedId">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Manifest Number</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Manifest Number</p>
                                 <input formControlName="bondedId" [ngClass]="
                                     form.get('bondedId')?.invalid &&
                                     form.get('bondedId')?.dirty
@@ -45,22 +45,10 @@
                                       : ''
                                   " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
                                 <mat-error *ngIf="errorHandling('bondedId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-
-                            <div class="col-6 marginFieldNew borderRadius12" id="partnerHouseAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Partner House Airway Bill</p>
-                                <input formControlName="partnerHouseAirwayBill" [ngClass]="
-                                form.get('partnerHouseAirwayBill')?.invalid &&
-                                form.get('partnerHouseAirwayBill')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
-                                <mat-error *ngIf="errorHandling('partnerHouseAirwayBill')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="partnerMasterAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Partner Master Airway Bill</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner MAWB</p>
                                 <input formControlName="partnerMasterAirwayBill" [ngClass]="
                                 form.get('partnerMasterAirwayBill')?.invalid &&
                                 form.get('partnerMasterAirwayBill')?.dirty
@@ -68,6 +56,18 @@
                                   : ''
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
                                 <mat-error *ngIf="errorHandling('partnerMasterAirwayBill')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+
+                            <div class="col-6 marginFieldNew borderRadius12" id="partnerHouseAirwayBill">
+                                <p class="formControlLabel f600 textBlack mb-0 required">Partner HAWB</p>
+                                <input formControlName="partnerHouseAirwayBill" [ngClass]="
+                                form.get('partnerHouseAirwayBill')?.invalid &&
+                                form.get('partnerHouseAirwayBill')?.dirty
+                                  ? 'invalid'
+                                  : ''
+                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" required />
+                                <mat-error *ngIf="errorHandling('partnerHouseAirwayBill')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="description">
@@ -207,11 +207,11 @@
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeCivilId">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Consignee ID</p>
-                                <p-dropdown [options]="consigneeList" placeholder="Select" filter="true" formControlName="consigneeCivilId" appendTo="body"
-                                    [ngClass]="form.get('consigneeCivilId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                <p class="formControlLabel f600 textBlack mb-0">Consignee ID</p>
+                                <p-dropdown [options]="consigneeList" placeholder="Select" filter="true" formControlName="consigneeName" appendTo="body"
+                                    [ngClass]="form.get('consigneeName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                       [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}"/>
-                                <mat-error *ngIf="errorHandling('consigneeCivilId')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('consigneeName')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="notifyParty">  
