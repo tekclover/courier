@@ -353,13 +353,18 @@ export const navbarData: INavbarData[] = [
         items: [
             {
                 routerId: 6101,
-                routerLink: '/main/operation/consignmentUploadProgram',
-                label: 'Consignment Upload Program'
+                routerLink: '/main/operation/consignment',
+                label: 'Consignment'
             },
             {
                 routerId: 6102,
                 routerLink: '/main/operation/consignmentStatus',
                 label: 'Consignment Status'
+            },
+            {
+                routerId: 6103,
+                routerLink: '/main/operation/consignmentUploadProgram',
+                label: 'Consignment Upload Program'
             }
 
         ]
