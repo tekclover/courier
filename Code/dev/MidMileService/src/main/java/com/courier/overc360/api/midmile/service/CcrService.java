@@ -12,6 +12,7 @@ import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.ccr.FindCcr;
 import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcr;
+import com.courier.overc360.api.midmile.replica.model.ccr.UpdateCCR;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.CcrSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -537,6 +538,83 @@ public class CcrService {
             errorLog.setReferenceField1(addCcr.getPartnerId());
             errorLog.setReferenceField2(addCcr.getHouseAirwayBill());
             errorLog.setReferenceField4(addCcr.getConsoleId());
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
+        errorLogService.writeLog(errorLogList);
+    }
+
+    //==========================================update CCR from Bayan PDF================================================
+
+    /**
+     * Get Ccr - Replica
+     * @param ccrId
+     * @return
+     */
+    public List<Ccr> getCcr(String ccrId) {
+        List<Ccr> dbCcrList = ccrRepository.findAllByCcrIdAndDeletionIndicator(ccrId, 0L);
+        return dbCcrList;
+    }
+    /**
+     *
+     * @param updateCcrList
+     * @return
+     * @throws IOException
+     * @throws CsvException
+     */
+    @Transactional
+    public String updateCCRFromBayan(List<UpdateCCR> updateCcrList) throws IOException, CsvException {
+        try {
+            List<Ccr> updatedCcrList = new ArrayList<>();
+            for (UpdateCCR updateCcr : updateCcrList) {
+                List<Ccr> dbCcrList = getCcr(updateCcr.getCcrId());
+                if (dbCcrList != null && !dbCcrList.isEmpty()) {
+                    for (Ccr dbCcr : dbCcrList) {
+                        if (dbCcr.getCcrId().equalsIgnoreCase(updateCcr.getCcrId()) &&
+                                dbCcr.getHsCode().equalsIgnoreCase(updateCcr.getHsCode()) &&
+                                dbCcr.getConsignmentValue().equalsIgnoreCase(updateCcr.getConsignmentValue())) {
+                            dbCcr.setCustomsCcrNo(updateCcr.getCustomsCcrNo());
+                            dbCcr.setPrimaryDo(updateCcr.getPrimaryDo());
+                            dbCcr.setCustomsKd(updateCcr.getCustomsKd());
+                            dbCcr.setUpdatedBy("Bayan");
+                            dbCcr.setUpdatedOn(new Date());
+                            Ccr updatedCcr = ccrRepository.save(dbCcr);
+                            updatedCcrList.add(updatedCcr);
+                        }
+                    }
+                }
+            }
+            return "Update Success";
+        } catch (Exception e) {
+            // Error Log
+            createCcrLog(updateCcrList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     *
+     * @param updateCcrList
+     * @param error
+     * @throws IOException
+     * @throws CsvException
+     */
+    private void createCcrLog(List<UpdateCCR> updateCcrList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (UpdateCCR updateCcr : updateCcrList) {
+            ErrorLog errorLog = new ErrorLog();
+
+            errorLog.setLogDate(new Date());
+            errorLog.setRefDocNumber(updateCcr.getCcrId());
+            errorLog.setMethod("Exception thrown in updateCcr from bayan PDF");
+            errorLog.setReferenceField1(updateCcr.getCustomsCcrNo());
+            errorLog.setReferenceField2(updateCcr.getPrimaryDo());
+            errorLog.setReferenceField3(updateCcr.getHsCode());
+            errorLog.setReferenceField5(updateCcr.getConsignmentValue());
+            errorLog.setReferenceField6(updateCcr.getCustomsKd());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);
