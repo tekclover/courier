@@ -125,6 +125,12 @@ public class PieceDetails {
     @Column(name = "PIECE_STATUS_TIMESTAMP")
     private Date pieceStatusTimestamp;
 
+    @Column(name = "PIECE_VALUE", columnDefinition = "nvarchar(50)")
+    private String pieceValue;
+
+    @Column(name = "PIECE_CURRENCY", columnDefinition = "nvarchar(50)")
+    private String pieceCurrency;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

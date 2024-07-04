@@ -33,6 +33,10 @@ public class UpdatePieceDetails { ;
 
         private String length;
 
+        private String pieceValue;
+
+        private String pieceCurrency;
+
         private String dimensionUnit;
 
         private String width;

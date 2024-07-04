@@ -117,6 +117,18 @@ public class AddConsignment {
 //    @NotBlank(message = "HsCode is mandatory")
     private String hsCode;
 
+    private String exchangeRate;
+
+    private String customsCurrency;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
 //    @NotBlank(message = "Currency is mandatory")
     private String currency;
 

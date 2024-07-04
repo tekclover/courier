@@ -51,6 +51,10 @@ public class UpdatePieceDetails {
 
         private List<ReferenceImageList> referenceImageList;
 
+        private String pieceValue;
+
+        private String pieceCurrency;
+
         private String packReferenceNumber;
 
         private String tags;

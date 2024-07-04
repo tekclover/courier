@@ -255,6 +255,12 @@ public class AddConsignment {
 
     private String reverseReason;
     private String countryOfDestination;
+    private String exchangeRate;
+    private String customsCurrency;
+    private String dutyPercentage;
+    private String iataCharge;
+    private String dduCharge;
+    private String specialApprovalCharge;
     private String noOfCrt;
     private String totalShipmentWeight;
     private String totalWeightHawb;

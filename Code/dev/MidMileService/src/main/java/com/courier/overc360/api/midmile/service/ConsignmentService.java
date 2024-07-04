@@ -132,7 +132,7 @@ public class ConsignmentService {
             String subProductId = consignmentEntity.getSubProductId();
 
             // Checking if the product ID and sub-product ID match
-            if (productId != null && subProductId != null && shipperData != null) {
+            if (productId != null && subProductId != null) {
                 if (!productId.equalsIgnoreCase(shipperData.getProductId()) ||
                         !subProductId.equalsIgnoreCase(shipperData.getSubProductId())) {
                     if (getProductIdFromCustomer != null) {
@@ -148,10 +148,17 @@ public class ConsignmentService {
 
             if (shipperData != null && shipperData.getProductName() != null) {
                 NUM_RAN_OBJ = shipperData.getProductName();
+            } else if(getProductIdFromCustomer != null && getProductIdFromCustomer.getProductName() != null) {
+                NUM_RAN_OBJ = getProductIdFromCustomer.getProductName();
+            } else {
+                throw new BadRequestException("HouseAirwayBill NumberRange is NULL Check PartnerId match in Consignor table And ProductName match in NumberRange Table");
             }
 
             // Generating house and master airway bills
             String houseAirwayBill = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            if(houseAirwayBill == null) {
+                throw new BadRequestException("Number Range Object " + NUM_RAN_OBJ + " Doesn't exits in NumberRangeTable");
+            }
 
             // Duplicate Check Consignment
             Optional<ConsignmentEntity> duplicateConsignment =
