@@ -78,6 +78,10 @@ public class ConsignmentEntity {
 
     private String secondaryDo;
 
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
+
     private Date flightArrivalTime;
 
     private String consigneeName;
