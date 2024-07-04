@@ -302,7 +302,7 @@ console.log(this.selectedConsole)
     const dialogRef = this.dialog.open(ConsoleEditpopupComponent, {
       disableClose: true,
       width: '70%',
-      height: '50%',
+      //height: '50%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: {pageflow: data,code:item},

@@ -25,8 +25,10 @@ export class ConsignmentService {
     return this.http.patch<any>('/overc-midmile-service/consignment', obj);
   }
 
-  Delete(languageId: string) {
-    return this.http.delete<any>('/overc-midmile-service/consignment/' + languageId);
+  Delete(obj: any) {
+    return this.http.delete<any>('/overc-midmile-service/consignment/' +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId + '&houseAirwayBill='+ obj.houseAirwayBill +'&masterAirwayBill='+ obj.masterAirwayBill
+      +'&partnerId='+ obj.partnerId
+    );
   }
 
   DeletePreAlertManifest(obj: any) {

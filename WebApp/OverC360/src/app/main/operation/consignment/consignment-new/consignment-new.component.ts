@@ -94,6 +94,7 @@ export class ConsignmentNewComponent {
     noOfPieceHawb: [],
     noOfPackageMawb: [],
     countryOfOrigin: [],
+    countryOfDestination: [],
     consignmentType: [,],
     customerCode: [],
     codAmount: [],
@@ -202,7 +203,7 @@ export class ConsignmentNewComponent {
     weight: [],
     weightUnit: [],
     invoiceNumber: [],
-    invoiceDate: [],
+    invoiceDate: [new Date,],
     invoiceSupplierName: [],
     goodsDescription: [],
     notifyParty: [],
@@ -517,7 +518,7 @@ export class ConsignmentNewComponent {
   countryIdList: any[] = [];
   cityIdList: any[] = [];
   provinceIdList: any[] = [];
-
+  partnerName: any[] = [];
 
   dropdownlist() {
     this.spin.show();
@@ -531,7 +532,8 @@ export class ConsignmentNewComponent {
       this.cas.dropdownlist.setup.loadType.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.city.url,
-      this.cas.dropdownlist.setup.province.url
+      this.cas.dropdownlist.setup.province.url,
+      this.cas.dropdownlist.setup.consignor.url
 
 
 
@@ -549,6 +551,7 @@ export class ConsignmentNewComponent {
         this.countryIdList = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
         this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
         this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
+        this.partnerName = this.cas.forLanguageFilter(results[10], this.cas.dropdownlist.setup.consignor.key);
 
 
 
@@ -583,6 +586,9 @@ export class ConsignmentNewComponent {
 
     this.patchForm(line);
 
+    this.consignment.controls.invoiceDate.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
+    this.shipmentInfo.controls.masterAirwayBill.disable();
+    this.shipmentInfo.controls.houseAirwayBill.disable();
   }
 
   opendialog(type: any = 'New', index: any) {
@@ -626,30 +632,32 @@ export class ConsignmentNewComponent {
   dimension(type: any = 'New', module: any, index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
       disableClose: true,
-      width: '80%',
-      maxWidth: '90%',
+      width: '70%',
+      maxWidth: '82%',
       position: { top: '6.5%', left: '25%' },
-      data: { pageflow: type, module: module, line: (this.piece.controls.pieceDetails as FormArray).at(index)},
+      data: { pageflow: type, module: module, line: (this.piece.controls.pieceDetails as FormArray).at(index) },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       const control = (this.piece.controls.pieceDetails as FormArray).at(index)
       control.patchValue(result);
       console.log(this.piece)
-    })}
+    })
+  }
 
-    imageupload(type: any = 'New',  index: any) {
-      const dialogRef = this.dialog.open(ImageUploadComponent, {
-        disableClose: true,
-        width: '80%',
-        maxWidth: '90%',
-        position: { top: '6.5%', left: '25%' },
-        data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray},
-      });
-       
-      dialogRef.afterClosed().subscribe(result => {
-        const control = (this.piece.controls.pieceDetails as FormArray).at(index)
-      })}
+  imageupload(type: any = 'New', index: any) {
+    const dialogRef = this.dialog.open(ImageUploadComponent, {
+      disableClose: true,
+      width: '80%',
+      maxWidth: '90%',
+      position: { top: '6.5%', left: '25%' },
+      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const control = (this.piece.controls.pieceDetails as FormArray).at(index)
+    })
+  }
 
   save() {
     this.submitted = true;

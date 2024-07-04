@@ -54,6 +54,9 @@ export class CommonServiceService {
     return new Date(date);
   }
 
+pCalendar(date: any): Date{
+  return  new Date(String(date));
+}
   dateExcel(date: any) {
     const del_date = this.datepipe.transform(date, "dd-MM-yyyy HH:mm");
     return del_date;

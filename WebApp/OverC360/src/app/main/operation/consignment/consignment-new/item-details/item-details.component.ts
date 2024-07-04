@@ -179,8 +179,8 @@ export class ItemDetailsComponent {
   dimension(type: any = 'New', module: any, index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
       disableClose: true,
-      width: '80%',
-      maxWidth: '90%',
+      width: '70%',
+      maxWidth: '82%',
       position: { top: '6.5%', left: '25%' },
       data: { pageflow: type, module: module, line: (this.itemForm.controls.itemDetails as FormArray).at(index)},
     });

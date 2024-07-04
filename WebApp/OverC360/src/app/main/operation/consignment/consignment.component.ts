@@ -169,7 +169,7 @@ export class ConsignmentComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.consignmentId).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
