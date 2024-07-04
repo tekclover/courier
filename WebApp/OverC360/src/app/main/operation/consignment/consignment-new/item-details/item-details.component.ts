@@ -17,8 +17,6 @@ import { DimensionComponent } from '../dimension/dimension.component';
 })
 export class ItemDetailsComponent {
 
-
-
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -41,6 +39,7 @@ export class ItemDetailsComponent {
   get itemDetails(): FormArray {
     return this.itemForm.get('itemDetails') as FormArray;
   }
+  
   addItem() {
     this.itemDetails.push(this.createItemFormGroup());
   }
@@ -70,6 +69,7 @@ export class ItemDetailsComponent {
     this.itemDetails.removeAt(index);
   }
   ngOnInit() {
+    console.log(this.data.line.value)
     this.patchForm(this.data.line.value)
   }
 
