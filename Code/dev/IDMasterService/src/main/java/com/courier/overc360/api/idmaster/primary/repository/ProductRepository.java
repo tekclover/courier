@@ -14,8 +14,8 @@ import java.util.Optional;
 @Transactional
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
 
-    Optional<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);
+    Optional<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue, String productId, Long deletionIndicator);
 
     Product findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(
             String languageId, String companyId, String productId, String subProductId, Long deletionIndicator);

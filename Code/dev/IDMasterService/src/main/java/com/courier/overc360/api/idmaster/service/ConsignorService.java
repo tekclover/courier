@@ -324,7 +324,18 @@ public class ConsignorService {
 
                 Consignor newConsignor = new Consignor();
                 BeanUtils.copyProperties(updateConsignor, newConsignor, CommonUtils.getNullPropertyNames(updateConsignor));
+                IKeyValuePair iKeyValuePair = replicaCustomerRepository.getDescription(
+                        updateConsignor.getLanguageId(), updateConsignor.getCompanyId(), updateConsignor.getSubProductId(),
+                        updateConsignor.getSubProductValue(), updateConsignor.getProductId(), updateConsignor.getCustomerId());
 
+                if (iKeyValuePair != null) {
+                    newConsignor.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newConsignor.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    newConsignor.setSubProductName(iKeyValuePair.getSubProductDesc());
+                    newConsignor.setProductName(iKeyValuePair.getProductDesc());
+                    newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
+                    newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
+                }
                 if (updateConsignor.getStatusId() != null && !updateConsignor.getStatusId().isEmpty()) {
                     String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignor.getStatusId());
                     if (statusDesc != null) {
