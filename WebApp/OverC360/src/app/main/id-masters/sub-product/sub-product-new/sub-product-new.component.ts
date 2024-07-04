@@ -170,7 +170,6 @@ export class SubProductNewComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if (result) {
         this.subProductArray.push(result);
       }

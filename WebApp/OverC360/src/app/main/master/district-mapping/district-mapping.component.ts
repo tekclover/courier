@@ -18,7 +18,6 @@ import { DistrictMappingService } from './district-mapping.service';
 })
 export class DistrictMappingComponent {
 
-
   districtMappingTable: any[] = [];
   selectedDistrictMapping: any[] = [];
   cols: any[] = [];
@@ -40,7 +39,7 @@ export class DistrictMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'District Mapping '];
+    const dataToSend = ['Master', 'District Mapping'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -49,12 +48,12 @@ export class DistrictMappingComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'partnerId', header: 'Partner ID' },
-      { field: 'districtName', header: 'District' },
       { field: 'companyName', header: 'Company' },
+      { field: 'districtName', header: 'District' },
+      { field: 'partnerId', header: 'Partner ID' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
-      { field: 'partnerDistrictName', header: 'Partner District ' },
+      { field: 'partnerDistrictName', header: 'Partner District' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -65,8 +64,8 @@ export class DistrictMappingComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'partnerDistrictId', header: 'Partner District ID' },
       { field: 'districtId', header: 'District ID' },
-      { field: 'languageId', header: 'Language Id' },
-      { field: 'companyId', header: 'Company Id' },
+      { field: 'languageId', header: 'Language ID' },
+      { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
@@ -85,22 +84,23 @@ export class DistrictMappingComponent {
   }
 
   initialCall() {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.districtMappingTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+    setTimeout(() => {
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.districtMappingTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 600);
   }
-
 
   onChange() {
     const choosen = this.selectedDistrictMapping[this.selectedDistrictMapping.length - 1];

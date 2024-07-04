@@ -21,7 +21,9 @@ export class ConsignmentNewComponent {
 
   activeIndex: number = 0;
   status: any[] = [];
-
+  paymentType: any[] = [];
+  incoTerms: any[] = [];
+  codCollectionMode: any[] = [];
   disabledCarrier = true;
   disabledSender = true;
   disabledDelivery = true;
@@ -50,6 +52,20 @@ export class ConsignmentNewComponent {
       { value: '17', label: 'Inactive' },
       { value: '16', label: 'Active' }
     ];
+    this.paymentType = [
+      { value: 'prepaid', label: 'Prepaid' },
+      { value: 'cod', label: 'COD' }
+    ];
+    this.incoTerms = [
+      { value: 'ddu', label: 'DDU' },
+      { value: 'ddp', label: 'DDP' }
+    ];
+    this.codCollectionMode = [
+      { value: 'cash', label: 'Cash' },
+      { value: 'cheque', label: 'Cheque' },
+      { value: 'online', label: 'Online' },
+      { value: 'card', label: 'Card' }
+    ];
   }
 
   pageToken: any;
@@ -77,6 +93,9 @@ export class ConsignmentNewComponent {
     countryOfOrigin: [],
     consignmentType: [,],
     customerCode: [],
+    codAmount: [],
+    codCollectionMode: [],
+    codFavorOf: [],
     customerReferenceNumber: [],
     actionType: [],
     movementType: [],
@@ -313,7 +332,7 @@ export class ConsignmentNewComponent {
 
   patchForm(shipmentData: any) {
     const piecesArray = this.piece.get('pieceDetails') as FormArray;
-    shipmentData.pieceDetails.forEach((piece:any) => {
+    shipmentData.pieceDetails.forEach((piece: any) => {
       piecesArray.push(this.patchPieceDetail(piece));
     });
   }
@@ -410,10 +429,10 @@ export class ConsignmentNewComponent {
   }
 
   patchReferenceImages(referenceImageList: any[]) {
-    if(referenceImageList == null){
-  return
-}    
-return this.fb.array(referenceImageList.map(image => this.fb.group({
+    if (referenceImageList == null) {
+      return
+    }
+    return this.fb.array(referenceImageList.map(image => this.fb.group({
       imageRefId: [image.imageRefId],
       pdfUrl: [image.pdfUrl],
       referenceImageUrl: [image.referenceImageUrl]
@@ -485,17 +504,52 @@ return this.fb.array(referenceImageList.map(image => this.fb.group({
   }
 
   companyIdList: any[] = [];
-  districtList: any[] = [];
+  districtIdList: any[] = [];
+  productIdList: any[] = [];
+  subProductIdList: any[] = [];
+  serviceTypeIdList: any[] = [];
+  consignmentTypeIdList: any[] = [];
+  loadTypeIdList: any[] = [];
+  countryIdList: any[] = [];
+  cityIdList: any[] = [];
+  provinceIdList: any[] = [];
+
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.district.url
+      this.cas.dropdownlist.setup.district.url,
+      this.cas.dropdownlist.setup.product.url,
+      this.cas.dropdownlist.setup.subProduct.url,
+      this.cas.dropdownlist.setup.serviceType.url,
+      this.cas.dropdownlist.setup.consignmentType.url,
+      this.cas.dropdownlist.setup.loadType.url,
+      this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.city.url,
+      this.cas.dropdownlist.setup.province.url
+
+
+
+
+
     ]).subscribe({
       next: (results: any) => {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
-        this.districtList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
+        this.districtIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.district.key);
+        this.productIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.product.key);
+        this.subProductIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.subProduct.key);
+        this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
+        this.consignmentTypeIdList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignmentType.key);
+        this.loadTypeIdList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.loadType.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
+        this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
+
+
+
+
+
         this.spin.hide();
       },
       error: (err: any) => {
@@ -518,107 +572,105 @@ return this.fb.array(referenceImageList.map(image => this.fb.group({
     this.disabledBilling = false;
 
     this.shipmentInfo.patchValue(line),
-    this.consignment.patchValue(line),
-    this.senderInfo.patchValue(line),
-    this.deliveryInfo.patchValue(line),
-    this.billing.patchValue(line)
+      this.consignment.patchValue(line),
+      this.senderInfo.patchValue(line),
+      this.deliveryInfo.patchValue(line),
+      this.billing.patchValue(line)
 
     this.patchForm(line);
     console.log(this.piece)
 
   }
 
-  opendialog(type: any = 'New', data: any, index:any) {
-    console.log(data)
+  opendialog(type: any = 'New', data: any, index: any) {
     const dialogRef = this.dialog.open(PieceDetailsComponent, {
       disableClose: true,
       width: '90%',
       maxWidth: '95%',
-      position: { top: '6.5%', left: '10%' }, 
+      position: { top: '6.5%', left: '10%' },
       data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
- // Clear existing items and set the new ones
- const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
- itemDetailsFormArray.clear(); // Clear existing items if needed
+        const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
+        itemDetailsFormArray.clear();
+        result.forEach((item: any) => {
+          itemDetailsFormArray.push(this.fb.group({
+            description: item.description
+          }));
+        });
 
- // Push all items from result array (assuming result is an array of objects)
- result.forEach((item :any) => {
-   itemDetailsFormArray.push(this.fb.group({
-    description: item.description
-   }));
- });
-
- console.log('Updated itemDetails:', itemDetailsFormArray.value);
- console.log(this.piece)
+        console.log('Updated itemDetails:', itemDetailsFormArray.value);
+        console.log(this.piece)
       }
     });
   }
 
 
   selectedFiles: FileList | null = null;
-  selectFiles(event: any, data:any): void {
+  selectFiles(event: any, data: any): void {
     this.selectedFiles = event.target.files;
 
     // Assuming you have an event object, such as from an input file change event
-const files: FileList = event.target.files!; // Explicitly type files as FileList
+    const files: FileList = event.target.files!; // Explicitly type files as FileList
 
-// Convert FileList to an array of File objects
-const filesArray: File[] = Array.from(files);
+    // Convert FileList to an array of File objects
+    const filesArray: File[] = Array.from(files);
 
-// Array to hold objects with name and referenceImageUrl
-let filesWithData: { name: string, referenceImageUrl: string }[] = [];
+    // Array to hold objects with name and referenceImageUrl
+    let filesWithData: { name: string, referenceImageUrl: string }[] = [];
 
-// Iterate over each file using forEach
-filesArray.forEach((file: File) => {
-    // Perform actions with each file here
-    console.log(file.name); // Example action: logging the file name
+    // Iterate over each file using forEach
+    filesArray.forEach((file: File) => {
+      // Perform actions with each file here
+      console.log(file.name); // Example action: logging the file name
 
-    // Set reference image URL for each file
-    const referenceImageUrl = `path/to/images/${file.name}`;
+      // Set reference image URL for each file
+      const referenceImageUrl = `path/to/images/${file.name}`;
 
-    // Create an object with file name and reference image URL
-    const fileData = {
+      // Create an object with file name and reference image URL
+      const fileData = {
         name: file.name,
         referenceImageUrl: file.name,
-    };
+      };
 
-    // Push the object into the array
-    filesWithData.push(fileData);
-});
+      // Push the object into the array
+      filesWithData.push(fileData);
+    });
 
-// Now filesWithData array contains objects with both name and referenceImageUrl
-console.log(filesWithData);
+    // Now filesWithData array contains objects with both name and referenceImageUrl
+    console.log(filesWithData);
 
 
 
-   this.uploadFile(filesWithData);
+    this.uploadFile(filesWithData);
   }
 
-  uploadFile(data: any){
+  uploadFile(data: any) {
     if (!this.selectedFiles || this.selectedFiles.length === 0) {
       console.log('No files selected for upload.');
       return;
     }
     console.log(data)
     this.patchReferenceImages(data),
-    console.log(this.piece)
+      console.log(this.piece)
 
     const location = 'test'
-    this.service.uploadFiles(this.selectedFiles, location).subscribe({next: (result) => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Updated',
-        key: 'br',
-        detail: 'File uploaded successfully',
-      });
-    },error: (err)=>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }});
-  
+    this.service.uploadFiles(this.selectedFiles, location).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+
   }
 
   save() {
@@ -859,7 +911,7 @@ console.log(filesWithData);
       ...this.consignment.value,
       ...this.senderInfo.value,
       ...this.deliveryInfo.value,
-      ...this.billing.value,  
+      ...this.billing.value,
       pieceDetails: this.piece.controls.pieceDetails as FormArray,
       updatedBy: [,],
       updatedOn: ['',],
@@ -891,7 +943,7 @@ console.log(filesWithData);
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail:  'Consignment has been created successfully',
+            detail: 'Consignment has been created successfully',
           });
           this.router.navigate(['/main/operation/consignment']);
         }, error: (err) => {
