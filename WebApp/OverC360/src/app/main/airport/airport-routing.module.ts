@@ -8,6 +8,7 @@ import { PreAlertNewComponent } from './pre-alert-manifest/pre-alert-new/pre-ale
 import { BondedManifestNewComponent } from './bonded-manifest/bonded-manifest-new/bonded-manifest-new.component';
 import { CcrNewComponent } from './ccr/ccr-new/ccr-new.component';
 import { ConsoleNewComponent } from './console/console-new/console-new.component';
+import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
 
 const routes: Routes = [
   {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Airport Hub', module: 'Pre-Alert Manifest' } },
@@ -16,6 +17,7 @@ const routes: Routes = [
   
   {path:'console',component: ConsoleComponent, data: { title: 'Airport', module: 'Console' } },
   {path:'console-new/:code',component: ConsoleNewComponent, data: { title: 'Airport', module: 'Console' } },
+  {path:'console-edit/:code',component: ConsoleEditComponent, data: { title: 'Airport', module: 'Console' } },
 
   {path:'bondedManifest',component: BondedManifestComponent, data: { title: 'Airport Hub', module: 'Bonded Manifest' } },
   {path:'bondedManifest-new/:code',component: BondedManifestNewComponent, data: { title: 'Airport Hub', module: 'Bonded Manifest New' } },
