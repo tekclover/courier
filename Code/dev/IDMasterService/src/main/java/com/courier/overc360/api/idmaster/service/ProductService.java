@@ -70,8 +70,8 @@ public class ProductService {
      */
     public Product getProduct(String languageId, String companyId, String subProductId, String productId, String subProductValue) {
 
-        Optional<Product> dbProduct = productRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-                languageId, companyId, subProductId, productId, 0L);
+        Optional<Product> dbProduct = productRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, productId, 0L);
         if (dbProduct.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId
                     + ", subProductValue - " + subProductValue + " and productId - " + productId + " and doesn't exists";
