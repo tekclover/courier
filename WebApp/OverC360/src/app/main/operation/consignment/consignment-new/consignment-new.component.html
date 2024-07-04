@@ -508,7 +508,7 @@
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="description"></td>
                                 <td style="width: 5rem; text-align: center;">
-                                    <i style="font-size: 14px;" class='bi-chevron-up'></i>
+                                    <i style="font-size: 14px;" class='bi-chevron-up' (click)="dimension(this.pageToken.pageflow, i)"></i>
                                 </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode">
                                 </td>
@@ -523,7 +523,7 @@
                                 <td class="d-flex justify-content-center">
                                     <img type="button" (click)="removePieceDetail(i)" src="./assets/common/deletetool.png"
                                         alt="" srcset="" style="height: 1.4rem;">
-                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, item, i)"
+                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, i)"
                                         class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
                                     <input type="file" #fileInput multiple style="display:none"
                                         (change)="selectFiles($event, rowData)" />
@@ -885,14 +885,14 @@
                             <mat-error *ngIf="errorHandlingBilling('incoTerms')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentValue">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="consignmentValue">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Value</p>
                             <input maxlength="50" formControlName="consignmentValue"
                                 [ngClass]="senderInfo.get('consignmentValue')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('consignmentValue')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
                         <div class="col-3 marginFieldNew borderRadius12" id="actualCurrency">
                             <p class="formControlLabel f600 textBlack mb-0">Actual Currency</p>
                             <input maxlength="50" formControlName="actualCurrency"
@@ -941,14 +941,14 @@
                             <mat-error *ngIf="errorHandlingBilling('declaredValue')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
                             <input maxlength="50" formControlName="consignmentCurrency"
                                 [ngClass]="senderInfo.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('consignmentCurrency')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
                         <div class="col-3 marginFieldNew borderRadius12" id="totalDuty">
                             <p class="formControlLabel f600 textBlack mb-0">Total Duty</p>
                             <input maxlength="50" formControlName="totalDuty"
