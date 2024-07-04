@@ -19,10 +19,10 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="productId">
                             <p class="formControlLabel f600 textBlack mb-0">Product</p>
-                            <p-dropdown [options]="productIdList" placeholder="Select" filter="true" formControlName="productId"
-                            [ngClass]="shipmentInfo.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    appendTo="body" [style]="{'width': '100%'}" 
-                                    [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="productIdList" placeholder="Select" filter="true"
+                                formControlName="productId"
+                                [ngClass]="shipmentInfo.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('productId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -30,10 +30,10 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="subProductId">
                             <p class="formControlLabel f600 textBlack mb-0">Sub Product</p>
-                            <p-dropdown [options]="subProductIdList" placeholder="Select" filter="true" formControlName="subProductId"
-                            [ngClass]="shipmentInfo.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    appendTo="body" [style]="{'width': '100%'}" 
-                                    [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="subProductIdList" placeholder="Select" filter="true"
+                                formControlName="subProductId"
+                                [ngClass]="shipmentInfo.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('subProductId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -41,10 +41,10 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="serviceTypeId">
                             <p class="formControlLabel f600 textBlack mb-0 required">Service Type </p>
-                            <p-dropdown [options]="serviceTypeIdList" placeholder="Select" filter="true" formControlName="serviceTypeId"
-                            [ngClass]="shipmentInfo.get('serviceTypeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    appendTo="body" [style]="{'width': '100%'}" 
-                                    [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="serviceTypeIdList" placeholder="Select" filter="true"
+                                formControlName="serviceTypeId"
+                                [ngClass]="shipmentInfo.get('serviceTypeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('serviceTypeId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -105,19 +105,19 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="consignmentType">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Type</p>
-                            <p-dropdown [options]="consignmentTypeIdList" placeholder="Select" filter="true" formControlName="serviceTypeId"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="consignmentTypeIdList" placeholder="Select" filter="true"
+                                formControlName="serviceTypeId" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('consignmentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
                         <div class="col-3 marginFieldNew borderRadius12" id="loadType">
                             <p class="formControlLabel f600 textBlack mb-0 required">Load Type <Code></Code></p>
-                            <p-dropdown [options]="loadTypeIdList" placeholder="Select" filter="true" formControlName="loadType"
-                            [ngClass]="shipmentInfo.get('loadType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="loadTypeIdList" placeholder="Select" filter="true"
+                                formControlName="loadType"
+                                [ngClass]="shipmentInfo.get('loadType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('loadType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -258,30 +258,30 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="incoTerms">
                             <p class="formControlLabel f600 textBlack mb-0">Inco Terms</p>
-                            <p-dropdown [options]="incoTerms" placeholder="Select" filter="true" formControlName="incoTerms"
-                            [ngClass]="shipmentInfo.get('incoTerms')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="incoTerms" placeholder="Select" filter="true"
+                                formControlName="incoTerms"
+                                [ngClass]="shipmentInfo.get('incoTerms')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('incoTerms')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
                         <div class="col-3 marginFieldNew borderRadius12" id="paymentType">
                             <p class="formControlLabel f600 textBlack mb-0">Payment Type</p>
-                            <p-dropdown [options]="paymentType" placeholder="Select" filter="true" formControlName="paymentType"
-                            [ngClass]="shipmentInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="paymentType" placeholder="Select" filter="true"
+                                formControlName="paymentType"
+                                [ngClass]="shipmentInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('paymentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
                         <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode">
                             <p class="formControlLabel f600 textBlack mb-0">COD Collection Mode</p>
-                            <p-dropdown [options]="codCollectionMode" placeholder="Select" filter="true" formControlName="codCollectionMode"
-                            [ngClass]="shipmentInfo.get('codCollectionMode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="codCollectionMode" placeholder="Select" filter="true"
+                                formControlName="codCollectionMode"
+                                [ngClass]="shipmentInfo.get('codCollectionMode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('codCollectionMode')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -303,7 +303,7 @@
                             <mat-error *ngIf="errorHandlingShipment('codFavorOf')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        
+
                     </div>
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
@@ -474,7 +474,8 @@
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Date</p>
                             <p-calendar formControlName="invoiceDate" appendTo="body"
                                 [ngClass]="senderInfo.get('invoiceDate')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'" [showIcon]="true" />
+                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
+                                [showIcon]="true" />
                             <mat-error *ngIf="errorHandlingConsignment('invoiceDate')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -528,22 +529,24 @@
 
             <p-tabPanel header="Piece" [disabled]="disabledPiece">
                 <div class="d-flex justify-content-end align-items-center">
-                    <button (click)="addPieceDetail()" type="button" class="btn ml-2 addNewbuttom bgOrange text-white"><i
-                            class="bi bi-plus-square pr-2"></i> Add New</button>
+                    <button (click)="addPieceDetail()" type="button"
+                        class="btn ml-2 addNewbuttom bgOrange text-white"><i class="bi bi-plus-square pr-2"></i> Add
+                        New</button>
                 </div>
                 <form [formGroup]="piece" class="mt-1">
-                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)" [value]="this.piece.controls.pieceDetails.controls">
+                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
+                        [value]="this.piece.controls.pieceDetails.controls">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th *ngIf="this.pageToken.pageflow != 'New'">Piece ID</th>
                                 <th>Description</th>
-                                <th style="width: 5rem; justify-content: center;">Dimension</th>
                                 <th>HS Code</th>
                                 <th>Piece Value</th>
                                 <th>Piece Currency</th>
                                 <th>Declared Value</th>
                                 <th>COD Amount</th>
-                                <th style="width: 10rem; justify-content: center;">Actions</th>
+                                <th  style="min-width: 9rem; justify-content: center;">
+                                    Actions</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
@@ -553,9 +556,6 @@
                                         placeholder="Enter" [value]="i" formControlName="pieceId"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="description"></td>
-                                <td style="width: 5rem; text-align: center;">
-                                    <i style="font-size: 14px;" class='bi-chevron-up' (click)="dimension(this.pageToken.pageflow, i)"></i>
-                                </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode">
                                 </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
@@ -566,16 +566,30 @@
                                         formControlName="declaredValue"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="codAmount">
                                 </td>
-                                <td class="d-flex justify-content-center">
-                                    <img type="button" (click)="removePieceDetail(i)" src="./assets/common/deletetool.png"
+                                <td  >
+                                    <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                                         alt="" srcset="" style="height: 1.4rem;">
-                                    <i type="button" (click)="opendialog(this.pageToken.pageflow, i)"
-                                        class="bi bi-plus-circle textBlack pl-3" style="font-size: 1.2rem;"></i>
-                                    <input type="file" #fileInput multiple style="display:none"
-                                        (change)="selectFiles($event, rowData)" />
-                                    <i type="button" class="bi bi-card-image textBlack pl-3" style="font-size: 1.2rem;"
-                                        (click)="fileInput.click()"></i>
-
+                                    <p-overlayPanel [style]="{ width: '180' }" #op>
+                                        <div class="d-flex flex-column">
+                                            <input type="file" #fileInput multiple style="display:none"
+                                                (change)="selectFiles($event, rowData)" />
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="dimension(this.pageToken.pageflow, 'piece', i)"><img
+                                                    src="./assets/common/dimension.png" style="padding-right: 10px;width: 2rem;"
+                                                    srcset="">Dimension</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="opendialog(this.pageToken.pageflow, i)"><img
+                                                    src="./assets/common/add.png" style="padding-right: 10px;width: 2rem;"
+                                                    srcset="">Item</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="removePieceDetail(i)"><img
+                                                    src="./assets/common/delete1x.png" style="padding-right: 10px;width: 2rem;"
+                                                    srcset="">Delete</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
+                                                    src="./assets/common/image.png" style="padding-right: 10px;width: 2rem;"
+                                                    srcset="">Image</button>
+                                        </div>
+                                    </p-overlayPanel>
                                 </td>
                             </tr>
 
@@ -627,37 +641,36 @@
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="country" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Country</p>
-                            <p-dropdown [options]="countryIdList" placeholder="Select" filter="true" formControlName="country"
-                            [ngClass]="senderInfo.get('originDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
+                                formControlName="country"
+                                [ngClass]="senderInfo.get('originDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingSender('originDetails.country')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">State</p>
-                            <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true" formControlName="state"
-                            [ngClass]="senderInfo.get('originDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
+                                formControlName="state"
+                                [ngClass]="senderInfo.get('originDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingSender('originDetails.state')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="district" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">District</p>
-                            <p-dropdown [options]="districtIdList" placeholder="Select" filter="true" formControlName="district"
-                            [ngClass]="senderInfo.get('originDetails.district')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="districtIdList" placeholder="Select" filter="true"
+                                formControlName="district"
+                                [ngClass]="senderInfo.get('originDetails.district')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingSender('originDetails.district')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="city" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">City</p>
                             <p-dropdown [options]="cityIdList" placeholder="Select" filter="true" formControlName="city"
-                            [ngClass]="senderInfo.get('originDetails.city')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                                [ngClass]="senderInfo.get('originDetails.city')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingSender('originDetails.city')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -800,38 +813,37 @@
                         <div class="col-3 marginFieldNew borderRadius12" id="country"
                             formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Country</p>
-                            <p-dropdown [options]="countryIdList" placeholder="Select" filter="true" formControlName="country"
-                            [ngClass]="deliveryInfo.get('destinationDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
+                                formControlName="country"
+                                [ngClass]="deliveryInfo.get('destinationDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.country')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="district"
                             formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">District</p>
-                            <p-dropdown [options]="districtIdList" placeholder="Select" filter="true" formControlName="district"
-                            [ngClass]="deliveryInfo.get('destinationDetails.district')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="districtIdList" placeholder="Select" filter="true"
+                                formControlName="district"
+                                [ngClass]="deliveryInfo.get('destinationDetails.district')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.district')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="city" formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">City</p>
                             <p-dropdown [options]="cityIdList" placeholder="Select" filter="true" formControlName="city"
-                            [ngClass]="deliveryInfo.get('destinationDetails.city')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                                [ngClass]="deliveryInfo.get('destinationDetails.city')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.city')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">State</p>
-                            <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true" formControlName="state"
-                            [ngClass]="deliveryInfo.get('destinationDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                            appendTo="body" [style]="{'width': '100%'}" 
-                            [panelStyle]="{'width':'100%'}" />
+                            <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
+                                formControlName="state"
+                                [ngClass]="deliveryInfo.get('destinationDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.state')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -908,7 +920,8 @@
                     </div>
                     <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
-                        <button class="buttom1 bgBlack text-white mx-1" (click)="saveDelivery()">{{ this.pageToken.pageflow != "New" ? "Next" : "Save" }}</button>
+                        <button class="buttom1 bgBlack text-white mx-1" (click)="saveDelivery()">{{
+                            this.pageToken.pageflow != "New" ? "Next" : "Save" }}</button>
                     </div>
                 </form>
             </p-tabPanel>

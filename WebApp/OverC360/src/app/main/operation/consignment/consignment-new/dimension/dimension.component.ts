@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -16,26 +16,9 @@ import { AuthService } from '../../../../../core/core';
 export class DimensionComponent {
 
 
-  form = this.fb.group({
-    codAmount: [''],
-    declaredValue: [''],
-    description: [''],
-    dimensionUnit: [''],
-    height: [''],
-    itemDetails: this.fb.array([]),
-    length: [''],
-    packReferenceNumber: [''],
-    partnerType: [''],
-    pieceId: [''],
-    volume: [''],
-    volumeUnit: [''],
-    weight: [''],
-    weightUnit: [''],
-    width: [''],
-    hsCode: [''],
-    pieceValue: [''],
-    pieceCurrency: [''],
-  });
+
+
+  form: FormGroup = new FormGroup({});
 
   constructor(
     public dialogRef: MatDialogRef<DimensionComponent>,
@@ -52,8 +35,52 @@ export class DimensionComponent {
 
 
 
-
   ngOnInit(): void {
+  if(this.data.module == 'piece'){
+    this.form = this.fb.group({
+      codAmount: [''],
+      declaredValue: [''],
+      description: [''],
+      dimensionUnit: [''],
+      height: [''],
+      itemDetails: this.fb.array([]),
+      length: [''],
+      packReferenceNumber: [''],
+      partnerType: [''],
+      pieceId: [''],
+      volume: [''],
+      volumeUnit: [''],
+      weight: [''],
+      weightUnit: [''],
+      width: [''],
+      hsCode: [''],
+      pieceValue: [''],
+      pieceCurrency: [''],
+    });
+  }
+  if(this.data.module == 'item'){
+    this.form  = this.fb.group({
+      codAmount: [],
+      declaredValue: [],
+      description: [],
+      dimensionUnit: [],
+      height: [],
+      hsCode: [],
+      imageRefId: [],
+      itemCode: [],
+      length: [],
+      partnerName: [],
+      partnerType: [],
+      pieceItemId: [],
+      pdfUrl: [],
+      volume: [],
+      volumeUnit: [],
+      weight: [],
+      weightUnit: [],
+      width: [],
+    })
+  }
+
     this.form.patchValue(this.data.line.value)
     }
 

@@ -317,6 +317,7 @@ export class ConsignmentNewComponent {
   }
 
   removePieceDetail(index: number) {
+    console.log(index)
     const control = this.piece.controls.pieceDetails as FormArray;
     control.removeAt(index);
   }
@@ -621,13 +622,13 @@ export class ConsignmentNewComponent {
     });
   }
 
-  dimension(type: any = 'New', index: any) {
+  dimension(type: any = 'New', module: any, index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
       disableClose: true,
       width: '80%',
       maxWidth: '90%',
       position: { top: '6.5%', left: '25%' },
-      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index)},
+      data: { pageflow: type, module: module, line: (this.piece.controls.pieceDetails as FormArray).at(index)},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -640,39 +641,18 @@ export class ConsignmentNewComponent {
   selectedFiles: FileList | null = null;
   selectFiles(event: any, data: any): void {
     this.selectedFiles = event.target.files;
-
-    // Assuming you have an event object, such as from an input file change event
-    const files: FileList = event.target.files!; // Explicitly type files as FileList
-
-    // Convert FileList to an array of File objects
+    const files: FileList = event.target.files!;
     const filesArray: File[] = Array.from(files);
-
-    // Array to hold objects with name and referenceImageUrl
     let filesWithData: { name: string, referenceImageUrl: string }[] = [];
-
-    // Iterate over each file using forEach
     filesArray.forEach((file: File) => {
-      // Perform actions with each file here
-      console.log(file.name); // Example action: logging the file name
-
-      // Set reference image URL for each file
       const referenceImageUrl = `path/to/images/${file.name}`;
-
-      // Create an object with file name and reference image URL
       const fileData = {
         name: file.name,
         referenceImageUrl: file.name,
       };
-
-      // Push the object into the array
       filesWithData.push(fileData);
     });
-
-    // Now filesWithData array contains objects with both name and referenceImageUrl
     console.log(filesWithData);
-
-
-
     this.uploadFile(filesWithData);
   }
 
