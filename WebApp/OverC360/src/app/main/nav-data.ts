@@ -55,7 +55,7 @@ export const navbarData: INavbarData[] = [
                     },
                     {
                         routerId: 2106,
-                        routerLink: '/main/idMaster/userRole',
+                        routerLink: '/main/idMaster/userrole',
                         label: 'User Role'
                     },
                     {
@@ -162,7 +162,7 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 3101,
-                        routerLink: '/main/master/opStatus',
+                        routerLink: '/main/master/opstatus',
                         label: 'Op Stauts'
                     },
                     {
@@ -230,7 +230,7 @@ export const navbarData: INavbarData[] = [
                     },
                     {
                         routerId: 3202,
-                        routerLink: '/main/master/numberRange',
+                        routerLink: '/main/master/numberrange',
                         label: 'Number Range'
                     },
                    
@@ -243,17 +243,17 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 3301,
-                        routerLink: '/main/airport/iata',
+                        routerLink: '/main/master/iata',
                         label: 'IATA'
                     },
                     {
                         routerId: 3302,
-                        routerLink: '/main/airport/specialApproval',
+                        routerLink: '/main/master/specialApproval',
                         label: 'Special Approval'
                     },
                     {
                         routerId: 3303,
-                        routerLink: '/main/airport/hsCode',
+                        routerLink: '/main/master/hsCode',
                         label: 'HS Code'
                     },
                    
@@ -266,17 +266,17 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 3401,
-                        routerLink: '/main/airport/exchangeRate',
-                        label: 'Exchange Rate'
+                        routerLink: '/main/master/currencyExchangeRate',
+                        label: 'Currency Exchange Rate'
                     },
                     {
                         routerId: 3402,
-                        routerLink: '/main/airport/billMode',
+                        routerLink: '/main/master/billMode',
                         label: 'Bill Mode'
                     },
                     {
                         routerId: 3403,
-                        routerLink: '/main/airport/rate',
+                        routerLink: '/main/master/rate',
                         label: 'Rate'
                     },
                    
