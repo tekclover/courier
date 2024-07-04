@@ -27,8 +27,13 @@ export class ConsoleNewComponent {
     private route: ActivatedRoute, private router: Router, private path: PathNameService, private fb: FormBuilder,
     private service: ConsoleService, private messageService: MessageService,private cas: CommonAPIService, 
     private auth: AuthService,private consignmentService: ConsignmentService,private currencyService: CurrencyService,
-    private iataService: IataService) { }
+    private iataService: IataService) {     
+      this.status = [
+        { value: '17', label: 'Inactive' },
+        { value: '16', label: 'Active' }
+      ];}
 
+    
   pageToken: any;
 
   //form builder initialize
@@ -116,7 +121,7 @@ export class ConsoleNewComponent {
       shipperId: [],
       shipperName: [],
       specialApprovalValue: [],
-      statusId: [],
+      statusId: ["16",],
       subProductId: [],
       subProductName: [],
       tareWeight: [],
@@ -218,7 +223,7 @@ export class ConsoleNewComponent {
   save() {
     this.submitted = true;
     if (this.form.invalid) {
-      this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: 'Please fill required fields to continue' });
+      this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: ' Please fill required fields to continue' });
       return;
     }
 
@@ -226,7 +231,7 @@ export class ConsoleNewComponent {
       this.spin.show()
       this.service.Update([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.consoleId + 'has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].consoleId + ' has been updated successfully' });
           this.router.navigate(['/main/airport/console']);
           this.spin.hide();
         }, error: (err) => {
@@ -239,7 +244,7 @@ export class ConsoleNewComponent {
       this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
         if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.consoleId + 'has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res[0].consoleId + ' has been created successfully' });
           this.router.navigate(['/main/airport/console']);
           this.spin.hide();
         }

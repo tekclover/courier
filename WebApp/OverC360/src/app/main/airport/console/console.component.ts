@@ -54,6 +54,8 @@ export class ConsoleComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'statusId', header: 'Status Id' },
+      { field: 'shipperId', header: 'Shipper Id' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -120,7 +122,7 @@ export class ConsoleComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedConsole, module: 'Language', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedConsole, module: 'Console', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
