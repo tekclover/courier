@@ -85,6 +85,11 @@ public class CcrService {
         try {
             List<Ccr> createdCcrList = new ArrayList<>();
 
+            String STATUS_ID = "2 - Ccr Created";
+            String NUM_RAN_OBJ = "CCRID";
+            String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
+
             for (Console addCcr : addCcrList) {
 
                 boolean duplicate = replicaCcrRepository.duplicateExists(
@@ -142,7 +147,11 @@ public class CcrService {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addCcr.getHouseAirwayBill());
                 }
 
-                Double customsValue = Double.valueOf(addCcr.getCustomsValue());
+                Double customsValue = null;
+                if(addCcr.getCustomsValue() != null) {
+                     customsValue = Double.valueOf(addCcr.getCustomsValue());
+
+                }
 
                 Ccr newCcr = new Ccr();
                 BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
@@ -153,11 +162,6 @@ public class CcrService {
                 }else {
                     newCcr.setIsExempted("No");
                 }
-
-                String STATUS_ID = "2 - Ccr Created";
-                String NUM_RAN_OBJ = "CCRID";
-                String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
                 newCcr.setCcrId(CCR_ID);
 
                 IKeyValuePair lAndCDesc = ccrRepository.getLAndCDescription(

@@ -775,6 +775,7 @@ public class ConsoleService {
 
                             if (allEventCodes) {
                                 ccrService.createConsoleCcr(consoleData, loginUserID);
+                                log.info("Console to CCR Created");
                             }
                         }
                     }
