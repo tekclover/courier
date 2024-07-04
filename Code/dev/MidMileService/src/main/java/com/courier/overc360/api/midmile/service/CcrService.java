@@ -85,6 +85,11 @@ public class CcrService {
         try {
             List<Ccr> createdCcrList = new ArrayList<>();
 
+            String STATUS_ID = "2 - Ccr Created";
+            String NUM_RAN_OBJ = "CCRID";
+            String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
+
             for (Console addCcr : addCcrList) {
 
                 boolean duplicate = replicaCcrRepository.duplicateExists(
@@ -157,11 +162,6 @@ public class CcrService {
                 }else {
                     newCcr.setIsExempted("No");
                 }
-
-                String STATUS_ID = "2 - Ccr Created";
-                String NUM_RAN_OBJ = "CCRID";
-                String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
                 newCcr.setCcrId(CCR_ID);
 
                 IKeyValuePair lAndCDesc = ccrRepository.getLAndCDescription(
