@@ -142,7 +142,11 @@ public class CcrService {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addCcr.getHouseAirwayBill());
                 }
 
-                Double customsValue = Double.valueOf(addCcr.getCustomsValue());
+                Double customsValue = null;
+                if(addCcr.getCustomsValue() != null) {
+                     customsValue = Double.valueOf(addCcr.getCustomsValue());
+
+                }
 
                 Ccr newCcr = new Ccr();
                 BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
