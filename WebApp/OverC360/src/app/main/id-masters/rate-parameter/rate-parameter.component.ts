@@ -38,7 +38,7 @@ export class RateParameterComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Rate Parameter - List'];
+    const dataToSend = ['Setup', 'Rate Parameter '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

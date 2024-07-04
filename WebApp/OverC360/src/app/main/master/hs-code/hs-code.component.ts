@@ -38,7 +38,7 @@ export class HsCodeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'HS Code - List'];
+    const dataToSend = ['Master', 'HS Code '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

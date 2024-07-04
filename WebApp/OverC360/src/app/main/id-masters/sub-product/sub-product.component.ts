@@ -37,7 +37,7 @@ export class SubProductComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Sub Product - List'];
+    const dataToSend = ['Setup', 'Sub Product '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -83,6 +83,7 @@ export class SubProductComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res , 'subProductId');
         this.subProductTable = res;
         this.spin.hide();
       },

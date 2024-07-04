@@ -38,7 +38,7 @@ export class UsersComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'Users - List'];
+    const dataToSend = ['Setup', 'Users '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -31,7 +31,7 @@ export class LanguageComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Language - List'];
+    const dataToSend = ['Setup', 'Language '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

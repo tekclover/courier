@@ -34,7 +34,7 @@ export class StatusComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Status - List'];
+    const dataToSend = ['Setup', 'Status '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

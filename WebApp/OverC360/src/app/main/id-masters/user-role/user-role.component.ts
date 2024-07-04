@@ -40,7 +40,7 @@ export class UserRoleComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Setup', 'User Role - List'];
+    const dataToSend = ['Setup', 'User Role '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -40,7 +40,7 @@ export class DistrictMappingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'District Mapping - List'];
+    const dataToSend = ['Master', 'District Mapping '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

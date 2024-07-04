@@ -38,7 +38,7 @@ export class SpecialApprovalComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Special Approval - List'];
+    const dataToSend = ['Master', 'Special Approval '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

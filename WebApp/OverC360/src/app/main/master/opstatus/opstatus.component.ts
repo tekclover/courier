@@ -38,7 +38,7 @@ export class OpstatusComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'Op Status - List'];
+    const dataToSend = ['Master', 'Op Status '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

@@ -37,7 +37,7 @@ export class IataComponent {
   fullDate: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Master', 'IATA - List'];
+    const dataToSend = ['Master', 'IATA '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

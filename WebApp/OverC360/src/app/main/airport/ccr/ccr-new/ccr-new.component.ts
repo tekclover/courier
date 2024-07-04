@@ -189,6 +189,8 @@ export class CcrNewComponent {
   hawbList: any[] = [];
   hsCodeList: any[] = [];
   currencyIdList: any[] = [];
+  consignorIdList: any[] = [];
+  
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
@@ -196,6 +198,8 @@ export class CcrNewComponent {
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.currency.url,
       this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.hsCode.url,
       this.cas.dropdownlist.setup.hsCode.url,
     ]).subscribe({
       next: (results: any) => {
@@ -203,7 +207,7 @@ export class CcrNewComponent {
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
         this.currencyIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
         this.countryIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.country.key);
-        this.hsCodeList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.hsCode.key);
+        this.consignorIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
 
         this.spin.hide();
       },

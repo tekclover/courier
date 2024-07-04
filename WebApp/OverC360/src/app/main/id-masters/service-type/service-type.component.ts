@@ -31,7 +31,7 @@ export class ServiceTypeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Service Type - List'];
+    const dataToSend = ['Setup', 'Service Type '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
