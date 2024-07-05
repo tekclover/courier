@@ -160,7 +160,7 @@ export class ProductComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedProduct[0]);
+        this.deleterecord(this.selectedProduct);
       }
     });
   }
@@ -173,7 +173,7 @@ export class ProductComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.productId + ' Deleted successfully',
+          detail: lines[0].productId + ' Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
@@ -189,8 +189,7 @@ export class ProductComponent {
     const exportData = this.productTable.map((item) => {
       const exportItem: any = {};
       this.cols.forEach((col) => {
-        if (col.format == 'date') {
-          console.log(3);
+        if (col.format == 'date') { 
           exportItem[col.field] = this.datePipe.transform(
             item[col.field],
             'dd-MM-yyyy'

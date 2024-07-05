@@ -99,7 +99,7 @@ export class DistrictComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
 

@@ -18,6 +18,10 @@ export class ConsoleService {
     return this.http.post<any>('/overc-midmile-service/console/create/list', obj);
   }
 
+  CreateFromConsignment(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/console/consignment', obj);
+  }
+  
   Update(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/console/update/list', obj);
   }

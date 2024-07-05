@@ -90,7 +90,7 @@ export class CurrencyComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
 

@@ -109,6 +109,8 @@ export class ConsignmentNewComponent {
     courierAccount: [],
     courierPartner: [],
     courierPartnerReferenceNumber: [],
+    invoiceAmount: [],
+    invoiceUrl: [],
   });
 
   carrierInfo = this.fb.group({
@@ -183,6 +185,12 @@ export class ConsignmentNewComponent {
     specialApprovalValue: [],
     codAmount: [],
     codFavorOf: [],
+    iataCharge: [],
+    exchangeRate: [],
+    customsCurrency: [],
+    dutyPercentage: ['5%',],
+    dduCharge: [],
+    specialApprovalCharge: [],
     codCollectionMode: [],
     declaredValueWithoutTax: [],
     invoiceAmount: [],
@@ -864,15 +872,9 @@ console.log(this.consignment.controls.invoiceDate.value)
       });
       return;
     } else {
-      if (this.pageToken.pageflow != 'New') {
         this.activeIndex = 5;
         this.submitted = false;
         this.disabledBilling = false;
-      } else {
-        this.saveFinal();
-      }
-
-
     }
   }
   saveBilling() {
@@ -963,7 +965,6 @@ console.log(this.consignment.controls.invoiceDate.value)
     if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'cod') {
       this.showPaymentTypeFields = true;
     }
-
   }
 }
 
