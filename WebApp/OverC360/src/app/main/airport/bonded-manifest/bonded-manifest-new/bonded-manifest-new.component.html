@@ -36,7 +36,7 @@
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId">
+                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId" *ngIf="this.pageToken.pageflow != 'New'">
                                 <p class="formControlLabel f600 textBlack mb-0">Manifest Number</p>
                                 <input formControlName="bondedId" [ngClass]="
                                     form.get('bondedId')?.invalid &&
@@ -209,13 +209,13 @@
                                   : ''
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="consigneeCivilId">
+                            <!-- <div class="col-6 marginFieldNew borderRadius12" id="consigneeCivilId">
                                 <p class="formControlLabel f600 textBlack mb-0">Consignee ID</p>
                                 <input formControlName="consigneeCivilId" [ngClass]="
                                       form.get('consigneeCivilId')?.invalid  && submitted ? 'ng-invalid ng-dirty' : ''" class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
                                 <mat-error *ngIf="errorHandling('consigneeCivilId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
-                            </div>
+                            </div> -->
                             <div class="col-6 marginFieldNew borderRadius12" id="notifyParty">
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     Notify Party

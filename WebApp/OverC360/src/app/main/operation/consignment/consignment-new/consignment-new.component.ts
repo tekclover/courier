@@ -171,34 +171,28 @@ export class ConsignmentNewComponent {
   })
 
   billing = this.fb.group({
-    incoTerms: [],
-    paymentType: [],
-    currency: [],
-    freightCurrency: [],
-    freightCharges: [],
+   // incoTerms: [],
+   // paymentType: [],
+    //currency: [],
+   // freightCurrency: [],
+    //freightCharges: [],
     countryOfSupply: [],
     declaredValue: [],
-    consignmentCurrency: [],
-    consignmentValue: [],
-    actualCurrency: [],
+   // consignmentCurrency: [],
+   // consignmentValue: [],
+    //actualCurrency: [],
     totalDuty: [],
     specialApprovalValue: [],
-    codAmount: [],
-    codFavorOf: [],
-    iataCharge: [],
-    exchangeRate: [],
-    customsCurrency: [],
-    dutyPercentage: ['5%',],
-    dduCharge: [],
-    specialApprovalCharge: [],
-    codCollectionMode: [],
+   // codAmount: [],
+   // codFavorOf: [],
+   // codCollectionMode: [],
     declaredValueWithoutTax: [],
-    invoiceAmount: [],
-    invoiceUrl: [],
+    // invoiceAmount: [],
+    // invoiceUrl: [],
     productCode: [],
     customsValue: [],
-    amount: [],
-    isCustomsDeclarable: [],
+  //  amount: [],
+    //isCustomsDeclarable: [],
   })
 
   consignment = this.fb.group({
@@ -872,9 +866,15 @@ console.log(this.consignment.controls.invoiceDate.value)
       });
       return;
     } else {
+      if (this.pageToken.pageflow != 'New') {
         this.activeIndex = 5;
         this.submitted = false;
         this.disabledBilling = false;
+      } else {
+        this.saveFinal();
+      }
+
+
     }
   }
   saveBilling() {

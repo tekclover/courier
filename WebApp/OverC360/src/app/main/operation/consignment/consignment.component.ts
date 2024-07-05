@@ -36,7 +36,7 @@ export class ConsignmentComponent {
     private spin: NgxSpinnerService,
     private pdf: ConsignmentLabelComponent,
     private fb: FormBuilder,
-  ) {}
+  ) { }
 
   fullDate: any;
   today: any;
@@ -51,20 +51,20 @@ export class ConsignmentComponent {
 
   callTableHeader() {
     this.cols = [
-      
+
       { field: 'houseAirwayBill', header: 'CN', style: 'min-width: 5rem' },
-      { field: 'statusDescription', header: 'Status' , style: 'min-width: 5rem'},
-      { field: 'eventText', header: 'Event' , style: 'min-width: 5rem'},
-      { field: 'partnerName', header: 'Partner' , style: 'min-width: 5rem'},
-      { field: 'productName', header: 'Product' , style: 'min-width: 10rem'},
-      { field: 'subProductName', header: 'Sub Product' , style: 'min-width: 10rem'},
-      { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem'},
+      { field: 'statusDescription', header: 'Status', style: 'min-width: 5rem' },
+      { field: 'eventText', header: 'Event', style: 'min-width: 5rem' },
+      { field: 'partnerName', header: 'Partner', style: 'min-width: 5rem' },
+      { field: 'productName', header: 'Product', style: 'min-width: 10rem' },
+      { field: 'subProductName', header: 'Sub Product', style: 'min-width: 10rem' },
+      { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem' },
       { field: 'countryOfDestination', header: 'Destination', style: 'min-width: 5rem' },
-      { field: 'serviceTypeText', header: 'Service Type' , style: 'min-width: 5rem'},
+      { field: 'serviceTypeText', header: 'Service Type', style: 'min-width: 5rem' },
       { field: 'loadType', header: 'Document Type', style: 'min-width: 5rem' },
-      { field: 'paymentType', header: 'Payment Type' , style: 'min-width: 5rem'},
-      { field: 'incoTerms', header: 'Inco Terms' , style: 'min-width: 5rem'},
-      { field: 'createdBy', header: 'Created By' , style: 'min-width: 5rem'},
+      { field: 'paymentType', header: 'Payment Type', style: 'min-width: 5rem' },
+      { field: 'incoTerms', header: 'Inco Terms', style: 'min-width: 5rem' },
+      { field: 'createdBy', header: 'Created By', style: 'min-width: 5rem' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
@@ -100,8 +100,8 @@ export class ConsignmentComponent {
     obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.consignmentTable = res;
+        this.getSearchDropdown();
         this.spin.hide();
       },
       error: (err) => {
@@ -211,14 +211,14 @@ export class ConsignmentComponent {
     this.cs.exportAsExcel(exportData, 'Consignment');
   }
 
-  downloadLabel(line:any){
+  downloadLabel(line: any) {
     this.pdf.generatePdfBarocde(line);
   }
 
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    this.selectedFiles = file; 
+    this.selectedFiles = file;
     this.service.uploadConsignment(this.selectedFiles).subscribe({
       next: (result) => {
         this.messageService.add({
@@ -236,46 +236,69 @@ export class ConsignmentComponent {
 
 
 
-  searhform = this.fb.group({
-    cityId: [''],
-    companyId: [''],
-    countryId: [''],
-    districtId: [''],
-    languageId: [''],
-    provinceId: [''],
-    statusId: [''],
+  searchform = this.fb.group({
+    houseAirwayBill: [],
+    masterAirwayBill: [],
+    partnerId: [],
+    pieceId: [],
+    pieceItemId: [],
+    shipperId: [],
+    statusId: [],
   })
 
   houseAirwayBillDropdown: any = [];
+  masterAirwayBillDropdown:any = [];
+  partnerDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
+    
     this.consignmentTable.forEach(res => {
 
-      if(res.houseAirwayBillDropdown != null){
-        const houseAirwayBillDropdown  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
-        this.houseAirwayBillDropdown.push({value: houseAirwayBillDropdown.companyId, label: houseAirwayBillDropdown.companyName});
+      if (res.houseAirwayBill != null) {
+        this.houseAirwayBillDropdown.push({ value: res.houseAirwayBill, label: res.houseAirwayBill });
+        this.houseAirwayBillDropdown =  this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerDropdown =  this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'partnerId');
+      }
+      if (res.masterAirwayBill != null) {
+        this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
+        this.masterAirwayBillDropdown =  this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'partnerId');
       }
     })
-    this.statusDropdown = [{ value: '17', label: 'Inactive' },{ value: '16', label: 'Active' }];
-  }
-  
-  @ViewChild('consignment') overlayPanel!: OverlayPanel;
-  closeOverLay(){
-    this.overlayPanel.hide()
+    this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
-  search(){
+  @ViewChild('consignment') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+    
     this.spin.show();
-      this.service.search(this.searhform.getRawValue()).subscribe({
-        next: (res: any) => {
-          this.consignmentTable = res;
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.consignmentTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  chipClear(value:any){
+    this.searchform.get(value.value)?.reset(); 
+    this.search();
   }
 }

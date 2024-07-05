@@ -95,9 +95,9 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-calendar{width: 100% !important;}
 .p-overlaypanel .p-overlaypanel-content{padding: 0rem !important;}
 .p-overlaypanel{ box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2) !important; }
-
-
-
+dl, ol, ul{margin-bottom: 0rem !important;}
+.p-chips .p-inputtext { border: none !important; }
+.custom-overlay-panel {top: 200px !important; left: 13% !important; border-radius: 12px !important;}
 //angular material
 
 
@@ -118,6 +118,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .disabledButton{background-color: rgb(95, 95, 95) !important; border-color: transparent !important;} 
 .listItems {padding-left: 20px !important;padding-top: 10px !important;padding-bottom: 10px !important;padding-right: 47px !important;}
   
+.inputborderLess{border: none !important;}
 
 
 

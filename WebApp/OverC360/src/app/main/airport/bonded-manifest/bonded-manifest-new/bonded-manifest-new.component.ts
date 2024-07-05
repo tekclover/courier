@@ -204,12 +204,16 @@ export class BondedManifestNewComponent {
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.customer.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
         this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key); 
-        this.consignorIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
+        const consitnor = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
+        const customer = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.customer.key);
+        customer.forEach(x => this.consignorIdList.push(x));
+        consitnor.forEach(x => this.consignorIdList.push(x));
         this.spin.hide();
       },
       error: (err: any) => {

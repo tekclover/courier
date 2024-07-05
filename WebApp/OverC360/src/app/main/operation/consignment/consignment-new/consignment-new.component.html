@@ -477,7 +477,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceNumber">
-                            <p class="formControlLabel f600 textBlack mb-0">Invoice</p>
+                            <p class="formControlLabel f600 textBlack mb-0">Invoice Number</p>
                             <input maxlength="50" formControlName="invoiceNumber"
                                 [ngClass]="consignment.get('invoiceNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
@@ -628,7 +628,16 @@
                             <mat-error *ngIf="errorHandlingSender('shipperId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        <div class="col-3 marginFieldNew borderRadius12" id="companyName">
+                        
+                        <div class="col-3 marginFieldNew borderRadius12" id="name" formGroupName="originDetails">
+                            <p class="formControlLabel f600 textBlack mb-0">Name</p>
+                            <input maxlength="50" formControlName="name"
+                                [ngClass]="senderInfo.get('originDetails.name')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingSender('originDetails.name')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="companyName" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Company Name</p>
                             <input maxlength="50" formControlName="companyName"
                                 [ngClass]="senderInfo.get('companyName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -738,14 +747,6 @@
                             <mat-error *ngIf="errorHandlingSender('originDetails.email')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="companyName" formGroupName="originDetails">
-                            <p class="formControlLabel f600 textBlack mb-0">Company Name</p>
-                            <input maxlength="50" formControlName="companyName"
-                                [ngClass]="senderInfo.get('originDetails.companyName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingSender('originDetails.companyName')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="addressHubCode"
                             formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Address Hub Code</p>
@@ -761,14 +762,6 @@
                                 [ngClass]="senderInfo.get('originDetails.accountId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingSender('originDetails.accountId')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="name" formGroupName="originDetails">
-                            <p class="formControlLabel f600 textBlack mb-0">Name</p>
-                            <input maxlength="50" formControlName="name"
-                                [ngClass]="senderInfo.get('originDetails.name')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingSender('originDetails.name')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                     </div>
@@ -853,6 +846,15 @@
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.city')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="pinCode" formGroupName="destinationDetails">
+                            <p class="formControlLabel f600 textBlack mb-0">Pincode</p>
+                            <input maxlength="50" formControlName="pinCode"
+                                [ngClass]="senderInfo.get('destinationDetails.pinCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingSender('destinationDetails.pinCode')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+
                         <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">State</p>
                             <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
