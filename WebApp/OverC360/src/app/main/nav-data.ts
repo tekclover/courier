@@ -5,7 +5,7 @@ export interface INavbarData {
     srcDark?: string;
     label: string;
     expanded?: boolean;
-    items?: INavbarData[];
+    items?: INavbarData[]; 
 }
 
 export const navbarData: INavbarData[] = [
