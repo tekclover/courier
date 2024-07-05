@@ -32,7 +32,7 @@
 
     <div class="tableProperties">
         <p-table #consoleTag [columns]="cols" [value]="consoleTable" class="custom-table" [scrollable]="true"
-            selectionMode="single" sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
+            selectionMode="multiple"  [(selection)]="selectedConsole" sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
             [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
             (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consoleId"
@@ -40,7 +40,7 @@
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
-                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                        <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
                     </th>
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3 invisible" [disabled]="true"></p-tableHeaderCheckbox>
@@ -52,10 +52,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr [class.selectedRow]="selectedConsole[0] === rowData">
-                    <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedConsole" class="pl-3"
-                            [value]="rowData"></p-checkbox>
-                    </td>
+                    <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
+                        <td style="width: 5rem; justify-content: center;">
+                                <p-tableCheckbox  class="pl-3" [value]="rowData" />
+                        </td>
                     <td style="width: 5rem; justify-content: center;">
                         <i style="font-size: 14px;" [pRowToggler]="rowData"
                             [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
@@ -98,12 +98,12 @@
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Console ID</p>
+                                    <p class="mb-0 headerText">Event</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.consoleId ? 'bgOrange text-dark' : ''">
-                                        {{rowData.consoleId}}</p>
+                                        [ngClass]="rowData.eventCode ? 'bgOrange text-dark' : ''">
+                                        {{rowData.eventCode}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Currency</p>

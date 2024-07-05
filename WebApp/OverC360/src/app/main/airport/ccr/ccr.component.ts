@@ -170,5 +170,7 @@ export class CcrComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
-
+  isSelected(item:any): boolean {
+    return this.selectedCcr.includes(item);
+  }
 }

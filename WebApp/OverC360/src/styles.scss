@@ -94,6 +94,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-toast .p-toast-message .p-toast-message-content .p-toast-message-text{overflow: hidden;}
 .p-calendar{width: 100% !important;}
 .p-overlaypanel .p-overlaypanel-content{padding: 0rem !important;}
+.p-overlaypanel{ box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2) !important; }
 
 
 
@@ -111,7 +112,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .buttom1:hover{background-color: var(--overcOrange) !important; border: solid 1px transparent !important; color: var(--black) !important; font-weight: bold !important;}
 .toolIcons{font-size: var(--header24); margin-left: 1.2rem; margin-right: 1.2rem;}
 .form-control{font-size: var(--line14) !important;}
-.formControlLabel{font-size: var(--line14) !important;}
+.formControlLabel{font-size: var(--line14) !important;padding-bottom: 4px;}
 .required:after {content:" *"; color: red;}
 .invalid{border-color: red !important;}
 .disabledButton{background-color: rgb(95, 95, 95) !important; border-color: transparent !important;} 
