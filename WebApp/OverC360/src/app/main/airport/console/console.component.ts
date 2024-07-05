@@ -48,8 +48,7 @@ export class ConsoleComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'shipperName', header: 'Shipper Name' },
-      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'eventText', header: 'Event' },
       { field: 'statusId', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -66,6 +65,7 @@ export class ConsoleComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -81,6 +81,7 @@ export class ConsoleComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   onChange() {

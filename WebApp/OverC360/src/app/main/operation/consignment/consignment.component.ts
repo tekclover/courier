@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ConsignmentService } from './consignment.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
@@ -11,6 +11,8 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-consignment',
@@ -33,6 +35,7 @@ export class ConsignmentComponent {
     private datePipe: DatePipe, private auth: AuthService,
     private spin: NgxSpinnerService,
     private pdf: ConsignmentLabelComponent,
+    private fb: FormBuilder,
   ) {}
 
   fullDate: any;
@@ -51,11 +54,12 @@ export class ConsignmentComponent {
       
       { field: 'houseAirwayBill', header: 'CN', style: 'min-width: 5rem' },
       { field: 'statusDescription', header: 'Status' , style: 'min-width: 5rem'},
+      { field: 'eventText', header: 'Event' , style: 'min-width: 5rem'},
       { field: 'partnerName', header: 'Partner' , style: 'min-width: 5rem'},
       { field: 'productName', header: 'Product' , style: 'min-width: 10rem'},
       { field: 'subProductName', header: 'Sub Product' , style: 'min-width: 10rem'},
       { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem'},
-      { field: 'destinationDetails.country', header: 'Destination', style: 'min-width: 5rem' },
+      { field: 'countryOfDestination', header: 'Destination', style: 'min-width: 5rem' },
       { field: 'serviceTypeText', header: 'Service Type' , style: 'min-width: 5rem'},
       { field: 'loadType', header: 'Document Type', style: 'min-width: 5rem' },
       { field: 'paymentType', header: 'Payment Type' , style: 'min-width: 5rem'},
@@ -228,5 +232,50 @@ export class ConsignmentComponent {
         this.cs.commonerrorNew(err);
       }
     });
+  }
+
+
+
+  searhform = this.fb.group({
+    cityId: [''],
+    companyId: [''],
+    countryId: [''],
+    districtId: [''],
+    languageId: [''],
+    provinceId: [''],
+    statusId: [''],
+  })
+
+  houseAirwayBillDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+    this.consignmentTable.forEach(res => {
+
+      if(res.houseAirwayBillDropdown != null){
+        const houseAirwayBillDropdown  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
+        this.houseAirwayBillDropdown.push({value: houseAirwayBillDropdown.companyId, label: houseAirwayBillDropdown.companyName});
+      }
+    })
+    this.statusDropdown = [{ value: '17', label: 'Inactive' },{ value: '16', label: 'Active' }];
+  }
+  
+  @ViewChild('consignment') overlayPanel!: OverlayPanel;
+  closeOverLay(){
+    this.overlayPanel.hide()
+  }
+
+  search(){
+    this.spin.show();
+      this.service.search(this.searhform.getRawValue()).subscribe({
+        next: (res: any) => {
+          this.consignmentTable = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
   }
 }

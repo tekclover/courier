@@ -178,6 +178,7 @@ export class ConsoleEditComponent {
 
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
+    this.form.controls.consoleId.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -272,7 +273,7 @@ lineSentforFill:any;
        }
       this.spin.show();
       this.selectedConsole.forEach((x: any) => {
-        x.eventCode = 8;
+        x.eventCode = 10;
       });
 console.log(this.selectedConsole)
       this.service.Update(this.selectedConsole).subscribe({

@@ -42,12 +42,12 @@ export class BondedManifestComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyId', header: 'Company' },
+      { field: 'bondedId', header: 'Bonded ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'shipperName', header: 'Shipper Name' },
-      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'eventText', header: 'Event' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -62,6 +62,7 @@ export class BondedManifestComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -69,7 +70,6 @@ export class BondedManifestComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
-        res = this.cs.removeDuplicatesFromArrayList(res, 'bondedId')
         this.bondedManifestTable = res;
         this.spin.hide();
       }, error: (err) => {
@@ -77,6 +77,7 @@ export class BondedManifestComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   onChange() {

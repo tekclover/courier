@@ -49,7 +49,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="masterAirwayBill">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="masterAirwayBill">
                             <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
                             <input maxlength="50" formControlName="masterAirwayBill"
                                 [ngClass]="shipmentInfo.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -65,7 +65,7 @@
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingShipment('houseAirwayBill')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
 
                         <!-- <div class="col-3 marginFieldNew borderRadius12" id="statusId">
                             <p class="formControlLabel f600 textBlack mb-0">Status</p>
@@ -169,14 +169,14 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="forwardReferenceNumber">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="forwardReferenceNumber">
                             <p class="formControlLabel f600 textBlack mb-0">Forward Ref No</p>
                             <input maxlength="50" formControlName="forwardReferenceNumber"
                                 [ngClass]="shipmentInfo.get('forwardReferenceNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingShipment('forwardReferenceNumber')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
 
                         <div class="col-3 marginFieldNew borderRadius12" id="countryOfOrigin">
                             <p class="formControlLabel f600 textBlack mb-0">Country of Origin</p>
@@ -461,7 +461,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="netWeight">
-                            <p class="formControlLabel f600 textBlack mb-0">New Weight</p>
+                            <p class="formControlLabel f600 textBlack mb-0">Net Weight</p>
                             <input maxlength="50" formControlName="netWeight"
                                 [ngClass]="consignment.get('netWeight')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />

@@ -93,15 +93,17 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                boolean duplicate = replicaCcrRepository.duplicateExists(
-                        addCcr.getLanguageId(), addCcr.getCompanyId(),
-                        addCcr.getPartnerId(), addCcr.getMasterAirwayBill(),
-                        addCcr.getHouseAirwayBill(), addCcr.getConsoleId()) == 1;
+//                boolean duplicate = replicaCcrRepository.duplicateExists(
+//                        addCcr.getLanguageId(), addCcr.getCompanyId(),
+//                        addCcr.getPartnerId(), addCcr.getMasterAirwayBill(),
+//                        addCcr.getHouseAirwayBill(), addCcr.getConsoleId()) == 1;
 
-                Optional<Ccr> duplicateConsole =  ccrRepository.findByHouseAirwayBill(addCcr.getHouseAirwayBill());
-                if(duplicateConsole.isPresent())
-                {
-                    throw new BadRequestException("Record is getting Duplicated with given value: houseAirwayBill - " + addCcr.getHouseAirwayBill());
+                Optional<Ccr> duplicateConsole =  ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), 0L);
+                if(duplicateConsole.isPresent()) {
+                    throw new BadRequestException("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
+                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getMasterAirwayBill() +
+                            " HouseAirwayBill " + addCcr.getHouseAirwayBill());
                 }
 
 
@@ -143,10 +145,6 @@ public class CcrService {
 //                        totalDuty += 4;
 //                    }
 //                }
-
-                if (duplicate) {
-                    throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addCcr.getHouseAirwayBill());
-                }
 
                 Double customsValue = null;
                 if(addCcr.getCustomsValue() != null) {

@@ -54,5 +54,7 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
     Optional<Ccr> findByHouseAirwayBill(String houseAirwayBill);
     List<Ccr> findAllByCcrIdAndDeletionIndicator(String ccrId, Long deletionIndicator);
 
+    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+            String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 }
 

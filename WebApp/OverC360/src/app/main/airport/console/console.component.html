@@ -35,7 +35,7 @@
             selectionMode="multiple"  [(selection)]="selectedConsole" sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
             [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consoleId"
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
             rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -91,33 +91,24 @@
                                         {{rowData.destinationDetails.countryOfOrigin}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Airline No</p>
+                                    <p class="mb-0 headerText">Flight No</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip">{{rowData.flightNo}}</p>
                                 </div>
-
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Event</p>
+                                    <p class="mb-0 headerText">Currency ID</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 valueText chip">{{rowData.consignmentCurrency}}</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 headerText"> Consignment Value</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.eventCode ? 'bgOrange text-dark' : ''">
-                                        {{rowData.eventCode}}</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Currency</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.currency}}</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Value</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.actualValue ? 'bgOrange text-dark' : ''">
-                                        {{rowData.actualValue}}</p>
+                                        [ngClass]="rowData.consignmentValue ? 'bgOrange text-dark' : ''">
+                                        {{rowData.consignmentValue}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
@@ -128,7 +119,7 @@
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Customs</p>
+                                    <p class="mb-0 headerText">Customs Value</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip">{{rowData.customsKd}}</p>
