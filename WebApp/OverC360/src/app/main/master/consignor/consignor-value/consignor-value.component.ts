@@ -4,7 +4,7 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PathNameService } from '../../../../common-service/path-name.service';
-import { CustomerService } from '../../customer/customer.service'; 
+import { CustomerService } from '../../customer/customer.service';
 import { MessageService } from 'primeng/api';
 import { CommonAPIService } from '../../../../common-service/common-api.service';
 import { AuthService } from '../../../../core/core';
@@ -134,7 +134,7 @@ export class ConsignorValueComponent {
     this.customerService.search(obj).subscribe({
       next: (result) => {
         this.form.patchValue(result[0]);
-        this.productIdList = this.cas.foreachlist(result, {key: 'productId', value: 'productName' });
+        this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
         this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
         this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
         this.spin.hide();
@@ -150,18 +150,19 @@ export class ConsignorValueComponent {
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.subProductId = [this.form.controls.subProductId.value];
-    
+
     this.subProductValueList = [];
     this.spin.show();
-    this.subProductService.search(obj).subscribe({next: (result) => {
-      this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'referenceField1'});
-      // this.form.patchValue(result[0]);
-      this.spin.hide();
-    }, error: (err) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }
-  })
+    this.subProductService.search(obj).subscribe({
+      next: (result) => {
+        this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'referenceField1' });
+        // this.form.patchValue(result[0]);
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
   subProductValueChanged() {
