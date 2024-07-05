@@ -169,7 +169,8 @@ public class PieceDetailsService {
     @Transactional
     public List<AddPieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill,
                                                         String houseAirwayBill, String companyName, String languageName, String partnerName,
-                                                        Long consignmentId, String partnerHawBill, String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String loginUserID)
+                                                        Long consignmentId, String partnerHawBill, String partnerMawBill, List<AddPieceDetails> addPieceDetailsList,
+                                                        String hsCode, String width, String height, String volume, String weightUnit, String codAmount,  String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -201,17 +202,19 @@ public class PieceDetailsService {
                         newPieceDetails.setLanguageDescription(languageName);
                         newPieceDetails.setPartnerName(partnerName);
                         newPieceDetails.setConsignmentId(consignmentId);
+                        if(hsCode != null) {
+                            newPieceDetails.setHsCode(hsCode);
+                        }
+//                        newPieceDetails.setWidth(width);
+//                        newPieceDetails.setWeight_unit(weightUnit);
+//                        newPieceDetails.setHeight(height);
+//                        newPieceDetails.setVolume(volume);
+//                        newPieceDetails.setCodAmount(codAmount);
                         newPieceDetails.setDeletionIndicator(0L);
                         newPieceDetails.setCreatedBy(loginUserID);
                         newPieceDetails.setCreatedOn(new Date());
                         newPieceDetails.setUpdatedBy(loginUserID);
                         newPieceDetails.setUpdatedOn(new Date());
-
-                        //ItemDetails Create
-                        List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
-                                companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
-                                PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
-                                partnerHawBill, addPieceDetails.getHsCode(), partnerMawBill, loginUserID);
 
                         //ReferenceImage Create
                         List<ReferenceImageList> referenceImageList = new ArrayList<>();
@@ -235,6 +238,12 @@ public class PieceDetailsService {
 
                         //Save PieceDetails
                         PieceDetails savePieceDetails = pieceDetailsRepository.save(newPieceDetails);
+
+                        //ItemDetails Create
+                        List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId, companyName, languageName,
+                                partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
+                                partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, loginUserID);
+
                         AddPieceDetails pieceDetails = new AddPieceDetails();
                         BeanUtils.copyProperties(savePieceDetails, pieceDetails);
                         pieceDetails.setReferenceImageList(referenceImageList);
@@ -259,23 +268,33 @@ public class PieceDetailsService {
                 newPieceDetails.setLanguageDescription(languageName);
                 newPieceDetails.setPartnerName(partnerName);
                 newPieceDetails.setConsignmentId(consignmentId);
+                if(hsCode != null) {
+                    newPieceDetails.setHsCode(hsCode);
+                }
+                newPieceDetails.setWidth(width);
+                newPieceDetails.setWeight_unit(weightUnit);
+                newPieceDetails.setHeight(height);
+                newPieceDetails.setVolume(volume);
+                newPieceDetails.setCodAmount(codAmount);
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
                 newPieceDetails.setUpdatedBy(null);
                 newPieceDetails.setUpdatedOn(null);
 
-                //ItemDetails Create
-                List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
-                        companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
-                        PIECE_ID, partnerId, null, consignmentId,
-                        partnerHawBill, null, partnerMawBill, loginUserID);
 
                 //ReferenceImage Create
                 List<ReferenceImageList> referenceImageList = new ArrayList<>();
 
                 //Save PieceDetails
                 PieceDetails savePieceDetails = pieceDetailsRepository.save(newPieceDetails);
+
+                //ItemDetails Create
+                List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
+                        companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
+                        PIECE_ID, partnerId, null, consignmentId,
+                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount,loginUserID);
+
                 AddPieceDetails pieceDetails = new AddPieceDetails();
                 BeanUtils.copyProperties(savePieceDetails, pieceDetails);
                 pieceDetails.setReferenceImageList(referenceImageList);
@@ -379,6 +398,7 @@ public class PieceDetailsService {
                             houseAirwayBill, pieceDetails.getPieceId(), loginUserID, pieceDetails.getItemDetails());
                     addPieceDetails.setItemDetails(dbItemDetails);
                 }
+
                 PieceDetails savedPiece = pieceDetailsRepository.save(dbPieceDetails);
                 BeanUtils.copyProperties(savedPiece, addPieceDetails);
 
@@ -445,7 +465,9 @@ public class PieceDetailsService {
                     dbPieceDetails.setUpdatedOn(new Date());
 
                     //Delete ItemDetails
-                    itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                    itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, dbPieceDetails.getPieceId(), loginUserID);
+
+                    imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, dbPieceDetails.getPieceId());
                     pieceDetailsRepository.save(dbPieceDetails);
 
                 } else {

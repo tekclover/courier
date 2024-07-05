@@ -101,9 +101,7 @@ export class MenuNewComponent {
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.menuId.disable();
-      this.form.controls.menuName.disable();
       this.form.controls.subMenuId.disable();
-      this.form.controls.subMenuName.disable();
       this.form.controls.authorizationObjectId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();

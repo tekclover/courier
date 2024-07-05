@@ -578,21 +578,14 @@ public class ConsoleService {
                     subGroups.add(currentSubGroup);
                 }
 
+                // ConsoleID generate in NumberRange
+                String NUM_RAN_OBJ = "CONSOLEID";
+                String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
                 // Process each subgroup
                 for (List<AddConsole> subGroup : subGroups) {
                     // Generate a new CONSOLE_ID for each subgroup
-                    String NUM_RAN_OBJ = "CONSOLEID";
-                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-
                     for (AddConsole console : subGroup) {
-                        boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
-                                console.getLanguageId(), console.getCompanyId(),
-                                console.getPartnerId(), console.getMasterAirwayBill(),
-                                console.getHouseAirwayBill()) == 1;
-                        if (duplicateConsole) {
-                            throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + console.getHouseAirwayBill());
-                        }
-
                         // Pass ConsignmentCurrency
                         IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 

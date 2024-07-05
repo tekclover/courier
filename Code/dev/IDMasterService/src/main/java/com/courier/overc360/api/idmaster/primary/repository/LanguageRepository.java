@@ -17,19 +17,21 @@ public interface LanguageRepository extends JpaRepository<Language, String>, Jpa
 
     Optional<Language> findByLanguageIdAndDeletionIndicator(String languageId, Long deletionIndicator);
 
-    // Update Language Desc in all Masters Tables
+
+    // Update Language Description in all Masters Tables
     @Transactional
     @Procedure(procedureName = "language_desc_update_proc")
-    void languageDescUpdateProc(
+    void updateLanguageDescProc(
             @Param(value = "languageId") String languageId,
             @Param(value = "oldLanguageDesc") String oldLanguageDesc,
             @Param(value = "newLanguageDesc") String newLanguageDesc);
 
+
     // Delete Validation Query for Language Table
-    @Query(value = "Select COUNT (*) From (\n" +
-            "Select 1 As col From tblcompany Where LANG_ID IN (:languageId) and IS_DELETED = 0\n" +
-            "Union All\n" +
-            "Select 1 As col From tblstatus Where LANG_ID IN (:languageId) and IS_DELETED = 0\n" +
+    @Query(value = "Select COUNT (*) From ( \n" +
+            "Select 1 As col From tblcompany Where LANG_ID IN (:languageId) and IS_DELETED = 0 \n" +
+            "Union All \n" +
+            "Select 1 As col From tblstatus Where LANG_ID IN (:languageId) and IS_DELETED = 0 \n" +
             ") As temp", nativeQuery = true)
     Long getLanguageCount(@Param(value = "languageId") String languageId);
 
