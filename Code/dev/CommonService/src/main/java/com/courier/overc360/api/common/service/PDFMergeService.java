@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +78,42 @@ public class PDFMergeService {
     }
     /**
      *
+     * @param pdfMergerList
+     * @throws IOException
+     */
+    public List<String> batchPdfMerge(List<PDFMerger> pdfMergerList) throws IOException {
+        List<String> fileNameWithPath = new ArrayList<>();
+        for (PDFMerger request : pdfMergerList) {
+            List<InputStream> pdfStreams = new ArrayList<>();
+            for (String path : request.getFilePaths()) {
+                try {
+                    String filePath = getQualifiedFilePath(path);
+                    pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new BadRequestException("Failed to Read the PDF" + e);
+                }
+            }
+            String fileOuputStoragePath = getQualifiedFilePath(request.getOutputPath());
+            int location = fileOuputStoragePath.lastIndexOf("/");
+            String directoryCreate = fileOuputStoragePath.substring(0, location);
+            this.fileStorageLocation = Paths.get(directoryCreate).toAbsolutePath().normalize();
+            if (!Files.exists(fileStorageLocation)) {
+                try {
+                    Files.createDirectories(this.fileStorageLocation);
+                } catch (Exception ex) {
+                    throw new BadRequestException(
+                            "Could not create the directory where the merged files will be stored.");
+                }
+            }
+            byte[] mergePdf = mergePdfs(pdfStreams, fileOuputStoragePath);
+            fileNameWithPath.add(fileOuputStoragePath);
+//            copyToTempFolder(mergePdf);
+        }
+        return fileNameWithPath;
+    }
+    /**
+     *
      * @param location
      * @return
      */
@@ -88,5 +125,30 @@ public class PDFMergeService {
             filePath = filePath + "/" + location;
         }
         return filePath;
+    }
+    /**
+     *
+     * @param pdfDocument
+     * @throws IOException
+     */
+    public void copyToTempFolder(byte[] pdfDocument) throws IOException {
+        String filePath = propertiesConfig.getDocStorageBasePath();
+        filePath = filePath + "/temp";
+        this.fileStorageLocation = Paths.get(filePath).toAbsolutePath().normalize();
+        try {
+            Files.deleteIfExists(fileStorageLocation);
+        } catch (IOException e) {
+            throw new BadRequestException("Could not delete the directory");
+        }
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException("Could not create the directory where the merged files will be stored.");
+            }
+        }
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(pdfDocument);
+        }
     }
 }
