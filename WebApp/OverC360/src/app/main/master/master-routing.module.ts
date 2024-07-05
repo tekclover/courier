@@ -32,6 +32,8 @@ import { OpstatusNewComponent } from './opstatus/opstatus-new/opstatus-new.compo
 import { OpstatusComponent } from './opstatus/opstatus.component';
 import { SpecialApprovalNewComponent } from './special-approval/special-approval-new/special-approval-new.component';
 import { SpecialApprovalComponent } from './special-approval/special-approval.component';
+import { AirportCodeComponent } from './airport-code/airport-code.component';
+import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
 
 const routes: Routes = [
 
@@ -84,8 +86,9 @@ const routes: Routes = [
 
   { path: 'iata', component: IataComponent, data: { title: 'Master', module: 'Iata' } },
   { path: 'iata-new/:code', component: IataNewComponent, data: { title: 'Master', module: 'Iata - Add New' } },
-
-
+  
+  { path: 'airportCode', component: AirportCodeComponent, data: { title: 'Master', module: 'AirportCode' } },
+  { path: 'airportCode-new/:code', component: AirportCodeNewComponent, data: { title: 'Master', module: 'AirportCode - Add New' } },
 
 ];
 
