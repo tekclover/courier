@@ -99,7 +99,7 @@ export class CityComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
 

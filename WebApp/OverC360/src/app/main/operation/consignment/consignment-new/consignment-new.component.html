@@ -87,7 +87,7 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerId">
                             <p class="formControlLabel f600 textBlack mb-0 required">Partner</p>
-                                <p-dropdown [options]="partnerName" placeholder="Select" filter="true"
+                            <p-dropdown [options]="partnerName" placeholder="Select" filter="true"
                                 formControlName="partnerId"
                                 [ngClass]="shipmentInfo.get('partnerId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
@@ -279,15 +279,16 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="paymentType">
                             <p class="formControlLabel f600 textBlack mb-0">Payment Type</p>
-                            <p-dropdown [options]="paymentType" (onChange)="paymentChange()" placeholder="Select" filter="true"
-                                formControlName="paymentType"
+                            <p-dropdown [options]="paymentType" (onChange)="paymentChange()" placeholder="Select"
+                                filter="true" formControlName="paymentType"
                                 [ngClass]="shipmentInfo.get('paymentType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('paymentType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode" *ngIf="showPaymentTypeFields">
+                        <div class="col-3 marginFieldNew borderRadius12" id="codCollectionMode"
+                            *ngIf="showPaymentTypeFields">
                             <p class="formControlLabel f600 textBlack mb-0">COD Collection Mode</p>
                             <p-dropdown [options]="codCollectionMode" placeholder="Select" filter="true"
                                 formControlName="codCollectionMode"
@@ -360,7 +361,7 @@
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="flightArrivalTime">
                             <p class="formControlLabel f600 textBlack mb-0">Flight ETA</p>
-                                <p-calendar formControlName="flightArrivalTime" appendTo="body"
+                            <p-calendar formControlName="flightArrivalTime" appendTo="body"
                                 [ngClass]="consignment.get('flightArrivalTime')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
@@ -541,11 +542,6 @@
             </p-tabPanel>
 
             <p-tabPanel header="Piece" [disabled]="disabledPiece">
-                <div class="d-flex justify-content-end align-items-center">
-                    <button (click)="addPieceDetail()" type="button"
-                        class="btn ml-2 addNewbuttom bgOrange text-white"><i class="bi bi-plus-square pr-2"></i> Add
-                        New</button>
-                </div>
                 <form [formGroup]="piece" class="mt-1">
                     <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
                         [value]="this.piece.controls.pieceDetails.controls">
@@ -558,7 +554,7 @@
                                 <th>Piece Currency</th>
                                 <th>Declared Value</th>
                                 <th>COD Amount</th>
-                                <th  style="min-width: 9rem; justify-content: center;">
+                                <th style="min-width: 9rem; justify-content: center;">
                                     Actions</th>
                             </tr>
                         </ng-template>
@@ -579,7 +575,7 @@
                                         formControlName="declaredValue"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="codAmount">
                                 </td>
-                                <td  >
+                                <td>
                                     <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                                         alt="" srcset="" style="height: 1.4rem;">
                                     <p-overlayPanel [style]="{ width: '180' }" #op>
@@ -588,19 +584,20 @@
                                                 (change)="selectFiles($event, rowData)" /> -->
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
                                                 (click)="dimension(this.pageToken.pageflow, 'piece', i)"><img
-                                                    src="./assets/common/dimension.png" style="padding-right: 10px;width: 2rem;"
+                                                    src="./assets/common/dimension.png"
+                                                    style="padding-right: 10px;width: 2rem;"
                                                     srcset="">Dimension</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
                                                 (click)="opendialog(this.pageToken.pageflow, i)"><img
-                                                    src="./assets/common/add.png" style="padding-right: 10px;width: 2rem;"
-                                                    srcset="">Item</button>
+                                                    src="./assets/common/add.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Item</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="removePieceDetail(i)"><img
-                                                    src="./assets/common/delete1x.png" style="padding-right: 10px;width: 2rem;"
-                                                    srcset="">Delete</button>
-                                            <button style="width: 8rem;" mat-menu-item class="w-100" (click)="imageupload(this.pageToken.pageflow, i)"><img
-                                                    src="./assets/common/image.png" style="padding-right: 10px;width: 2rem;"
-                                                    srcset="">Image</button>
+                                                (click)="removePieceDetail(i)"><img src="./assets/common/delete1x.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="imageupload(this.pageToken.pageflow, i)"><img
+                                                    src="./assets/common/image.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Image</button>
                                         </div>
                                     </p-overlayPanel>
                                 </td>
@@ -609,6 +606,11 @@
                         </ng-template>
                     </p-table>
                 </form>
+                <div class="d-flex mt-1 justify-content-center" style="position: absolute; right: 50%; bottom: 5%;">
+                    <button (click)="addPieceDetail()" type="button"
+                        class="btn ml-2 addNewbuttom bgOrange text-white"><i class="bi bi-plus-square pr-2"></i> Add
+                        New</button>
+                </div>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="savePiece()">Next</button>

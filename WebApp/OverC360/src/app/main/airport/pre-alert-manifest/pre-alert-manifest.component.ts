@@ -191,7 +191,7 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.console.Create(this.selectedPreAlertManifest).subscribe({next: (res) =>{
+    this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({next: (res) =>{
       this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
       this.spin.hide();
     }, error: (err) =>{
