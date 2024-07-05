@@ -187,7 +187,7 @@ export class ProductNewComponent {
 
   save() {
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.productArray.length == 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -213,7 +213,7 @@ export class ProductNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.productId + ' has been updated successfully',
+            detail: res[0].productId + ' has been updated successfully',
           });
           this.router.navigate(['/main/idMaster/product']);
           this.spin.hide();
@@ -240,7 +240,7 @@ export class ProductNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.productId + ' has been created successfully',
+              detail: res[0].productId + ' has been created successfully',
             });
             this.router.navigate(['/main/idMaster/product']);
             this.spin.hide();

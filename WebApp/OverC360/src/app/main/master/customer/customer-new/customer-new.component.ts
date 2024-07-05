@@ -221,7 +221,7 @@ export class CustomerNewComponent {
   save() {
 
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.customerArray.length == 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -247,7 +247,7 @@ export class CustomerNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.customerId + ' has been updated successfully',
+            detail: res[0].customerId + ' has been updated successfully',
           });
           this.router.navigate(['/main/master/customer']);
           this.spin.hide();
@@ -275,7 +275,7 @@ export class CustomerNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.customerId + ' has been created successfully',
+              detail: res[0].customerId + ' has been created successfully',
             });
             this.router.navigate(['/main/master/customer']);
             this.spin.hide();
