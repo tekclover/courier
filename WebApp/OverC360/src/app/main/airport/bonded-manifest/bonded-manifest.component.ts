@@ -69,6 +69,7 @@ export class BondedManifestComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res, 'bondedId')
         this.bondedManifestTable = res;
         this.spin.hide();
       }, error: (err) => {

@@ -56,7 +56,7 @@ import {
 // src/app/app-routing.module.ts
 var routes = [
   { path: "", loadChildren: () => import("./chunk-ND3Y6BZP.js").then((m) => m.LoginModule) },
-  { path: "main", loadChildren: () => import("./chunk-RBLFQKCR.js").then((m) => m.MainModule) }
+  { path: "main", loadChildren: () => import("./chunk-ZGGN5S5W.js").then((m) => m.MainModule) }
 ];
 var _AppRoutingModule = class _AppRoutingModule {
 };

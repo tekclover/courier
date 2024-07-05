@@ -987,6 +987,7 @@ var _ConsoleComponent = class _ConsoleComponent {
     this.service.search(obj).subscribe({
       next: (res) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res, "consoleId");
         this.consoleTable = res;
         this.spin.hide();
       },
@@ -1428,6 +1429,7 @@ var _BondedManifestComponent = class _BondedManifestComponent {
     this.service.search(obj).subscribe({
       next: (res) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res, "bondedId");
         this.bondedManifestTable = res;
         this.spin.hide();
       },
@@ -1889,6 +1891,7 @@ var _CcrComponent = class _CcrComponent {
     this.service.search(obj).subscribe({
       next: (res) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res, "ccrId");
         this.ccrTable = res;
         this.spin.hide();
       },
@@ -6123,4 +6126,4 @@ var AirportModule = _AirportModule;
 export {
   AirportModule
 };
-//# sourceMappingURL=chunk-FV3KZQN7.js.map
+//# sourceMappingURL=chunk-SXL7BOBE.js.map

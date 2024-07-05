@@ -1111,7 +1111,7 @@ var routes = [{
   children: [
     { path: "idMaster", loadChildren: () => import("./chunk-QCRIWIPX.js").then((m) => m.IdMastersModule) },
     { path: "master", loadChildren: () => import("./chunk-WPJICMMJ.js").then((m) => m.MasterModule) },
-    { path: "airport", loadChildren: () => import("./chunk-FV3KZQN7.js").then((m) => m.AirportModule) },
+    { path: "airport", loadChildren: () => import("./chunk-SXL7BOBE.js").then((m) => m.AirportModule) },
     { path: "operation", loadChildren: () => import("./chunk-6UBMKCWR.js").then((m) => m.OperationModule) }
   ]
 }];
@@ -1140,4 +1140,4 @@ var MainModule = _MainModule;
 export {
   MainModule
 };
-//# sourceMappingURL=chunk-RBLFQKCR.js.map
+//# sourceMappingURL=chunk-ZGGN5S5W.js.map
