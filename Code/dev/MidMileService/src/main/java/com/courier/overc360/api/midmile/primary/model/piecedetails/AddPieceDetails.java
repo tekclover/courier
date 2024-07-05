@@ -113,6 +113,8 @@ public class AddPieceDetails {
 
     private String referenceField20;
 
+    private Long deletionIndicator = 0L;
+
     private List<AddItemDetails> itemDetails = new ArrayList<>();
 
 }

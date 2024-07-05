@@ -345,6 +345,7 @@ public class PieceDetailsService {
                 UpdatePieceDetails addPieceDetails = new UpdatePieceDetails();
                 PieceDetails dbPieceDetails = getPieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceDetails.getPieceId());
                 BeanUtils.copyProperties(pieceDetails, dbPieceDetails, CommonUtils.getNullPropertyNames(updatePieceDetails));
+                dbPieceDetails.setDeletionIndicator(0L);
                 dbPieceDetails.setUpdatedBy(loginUserID);
                 dbPieceDetails.setUpdatedOn(new Date());
 
@@ -361,6 +362,7 @@ public class PieceDetailsService {
                         }
                         imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
                         imageReferenceRecord.setReferenceField2(downloadDocument);
+                        imageReferenceRecord.setDeletionIndicator(0L);
                         imageReferenceRecord.setUpdatedBy(loginUserID);
                         imageReferenceRecord.setUpdatedOn(new Date());
                         ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
