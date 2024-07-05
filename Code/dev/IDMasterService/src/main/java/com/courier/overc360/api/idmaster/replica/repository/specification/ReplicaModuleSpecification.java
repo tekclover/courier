@@ -15,10 +15,11 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class ReplicaModuleSpecification implements Specification<ReplicaModule> {
-    FindModule findModuleId;
+
+    FindModule findModule;
 
     public ReplicaModuleSpecification(FindModule inputSearchParams) {
-        this.findModuleId = inputSearchParams;
+        this.findModule = inputSearchParams;
     }
 
     @Override
@@ -26,29 +27,29 @@ public class ReplicaModuleSpecification implements Specification<ReplicaModule> 
 
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        if (findModuleId.getCompanyId() != null && !findModuleId.getCompanyId().isEmpty()) {
+        if (findModule.getCompanyId() != null && !findModule.getCompanyId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("companyId");
-            predicates.add(group.in(findModuleId.getCompanyId()));
+            predicates.add(group.in(findModule.getCompanyId()));
         }
-        if (findModuleId.getModuleId() != null && !findModuleId.getModuleId().isEmpty()) {
+        if (findModule.getModuleId() != null && !findModule.getModuleId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("moduleId");
-            predicates.add(group.in(findModuleId.getModuleId()));
+            predicates.add(group.in(findModule.getModuleId()));
         }
-        if (findModuleId.getLanguageId() != null && !findModuleId.getLanguageId().isEmpty()) {
+        if (findModule.getLanguageId() != null && !findModule.getLanguageId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("languageId");
-            predicates.add(group.in(findModuleId.getLanguageId()));
+            predicates.add(group.in(findModule.getLanguageId()));
         }
-        if (findModuleId.getMenuId() != null && !findModuleId.getMenuId().isEmpty()) {
+        if (findModule.getMenuId() != null && !findModule.getMenuId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("menuId");
-            predicates.add(group.in(findModuleId.getMenuId()));
+            predicates.add(group.in(findModule.getMenuId()));
         }
-        if (findModuleId.getSubMenuId() != null && !findModuleId.getSubMenuId().isEmpty()) {
+        if (findModule.getSubMenuId() != null && !findModule.getSubMenuId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("subMenuId");
-            predicates.add(group.in(findModuleId.getSubMenuId()));
+            predicates.add(group.in(findModule.getSubMenuId()));
         }
-        if (findModuleId.getStatusId() != null && !findModuleId.getStatusId().isEmpty()) {
+        if (findModule.getStatusId() != null && !findModule.getStatusId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("statusId");
-            predicates.add(group.in(findModuleId.getStatusId()));
+            predicates.add(group.in(findModule.getStatusId()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
