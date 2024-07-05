@@ -30,7 +30,7 @@ public interface ReplicaMenuRepository extends JpaRepository<ReplicaMenu, Long>,
             "Where IS_DELETED = 0", nativeQuery = true)
     List<ReplicaMenu> getNonDeletedMenus();
 
-    // Find Menus with Only given Params
+    // Find Menus with given Params Only
     @Query(value = "SELECT * FROM tblmenu tm " +
             "WHERE tm.IS_DELETED = 0 " +
             "AND (:#{#languageId == null ? 1 : 0} = 1 OR tm.LANG_ID IN (:languageId)) " +

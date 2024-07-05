@@ -68,7 +68,7 @@ public class NumberRangeService {
         Optional<NumberRange> duplicateNumberRange =
                 numberRangeRepository.findByNumberRangeObjectAndDeletionIndicator(numberRangeObject, 0L);
         if (duplicateNumberRange.isEmpty()) {
-            throw new BadRequestException("Record not found for given NumberRangeObject - " + duplicateNumberRange);
+            throw new BadRequestException("Record not found for given NumberRangeObject - " + numberRangeObject);
         } else {
             NumberRange numberRange = duplicateNumberRange.get();
             log.info("Current record --> " + numberRange);

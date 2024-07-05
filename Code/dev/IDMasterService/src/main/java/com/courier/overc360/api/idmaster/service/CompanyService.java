@@ -178,6 +178,31 @@ public class CompanyService {
         }
     }
 
+    // Update Company Name in all Masters Tables using Stored Procedure
+    private void updateCompanyDescSP(String companyId, String languageId, UpdateCompany updateCompany, Company dbCompany) {
+
+        if (updateCompany.getCompanyName() != null) {
+            if (updateCompany.getCompanyName().isBlank()) {
+                throw new BadRequestException("Company Name cannot be blank");
+            }
+            boolean isCompanyNameChanged = !dbCompany.getCompanyName().equalsIgnoreCase(updateCompany.getCompanyName());
+            if (isCompanyNameChanged) {
+                String newCompanyName = updateCompany.getCompanyName();
+                log.info("new Company Name --> {}", newCompanyName);
+                String oldCompanyDesc = dbCompany.getCompanyName();
+                try {
+                    // Update Company Name in all Masters Tables using Stored Procedure
+                    companyRepository.updateCompanyDescProc(languageId, companyId, oldCompanyDesc, newCompanyName);
+                    log.info("new Company Name - {} updated in all Masters Tables", newCompanyName);
+                } catch (Exception e) {
+                    log.info("Failed to update new Company Name updated in all Masters Tables : " + e);
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
     /**
      * Update Company
      *
@@ -196,44 +221,6 @@ public class CompanyService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Company dbCompany = getCompany(companyId, languageId);
-//            if (updateCompany.getCompanyName() != null) {
-//                if (updateCompany.getCompanyName().isBlank()) {
-//                    throw new BadRequestException("Company Name cannot be blank");
-//                }
-//                boolean isCompanyNameChanged = !dbCompany.getCompanyName().equalsIgnoreCase(updateCompany.getCompanyName());
-//                if (isCompanyNameChanged) {
-//                    String oldCompanyDesc = dbCompany.getCompanyName();
-//                    BeanUtils.copyProperties(updateCompany, dbCompany, CommonUtils.getNullPropertyNames(updateCompany));
-//                    String cityDesc = null;
-//                    String countryDesc = null;
-//                    String provinceDesc = null;
-//                    String districtDesc = null;
-//
-//                    if (updateCompany.getCityId() != null) {
-//                        cityDesc = cityRepository.getCityDesc(updateCompany.getCityId());
-//                        dbCompany.setCityName(cityDesc);
-//                    }
-//                    if (updateCompany.getCountryId() != null) {
-//                        countryDesc = cityRepository.getCountryDesc(updateCompany.getCountryId());
-//                        dbCompany.setCountryName(countryDesc);
-//                    }
-//                    if (updateCompany.getProvinceId() != null) {
-//                        provinceDesc = cityRepository.getProvinceDesc(updateCompany.getProvinceId());
-//                        dbCompany.setProvinceName(provinceDesc);
-//                    }
-//                    if (updateCompany.getDistrictId() != null) {
-//                        districtDesc = cityRepository.getDistrictDesc(updateCompany.getDistrictId());
-//                        dbCompany.setDistrictName(districtDesc);
-//                    }
-//                    dbCompany.setUpdatedBy(loginUserID);
-//                    dbCompany.setUpdatedOn(new Date());
-//                    Company updatedCompany = companyRepository.save(dbCompany);
-//
-//                    // Update Company Name in all Masters Tables
-//                    companyRepository.companyDescUpdateProc(languageId, companyId, oldCompanyDesc, updateCompany.getCompanyName());
-//                    return updatedCompany;
-//                }
-//            }
             BeanUtils.copyProperties(updateCompany, dbCompany, CommonUtils.getNullPropertyNames(updateCompany));
 
             String cityDesc = null;

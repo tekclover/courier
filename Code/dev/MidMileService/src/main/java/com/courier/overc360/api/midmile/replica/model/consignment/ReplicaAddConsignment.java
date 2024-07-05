@@ -29,6 +29,8 @@ public class ReplicaAddConsignment {
 
     private String statusId;
 
+    private String statusDescription;
+
     private String shipperId;
 
     private Long consignmentId;

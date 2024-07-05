@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
@@ -8,6 +8,8 @@ import { CommonAPIService } from '../../../../../common-service/common-api.servi
 import { CommonServiceService } from '../../../../../common-service/common-service.service';
 import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
+import { DimensionComponent } from '../dimension/dimension.component';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
 @Component({
   selector: 'app-item-details',
@@ -15,11 +17,6 @@ import { ConsignmentService } from '../../consignment.service';
   styleUrl: './item-details.component.scss'
 })
 export class ItemDetailsComponent {
-
-
-  pieceForm = this.fb.group({
-    items: this.fb.array([])
-  });
 
   constructor(
     private cs: CommonServiceService,
@@ -31,6 +28,7 @@ export class ItemDetailsComponent {
     private cas: CommonAPIService,
     private auth: AuthService,
     public dialogRef: MatDialogRef<ItemDetailsComponent>,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -42,6 +40,7 @@ export class ItemDetailsComponent {
   get itemDetails(): FormArray {
     return this.itemForm.get('itemDetails') as FormArray;
   }
+  
   addItem() {
     this.itemDetails.push(this.createItemFormGroup());
   }
@@ -59,49 +58,21 @@ export class ItemDetailsComponent {
       partnerName: [],
       partnerType: [],
       pieceItemId: [],
-      referenceField1: [],
-      referenceField10: [],
-      referenceField11: [],
-      referenceField12: [],
-      referenceField13: [],
-      referenceField14: [],
-      referenceField15: [],
-      referenceField16: [],
-      referenceField17: [],
-      referenceField18: [],
-      referenceField19: [],
-      referenceField2: [],
-      referenceField20: [],
-      referenceField3: [],
-      referenceField4: [],
-      referenceField5: [],
-      referenceField6: [],
-      referenceField7: [],
-      referenceField8: [],
-      referenceField9: [],
       pdfUrl: [],
-      //referenceImageList: ReferenceImageList[]
       volume: [],
       volumeUnit: [],
       weight: [],
       weightUnit: [],
       width: [],
+      referenceImageList: this.fb.array([]),
     });
   }
   removeItem(index: number) {
     this.itemDetails.removeAt(index);
   }
-
   ngOnInit() {
     this.patchForm(this.data.line.value)
   }
-
-
-  selectedFiles: any[] = [];
-  selectFiles(event:any): void {
-    this.selectedFiles = event.target.files;
-  }
-  
   save() {
     this.dialogRef.close(this.itemForm.controls.itemDetails.value)
   }
@@ -152,7 +123,7 @@ export class ItemDetailsComponent {
       referenceField7: [item.referenceField7],
       referenceField8: [item.referenceField8],
       referenceField9: [item.referenceField9],
-    //  referenceImageList: this.patchReferenceImages(item.referenceImageList),
+      referenceImageList: this.patchReferenceImages(item.referenceImageList),
       volume: [item.volume],
       volumeUnit: [item.volumeUnit],
       weight: [item.weight],
@@ -160,4 +131,56 @@ export class ItemDetailsComponent {
       width: [item.width]
     });
   }
+
+  patchReferenceImages(referenceImageList: any[]) {
+    if (referenceImageList == null) {
+      return
+    }
+    return this.fb.array(referenceImageList.map(image => this.fb.group({
+      imageRefId: [image.imageRefId],
+      pdfUrl: [image.pdfUrl],
+      referenceImageUrl: [image.referenceImageUrl]
+    })));
+  }
+
+
+  dimension(type: any = 'New', module: any, index: any) {
+    const dialogRef = this.dialog.open(DimensionComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '25%' },
+      data: { pageflow: type, module: module, line: (this.itemForm.controls.itemDetails as FormArray).at(index)},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      const control = (this.itemForm.controls.itemDetails as FormArray).at(index)
+      control.patchValue(result);
+      console.log(this.itemForm)
+    })}
+
+    imageupload(type: any = 'New', index: any) {
+      const dialogRef = this.dialog.open(ImageUploadComponent, {
+        disableClose: true,
+        width: '70%',
+        maxWidth: '82%',
+        position: { top: '6.5%', left: '25%' },
+        data: { pageflow: type, line: (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray },
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          const imageDetailsFormArray = (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray;
+          imageDetailsFormArray.clear();
+          result.forEach((image: any) => {
+            imageDetailsFormArray.push(this.fb.group({
+              imageRefId: image.imageRefId,
+              pdfUrl: image.pdfUrl,
+              referenceImageUrl: image.referenceImageUrl,
+            }));
+          });
+          console.log(this.itemForm)
+        }
+      })
+    }
 }

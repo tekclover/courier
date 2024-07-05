@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ModuleService } from '../module.service';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { MenuService } from '../../menu/menu.service';
 import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
+import { Stepper } from 'primeng/stepper';
 
 @Component({
   selector: 'app-module-new',
@@ -18,6 +19,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 })
 export class ModuleNewComponent {
   active: number | undefined = 0;
+
 
   status: any[] = []
   moduleTable: any[] = [];
@@ -295,5 +297,19 @@ export class ModuleNewComponent {
       this.cs.commonerrorNew(err);
     },})
 
+  }
+  nextToSecond(){
+    this.submitted = true;
+    if (!this.form.controls.moduleId.value && !this.form.controls.moduleDescription.value && !this.form.controls.menuId.value) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        key: 'br',
+        detail: 'Please fill required fields to continue',
+      });
+      return;
+    }
+    this.active = 1;
+    this.submitted = false;
   }
 }

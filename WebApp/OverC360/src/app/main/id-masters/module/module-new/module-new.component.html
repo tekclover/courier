@@ -6,10 +6,10 @@
   </div>
   <div class="w-75 mt-4 mx-auto">
     <form [formGroup]="form">
-      <p-stepper [(activeStep)]="active">
+      <p-stepper #stepper [(activeStep)]="active">
         <p-stepperPanel>
           <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-            <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
+            <div class="d-flex flex-column align-items-center"> <!-- (click)="onClick.emit()"-->
               <div class="d-flex justify-content-center align-items-center">
                 <p *ngIf="active == 0" class="circle borderCircle mb-0">1</p>
                 <img *ngIf="active != 0" src="./assets/dashboard/tick.png" alt="" srcset="" />
@@ -70,7 +70,7 @@
               <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/module">
                 Cancel
               </button>
-              <button class="buttom1 bgBlack text-white mx-1" (click)="nextCallback.emit()">
+              <button class="buttom1 bgBlack text-white mx-1" (click)="nextToSecond()">
                 Next
               </button>
             </div>

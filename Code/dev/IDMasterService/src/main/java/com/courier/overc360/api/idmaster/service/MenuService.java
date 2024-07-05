@@ -15,7 +15,6 @@ import com.courier.overc360.api.idmaster.replica.model.menu.ReplicaMenu;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaMenuRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
-import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaMenuSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -276,18 +275,19 @@ public class MenuService {
      * @param findMenu
      * @return
      */
-    public List<ReplicaMenu> findMenus(FindMenu findMenu) throws ParseException {
-        ReplicaMenuSpecification spec = new ReplicaMenuSpecification(findMenu);
-        List<ReplicaMenu> results = replicaMenuRepository.findAll(spec);
-        log.info("found Menus --> " + results);
-        return results;
-    }
 //    public List<ReplicaMenu> findMenus(FindMenu findMenu) throws ParseException {
-//
-//        List<ReplicaMenu> results = replicaMenuRepository.findMenusWithQry(findMenu.getLanguageId(), findMenu.getCompanyId(),
-//                findMenu.getMenuId(), findMenu.getSubMenuId(), findMenu.getAuthorizationObjectId());
+//        ReplicaMenuSpecification spec = new ReplicaMenuSpecification(findMenu);
+//        List<ReplicaMenu> results = replicaMenuRepository.findAll(spec);
+//        log.info("found Menus --> {}", results);
 //        return results;
 //    }
+    public List<ReplicaMenu> findMenus(FindMenu findMenu) throws ParseException {
+
+        List<ReplicaMenu> results = replicaMenuRepository.findMenusWithQry(findMenu.getLanguageId(), findMenu.getCompanyId(),
+                findMenu.getMenuId(), findMenu.getSubMenuId(), findMenu.getAuthorizationObjectId());
+        log.info("found Menus --> {}", results);
+        return results;
+    }
 
     //==============================================Menu_ErrorLog======================================================
     private void createMenuLog(String languageId, String companyId, Long menuId, Long subMenuId,

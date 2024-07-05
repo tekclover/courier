@@ -48,9 +48,9 @@ export class CityComponent {
 
   callTableHeader() {
     this.cols = [
+      { field: 'companyName', header: 'Company' },
       { field: 'cityId', header: ' City ID' },
       { field: 'cityName', header: 'City Name' },
-      { field: 'companyName', header: 'Company' },
       { field: 'countryName', header: 'Country' },
       { field: 'provinceName', header: 'Province' },
       { field: 'districtName', header: 'District' },
@@ -99,7 +99,7 @@ export class CityComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
 
@@ -141,7 +141,7 @@ export class CityComponent {
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
       disableClose: true,
-      width: '70%',
+      width: '60%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: { line: this.selectedCity, module: 'City', body: 'This action cannot be undone. All values associated with this field will be lost.' },

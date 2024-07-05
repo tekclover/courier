@@ -73,10 +73,20 @@
  
                             <div class="col-6 marginFieldNew borderRadius12" id="consigneeName">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Consignee Name</p>
-                                <input maxlength="100" pInputText formControlName="description" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="consigneeName" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('consigneeName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('consigneeName')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
+                            </div>
+
+                            
+                            <div class="col-6 marginFieldNew borderRadius12" id="incoTerms">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Inco Terms</p>
+                                <input maxlength="100" pInputText formControlName="incoTerms" class=" w-100" pInputText
+                                placeholder="Enter"
+                                [ngClass]="form.get('incoTerms')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('incoTerms')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 

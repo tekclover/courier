@@ -171,7 +171,7 @@ export class ConsoleEditComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'Sub Product', this.pageToken.pageflow];
+    const dataToSend = ['Airport', 'Console', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -302,7 +302,7 @@ console.log(this.selectedConsole)
     const dialogRef = this.dialog.open(ConsoleEditpopupComponent, {
       disableClose: true,
       width: '70%',
-      height: '50%',
+      //height: '50%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: {pageflow: data,code:item},

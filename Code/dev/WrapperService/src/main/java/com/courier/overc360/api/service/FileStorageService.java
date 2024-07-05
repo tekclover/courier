@@ -448,48 +448,75 @@ public class FileStorageService {
                 destinationDetails.setLongitude(listUploadedData.get(155));
                 addConsignment.setDestinationDetails(destinationDetails);
 
-//                ReferenceImageList imageReference = new ReferenceImageList();
-//                imageReference.setReferenceImageUrl(listUploadedData.get(155));
-//                addConsignment.getReferenceImageList().add(imageReference);
+                String imageReferences = listUploadedData.get(156);
+                String[] imageUrls = imageReferences.split(",");
+                List<ReferenceImageList> referenceImageLists = new ArrayList<>();
+                for (String imageUrl : imageUrls) {
+                    ReferenceImageList imageReference = new ReferenceImageList();
+                    imageReference.setReferenceImageUrl(imageUrl.trim());
+                    referenceImageLists.add(imageReference);
+                }
+                addConsignment.setReferenceImageList(referenceImageLists);
 
                 consignmentMap.put(consignmentKey, addConsignment);
                 pieceMap.put(consignmentKey, pieceDetailsMap);
             }
 
             AddPieceDetails pieceDetails = pieceDetailsMap.getOrDefault(pieceKey, new AddPieceDetails());
-            pieceDetails.setDescription(listUploadedData.get(156));
-            pieceDetails.setDeclaredValue(listUploadedData.get(157));
-            pieceDetails.setCodAmount(listUploadedData.get(158));
-            pieceDetails.setLength(listUploadedData.get(159));
-            pieceDetails.setDimensionUnit(listUploadedData.get(160));
-            pieceDetails.setWidth(listUploadedData.get(161));
-            pieceDetails.setHeight(listUploadedData.get(162));
-            pieceDetails.setWeight(listUploadedData.get(163));
-            pieceDetails.setPartnerType(listUploadedData.get(164));
-            pieceDetails.setWeight_unit(listUploadedData.get(165));
-            pieceDetails.setVolume(listUploadedData.get(166));
-            pieceDetails.setVolumeUnit(listUploadedData.get(167));
-            pieceDetails.setPackReferenceNumber(listUploadedData.get(168));
-            pieceDetails.setTags(listUploadedData.get(169));
+            pieceDetails.setDescription(listUploadedData.get(157));
+            pieceDetails.setDeclaredValue(listUploadedData.get(158));
+            pieceDetails.setCodAmount(listUploadedData.get(159));
+            pieceDetails.setLength(listUploadedData.get(160));
+            pieceDetails.setDimensionUnit(listUploadedData.get(161));
+            pieceDetails.setWidth(listUploadedData.get(162));
+            pieceDetails.setHeight(listUploadedData.get(163));
+            pieceDetails.setWeight(listUploadedData.get(164));
+            pieceDetails.setPartnerType(listUploadedData.get(165));
+            pieceDetails.setWeight_unit(listUploadedData.get(166));
+            pieceDetails.setVolume(listUploadedData.get(167));
+            pieceDetails.setVolumeUnit(listUploadedData.get(168));
+            pieceDetails.setPackReferenceNumber(listUploadedData.get(169));
+            pieceDetails.setTags(listUploadedData.get(170));
+
+            String pieceImageRef = listUploadedData.get(171);
+            String[] pieceImageUrls = pieceImageRef.split(",");
+            List<ReferenceImageList> imageReference = new ArrayList<>();
+            for(String imageUrl : pieceImageUrls) {
+                ReferenceImageList referenceImageList = new ReferenceImageList();
+                referenceImageList.setReferenceImageUrl(imageUrl);
+                imageReference.add(referenceImageList);
+            }
+            pieceDetails.setReferenceImageList(imageReference);
 
             // Set Item Details
             AddItemDetails itemDetails = new AddItemDetails();
-            itemDetails.setPartnerType(listUploadedData.get(170));
-            itemDetails.setItemCode(listUploadedData.get(171));
-            itemDetails.setHsCode(listUploadedData.get(172));
-            itemDetails.setDeclaredValue(listUploadedData.get(173));
-            itemDetails.setCodAmount(listUploadedData.get(174));
-            itemDetails.setLength(listUploadedData.get(175));
-            itemDetails.setDimensionUnit(listUploadedData.get(176));
-            itemDetails.setWidth(listUploadedData.get(177));
-            itemDetails.setHeight(listUploadedData.get(178));
-            itemDetails.setWeight(listUploadedData.get(179));
-            itemDetails.setWeightUnit(listUploadedData.get(180));
-            itemDetails.setVolume(listUploadedData.get(181));
-            itemDetails.setVolumeUnit(listUploadedData.get(182));
-            if (listUploadedData.get(183).trim().length() > 0) {
-                itemDetails.setDescription(listUploadedData.get(183));
+            itemDetails.setPartnerType(listUploadedData.get(172));
+            itemDetails.setItemCode(listUploadedData.get(173));
+            itemDetails.setHsCode(listUploadedData.get(174));
+            itemDetails.setDeclaredValue(listUploadedData.get(175));
+            itemDetails.setCodAmount(listUploadedData.get(176));
+            itemDetails.setLength(listUploadedData.get(177));
+            itemDetails.setDimensionUnit(listUploadedData.get(178));
+            itemDetails.setWidth(listUploadedData.get(179));
+            itemDetails.setHeight(listUploadedData.get(180));
+            itemDetails.setWeight(listUploadedData.get(181));
+            itemDetails.setWeightUnit(listUploadedData.get(182));
+            itemDetails.setVolume(listUploadedData.get(183));
+            itemDetails.setVolumeUnit(listUploadedData.get(184));
+            List<ReferenceImageList> imageReferenceList = new ArrayList<>();
+
+            String itemImageRef = listUploadedData.get(185);
+            String[] itemImageUrl = itemImageRef.split(",");
+            for(String imageUrl : itemImageUrl) {
+                ReferenceImageList referenceImageList = new ReferenceImageList();
+                referenceImageList.setReferenceImageUrl(imageUrl);
+                imageReferenceList.add(referenceImageList);
             }
+            if (listUploadedData.get(186).trim().length() > 0) {
+                itemDetails.setDescription(listUploadedData.get(186));
+            }
+            itemDetails.setReferenceImageList(imageReferenceList);
+
 
             // Add item to piece
             List<AddItemDetails> itemDetailsList = pieceDetails.getItemDetails();

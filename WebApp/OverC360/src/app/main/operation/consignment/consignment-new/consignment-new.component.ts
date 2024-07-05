@@ -11,6 +11,7 @@ import { AuthService } from '../../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemDetailsComponent } from './item-details/item-details.component';
 import { DimensionComponent } from './dimension/dimension.component';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
 
 @Component({
   selector: 'app-consignment-new',
@@ -93,6 +94,7 @@ export class ConsignmentNewComponent {
     noOfPieceHawb: [],
     noOfPackageMawb: [],
     countryOfOrigin: [],
+    countryOfDestination: [],
     consignmentType: [,],
     customerCode: [],
     codAmount: [],
@@ -107,6 +109,8 @@ export class ConsignmentNewComponent {
     courierAccount: [],
     courierPartner: [],
     courierPartnerReferenceNumber: [],
+    invoiceAmount: [],
+    invoiceUrl: [],
   });
 
   carrierInfo = this.fb.group({
@@ -181,6 +185,12 @@ export class ConsignmentNewComponent {
     specialApprovalValue: [],
     codAmount: [],
     codFavorOf: [],
+    iataCharge: [],
+    exchangeRate: [],
+    customsCurrency: [],
+    dutyPercentage: ['5%',],
+    dduCharge: [],
+    specialApprovalCharge: [],
     codCollectionMode: [],
     declaredValueWithoutTax: [],
     invoiceAmount: [],
@@ -201,7 +211,8 @@ export class ConsignmentNewComponent {
     weight: [],
     weightUnit: [],
     invoiceNumber: [],
-    invoiceDate: [],
+    invoiceDate: [new Date,],
+    invoiceDateFE: [new Date,],
     invoiceSupplierName: [],
     goodsDescription: [],
     notifyParty: [],
@@ -317,6 +328,7 @@ export class ConsignmentNewComponent {
   }
 
   removePieceDetail(index: number) {
+    console.log(index)
     const control = this.piece.controls.pieceDetails as FormArray;
     control.removeAt(index);
   }
@@ -515,7 +527,7 @@ export class ConsignmentNewComponent {
   countryIdList: any[] = [];
   cityIdList: any[] = [];
   provinceIdList: any[] = [];
-
+  partnerName: any[] = [];
 
   dropdownlist() {
     this.spin.show();
@@ -529,7 +541,8 @@ export class ConsignmentNewComponent {
       this.cas.dropdownlist.setup.loadType.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.city.url,
-      this.cas.dropdownlist.setup.province.url
+      this.cas.dropdownlist.setup.province.url,
+      this.cas.dropdownlist.setup.consignor.url
 
 
 
@@ -547,6 +560,7 @@ export class ConsignmentNewComponent {
         this.countryIdList = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
         this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
         this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
+        this.partnerName = this.cas.forLanguageFilter(results[10], this.cas.dropdownlist.setup.consignor.key);
 
 
 
@@ -580,7 +594,13 @@ export class ConsignmentNewComponent {
       this.billing.patchValue(line)
 
     this.patchForm(line);
-
+console.log(this.consignment.controls.invoiceDate.value)
+    if(this.consignment.controls.invoiceDate.value){
+      this.consignment.controls.invoiceDateFE.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
+    }
+ 
+    this.shipmentInfo.controls.masterAirwayBill.disable();
+    this.shipmentInfo.controls.houseAirwayBill.disable();
   }
 
   opendialog(type: any = 'New', index: any) {
@@ -594,6 +614,7 @@ export class ConsignmentNewComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log(result)
         const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
         itemDetailsFormArray.clear();
         result.forEach((item: any) => {
@@ -614,92 +635,51 @@ export class ConsignmentNewComponent {
             volumeUnit: item.volumeUnit,
             weight: item.weight,
             weightUnit: item.weightUnit,
-            width: item.width
+            width: item.width,
+            referenceImageList: this.patchReferenceImages(item.referenceImageList),
           }));
         });
+        console.log(this.piece)
       }
     });
   }
 
-  dimension(type: any = 'New', index: any) {
+  dimension(type: any = 'New', module: any, index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
       disableClose: true,
-      width: '80%',
-      maxWidth: '90%',
+      width: '70%',
+      maxWidth: '82%',
       position: { top: '6.5%', left: '25%' },
-      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index)},
+      data: { pageflow: type, module: module, line: (this.piece.controls.pieceDetails as FormArray).at(index) },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       const control = (this.piece.controls.pieceDetails as FormArray).at(index)
-      control.patchValue(result);
-      console.log(this.piece)
-    })}
-
-
-  selectedFiles: FileList | null = null;
-  selectFiles(event: any, data: any): void {
-    this.selectedFiles = event.target.files;
-
-    // Assuming you have an event object, such as from an input file change event
-    const files: FileList = event.target.files!; // Explicitly type files as FileList
-
-    // Convert FileList to an array of File objects
-    const filesArray: File[] = Array.from(files);
-
-    // Array to hold objects with name and referenceImageUrl
-    let filesWithData: { name: string, referenceImageUrl: string }[] = [];
-
-    // Iterate over each file using forEach
-    filesArray.forEach((file: File) => {
-      // Perform actions with each file here
-      console.log(file.name); // Example action: logging the file name
-
-      // Set reference image URL for each file
-      const referenceImageUrl = `path/to/images/${file.name}`;
-
-      // Create an object with file name and reference image URL
-      const fileData = {
-        name: file.name,
-        referenceImageUrl: file.name,
-      };
-
-      // Push the object into the array
-      filesWithData.push(fileData);
-    });
-
-    // Now filesWithData array contains objects with both name and referenceImageUrl
-    console.log(filesWithData);
-
-
-
-    this.uploadFile(filesWithData);
+    })
   }
 
-  uploadFile(data: any) {
-    if (!this.selectedFiles || this.selectedFiles.length === 0) {
-      console.log('No files selected for upload.');
-      return;
-    }
-    console.log(data)
-    this.patchReferenceImages(data),
-      console.log(this.piece)
-
-    const location = 'test'
-    this.service.uploadFiles(this.selectedFiles, location).subscribe({
-      next: (result) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          key: 'br',
-          detail: 'File uploaded successfully',
-        });
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
+  imageupload(type: any = 'New', index: any) {
+    const dialogRef = this.dialog.open(ImageUploadComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '25%' },
+      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray },
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const imageDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray;
+        imageDetailsFormArray.clear();
+        result.forEach((image: any) => {
+          imageDetailsFormArray.push(this.fb.group({
+            imageRefId: image.imageRefId,
+            pdfUrl: image.pdfUrl,
+            referenceImageUrl: image.referenceImageUrl,
+          }));
+        });
+      }
+    })
   }
 
   save() {
@@ -892,15 +872,9 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      if (this.pageToken.pageflow != 'New') {
         this.activeIndex = 5;
         this.submitted = false;
         this.disabledBilling = false;
-      } else {
-        this.saveFinal();
-      }
-
-
     }
   }
   saveBilling() {
@@ -947,7 +921,8 @@ export class ConsignmentNewComponent {
       createdOn: ['',],
       createdBy: [,],
       companyId: [this.auth.companyId,],
-      languageId: [this.auth.languageId,]
+      languageId: [this.auth.languageId,],
+      invoiceDate: this.cs.jsonDate(this.consignment.controls.invoiceDateFE.value)
     });
 
     if (this.pageToken.pageflow != 'New') {
@@ -980,6 +955,15 @@ export class ConsignmentNewComponent {
           this.cs.commonerrorNew(err);
         }
       })
+    }
+  }
+
+
+  showPaymentTypeFields = false;
+  paymentChange() {
+    const paymentTypeValue = this.shipmentInfo.controls.paymentType.value;
+    if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'cod') {
+      this.showPaymentTypeFields = true;
     }
   }
 }

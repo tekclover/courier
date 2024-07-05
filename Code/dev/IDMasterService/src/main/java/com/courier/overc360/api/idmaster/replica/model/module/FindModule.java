@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class FindModule {
 
-    private String companyId;
+    private List<String> companyId;
     private List<String> moduleId;
     private List<String> languageId;
     private List<Long> menuId;

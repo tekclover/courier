@@ -131,7 +131,7 @@ export class PreAlertManifestComponent {
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
       disableClose: true,
-      width: '70%',
+      width: '60%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: { line: this.selectedPreAlertManifest, module: 'Pre Alert Manifest', body: 'This action cannot be undone. All values associated with this field will be lost.' },
@@ -145,7 +145,7 @@ export class PreAlertManifestComponent {
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.DeletePreAlertManifest(lines).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' deleted successfully' });
         this.spin.hide();
@@ -191,7 +191,7 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.console.Create(this.selectedPreAlertManifest).subscribe({next: (res) =>{
+    this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({next: (res) =>{
       this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
       this.spin.hide();
     }, error: (err) =>{

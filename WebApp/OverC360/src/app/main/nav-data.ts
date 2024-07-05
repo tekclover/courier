@@ -317,6 +317,12 @@ export const navbarData: INavbarData[] = [
         srcDark: './assets/sidebar/airport/Airport HubDark.png',
         label: 'Airport',
         items: [
+            
+            {
+                routerId: 5105,
+                routerLink: '/main/airport/preAlertManifest',
+                label: 'Pre Alert Manifest'
+            },
             {
                 routerId: 5101,
                 routerLink: '/main/airport/bondedManifest',
@@ -337,11 +343,6 @@ export const navbarData: INavbarData[] = [
                 routerLink: '/main/airport/ccr',
                 label: 'CCR'
             },
-            {
-                routerId: 5105,
-                routerLink: '/main/airport/shippingLabel',
-                label: 'Shipping Label'
-            }
         ]
     },
     {

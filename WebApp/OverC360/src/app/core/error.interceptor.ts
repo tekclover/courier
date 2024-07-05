@@ -30,6 +30,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                 if(request.url.includes('/doc-storage/multiUpload')){
                     return throwError(error);
                 }
+                if(request.url.includes('/consignment/Upload')){
+                    return throwError(error);
+                }
                 return this.handle401Error(request, next, error);
             }
             return throwError(error);

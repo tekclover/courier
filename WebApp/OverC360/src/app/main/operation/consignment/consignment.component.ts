@@ -59,7 +59,7 @@ export class ConsignmentComponent {
       { field: 'serviceTypeText', header: 'Service Type' , style: 'min-width: 5rem'},
       { field: 'loadType', header: 'Document Type', style: 'min-width: 5rem' },
       { field: 'paymentType', header: 'Payment Type' , style: 'min-width: 5rem'},
-      { field: 'incoTerms', header: 'Shipment Type' , style: 'min-width: 5rem'},
+      { field: 'incoTerms', header: 'Inco Terms' , style: 'min-width: 5rem'},
       { field: 'createdBy', header: 'Created By' , style: 'min-width: 5rem'},
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -150,7 +150,7 @@ export class ConsignmentComponent {
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
       disableClose: true,
-      width: '70%',
+      width: '60%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: {
@@ -169,7 +169,7 @@ export class ConsignmentComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.consignmentId).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
@@ -209,5 +209,24 @@ export class ConsignmentComponent {
 
   downloadLabel(line:any){
     this.pdf.generatePdfBarocde(line);
+  }
+
+  selectedFiles: File | null = null;
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    this.selectedFiles = file; 
+    this.service.uploadConsignment(this.selectedFiles).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uploaded',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
   }
 }

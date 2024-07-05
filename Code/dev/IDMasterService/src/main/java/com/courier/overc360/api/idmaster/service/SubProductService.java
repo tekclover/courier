@@ -346,7 +346,7 @@ public class SubProductService {
                 newSubProduct.setUpdatedBy(loginUserID);
                 newSubProduct.setUpdatedOn(new Date());
                 SubProduct subProduct = subProductRepository.save(newSubProduct);
-                log.info("Created subProduct --> {}", subProduct);
+                log.info("created subProduct --> {}", subProduct);
                 updatedSubProductList.add(subProduct);
             }
             return updatedSubProductList;
