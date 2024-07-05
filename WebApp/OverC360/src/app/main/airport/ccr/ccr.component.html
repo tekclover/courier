@@ -36,7 +36,7 @@
         selectionMode="multiple"  [(selection)]="selectedCcr"  sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
             [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consignmentId"  rowExpandMode="single">
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"  rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
@@ -94,12 +94,6 @@
                                     <p class="mb-0 valueText chip">{{rowData.itemTotalPrice}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">CCR ID</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.ccrId}}</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Customs CCR No</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
@@ -120,7 +114,7 @@
                                     <p class="mb-0 valueText chip">{{rowData.paymentType}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Pcs</p>
+                                    <p class="mb-0 headerText">No of Pcs</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip">{{rowData.noOfPieceHawb}}</p>

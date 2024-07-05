@@ -48,8 +48,7 @@ export class CcrComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'shipperName', header: 'shipper Name' },
-      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'eventText', header: 'Event' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -71,8 +70,6 @@ export class CcrComponent {
     obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
-        res = this.cs.removeDuplicatesFromArrayList(res, 'ccrId')
         this.ccrTable = res;
         this.spin.hide();
       }, error: (err) => {
