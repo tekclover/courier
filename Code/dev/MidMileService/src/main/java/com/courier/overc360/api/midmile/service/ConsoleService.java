@@ -585,13 +585,6 @@ public class ConsoleService {
                     String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 
                     for (AddConsole console : subGroup) {
-                        boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
-                                console.getLanguageId(), console.getCompanyId(),
-                                console.getPartnerId(), console.getMasterAirwayBill(),
-                                console.getHouseAirwayBill()) == 1;
-                        if (duplicateConsole) {
-                            throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + console.getHouseAirwayBill());
-                        }
 
                         // Pass ConsignmentCurrency
                         IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
