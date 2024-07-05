@@ -2201,4 +2201,61 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(notificationList, HttpStatus.OK);
     }
 
+    //==================================================AirportCode===================================================
+    // Get All AirportCode Details
+
+    @ApiOperation(response = AirportCode[].class, value = "Get all AirportCode details")
+    @GetMapping("/airportCode")
+    public ResponseEntity<?> getAllAirportCode(@RequestParam String authToken) {
+        AirportCode[] airportCode = idmasterService.getAllAirportCode(authToken);
+        return new ResponseEntity<>(airportCode, HttpStatus.OK);
+    }
+
+    // Get AirportCode
+    @ApiOperation(response = AirportCode.class, value = "Get AirportCode") // label for swagger
+    @GetMapping("/airportCode/{airportCode}")
+    public ResponseEntity<?> getAirportCode(@PathVariable String airportCode, @RequestParam String languageId,
+                                            @RequestParam String companyId, @RequestParam String authToken) {
+        AirportCode dbAirportCode = idmasterService.getAirportCode(languageId, companyId, airportCode, authToken);
+        return new ResponseEntity<>(dbAirportCode, HttpStatus.OK);
+    }
+
+    // Create AirportCode
+    @ApiOperation(response = AirportCode.class, value = "Create new AirportCode") // label for swagger
+    @PostMapping("/airportCode")
+    public ResponseEntity<?> postAirportCode(@RequestBody AddAirportCode addAirportCode, @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        AirportCode createdAirportCode = idmasterService.createAirportCode(addAirportCode, loginUserID, authToken);
+        return new ResponseEntity<>(createdAirportCode, HttpStatus.OK);
+    }
+
+    // Update AirportCode
+    @ApiOperation(response = AirportCode.class, value = "Update AirportCode") // label for swagger
+    @PatchMapping("/airportCode/{airportCode}")
+    public ResponseEntity<?> patchAirportCode(@PathVariable String airportCode, @RequestParam String languageId, @RequestParam String companyId,
+                                              @RequestBody UpdateAirportCode updateAirportCode, @RequestParam String loginUserID,
+                                              @RequestParam String authToken) {
+        AirportCode updatedAirportCode = idmasterService.updateAirportCode(languageId, companyId, airportCode, updateAirportCode, loginUserID, authToken);
+        return new ResponseEntity<>(updatedAirportCode, HttpStatus.OK);
+    }
+
+    // Delete AirportCode
+    @ApiOperation(response = AirportCode.class, value = "Delete AirportCode") // label for swagger
+    @DeleteMapping("/airportCode/{airportCode}")
+    public ResponseEntity<?> deleteAirportCode(@PathVariable String airportCode, @RequestParam String languageId,
+                                               @RequestParam String companyId, @RequestParam String loginUserID,
+                                               @RequestParam String authToken) {
+        idmasterService.deleteAirportCode(languageId, companyId, airportCode, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find AirportCode
+    @ApiOperation(response = AirportCode[].class, value = "Find AirportCode")
+    @PostMapping("/airportCode/find")
+    public ResponseEntity<?> findAirportCode(@Valid @RequestBody FindAirportCode findAirportCode,
+                                             @RequestParam String authToken) throws Exception {
+        AirportCode[] airportCodeList = idmasterService.findAirportCode(findAirportCode, authToken);
+        return new ResponseEntity<>(airportCodeList, HttpStatus.OK);
+    }
+
 }

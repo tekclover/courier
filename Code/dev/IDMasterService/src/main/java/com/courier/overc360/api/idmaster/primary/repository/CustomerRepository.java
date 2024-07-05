@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,6 +24,16 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
     Customer findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
             String languageId, String companyId, String subProductValue, String subProductId,
             String productId, String customerId, Long deletionIndicator);
+
+    List<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndCustomerIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String subProductValue,
+            String customerId, Long deletionIndicator);
+
+    List<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndCustomerIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String customerId, Long deletionIndicator);
+
+    List<Customer> findByLanguageIdAndCompanyIdAndCustomerIdAndDeletionIndicator(
+            String languageId, String companyId, String customerId, Long deletionIndicator);
 
 
     // Updating customerName in ConsignorTable using Stored Procedure
@@ -39,13 +50,13 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
 
     // Updating Customer Name in Consignor Table using SQL Query
     @Modifying
+    @Transactional
     @Query(value = "Update tblconsignor \n" +
             "Set CUSTOMER_NAME = :newCustomerDesc \n" +
             "Where \n" +
             "LANG_ID = :languageId and \n" +
             "C_ID = :companyId and \n" +
             "SUB_PRODUCT_ID = :subProductId and \n" +
-            "SUB_PRODUCT_VALUE = :subProductValue and \n" +
             "PRODUCT_ID = :productId and \n" +
             "CUSTOMER_ID = :customerId and \n" +
             "CUSTOMER_NAME = :oldCustomerDesc and \n" +

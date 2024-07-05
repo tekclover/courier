@@ -195,7 +195,7 @@ public class CompanyService {
                     companyRepository.updateCompanyDescProc(languageId, companyId, oldCompanyDesc, newCompanyName);
                     log.info("new Company Name - {} updated in all Masters Tables", newCompanyName);
                 } catch (Exception e) {
-                    log.info("Failed to update new Company Name updated in all Masters Tables : " + e);
+                    log.error("Failed to update new Company Name in all Masters Tables : " + e);
                     e.printStackTrace();
                     throw new RuntimeException(e);
                 }

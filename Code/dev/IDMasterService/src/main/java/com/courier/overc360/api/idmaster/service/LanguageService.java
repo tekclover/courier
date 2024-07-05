@@ -102,7 +102,7 @@ public class LanguageService {
                     languageRepository.updateLanguageDescProc(languageId, oldLanguageDesc, newLangDesc);
                     log.info("new language Description - {} updated in all Masters Tables", newLangDesc);
                 } catch (Exception e) {
-                    log.info("Failed to update new language Description updated in all Masters Tables : " + e);
+                    log.error("Failed to update new language Description in all Masters Tables : " + e);
                     e.printStackTrace();
                     throw new RuntimeException(e);
                 }

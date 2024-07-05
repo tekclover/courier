@@ -84,6 +84,26 @@ public class SubProductService {
      * @param languageId
      * @param companyId
      * @param subProductId
+     * @return
+     */
+    public List<SubProduct> getSubProductList(String languageId, String companyId, String subProductId) {
+
+        List<SubProduct> dbSubProductList = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
+                languageId, companyId, subProductId, 0L);
+        if (dbSubProductList.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId +
+                    ", subProductId - " + subProductId + " and doesn't exists";
+            // Error Log
+            createSubProductLog5(languageId, companyId, subProductId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbSubProductList;
+    }
+
+    /**
+     * @param languageId
+     * @param companyId
+     * @param subProductId
      * @param subProductValue
      * @return
      */
@@ -120,7 +140,7 @@ public class SubProductService {
             if (duplicateSubProductPresent) {
                 throw new BadRequestException("Record is getting Duplicated with the given values : subProductId - " + addSubProduct.getSubProductId());
             }
-            log.info("new SubProduct --> " + addSubProduct);
+            log.info("new SubProduct --> {}", addSubProduct);
             IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSubProduct.getLanguageId(), addSubProduct.getCompanyId());
             SubProduct newSubProduct = new SubProduct();
             BeanUtils.copyProperties(addSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(addSubProduct));
@@ -199,7 +219,7 @@ public class SubProductService {
                 if (duplicateSubProductPresent) {
                     throw new BadRequestException("Record is getting Duplicated with the given values : subProductId - " + addSubProduct.getSubProductId());
                 }
-                log.info("new SubProduct --> " + addSubProduct);
+                log.info("new SubProduct --> {}", addSubProduct);
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addSubProduct.getLanguageId(), addSubProduct.getCompanyId());
                 SubProduct newSubProduct = new SubProduct();
                 BeanUtils.copyProperties(addSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(addSubProduct));
@@ -242,14 +262,20 @@ public class SubProductService {
             if (updateSubProduct.getSubProductName().isBlank()) {
                 throw new BadRequestException("SubProduct Name cannot be blank");
             }
-            String newSubProductDesc = updateSubProduct.getSubProductName();
             boolean isSubProductNameChanged = !dbSubProduct.getSubProductName().equalsIgnoreCase(updateSubProduct.getSubProductName());
             if (isSubProductNameChanged) {
+                String newSubProductDesc = updateSubProduct.getSubProductName();
                 log.info("new SubProduct Name --> {}", newSubProductDesc);
                 String oldSubProductDesc = dbSubProduct.getSubProductName();
-
-                // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure
-                subProductRepository.updateSubProductDescProc(languageId, companyId, subProductId, oldSubProductDesc, newSubProductDesc);
+                try {
+                    // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure
+                    subProductRepository.updateSubProductDescProc(languageId, companyId, subProductId, oldSubProductDesc, newSubProductDesc);
+                    log.info("new SubProduct Name - {} updated in associated Masters Tables", newSubProductDesc);
+                } catch (Exception e) {
+                    log.error("Failed to update new SubProduct Name in associated Masters Tables : " + e);
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -381,6 +407,14 @@ public class SubProductService {
         }
     }
 
+//    public void deleteSubProductBulk(List<SubProductDeleteInput> subProductDeleteInputList, String loginUserID) {
+//
+//        for (SubProductDeleteInput deleteInput : subProductDeleteInputList) {
+//            deleteSubProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+//                    deleteInput.getSubProductValue(), loginUserID);
+//        }
+//    }
+
     /**
      * Delete SubProducts - bulk
      *
@@ -389,9 +423,24 @@ public class SubProductService {
      */
     public void deleteSubProductBulk(List<SubProductDeleteInput> subProductDeleteInputList, String loginUserID) {
 
-        for (SubProductDeleteInput deleteInput : subProductDeleteInputList) {
-            deleteSubProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-                    deleteInput.getSubProductValue(), loginUserID);
+        if (subProductDeleteInputList != null && !subProductDeleteInputList.isEmpty()) {
+            for (SubProductDeleteInput deleteInput : subProductDeleteInputList) {
+
+                if (deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
+                    // Call normal delete API
+                    deleteSubProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+                            deleteInput.getSubProductValue(), loginUserID);
+                } else {
+                    List<SubProduct> dbSubProductList = getSubProductList(deleteInput.getLanguageId(),
+                            deleteInput.getCompanyId(), deleteInput.getSubProductId());
+                    for (SubProduct dbSubProduct : dbSubProductList) {
+                        dbSubProduct.setDeletionIndicator(1L);
+                        dbSubProduct.setUpdatedBy(loginUserID);
+                        dbSubProduct.setUpdatedOn(new Date());
+                        subProductRepository.save(dbSubProduct);
+                    }
+                }
+            }
         }
     }
 
@@ -531,6 +580,19 @@ public class SubProductService {
             errorLogList.add(errorLog);
         }
         errorLogService.writeLog(errorLogList);
+    }
+
+    private void createSubProductLog5(String languageId, String companyId, String subProductId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(subProductId);
+        errorLog.setMethod("Exception thrown in getSubProductList");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
     }
 
 }

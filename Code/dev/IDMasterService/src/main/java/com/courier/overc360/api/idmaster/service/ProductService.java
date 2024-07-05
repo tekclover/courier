@@ -83,6 +83,47 @@ public class ProductService {
     }
 
     /**
+     * @param languageId
+     * @param companyId
+     * @param subProductId
+     * @param productId
+     * @return
+     */
+    public List<Product> getProductList(String languageId, String companyId, String subProductId, String productId) {
+
+        List<Product> dbProductList = productRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
+                languageId, companyId, subProductId, productId, 0L);
+        if (dbProductList.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+                    + ", subProductId - " + subProductId + " and productId - " + productId + " and doesn't exists";
+            // Error Log
+            createProductLog5(languageId, companyId, subProductId, productId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbProductList;
+    }
+
+    /**
+     * @param languageId
+     * @param companyId
+     * @param productId
+     * @return
+     */
+    public List<Product> getProductList1(String languageId, String companyId, String productId) {
+
+        List<Product> dbProductList = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndDeletionIndicator(
+                languageId, companyId, productId, 0L);
+        if (dbProductList.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+                    + " and productId - " + productId + " and doesn't exists";
+            // Error Log
+            createProductLog6(languageId, companyId, productId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbProductList;
+    }
+
+    /**
      * Create Product
      *
      * @param addProduct
@@ -240,14 +281,20 @@ public class ProductService {
             if (updateProduct.getProductName().isBlank()) {
                 throw new BadRequestException("Product Name cannot be blank");
             }
-            String newProductDesc = updateProduct.getProductName();
             boolean isProductNameChanged = !dbProduct.getProductName().equalsIgnoreCase(updateProduct.getProductName());
             if (isProductNameChanged) {
+                String newProductDesc = updateProduct.getProductName();
                 log.info("new Product Name --> {}", newProductDesc);
                 String oldProductDesc = dbProduct.getProductName();
-
-                // Updating productName in Consignor & Customer Tables using Stored Procedure
-                productRepository.updateProductDescProc(languageId, companyId, subProductId, productId, oldProductDesc, newProductDesc);
+                try {
+                    // Updating productName in Consignor & Customer Tables using Stored Procedure
+                    productRepository.updateProductDescProc(languageId, companyId, subProductId, productId, oldProductDesc, newProductDesc);
+                    log.info("new Product Name - {} updated in associated Masters Tables", newProductDesc);
+                } catch (Exception e) {
+                    log.error("Failed to update new Product Name in associated Masters Tables : " + e);
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -349,7 +396,7 @@ public class ProductService {
                 newProduct.setUpdatedBy(loginUserID);
                 newProduct.setUpdatedOn(new Date());
                 Product product = productRepository.save(newProduct);
-                log.info("Created Product --> {}", product);
+                log.info("created Product --> {}", product);
                 updatedProductList.add(product);
             }
             return updatedProductList;
@@ -359,6 +406,14 @@ public class ProductService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    // Delete Product Properties
+    private void deleteProductProperties(Product dbProduct, String loginUserID) {
+        dbProduct.setDeletionIndicator(1L);
+        dbProduct.setUpdatedBy(loginUserID);
+        dbProduct.setUpdatedOn(new Date());
+        productRepository.save(dbProduct);
     }
 
     /**
@@ -375,10 +430,7 @@ public class ProductService {
 
         Product dbProduct = getProduct(languageId, companyId, subProductId, productId, subProductValue);
         if (dbProduct != null) {
-            dbProduct.setDeletionIndicator(1L);
-            dbProduct.setUpdatedBy(loginUserID);
-            dbProduct.setUpdatedOn(new Date());
-            productRepository.save(dbProduct);
+            deleteProductProperties(dbProduct, loginUserID);
         } else {
             // Error Log
             createProductLog1(languageId, companyId, subProductId, subProductValue, productId, "Error in deleting ProductId - " + productId);
@@ -394,9 +446,28 @@ public class ProductService {
      */
     public void deleteProductBulk(List<ProductDeleteInput> productDeleteInputList, String loginUserID) {
 
-        for (ProductDeleteInput deleteInput : productDeleteInputList) {
-            deleteProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                    deleteInput.getSubProductId(), deleteInput.getProductId(), deleteInput.getSubProductValue(), loginUserID);
+        if (productDeleteInputList != null && !productDeleteInputList.isEmpty()) {
+            for (ProductDeleteInput deleteInput : productDeleteInputList) {
+
+                if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty() &&
+                        deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
+                    // Call normal delete API
+                    deleteProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                            deleteInput.getSubProductId(), deleteInput.getProductId(), deleteInput.getSubProductValue(), loginUserID);
+
+                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()) {
+                    List<Product> dbProductList = getProductList(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                            deleteInput.getSubProductId(), deleteInput.getProductId());
+                    for (Product dbProduct : dbProductList) {
+                        deleteProductProperties(dbProduct, loginUserID);
+                    }
+                } else {
+                    List<Product> dbProductList = getProductList1(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getProductId());
+                    for (Product dbProduct : dbProductList) {
+                        deleteProductProperties(dbProduct, loginUserID);
+                    }
+                }
+            }
         }
     }
 
@@ -535,6 +606,34 @@ public class ProductService {
             errorLogList.add(errorLog);
         }
         errorLogService.writeLog(errorLogList);
+    }
+
+    private void createProductLog5(String languageId, String companyId, String subProductId,
+                                   String productId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(productId);
+        errorLog.setReferenceField1(subProductId);
+        errorLog.setMethod("Exception thrown in getProductList");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createProductLog6(String languageId, String companyId, String productId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(productId);
+        errorLog.setMethod("Exception thrown in getProductList1");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
     }
 
 }

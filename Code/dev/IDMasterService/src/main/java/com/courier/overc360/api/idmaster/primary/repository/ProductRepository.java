@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,13 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
 
     Product findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(
             String languageId, String companyId, String productId, String subProductId, Long deletionIndicator);
+
+    List<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);
+
+    List<Product> findByLanguageIdAndCompanyIdAndProductIdAndDeletionIndicator(
+            String languageId, String companyId, String productId, Long deletionIndicator);
+
 
     // Updating productName in Consignor & Customer Tables using Stored Procedure
     @Transactional
