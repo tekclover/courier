@@ -129,6 +129,16 @@ public class PdfController {
                 .body(mergePdf);
     }
 
+    @PostMapping("/merge/batch")
+    public ResponseEntity<?> pdfMergeBatch(@RequestBody List<PDFMerger> request) throws IOException {
+        try {
+            List<String> fileNameWithPath = pdfMergeService.batchPdfMerge(request);
+            return new ResponseEntity <> (fileNameWithPath, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity <> ("Exception: Merge Failed", HttpStatus.OK);
+        }
+    }
+
     @GetMapping("/splitPdf")
     public String splitPdf(@RequestParam String sourceFilePath, @RequestParam String destinationDir) {
         try {

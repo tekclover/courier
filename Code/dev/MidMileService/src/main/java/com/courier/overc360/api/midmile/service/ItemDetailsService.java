@@ -221,6 +221,7 @@ public class ItemDetailsService {
 
                         imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
                         imageReferenceRecord.setReferenceField2(downloadDocument);
+                        imageReferenceRecord.setDeletionIndicator(0L);
                         imageReferenceRecord.setUpdatedBy(loginUserID);
                         imageReferenceRecord.setUpdatedOn(new Date());
                         ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
