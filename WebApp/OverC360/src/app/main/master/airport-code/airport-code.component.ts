@@ -1,25 +1,25 @@
 import { Component } from '@angular/core';
-import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
+import { AirportCodeService } from './airport-code.service';
 import { DatePipe } from '@angular/common';
-import { AuthService } from '../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
+import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
-import { CityService } from './city.service';
+import { AuthService } from '../../../core/core';
 
 @Component({
-  selector: 'app-city',
-  templateUrl: './city.component.html',
-  styleUrl: './city.component.scss'
+  selector: 'app-airport-code',
+  templateUrl: './airport-code.component.html',
+  styleUrl: './airport-code.component.scss'
 })
-export class CityComponent {
+export class AirportCodeComponent {
 
-  cityTable: any[] = [];
-  selectedCity: any[] = [];
+  airportCodeTable: any[] = [];
+  selectedAirportCode: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
@@ -28,7 +28,7 @@ export class CityComponent {
     private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
-    private service: CityService,
+    private service: AirportCodeService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
@@ -39,7 +39,7 @@ export class CityComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'City - List'];
+    const dataToSend = ['Master', 'Airport Code - List'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,13 +47,11 @@ export class CityComponent {
   }
 
   callTableHeader() {
-    this.cols = [
+    this.cols = [    
       { field: 'companyName', header: 'Company' },
-      { field: 'cityId', header: ' City ID' },
-      { field: 'cityName', header: 'City Name' },
+      { field: 'airportCode', header: 'Airport Code' },
+      { field: 'airportText', header: 'Airport Name' },
       { field: 'countryName', header: 'Country' },
-      { field: 'provinceName', header: 'Province' },
-      { field: 'districtName', header: 'District' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
       { field: 'createdBy', header: 'Created By' },
@@ -63,8 +61,6 @@ export class CityComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'countryId', header: 'Country ID' },
-      { field: 'provinceId', header: 'Province ID' },
-      { field: 'districtId', header: 'District ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
@@ -92,7 +88,7 @@ export class CityComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           console.log(res);
-          this.cityTable = res;
+          this.airportCodeTable = res;
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -104,9 +100,9 @@ export class CityComponent {
 
 
   onChange() {
-    const choosen = this.selectedCity[this.selectedCity.length - 1];
-    this.selectedCity.length = 0;
-    this.selectedCity.push(choosen);
+    const choosen = this.selectedAirportCode[this.selectedAirportCode.length - 1];
+    this.selectedAirportCode.length = 0;
+    this.selectedAirportCode.push(choosen);
   }
 
   customTable() {
@@ -120,22 +116,22 @@ export class CityComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedCity[0]);
+        this.deleterecord(this.selectedAirportCode[0]);
       }
     });
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedCity.length === 0 && type != 'New') {
+    if (this.selectedAirportCode.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCity[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/city-new/' + paramdata]);
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedAirportCode[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/master/airportCode-new/' + paramdata]);
     }
   }
 
   deleteDialog() {
-    if (this.selectedCity.length === 0) {
+    if (this.selectedAirportCode.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
@@ -144,12 +140,12 @@ export class CityComponent {
       width: '60%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedCity, module: 'City', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedAirportCode, module: 'Airport Code', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedCity[0]);
+        this.deleterecord(this.selectedAirportCode[0]);
       }
     });
   }
@@ -157,7 +153,7 @@ export class CityComponent {
     this.spin.show();
     this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.cityId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.airportCode + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
@@ -168,7 +164,7 @@ export class CityComponent {
   }
 
   downloadExcel() {
-    const exportData = this.cityTable.map(item => {
+    const exportData = this.airportCodeTable.map(item => {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
@@ -182,10 +178,8 @@ export class CityComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'City');
+    this.cs.exportAsExcel(exportData, 'Airport Code');
   }
 }
-
-
 
 
