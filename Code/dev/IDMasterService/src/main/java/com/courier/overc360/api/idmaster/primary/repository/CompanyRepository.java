@@ -21,7 +21,7 @@ public interface CompanyRepository extends JpaRepository<Company, String>, JpaSp
     // Update Company Name in all Masters Tables
     @Transactional
     @Procedure(procedureName = "company_desc_update_proc")
-    void companyDescUpdateProc(
+    void updateCompanyDescProc(
             @Param(value = "languageId") String languageId,
             @Param(value = "companyId") String companyId,
             @Param(value = "oldLanguageDesc") String oldLanguageDesc,

@@ -85,6 +85,31 @@ public class LanguageService {
         }
     }
 
+    // Update Language Description in all Masters Tables using Stored Procedure
+    private void updateLangDescSP(String languageId, UpdateLanguage updateLanguage, Language dbLanguage) {
+
+        if (updateLanguage.getLanguageDescription() != null) {
+            if (updateLanguage.getLanguageDescription().isBlank()) {
+                throw new BadRequestException("Language Description cannot be blank");
+            }
+            boolean isLangDescChanged = !dbLanguage.getLanguageDescription().equalsIgnoreCase(updateLanguage.getLanguageDescription());
+            if (isLangDescChanged) {
+                String newLangDesc = updateLanguage.getLanguageDescription();
+                log.info("new Language Description --> {}", newLangDesc);
+                String oldLanguageDesc = dbLanguage.getLanguageDescription();
+                try {
+                    // Update Language Desc in all Masters Tables
+                    languageRepository.updateLanguageDescProc(languageId, oldLanguageDesc, newLangDesc);
+                    log.info("new language Description - {} updated in all Masters Tables", newLangDesc);
+                } catch (Exception e) {
+                    log.info("Failed to update new language Description updated in all Masters Tables : " + e);
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
     /**
      * Update Language
      *
@@ -100,23 +125,6 @@ public class LanguageService {
             throws IllegalAccessException, InvocationTargetException {
         try {
             Language dbLanguage = getLanguage(languageId);
-//            if (updateLanguage.getLanguageDescription() != null) {
-//                if (updateLanguage.getLanguageDescription().isBlank()) {
-//                    throw new BadRequestException("Language Description cannot be blank");
-//                }
-//                boolean isLangDescChanged = !dbLanguage.getLanguageDescription().equalsIgnoreCase(updateLanguage.getLanguageDescription());
-//                if (isLangDescChanged) {
-//                    String oldLanguageDesc = dbLanguage.getLanguageDescription();
-//                    BeanUtils.copyProperties(updateLanguage, dbLanguage, CommonUtils.getNullPropertyNames(updateLanguage));
-//                    dbLanguage.setUpdatedBy(loginUserID);
-//                    dbLanguage.setUpdatedOn(new Date());
-//                    Language updatedLanguage = languageRepository.save(dbLanguage);
-//
-//                    // Update Language Desc in all Masters Tables
-//                    languageRepository.languageDescUpdateProc(languageId, oldLanguageDesc, updateLanguage.getLanguageDescription());
-//                    return updatedLanguage;
-//                }
-//            }
             BeanUtils.copyProperties(updateLanguage, dbLanguage, CommonUtils.getNullPropertyNames(updateLanguage));
             dbLanguage.setUpdatedBy(loginUserID);
             dbLanguage.setUpdatedOn(new Date());
@@ -194,7 +202,7 @@ public class LanguageService {
 
         ReplicaLanguageSpecification spec = new ReplicaLanguageSpecification(findLanguage);
         List<ReplicaLanguage> results = replicaLanguageRepository.findAll(spec);
-        log.info("found Languages --> " + results);
+        log.info("found Languages --> {}", results);
         return results;
     }
 
