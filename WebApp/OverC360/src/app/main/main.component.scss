@@ -292,7 +292,7 @@ mat-sidenav {
   width: 180px;
   height: 250px;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: scroll;
   transition: all .4s ease-in;
 
   .listSelector {
