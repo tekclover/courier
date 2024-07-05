@@ -95,7 +95,7 @@ export class MenuComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
   onChange() {

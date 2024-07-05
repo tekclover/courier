@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -59,6 +60,19 @@ public class CommonService {
 		return result.getBody();
 	}
 	
+	public String[] batchMergePdf(List<PDFMerger> pdfMergerList) {
+		HttpHeaders headers = new HttpHeaders();
+		AuthToken authTokenForCommonService = authTokenService.getCommonServiceAuthToken();
+		String authToken = authTokenForCommonService.getAccess_token();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("User-Agent", "RestTemplate");
+		headers.add("Authorization", "Bearer " + authToken);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "pdf/merge/batch");
+		HttpEntity<?> entity = new HttpEntity<>(pdfMergerList, headers);
+		ResponseEntity<String[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String[].class);
+		return result.getBody();
+	}
+
 	public String downloadPdf(String sourceUrl, String destinationDir, String documentName) {
 		HttpHeaders headers = new HttpHeaders();
 		AuthToken authTokenForCommonService = authTokenService.getCommonServiceAuthToken();

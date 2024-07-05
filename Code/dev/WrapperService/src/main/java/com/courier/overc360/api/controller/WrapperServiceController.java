@@ -18,13 +18,16 @@ import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.nio.file.Files;
@@ -34,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @CrossOrigin(origins = "*")
@@ -181,6 +186,39 @@ public class WrapperServiceController {
             return new ResponseEntity <> (fileNames, HttpStatus.OK) ;
         } catch (Exception e) {
             return new ResponseEntity <> ("Fail to upload files!", HttpStatus.EXPECTATION_FAILED) ;
+        }
+    }
+
+    @ApiOperation(response = Optional.class, value = "Multiple Pdf Merge and download as Zip") // label for swagger
+    @PostMapping("/pdf/downloadZip")
+    public void downloadFile(HttpServletResponse response, @RequestBody List<PDFMerger> pdfMergerList) {
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=download.zip");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        String[] fileNames = commonService.batchMergePdf(pdfMergerList);
+
+        log.info("############# file size ###########" + fileNames);
+
+        try (ZipOutputStream zippedOut = new ZipOutputStream(response.getOutputStream())) {
+            for (String file : fileNames) {
+                FileSystemResource resource = new FileSystemResource(file);
+
+                ZipEntry e = new ZipEntry(resource.getFilename());
+                // Configure the zip entry, the properties of the file
+                e.setSize(resource.contentLength());
+                e.setTime(System.currentTimeMillis());
+                // etc.
+                zippedOut.putNextEntry(e);
+                // And the content of the resource:
+                StreamUtils.copy(resource.getInputStream(), zippedOut);
+                zippedOut.closeEntry();
+            }
+            zippedOut.finish();
+        } catch (Exception e) {
+            // Exception handling goes here
+            throw new BadRequestException("Merging Pdf Failed");
         }
     }
 

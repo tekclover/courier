@@ -99,7 +99,7 @@ export class CountryMappingComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
   onChange() {

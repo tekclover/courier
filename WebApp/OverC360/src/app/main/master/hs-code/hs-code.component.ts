@@ -97,7 +97,7 @@ export class HsCodeComponent {
           this.cs.commonerrorNew(err);
         },
       });
-    }, 600);
+    }, 1000);
   }
 
   onChange() {

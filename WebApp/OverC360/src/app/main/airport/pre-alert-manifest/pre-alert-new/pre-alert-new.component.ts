@@ -66,6 +66,7 @@ export class PreAlertNewComponent {
     destinationDetails: this.DestinationDetails,
     goodsDescription: [],
     consigneeName: [],
+    incoTerms: [],
     shipperName: [],
     description: [],
     weight: [,],

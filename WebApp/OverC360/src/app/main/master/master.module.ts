@@ -36,6 +36,8 @@ import { ConsignorComponent } from './consignor/consignor.component';
 import { CustomerNewComponent } from './customer/customer-new/customer-new.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomerValueComponent } from './customer/customer-value/customer-value.component';
+import { AirportCodeComponent } from './airport-code/airport-code.component';
+import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
 
 
 @NgModule({
@@ -73,6 +75,8 @@ import { CustomerValueComponent } from './customer/customer-value/customer-value
     CustomerComponent,
     CustomerNewComponent,
     CustomerValueComponent,
+    AirportCodeComponent,
+    AirportCodeNewComponent,
 
   ],
   imports: [

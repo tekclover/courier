@@ -93,7 +93,7 @@ export class LoadTypeComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
 

@@ -25,7 +25,7 @@
             <button (click)="createConsole()" type="button" class="btn ml-2 addNewbuttom hoverButton"><i
                 class="bi bi-plus-circle pr-2"></i>Console</button>
                 <button (click)="createManifest()" type="button" class="btn ml-2  addNewbuttom hoverButton"><i
-                    class="bi bi-plus-circle pr-2"></i>Manifest</button>
+                    class="bi bi-plus-circle pr-2"></i>Bonded</button>
         </div>
     </div>
 
@@ -144,6 +144,13 @@
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip">{{rowData.consigneeName}}</p>
+                                </div>
+
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 headerText">Inco Terms</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 valueText chip">{{rowData.incoTerms}}</p>
                                 </div>
                             </div>
                         </div>
