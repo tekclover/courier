@@ -216,6 +216,14 @@ export class SubProductNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
+      this.subProductArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.subProductId = this.form.controls.subProductId.value;
+        x.subProductName = this.form.controls.subProductName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
       this.service.UpdateBulk(this.subProductArray).subscribe({
         next: (res) => {
           this.messageService.add({

@@ -199,6 +199,14 @@ export class ProductNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
+      this.productArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.productId = this.form.controls.productId.value;
+        x.productName = this.form.controls.productName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
       this.service.UpdateBulk(this.productArray).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -252,8 +260,8 @@ export class ProductNewComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.productId = [line.productId];
-    // obj.referenceField1 = line.referenceField1;
+    obj.subProductId = [line.subProductId];
+
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
