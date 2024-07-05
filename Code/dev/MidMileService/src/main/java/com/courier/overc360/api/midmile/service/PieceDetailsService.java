@@ -222,17 +222,19 @@ public class PieceDetailsService {
                             for (ReferenceImageList refImage : addPieceDetails.getReferenceImageList()) {
                                 //CommonService GetFileName
                                 String downloadDocument = commonService.downLoadDocument(refImage.getReferenceImageUrl(), "document", "image");
-                                ImageReference imageReference = imageReferenceService.createImageReference(
-                                        languageId, companyId, partnerId, partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null,
-                                        PIECE_ID, null, refImage.getReferenceImageUrl(), "P_ID", downloadDocument, loginUserID);
+                                if (downloadDocument != null) {
+                                    ImageReference imageReference = imageReferenceService.createImageReference(
+                                            languageId, companyId, partnerId, partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null,
+                                            PIECE_ID, null, refImage.getReferenceImageUrl(), "P_ID", downloadDocument, loginUserID);
 
-                                //ReferenceImage set
-                                ReferenceImageList refImageList = new ReferenceImageList();
-                                refImageList.setImageRefId(imageReference.getImageRefId());
-                                refImageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
-                                refImageList.setPdfUrl(imageReference.getReferenceField2());
+                                    //ReferenceImage set
+                                    ReferenceImageList refImageList = new ReferenceImageList();
+                                    refImageList.setImageRefId(imageReference.getImageRefId());
+                                    refImageList.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+                                    refImageList.setPdfUrl(imageReference.getReferenceField2());
 
-                                referenceImageList.add(refImageList);
+                                    referenceImageList.add(refImageList);
+                                }
                             }
                         }
 
@@ -432,6 +434,9 @@ public class PieceDetailsService {
             dbPieceDetails.setUpdatedBy(loginUserID);
             dbPieceDetails.setUpdatedOn(new Date());
 
+            //Multiple ImageDelete
+            imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, pieceId, loginUserID);
+
             //Delete ItemDetails
             itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);
             pieceDetailsRepository.save(dbPieceDetails);
@@ -464,10 +469,12 @@ public class PieceDetailsService {
                     dbPieceDetails.setUpdatedBy(loginUserID);
                     dbPieceDetails.setUpdatedOn(new Date());
 
-                    //Delete ItemDetails
-                    itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, dbPieceDetails.getPieceId(), loginUserID);
+                    //MultipleItem Delete
+                    itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
 
-                    imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, dbPieceDetails.getPieceId());
+                    //MultipleImage Delete
+                    imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, loginUserID);
+
                     pieceDetailsRepository.save(dbPieceDetails);
 
                 } else {
