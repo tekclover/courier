@@ -52,7 +52,8 @@
                             [value]="rowData"></p-checkbox>
                     </td>
                     <td style="width: 5rem; justify-content: center;">
-                        <i type="button" (click)="downloadLabel(rowData)" style="font-size: 1.1rem;" class=" textOrange bi bi-file-earmark-pdf-fill"></i>                    </td>
+                        <img type="button" (click)="downloadLabel(rowData)" src="./assets/common/document.png" alt="" srcset=""
+                        style="margin: 0 5px; height: 1.3rem;">                  </td>
                     <td *ngFor="let col of columns" [style]="col.style">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
                             {{ rowData[col.field] }}
