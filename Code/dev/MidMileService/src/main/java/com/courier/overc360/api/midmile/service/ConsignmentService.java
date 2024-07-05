@@ -334,7 +334,7 @@ public class ConsignmentService {
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
             dbConsignmentEntity.setStatusId("2");
             dbConsignmentEntity.setDeletionIndicator(0L);
-            dbConsignmentEntity.setStatusDescription("CONSIGNMENT UPDATED ");
+            dbConsignmentEntity.setStatusDescription("Consignment Updated");
             dbConsignmentEntity.setUpdatedBy(loginUserID);
             dbConsignmentEntity.setUpdatedOn(new Date());
 
