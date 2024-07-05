@@ -262,6 +262,7 @@ public class ItemDetailsService {
             dbItemDetails.setDeletionIndicator(1L);
             dbItemDetails.setUpdatedBy(loginUserID);
             dbItemDetails.setUpdatedOn(new Date());
+            imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, loginUserID);
             itemDetailsRepository.save(dbItemDetails);
         } else {
             // Error Log
@@ -283,16 +284,18 @@ public class ItemDetailsService {
      */
     public void deleteItemDetails(String languageId, String companyId, String partnerId, String masterAirwayBill,
                                   String houseAirwayBill, String pieceId, String loginUserID) {
-        ItemDetails dbItemDetails = itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+        List<ItemDetails> dbItemDetails = itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
                 languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, 0L);
         if (dbItemDetails != null) {
-            dbItemDetails.setDeletionIndicator(1L);
-            dbItemDetails.setUpdatedBy(loginUserID);
-            dbItemDetails.setUpdatedOn(new Date());
-            itemDetailsRepository.save(dbItemDetails);
+            for (ItemDetails itemDetails : dbItemDetails) {
+                itemDetails.setDeletionIndicator(1L);
+                itemDetails.setUpdatedBy(loginUserID);
+                itemDetails.setUpdatedOn(new Date());
+                itemDetailsRepository.save(itemDetails);
+            }
         } else {
             // Error Log
-            createItemDetailsLog3(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, "Error in deleting ItemId - " + dbItemDetails.getPieceItemId());
+            createItemDetailsLog3(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, "Error in deleting ItemId " );
             throw new BadRequestException("Error in deleting PieceId - " + pieceId);
         }
     }
@@ -585,7 +588,7 @@ public class ItemDetailsService {
                 newItemDetails.setPartnerHouseAirwayBill(partnerHawBill);
                 newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
                 newItemDetails.setConsignmentId(consignmentId);
-
+                newItemDetails.setHsCode(hsCode);
                 newItemDetails.setDeletionIndicator(0L);
                 newItemDetails.setCreatedBy(loginUserID);
                 newItemDetails.setCreatedOn(new Date());

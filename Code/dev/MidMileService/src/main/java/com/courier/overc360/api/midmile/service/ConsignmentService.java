@@ -276,12 +276,9 @@ public class ConsignmentService {
             }
 
             // PieceDetails Save
-            List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(
-                    companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
-                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(),
-                    newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), loginUserId
-            );
+            List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), loginUserId);
 
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             for (AddPieceDetails pd : pieceDetails) {
@@ -325,7 +322,7 @@ public class ConsignmentService {
 
             if (dbConsignmentEntity == null) {
                 throw new BadRequestException("Given Values Doesn't exist CompanyId " + dbConsignment.getCompanyId() + " LanguageId " + dbConsignment.getLanguageId() +
-                        " PartnerId " + dbConsignmentEntity.getPartnerId() + " MasterAirwayBillNo " + dbConsignment.getMasterAirwayBill() + " HouseAirwayBillNo " + dbConsignment.getHouseAirwayBill());
+                        " PartnerId " + dbConsignment.getPartnerId() + " MasterAirwayBillNo " + dbConsignment.getMasterAirwayBill() + " HouseAirwayBillNo " + dbConsignment.getHouseAirwayBill());
             }
 
             UpdateConsignment addConsignment = new UpdateConsignment();
@@ -397,7 +394,7 @@ public class ConsignmentService {
             //PieceDetails Update
             if (dbConsignment.getPieceDetails() != null && !dbConsignment.getPieceDetails().isEmpty()) {
                 List<UpdatePieceDetails> savedPieceDetails = pieceDetailsService.updatePieceDetails(dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getPartnerId(),
-                        dbConsignment.getMasterAirwayBill(), dbConsignment.getHouseAirwayBill(), dbConsignment.getPieceDetails(), loginUserID);
+                        dbConsignment.getMasterAirwayBill(), dbConsignment.getHouseAirwayBill(), dbConsignment.getPieceDetails(), loginUserID );
                 addConsignment.setPieceDetails(savedPieceDetails);
                 BeanUtils.copyProperties(savedPieceDetails, addConsignment.getPieceDetails());
             }
@@ -448,6 +445,7 @@ public class ConsignmentService {
                 dbConsignmentEntity.setDeletionIndicator(1L);
                 dbConsignmentEntity.setUpdatedBy(loginUserID);
                 dbConsignmentEntity.setUpdatedOn(new Date());
+                imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
                 pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
                 consignmentEntityRepository.save(dbConsignmentEntity);
             }
