@@ -69,6 +69,7 @@ export class BondedManifestComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res, 'bondedId')
         this.bondedManifestTable = res;
         this.spin.hide();
       }, error: (err) => {
@@ -169,5 +170,7 @@ export class BondedManifestComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
-
+  isSelected(item:any): boolean {
+    return this.selectedBondedManifest.includes(item);
+  }
 }

@@ -36,6 +36,10 @@ export class CustomerService {
       + '&subProductId=' + subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
   }
 
+  DeleteBulk(obj: any) {
+    return this.http.delete<any>('/overc-idmaster-service/customer/', obj);
+  }
+
   search(obj: any) {
     return this.http.post<any>('/overc-idmaster-service/customer/' + 'find', obj);
   }

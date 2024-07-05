@@ -300,7 +300,7 @@ export class ModuleNewComponent {
   }
   nextToSecond(){
     this.submitted = true;
-    if (!this.form.controls.moduleId.value && !this.form.controls.moduleDescription.value && !this.form.controls.menuId.value) {
+    if (!this.form.controls.moduleId.value || !this.form.controls.moduleDescription.value || !this.form.controls.menuId.value) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',

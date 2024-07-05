@@ -70,6 +70,7 @@ export class CcrComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
+        res = this.cs.removeDuplicatesFromArrayList(res, 'ccrId')
         this.ccrTable = res;
         this.spin.hide();
       }, error: (err) => {
@@ -170,5 +171,7 @@ export class CcrComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
-
+  isSelected(item:any): boolean {
+    return this.selectedCcr.includes(item);
+  }
 }

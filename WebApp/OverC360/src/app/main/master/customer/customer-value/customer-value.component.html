@@ -6,22 +6,12 @@
         <form [formGroup]="form">
             <div class="d-flex-row">
                 <div class="row">
-                    <!-- <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Product Value</p>
-                        <input maxlength="50" formControlName="productValue"
-                        class="w-100" pInputText placeholder="Enter" />
-                    </div> -->
                     <div class="col-6 marginFieldNew borderRadius12" id="productId">
                         <p class="formControlLabel f600 textBlack mb-0 required">Product</p>
                         <p-dropdown [options]="productIdList" placeholder="Select" filter="true" formControlName="productId" appendTo="body"
                         [ngClass]="form.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                           [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="productChanged()"/>
                     </div>
-                    <!-- <div class="col-6 marginFieldNew borderRadius12" id="productName">
-                        <p class="formControlLabel f600 textBlack mb-0 required">Product Name</p>
-                        <input maxlength="50" pInputText formControlName="productName"
-                            class="w-100" pInputText placeholder="Enter" />
-                    </div> -->
                     <div class="col-6 marginFieldNew borderRadius12" id="subProductId">
                         <p class="formControlLabel f600 textBlack mb-0 required">Sub Product</p>    
                         <p-dropdown [options]="subProductIdList" placeholder="Select" filter="true" formControlName="subProductId" appendTo="body"

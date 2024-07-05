@@ -18,14 +18,26 @@ export class ConsignorService {
     return this.http.post<any>('/overc-idmaster-service/consignor', obj);
   }
 
+  CreateBulk(obj: any) {
+    return this.http.post<any>('/overc-idmaster-service/consignor/create/list', obj);
+  }
+
   Update(obj: any) {
     return this.http.patch<any>('/overc-idmaster-service/consignor/' + obj.consignorId + '?customerId=' + obj.customerId + '&productId=' + obj.productId
       + '&subProductId=' + obj.subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId, obj);
   }
 
+  UpdateBulk(obj: any) {
+    return this.http.patch<any>('/overc-idmaster-service/consignor/update/list', obj);
+  }
+
   Delete(consignorId: string, customerId: string, productId: string, subProductId: string) {
     return this.http.delete<any>('/overc-idmaster-service/consignor/' + consignorId + '?customerId=' + customerId + '&productId=' + productId
       + '&subProductId=' + subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
+  }
+
+  DeleteBulk(obj: any) {
+    return this.http.delete<any>('/overc-idmaster-service/consignor/', obj);
   }
 
   search(obj: any) {

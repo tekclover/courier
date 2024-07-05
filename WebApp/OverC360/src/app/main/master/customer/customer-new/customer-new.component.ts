@@ -121,7 +121,7 @@ export class CustomerNewComponent {
     }
   }
 
-  checkNumberRange(){
+  checkNumberRange() {
     this.spin.show();
     let obj: any = {};
     obj.numberRangeObject = ['CUSTOMER'];
@@ -240,7 +240,7 @@ export class CustomerNewComponent {
         x.customerName = this.form.controls.customerName.value;
         x.statusId = this.form.controls.statusId.value;
         x.remark = this.form.controls.remark.value;
-      });
+      });
       this.service.UpdateBulk(this.customerArray).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -266,7 +266,7 @@ export class CustomerNewComponent {
         x.customerName = this.form.controls.customerName.value;
         x.statusId = this.form.controls.statusId.value;
         x.remark = this.form.controls.remark.value;
-      });
+      });
       console.log(this.customerArray)
       this.service.CreateBulk(this.customerArray).subscribe({
         next: (res) => {
@@ -289,25 +289,26 @@ export class CustomerNewComponent {
     }
   }
 
-  editItem(data: any,i: any): void {
+  editItem(data: any, i: any): void {
     const dialogRef = this.dialog.open(CustomerValueComponent, {
       disableClose: true,
       width: '70%',
       height: '50%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: {pageflow: data,code:this.customerArray[i]},
+      data: { pageflow: data, code: this.customerArray[i] },
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.customerArray.splice(i,0);
+      if (result) {
+        this.customerArray.splice(i, 0);
         this.customerArray.splice(i, 1, result);
         console.log(result);
-      //this.form.patchValue(result);
-      this.customerArray = [...this.customerArray]
-  
-  }});
+        //this.form.patchValue(result);
+        this.customerArray = [...this.customerArray]
+
+      }
+    });
   }
 
 }

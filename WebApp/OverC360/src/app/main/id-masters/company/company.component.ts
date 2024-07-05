@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { Router } from '@angular/router';
 import { PathNameService } from '../../../common-service/path-name.service';
@@ -11,6 +11,7 @@ import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-company',
@@ -18,6 +19,9 @@ import { FormBuilder } from '@angular/forms';
   styleUrl: './company.component.scss',
 })
 export class CompanyComponent {
+
+  @ViewChild('company') overlayPanel!: OverlayPanel;
+
   companyTable: any[] = [];
   selectedCompany: any[] = [];
   cols: any[] = [];
@@ -40,7 +44,7 @@ export class CompanyComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Company - List'];
+    const dataToSend = ['Setup', 'Company '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -226,13 +230,37 @@ export class CompanyComponent {
     statusId: [''],
   })
 
-  getSearchDropdown(): string[] {
-    const companyDropdown = new Set<string>();
-    this.companyTable.forEach(item => companyDropdown.add(item.companyName));
-    console.log(Array.from(companyDropdown))
-    return Array.from(companyDropdown);
+  companyDropdown: any = [];
+  countryDropdown:any = [];
+  districtDropdown:any = [];
+  provinceDropdown:any = [];
+  getSearchDropdown() {
+    this.companyTable.forEach(res => {
+      this.companyDropdown.push({value: res.companyId, label: res.companyName});
+      this.countryDropdown.push({value: res.countryId, label: res.countryName});
+      this.districtDropdown.push({value: res.districtId, label: res.districtName});
+      this.provinceDropdown.push({value: res.provinceId, label: res.provinceName});
+    })
+  }
 
-   
+  closeOverLay(){
+    this.overlayPanel.hide()
+  }
+
+  search(){
+    this.spin.show();
+      this.service.search(this.searhform.getRawValue()).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.companyTable = res;
+          this.getSearchDropdown();
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
   }
 
 }
