@@ -53,7 +53,6 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageId', header: 'Language' },
        { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
@@ -66,6 +65,7 @@ export class PreAlertManifestComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'languageId', header: 'Language' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },

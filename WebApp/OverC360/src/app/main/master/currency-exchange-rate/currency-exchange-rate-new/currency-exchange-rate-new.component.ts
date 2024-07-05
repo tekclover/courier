@@ -132,17 +132,22 @@ export class CurrencyExchangeRateNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  currencyIdList: any[] = [];
+
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.currency.url,
+
 
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.currencyIdList= this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.currency.key);
         this.spin.hide();
       },
       error: (err: any) => {

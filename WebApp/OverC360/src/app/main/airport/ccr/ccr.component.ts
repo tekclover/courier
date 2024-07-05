@@ -43,12 +43,12 @@ export class CcrComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyId', header: 'Company' },
+      { field: 'ccrId', header: 'CCR ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'shipperName', header: 'shipper Name' },
-      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'eventText', header: 'Event' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -63,14 +63,13 @@ export class CcrComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
-        res = this.cs.removeDuplicatesFromArrayList(res, 'ccrId')
         this.ccrTable = res;
         this.spin.hide();
       }, error: (err) => {
@@ -78,6 +77,7 @@ export class CcrComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   onChange() {
