@@ -63,6 +63,8 @@ public class ReplicaAddPieceDetails {
 
     private String volumeUnit;
 
+    private String hsCode;
+
     private String pieceStatusId;
     private Date pieceStatusTimestamp;
 
