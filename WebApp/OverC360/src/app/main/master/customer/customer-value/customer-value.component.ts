@@ -87,11 +87,11 @@ export class CustomerValueComponent {
     }
 
     this.productDropdown();
-    // this.subProductDropdown();
   }
 
   save() {
     this.submitted = true;
+    // console.log(this.form.value);
     this.dialogRef.close(this.form.value);
   }
 
@@ -101,19 +101,19 @@ export class CustomerValueComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.subProductId = [this.form.controls.subProductId.value];
 
     this.productIdList = [];
     this.spin.show();
-    this.productService.search(obj).subscribe({next: (result) => {
-      this.productIdList = this.cas.foreachlist(result, {key: 'productId', value: 'productName'});
-      console.log(this.productIdList);
-      this.spin.hide();
-    }, error: (err) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }
-  })
+    this.productService.search(obj).subscribe({
+      next: (result) => {
+        this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
+        console.log(this.productIdList);
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
   subProductIdList: any[] = [];
@@ -125,19 +125,20 @@ export class CustomerValueComponent {
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.productId = [this.form.controls.productId.value];
-    obj.subProductId = [this.form.controls.subProductId.value];
 
     this.subProductIdList = [];
     this.spin.show();
-    this.subProductService.search(obj).subscribe({next: (result) => {
-      this.subProductIdList = this.cas.foreachlist(result, {key: 'subProductId', value: 'subProductName'});
-      this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'subProductValue'});
-      this.spin.hide();
-    }, error: (err) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }
-  })
+    this.productService.search(obj).subscribe({
+      next: (result) => {
+        this.form.patchValue(result[0]);
+        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
+        this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
   subProductChanged() {
@@ -167,14 +168,15 @@ export class CustomerValueComponent {
     obj.subProductValue = [this.form.controls.subProductValue.value];
 
     this.spin.show();
-    this.subProductService.search(obj).subscribe({next: (result) => {
-      this.form.patchValue(result[0]);
-      this.spin.hide();
-    }, error: (err) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    } 
-  })
+    this.subProductService.search(obj).subscribe({
+      next: (result) => {
+        this.form.patchValue(result[0]);
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
 }

@@ -105,7 +105,7 @@ export class ProductValueComponent {
     this.spin.show();
     this.subProductService.search(obj).subscribe({next: (result) => {
       this.subProductIdList = this.cas.foreachlist(result, {key: 'subProductId', value: 'subProductName'});
-      this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'subProductValue'});
+      // this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'subProductValue'});
       this.spin.hide();
     }, error: (err) => {
       this.spin.hide();
@@ -150,5 +150,5 @@ export class ProductValueComponent {
     } 
   })
   }
-
+  
 }

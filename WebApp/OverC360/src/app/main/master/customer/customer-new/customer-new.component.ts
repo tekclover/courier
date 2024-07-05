@@ -55,9 +55,9 @@ export class CustomerNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    subProductId: [, Validators.required],
+    subProductId: [],
     subProductName: [],
-    productId: [, Validators.required],
+    productId: [],
     productName: [],
     customerId: [],
     customerName: [, Validators.required],
@@ -111,7 +111,6 @@ export class CustomerNewComponent {
       this.form.controls.subProductId.disable();
       this.form.controls.productId.disable();
       this.form.controls.customerId.disable();
-      this.form.controls.customerId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -162,6 +161,7 @@ export class CustomerNewComponent {
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
         this.subProductIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.subProduct.key);
         this.productIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.product.key);
+        console.log(this.productIdList);
         this.spin.hide();
       },
       error: (err: any) => {
@@ -202,6 +202,7 @@ export class CustomerNewComponent {
     obj.companyId = [this.auth.companyId];
     obj.subProductId = [line.subProductId];
     obj.productId = [line.productId];
+
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
@@ -218,8 +219,9 @@ export class CustomerNewComponent {
   }
 
   save() {
+
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.customerArray.length == 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -231,13 +233,21 @@ export class CustomerNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.customerArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.customerId = this.form.controls.customerId.value;
+        x.customerName = this.form.controls.customerName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
+      this.service.UpdateBulk(this.customerArray).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.customerId + ' has been updated successfully',
+            detail: res[0].customerId + ' has been updated successfully',
           });
           this.router.navigate(['/main/master/customer']);
           this.spin.hide();
@@ -249,6 +259,15 @@ export class CustomerNewComponent {
       });
     } else {
       this.spin.show();
+      this.customerArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.customerId = this.form.controls.customerId.value;
+        x.customerName = this.form.controls.customerName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
+      console.log(this.customerArray)
       this.service.CreateBulk(this.customerArray).subscribe({
         next: (res) => {
           if (res) {
@@ -256,7 +275,7 @@ export class CustomerNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.customerId + ' has been created successfully',
+              detail: res[0].customerId + ' has been created successfully',
             });
             this.router.navigate(['/main/master/customer']);
             this.spin.hide();
@@ -291,23 +310,9 @@ export class CustomerNewComponent {
   }});
   }
 
-  productChanged() {
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    obj.productId = [this.form.controls.productId.value]
-
-    this.subProductIdList = [];
-    this.spin.show();
-    this.subProductService.search(obj).subscribe({
-      next: (result) => {
-        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }
-
 }
+
+
+
+
+

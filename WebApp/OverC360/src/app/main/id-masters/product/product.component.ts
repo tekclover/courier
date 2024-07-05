@@ -86,6 +86,7 @@ export class ProductComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           console.log(res);
+          res = this.cs.removeDuplicatesFromArrayList(res, 'productId');
           this.productTable = res;
           this.spin.hide();
         },
