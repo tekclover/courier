@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-company',
@@ -31,7 +32,8 @@ export class CompanyComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
-    private spin: NgxSpinnerService
+    private spin: NgxSpinnerService,
+    private fb: FormBuilder
   ) { }
 
   fullDate: any;
@@ -93,6 +95,7 @@ export class CompanyComponent {
         next: (res: any) => {
           console.log(res);
           this.companyTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         },
         error: (err) => {
@@ -212,4 +215,24 @@ export class CompanyComponent {
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Company');
   }
+
+  searhform = this.fb.group({
+    cityId: [''],
+    companyId: [''],
+    countryId: [''],
+    districtId: [''],
+    languageId: [''],
+    provinceId: [''],
+    statusId: [''],
+  })
+
+  getSearchDropdown(): string[] {
+    const companyDropdown = new Set<string>();
+    this.companyTable.forEach(item => companyDropdown.add(item.companyName));
+    console.log(Array.from(companyDropdown))
+    return Array.from(companyDropdown);
+
+   
+  }
+
 }

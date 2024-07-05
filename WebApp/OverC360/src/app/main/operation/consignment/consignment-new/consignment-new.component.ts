@@ -109,6 +109,8 @@ export class ConsignmentNewComponent {
     courierAccount: [],
     courierPartner: [],
     courierPartnerReferenceNumber: [],
+    invoiceAmount: [],
+    invoiceUrl: [],
   });
 
   carrierInfo = this.fb.group({
@@ -963,7 +965,6 @@ console.log(this.consignment.controls.invoiceDate.value)
     if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'cod') {
       this.showPaymentTypeFields = true;
     }
-
   }
 }
 
