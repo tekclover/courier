@@ -283,6 +283,9 @@ public class ReplicaAddConsignment {
     private Date estimatedDepartureTime;
 
     private String reverseReason;
+    private String eventCode;
+    private String eventText;
+    private Date eventTimestamp;
 
     private String referenceField1;
     private String referenceField2;
