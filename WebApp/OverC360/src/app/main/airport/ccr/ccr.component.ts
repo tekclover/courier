@@ -174,4 +174,24 @@ export class CcrComponent {
   isSelected(item:any): boolean {
     return this.selectedCcr.includes(item);
   }
+
+  selectedFiles: File | null = null;
+  onFileSelected(event: any): void {
+    const filePath = 'dd';
+    const file: File = event.target.files[0];
+    this.selectedFiles = file;
+    this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uploaded',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+  }
 }

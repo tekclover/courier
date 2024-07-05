@@ -28,4 +28,10 @@ export class CcrService {
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/ccr/findCcr', obj);
   }
+
+  uploadBayan(file: File, filePath:any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
+  }
 }

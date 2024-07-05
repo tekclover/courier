@@ -1,6 +1,7 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">CCR </p>
+        <input type="file" #fileInput style="display:none" (change)="onFileSelected($event)" />
         <div class="d-flex justify-content-between align-items-center">
             <img type="button" (click)="openCrud('Edit')" src="./assets/common/edit.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
@@ -8,8 +9,15 @@
                 style="margin: 0 17px; height: 1.5rem;">
             <img type="button" (click)="deleteDialog()" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
-            <img type="button" (click)="customTable()" src="./assets/common/settings.png" alt="" srcset=""
+            <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
                 style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
+            <p-overlayPanel [style]="{ width: '180' }" #op>
+                <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
+                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;"
+                            srcset="">Upload Bayan</button>
+                </div>
+            </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
                     class="bi bi-plus-square pr-2"></i> Add New</button>
         </div>
@@ -33,10 +41,12 @@
 
     <div class="tableProperties">
         <p-table #bondedManifestTag [columns]="cols" [value]="ccrTable" class="custom-table" [scrollable]="true"
-        selectionMode="multiple"  [(selection)]="selectedCcr"  sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 19.8rem)"
-            [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
+            selectionMode="multiple" [(selection)]="selectedCcr" sortField="createdOn" [sortOrder]="-1"
+            scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
+            sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"  rowExpandMode="single">
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
+            rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
@@ -51,12 +61,13 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                    <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
-                        <td style="width: 5rem; justify-content: center;">
-                                <p-tableCheckbox  class="pl-3" [value]="rowData" />
-                        </td>
+                <tr [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;">
-                        <i style="font-size: 14px;" [pRowToggler]="rowData" [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
+                        <p-tableCheckbox class="pl-3" [value]="rowData" />
+                    </td>
+                    <td style="width: 5rem; justify-content: center;">
+                        <i style="font-size: 14px;" [pRowToggler]="rowData"
+                            [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
                     </td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
@@ -84,7 +95,8 @@
                                     <p class="mb-0 headerText">Origin</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip"  [ngClass]="rowData.origin ? 'bgOrange text-dark' : ''">{{rowData.origin}}</p>
+                                    <p class="mb-0 valueText chip"
+                                        [ngClass]="rowData.origin ? 'bgOrange text-dark' : ''">{{rowData.origin}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
