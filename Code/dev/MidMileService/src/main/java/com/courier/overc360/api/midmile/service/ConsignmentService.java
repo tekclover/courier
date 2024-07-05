@@ -130,6 +130,11 @@ public class ConsignmentService {
             String partnerMawBill = consignmentEntity.getPartnerMasterAirwayBill();
             String productId = consignmentEntity.getProductId();
             String subProductId = consignmentEntity.getSubProductId();
+            String width = consignmentEntity.getWidth();
+            String height = consignmentEntity.getHeight();
+            String weightUnit = consignmentEntity.getWeightUnit();
+            String volume = consignmentEntity.getVolume();
+            String codAmount = consignmentEntity.getCodAmount();
 
             // Checking if the product ID and sub-product ID match
             if (productId != null && subProductId != null) {
@@ -278,7 +283,7 @@ public class ConsignmentService {
             // PieceDetails Save
             List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), loginUserId);
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount, loginUserId);
 
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             for (AddPieceDetails pd : pieceDetails) {

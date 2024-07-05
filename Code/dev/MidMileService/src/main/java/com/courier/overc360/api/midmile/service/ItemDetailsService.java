@@ -504,7 +504,8 @@ public class ItemDetailsService {
     public List<AddItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName,
                                                       String partnerName, String houseAirwayBill, String masterAirwayBill,
                                                       String pieceId, String partnerId, List<AddItemDetails> addItemDetailsList,
-                                                      Long consignmentId, String partnerHawBill, String hsCode, String partnerMawBill, String loginUserID)
+                                                      Long consignmentId, String partnerHawBill, String hsCode, String partnerMawBill,
+                                                      String width, String height, String weightUnit, String volume, String codAmount, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddItemDetails> itemDetailsList = new ArrayList<>();
         try {
@@ -589,6 +590,11 @@ public class ItemDetailsService {
                 newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
                 newItemDetails.setConsignmentId(consignmentId);
                 newItemDetails.setHsCode(hsCode);
+                newItemDetails.setHeight(height);
+                newItemDetails.setWidth(width);
+                newItemDetails.setVolume(volume);
+                newItemDetails.setCodAmount(codAmount);
+                newItemDetails.setWeightUnit(weightUnit);
                 newItemDetails.setDeletionIndicator(0L);
                 newItemDetails.setCreatedBy(loginUserID);
                 newItemDetails.setCreatedOn(new Date());

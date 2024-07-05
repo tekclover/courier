@@ -170,7 +170,7 @@ public class PieceDetailsService {
     public List<AddPieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill,
                                                         String houseAirwayBill, String companyName, String languageName, String partnerName,
                                                         Long consignmentId, String partnerHawBill, String partnerMawBill, List<AddPieceDetails> addPieceDetailsList,
-                                                        String hsCode, String loginUserID)
+                                                        String hsCode, String width, String height, String volume, String weightUnit, String codAmount,  String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -205,6 +205,11 @@ public class PieceDetailsService {
                         if(hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
                         }
+//                        newPieceDetails.setWidth(width);
+//                        newPieceDetails.setWeight_unit(weightUnit);
+//                        newPieceDetails.setHeight(height);
+//                        newPieceDetails.setVolume(volume);
+//                        newPieceDetails.setCodAmount(codAmount);
                         newPieceDetails.setDeletionIndicator(0L);
                         newPieceDetails.setCreatedBy(loginUserID);
                         newPieceDetails.setCreatedOn(new Date());
@@ -235,10 +240,9 @@ public class PieceDetailsService {
                         PieceDetails savePieceDetails = pieceDetailsRepository.save(newPieceDetails);
 
                         //ItemDetails Create
-                        List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
-                                companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
-                                PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
-                                partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, loginUserID);
+                        List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId, companyName, languageName,
+                                partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
+                                partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, loginUserID);
 
                         AddPieceDetails pieceDetails = new AddPieceDetails();
                         BeanUtils.copyProperties(savePieceDetails, pieceDetails);
@@ -267,6 +271,11 @@ public class PieceDetailsService {
                 if(hsCode != null) {
                     newPieceDetails.setHsCode(hsCode);
                 }
+                newPieceDetails.setWidth(width);
+                newPieceDetails.setWeight_unit(weightUnit);
+                newPieceDetails.setHeight(height);
+                newPieceDetails.setVolume(volume);
+                newPieceDetails.setCodAmount(codAmount);
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
@@ -284,7 +293,7 @@ public class PieceDetailsService {
                 List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
                         companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
                         PIECE_ID, partnerId, null, consignmentId,
-                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, loginUserID);
+                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount,loginUserID);
 
                 AddPieceDetails pieceDetails = new AddPieceDetails();
                 BeanUtils.copyProperties(savePieceDetails, pieceDetails);
