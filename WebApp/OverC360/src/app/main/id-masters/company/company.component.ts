@@ -103,7 +103,7 @@ export class CompanyComponent {
           this.cs.commonerrorNew(err);
         },
       });
-    }, 600);
+    }, 1000);
   }
 
   onChange() {

@@ -93,7 +93,7 @@ export class ProvinceComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
   onChange() {

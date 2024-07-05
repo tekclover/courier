@@ -98,7 +98,7 @@ export class CurrencyExchangeRateComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
   onChange() {

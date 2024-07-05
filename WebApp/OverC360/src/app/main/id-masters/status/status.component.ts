@@ -89,7 +89,7 @@ export class StatusComponent {
           this.cs.commonerrorNew(err);
         }
       })
-    }, 600);
+    }, 1000);
   }
 
 
