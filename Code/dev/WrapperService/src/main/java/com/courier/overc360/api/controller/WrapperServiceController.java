@@ -231,4 +231,12 @@ public class WrapperServiceController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    //Consignment Upload-V2
+    @ApiOperation(response = UploadApiResponse.class, value = " Consignment Upload V2")
+    @PostMapping("/consignment/upload/v2")
+    public ResponseEntity<?> consignmentUploadV2(@RequestParam("file") MultipartFile multipartFile) {
+        Map<String, String> response = fileStorageService.processConsignmentOrdersV2(multipartFile);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
