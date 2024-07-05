@@ -27,9 +27,17 @@ export class CustomerService {
       + '&subProductId=' + obj.subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId, obj);
   }
 
+  UpdateBulk(obj: any) {
+    return this.http.patch<any>('/overc-idmaster-service/customer/update/list', obj);
+  }
+
   Delete(customerId: string, productId: string, subProductId: string) {
     return this.http.delete<any>('/overc-idmaster-service/customer/' + customerId + '?productId=' + productId
       + '&subProductId=' + subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
+  }
+
+  DeleteBulk(obj: any) {
+    return this.http.delete<any>('/overc-idmaster-service/customer/', obj);
   }
 
   search(obj: any) {

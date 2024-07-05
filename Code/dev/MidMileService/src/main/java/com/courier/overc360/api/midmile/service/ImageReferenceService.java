@@ -133,7 +133,6 @@ public class ImageReferenceService {
     }
 
     /**
-     *
      * @param languageId
      * @param companyId
      * @param partnerId
@@ -242,9 +241,11 @@ public class ImageReferenceService {
      * @param imageRefId
      * @param loginUserID
      */
-    public void deleteImageReference(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId, String imageRefId, String loginUserID) {
+    public void deleteImageReference(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                     String houseAirwayBill, String pieceId, String pieceItemId, String imageRefId, String loginUserID) {
 
-        ImageReference dbImageReference = getImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, imageRefId);
+        ImageReference dbImageReference = getImageReference(languageId, companyId, partnerId, masterAirwayBill,
+                houseAirwayBill, pieceId, pieceItemId, imageRefId);
         if (dbImageReference != null) {
             dbImageReference.setDeletionIndicator(1L);
             dbImageReference.setUpdatedBy(loginUserID);
@@ -258,7 +259,78 @@ public class ImageReferenceService {
     }
 
     /**
+     * Delete ImageReference
      *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param loginUserID
+     */
+    public void deleteImageReference(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                     String houseAirwayBill, String loginUserID) {
+
+        List<ImageReference> dbImageReference = imageReferenceRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
+        try {
+            if (dbImageReference != null) {
+                for (ImageReference dbImage : dbImageReference) {
+                    if (dbImage.getReferenceField1().equalsIgnoreCase("CON_ID")) {
+                        dbImage.setDeletionIndicator(1L);
+                        dbImage.setUpdatedBy(loginUserID);
+                        dbImage.setUpdatedOn(new Date());
+                        imageReferenceRepository.save(dbImage);
+                    }
+                }
+            } else {
+                log.info("Consignment Image Delete Doesn't exist");
+            }
+        } catch (Exception e) {
+            for (ImageReference dbImage : dbImageReference) {
+                createImageReferenceLog1(dbImage.getLanguageId(), dbImage.getCompanyId(), dbImage.getPartnerId(), dbImage.getMasterAirwayBill(),
+                        dbImage.getHouseAirwayBill(), dbImage.getPieceId(), dbImage.getPieceItemId(), dbImage.getImageRefId(), " Error in ImageReference Delete" + e.getMessage());
+//            throw new BadRequestException("Error in deleting imageRefId - " + imageRefId);
+            }
+        }
+    }
+
+    /**
+     * Delete ImageReference
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @param pieceItemId
+     * @param loginUserID
+     */
+    public void deleteImageReference(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                     String houseAirwayBill, String pieceId, String pieceItemId, String loginUserID) {
+
+        List<ImageReference> imageReferenceList = imageReferenceRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, 0L);
+        try {
+            if (imageReferenceList != null) {
+                for (ImageReference imageReference : imageReferenceList) {
+                    imageReference.setDeletionIndicator(1L);
+                    imageReference.setUpdatedBy(loginUserID);
+                    imageReference.setUpdatedOn(new Date());
+                    imageReferenceRepository.save(imageReference);
+                }
+            }
+        } catch (Exception e) {
+            for (ImageReference imageReference : imageReferenceList) {
+                createImageReferenceLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId,
+                        pieceItemId, imageReference.getImageRefId(), "Error in deleting imageRefId - " + imageReference.getImageRefId());
+//                 BadRequestException("Error in deleting imageRefId - " + imageReference.getImageRefId());
+            }
+        }
+    }
+
+    /**
      * @param imageRefId
      * @param loginUserID
      */
@@ -304,7 +376,8 @@ public class ImageReferenceService {
      * @param imageRefId
      * @return
      */
-    public ReplicaImageReference getReplicaImageReference(String languageId, String companyId, String partnerId, String masterAirwayBill,
+    public ReplicaImageReference getReplicaImageReference(String languageId, String companyId, String
+            partnerId, String masterAirwayBill,
                                                           String houseAirwayBill, String pieceId, String pieceItemId, String imageRefId) {
 
         Optional<ReplicaImageReference> dbImageReference = replicaImageReferenceRepository.
@@ -337,7 +410,8 @@ public class ImageReferenceService {
 //    }
 
     //=============================================ImageReference_ErrorLog====================================================
-    private void createImageReferenceLog(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill,
+    private void createImageReferenceLog(String languageId, String companyId, String partnerId, String
+            masterAirwayBill, String houseAirwayBill,
                                          String pieceId, String pieceItemId, String imageRefId, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
@@ -359,7 +433,8 @@ public class ImageReferenceService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createImageReferenceLog1(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill,
+    private void createImageReferenceLog1(String languageId, String companyId, String partnerId, String
+            masterAirwayBill, String houseAirwayBill,
                                           String pieceId, String pieceItemId, String imageRefId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
@@ -378,7 +453,8 @@ public class ImageReferenceService {
         errorLogRepository.save(errorLog);
     }
 
-    private void createImageReferenceLog2(AddImageReference addImageReference, String error) throws IOException, CsvException {
+    private void createImageReferenceLog2(AddImageReference addImageReference, String error) throws
+            IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();

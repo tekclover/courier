@@ -187,7 +187,7 @@ export class ProductNewComponent {
 
   save() {
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.productArray.length == 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -199,13 +199,21 @@ export class ProductNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
+      this.productArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.productId = this.form.controls.productId.value;
+        x.productName = this.form.controls.productName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
       this.service.UpdateBulk(this.productArray).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.productId + ' has been updated successfully',
+            detail: res[0].productId + ' has been updated successfully',
           });
           this.router.navigate(['/main/idMaster/product']);
           this.spin.hide();
@@ -232,7 +240,7 @@ export class ProductNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.productId + ' has been created successfully',
+              detail: res[0].productId + ' has been created successfully',
             });
             this.router.navigate(['/main/idMaster/product']);
             this.spin.hide();
@@ -252,8 +260,8 @@ export class ProductNewComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.productId = [line.productId];
-    // obj.referenceField1 = line.referenceField1;
+    obj.subProductId = [line.subProductId];
+
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);

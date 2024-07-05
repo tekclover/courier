@@ -47,8 +47,23 @@ public interface ImageReferenceRepository extends JpaRepository<ImageReference, 
                                  @Param("partnerId") String partnerId, @Param("houseAB") String houseAB,
                                  @Param("masterAB") String masterAB, @Param("pieceId") String pieceId,
                                  @Param("pieceItemId") String pieceItemId);
+
+    @Modifying
+    @Transactional
+    @Query(value = " update tblimagereference set is_deleted = 1 where " +
+            " (c_id = :companyId) and (lang_id = :languageId) and (partner_id = :partnerId) and  " +
+            " (house_airway_bill = :houseAB) and (master_airway_bill = :masterAB) and  " +
+            " (piece_id = :pieceId) and REF_FIELD_1 = 'PI_ID' and " +
+            " is_deleted = 0", nativeQuery = true)
+    public void updateImageTable(@Param("companyId") String companyId, @Param("languageId") String languageId,
+                                 @Param("partnerId") String partnerId, @Param("houseAB") String houseAB,
+                                 @Param("masterAB") String masterAB, @Param("pieceId") String pieceId);
+
     List<ImageReference> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId, Long deletionIndicator);
 
     ImageReference findByImageRefIdAndDeletionIndicator(String imageRefId, Long deletionIndicator);
+
+    List<ImageReference> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 }

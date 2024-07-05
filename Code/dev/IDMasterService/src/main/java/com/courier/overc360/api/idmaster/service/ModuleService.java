@@ -360,7 +360,7 @@ public class ModuleService {
 
         ReplicaModuleSpecification spec = new ReplicaModuleSpecification(findModule);
         List<ReplicaModule> results = replicaModuleRepository.findAll(spec);
-        log.info("found Modules --> " + results);
+        log.info("found Modules --> {}", results);
         return results;
 
     }

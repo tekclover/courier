@@ -454,13 +454,21 @@ public class ConsoleService {
                         String NUM_RAN_OBJ = "CONSOLEID";
                         String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                         for (AddConsole console : consoleEntryList) {
+
+                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), 0L);
+
+                            if(duplicateConsole) {
+                                throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
+                            }
+
                             // Pass ConsignmentCurrency
                             IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                             Console newConsole = new Console();
                             BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
 
-                            String STATUS_ID = "2 - Console Created";
+                            String STATUS_ID = "6 - Console Created";
                             IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
                                     console.getLanguageId(), console.getCompanyId());
 
@@ -502,7 +510,7 @@ public class ConsoleService {
                             }
 
                             if (iataData != null && iataData.getIataKd() != null) {
-                                newConsole.setIataKd(iataData.getCurrencyValue());
+                                newConsole.setIataKd(iataData.getIataKd());
                             }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setCustomsValue(CUS_VAL);
@@ -578,13 +586,22 @@ public class ConsoleService {
                     subGroups.add(currentSubGroup);
                 }
 
+                // ConsoleID generate in NumberRange
+                String NUM_RAN_OBJ = "CONSOLEID";
+                String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
                 // Process each subgroup
                 for (List<AddConsole> subGroup : subGroups) {
                     // Generate a new CONSOLE_ID for each subgroup
-                    String NUM_RAN_OBJ = "CONSOLEID";
-                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-
                     for (AddConsole console : subGroup) {
+
+                        // Duplicate Check
+                        boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                                console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), 0L);
+
+                        if(duplicateConsole) {
+                            throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
+                        }
 
                         // Pass ConsignmentCurrency
                         IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());

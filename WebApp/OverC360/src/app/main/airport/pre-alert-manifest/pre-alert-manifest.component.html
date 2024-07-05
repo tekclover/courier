@@ -31,7 +31,7 @@
 
     <div class="tableProperties">
         <p-table #preAlertManifestTag [columns]="cols" [value]="preAlertManifestTable" class="custom-table" [scrollable]="true"
-            selectionMode="single" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedPreAlertManifest" scrollHeight="calc(100vh - 19.8rem)"
+            selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedPreAlertManifest" scrollHeight="calc(100vh - 19.8rem)"
             [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
             (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consignmentId"  rowExpandMode="single">
@@ -59,11 +59,13 @@
                         <i style="font-size: 14px;" [pRowToggler]="rowData" [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
                     </td>
                     <td *ngFor="let col of columns">
-                        <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
+                        <ng-container *ngIf="col.format !== 'date' && col.format !== 'boolean'; else dateTemplate">
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                            {{ rowData.createdOn | date: 'dd-MM-yyyy' }}
+                            <span *ngIf="col.field === 'consoleIndicator'">{{rowData[col.field] == 0 ? 'No' : 'yes'}}</span>
+                            <span *ngIf="col.field === 'manifestIndicator'">{{rowData[col.field] == 0 ? 'No' : 'yes'}}</span>
+                            <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy'}}</span>
                         </ng-template>
                     </td>
                 </tr>

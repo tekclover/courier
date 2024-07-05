@@ -130,6 +130,11 @@ public class ConsignmentService {
             String partnerMawBill = consignmentEntity.getPartnerMasterAirwayBill();
             String productId = consignmentEntity.getProductId();
             String subProductId = consignmentEntity.getSubProductId();
+            String width = consignmentEntity.getWidth();
+            String height = consignmentEntity.getHeight();
+            String weightUnit = consignmentEntity.getWeightUnit();
+            String volume = consignmentEntity.getVolume();
+            String codAmount = consignmentEntity.getCodAmount();
 
             // Checking if the product ID and sub-product ID match
             if (productId != null && subProductId != null) {
@@ -276,12 +281,9 @@ public class ConsignmentService {
             }
 
             // PieceDetails Save
-            List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(
-                    companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
-                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(),
-                    newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), loginUserId
-            );
+            List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount, loginUserId);
 
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             for (AddPieceDetails pd : pieceDetails) {
@@ -325,14 +327,14 @@ public class ConsignmentService {
 
             if (dbConsignmentEntity == null) {
                 throw new BadRequestException("Given Values Doesn't exist CompanyId " + dbConsignment.getCompanyId() + " LanguageId " + dbConsignment.getLanguageId() +
-                        " PartnerId " + dbConsignmentEntity.getPartnerId() + " MasterAirwayBillNo " + dbConsignment.getMasterAirwayBill() + " HouseAirwayBillNo " + dbConsignment.getHouseAirwayBill());
+                        " PartnerId " + dbConsignment.getPartnerId() + " MasterAirwayBillNo " + dbConsignment.getMasterAirwayBill() + " HouseAirwayBillNo " + dbConsignment.getHouseAirwayBill());
             }
 
             UpdateConsignment addConsignment = new UpdateConsignment();
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
             dbConsignmentEntity.setStatusId("2");
             dbConsignmentEntity.setDeletionIndicator(0L);
-            dbConsignmentEntity.setStatusDescription("CONSIGNMENT UPDATED ");
+            dbConsignmentEntity.setStatusDescription("Consignment Updated");
             dbConsignmentEntity.setUpdatedBy(loginUserID);
             dbConsignmentEntity.setUpdatedOn(new Date());
 
@@ -397,7 +399,7 @@ public class ConsignmentService {
             //PieceDetails Update
             if (dbConsignment.getPieceDetails() != null && !dbConsignment.getPieceDetails().isEmpty()) {
                 List<UpdatePieceDetails> savedPieceDetails = pieceDetailsService.updatePieceDetails(dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getPartnerId(),
-                        dbConsignment.getMasterAirwayBill(), dbConsignment.getHouseAirwayBill(), dbConsignment.getPieceDetails(), loginUserID);
+                        dbConsignment.getMasterAirwayBill(), dbConsignment.getHouseAirwayBill(), dbConsignment.getPieceDetails(), loginUserID );
                 addConsignment.setPieceDetails(savedPieceDetails);
                 BeanUtils.copyProperties(savedPieceDetails, addConsignment.getPieceDetails());
             }
@@ -448,6 +450,7 @@ public class ConsignmentService {
                 dbConsignmentEntity.setDeletionIndicator(1L);
                 dbConsignmentEntity.setUpdatedBy(loginUserID);
                 dbConsignmentEntity.setUpdatedOn(new Date());
+                imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
                 pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
                 consignmentEntityRepository.save(dbConsignmentEntity);
             }

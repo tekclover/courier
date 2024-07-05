@@ -12,6 +12,8 @@ import { CustomerService } from '../../customer/customer.service';
 import { ProductService } from '../../../id-masters/product/product.service';
 import { SubProductService } from '../../../id-masters/sub-product/sub-product.service';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConsignorValueComponent } from '../consignor-value/consignor-value.component';
 
 @Component({
   selector: 'app-consignor-new',
@@ -37,13 +39,14 @@ export class ConsignorNewComponent {
     private customerService: CustomerService,
     private messageService: MessageService,
     private cas: CommonAPIService,
-    private auth: AuthService
+    private auth: AuthService,
+    private dialog: MatDialog,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
       { value: '16', label: 'Active' }
     ];
-   }
+  }
 
   numCondition: any;
   pageToken: any;
@@ -54,11 +57,12 @@ export class ConsignorNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    subProductId: [, Validators.required],
+    subProductId: [],
     subProductName: [],
-    productId: [, Validators.required],
+    subProductValue: [],
+    productId: [],
     productName: [],
-    customerId: [, Validators.required],
+    customerId: [],
     customerName: [],
     consignorId: [],
     consignorName: [, Validators.required],
@@ -75,9 +79,9 @@ export class ConsignorNewComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     updatedBy: [],
   });
 
@@ -119,26 +123,30 @@ export class ConsignorNewComponent {
       this.form.controls.createdOn.disable();
     }
     else {
-      this.spin.show();
-      let obj: any = {};
-      obj.numberRangeObject = ['CONSIGNOR'];
-      this.numberRangeService.search(obj).subscribe({
-        next: (res: any) => {
-          if (res.length > 0) {
-            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
-            this.form.controls.consignorId.patchValue(this.nextNumber);
-            this.numCondition = 'true';
-            this.form.controls.referenceField10.patchValue(this.numCondition);
-            this.form.controls.consignorId.disable();
-          }
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
+      this.checkNumberRange();
     }
+  }
+
+  checkNumberRange() {
+    this.spin.show();
+    let obj: any = {};
+    obj.numberRangeObject = ['CONSIGNOR'];
+    this.numberRangeService.search(obj).subscribe({
+      next: (res: any) => {
+        if (res.length > 0) {
+          this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+          this.form.controls.consignorId.patchValue(this.nextNumber);
+          this.numCondition = 'true';
+          this.form.controls.referenceField10.patchValue(this.numCondition);
+          this.form.controls.consignorId.disable();
+        }
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
   }
 
   languageIdList: any[] = [];
@@ -171,16 +179,58 @@ export class ConsignorNewComponent {
     });
   }
 
+  consignorArray: any[] = [];
+
+  add() {
+    const dialogRef = this.dialog.open(ConsignorValueComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: this.consignorArray.length + 1,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.consignorArray.push(result);
+      }
+    });
+  }
+
+  removeItem(index: number) {
+    this.consignorArray.splice(index, 1);
+  }
+
 
   fill(line: any) {
     this.form.patchValue(line);
+    this.spin.show();
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.subProductId = [line.subProductId];
+    obj.productId = [line.productId];
+    obj.customerId = [line.customerId];
+
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.consignorArray = res;
+        this.spin.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }
 
   save() {
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.consignorArray.length == 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -192,13 +242,21 @@ export class ConsignorNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.consignorArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.consignorId = this.form.controls.consignorId.value;
+        x.consignorName = this.form.controls.consignorName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
+      this.service.UpdateBulk(this.consignorArray).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.consignorId + ' has been updated successfully',
+            detail: res[0].consignorId + ' has been updated successfully',
           });
           this.router.navigate(['/main/master/consignor']);
           this.spin.hide();
@@ -210,14 +268,22 @@ export class ConsignorNewComponent {
       });
     } else {
       this.spin.show();
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.consignorArray.forEach((x: any) => {
+        x.languageId = this.auth.languageId;
+        x.companyId = this.auth.companyId;
+        x.consignorId = this.form.controls.consignorId.value;
+        x.consignorName = this.form.controls.consignorName.value;
+        x.statusId = this.form.controls.statusId.value;
+        x.remark = this.form.controls.remark.value;
+      });
+      this.service.CreateBulk(this.consignorArray).subscribe({
         next: (res) => {
           if (res) {
             this.messageService.add({
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.consignorId + ' has been created successfully',
+              detail: res[0].consignorId + ' has been created successfully',
             });
             this.router.navigate(['/main/master/consignor']);
             this.spin.hide();
@@ -229,6 +295,28 @@ export class ConsignorNewComponent {
         },
       });
     }
+  }
+
+  editItem(data: any, i: any): void {
+    const dialogRef = this.dialog.open(ConsignorValueComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '50%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { pageflow: data, code: this.consignorArray[i] },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.consignorArray.splice(i, 0);
+        this.consignorArray.splice(i, 1, result);
+        console.log(result);
+        //this.form.patchValue(result);
+        this.consignorArray = [...this.consignorArray]
+
+      }
+    });
   }
 
   subProductChanged() {
