@@ -1,6 +1,6 @@
 <div class="bgWhite text-black w-93 h-100 m-4 mt-4">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Dimension</p>
+        <p class="componentHeader f600 mb-0">Image Upload</p>
         <input type="file" #fileInput multiple style="display:none" (change)="selectFiles($event)" />
         <button (click)="fileInput.click()" type="button" class="btn ml-2 addNewbuttom bgBlack text-white"><i
             class="bi bi-plus-square pr-2"></i> Add New</button>
@@ -10,17 +10,15 @@
         [value]="imageDetails.controls">
         <ng-template pTemplate="header">
           <tr>
-            <th >Description</th>
-            <th >Product Code</th>
-            <th >HS Code</th>
+            <th >File Name</th>
+            <th >Location</th>
             <th >Actions</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item let-i="rowIndex"  let-rowData>
           <tr [formGroup]="item">
-            <td><input type="text" formControlName="referenceImageUrl"></td>
-            <td>{{rowData.referenceImageUrl}}</td>
-            <td>{{rowData.imageRefId}}</td>
+            <td ><input class="inputborderLess pl-3" type="text" matInput formControlName="imageRefId"></td>
+            <td><input class="inputborderLess pl-3" type="text" formControlName="referenceImageUrl"></td>
             <td>
               <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                   alt="" srcset="" style="height: 1.4rem;">

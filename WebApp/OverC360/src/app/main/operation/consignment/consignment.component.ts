@@ -219,7 +219,7 @@ export class ConsignmentComponent {
       next: (result) => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Updated',
+          summary: 'Uploaded',
           key: 'br',
           detail: 'File uploaded successfully',
         });

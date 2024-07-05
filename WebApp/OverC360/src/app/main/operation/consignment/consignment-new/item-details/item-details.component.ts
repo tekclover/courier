@@ -9,6 +9,7 @@ import { CommonServiceService } from '../../../../../common-service/common-servi
 import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
 import { DimensionComponent } from '../dimension/dimension.component';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
 @Component({
   selector: 'app-item-details',
@@ -63,60 +64,15 @@ export class ItemDetailsComponent {
       weight: [],
       weightUnit: [],
       width: [],
+      referenceImageList: this.fb.array([]),
     });
   }
   removeItem(index: number) {
     this.itemDetails.removeAt(index);
   }
   ngOnInit() {
-    console.log(this.data.line.value)
     this.patchForm(this.data.line.value)
   }
-
-  selectedFiles: FileList | null = null;
-  selectFiles(event: any, data: any): void {
-    this.selectedFiles = event.target.files;
-    const files: FileList = event.target.files!;
-    const filesArray: File[] = Array.from(files);
-    let filesWithData: { name: string, referenceImageUrl: string }[] = [];
-    filesArray.forEach((file: File) => {
-      const referenceImageUrl = `path/to/images/${file.name}`;
-      const fileData = {
-        name: file.name,
-        referenceImageUrl: file.name,
-      };
-      filesWithData.push(fileData);
-    });
-    console.log(filesWithData);
-    this.uploadFile(filesWithData);
-  }
-
-  uploadFile(data: any) {
-    if (!this.selectedFiles || this.selectedFiles.length === 0) {
-      console.log('No files selected for upload.');
-      return;
-    }
-    console.log(data)
-    //this.patchReferenceImages(data)
-
-    const location = 'test'
-    this.service.uploadFiles(this.selectedFiles, location).subscribe({
-      next: (result) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          key: 'br',
-          detail: 'File uploaded successfully',
-        });
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    });
-
-  }
-
-  
   save() {
     this.dialogRef.close(this.itemForm.controls.itemDetails.value)
   }
@@ -167,7 +123,7 @@ export class ItemDetailsComponent {
       referenceField7: [item.referenceField7],
       referenceField8: [item.referenceField8],
       referenceField9: [item.referenceField9],
-    //  referenceImageList: this.patchReferenceImages(item.referenceImageList),
+      referenceImageList: this.patchReferenceImages(item.referenceImageList),
       volume: [item.volume],
       volumeUnit: [item.volumeUnit],
       weight: [item.weight],
@@ -175,6 +131,18 @@ export class ItemDetailsComponent {
       width: [item.width]
     });
   }
+
+  patchReferenceImages(referenceImageList: any[]) {
+    if (referenceImageList == null) {
+      return
+    }
+    return this.fb.array(referenceImageList.map(image => this.fb.group({
+      imageRefId: [image.imageRefId],
+      pdfUrl: [image.pdfUrl],
+      referenceImageUrl: [image.referenceImageUrl]
+    })));
+  }
+  
 
   dimension(type: any = 'New', module: any, index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
@@ -190,4 +158,29 @@ export class ItemDetailsComponent {
       control.patchValue(result);
       console.log(this.itemForm)
     })}
+
+    imageupload(type: any = 'New', index: any) {
+      const dialogRef = this.dialog.open(ImageUploadComponent, {
+        disableClose: true,
+        width: '70%',
+        maxWidth: '82%',
+        position: { top: '6.5%', left: '25%' },
+        data: { pageflow: type, line: (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray },
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          const imageDetailsFormArray = (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray;
+          imageDetailsFormArray.clear();
+          result.forEach((image: any) => {
+            imageDetailsFormArray.push(this.fb.group({
+              imageRefId: image.imageRefId,
+              pdfUrl: image.pdfUrl,
+              referenceImageUrl: image.referenceImageUrl,
+            }));
+          });
+          console.log(this.itemForm)
+        }
+      })
+    }
 }

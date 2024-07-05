@@ -46,7 +46,7 @@ export class CommonServiceService {
     }
   }
 
-  day_callapiSearch(date: any) {
+  jsonDate(date: any) {
     const del_date = this.datepipe.transform(date, 'yyyy-MM-ddT00:00:00.000');
     return del_date;
   }
@@ -86,8 +86,8 @@ pCalendar(date: any): Date{
     if (filters.createdOn_from &&
       filters.createdOn_to) {
       data = data.filter(x =>
-        this.datesearch(this.day_callapiSearch(new Date(x.createdOn.replace("+00:00", "")))) >= this.datesearch(this.day_callapiSearch(filters.createdOn_from))
-        && this.datesearch(this.day_callapiSearch(new Date(x.createdOn.replace("+00:00", "")))) <= this.datesearch(this.day_callapiSearch(filters.createdOn_to))
+        this.datesearch(this.jsonDate(new Date(x.createdOn.replace("+00:00", "")))) >= this.datesearch(this.jsonDate(filters.createdOn_from))
+        && this.datesearch(this.jsonDate(new Date(x.createdOn.replace("+00:00", "")))) <= this.datesearch(this.jsonDate(filters.createdOn_to))
       );
 
     }

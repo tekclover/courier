@@ -40,8 +40,6 @@
                   alt="" srcset="" style="height: 1.4rem;">
               <p-overlayPanel [style]="{ width: '180' }" #op>
                   <div class="d-flex flex-column">
-                      <input type="file" #fileInput multiple style="display:none"
-                          (change)="selectFiles($event, rowData)" />
                       <button style="width: 8rem;" mat-menu-item class="w-100"
                           (click)="dimension(this.data.pageflow, 'item', i)"><img
                               src="./assets/common/dimension.png" style="padding-right: 10px;width: 2rem;"
@@ -50,7 +48,7 @@
                           (click)="removeItem(i)"><img
                               src="./assets/common/delete1x.png" style="padding-right: 10px;width: 2rem;"
                               srcset="">Delete</button>
-                      <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
+                      <button style="width: 8rem;" mat-menu-item class="w-100" (click)="imageupload(this.data.pageflow, i)"><img
                               src="./assets/common/image.png" style="padding-right: 10px;width: 2rem;"
                               srcset="">Image</button>
                   </div>

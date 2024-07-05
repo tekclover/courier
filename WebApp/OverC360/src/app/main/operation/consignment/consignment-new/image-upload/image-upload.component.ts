@@ -72,6 +72,7 @@ export class ImageUploadComponent {
         });
         result.forEach((x:any) => {
           x['referenceImageUrl'] = x.filePath;
+          x['imageRefId'] = x.fileName;
         })
         this.patchForm(result)
       }, error: (err) => {

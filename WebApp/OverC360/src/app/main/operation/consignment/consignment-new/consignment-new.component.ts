@@ -204,6 +204,7 @@ export class ConsignmentNewComponent {
     weightUnit: [],
     invoiceNumber: [],
     invoiceDate: [new Date,],
+    invoiceDateFE: [new Date,],
     invoiceSupplierName: [],
     goodsDescription: [],
     notifyParty: [],
@@ -585,8 +586,11 @@ export class ConsignmentNewComponent {
       this.billing.patchValue(line)
 
     this.patchForm(line);
-
-    this.consignment.controls.invoiceDate.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
+console.log(this.consignment.controls.invoiceDate.value)
+    if(this.consignment.controls.invoiceDate.value){
+      this.consignment.controls.invoiceDateFE.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
+    }
+ 
     this.shipmentInfo.controls.masterAirwayBill.disable();
     this.shipmentInfo.controls.houseAirwayBill.disable();
   }
@@ -602,6 +606,7 @@ export class ConsignmentNewComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log(result)
         const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
         itemDetailsFormArray.clear();
         result.forEach((item: any) => {
@@ -622,9 +627,11 @@ export class ConsignmentNewComponent {
             volumeUnit: item.volumeUnit,
             weight: item.weight,
             weightUnit: item.weightUnit,
-            width: item.width
+            width: item.width,
+            referenceImageList: this.patchReferenceImages(item.referenceImageList),
           }));
         });
+        console.log(this.piece)
       }
     });
   }
@@ -640,8 +647,6 @@ export class ConsignmentNewComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       const control = (this.piece.controls.pieceDetails as FormArray).at(index)
-      control.patchValue(result);
-      console.log(this.piece)
     })
   }
 
@@ -655,17 +660,17 @@ export class ConsignmentNewComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      const imageDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray;
-      imageDetailsFormArray.clear();
-      result.forEach((image: any) => {
-        imageDetailsFormArray.push(this.fb.group({
-          imageRefId: image.imageRefId,
-          pdfUrl: image.pdfUrl,
-          referenceImageUrl: image.referenceImageUrl,
-        }));
-      });
-      console.log(this.piece)
+      if (result) {
+        const imageDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray;
+        imageDetailsFormArray.clear();
+        result.forEach((image: any) => {
+          imageDetailsFormArray.push(this.fb.group({
+            imageRefId: image.imageRefId,
+            pdfUrl: image.pdfUrl,
+            referenceImageUrl: image.referenceImageUrl,
+          }));
+        });
+      }
     })
   }
 
@@ -914,7 +919,8 @@ export class ConsignmentNewComponent {
       createdOn: ['',],
       createdBy: [,],
       companyId: [this.auth.companyId,],
-      languageId: [this.auth.languageId,]
+      languageId: [this.auth.languageId,],
+      invoiceDate: this.cs.jsonDate(this.consignment.controls.invoiceDateFE.value)
     });
 
     if (this.pageToken.pageflow != 'New') {
@@ -951,13 +957,13 @@ export class ConsignmentNewComponent {
   }
 
 
-showPaymentTypeFields = false;
-  paymentChange(){
+  showPaymentTypeFields = false;
+  paymentChange() {
     const paymentTypeValue = this.shipmentInfo.controls.paymentType.value;
     if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'cod') {
-     this.showPaymentTypeFields = true;
+      this.showPaymentTypeFields = true;
     }
-    
+
   }
 }
 
