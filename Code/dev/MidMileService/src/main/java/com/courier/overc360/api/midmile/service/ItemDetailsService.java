@@ -262,6 +262,7 @@ public class ItemDetailsService {
             dbItemDetails.setDeletionIndicator(1L);
             dbItemDetails.setUpdatedBy(loginUserID);
             dbItemDetails.setUpdatedOn(new Date());
+            // MultipleImage
             imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, loginUserID);
             itemDetailsRepository.save(dbItemDetails);
         } else {
@@ -291,6 +292,10 @@ public class ItemDetailsService {
                 itemDetails.setDeletionIndicator(1L);
                 itemDetails.setUpdatedBy(loginUserID);
                 itemDetails.setUpdatedOn(new Date());
+
+                //MultipleImage
+                imageReferenceRepository.updateImageTable(itemDetails.getCompanyId(), itemDetails.getLanguageId(), itemDetails.getPartnerId(),
+                        itemDetails.getHouseAirwayBill(), itemDetails.getMasterAirwayBill(), itemDetails.getPieceId(), loginUserID);
                 itemDetailsRepository.save(itemDetails);
             }
         } else {
@@ -320,6 +325,8 @@ public class ItemDetailsService {
                     dbItemDetails.setDeletionIndicator(1L);
                     dbItemDetails.setUpdatedBy(loginUserID);
                     dbItemDetails.setUpdatedOn(new Date());
+                    //MultipleImage
+                    imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, loginUserID);
                     itemDetailsRepository.save(dbItemDetails);
                 }
             }
@@ -547,17 +554,19 @@ public class ItemDetailsService {
                             for (ReferenceImageList imageReference : addItemDetails.getReferenceImageList()) {
                                 //CommonService
                                 String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
-                                ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
-                                        partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null, pieceId,
-                                        PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
+                                if (downloadDocument != null) {
+                                    ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
+                                            partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null, pieceId,
+                                            PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
 
-                                //ReferenceImage Set
-                                ReferenceImageList newImage = new ReferenceImageList();
-                                newImage.setImageRefId(dbImage.getImageRefId());
-                                newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
-                                newImage.setPdfUrl(dbImage.getReferenceField2());
+                                    //ReferenceImage Set
+                                    ReferenceImageList newImage = new ReferenceImageList();
+                                    newImage.setImageRefId(dbImage.getImageRefId());
+                                    newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
+                                    newImage.setPdfUrl(dbImage.getReferenceField2());
 
-                                imageReferenceList.add(newImage);
+                                    imageReferenceList.add(newImage);
+                                }
                             }
                         }
 

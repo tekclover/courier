@@ -929,9 +929,7 @@ public class MidMileService {
 
     /**
      *
-     * @param houseAirwayBill
-     * @param fromConsoleId
-     * @param toConsoleId
+     * @param transferConsole
      * @param loginUserID
      * @param authToken
      * @return
@@ -953,6 +951,138 @@ public class MidMileService {
             throw e;
         }
     }
+
+    //==================================================ConsignmentStatus====================================================
+
+    //Get All ConsignmentStatus
+
+    public ConsignmentStatus[] getAllConsignmentStatus(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<ConsignmentStatus[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ConsignmentStatus[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get ConsignmentStatus
+    public ConsignmentStatus getConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
+                                                  String pieceId, String statusId, String eventCode, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("pieceId", pieceId)
+                    .queryParam("eventCode", eventCode)
+                    .queryParam("houseAirwayBill", houseAirwayBill);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ConsignmentStatus.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+
+    // Create ConsignmentStatus
+    public ConsignmentStatus createConsignmentStatus(AddConsignmentStatus addConsignmentStatus, String loginUserID, String authToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("User-Agent", "RestTemplate");
+        headers.add("Authorization", "Bearer " + authToken);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus")
+                .queryParam("loginUserID", loginUserID);
+        HttpEntity<?> entity = new HttpEntity<>(addConsignmentStatus, headers);
+        ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentStatus.class);
+        return result.getBody();
+    }
+
+    // Update ConsignmentStatus
+    public ConsignmentStatus updateConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
+                                                     String pieceId, String statusId, String eventCode, UpdateConsignmentStatus updateConsignmentStatus, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateConsignmentStatus, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("houseAirwayBill", houseAirwayBill)
+                    .queryParam("pieceId", pieceId)
+                    .queryParam("eventCode", eventCode)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<ConsignmentStatus> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ConsignmentStatus.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete ConsignmentStatus
+    public boolean deleteConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
+                                           String pieceId, String statusId, String eventCode, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("houseAirwayBill", houseAirwayBill)
+                    .queryParam("pieceId", pieceId)
+                    .queryParam("eventCode", eventCode)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find ConsignmentStatus
+    public ConsignmentStatus[] findConsignmentStatus(FindConsignmentStatus findConsignmentStatus, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/find");
+            HttpEntity<?> entity = new HttpEntity<>(findConsignmentStatus, headers);
+            ResponseEntity<ConsignmentStatus[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentStatus[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     //----------------------Upload------------------------------------------------------------------
 
     // POST - Consingment Upload

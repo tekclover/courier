@@ -164,6 +164,7 @@ public class FileStorageService {
 		return filePath;
 	}
 
+    // ProcessConsignmentOrder - V1
 	public Map<String, String> processConsignmentOrders(MultipartFile file) {
 		this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
 		if (!Files.exists(fileStorageLocation)) {
@@ -212,6 +213,8 @@ public class FileStorageService {
 
 	}
 
+
+    //Read Excel Data
 	private List<List<String>> readExcelData(File file) {
 		try {
 			Workbook workbook = new XSSFWorkbook(file);
@@ -250,6 +253,55 @@ public class FileStorageService {
 		return null;
 	}
 
+
+    //ProcessConsignmentOrders-V2
+    public Map<String, String> processConsignmentOrdersV2(MultipartFile file) {
+        this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException(
+                        "Could not create the directory where the uploaded files will be stored.");
+            }
+        }
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        log.info("filename before: " + fileName);
+        fileName = fileName.replace("", "_");
+        log.info("filename after: " + fileName);
+
+        try {
+            if (fileName.contains("..")) {
+                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Copied : " + targetLocation);
+
+            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
+            List<AddConsignment> consignmentOrders = prepConsignmentDataV2(allRowsList);
+            log.info("consignmentOrders : " + consignmentOrders);
+
+            // Uploading Orders
+            UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
+            AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Uploaded", authToken.getAccess_token());
+
+            if(dbUploadApiResponse != null) {
+                Map<String, String> mapFileProps = new HashMap<>();
+                mapFileProps.put("file", fileName);
+                mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
+                return mapFileProps;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+        }
+        return null;
+
+    }
 
     /**
      *
@@ -894,4 +946,209 @@ public class FileStorageService {
 //		return new ArrayList<>(consignmentMap.values());
 //	}
 
+    /**
+     *
+     * @param allRowsList
+     * @return
+     */
+    public List<AddConsignment> prepConsignmentDataV2(List<List<String>> allRowsList) {
+        Map<String, AddConsignment> consignmentMap = new HashMap<>();
+        Map<String, Map<String, AddPieceDetails>> pieceMap = new HashMap<>();
+
+        // DateFormat
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        for (List<String> listUploadedData : allRowsList) {
+            // Create consignment key based on consignment fields
+            String consignmentKey = String.join("_", listUploadedData.subList(0, 80));
+            // Create piece key based on piece-specific fields
+            String pieceKey = String.join("_", listUploadedData.subList(81, 94));
+
+            AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
+            Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
+
+            if (!consignmentMap.containsKey(consignmentKey)) {
+                // Set Consignment Details
+                addConsignment.setCompanyId(listUploadedData.get(0));
+                addConsignment.setPartnerType(listUploadedData.get(1));
+                addConsignment.setPartnerId(listUploadedData.get(2));
+                addConsignment.setPartnerMasterAirwayBill(listUploadedData.get(3));
+                addConsignment.setPartnerHouseAirwayBill(listUploadedData.get(4));
+                addConsignment.setCustomerReferenceNumber(listUploadedData.get(5));
+                addConsignment.setServiceTypeId(listUploadedData.get(6));
+                addConsignment.setServiceTypeText(listUploadedData.get(7));
+                addConsignment.setLoadType(listUploadedData.get(8));
+                addConsignment.setConsignmentType(listUploadedData.get(9));
+                addConsignment.setIncoTerms(listUploadedData.get(10));
+                addConsignment.setPaymentType(listUploadedData.get(11));
+                addConsignment.setNoOfPieceHawb(listUploadedData.get(12));
+                addConsignment.setNoOfPackageHawb(listUploadedData.get(13));
+                addConsignment.setNoOfPackageMawb(listUploadedData.get(14));
+                addConsignment.setHsCode(listUploadedData.get(15));
+                addConsignment.setGoodsDescription(listUploadedData.get(16));
+                addConsignment.setCountryOfOrigin(listUploadedData.get(17));
+                addConsignment.setConsignmentValue(listUploadedData.get(18));
+                addConsignment.setConsignmentCurrency(listUploadedData.get(19));
+                addConsignment.setFlightNo(listUploadedData.get(20));
+                addConsignment.setFlightName(listUploadedData.get(21));
+                try {
+                    Date flightArrivalTime = simpleDateFormat.parse(listUploadedData.get(22));
+                    addConsignment.setFlightArrivalTime(flightArrivalTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                addConsignment.setLength(listUploadedData.get(23));
+                addConsignment.setWidth(listUploadedData.get(24));
+                addConsignment.setHeight(listUploadedData.get(25));
+                addConsignment.setDimensionUnit(listUploadedData.get(26));
+                addConsignment.setWeight(listUploadedData.get(27));
+                addConsignment.setWeightUnit(listUploadedData.get(28));
+                addConsignment.setVolume(listUploadedData.get(29));
+                addConsignment.setVolumeUnit(listUploadedData.get(30));
+                addConsignment.setNetWeight(listUploadedData.get(31));
+                addConsignment.setGrossWeight(listUploadedData.get(32));
+                addConsignment.setIsExempted(listUploadedData.get(33));
+                addConsignment.setExemptionFor(listUploadedData.get(34));
+                addConsignment.setExemptionBeneficiary(listUploadedData.get(35));
+                addConsignment.setExemptionReference(listUploadedData.get(36));
+                addConsignment.setAirportOriginCode(listUploadedData.get(37));
+                addConsignment.setInvoiceAmount(listUploadedData.get(38));
+                addConsignment.setInvoiceNumber(listUploadedData.get(39));
+                addConsignment.setInvoiceDate(listUploadedData.get(40));
+                addConsignment.setInvoiceType(listUploadedData.get(41));
+                addConsignment.setInvoiceUrl(listUploadedData.get(42));
+                addConsignment.setCountryOfSupply((listUploadedData.get(43)));
+                addConsignment.setRemark(listUploadedData.get(44));
+                addConsignment.setCodAmount(listUploadedData.get(45));
+                addConsignment.setCodFavorOf(listUploadedData.get(46));
+                addConsignment.setCodCollectionMode(listUploadedData.get(47));
+
+
+                // Set Origin Details
+                AddOriginDetails originDetails = new AddOriginDetails();
+                originDetails.setAddressHubCode(listUploadedData.get(48));
+                originDetails.setAccountId(listUploadedData.get(49));
+                originDetails.setEmail(listUploadedData.get(50));
+                originDetails.setCompanyName(listUploadedData.get(51));
+                originDetails.setName(listUploadedData.get(52));
+                originDetails.setPhone(listUploadedData.get(53));
+                originDetails.setAlternatePhone(listUploadedData.get(54));
+                originDetails.setAddressLine1(listUploadedData.get(55));
+                originDetails.setAddressLine2(listUploadedData.get(56));
+                originDetails.setPinCode(listUploadedData.get(57));
+                originDetails.setDistrict(listUploadedData.get(58));
+                originDetails.setCity(listUploadedData.get(59));
+                originDetails.setState(listUploadedData.get(60));
+                originDetails.setCountry(listUploadedData.get(61));
+                originDetails.setLatitude(listUploadedData.get(62));
+                originDetails.setLongitude(listUploadedData.get(63));
+                addConsignment.setOriginDetails(originDetails);
+
+                // Set Destination Details
+                AddDestinationDetails destinationDetails = new AddDestinationDetails();
+                destinationDetails.setAddressHubCode(listUploadedData.get(64));
+                destinationDetails.setAccountId(listUploadedData.get(65));
+                destinationDetails.setEmail(listUploadedData.get(66));
+                destinationDetails.setCompanyName(listUploadedData.get(67));
+                destinationDetails.setName(listUploadedData.get(68));
+                destinationDetails.setPhone(listUploadedData.get(69));
+                destinationDetails.setAlternatePhone(listUploadedData.get(70));
+                destinationDetails.setAddressLine1(listUploadedData.get(71));
+                destinationDetails.setAddressLine2(listUploadedData.get(72));
+                destinationDetails.setPinCode(listUploadedData.get(73));
+                destinationDetails.setDistrict(listUploadedData.get(74));
+                destinationDetails.setCity(listUploadedData.get(75));
+                destinationDetails.setState(listUploadedData.get(76));
+                destinationDetails.setCountry(listUploadedData.get(77));
+                destinationDetails.setLatitude(listUploadedData.get(78));
+                destinationDetails.setLongitude(listUploadedData.get(79));
+                addConsignment.setDestinationDetails(destinationDetails);
+
+                String imageReferences = listUploadedData.get(80);
+                String[] imageUrls = imageReferences.split(",");
+                List<ReferenceImageList> referenceImageLists = new ArrayList<>();
+                for (String imageUrl : imageUrls) {
+                    ReferenceImageList imageReference = new ReferenceImageList();
+                    imageReference.setReferenceImageUrl(imageUrl.trim());
+                    referenceImageLists.add(imageReference);
+                }
+                addConsignment.setReferenceImageList(referenceImageLists);
+
+                consignmentMap.put(consignmentKey, addConsignment);
+                pieceMap.put(consignmentKey, pieceDetailsMap);
+            }
+
+            AddPieceDetails pieceDetails = pieceDetailsMap.getOrDefault(pieceKey, new AddPieceDetails());
+            pieceDetails.setDescription(listUploadedData.get(81));
+            pieceDetails.setDeclaredValue(listUploadedData.get(82));
+            pieceDetails.setCodAmount(listUploadedData.get(83));
+            pieceDetails.setLength(listUploadedData.get(84));
+            pieceDetails.setDimensionUnit(listUploadedData.get(85));
+            pieceDetails.setWidth(listUploadedData.get(86));
+            pieceDetails.setHeight(listUploadedData.get(87));
+            pieceDetails.setWeight(listUploadedData.get(88));
+            pieceDetails.setPartnerType(listUploadedData.get(89));
+            pieceDetails.setWeight_unit(listUploadedData.get(90));
+            pieceDetails.setVolume(listUploadedData.get(91));
+            pieceDetails.setVolumeUnit(listUploadedData.get(92));
+            pieceDetails.setPackReferenceNumber(listUploadedData.get(93));
+            pieceDetails.setTags(listUploadedData.get(94));
+
+            String pieceImageRef = listUploadedData.get(95);
+            String[] pieceImageUrls = pieceImageRef.split(",");
+            List<ReferenceImageList> imageReference = new ArrayList<>();
+            for(String imageUrl : pieceImageUrls) {
+                ReferenceImageList referenceImageList = new ReferenceImageList();
+                referenceImageList.setReferenceImageUrl(imageUrl);
+                imageReference.add(referenceImageList);
+            }
+            pieceDetails.setReferenceImageList(imageReference);
+
+            // Set Item Details
+            AddItemDetails itemDetails = new AddItemDetails();
+            itemDetails.setPartnerType(listUploadedData.get(96));
+            itemDetails.setItemCode(listUploadedData.get(97));
+            itemDetails.setHsCode(listUploadedData.get(98));
+            itemDetails.setDeclaredValue(listUploadedData.get(99));
+            itemDetails.setCodAmount(listUploadedData.get(100));
+            itemDetails.setLength(listUploadedData.get(101));
+            itemDetails.setDimensionUnit(listUploadedData.get(102));
+            itemDetails.setWidth(listUploadedData.get(103));
+            itemDetails.setHeight(listUploadedData.get(104));
+            itemDetails.setWeight(listUploadedData.get(105));
+            itemDetails.setWeightUnit(listUploadedData.get(106));
+            itemDetails.setVolume(listUploadedData.get(107));
+            itemDetails.setVolumeUnit(listUploadedData.get(108));
+            List<ReferenceImageList> imageReferenceList = new ArrayList<>();
+
+            String itemImageRef = listUploadedData.get(109);
+            String[] itemImageUrl = itemImageRef.split(",");
+            for(String imageUrl : itemImageUrl) {
+                ReferenceImageList referenceImageList = new ReferenceImageList();
+                referenceImageList.setReferenceImageUrl(imageUrl);
+                imageReferenceList.add(referenceImageList);
+            }
+            if (listUploadedData.get(110).trim().length() > 0) {
+                itemDetails.setDescription(listUploadedData.get(110));
+            }
+            itemDetails.setReferenceImageList(imageReferenceList);
+
+
+            // Add item to piece
+            List<AddItemDetails> itemDetailsList = pieceDetails.getItemDetails();
+            if (itemDetailsList == null) {
+                itemDetailsList = new ArrayList<>();
+                pieceDetails.setItemDetails(itemDetailsList);
+            }
+            itemDetailsList.add(itemDetails);
+
+            // Add piece to piece map
+            pieceDetailsMap.put(pieceKey, pieceDetails);
+
+            // Add piece map to consignment map
+            consignmentMap.get(consignmentKey).setPieceDetails(new ArrayList<>(pieceDetailsMap.values()));
+        }
+
+        return new ArrayList<>(consignmentMap.values());
+    }
 }

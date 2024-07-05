@@ -200,7 +200,6 @@ mat-sidenav {
     .sidenav-nav-link {
       background-color: rgba(255, 255, 255, 0.05);
     }
-
   }
 
   .sidenav-nav-link.active {
@@ -244,7 +243,9 @@ mat-sidenav {
 }
 
 .sublevel-nav-link {
+  width: 160px; 
   display: flex;
+  justify-content: space-between;
   align-items: center;
   height: 40px;
   color: #8690a3;
@@ -291,7 +292,7 @@ mat-sidenav {
   width: 180px;
   height: 250px;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: scroll;
   transition: all .4s ease-in;
 
   .listSelector {
@@ -309,7 +310,8 @@ mat-sidenav {
   .sublevel-nav-item {
     width: 80%;
     margin-top: 5px;
-    display: flex;
+    // display: flex;
+    // justify-content: space-between;
     cursor: pointer;
   }
 
@@ -321,12 +323,12 @@ mat-sidenav {
 
   .sublevel-link-text {
     margin-left: 1.2rem;
-  }
+  } 
 
   .sublevel-nav-item:hover {
     background-color: #2b2a2a;
   }
-}
+} 
 
 .sublevel-nav-item.expanded .sublevel-nav-link-container {
   display: flex;
@@ -336,6 +338,8 @@ mat-sidenav {
   margin-top: 10px;
   width: 80%;
 }
+
+::-webkit-scrollbar {display: none !important;}
 
 
 

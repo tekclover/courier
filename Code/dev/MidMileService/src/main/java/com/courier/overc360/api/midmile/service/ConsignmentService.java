@@ -178,8 +178,8 @@ public class ConsignmentService {
 
             if (iKeyValuePair != null) {
                 newConsignment.setLanguageId(iKeyValuePair.getLangId());
-                newConsignment.setLanguageDescription(iKeyValuePair.getLangId() + " - " + iKeyValuePair.getLangDesc());
-                newConsignment.setCompanyName(companyId + " - " + iKeyValuePair.getCompanyDesc());
+                newConsignment.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newConsignment.setCompanyName(iKeyValuePair.getCompanyDesc());
             }
             if (shipperData != null) {
                 newConsignment.setPartnerName(shipperData.getConsignorName());
@@ -202,6 +202,7 @@ public class ConsignmentService {
             newConsignment.setStatusDescription("Consignment Created");
             newConsignment.setEventText("Prealert Received");
             newConsignment.setCreatedBy(loginUserId);
+            newConsignment.setStatusTimestamp(new Date());
             newConsignment.setEventTimestamp(new Date());
             newConsignment.setCreatedOn(new Date());
             newConsignment.setUpdatedBy(null);
@@ -267,16 +268,18 @@ public class ConsignmentService {
             if (consignmentEntity.getReferenceImageList() != null && !consignmentEntity.getReferenceImageList().isEmpty()) {
                 for (ReferenceImageList consignment : consignmentEntity.getReferenceImageList()) {
                     String downloadDocument = commonService.downLoadDocument(consignment.getReferenceImageUrl(), "document", "image");
-                    ImageReference imageReference = imageReferenceService.createImageReference(
-                            languageId, companyId, partnerId, partnerName, houseAirwayBill, masterAirwayBill,
-                            partnerHawBill, partnerMawBill, saveConsignment.getConsignmentId(), null, null, consignment.getReferenceImageUrl(), "CON_ID", downloadDocument, loginUserId);
-                    //ReferenceImageList
-                    ReferenceImageList refImage = new ReferenceImageList();
-                    refImage.setImageRefId(imageReference.getImageRefId());
-                    refImage.setReferenceImageUrl(imageReference.getReferenceImageUrl());
-                    refImage.setPdfUrl(imageReference.getReferenceField2());
+                    if (downloadDocument != null) {
+                        ImageReference imageReference = imageReferenceService.createImageReference(
+                                languageId, companyId, partnerId, partnerName, houseAirwayBill, masterAirwayBill,
+                                partnerHawBill, partnerMawBill, saveConsignment.getConsignmentId(), null, null, consignment.getReferenceImageUrl(), "CON_ID", downloadDocument, loginUserId);
+                        //ReferenceImageList
+                        ReferenceImageList refImage = new ReferenceImageList();
+                        refImage.setImageRefId(imageReference.getImageRefId());
+                        refImage.setReferenceImageUrl(imageReference.getReferenceImageUrl());
+                        refImage.setPdfUrl(imageReference.getReferenceField2());
 
-                    referenceImageList.add(refImage);
+                        referenceImageList.add(refImage);
+                    }
                 }
             }
 
@@ -434,12 +437,10 @@ public class ConsignmentService {
      * @param masterAirwayBill
      * @param houseAirwayBill
      */
-
-
     public void deleteConsignmentEntity(String companyId, String languageId, String partnerId, String masterAirwayBill,
                                         String houseAirwayBill, String pieceId, String pieceItemId, String imageRefId, String loginUserID) {
 
-        if (pieceId.isEmpty() && pieceItemId.isEmpty()) {
+        if (pieceId.isEmpty() && pieceItemId.isEmpty() && imageRefId.isEmpty()) {
             ConsignmentEntity dbConsignmentEntity = consignmentEntityRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                     companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
 
@@ -450,18 +451,20 @@ public class ConsignmentService {
                 dbConsignmentEntity.setDeletionIndicator(1L);
                 dbConsignmentEntity.setUpdatedBy(loginUserID);
                 dbConsignmentEntity.setUpdatedOn(new Date());
+                //MultipleImageDelete
                 imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                //MultiplePiece
                 pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
                 consignmentEntityRepository.save(dbConsignmentEntity);
             }
         }
-        if (!pieceId.isEmpty() && pieceItemId == null) {
+        if (pieceItemId.isEmpty() && !pieceId.isEmpty()) {
             pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);
         }
-        if (!pieceItemId.isEmpty() && pieceItemId != null) {
+        if (!pieceItemId.isEmpty() && !pieceId.isEmpty()) {
             itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, loginUserID);
         }
-        if (imageRefId != null) {
+        if (imageRefId != null && !imageRefId.isEmpty()) {
             imageReferenceService.deleteImageReference(imageRefId, loginUserID);
         }
     }

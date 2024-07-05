@@ -343,9 +343,7 @@ public class ImageReferenceService {
             imageReference.setUpdatedOn(new Date());
             imageReferenceRepository.save(imageReference);
         } else {
-            createImageReferenceLog1(imageReference.getLanguageId(), imageReference.getCompanyId(), imageReference.getPartnerId(),
-                    imageReference.getMasterAirwayBill(), imageReference.getHouseAirwayBill(), imageReference.getPieceId(),
-                    imageReference.getPieceItemId(), imageRefId, "Error in deleting imageRefId - " + imageRefId);
+            createImageReferenceLog1(imageRefId, "Error in deleting imageRefId - " + imageRefId);
             throw new BadRequestException("Error in deleting imageRefId - " + imageRefId);
         }
     }
@@ -431,6 +429,26 @@ public class ImageReferenceService {
         errorLogRepository.save(errorLog);
         errorLogList.add(errorLog);
         errorLogService.writeLog(errorLogList);
+    }
+
+
+    //ImageReferenceLog
+    private void createImageReferenceLog1(String imageRefId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+//        errorLog.setLanguageId(languageId);
+//        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(imageRefId);
+        errorLog.setMethod("Exception thrown in getImageReference");
+//        errorLog.setReferenceField1(partnerId);
+//        errorLog.setReferenceField2(masterAirwayBill);
+//        errorLog.setReferenceField3(houseAirwayBill);
+//        errorLog.setReferenceField4(pieceId);
+//        errorLog.setReferenceField5(pieceItemId);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
     }
 
     private void createImageReferenceLog1(String languageId, String companyId, String partnerId, String

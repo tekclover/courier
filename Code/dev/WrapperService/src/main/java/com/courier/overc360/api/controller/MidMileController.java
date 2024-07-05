@@ -453,4 +453,62 @@ public class MidMileController {
         Console[] dbtransferConsole = midMileService.transferConsole(transferConsole, loginUserID, authToken);
         return new ResponseEntity<>(dbtransferConsole, HttpStatus.OK);
     }
+
+    //==================================================ConsignmentStatus====================================================
+
+    // Get All ConsignmentStatus Details
+    @ApiOperation(response = ConsignmentStatus[].class, value = "Get all ConsignmentStatus details")
+    // label for swagger
+    @GetMapping("/consignmentStatus")
+    public ResponseEntity<?> getAllConsignmentStatus(@RequestParam String authToken) {
+        ConsignmentStatus[] consignmentStatus = midMileService.getAllConsignmentStatus(authToken);
+        return new ResponseEntity<>(consignmentStatus, HttpStatus.OK);
+    }
+
+    // Get ConsignmentStatus
+    @ApiOperation(response = ConsignmentStatus.class, value = "Get ConsignmentStatus") // label for swagger
+    @GetMapping("/consignmentStatus/{statusId}")
+    public ResponseEntity<?> getConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
+                                                  @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String eventCode, @RequestParam String authToken) {
+        ConsignmentStatus dbConsignmentStatus = midMileService.getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, authToken);
+        return new ResponseEntity<>(dbConsignmentStatus, HttpStatus.OK);
+    }
+
+
+    // Create ConsignmentStatus
+    @ApiOperation(response = ConsignmentStatus.class, value = "Create new ConsignmentStatus") // label for swagger
+    @PostMapping("/consignmentStatus")
+    public ResponseEntity<?> postConsignmentStatus(@RequestBody AddConsignmentStatus addConsignmentStatus, @RequestParam String loginUserID, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        ConsignmentStatus createdConsignmentStatus = midMileService.createConsignmentStatus(addConsignmentStatus, loginUserID, authToken);
+        return new ResponseEntity<>(createdConsignmentStatus, HttpStatus.OK);
+    }
+
+    // Update ConsignmentStatus
+    @ApiOperation(response = ConsignmentStatus.class, value = "Update ConsignmentStatus") // label for swagger
+    @PatchMapping("/consignmentStatus/{statusId}")
+    public ResponseEntity<?> patchConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
+                                                    @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String eventCode, @RequestBody UpdateConsignmentStatus updateConsignmentStatus, @RequestParam String loginUserID,
+                                                    @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
+        ConsignmentStatus updatedConsignmentStatus = midMileService.updateConsignmentStatus
+                (languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, updateConsignmentStatus, loginUserID, authToken);
+        return new ResponseEntity<>(updatedConsignmentStatus, HttpStatus.OK);
+    }
+
+    // Delete ConsignmentStatus
+    @ApiOperation(response = ConsignmentStatus.class, value = "Delete ConsignmentStatus") // label for swagger
+    @DeleteMapping("/consignmentStatus/{statusId}")
+    public ResponseEntity<?> deleteConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
+                                                     @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String eventCode, @RequestParam String loginUserID, @RequestParam String authToken) {
+        midMileService.deleteConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find ConsignmentStatus
+    @ApiOperation(response = ConsignmentStatus[].class, value = "Find ConsignmentStatus")//label for swagger
+    @PostMapping("/consignmentStatus/find")
+    public ConsignmentStatus[] findConsignmentStatus(@RequestBody FindConsignmentStatus findConsignmentStatus,
+                                                     @RequestParam String authToken) throws Exception {
+        return midMileService.findConsignmentStatus(findConsignmentStatus, authToken);
+    }
 }
