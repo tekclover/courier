@@ -66,6 +66,7 @@ export class ConsoleComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -81,6 +82,7 @@ export class ConsoleComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   onChange() {

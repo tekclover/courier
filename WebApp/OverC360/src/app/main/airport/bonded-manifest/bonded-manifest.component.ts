@@ -42,6 +42,7 @@ export class BondedManifestComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyId', header: 'Company' },
+      { field: 'bondedId', header: 'Bonded ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -62,6 +63,7 @@ export class BondedManifestComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -69,7 +71,6 @@ export class BondedManifestComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         console.log(res);
-        res = this.cs.removeDuplicatesFromArrayList(res, 'bondedId')
         this.bondedManifestTable = res;
         this.spin.hide();
       }, error: (err) => {
@@ -77,6 +78,7 @@ export class BondedManifestComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   onChange() {

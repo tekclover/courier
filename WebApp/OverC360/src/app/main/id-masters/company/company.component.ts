@@ -20,7 +20,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class CompanyComponent {
 
-  @ViewChild('company') overlayPanel!: OverlayPanel;
+
 
   companyTable: any[] = [];
   selectedCompany: any[] = [];
@@ -234,15 +234,36 @@ export class CompanyComponent {
   countryDropdown:any = [];
   districtDropdown:any = [];
   provinceDropdown:any = [];
+  statusDropdown:any = [];
+
   getSearchDropdown() {
     this.companyTable.forEach(res => {
-      this.companyDropdown.push({value: res.companyId, label: res.companyName});
-      this.countryDropdown.push({value: res.countryId, label: res.countryName});
-      this.districtDropdown.push({value: res.districtId, label: res.districtName});
-      this.provinceDropdown.push({value: res.provinceId, label: res.provinceName});
-    })
-  }
 
+      if(res.companyId != null){
+        const company  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
+        this.companyDropdown.push({value: company.companyId, label: company.companyName});
+      }
+      
+      if(res.countryId != null){
+        const country  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
+        this.countryDropdown.push({value: country.countryId, label: country.countryName});
+      }
+
+      if(res.districtId != null){
+        const district  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
+        this.districtDropdown.push({value: district.districtId, label: district.districtName});
+      }
+
+      if(res.provinceId != null){
+        const provinceId  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
+        this.provinceDropdown.push({value: provinceId.provinceId, label: provinceId.provinceName});
+      }
+    
+    })
+    this.statusDropdown = [{ value: '17', label: 'Inactive' },{ value: '16', label: 'Active' }];
+  }
+  
+  @ViewChild('company') overlayPanel!: OverlayPanel;
   closeOverLay(){
     this.overlayPanel.hide()
   }

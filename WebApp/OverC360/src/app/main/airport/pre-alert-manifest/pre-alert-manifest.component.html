@@ -111,22 +111,24 @@
                                     <p class="mb-0 headerText">ETA</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip" [ngClass]="rowData.flightArrivalTime ? 'bgOrange text-dark' : ''">{{rowData.flightArrivalTime}}</p>
+                                    <p class="mb-0 valueText chip" [ngClass]="rowData.flightArrivalTime ? 'bgOrange text-dark' : ''">{{rowData.flightArrivalTime | date: 'dd-MM-yyyy HH:mm'}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Currency</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.currecy}}</p>
-                                </div>
-
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Value</p>
+                                    <p class="mb-0 headerText">Consignment Value</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip">{{rowData.consignmentValue}}</p>
                                 </div>
+
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 headerText">Consignment Currency</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 valueText chip">{{rowData.consignmentCurrency}}</p>
+                                </div>
+
+                               
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Invoice No</p>
                                 </div>
@@ -138,14 +140,14 @@
                                     <p class="mb-0 headerText">Shipper Name</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.shipperName}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.originDetails.name}}</p>
                                 </div>
                                 
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Consignee Name</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.consigneeName}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.destinationDetails.name}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">

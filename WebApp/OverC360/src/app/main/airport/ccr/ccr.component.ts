@@ -43,6 +43,7 @@ export class CcrComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyId', header: 'Company' },
+      { field: 'ccrId', header: 'CCR ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -63,6 +64,7 @@ export class CcrComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -78,6 +80,7 @@ export class CcrComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   onChange() {

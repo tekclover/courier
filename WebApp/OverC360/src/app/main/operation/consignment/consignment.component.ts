@@ -51,11 +51,12 @@ export class ConsignmentComponent {
       
       { field: 'houseAirwayBill', header: 'CN', style: 'min-width: 5rem' },
       { field: 'statusDescription', header: 'Status' , style: 'min-width: 5rem'},
+      { field: 'eventText', header: 'Event' , style: 'min-width: 5rem'},
       { field: 'partnerName', header: 'Partner' , style: 'min-width: 5rem'},
       { field: 'productName', header: 'Product' , style: 'min-width: 10rem'},
       { field: 'subProductName', header: 'Sub Product' , style: 'min-width: 10rem'},
       { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem'},
-      { field: 'destinationDetails.country', header: 'Destination', style: 'min-width: 5rem' },
+      { field: 'destinationDetails.accountId', header: 'Destination', style: 'min-width: 5rem' },
       { field: 'serviceTypeText', header: 'Service Type' , style: 'min-width: 5rem'},
       { field: 'loadType', header: 'Document Type', style: 'min-width: 5rem' },
       { field: 'paymentType', header: 'Payment Type' , style: 'min-width: 5rem'},
