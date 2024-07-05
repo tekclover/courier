@@ -39,7 +39,7 @@ export class AirportCodeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Airport Code - List'];
+    const dataToSend = ['Master', 'Airport Code '];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

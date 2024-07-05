@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/main/operation/consignment/consignment-new/piece-details/piece-details.component.scss"],
-  "sourcesContent": ["::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{border-radius: 12px !important;}\r\n.inputborderLess{\r\n    border: none !important;\r\n  }"],
-  "mappings": ";AAAA,UAAA,CAAA,yBAAA,CAAA;AAAyD,iBAAA;;AACzD,CAAA;AACI,UAAA;;",
-  "names": []
-}
