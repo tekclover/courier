@@ -155,7 +155,7 @@ export class CompanyComponent {
     }
     const dialogRef = this.dialog.open(DeleteComponent, {
       disableClose: true,
-      width: '70%',
+      width: '60%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: {

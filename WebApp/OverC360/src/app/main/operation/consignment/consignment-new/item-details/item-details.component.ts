@@ -142,7 +142,7 @@ export class ItemDetailsComponent {
       referenceImageUrl: [image.referenceImageUrl]
     })));
   }
-  
+
 
   dimension(type: any = 'New', module: any, index: any) {
     const dialogRef = this.dialog.open(DimensionComponent, {
