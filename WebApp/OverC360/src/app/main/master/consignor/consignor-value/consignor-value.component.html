@@ -1,16 +1,28 @@
 <div class="bgWhite text-black w-93 h-100 m-4 mt-4">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Add Customer</p>
+        <p class="componentHeader f600 mb-0">Add Consignor</p>
     </div>
     <div class="mt-4">
         <form [formGroup]="form">
             <div class="d-flex-row">
                 <div class="row">
+                    <div class="col-6 marginFieldNew borderRadius12" id="customerId">
+                        <p class="formControlLabel f600 textBlack mb-0 required">Customer</p>
+                        <p-dropdown [options]="customerIdList" placeholder="Select" filter="true" formControlName="customerId" appendTo="body"
+                        [ngClass]="form.get('customerId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                          [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="customerChanged()"/>
+                    </div>
+                    <!-- <div class="col-6 marginFieldNew borderRadius12" id="subProductId">
+                        <p class="formControlLabel f600 textBlack mb-0 required">Sub Product</p>    
+                        <p-dropdown [options]="subProductIdList" placeholder="Select" filter="true" formControlName="subProductId" appendTo="body"
+                        [ngClass]="form.get('subProductId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                          [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="subProductChanged()" />
+                    </div> -->
                     <div class="col-6 marginFieldNew borderRadius12" id="productId">
                         <p class="formControlLabel f600 textBlack mb-0 required">Product</p>
                         <p-dropdown [options]="productIdList" placeholder="Select" filter="true" formControlName="productId" appendTo="body"
                         [ngClass]="form.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                          [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="productChanged()"/>
+                          [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" (onChange)="subProductChanged()"/>
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" id="subProductId">
                         <p class="formControlLabel f600 textBlack mb-0 required">Sub Product</p>    
