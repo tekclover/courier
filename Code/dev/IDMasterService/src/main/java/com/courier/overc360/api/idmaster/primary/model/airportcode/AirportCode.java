@@ -1,4 +1,4 @@
-package com.courier.overc360.api.idmaster.replica.model.menu;
+package com.courier.overc360.api.idmaster.primary.model.airportcode;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,18 +16,15 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/*
- * `LANG_ID`, `C_ID`, `MENU_ID`, `SUB_MENU_ID`, `AUT_OBJ_ID`
- */
-@Table(name = "tblmenu",
+@Table(name = "tblairportcode",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "unique_key_menu",
-                        columnNames = {"LANG_ID", "C_ID", "MENU_ID", "SUB_MENU_ID", "AUT_OBJ_ID"})
+                        name = "unique_key_airportcode",
+                        columnNames = {"C_ID", "LANG_ID", "AIRPORT_CODE"})
         }
 )
-@IdClass(ReplicaMenuCompositeKey.class)
-public class ReplicaMenu {
+@IdClass(AirportCodeCompositeKey.class)
+public class AirportCode {
 
     @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
@@ -38,43 +35,35 @@ public class ReplicaMenu {
     private String companyId;
 
     @Id
-    @Column(name = "MENU_ID")
-    private Long menuId;
+    @Column(name = "AIRPORT_CODE", columnDefinition = "nvarchar(50)")
+    private String airportCode;
 
-    @Id
-    @Column(name = "SUB_MENU_ID")
-    private Long subMenuId;
+    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
+    private String languageDescription;
 
-    @Id
-    @Column(name = "AUT_OBJ_ID")
-    private Long authorizationObjectId;
+    @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
+    private String companyName;
 
-    @Column(name = "AUT_OBJ_VALUE", columnDefinition = "nvarchar(100)")
-    private String authorizationObjectValue;
+    @Column(name = "AIRPORT_TEXT", columnDefinition = "nvarchar(100)")
+    private String airportText;
 
-    @Column(name = "MENU_TEXT", columnDefinition = "nvarchar(100)")
-    private String menuName;
+    @Column(name = "COUNTRY_ID", columnDefinition = "nvarchar(50)")
+    private String countryId;
 
-    @Column(name = "SUB_MENU_TEXT", columnDefinition = "nvarchar(100)")
-    private String subMenuName;
-
-    @Column(name = "AUT_OBJ", columnDefinition = "nvarchar(100)")
-    private String authorizationObject;
-
-    @Column(name = "LANG_ID_DESC", columnDefinition = "nvarchar(500)")
-    private String languageIdAndDescription;
-
-    @Column(name = "COMP_ID_DESC", columnDefinition = "nvarchar(500)")
-    private String companyIdAndDescription;
+    @Column(name = "COUNTRY_NAME", columnDefinition = "nvarchar(100)")
+    private String countryName;
 
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
     private String statusDescription;
 
+    @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
+    private String remark;
+
     @Column(name = "IS_DELETED")
-    private Long deletionIndicator;
+    private Long deletionIndicator = 0L;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
@@ -112,24 +101,10 @@ public class ReplicaMenu {
     @Column(name = "CTD_ON")
     private Date createdOn = new Date();
 
-    @Column(name = "UTD_BY", columnDefinition = "nvarchar(50)")
-    private String updatedBy;
-
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
-    // For Role Access
-    @Column(name = "CREATE_UPDATE")
-    private Boolean createUpdate;
-
-    @Column(name = "DELETE_MODULE")
-    private Boolean delete;
-
-    @Column(name = "VIEW_MODULE")
-    private Boolean view;
-
-    // For ModuleId
-    @Column(name = "ADD_MODULE")
-    private Boolean addModule;
+    @Column(name = "UTD_BY", columnDefinition = "nvarchar(500)")
+    private String updatedBy;
 
 }

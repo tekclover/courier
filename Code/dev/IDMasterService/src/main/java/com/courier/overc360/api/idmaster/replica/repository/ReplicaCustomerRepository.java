@@ -53,4 +53,5 @@ public interface ReplicaCustomerRepository extends JpaRepository<ReplicaCustomer
                                  @Param(value = "productId") String productId,
                                  @Param(value = "customerId") String customerId);
 
+
 }

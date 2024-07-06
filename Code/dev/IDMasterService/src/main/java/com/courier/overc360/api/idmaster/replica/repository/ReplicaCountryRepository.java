@@ -41,4 +41,18 @@ public interface ReplicaCountryRepository extends JpaRepository<ReplicaCountry, 
                                  @Param(value = "companyId") String companyId,
                                  @Param(value = "countryId") String countryId);
 
+
+    // Get Country Desc
+    @Query(value = "Select \n" +
+            "CONCAT (tc.COUNTRY_ID, ' - ', tc.COUNTRY_NAME) \n" +
+            "From tblcountry tc \n" +
+            "Where \n" +
+            "tc.LANG_ID IN (:languageId) and \n" +
+            "tc.C_ID IN (:companyId) and \n" +
+            "tc.COUNTRY_ID IN (:countryId) and \n" +
+            "tc.IS_DELETED = 0", nativeQuery = true)
+    String getCountryDesc(@Param(value = "countryId") String countryId,
+                          @Param(value = "languageId") String languageId,
+                          @Param(value = "companyId") String companyId);
+
 }

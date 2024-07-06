@@ -116,7 +116,7 @@ public class ProductController {
     @ApiOperation(response = ReplicaProduct.class, value = "Find Product") // label for swagger
     @PostMapping("/find")
     public ResponseEntity<?> findProducts(@Valid @RequestBody FindProduct findProduct) throws Exception {
-        List<ReplicaProduct> productList = productService.findProduct(findProduct);
+        List<ReplicaProduct> productList = productService.findProducts(findProduct);
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 

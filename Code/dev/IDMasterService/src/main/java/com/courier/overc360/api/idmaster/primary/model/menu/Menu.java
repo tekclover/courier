@@ -131,4 +131,5 @@ public class Menu {
     // For ModuleId
     @Column(name = "ADD_MODULE")
     private Boolean addModule;
+
 }

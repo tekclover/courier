@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,9 @@ public interface SubProductRepository extends JpaRepository<SubProduct, String>,
 
     SubProduct findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductValue, String subProductId, Long deletionIndicator);
+
+    List<SubProduct> findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, Long deletionIndicator);
 
 
     // Updating subProductName in Product, Customer & Consignor Tables using Stored Procedure

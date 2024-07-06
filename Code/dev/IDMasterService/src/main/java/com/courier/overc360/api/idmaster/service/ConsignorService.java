@@ -87,6 +87,96 @@ public class ConsignorService {
     }
 
     /**
+     * @param languageId
+     * @param companyId
+     * @param subProductId
+     * @param subProductValue
+     * @param productId
+     * @param consignorId
+     * @return
+     */
+    public List<Consignor> getConsignorList(String languageId, String companyId, String subProductId, String subProductValue,
+                                            String productId, String consignorId) {
+
+        List<Consignor> dbConsignorList = consignorRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndConsignorIdAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, productId, consignorId, 0L);
+        if (dbConsignorList.isEmpty()) {
+            String errMsg = "The given values : consignorId - " + consignorId + ", productId - " + productId
+                    + ", subProductId - " + subProductId + ", subProductValue - " + subProductValue
+                    + ", companyId - " + companyId + " and languageId - " + languageId + " doesn't exists";
+            // Error Log
+            createConsignorLog5(languageId, companyId, subProductId, subProductValue, productId, consignorId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbConsignorList;
+    }
+
+    /**
+     * @param languageId
+     * @param companyId
+     * @param subProductId
+     * @param subProductValue
+     * @param consignorId
+     * @return
+     */
+    public List<Consignor> getConsignorList1(String languageId, String companyId, String subProductId,
+                                             String subProductValue, String consignorId) {
+
+        List<Consignor> dbConsignorList = consignorRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndConsignorIdAndDeletionIndicator(
+                languageId, companyId, subProductId, subProductValue, consignorId, 0L);
+        if (dbConsignorList.isEmpty()) {
+            String errMsg = "The given values : consignorId - " + consignorId + ", subProductId - " + subProductId
+                    + ", subProductValue - " + subProductValue + ", companyId - " + companyId
+                    + " and languageId - " + languageId + " doesn't exists";
+            // Error Log
+            createConsignorLog6(languageId, companyId, subProductId, subProductValue, consignorId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbConsignorList;
+    }
+
+    /**
+     * @param languageId
+     * @param companyId
+     * @param subProductId
+     * @param consignorId
+     * @return
+     */
+    public List<Consignor> getConsignorList2(String languageId, String companyId, String subProductId, String consignorId) {
+
+        List<Consignor> dbConsignorList = consignorRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndConsignorIdAndDeletionIndicator(
+                languageId, companyId, subProductId, consignorId, 0L);
+        if (dbConsignorList.isEmpty()) {
+            String errMsg = "The given values : consignorId - " + consignorId + ", subProductId - " + subProductId
+                    + ", companyId - " + companyId + " and languageId - " + languageId + " doesn't exists";
+            // Error Log
+            createConsignorLog7(languageId, companyId, subProductId, consignorId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbConsignorList;
+    }
+
+    /**
+     * @param languageId
+     * @param companyId
+     * @param consignorId
+     * @return
+     */
+    public List<Consignor> getConsignorList3(String languageId, String companyId, String consignorId) {
+
+        List<Consignor> dbConsignorList = consignorRepository.findByLanguageIdAndCompanyIdAndConsignorIdAndDeletionIndicator(
+                languageId, companyId, consignorId, 0L);
+        if (dbConsignorList.isEmpty()) {
+            String errMsg = "The given values : consignorId - " + consignorId + ", companyId - " + companyId
+                    + " and languageId - " + languageId + " doesn't exists";
+            // Error Log
+            createConsignorLog8(languageId, companyId, consignorId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbConsignorList;
+    }
+
+    /**
      * Create new Consignor
      *
      * @param addConsignor
@@ -359,6 +449,14 @@ public class ConsignorService {
         }
     }
 
+    // Delete Consignor Properties
+    private void deleteConsignorProperties(Consignor dbConsignor, String loginUserID) {
+        dbConsignor.setDeletionIndicator(1L);
+        dbConsignor.setUpdatedBy(loginUserID);
+        dbConsignor.setUpdatedOn(new Date());
+        consignorRepository.save(dbConsignor);
+    }
+
     /**
      * Delete Consignor
      *
@@ -375,10 +473,7 @@ public class ConsignorService {
 
         Consignor dbConsignor = getConsignor(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId);
         if (dbConsignor != null) {
-            dbConsignor.setDeletionIndicator(1L);
-            dbConsignor.setUpdatedBy(loginUserID);
-            dbConsignor.setUpdatedOn(new Date());
-            consignorRepository.save(dbConsignor);
+            deleteConsignorProperties(dbConsignor, loginUserID);
         } else {
             // Error Log
             createConsignorLog1(languageId, companyId, subProductId, subProductValue, productId, customerId, consignorId,
@@ -395,10 +490,47 @@ public class ConsignorService {
      */
     public void deleteConsignorBulk(List<ConsignorDeleteInput> consignorDeleteInputList, String loginUserID) {
 
-        for (ConsignorDeleteInput deleteInput : consignorDeleteInputList) {
-            deleteConsignor(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-                    deleteInput.getSubProductValue(), deleteInput.getProductId(),
-                    deleteInput.getCustomerId(), deleteInput.getConsignorId(), loginUserID);
+        if (consignorDeleteInputList != null && !consignorDeleteInputList.isEmpty()) {
+            for (ConsignorDeleteInput deleteInput : consignorDeleteInputList) {
+
+                if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()
+                        && deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()
+                        && deleteInput.getProductId() != null && !deleteInput.getProductId().isEmpty()
+                        && deleteInput.getCustomerId() != null && !deleteInput.getCustomerId().isEmpty()) {
+                    // Call normal delete API
+                    deleteConsignor(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+                            deleteInput.getSubProductValue(), deleteInput.getProductId(),
+                            deleteInput.getCustomerId(), deleteInput.getConsignorId(), loginUserID);
+                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()
+                        && deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()
+                        && deleteInput.getProductId() != null && !deleteInput.getProductId().isEmpty()) {
+                    List<Consignor> dbConsignorList = getConsignorList(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                            deleteInput.getSubProductId(), deleteInput.getSubProductValue(),
+                            deleteInput.getProductId(), deleteInput.getConsignorId());
+                    for (Consignor dbConsignor : dbConsignorList) {
+                        deleteConsignorProperties(dbConsignor, loginUserID);
+                    }
+                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty() &&
+                        deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
+                    List<Consignor> dbConsignorList = getConsignorList1(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                            deleteInput.getSubProductId(), deleteInput.getSubProductValue(), deleteInput.getConsignorId());
+                    for (Consignor dbConsignor : dbConsignorList) {
+                        deleteConsignorProperties(dbConsignor, loginUserID);
+                    }
+                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()) {
+                    List<Consignor> dbConsignorList = getConsignorList2(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                            deleteInput.getSubProductId(), deleteInput.getConsignorId());
+                    for (Consignor dbConsignor : dbConsignorList) {
+                        deleteConsignorProperties(dbConsignor, loginUserID);
+                    }
+                } else {
+                    List<Consignor> dbConsignorList = getConsignorList3(deleteInput.getLanguageId(),
+                            deleteInput.getCompanyId(), deleteInput.getConsignorId());
+                    for (Consignor dbConsignor : dbConsignorList) {
+                        deleteConsignorProperties(dbConsignor, loginUserID);
+                    }
+                }
+            }
         }
     }
 
@@ -559,6 +691,67 @@ public class ConsignorService {
             errorLogList.add(errorLog);
         }
         errorLogService.writeLog(errorLogList);
+    }
+
+    private void createConsignorLog5(String languageId, String companyId, String subProductId, String subProductValue,
+                                     String productId, String consignorId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(consignorId);
+        errorLog.setMethod("Exception thrown in getConsignorList");
+        errorLog.setReferenceField1(subProductId);
+        errorLog.setReferenceField2(productId);
+        errorLog.setReferenceField3(subProductValue);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createConsignorLog6(String languageId, String companyId, String subProductId,
+                                     String subProductValue, String consignorId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(consignorId);
+        errorLog.setMethod("Exception thrown in getConsignorList1");
+        errorLog.setReferenceField1(subProductId);
+        errorLog.setReferenceField2(subProductValue);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createConsignorLog7(String languageId, String companyId, String subProductId,
+                                     String consignorId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(consignorId);
+        errorLog.setMethod("Exception thrown in getConsignorList2");
+        errorLog.setReferenceField1(subProductId);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createConsignorLog8(String languageId, String companyId, String consignorId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(consignorId);
+        errorLog.setMethod("Exception thrown in getConsignorList3");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
     }
 
 }
