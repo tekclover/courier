@@ -110,6 +110,24 @@ public class UpdateConsole {
 
     private String customsKd;
 
+    private String noOfPackageMawb;
+
+    private String companyName;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String statusId;
+
+    private String statusText;
+
+    private String bondedId;
+
+    private Long shipmentBagId;
+
     private String consignmentCurrency;
 
     private String consignmentValue;
