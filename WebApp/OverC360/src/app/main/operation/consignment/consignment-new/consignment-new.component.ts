@@ -12,8 +12,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ItemDetailsComponent } from './item-details/item-details.component';
 import { DimensionComponent } from './dimension/dimension.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
-import { ProvinceService } from '../../../id-masters/province/province.service';
-import { DistrictService } from '../../../id-masters/district/district.service';
 
 @Component({
   selector: 'app-consignment-new',
@@ -51,9 +49,6 @@ export class ConsignmentNewComponent {
     private auth: AuthService,
     private el: ElementRef,
     public dialog: MatDialog,
-    private provinceService: ProvinceService,
-    private districtService: DistrictService,
-    
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -523,8 +518,7 @@ export class ConsignmentNewComponent {
   serviceTypeIdList: any[] = [];
   consignmentTypeIdList: any[] = [];
   loadTypeIdList: any[] = [];
-  countryIdListOrigin: any[] = [];
-  countryIdListDestination: any[] = [];
+  countryIdList: any[] = [];
   cityIdList: any[] = [];
   provinceIdList: any[] = [];
   partnerName: any[] = [];
@@ -557,8 +551,7 @@ export class ConsignmentNewComponent {
         this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
         this.consignmentTypeIdList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignmentType.key);
         this.loadTypeIdList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.loadType.key);
-        this.countryIdListOrigin = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
-        this.countryIdListDestination = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
         this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
         this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
         this.partnerName = this.cas.forLanguageFilter(results[10], this.cas.dropdownlist.setup.consignor.key);
@@ -973,26 +966,6 @@ console.log(this.consignment.controls.invoiceDate.value)
       this.showPaymentTypeFields = true;
     }
   }
-
-  countryChanged(name:any){
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-  //  obj.countryId = [this[name].country.value];
-
-    this.provinceIdList = [];
-    this.spin.show();
-    this.provinceService.search(obj).subscribe({
-      next: (result) => {
-        this.provinceIdList = this.cas.foreachlist(result, { key: 'provinceId', value: 'provinceName' });
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }
-
 }
 
 
