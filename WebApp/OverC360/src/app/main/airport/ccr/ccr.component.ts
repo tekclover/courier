@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CcrService } from './ccr.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
@@ -190,9 +190,18 @@ export class CcrComponent {
     return this.selectedCcr.includes(item);
   }
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  
+  uploadBayan(){
+    if (this.selectedCcr.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    this.fileInput.nativeElement.click();
+  }
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
-    const filePath = 'dd';
+    const filePath = this.selectedCcr[0].ccrId + '/';
     const file: File = event.target.files[0];
     this.selectedFiles = file;
     this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
