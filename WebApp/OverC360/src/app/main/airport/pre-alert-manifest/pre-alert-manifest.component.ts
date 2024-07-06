@@ -17,6 +17,7 @@ import { BondedManifestService } from '../bonded-manifest/bonded-manifest.servic
 import { ConsoleService } from '../console/console.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 
 @Component({
   selector: 'app-pre-alert-manifest',
@@ -86,7 +87,19 @@ export class PreAlertManifestComponent {
       { field: 'referenceField5', header: 'Reference Field 5' },
     ];
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'PreAlertManifest',code :  this.selectedPreAlertManifest} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   initialCall() {
     this.spin.show();
     let obj: any = {};
