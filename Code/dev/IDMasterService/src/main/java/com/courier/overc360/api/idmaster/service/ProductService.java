@@ -507,7 +507,7 @@ public class ProductService {
         return dbProduct.get();
     }
 
-    public List<ReplicaProduct> findProduct(FindProduct findProduct) throws ParseException {
+    public List<ReplicaProduct> findProducts(FindProduct findProduct) throws ParseException {
         ReplicaProductSpecification spec = new ReplicaProductSpecification(findProduct);
         List<ReplicaProduct> results = replicaProductRepository.findAll(spec);
         log.info("found Products --> {}", results);

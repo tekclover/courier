@@ -25,10 +25,12 @@ public interface ReplicaMenuRepository extends JpaRepository<ReplicaMenu, Long>,
 
     List<ReplicaMenu> findBySubMenuId(Long subMenuId);
 
+
     // Get All Non-Deleted Menus
     @Query(value = "Select * From tblmenu \n" +
             "Where IS_DELETED = 0", nativeQuery = true)
     List<ReplicaMenu> getNonDeletedMenus();
+
 
     // Find Menus with given Params Only
     @Query(value = "SELECT * FROM tblmenu tm " +

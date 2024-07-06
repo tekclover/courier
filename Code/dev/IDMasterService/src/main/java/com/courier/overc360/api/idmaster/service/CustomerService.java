@@ -83,47 +83,47 @@ public class CustomerService {
         return dbCustomer.get();
     }
 
-    public List<Customer> getCustomerList(String languageId, String companyId, String customerId, String subProductId, String subProductValue) {
-
-        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndCustomerIdAndDeletionIndicator(
-                languageId, companyId, subProductId, subProductValue, customerId, 0L);
-        if (dbCustomerList.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId +
-                    ", subProductValue - " + subProductValue + " and customerId - " + customerId + " doesn't exists.";
-            // Error Log
-            createCustomerLog5(languageId, companyId, subProductId, customerId, subProductValue, errMsg);
-            throw new BadRequestException(errMsg);
-        }
-        return dbCustomerList;
-    }
-
-    public List<Customer> getCustomerList1(String languageId, String companyId, String customerId, String subProductId) {
-
-        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndCustomerIdAndDeletionIndicator(
-                languageId, companyId, subProductId, customerId, 0L);
-        if (dbCustomerList.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
-                    + ", subProductId - " + subProductId + " and customerId - " + customerId + " doesn't exists.";
-            // Error Log
-            createCustomerLog6(languageId, companyId, subProductId, customerId, errMsg);
-            throw new BadRequestException(errMsg);
-        }
-        return dbCustomerList;
-    }
-
-    public List<Customer> getCustomerList2(String languageId, String companyId, String customerId) {
-
-        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndCustomerIdAndDeletionIndicator(
-                languageId, companyId, customerId, 0L);
-        if (dbCustomerList.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
-                    + " and customerId - " + customerId + " doesn't exists.";
-            // Error Log
-            createCustomerLog7(languageId, companyId, customerId, errMsg);
-            throw new BadRequestException(errMsg);
-        }
-        return dbCustomerList;
-    }
+//    public List<Customer> getCustomerList(String languageId, String companyId, String customerId, String subProductId, String subProductValue) {
+//
+//        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndCustomerIdAndDeletionIndicator(
+//                languageId, companyId, subProductId, subProductValue, customerId, 0L);
+//        if (dbCustomerList.isEmpty()) {
+//            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId +
+//                    ", subProductValue - " + subProductValue + " and customerId - " + customerId + " doesn't exists.";
+//            // Error Log
+//            createCustomerLog5(languageId, companyId, subProductId, customerId, subProductValue, errMsg);
+//            throw new BadRequestException(errMsg);
+//        }
+//        return dbCustomerList;
+//    }
+//
+//    public List<Customer> getCustomerList1(String languageId, String companyId, String customerId, String subProductId) {
+//
+//        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndCustomerIdAndDeletionIndicator(
+//                languageId, companyId, subProductId, customerId, 0L);
+//        if (dbCustomerList.isEmpty()) {
+//            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+//                    + ", subProductId - " + subProductId + " and customerId - " + customerId + " doesn't exists.";
+//            // Error Log
+//            createCustomerLog6(languageId, companyId, subProductId, customerId, errMsg);
+//            throw new BadRequestException(errMsg);
+//        }
+//        return dbCustomerList;
+//    }
+//
+//    public List<Customer> getCustomerList2(String languageId, String companyId, String customerId) {
+//
+//        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndCustomerIdAndDeletionIndicator(
+//                languageId, companyId, customerId, 0L);
+//        if (dbCustomerList.isEmpty()) {
+//            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+//                    + " and customerId - " + customerId + " doesn't exists.";
+//            // Error Log
+//            createCustomerLog7(languageId, companyId, customerId, errMsg);
+//            throw new BadRequestException(errMsg);
+//        }
+//        return dbCustomerList;
+//    }
 
     /**
      * Create Customer
@@ -454,41 +454,78 @@ public class CustomerService {
     }
 
     /**
+     * Get Customer List for bulk Delete
+     *
+     * @param languageId
+     * @param companyId
+     * @param subProductId
+     * @param subProductValue
+     * @param productId
+     * @param customerId
+     * @return
+     */
+    public List<Customer> getCustomerList(String languageId, String companyId, String subProductId,
+                                          String subProductValue, String productId, String customerId) {
+
+        List<Customer> customerList = customerRepository.getCustomersWithQry(languageId, companyId,
+                subProductId, subProductValue, productId, customerId);
+        if (customerList.isEmpty()) {
+            throw new BadRequestException("There are no Customers with given values");
+        }
+        log.info("Customer List for Delete --> {}", customerList);
+        return customerList;
+    }
+
+    /**
      * Delete Customers - bulk
      *
      * @param customerDeleteInputList
      * @param loginUserID
      */
+//    public void deleteCustomerBulk(List<CustomerDeleteInput> customerDeleteInputList, String loginUserID) {
+//
+//        if (customerDeleteInputList != null && !customerDeleteInputList.isEmpty()) {
+//            for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
+//
+//                if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()
+//                        && deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()
+//                        && deleteInput.getProductId() != null && !deleteInput.getProductId().isEmpty()) {
+//                    // Call normal delete API
+//                    deleteCustomer(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+//                            deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId(), loginUserID);
+//
+//                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty() &&
+//                        deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
+//                    List<Customer> dbCustomerList = getCustomerList(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+//                            deleteInput.getCustomerId(), deleteInput.getSubProductId(), deleteInput.getSubProductValue());
+//                    for (Customer dbCustomer : dbCustomerList) {
+//                        deleteCustomerProperties(dbCustomer, loginUserID);
+//                    }
+//                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()) {
+//                    List<Customer> dbCustomerList = getCustomerList1(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+//                            deleteInput.getCustomerId(), deleteInput.getSubProductId());
+//                    for (Customer dbCustomer : dbCustomerList) {
+//                        deleteCustomerProperties(dbCustomer, loginUserID);
+//                    }
+//                } else {
+//                    List<Customer> dbCustomerList = getCustomerList2(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getCustomerId());
+//                    for (Customer dbCustomer : dbCustomerList) {
+//                        deleteCustomerProperties(dbCustomer, loginUserID);
+//                    }
+//                }
+//            }
+//        }
+//    }
     public void deleteCustomerBulk(List<CustomerDeleteInput> customerDeleteInputList, String loginUserID) {
 
         if (customerDeleteInputList != null && !customerDeleteInputList.isEmpty()) {
             for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
 
-                if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()
-                        && deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()
-                        && deleteInput.getProductId() != null && !deleteInput.getProductId().isEmpty()) {
-                    // Call normal delete API
-                    deleteCustomer(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-                            deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId(), loginUserID);
+                List<Customer> dbCustomerList = getCustomerList(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+                        deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId());
 
-                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty() &&
-                        deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
-                    List<Customer> dbCustomerList = getCustomerList(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                            deleteInput.getCustomerId(), deleteInput.getSubProductId(), deleteInput.getSubProductValue());
-                    for (Customer dbCustomer : dbCustomerList) {
-                        deleteCustomerProperties(dbCustomer, loginUserID);
-                    }
-                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()) {
-                    List<Customer> dbCustomerList = getCustomerList1(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                            deleteInput.getCustomerId(), deleteInput.getSubProductId());
-                    for (Customer dbCustomer : dbCustomerList) {
-                        deleteCustomerProperties(dbCustomer, loginUserID);
-                    }
-                } else {
-                    List<Customer> dbCustomerList = getCustomerList2(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getCustomerId());
-                    for (Customer dbCustomer : dbCustomerList) {
-                        deleteCustomerProperties(dbCustomer, loginUserID);
-                    }
+                for (Customer dbCustomer : dbCustomerList) {
+                    deleteCustomerProperties(dbCustomer, loginUserID);
                 }
             }
         }
