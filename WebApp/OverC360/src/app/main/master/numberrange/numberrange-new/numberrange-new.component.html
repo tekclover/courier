@@ -27,7 +27,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Code</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">ID</p>
                                 <input maxlength="50" formControlName="numberRangeCode"
                                 [ngClass]="form.get('numberRangeCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
@@ -35,7 +35,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Object</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Process</p>
                                 <input maxlength="100" formControlName="numberRangeObject"
                                 [ngClass]="form.get('numberRangeObject')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -43,7 +43,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range From</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">From Number</p>
                                 <input maxlength="50" formControlName="numberRangeFrom" 
                                 [ngClass]="form.get('numberRangeFrom')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -51,7 +51,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range To</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">To Number</p>
                                 <input maxlength="50" formControlName="numberRangeTo" 
                                 [ngClass]="form.get('numberRangeTo')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
@@ -59,7 +59,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Number Range Current</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Current Number</p>
                                 <input maxlength="50" formControlName="numberRangeCurrent" 
                                 [ngClass]="form.get('numberRangeCurrent')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />

@@ -73,7 +73,7 @@ export class PreAlertNewComponent {
     consignmentValue: [],
     consignmentCurrency: [],
     hsCode: [],
-    partnerType: [],
+    partnerType: ['', Validators.required],
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
@@ -86,7 +86,7 @@ export class PreAlertNewComponent {
     createdBy: [],
     updatedBy: [],
     updatedOn: ['', ],
-    partnerId: [,]
+    partnerId: ['', Validators.required]
   })
 
   submitted = false;

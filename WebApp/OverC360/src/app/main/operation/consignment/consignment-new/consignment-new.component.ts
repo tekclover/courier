@@ -182,7 +182,13 @@ export class ConsignmentNewComponent {
    // consignmentValue: [],
     //actualCurrency: [],
     totalDuty: [],
+    customsCurrency:[],
     specialApprovalValue: [],
+    specialApprovalCharge: [],
+    iataCharge: [],
+    dduCharge: [],
+    exchangeRate: [],
+    dutyPercentage: ['5%',],
    // codAmount: [],
    // codFavorOf: [],
    // codCollectionMode: [],
@@ -587,8 +593,10 @@ export class ConsignmentNewComponent {
       this.deliveryInfo.patchValue(line),
       this.billing.patchValue(line)
 
+      console.log(this.shipmentInfo.value)
+      console.log(line)
+
     this.patchForm(line);
-console.log(this.consignment.controls.invoiceDate.value)
     if(this.consignment.controls.invoiceDate.value){
       this.consignment.controls.invoiceDateFE.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
     }
@@ -910,11 +918,11 @@ console.log(this.consignment.controls.invoiceDate.value)
 
   saveFinal() {
     this.mainForm = this.fb.group({
-      ...this.shipmentInfo.value,
-      ...this.consignment.value,
-      ...this.senderInfo.value,
-      ...this.deliveryInfo.value,
-      ...this.billing.value,
+      ...this.shipmentInfo.getRawValue(),
+      ...this.consignment.getRawValue(),
+      ...this.senderInfo.getRawValue(),
+      ...this.deliveryInfo.getRawValue(),
+      ...this.billing.getRawValue(),
       pieceDetails: this.piece.controls.pieceDetails as FormArray,
       updatedBy: [,],
       updatedOn: ['',],

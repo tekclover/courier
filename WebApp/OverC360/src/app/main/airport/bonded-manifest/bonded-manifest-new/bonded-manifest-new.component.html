@@ -36,7 +36,8 @@
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId" *ngIf="this.pageToken.pageflow != 'New'">
+                            <div class="col-6 marginFieldNew borderRadius12" id="bondedId"
+                                *ngIf="this.pageToken.pageflow != 'New'">
                                 <p class="formControlLabel f600 textBlack mb-0">Manifest Number</p>
                                 <input formControlName="bondedId" [ngClass]="
                                     form.get('bondedId')?.invalid &&
@@ -134,7 +135,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="tareWeight">
                                 <p class="formControlLabel f600 textBlack mb-0">
-                                    Tare Weight (Kgs)
+                                    Tare Weight (Kgs) <!--gross - net-->
                                 </p>
                                 <input formControlName="tareWeight" [ngClass]="
                                 form.get('tareWeight')?.invalid &&
@@ -263,7 +264,7 @@
                                     formControlName="isConsolidatedShipment" placeholder="Select "   />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="isSplitBillOfLanding">
-                                <p class="formControlLabel f600 textBlack mb-0">Is Split Bill of Landing</p>
+                                <p class="formControlLabel f600 textBlack mb-0">Is Split Bill of Lading</p>
                                 <p-dropdown [options]="flag" [style]="{'width': '100%'}" appendTo="body"
                                     formControlName="isSplitBillOfLanding" placeholder="Select "   />
                             </div>
@@ -282,12 +283,8 @@
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     Is Pending Shipment
                                 </p>
-                                <input formControlName="isPendingShipment" [ngClass]="
-                                form.get('isPendingShipment')?.invalid &&
-                                form.get('isPendingShipment')?.dirty
-                                  ? 'invalid'
-                                  : ''
-                              " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
+                                <p-dropdown [options]="flag" [style]="{'width': '100%'}" appendTo="body"
+                                formControlName="isPendingShipment" placeholder="Select "   />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="bwhInvestor">
                                 <p class="formControlLabel f600 textBlack mb-0">

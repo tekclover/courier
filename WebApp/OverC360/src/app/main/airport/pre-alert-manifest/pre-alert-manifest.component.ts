@@ -58,9 +58,10 @@ export class PreAlertManifestComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code', format: 'code'},
-      { field: 'consoleIndicator', header: 'Console',  format: 'boolean'},
-      { field: 'manifestIndicator', header: 'Manifest', format: 'boolean' },
+      { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
+      { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'eventCode', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];

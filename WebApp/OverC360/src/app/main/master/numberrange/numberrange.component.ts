@@ -48,11 +48,11 @@ export class NumberrangeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'numberRangeCode', header: 'Number Range Code' },
-      { field: 'numberRangeObject', header: 'Number Range Object' },
-      { field: 'numberRangeFrom', header: 'Number Range From' },
-      { field: 'numberRangeTo', header: 'Number Range To' },
-      { field: 'numberRangeCurrent', header: 'Number Range Current' },
+      { field: 'numberRangeCode', header: 'ID' },
+      { field: 'numberRangeObject', header: 'Process/Master' },
+      { field: 'numberRangeFrom', header: 'From Number' },
+      { field: 'numberRangeTo', header: 'To Number' },
+      { field: 'numberRangeCurrent', header: 'Current Number' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

@@ -90,7 +90,7 @@
                                     <p class="mb-0 headerText">Origin</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip"  [ngClass]="rowData.origin ? 'bgOrange text-dark' : ''">{{rowData.origin}}</p>
+                                    <p class="mb-0 valueText chip"  [ngClass]="rowData.countryOfOrigin ? 'bgOrange text-dark' : ''">{{rowData.countryOfOrigin}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
@@ -100,16 +100,16 @@
                                     <p class="mb-0 valueText chip">{{rowData.bondedId}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Consolidated Bill No</p>
+                                    <p class="mb-0 headerText">Bill of Lading No</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.consolidatedBillNo}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.houseAirwayBill}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Bill of Landing For</p>
+                                    <p class="mb-0 headerText">Bill of Lading For</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.billOfLadingFor}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.createdOn | date: 'dd-MM-yyyy'}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
@@ -123,7 +123,7 @@
                                     <p class="mb-0 headerText">No of Pcs</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.pcs}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.noOfPieceHawb}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Weight</p>
