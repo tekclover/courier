@@ -33,7 +33,7 @@ export class ProductComponent {
     private service: ProductService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
@@ -195,7 +195,7 @@ export class ProductComponent {
     const exportData = this.productTable.map((item) => {
       const exportItem: any = {};
       this.cols.forEach((col) => {
-        if (col.format == 'date') { 
+        if (col.format == 'date') {
           exportItem[col.field] = this.datePipe.transform(
             item[col.field],
             'dd-MM-yyyy'

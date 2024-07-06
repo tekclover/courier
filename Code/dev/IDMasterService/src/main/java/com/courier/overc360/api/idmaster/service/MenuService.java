@@ -285,7 +285,7 @@ public class MenuService {
 
         List<ReplicaMenu> results = replicaMenuRepository.findMenusWithQry(findMenu.getLanguageId(), findMenu.getCompanyId(),
                 findMenu.getMenuId(), findMenu.getSubMenuId(), findMenu.getAuthorizationObjectId());
-        log.info("found Menus --> {}", results);
+//        log.info("found Menus --> {}", results);
         return results;
     }
 
