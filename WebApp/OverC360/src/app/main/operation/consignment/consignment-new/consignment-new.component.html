@@ -22,7 +22,7 @@
                             <p-dropdown [options]="productIdList" placeholder="Select" filter="true"
                                 formControlName="productId"
                                 [ngClass]="shipmentInfo.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="productChanged()" />
                             <mat-error *ngIf="errorHandlingShipment('productId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -83,7 +83,7 @@
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingShipment('partnerType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> 
 
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerId">
                             <p class="formControlLabel f600 textBlack mb-0 required">Partner</p>
