@@ -8,6 +8,8 @@ import com.courier.overc360.api.midmile.primary.model.consignment.UpdateConsignm
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
+import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
+import com.courier.overc360.api.midmile.replica.model.dto.IConsignment;
 import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.service.CommonService;
@@ -110,5 +112,14 @@ public class ConsignmentController {
             uploadResponseList.add(uploadResponse);
         }
         return new ResponseEntity<>(uploadResponseList, HttpStatus.OK);
+    }
+
+    //========================================================null validation column==================================================//
+    // Find
+    @ApiOperation(response = IConsignment.class, value = "Find IConsignmentEntity") // label for swagger
+    @PostMapping("/find/v2")
+    public ResponseEntity<?> findIConsignment(@RequestBody FindIConsignment findConsignment) throws Exception {
+        List<IConsignment> consignmentEntityList = consignmentService.findIConsignment(findConsignment);
+        return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
     }
 }
