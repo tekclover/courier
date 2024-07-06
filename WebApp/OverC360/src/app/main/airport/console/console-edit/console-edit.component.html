@@ -53,6 +53,7 @@
                                 <th>Freight Currency </th>
                                 <th>Custom KD </th>
                                 <th>IATA KD</th>
+                                <th>Created  On</th>
                                 <th>Actions</th>
                             </tr>
                         </ng-template>
@@ -104,6 +105,10 @@
                                 </td>
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.iataKd }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.createdOn| date : 'dd-MM-yyyy HH:mm' }}
                                     </p>
                                 </td>
                                 <td>
