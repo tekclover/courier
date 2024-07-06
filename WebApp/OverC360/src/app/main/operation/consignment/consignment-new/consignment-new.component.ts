@@ -24,6 +24,7 @@ export class ConsignmentNewComponent {
 
   activeIndex: number = 0;
   status: any[] = [];
+  partnerType: any[] = [];  
   paymentType: any[] = [];
   incoTerms: any[] = [];
   codCollectionMode: any[] = [];
@@ -55,6 +56,10 @@ export class ConsignmentNewComponent {
     this.status = [
       { value: '17', label: 'Inactive' },
       { value: '16', label: 'Active' }
+    ];
+    this.partnerType = [
+      { value: 'customer', label: 'Customer' },
+      { value: 'consignor', label: 'Consignor' }
     ];
     this.paymentType = [
       { value: 'prepaid', label: 'Prepaid' },
