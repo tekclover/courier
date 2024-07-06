@@ -13,14 +13,12 @@ import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmen
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
+import com.courier.overc360.api.midmile.replica.model.dto.*;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaConsignmentEntityRepository;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaImageReferenceRepository;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.*;
 import com.courier.overc360.api.midmile.replica.repository.specification.*;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +34,10 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ConsignmentService {
+    @Autowired
+    private ReplicaDestinationDetailsRepository replicaDestinationDetailsRepository;
+    @Autowired
+    private ReplicaOriginDetailsRepository replicaOriginDetailsRepository;
 
     @Autowired
     ConsignmentInfoRepository consignmentInfoRepository;
@@ -101,6 +103,9 @@ public class ConsignmentService {
         List<AddConsignment> consignmentEntities = new ArrayList<>();
         String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
         for (AddConsignment consignmentEntity : consignmentEntityList) {
+
+            //Null validation code
+            consignmentEntity = consignmentNullValidation(consignmentEntity);
 
             // Fetching the description for a company
             IKeyValuePair iKeyValuePair = replicaConsignmentEntityRepository.getDescription(consignmentEntity.getCompanyId());
@@ -730,6 +735,133 @@ public class ConsignmentService {
         }).collect(Collectors.toList());
 
         return consignmentList;
+    }
+
+    //===================================================================Null validation columns=================================================================================//
+
+    /**
+     * null validation colum find
+     *
+     * @param findConsignment
+     * @return
+     */
+    public List<IConsignment> findIConsignment(FindIConsignment findConsignment) {
+        List<IConsignment> consignmentList = new ArrayList<>();
+        List<ConsignmentImpl> iconsignmentList = replicaConsignmentEntityRepository.getConsignmentImpl(
+                findConsignment.getConsignmentId(),
+                findConsignment.getLanguageId(),
+                findConsignment.getCompanyId(),
+                findConsignment.getPartnerId(),
+                findConsignment.getMasterAirwayBill(),
+                findConsignment.getHouseAirwayBill(),
+                findConsignment.getStatusId(),
+                findConsignment.getShipperId(),
+                findConsignment.getPartnerHouseAirwayBill(),
+                findConsignment.getPartnerMasterAirwayBill());
+        log.info("Consignment List: " + iconsignmentList.size());
+        if (iconsignmentList != null && !iconsignmentList.isEmpty()) {
+            iconsignmentList.forEach(n -> {
+                IConsignment dbConsignment = new IConsignment();
+                BeanUtils.copyProperties(n, dbConsignment, CommonUtils.getNullPropertyNames(n));
+                OriginDetailsImpl originDetails = replicaOriginDetailsRepository.getOriginDetailsImpl(n.getConsignmentId());
+                DestinationDetailsImpl destinationDetails = replicaDestinationDetailsRepository.getDestinationDetailsImpl(n.getConsignmentId());
+                List<PieceDetailsImpl> pieceDetails = replicaPieceDetailsRepository.getPieceDetailsImpl(n.getConsignmentId());
+                List<ReplicaPieceDetails> replicaPieceDetailsList = new ArrayList<>();
+                if (originDetails != null) {
+                    dbConsignment.setOriginDetails(originDetails);
+                }
+                if (destinationDetails != null) {
+                    dbConsignment.setDestinationDetails(destinationDetails);
+                }
+                if (pieceDetails != null && !pieceDetails.isEmpty()) {
+                    pieceDetails.stream().forEach(a -> {
+                        ReplicaPieceDetails replicaPieceDetails = new ReplicaPieceDetails();
+                        BeanUtils.copyProperties(a, replicaPieceDetails, CommonUtils.getNullPropertyNames(a));
+                        replicaPieceDetailsList.add(replicaPieceDetails);
+                    });
+                    dbConsignment.setPieceDetails(replicaPieceDetailsList);
+                }
+                consignmentList.add(dbConsignment);
+            });
+        }
+        return consignmentList;
+    }
+
+    /**
+     *
+     * @param addConsignment
+     * @return
+     */
+    public AddConsignment consignmentNullValidation(AddConsignment addConsignment) {
+        log.info("Consignment null validaiton input: " + addConsignment);
+        if(addConsignment != null) {
+            if(addConsignment.getOriginDetails() != null) {
+                if(addConsignment.getOriginDetails().getName() == null) {
+                    addConsignment.getOriginDetails().setName("1");
+                }
+                if(addConsignment.getOriginDetails().getPhone() == null) {
+                    addConsignment.getOriginDetails().setPhone("1");
+                }
+                if(addConsignment.getOriginDetails().getAddressLine1() == null) {
+                    addConsignment.getOriginDetails().setAddressLine1("1");
+                }
+                if(addConsignment.getOriginDetails().getAddressLine2() == null) {
+                    addConsignment.getOriginDetails().setAddressLine2("1");
+                }
+                if(addConsignment.getOriginDetails().getCity() == null) {
+                    addConsignment.getOriginDetails().setCity("1");
+                }
+                if(addConsignment.getOriginDetails().getCountry() == null) {
+                    addConsignment.getOriginDetails().setCountry("1");
+                }
+            }
+            if(addConsignment.getDestinationDetails() != null) {
+                if(addConsignment.getDestinationDetails().getName() == null) {
+                    addConsignment.getDestinationDetails().setName("1");
+                }
+                if(addConsignment.getDestinationDetails().getPhone() == null) {
+                    addConsignment.getDestinationDetails().setPhone("1");
+                }
+                if(addConsignment.getDestinationDetails().getAddressLine1() == null) {
+                    addConsignment.getDestinationDetails().setAddressLine1("1");
+                }
+                if(addConsignment.getDestinationDetails().getAddressLine2() == null) {
+                    addConsignment.getDestinationDetails().setAddressLine2("1");
+                }
+                if(addConsignment.getDestinationDetails().getCity() == null) {
+                    addConsignment.getDestinationDetails().setCity("1");
+                }
+                if(addConsignment.getDestinationDetails().getCountry() == null) {
+                    addConsignment.getDestinationDetails().setCountry("1");
+                }
+            }
+            List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
+            if(addConsignment.getPieceDetails() != null && !addConsignment.getPieceDetails().isEmpty()) {
+                for(AddPieceDetails pieceDetails : addConsignment.getPieceDetails()) {
+                    AddPieceDetails dbPieceDetails = new AddPieceDetails();
+                    BeanUtils.copyProperties(pieceDetails, dbPieceDetails, CommonUtils.getNullPropertyNames(pieceDetails));
+                    if(pieceDetails.getPartnerHouseAirwayBill() == null) {
+                        dbPieceDetails.setPartnerHouseAirwayBill("1");
+                    }
+                    if(pieceDetails.getDescription() == null) {
+                        dbPieceDetails.setDescription("1");
+                    }
+                    if(pieceDetails.getDeclaredValue() == null) {
+                        dbPieceDetails.setDeclaredValue("1");
+                    }
+                    if(pieceDetails.getWeight() == null) {
+                        dbPieceDetails.setWeight("1");
+                    }
+                    if(pieceDetails.getHsCode() == null) {
+                        dbPieceDetails.setHsCode("1");
+                    }
+                    addPieceDetailsList.add(dbPieceDetails);
+                }
+            }
+            addConsignment.setPieceDetails(addPieceDetailsList);
+        }
+        log.info("Consignment null validaiton output: " + addConsignment);
+        return addConsignment;
     }
 
 }

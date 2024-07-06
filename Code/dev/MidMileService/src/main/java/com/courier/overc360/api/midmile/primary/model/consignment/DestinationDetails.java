@@ -45,7 +45,7 @@ public class DestinationDetails {
     private String addressLine2;
 
     @Column(name = "PINCODE", columnDefinition = "nvarchar(50)")
-    private String pincode;
+    private String pinCode;
 
     @Column(name = "DISTRICT", columnDefinition = "nvarchar(50)")
     private String district;

@@ -286,6 +286,9 @@ public class ReplicaConsignmentEntity {
     @Column(name = "DUTY_PERCENTAGE", columnDefinition = "nvarchar(50)")
     private String dutyPercentage;
 
+    @Column(name = "AIRPORT_DESTINATION_CODE", columnDefinition = "nvarchar(50)")
+    private String airportDestinationCode;
+
     @Column(name = "IATA_CHARGE", columnDefinition = "nvarchar(50)")
     private String iataCharge;
 
@@ -330,6 +333,7 @@ public class ReplicaConsignmentEntity {
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
     //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "COND")
     private ReplicaReturnDetails returnDetails;
+
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "CON_REF_ID")

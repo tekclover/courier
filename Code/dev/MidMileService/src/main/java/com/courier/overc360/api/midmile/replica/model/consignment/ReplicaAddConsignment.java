@@ -54,6 +54,7 @@ public class ReplicaAddConsignment {
     private String noOfPieceHawb;
 
     private String noOfPackageMawb;
+    private String noOfPackageHawb;
 
     private String productId;
 
@@ -227,6 +228,7 @@ public class ReplicaAddConsignment {
 
     private String pickupOtp;
 
+
     private String deliveryOtp;
 
     private String rtoOtp;
@@ -276,12 +278,12 @@ public class ReplicaAddConsignment {
 
     private String isExchange;
 
+    private String airportDestinationCode;
     private String countryOfDestination;
     private String noOfCrt;
     private String totalShipmentWeight;
     private String totalWeightHawb;
     private Date estimatedDepartureTime;
-
     private String reverseReason;
     private String eventCode;
     private String eventText;

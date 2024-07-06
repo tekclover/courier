@@ -203,7 +203,7 @@ public class BondedManifestService {
                         updateBondedManifest.getPartnerId(), updateBondedManifest.getMasterAirwayBill(),
                         updateBondedManifest.getHouseAirwayBill(), updateBondedManifest.getBondedId());
 
-                BeanUtils.copyProperties(updatedBondedManifestList, dbBondedManifest, CommonUtils.getNullPropertyNames(updatedBondedManifestList));
+                BeanUtils.copyProperties(updateBondedManifest, dbBondedManifest, CommonUtils.getNullPropertyNames(updateBondedManifest));
                 dbBondedManifest.setUpdatedBy(loginUserID);
                 dbBondedManifest.setUpdatedOn(new Date());
 

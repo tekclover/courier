@@ -960,9 +960,9 @@ public class FileStorageService {
 
         for (List<String> listUploadedData : allRowsList) {
             // Create consignment key based on consignment fields
-            String consignmentKey = String.join("_", listUploadedData.subList(0, 80));
+            String consignmentKey = String.join("_", listUploadedData.subList(0, 82));
             // Create piece key based on piece-specific fields
-            String pieceKey = String.join("_", listUploadedData.subList(81, 94));
+            String pieceKey = String.join("_", listUploadedData.subList(83, 97));
 
             AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
             Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
@@ -987,84 +987,86 @@ public class FileStorageService {
                 addConsignment.setHsCode(listUploadedData.get(15));
                 addConsignment.setGoodsDescription(listUploadedData.get(16));
                 addConsignment.setCountryOfOrigin(listUploadedData.get(17));
-                addConsignment.setConsignmentValue(listUploadedData.get(18));
-                addConsignment.setConsignmentCurrency(listUploadedData.get(19));
-                addConsignment.setFlightNo(listUploadedData.get(20));
-                addConsignment.setFlightName(listUploadedData.get(21));
+                addConsignment.setCountryOfDestination(listUploadedData.get(18));
+                addConsignment.setConsignmentValue(listUploadedData.get(19));
+                addConsignment.setConsignmentCurrency(listUploadedData.get(20));
+                addConsignment.setFlightNo(listUploadedData.get(21));
+                addConsignment.setFlightName(listUploadedData.get(22));
                 try {
-                    Date flightArrivalTime = simpleDateFormat.parse(listUploadedData.get(22));
+                    Date flightArrivalTime = simpleDateFormat.parse(listUploadedData.get(23));
                     addConsignment.setFlightArrivalTime(flightArrivalTime);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                addConsignment.setLength(listUploadedData.get(23));
-                addConsignment.setWidth(listUploadedData.get(24));
-                addConsignment.setHeight(listUploadedData.get(25));
-                addConsignment.setDimensionUnit(listUploadedData.get(26));
-                addConsignment.setWeight(listUploadedData.get(27));
-                addConsignment.setWeightUnit(listUploadedData.get(28));
-                addConsignment.setVolume(listUploadedData.get(29));
-                addConsignment.setVolumeUnit(listUploadedData.get(30));
-                addConsignment.setNetWeight(listUploadedData.get(31));
-                addConsignment.setGrossWeight(listUploadedData.get(32));
-                addConsignment.setIsExempted(listUploadedData.get(33));
-                addConsignment.setExemptionFor(listUploadedData.get(34));
-                addConsignment.setExemptionBeneficiary(listUploadedData.get(35));
-                addConsignment.setExemptionReference(listUploadedData.get(36));
-                addConsignment.setAirportOriginCode(listUploadedData.get(37));
-                addConsignment.setInvoiceAmount(listUploadedData.get(38));
-                addConsignment.setInvoiceNumber(listUploadedData.get(39));
-                addConsignment.setInvoiceDate(listUploadedData.get(40));
-                addConsignment.setInvoiceType(listUploadedData.get(41));
-                addConsignment.setInvoiceUrl(listUploadedData.get(42));
-                addConsignment.setCountryOfSupply((listUploadedData.get(43)));
-                addConsignment.setRemark(listUploadedData.get(44));
-                addConsignment.setCodAmount(listUploadedData.get(45));
-                addConsignment.setCodFavorOf(listUploadedData.get(46));
-                addConsignment.setCodCollectionMode(listUploadedData.get(47));
+                addConsignment.setLength(listUploadedData.get(24));
+                addConsignment.setWidth(listUploadedData.get(25));
+                addConsignment.setHeight(listUploadedData.get(26));
+                addConsignment.setDimensionUnit(listUploadedData.get(27));
+                addConsignment.setWeight(listUploadedData.get(28));
+                addConsignment.setWeightUnit(listUploadedData.get(29));
+                addConsignment.setVolume(listUploadedData.get(30));
+                addConsignment.setVolumeUnit(listUploadedData.get(31));
+                addConsignment.setNetWeight(listUploadedData.get(32));
+                addConsignment.setGrossWeight(listUploadedData.get(33));
+                addConsignment.setIsExempted(listUploadedData.get(34));
+                addConsignment.setExemptionFor(listUploadedData.get(35));
+                addConsignment.setExemptionBeneficiary(listUploadedData.get(36));
+                addConsignment.setExemptionReference(listUploadedData.get(37));
+                addConsignment.setAirportOriginCode(listUploadedData.get(38));
+                addConsignment.setInvoiceAmount(listUploadedData.get(39));
+                addConsignment.setInvoiceNumber(listUploadedData.get(40));
+                addConsignment.setInvoiceDate(listUploadedData.get(41));
+                addConsignment.setInvoiceType(listUploadedData.get(42));
+                addConsignment.setInvoiceUrl(listUploadedData.get(43));
+                addConsignment.setCountryOfSupply((listUploadedData.get(44)));
+                addConsignment.setRemark(listUploadedData.get(45));
+                addConsignment.setCodAmount(listUploadedData.get(46));
+                addConsignment.setCodFavorOf(listUploadedData.get(47));
+                addConsignment.setCodCollectionMode(listUploadedData.get(48));
+                addConsignment.setAirportDestinationCode(listUploadedData.get(49));
 
 
                 // Set Origin Details
                 AddOriginDetails originDetails = new AddOriginDetails();
-                originDetails.setAddressHubCode(listUploadedData.get(48));
-                originDetails.setAccountId(listUploadedData.get(49));
-                originDetails.setEmail(listUploadedData.get(50));
-                originDetails.setCompanyName(listUploadedData.get(51));
-                originDetails.setName(listUploadedData.get(52));
-                originDetails.setPhone(listUploadedData.get(53));
-                originDetails.setAlternatePhone(listUploadedData.get(54));
-                originDetails.setAddressLine1(listUploadedData.get(55));
-                originDetails.setAddressLine2(listUploadedData.get(56));
-                originDetails.setPinCode(listUploadedData.get(57));
-                originDetails.setDistrict(listUploadedData.get(58));
-                originDetails.setCity(listUploadedData.get(59));
-                originDetails.setState(listUploadedData.get(60));
-                originDetails.setCountry(listUploadedData.get(61));
-                originDetails.setLatitude(listUploadedData.get(62));
-                originDetails.setLongitude(listUploadedData.get(63));
+                originDetails.setAddressHubCode(listUploadedData.get(50));
+                originDetails.setAccountId(listUploadedData.get(51));
+                originDetails.setEmail(listUploadedData.get(52));
+                originDetails.setCompanyName(listUploadedData.get(53));
+                originDetails.setName(listUploadedData.get(54));
+                originDetails.setPhone(listUploadedData.get(55));
+                originDetails.setAlternatePhone(listUploadedData.get(56));
+                originDetails.setAddressLine1(listUploadedData.get(57));
+                originDetails.setAddressLine2(listUploadedData.get(58));
+                originDetails.setPinCode(listUploadedData.get(59));
+                originDetails.setDistrict(listUploadedData.get(60));
+                originDetails.setCity(listUploadedData.get(61));
+                originDetails.setState(listUploadedData.get(62));
+                originDetails.setCountry(listUploadedData.get(63));
+                originDetails.setLatitude(listUploadedData.get(64));
+                originDetails.setLongitude(listUploadedData.get(65));
                 addConsignment.setOriginDetails(originDetails);
 
                 // Set Destination Details
                 AddDestinationDetails destinationDetails = new AddDestinationDetails();
-                destinationDetails.setAddressHubCode(listUploadedData.get(64));
-                destinationDetails.setAccountId(listUploadedData.get(65));
-                destinationDetails.setEmail(listUploadedData.get(66));
-                destinationDetails.setCompanyName(listUploadedData.get(67));
-                destinationDetails.setName(listUploadedData.get(68));
-                destinationDetails.setPhone(listUploadedData.get(69));
-                destinationDetails.setAlternatePhone(listUploadedData.get(70));
-                destinationDetails.setAddressLine1(listUploadedData.get(71));
-                destinationDetails.setAddressLine2(listUploadedData.get(72));
-                destinationDetails.setPinCode(listUploadedData.get(73));
-                destinationDetails.setDistrict(listUploadedData.get(74));
-                destinationDetails.setCity(listUploadedData.get(75));
-                destinationDetails.setState(listUploadedData.get(76));
-                destinationDetails.setCountry(listUploadedData.get(77));
-                destinationDetails.setLatitude(listUploadedData.get(78));
-                destinationDetails.setLongitude(listUploadedData.get(79));
+                destinationDetails.setAddressHubCode(listUploadedData.get(66));
+                destinationDetails.setAccountId(listUploadedData.get(67));
+                destinationDetails.setEmail(listUploadedData.get(68));
+                destinationDetails.setCompanyName(listUploadedData.get(69));
+                destinationDetails.setName(listUploadedData.get(70));
+                destinationDetails.setPhone(listUploadedData.get(71));
+                destinationDetails.setAlternatePhone(listUploadedData.get(72));
+                destinationDetails.setAddressLine1(listUploadedData.get(73));
+                destinationDetails.setAddressLine2(listUploadedData.get(74));
+                destinationDetails.setPinCode(listUploadedData.get(75));
+                destinationDetails.setDistrict(listUploadedData.get(76));
+                destinationDetails.setCity(listUploadedData.get(77));
+                destinationDetails.setState(listUploadedData.get(78));
+                destinationDetails.setCountry(listUploadedData.get(79));
+                destinationDetails.setLatitude(listUploadedData.get(80));
+                destinationDetails.setLongitude(listUploadedData.get(81));
                 addConsignment.setDestinationDetails(destinationDetails);
 
-                String imageReferences = listUploadedData.get(80);
+                String imageReferences = listUploadedData.get(82);
                 String[] imageUrls = imageReferences.split(",");
                 List<ReferenceImageList> referenceImageLists = new ArrayList<>();
                 for (String imageUrl : imageUrls) {
@@ -1079,22 +1081,22 @@ public class FileStorageService {
             }
 
             AddPieceDetails pieceDetails = pieceDetailsMap.getOrDefault(pieceKey, new AddPieceDetails());
-            pieceDetails.setDescription(listUploadedData.get(81));
-            pieceDetails.setDeclaredValue(listUploadedData.get(82));
-            pieceDetails.setCodAmount(listUploadedData.get(83));
-            pieceDetails.setLength(listUploadedData.get(84));
-            pieceDetails.setDimensionUnit(listUploadedData.get(85));
-            pieceDetails.setWidth(listUploadedData.get(86));
-            pieceDetails.setHeight(listUploadedData.get(87));
-            pieceDetails.setWeight(listUploadedData.get(88));
-            pieceDetails.setPartnerType(listUploadedData.get(89));
-            pieceDetails.setWeight_unit(listUploadedData.get(90));
-            pieceDetails.setVolume(listUploadedData.get(91));
-            pieceDetails.setVolumeUnit(listUploadedData.get(92));
-            pieceDetails.setPackReferenceNumber(listUploadedData.get(93));
-            pieceDetails.setTags(listUploadedData.get(94));
+            pieceDetails.setDescription(listUploadedData.get(83));
+            pieceDetails.setDeclaredValue(listUploadedData.get(84));
+            pieceDetails.setCodAmount(listUploadedData.get(85));
+            pieceDetails.setLength(listUploadedData.get(86));
+            pieceDetails.setDimensionUnit(listUploadedData.get(87));
+            pieceDetails.setWidth(listUploadedData.get(88));
+            pieceDetails.setHeight(listUploadedData.get(89));
+            pieceDetails.setWeight(listUploadedData.get(90));
+            pieceDetails.setPartnerType(listUploadedData.get(91));
+            pieceDetails.setWeight_unit(listUploadedData.get(92));
+            pieceDetails.setVolume(listUploadedData.get(93));
+            pieceDetails.setVolumeUnit(listUploadedData.get(94));
+            pieceDetails.setPackReferenceNumber(listUploadedData.get(95));
+            pieceDetails.setTags(listUploadedData.get(96));
 
-            String pieceImageRef = listUploadedData.get(95);
+            String pieceImageRef = listUploadedData.get(97);
             String[] pieceImageUrls = pieceImageRef.split(",");
             List<ReferenceImageList> imageReference = new ArrayList<>();
             for(String imageUrl : pieceImageUrls) {
@@ -1106,30 +1108,30 @@ public class FileStorageService {
 
             // Set Item Details
             AddItemDetails itemDetails = new AddItemDetails();
-            itemDetails.setPartnerType(listUploadedData.get(96));
-            itemDetails.setItemCode(listUploadedData.get(97));
-            itemDetails.setHsCode(listUploadedData.get(98));
-            itemDetails.setDeclaredValue(listUploadedData.get(99));
-            itemDetails.setCodAmount(listUploadedData.get(100));
-            itemDetails.setLength(listUploadedData.get(101));
-            itemDetails.setDimensionUnit(listUploadedData.get(102));
-            itemDetails.setWidth(listUploadedData.get(103));
-            itemDetails.setHeight(listUploadedData.get(104));
-            itemDetails.setWeight(listUploadedData.get(105));
-            itemDetails.setWeightUnit(listUploadedData.get(106));
-            itemDetails.setVolume(listUploadedData.get(107));
-            itemDetails.setVolumeUnit(listUploadedData.get(108));
+            itemDetails.setPartnerType(listUploadedData.get(98));
+            itemDetails.setItemCode(listUploadedData.get(99));
+            itemDetails.setHsCode(listUploadedData.get(100));
+            itemDetails.setDeclaredValue(listUploadedData.get(101));
+            itemDetails.setCodAmount(listUploadedData.get(102));
+            itemDetails.setLength(listUploadedData.get(103));
+            itemDetails.setDimensionUnit(listUploadedData.get(104));
+            itemDetails.setWidth(listUploadedData.get(105));
+            itemDetails.setHeight(listUploadedData.get(106));
+            itemDetails.setWeight(listUploadedData.get(107));
+            itemDetails.setWeightUnit(listUploadedData.get(108));
+            itemDetails.setVolume(listUploadedData.get(109));
+            itemDetails.setVolumeUnit(listUploadedData.get(110));
             List<ReferenceImageList> imageReferenceList = new ArrayList<>();
 
-            String itemImageRef = listUploadedData.get(109);
+            String itemImageRef = listUploadedData.get(111);
             String[] itemImageUrl = itemImageRef.split(",");
             for(String imageUrl : itemImageUrl) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
-            if (listUploadedData.get(110).trim().length() > 0) {
-                itemDetails.setDescription(listUploadedData.get(110));
+            if (listUploadedData.get(112).trim().length() > 0) {
+                itemDetails.setDescription(listUploadedData.get(112));
             }
             itemDetails.setReferenceImageList(imageReferenceList);
 

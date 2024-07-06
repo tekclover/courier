@@ -90,8 +90,6 @@ public class AddBondedManifest {
 
     private String consolidatedBillNo;
 
-    private String billOfLoadingFor;
-
     private String remarks;
 
     private String isConsolidatedShipment;

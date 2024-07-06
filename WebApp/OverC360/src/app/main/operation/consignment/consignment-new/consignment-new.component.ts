@@ -13,6 +13,9 @@ import { ItemDetailsComponent } from './item-details/item-details.component';
 import { DimensionComponent } from './dimension/dimension.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { ProductService } from '../../../id-masters/product/product.service';
+import { HubPartnerAssignmentService } from '../../../master/hub-partner-assignment/hub-partner-assignment.service';
+import { CustomerService } from '../../../master/customer/customer.service';
+import { ConsignorService } from '../../../master/consignor/consignor.service';
 
 @Component({
   selector: 'app-consignment-new',
@@ -24,7 +27,7 @@ export class ConsignmentNewComponent {
 
   activeIndex: number = 0;
   status: any[] = [];
-  partnerType: any[] = [];  
+  partnerType: any[] = [];
   paymentType: any[] = [];
   incoTerms: any[] = [];
   codCollectionMode: any[] = [];
@@ -52,6 +55,8 @@ export class ConsignmentNewComponent {
     private el: ElementRef,
     public dialog: MatDialog,
     public productService: ProductService,
+    public customerService: CustomerService,
+    public consignorService: ConsignorService,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -104,6 +109,7 @@ export class ConsignmentNewComponent {
     countryOfDestination: [],
     consignmentType: [,],
     customerCode: [],
+    customerId: [],
     codAmount: [],
     codCollectionMode: [],
     codFavorOf: [],
@@ -178,33 +184,33 @@ export class ConsignmentNewComponent {
   })
 
   billing = this.fb.group({
-   // incoTerms: [],
-   // paymentType: [],
+    // incoTerms: [],
+    // paymentType: [],
     //currency: [],
-   // freightCurrency: [],
+    // freightCurrency: [],
     //freightCharges: [],
     countryOfSupply: [],
     declaredValue: [],
-   // consignmentCurrency: [],
-   // consignmentValue: [],
+    // consignmentCurrency: [],
+    // consignmentValue: [],
     //actualCurrency: [],
     totalDuty: [],
-    customsCurrency:[],
+    customsCurrency: [],
     specialApprovalValue: [],
     specialApprovalCharge: [],
     iataCharge: [],
     dduCharge: [],
     exchangeRate: [],
     dutyPercentage: ['5%',],
-   // codAmount: [],
-   // codFavorOf: [],
-   // codCollectionMode: [],
+    // codAmount: [],
+    // codFavorOf: [],
+    // codCollectionMode: [],
     declaredValueWithoutTax: [],
     // invoiceAmount: [],
     // invoiceUrl: [],
     productCode: [],
     customsValue: [],
-  //  amount: [],
+    //  amount: [],
     //isCustomsDeclarable: [],
   })
 
@@ -585,6 +591,48 @@ export class ConsignmentNewComponent {
 
   }
 
+  partnerNameList: any[] = [];
+
+  partnerTypeChanged() {
+    if (this.shipmentInfo.controls.partnerType.value == 'customer') {
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+
+      this.partnerNameList = [];
+      this.spin.show();
+      this.service.search(obj).subscribe({
+        next: (result) => {
+          this.partnerNameList = this.cas.foreachlist(result, { key: 'partnerType', value: 'partnerName' });
+        
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
+
+    if (this.shipmentInfo.controls.partnerType.value == 'consignor') {
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+
+      this.partnerNameList = [];
+      this.spin.show();
+      this.service.search(obj).subscribe({
+        next: (result) => {
+          this.partnerNameList = this.cas.foreachlist(result, { key: 'partnerType', value: 'partnerName' });
+        
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
+  }
+
   fill(line: any) {
     this.form.patchValue(line);
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
@@ -602,14 +650,14 @@ export class ConsignmentNewComponent {
       this.deliveryInfo.patchValue(line),
       this.billing.patchValue(line)
 
-      console.log(this.shipmentInfo.value)
-      console.log(line)
+    console.log(this.shipmentInfo.value)
+    console.log(line)
 
     this.patchForm(line);
-    if(this.consignment.controls.invoiceDate.value){
+    if (this.consignment.controls.invoiceDate.value) {
       this.consignment.controls.invoiceDateFE.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
     }
- 
+
     this.shipmentInfo.controls.masterAirwayBill.disable();
     this.shipmentInfo.controls.houseAirwayBill.disable();
   }
@@ -728,7 +776,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail:  'Record has been updated successfully',
+            detail: 'Record has been updated successfully',
           });
           this.router.navigate(['/main/master/rate']);
           this.spin.hide();
@@ -999,7 +1047,7 @@ export class ConsignmentNewComponent {
       next: (result) => {
         // this.form.patchValue(result[0]);
         // this.subProductIdList = this.cas.forLanguageFilter(result, this.cas.dropdownlist.setup.subProduct.key);
-        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductName', value: 'referenceField1',});
+        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductName', value: 'referenceField1', });
         // this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
         this.spin.hide();
       }, error: (err) => {

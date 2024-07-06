@@ -208,6 +208,8 @@ public class UpdateConsignment {
 
     private String upstreamCreationSource;
 
+    private String airportDestinationCode;
+
     private String allocationTime;
 
     private String autoAllocate;

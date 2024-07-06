@@ -110,6 +110,24 @@ public class MidMileService {
         }
     }
 
+    // Find IConsignmentEntity - null validation column
+    public IConsignment[] findIConsignmentEntity(FindIConsignment findConsignment, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/v2");
+            HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
+            ResponseEntity<IConsignment[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, IConsignment[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     /**
      * DeleteConsignment
      *

@@ -78,16 +78,15 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerType">
                             <p class="formControlLabel f600 textBlack mb-0">Partner Type</p>
-                            <input maxlength="50" formControlName="partnerType"
-                                [ngClass]="shipmentInfo.get('partnerType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
+                            <p-dropdown formControlName="partnerType" [options]="partnerType" appendTo="body"
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" (onChange)="partnerTypeChanged()" />
                             <mat-error *ngIf="errorHandlingShipment('partnerType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> 
 
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerId">
                             <p class="formControlLabel f600 textBlack mb-0 required">Partner</p>
-                            <p-dropdown [options]="partnerName" placeholder="Select" filter="true"
+                            <p-dropdown [options]="partnerNameList" placeholder="Select" filter="true"
                                 formControlName="partnerId"
                                 [ngClass]="shipmentInfo.get('partnerId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
@@ -517,20 +516,20 @@
                             <mat-error *ngIf="errorHandlingConsignment('notifyParty')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
-                            <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
-                            <input maxlength="500" formControlName="consignmentCurrency"
-                                [ngClass]="consignment.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingConsignment('consignmentCurrency')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="consignmentValue">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Value</p>
                             <input maxlength="500" formControlName="consignmentValue"
                                 [ngClass]="consignment.get('consignmentValue')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingConsignment('consignmentValue')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
+                            <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
+                            <input maxlength="500" formControlName="consignmentCurrency"
+                                [ngClass]="consignment.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('consignmentCurrency')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                     </div>

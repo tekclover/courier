@@ -57,6 +57,9 @@ public class UpdateConsignment {
 
     private String flightName;
 
+    private String airportDestinationCode;
+
+
     private String flightArrivalTime;
 
     private String consigneeName;
@@ -218,7 +221,8 @@ public class UpdateConsignment {
     private String tags;
 
     private String serviceTime;
-
+    private String noOfPackageMawb;
+    private String noOfPackageHawb;
     private String pickupServiceTime;
 
     private String deliveryServiceTime;
