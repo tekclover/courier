@@ -2,12 +2,11 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
 public class BondedManifest {
-
-    private String  bondedId;
 
     private String languageId;
 
@@ -19,6 +18,12 @@ public class BondedManifest {
 
     private String houseAirwayBill;
 
+    private String  bondedId;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
     private String languageDescription;
 
     private String companyName;
@@ -29,11 +34,17 @@ public class BondedManifest {
 
     private String statusId;
 
-    private String noOfPackagesMawb;
+    private String statusText;
+
+    private String noOfPackageMawb;
 
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String description;
 
@@ -54,18 +65,6 @@ public class BondedManifest {
     private String volume;
 
     private String finalDestination;
-
-    private String paymentType;
-
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
-
-    private String consolidatedBillNo;
 
     private String notifyParty;
 
@@ -141,11 +140,23 @@ public class BondedManifest {
 
     private String countryOfOrigin;
 
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
     private Long deletionIndicator = 0L;
 
     private String lineNo;
 
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     private String consigneeCivilId;
 
@@ -182,10 +193,6 @@ public class BondedManifest {
     private String declaredValue;
 
     private String currency;
-
-    private String primaryDo;
-
-    private String secondaryDo;
 
     private String billOfLadingFor;
 

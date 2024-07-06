@@ -34,11 +34,7 @@
                         
                     </div>
 
-                    <div class="col-6 marginFieldNew borderRadius12" >
-                        <p class="formControlLabel f600 textBlack mb-0 required">Currency</p>
-                        <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="currency" appendTo="body"
-                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                    </div>
+                   
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">HS Code </p>
                         <input maxlength="50" pInputText formControlName="hsCode"
@@ -46,13 +42,18 @@
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Consignee Name </p>
-                        <input maxlength="50" pInputText formControlName="hsCode"
+                        <input maxlength="50" pInputText formControlName="consigneeName"
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Consignment Value </p>
-                        <input maxlength="50" pInputText formControlName="consignmentValue"
+                        <p class="formControlLabel f600 textBlack mb-0">Freight Charge </p>
+                        <input maxlength="50" pInputText formControlName="consignmentCurrency"
                             class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0 required">Freight Currency</p>
+                        <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="currency" appendTo="body"
+                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 required">Customs KD</p>

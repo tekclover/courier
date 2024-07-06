@@ -26,21 +26,31 @@ public class UpdateBondedManifest {
     @NotBlank(message = "BondedId is mandatory")
     private String bondedId;
 
-    private String paymentType;
+    private String pieceId;
 
-    private String consolidatedBillNo;
+    private String pieceItemId;
 
-    private String billOfLadingFor;
+    private String languageDescription;
+
+    private String companyName;
 
     private String partnerType;
 
     private String partnerName;
 
+    private String statusId;
+
+    private String statusText;
+
+    private String noOfPackageMawb;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
-    private String noOfPackagesMawb;
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String description;
 
@@ -72,15 +82,13 @@ public class UpdateBondedManifest {
 
     private String subProductId;
 
+    private String subProductName;
+
     private String serviceTypeId;
 
     private String serviceTypeName;
 
     private String shipperId;
-
-    private String primaryDo;
-
-    private String secondaryDo;
 
     private String shipperName;
 
@@ -95,14 +103,6 @@ public class UpdateBondedManifest {
     private String bwhInvestor;
 
     private String kind;
-
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
 
     private String goodsType;
 
@@ -146,11 +146,23 @@ public class UpdateBondedManifest {
 
     private String countryOfOrigin;
 
-    private Long deletionIndicator;
+    private String paymentType;
 
-    private String noOfPiecesHawb;
+    private String eventCode;
 
-    private String subProductName;
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private Long deletionIndicator = 0L;
+
+    private String lineNo;
+
+    private String noOfPieceHawb;
 
     private String consigneeCivilId;
 
@@ -182,9 +194,13 @@ public class UpdateBondedManifest {
 
     private String totalDuty;
 
+    private String specialApprovalValue;
+
     private String declaredValue;
 
     private String currency;
+
+    private String billOfLadingFor;
 
     private String referenceField1;
 
@@ -225,6 +241,5 @@ public class UpdateBondedManifest {
     private String referenceField19;
 
     private String referenceField20;
-
 
 }

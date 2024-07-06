@@ -160,7 +160,7 @@ Consigment: any[] = [];
   dropdownlist(){
     this.spin.show();
     this.cas.getalldropdownlist([ 
-      this.cas.dropdownlist.setup.status.url,
+      this.cas.dropdownlist.setup.opStatus.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.hsCode.url,
       this.cas.dropdownlist.setup.event.url,
@@ -168,7 +168,7 @@ Consigment: any[] = [];
       this.cas.dropdownlist.setup.customer.url,
     ]).subscribe({next: (results: any) => {
      
-      this.statusList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.status.key);
+      this.statusList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.opStatus.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
       this.hsCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.hsCode.key);
       this.eventList= this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.event.key);

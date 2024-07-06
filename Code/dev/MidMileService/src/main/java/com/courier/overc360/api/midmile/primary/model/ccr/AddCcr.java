@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.primary.model.ccr;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -27,9 +28,27 @@ public class AddCcr {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    private String ccrId;
+
     private String customsCcrNo;
 
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String companyName;
+
+    private String languageDescription;
+
     private String partnerType;
+
+    private String partnerName;
+
+    private String statusId;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String paymentType;
 
@@ -41,27 +60,17 @@ public class AddCcr {
 
     private Date statusTimestamp;
 
-    private String partnerName;
+    private String partnerHouseAirwayBill;
 
     private String partnerMasterAirwayBill;
 
-    private String partnerHouseAirwayBill;
-
     private String noOfPackageMawb;
+
+    private String bondedId;
 
     private String description;
 
     private String netWeight;
-
-    private String manifestedGrossWeight;
-
-    private String grossWeight;
-
-    private String tareWeight;
-
-    private String primaryDo;
-
-    private String secondaryDo;
 
     private String manifestedQuantity;
 
@@ -90,6 +99,12 @@ public class AddCcr {
     private String shipperId;
 
     private String shipperName;
+
+    private String manifestedGrossWeight;
+
+    private String grossWeight;
+
+    private String tareWeight;
 
     private String remarks;
 
@@ -147,7 +162,7 @@ public class AddCcr {
 
     private String freightCurrency;
 
-    private String freightCharges;
+    private  String freightCharges;
 
     private String declaredValue;
 
@@ -164,6 +179,8 @@ public class AddCcr {
     private String flightNo;
 
     private String flightArrivalTime;
+
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
