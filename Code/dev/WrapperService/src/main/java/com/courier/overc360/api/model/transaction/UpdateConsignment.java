@@ -30,6 +30,10 @@ public class UpdateConsignment {
 
     private String houseAirwayBill;
 
+    private String noOfPackageMawb;
+
+    private String noOfPackageHawb;
+
     private String noOfPieceHawb;
 
     private String shipperId;
