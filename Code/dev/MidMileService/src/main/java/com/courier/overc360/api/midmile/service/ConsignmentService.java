@@ -18,10 +18,7 @@ import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImag
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaConsignmentEntityRepository;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaImageReferenceRepository;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
-import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.*;
 import com.courier.overc360.api.midmile.replica.repository.specification.*;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
