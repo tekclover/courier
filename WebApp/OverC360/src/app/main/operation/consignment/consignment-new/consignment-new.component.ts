@@ -57,18 +57,18 @@ export class ConsignmentNewComponent {
       { value: '16', label: 'Active' }
     ];
     this.paymentType = [
-      { value: 'prepaid', label: 'Prepaid' },
-      { value: 'cod', label: 'COD' }
+      { value: 'Prepaid', label: 'Prepaid' },
+      { value: 'COD', label: 'COD' }
     ];
     this.incoTerms = [
-      { value: 'ddu', label: 'DDU' },
-      { value: 'ddp', label: 'DDP' }
+      { value: 'DDU', label: 'DDU' },
+      { value: 'DDP', label: 'DDP' }
     ];
     this.codCollectionMode = [
-      { value: 'cash', label: 'Cash' },
-      { value: 'cheque', label: 'Cheque' },
-      { value: 'online', label: 'Online' },
-      { value: 'card', label: 'Card' }
+      { value: 'Cash', label: 'Cash' },
+      { value: 'Cheque', label: 'Cheque' },
+      { value: 'Online', label: 'Online' },
+      { value: 'Card', label: 'Card' }
     ];
   }
 

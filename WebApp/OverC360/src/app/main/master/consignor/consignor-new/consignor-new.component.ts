@@ -256,7 +256,7 @@ export class ConsignorNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res[0].consignorId + ' has been updated successfully',
+            detail: 'Record has been updated successfully',
           });
           this.router.navigate(['/main/master/consignor']);
           this.spin.hide();
@@ -283,7 +283,7 @@ export class ConsignorNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res[0].consignorId + ' has been created successfully',
+              detail: 'Record has been created successfully',
             });
             this.router.navigate(['/main/master/consignor']);
             this.spin.hide();

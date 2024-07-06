@@ -176,7 +176,7 @@ export class CustomerComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.customerId + ' Deleted successfully',
+          detail:  'Record Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
