@@ -3,52 +3,55 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
 public class Console {
 
-    private String consoleId;
-
     private String languageId;
-
-    private String languageDescription;
 
     private String companyId;
 
-    private String companyName;
-
     private String partnerId;
-
-    private String partnerType;
-
-    private String partnerName;
-
-    private String statusId;
-
-    private String partnerHouseAirwayBill;
-
-    private String partnerMasterAirwayBill;
-
-    private String houseAirwayBill;
 
     private String masterAirwayBill;
 
-    private String noOfPackageMawb;
+    private String houseAirwayBill;
 
-    private String noOfPieceHawb;
+    private String consoleId;
 
-    private String bondedId;
-
-    private String description;
-
-    private String netWeight;
+    private String partnerType;
 
     private String expectedDuty;
 
     private String customsValue;
 
     private String customsCurrency;
+
+    private String partnerName;
+
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
+
+    private String description;
+
+    private String exchangeRate;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
+    private String netWeight;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String manifestedGrossWeight;
 
@@ -74,6 +77,8 @@ public class Console {
 
     private String shipperName;
 
+    private String remarks;
+
     private String paymentType;
 
     private String eventCode;
@@ -84,10 +89,6 @@ public class Console {
 
     private Date statusTimestamp;
 
-    private Long shipmentBagId;
-
-    private String remarks;
-
     private String isConsolidatedShipment;
 
     private String isSplitBillOfLading;
@@ -96,11 +97,31 @@ public class Console {
 
     private String goodsType;
 
-    private String primaryDo;
-
-    private String secondaryDo;
-
     private String countryOfOrigin;
+
+    private String noOfPiecesHawb;
+
+    private String airportOriginCode;
+
+    private String customsKd;
+
+    private String noOfPackageMawb;
+
+    private String companyName;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String statusId;
+
+    private String statusText;
+
+    private String bondedId;
+
+    private Long shipmentBagId;
 
     private String consignmentCurrency;
 
@@ -111,10 +132,6 @@ public class Console {
     private String actualValue;
 
     private String specialApprovalValue;
-
-    private String airportOriginCode;
-
-    private String customsKd;
 
     private String iataKd;
 
@@ -156,7 +173,7 @@ public class Console {
 
     private String currency;
 
-    private Long deletionIndicator ;
+    private Long deletionIndicator;
 
     private String referenceField1;
 

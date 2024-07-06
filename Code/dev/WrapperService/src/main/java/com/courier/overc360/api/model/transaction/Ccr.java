@@ -3,12 +3,11 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
 public class Ccr {
-
-    private String ccrId;
 
     private String languageId;
 
@@ -20,9 +19,15 @@ public class Ccr {
 
     private String houseAirwayBill;
 
+    private String consoleId;
+
+    private String ccrId;
+
     private String customsCcrNo;
 
-    private String consoleId;
+    private String pieceId;
+
+    private String pieceItemId;
 
     private String companyName;
 
@@ -33,6 +38,20 @@ public class Ccr {
     private String partnerName;
 
     private String statusId;
+
+    private String primaryDo;
+
+    private String secondaryDo;
+
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
 
     private String partnerHouseAirwayBill;
 
@@ -51,20 +70,6 @@ public class Ccr {
     private String landedQuantity;
 
     private String totalQuantity;
-
-    private String paymentType;
-
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
-
-    private String primaryDo;
-
-    private String secondaryDo;
 
     private String volume;
 
@@ -168,7 +173,7 @@ public class Ccr {
 
     private String flightArrivalTime;
 
-    private Long deletionIndicator ;
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 

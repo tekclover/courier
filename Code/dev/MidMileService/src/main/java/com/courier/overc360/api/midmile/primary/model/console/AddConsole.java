@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.primary.model.console;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -35,6 +36,24 @@ public class AddConsole {
     private String noOfPackageMawb;
 
     private String description;
+
+    private String companyName;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String statusId;
+
+    private String statusText;
+
+    private String bondedId;
+
+    private Long shipmentBagId;
+
+    private Long deletionIndicator = 0L;
 
     private String netWeight;
 
@@ -199,5 +218,7 @@ public class AddConsole {
     private String referenceField19;
 
     private String referenceField20;
+
+
 
 }

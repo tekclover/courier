@@ -71,6 +71,15 @@ public class ReplicaConsole {
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String statusText;
+
+    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
+    private String primaryDo;
+
+    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
+    private String secondaryDo;
+
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
@@ -95,32 +104,11 @@ public class ReplicaConsole {
     @Column(name = "CUSTOMS_CURRENCY", columnDefinition = "nvarchar(50)")
     private String customsCurrency;
 
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
+
     @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
     private String description;
-
-    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
-    private String paymentType;
-
-    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String eventCode;
-
-    @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
-    private String primaryDo;
-
-    @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
-    private String secondaryDo;
-
-    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String eventText;
-
-    @Column(name = "EVENT_TIMESTAMP")
-    private Date eventTimestamp;
-
-    @Column(name = "STATUS_TIMESTAMP")
-    private Date statusTimestamp;
-
-    @Column(name = "SHIPMENT_BAG_ID")
-    private Long shipmentBagId;
 
     @Column(name = "NET_WEIGHT", columnDefinition = "nvarchar(50)")
     private String netWeight;
@@ -137,21 +125,6 @@ public class ReplicaConsole {
     @Column(name = "MANIFESTED_QUANTITY", columnDefinition = "nvarchar(50)")
     private String manifestedQuantity;
 
-    @Column(name = "DUTY_PERCENTAGE", columnDefinition = "nvarchar(50)")
-    private String dutyPercentage;
-
-    @Column(name = "IATA_CHARGE", columnDefinition = "nvarchar(50)")
-    private String iataCharge;
-
-    @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
-    private String dduCharge;
-
-    @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
-    private String specialApprovalCharge;
-
-    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
-    private String exchangeRate;
-
     @Column(name = "LANDED_QUANTITY", columnDefinition = "nvarchar(50)")
     private String landedQuantity;
 
@@ -166,6 +139,36 @@ public class ReplicaConsole {
 
     @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
     private String notifyParty;
+
+    @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
+    private String paymentType;
+
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
+
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
+
+    @Column(name = "EVENT_TIMESTAMP")
+    private Date eventTimestamp;
+
+    @Column(name = "STATUS_TIMESTAMP")
+    private Date statusTimestamp;
+
+    @Column(name = "SHIPMENT_BAG_ID")
+    private Long shipmentBagId;
+
+    @Column(name = "DUTY_PERCENTAGE", columnDefinition = "nvarchar(50)")
+    private String dutyPercentage;
+
+    @Column(name = "IATA_CHARGE", columnDefinition = "nvarchar(50)")
+    private String iataCharge;
+
+    @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
+    private String dduCharge;
+
+    @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
+    private String specialApprovalCharge;
 
     @Column(name = "CONSIGNEE_NAME", columnDefinition = "nvarchar(500)")
     private String consigneeName;
