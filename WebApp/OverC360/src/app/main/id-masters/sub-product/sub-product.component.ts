@@ -173,7 +173,7 @@ export class SubProductComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.subProductId + ' Deleted successfully',
+          detail: lines[0].subProductId + ' Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
