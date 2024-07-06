@@ -334,6 +334,7 @@ public class ReplicaConsignmentEntity {
     //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "COND")
     private ReplicaReturnDetails returnDetails;
 
+
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "CON_REF_ID")
 //    private ConsignmentRef consignmentRefs;

@@ -67,8 +67,6 @@ public class BondedManifest {
 
     private String consolidatedBillNo;
 
-    private String billOfLoadingFor;
-
     private String notifyParty;
 
     private String consigneeName;

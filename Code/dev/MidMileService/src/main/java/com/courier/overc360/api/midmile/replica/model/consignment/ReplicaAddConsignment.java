@@ -54,6 +54,7 @@ public class ReplicaAddConsignment {
     private String noOfPieceHawb;
 
     private String noOfPackageMawb;
+    private String noOfPackageHawb;
 
     private String productId;
 
@@ -226,6 +227,7 @@ public class ReplicaAddConsignment {
     private String courierPartnerReferenceNumber;
 
     private String pickupOtp;
+
 
     private String deliveryOtp;
 

@@ -104,8 +104,6 @@ public class UpdateBondedManifest {
 
     private Date statusTimestamp;
 
-    private String billOfLoadingFor;
-
     private String goodsType;
 
     private String fclLcl;

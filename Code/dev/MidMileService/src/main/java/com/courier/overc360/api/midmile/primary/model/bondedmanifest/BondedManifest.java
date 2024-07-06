@@ -245,9 +245,6 @@ public class BondedManifest {
     @Column(name = "CONSOLIDATED_BILL_NO", columnDefinition = "nvarchar(50)")
     private String consolidatedBillNo;
 
-    @Column(name = "BILL_OF_LOADING", columnDefinition = "nvarchar(50)")
-    private String billOfLoadingFor;
-
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

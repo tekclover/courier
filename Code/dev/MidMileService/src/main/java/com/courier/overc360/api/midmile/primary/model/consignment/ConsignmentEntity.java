@@ -87,6 +87,7 @@ public class ConsignmentEntity {
     @Column(name = "NO_OF_PACKAGE_MAWB", columnDefinition = "nvarchar(50)")
     private String noOfPackageMawb;
 
+
     @Column(name = "NO_OF_PACKAGE_HAWB", columnDefinition = "nvarchar(50)")
     private String noOfPackageHawb;
 

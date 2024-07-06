@@ -27,6 +27,12 @@ public class UpdateBondedManifest {
 
     private String partnerType;
 
+    private String noOfPackageMawb;
+
+    private String noOfPackageHawb;
+
+    private String noOfPieceHawb;
+
     private String partnerName;
 
     private String partnerMasterAirwayBill;
@@ -66,8 +72,6 @@ public class UpdateBondedManifest {
     private Date eventTimestamp;
 
     private Date statusTimestamp;
-
-    private String billOfLoadingFor;
 
     private String productId;
 
