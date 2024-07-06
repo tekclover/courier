@@ -15,6 +15,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { ConsignmentService } from '../../operation/consignment/consignment.service';
 import { BondedManifestService } from '../bonded-manifest/bonded-manifest.service';
 import { ConsoleService } from '../console/console.service';
+import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 
 @Component({
   selector: 'app-pre-alert-manifest',
@@ -116,7 +117,19 @@ export class PreAlertManifestComponent {
       }
     });
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'PreAlertManifest',code :  this.selectedPreAlertManifest} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedPreAlertManifest.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
