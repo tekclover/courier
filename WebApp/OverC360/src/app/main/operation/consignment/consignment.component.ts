@@ -234,7 +234,7 @@ export class ConsignmentComponent {
     });
   }
 
-
+///  Filter Code
 
   searchform = this.fb.group({
     houseAirwayBill: [],
@@ -244,6 +244,8 @@ export class ConsignmentComponent {
     pieceItemId: [],
     shipperId: [],
     statusId: [],
+    companyId: [[this.auth.companyId], ],
+    languageId: [[this.auth.languageId], ]
   })
 
   houseAirwayBillDropdown: any = [];
@@ -267,8 +269,12 @@ export class ConsignmentComponent {
         this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
         this.masterAirwayBillDropdown =  this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'partnerId');
       }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown =  this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'statusId');
+      }
     })
-    this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
   @ViewChild('consignment') overlayPanel!: OverlayPanel;
@@ -295,6 +301,21 @@ export class ConsignmentComponent {
         this.cs.commonerrorNew(err);
       },
     });
+  }
+  reset(){
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      houseAirwayBill: [],
+      masterAirwayBill: [],
+      partnerId: [],
+      pieceId: [],
+      pieceItemId: [],
+      shipperId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId], ],
+      languageId: [[this.auth.languageId], ]
+    })
+    this.search();
   }
 
   chipClear(value:any){
