@@ -59,8 +59,8 @@ export class BondedManifestComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'eventText', header: 'Event' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
