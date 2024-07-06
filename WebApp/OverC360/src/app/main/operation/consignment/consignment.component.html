@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start align-items-center my-2" style="margin-bottom: 1.1rem !important;">
+    <div class="d-flex justify-content-start align-items-center" style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
         <p-iconField iconPosition="right" class="mr-2">
             <p-inputIcon type="button" (click)="consignment.toggle($event)" styleClass="pi pi-filter" />
             <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
@@ -56,7 +56,7 @@
 
     <div class="tableProperties">
         <p-table #consignmentTag [columns]="cols" [value]="consignmentTable" class="custom-table" [scrollable]="true"
-            selectionMode="single" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100"
+            selectionMode="single" scrollHeight="calc(100vh - 18.8rem)" [paginator]="true" [rows]="100"
             [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '130rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>

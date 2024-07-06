@@ -51,7 +51,7 @@ export class ConsignmentService {
   uploadConsignment(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>('/consignment/Upload', formData);
+    return this.http.post<any>('/consignment/upload/v2', formData);
   }
 }
 
