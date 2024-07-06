@@ -71,10 +71,10 @@ export class BondedManifestNewComponent {
     volume: [],
     portOfShipping: [],
     finalDestination: [],
-    consigneeCivilId: [, Validators.required],
+    consigneeCivilId: [,],
     notifyParty: [],
     consigneeName: [],
-    shipper: [, Validators.required],
+    shipper: [, ],
     remark: [],
     isConsolidatedShipment: [],
     isSplitBillOfLanding: [],
@@ -212,6 +212,7 @@ export class BondedManifestNewComponent {
         const customer = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.customer.key);
         customer.forEach(x => this.consignorIdList.push(x));
         consitnor.forEach(x => this.consignorIdList.push(x));
+        this.consignorIdList = this.cs.removeDuplicatesFromArrayList(this.consignorIdList, 'value')
         this.spin.hide();
       },
       error: (err: any) => {
@@ -242,13 +243,13 @@ export class BondedManifestNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show();
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.Update([this.form.getRawValue()]).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.consigneeCivilId + ' has been updated successfully',
+            detail: 'Record has been updated successfully',
           });
           this.router.navigate(['/main/airport/bondedManifest']);
           this.spin.hide();
@@ -260,14 +261,14 @@ export class BondedManifestNewComponent {
       });
     } else {
       this.spin.show();
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
           if (res) {
             this.messageService.add({
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.consigneeCivilId + ' has been created successfully',
+              detail: 'Record has been created successfully',
             });
             this.router.navigate(['/main/airport/bondedManifest']);
             this.spin.hide();
