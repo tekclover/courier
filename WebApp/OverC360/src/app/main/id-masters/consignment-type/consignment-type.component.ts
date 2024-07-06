@@ -190,6 +190,7 @@ export class ConsignmentTypeComponent {
     languageId: [[this.auth.languageId],]
   })
 
+  languageDropdown: any = [];
   companyDropdown: any = [];
   consignmentTypeDropdown: any = [];
   statusDropdown: any = [];
@@ -198,6 +199,10 @@ export class ConsignmentTypeComponent {
 
     this.consignmentTypeTable.forEach(res => {
 
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
       if (res.companyId != null) {
         this.companyDropdown.push({ value: res.companyId, label: res.companyName });
         this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
