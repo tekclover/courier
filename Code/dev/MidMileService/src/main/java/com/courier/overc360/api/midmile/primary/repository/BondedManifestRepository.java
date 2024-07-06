@@ -98,4 +98,6 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                                @Param("eventText") String eventText);
 
 
+    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 }
