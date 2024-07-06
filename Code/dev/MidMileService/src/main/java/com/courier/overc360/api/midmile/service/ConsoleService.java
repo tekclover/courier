@@ -552,17 +552,18 @@ public class ConsoleService {
 
                 for (AddConsole console : smallerGroups) {
                     Double consignmentValue = null;
-                    if(console.getConsignmentValue() != null) {
-                        consignmentValue = Double.parseDouble(console.getConsignmentValue());
-                    }
+
                     IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                     Double toCurrencyValue = 0.0;
                     if (iKeyValue != null && iKeyValue.getCurrencyValue() != null) {
                         toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
                     }
-
-                    Double totalDuty = toCurrencyValue * consignmentValue;
+                    Double totalDuty = 0.0;
+                    if(console.getConsignmentValue() != null) {
+                        consignmentValue = Double.parseDouble(console.getConsignmentValue());
+                        totalDuty = toCurrencyValue * consignmentValue;
+                    }
                     if (totalDuty > 100) {
                         totalDuty += totalDuty * 0.05;
                     }
