@@ -19,6 +19,8 @@ public class AddConsignment {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
+    private String languageId;
+
 //    @NotBlank(message = "PartnerType is mandatory")
     private String partnerType;
 

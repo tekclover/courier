@@ -95,11 +95,12 @@ public class BondedManifestService {
         List<AddBondedManifest> addBondedManifest = new ArrayList<>();
         for (AddConsignment consignment : addConsignments) {
             AddBondedManifest bondedManifest = new AddBondedManifest();
-            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
-                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
-                    BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
-                }
-            }
+            BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
+
+//            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
+//                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+//                    bondedManifest.se
+//                }}
             addBondedManifest.add(bondedManifest);
         }
 
@@ -127,10 +128,8 @@ public class BondedManifestService {
 
             for (AddBondedManifest addBondedManifest : addBondedManifestList) {
                 //Check Duplicate
-                boolean duplicateRecord = replicaBondedManifestRepository.duplicateExists(
-                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(),
-                        addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(),
-                        addBondedManifest.getHouseAirwayBill()) == 1;
+                boolean duplicateRecord = bondedManifestRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(), addBondedManifest.getHouseAirwayBill(), 0L);
 
                 if (duplicateRecord) {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());
