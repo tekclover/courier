@@ -22,6 +22,8 @@ export class PreAlertNewComponent {
   partnerType: any[] = []
   active: number | undefined = 0;
 
+  incoTerms: any[] = [];
+
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -42,6 +44,10 @@ export class PreAlertNewComponent {
       { value: 'customer', label: 'Customer' },
       { value: 'consignor', label: 'Consignor' },
     ];
+    this.incoTerms = [
+      { value: 'ddu', label: 'DDU' },
+      { value: 'ddp', label: 'DDP' }
+    ];
   }
   
   OriginDetails = this.fb.group({
