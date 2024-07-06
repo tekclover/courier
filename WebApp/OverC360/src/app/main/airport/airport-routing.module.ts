@@ -11,19 +11,19 @@ import { ConsoleNewComponent } from './console/console-new/console-new.component
 import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
 
 const routes: Routes = [
-  {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Airport Hub', module: 'Pre-Alert Manifest' } },
-  {path:'preAlertManifest-new/:code',component: PreAlertNewComponent, data: { title: 'Airport Hub', module: 'Pre-Alert Manifest New' } },
+  {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest' } },
+  {path:'preAlertManifest-new/:code',component: PreAlertNewComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest New' } },
   
   
-  {path:'console',component: ConsoleComponent, data: { title: 'Airport', module: 'Console' } },
-  {path:'console-new/:code',component: ConsoleNewComponent, data: { title: 'Airport', module: 'Console' } },
-  {path:'console-edit/:code',component: ConsoleEditComponent, data: { title: 'Airport', module: 'Console' } },
+  {path:'console',component: ConsoleComponent, data: { title: 'Mid-Mile', module: 'Console' } },
+  {path:'console-new/:code',component: ConsoleNewComponent, data: { title: 'Mid-Mile', module: 'Console' } },
+  {path:'console-edit/:code',component: ConsoleEditComponent, data: { title: 'Mid-Mile', module: 'Console' } },
 
-  {path:'bondedManifest',component: BondedManifestComponent, data: { title: 'Airport Hub', module: 'Bonded Manifest' } },
-  {path:'bondedManifest-new/:code',component: BondedManifestNewComponent, data: { title: 'Airport Hub', module: 'Bonded Manifest New' } },
+  {path:'bondedManifest',component: BondedManifestComponent, data: { title: 'Mid-Mile', module: 'Bonded Manifest' } },
+  {path:'bondedManifest-new/:code',component: BondedManifestNewComponent, data: { title: 'Mid-Mile', module: 'Bonded Manifest New' } },
 
-  {path:'ccr',component: CcrComponent, data: { title: 'Airport Hub', module: 'CCR' } },
-  {path:'ccr-new/:code',component: CcrNewComponent, data: { title: 'Airport Hub', module: 'CCR New' } },
+  {path:'ccr',component: CcrComponent, data: { title: 'Mid-Mile', module: 'CCR' } },
+  {path:'ccr-new/:code',component: CcrNewComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
 
 ];
 

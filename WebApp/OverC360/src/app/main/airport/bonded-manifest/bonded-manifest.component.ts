@@ -44,7 +44,7 @@ export class BondedManifestComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'Bonded Manifest'];
+    const dataToSend = ['Mid-Mile', 'Bonded Manifest'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
