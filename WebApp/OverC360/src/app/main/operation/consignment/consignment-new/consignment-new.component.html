@@ -665,7 +665,7 @@
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="country" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Country</p>
-                            <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
+                            <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
                                 formControlName="country"
                                 [ngClass]="senderInfo.get('originDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
@@ -821,8 +821,8 @@
                         <div class="col-3 marginFieldNew borderRadius12" id="country"
                             formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Country</p>
-                            <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
-                                formControlName="country"
+                            <p-dropdown [options]="countryIdListDestination" placeholder="Select" filter="true"
+                                formControlName="country" (onChange)="countryChanged('deliveryInfo')"
                                 [ngClass]="deliveryInfo.get('destinationDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.country')"

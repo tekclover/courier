@@ -20,6 +20,9 @@ export class ConsignmentService {
   Update(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/consignment', obj);
   }
+  UpdateBondedManifest(obj: any) {
+    return this.http.patch<any>('/overc-midmile-service/bondedManifest/update/list', obj);
+  }
 
   UpdatePreAlertManifest(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/consignment', obj);
