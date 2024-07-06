@@ -13,6 +13,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ConsignmentUpdatebulkComponent } from './consignment-updatebulk/consignment-updatebulk.component';
 
 @Component({
   selector: 'app-consignment',
@@ -132,7 +133,19 @@ export class ConsignmentComponent {
       }
     });
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'Consignment',code :  this.selectedConsignment} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedConsignment.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
