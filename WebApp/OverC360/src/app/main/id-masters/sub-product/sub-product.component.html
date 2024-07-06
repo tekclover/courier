@@ -15,50 +15,50 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start align-items-center" style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
+    <div class="d-flex justify-content-start align-items-center"
+        style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
         <p-iconField iconPosition="right" class="mr-2">
             <p-inputIcon type="button" (click)="subProduct.toggle($event)" styleClass="pi pi-filter" />
             <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
                 (input)="subProductTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
 
-        <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}" [styleClass]="'custom-overlay-panel'" #subProduct >
+        <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}"
+            [styleClass]="'custom-overlay-panel'" #subProduct>
             <form [formGroup]="searchform" style="padding: 2rem;">
                 <div class="row">
-                      <!-- <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Company</p>
-                        <p-multiSelect  placeholder="Select" filter="true" [options]="companyDropdown" formControlName="companyId" appendTo="body"
-                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                      </div> -->
-                      <div class="col-3 mb-3 borderRadius12">
+                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Sub Product</p>
-                        <p-multiSelect  placeholder="Select" filter="true" [options]="subProductDropdown" formControlName="subProductId" appendTo="body"
-                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                      </div>
-                      <div class="col-3 mb-3 borderRadius12">
+                        <p-multiSelect placeholder="Select" filter="true" [options]="subProductDropdown"
+                            formControlName="subProductId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Sub Product Value</p>
-                        <p-multiSelect  placeholder="Select" filter="true" [options]="subProductValueDropdown" formControlName="subProductId" appendTo="body"
-                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                      </div>
-                      <div class="col-3 mb-3 borderRadius12">
+                        <p-multiSelect placeholder="Select" filter="true" [options]="subProductValueDropdown"
+                            formControlName="subProductId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
-                        <p-multiSelect  placeholder="Select" filter="true" [options]="statusDropdown" formControlName="statusId" appendTo="body"
-                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                      </div>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="statusDropdown"
+                            formControlName="statusId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>
                         <img type="button" (click)="reset()" src="./assets/common/reset.png" alt="" srcset="">
                     </div>
                     <div>
-                        <button class="buttom1 textBlack mx-1" (click)="closeOverLay()" >Cancel</button>
-                    <button class="buttom1 bgBlack text-white mx-1" (click)="search()">Apply</button>
+                        <button class="buttom1 textBlack mx-1" (click)="closeOverLay()">Cancel</button>
+                        <button class="buttom1 bgBlack text-white mx-1" (click)="search()">Apply</button>
                     </div>
                 </div>
             </form>
         </p-overlayPanel>
 
-        <p-chips  (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
+        <p-chips (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
     </div>
 
     <div class="tableProperties">

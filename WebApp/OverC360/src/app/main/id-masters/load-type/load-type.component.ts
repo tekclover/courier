@@ -243,6 +243,7 @@ export class LoadTypeComponent {
       },
     });
   }
+  
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
@@ -260,5 +261,3 @@ export class LoadTypeComponent {
   }
 
 }
-
-

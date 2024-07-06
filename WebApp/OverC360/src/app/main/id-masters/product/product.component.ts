@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -10,6 +10,8 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { ProductService } from './product.service';
+import { OverlayPanel } from 'primeng/overlaypanel/public_api';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-product',
@@ -30,7 +32,9 @@ export class ProductComponent {
     private path: PathNameService,
     private service: ProductService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private fb: FormBuilder, 
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -88,6 +92,7 @@ export class ProductComponent {
           console.log(res);
           res = this.cs.removeDuplicatesFromArrayList(res, 'productId');
           this.productTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         },
         error: (err) => {
@@ -205,4 +210,96 @@ export class ProductComponent {
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Product');
   }
+
+  searchform = this.fb.group({
+    subProductId: [],
+    subProductValue: [],
+    productId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  languageDropdown: any = [];
+  companyDropdown: any = [];
+  subProductDropdown: any = [];
+  subProductValueDropdown: any = [];
+  productDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.productTable.forEach(res => {
+
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.subProductId != null) {
+        this.subProductDropdown.push({ value: res.subProductId, label: res.subProductName });
+        this.subProductDropdown = this.cs.removeDuplicatesFromArrayList(this.subProductDropdown, 'value');
+      }
+      if (res.subProductValue != null) {
+        this.subProductValueDropdown.push({ value: res.subProductValue, label: res.referenceField1 });
+        this.subProductValueDropdown = this.cs.removeDuplicatesFromArrayList(this.subProductValueDropdown, 'value');
+      }
+      if (res.productId != null) {
+        this.productDropdown.push({ value: res.productId, label: res.productName });
+        this.productDropdown = this.cs.removeDuplicatesFromArrayList(this.productDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('product') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.productTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      subProductId: [],
+      subProductValue: [],
+      productId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }
