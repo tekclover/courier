@@ -178,7 +178,7 @@ export class ConsignorComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.consignorId + ' Deleted successfully',
+          detail:  'Record Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CcrService } from './ccr.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
@@ -11,6 +11,8 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-ccr',
@@ -26,7 +28,7 @@ export class CcrComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CcrService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService, 
+    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder, private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -64,20 +66,20 @@ export class CcrComponent {
 
   initialCall() {
     setTimeout(() => {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        this.ccrTable = res;
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }, 2000);
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          this.ccrTable = res;
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 2000);
   }
 
   onChange() {
@@ -171,7 +173,7 @@ export class CcrComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
-  isSelected(item:any): boolean {
+  isSelected(item: any): boolean {
     return this.selectedCcr.includes(item);
   }
 
@@ -194,4 +196,100 @@ export class CcrComponent {
       }
     });
   }
+
+  searchform = this.fb.group({
+    houseAirwayBill: [],
+    masterAirwayBill: [],
+    partnerId: [],
+    ccrId: [],
+    consoleId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  houseAirwayBillDropdown: any = [];
+  masterAirwayBillDropdown: any = [];
+  partnerDropdown: any = [];
+  statusDropdown: any = [];
+  ccrIdDropdown: any = [];
+  consoleIdDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.ccrTable.forEach(res => {
+
+      if (res.houseAirwayBill != null) {
+        this.houseAirwayBillDropdown.push({ value: res.houseAirwayBill, label: res.houseAirwayBill });
+        this.houseAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'value');
+      }
+      if (res.masterAirwayBill != null) {
+        this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
+        this.masterAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+      if (res.ccrId != null) {
+        this.ccrIdDropdown.push({ value: res.ccrId, label: res.ccrId });
+        this.ccrIdDropdown = this.cs.removeDuplicatesFromArrayList(this.ccrIdDropdown, 'value');
+      }
+      if (res.consoleId != null) {
+        this.consoleIdDropdown.push({ value: res.consoleId, label: res.consoleId });
+        this.consoleIdDropdown = this.cs.removeDuplicatesFromArrayList(this.consoleIdDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('ccr') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.ccrTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      houseAirwayBill: [],
+      masterAirwayBill: [],
+      partnerId: [],
+      ccrId: [],
+      consoleId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }

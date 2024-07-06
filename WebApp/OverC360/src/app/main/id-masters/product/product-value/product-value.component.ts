@@ -78,7 +78,8 @@ export class ProductValueComponent {
   ngOnInit(): void {
     
     this.form.controls.productValue.patchValue(this.data);
-
+    this.form.controls.referenceField1.disable();
+    
     if(this.data.pageflow == "Edit"){
       this.form.patchValue(this.data.code)
     }
@@ -105,6 +106,8 @@ export class ProductValueComponent {
     this.spin.show();
     this.subProductService.search(obj).subscribe({next: (result) => {
       this.subProductIdList = this.cas.foreachlist(result, {key: 'subProductId', value: 'subProductName'});
+      this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
+
       // this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'subProductValue'});
       this.spin.hide();
     }, error: (err) => {

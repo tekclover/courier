@@ -14,6 +14,7 @@ import { ConsoleNewComponent } from './console/console-new/console-new.component
 import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
 import { ConsoleTransferComponent } from './console/console-transfer/console-transfer.component';
 import { ConsoleEditpopupComponent } from './console/console-editpopup/console-editpopup.component';
+import { ConsoleBulkComponent } from './console/console-bulk/console-bulk.component';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { ConsoleEditpopupComponent } from './console/console-editpopup/console-e
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent
 
 
   ],

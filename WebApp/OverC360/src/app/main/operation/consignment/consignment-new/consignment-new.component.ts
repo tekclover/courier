@@ -62,18 +62,18 @@ export class ConsignmentNewComponent {
       { value: 'consignor', label: 'Consignor' }
     ];
     this.paymentType = [
-      { value: 'prepaid', label: 'Prepaid' },
-      { value: 'cod', label: 'COD' }
+      { value: 'Prepaid', label: 'Prepaid' },
+      { value: 'COD', label: 'COD' }
     ];
     this.incoTerms = [
-      { value: 'ddu', label: 'DDU' },
-      { value: 'ddp', label: 'DDP' }
+      { value: 'DDU', label: 'DDU' },
+      { value: 'DDP', label: 'DDP' }
     ];
     this.codCollectionMode = [
-      { value: 'cash', label: 'Cash' },
-      { value: 'cheque', label: 'Cheque' },
-      { value: 'online', label: 'Online' },
-      { value: 'card', label: 'Card' }
+      { value: 'Cash', label: 'Cash' },
+      { value: 'Cheque', label: 'Cheque' },
+      { value: 'Online', label: 'Online' },
+      { value: 'Card', label: 'Card' }
     ];
   }
 
@@ -728,7 +728,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.partnerId + ' has been updated successfully',
+            detail:  'Record has been updated successfully',
           });
           this.router.navigate(['/main/master/rate']);
           this.spin.hide();
@@ -747,7 +747,7 @@ export class ConsignmentNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.partnerId + ' has been created successfully',
+              detail: 'Record has been created successfully',
             });
             this.router.navigate(['/main/master/rate']);
             this.spin.hide();
