@@ -1112,14 +1112,14 @@
                             <mat-error *ngIf="errorHandlingBilling('codCollectionMode')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        <div class="col-3 marginFieldNew borderRadius12" id="declaredValueWithoutTax">
-                            <p class="formControlLabel f600 textBlack mb-0">Declared Value Without Tax </p>
-                            <input maxlength="50" formControlName="declaredValueWithoutTax"
-                                [ngClass]="senderInfo.get('declaredValueWithoutTax')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('declaredValueWithoutTax')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div> 
+                    <!-- <div class="col-3 marginFieldNew borderRadius12" id="declaredValueWithoutTax">
+                    <p class="formControlLabel f600 textBlack mb-0">Declared Value Without Tax </p>
+                    <input maxlength="50" formControlName="declaredValueWithoutTax"
+                        [ngClass]="senderInfo.get('declaredValueWithoutTax')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                        class=" w-100" pInputText placeholder="Enter" />
+                    <mat-error *ngIf="errorHandlingBilling('declaredValueWithoutTax')"
+                        class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                </div> 
                         <!-- <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Amount </p>
                             <input maxlength="50" formControlName="invoiceAmount"
