@@ -367,9 +367,9 @@ public class ProductService {
             List<Product> updatedProductList = new ArrayList<>();
             for (UpdateProduct updateProduct : updateProductList) {
 
-                Product dbProduct = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(
-                        updateProduct.getLanguageId(), updateProduct.getCompanyId(),
-                        updateProduct.getProductId(), updateProduct.getSubProductId(), 0L);
+                Product dbProduct = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+                        updateProduct.getLanguageId(), updateProduct.getCompanyId(), updateProduct.getProductId(),
+                        updateProduct.getSubProductId(), updateProduct.getSubProductValue(), 0L);
                 if (dbProduct != null) {
                     productRepository.delete(dbProduct);
                 }

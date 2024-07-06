@@ -299,7 +299,7 @@ export class PreAlertManifestComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
