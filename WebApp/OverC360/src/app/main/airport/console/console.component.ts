@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -11,6 +11,9 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsoleService } from './console.service';
+import { ConsoleBulkComponent } from './console-bulk/console-bulk.component';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-console',
@@ -26,7 +29,7 @@ export class ConsoleComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, 
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService,  private service: ConsoleService
+    public dialog: MatDialog, private datePipe: DatePipe, private fb: FormBuilder, private auth: AuthService, private spin: NgxSpinnerService,  private service: ConsoleService
   ) { }
 
   fullDate: any;
@@ -63,7 +66,19 @@ export class ConsoleComponent {
       { field: 'referenceField5', header: 'Reference Field 5' },
     ];
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsoleBulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'Console',code :  this.selectedConsole} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   initialCall() {
     setTimeout(() => {
     this.spin.show();
@@ -186,4 +201,93 @@ export class ConsoleComponent {
   isSelected(item:any): boolean {
     return this.selectedConsole.includes(item);
   }
+
+  searchform = this.fb.group({
+    houseAirwayBill: [],
+    masterAirwayBill: [],
+    partnerId: [],
+    consoleId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  houseAirwayBillDropdown: any = [];
+  masterAirwayBillDropdown: any = [];
+  partnerDropdown: any = [];
+  statusDropdown: any = [];
+  consoleIdDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.consoleTable.forEach(res => {
+
+      if (res.houseAirwayBill != null) {
+        this.houseAirwayBillDropdown.push({ value: res.houseAirwayBill, label: res.houseAirwayBill });
+        this.houseAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'value');
+      }
+      if (res.masterAirwayBill != null) {
+        this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
+        this.masterAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+      if (res.consoleId != null) {
+        this.consoleIdDropdown.push({ value: res.consoleId, label: res.consoleId });
+        this.consoleIdDropdown = this.cs.removeDuplicatesFromArrayList(this.consoleIdDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('console') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.consoleTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      houseAirwayBill: [],
+      masterAirwayBill: [],
+      partnerId: [],
+      consoleId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }

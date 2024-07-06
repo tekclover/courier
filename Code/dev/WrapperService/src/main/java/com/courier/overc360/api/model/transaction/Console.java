@@ -96,6 +96,10 @@ public class Console {
 
     private String goodsType;
 
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String countryOfOrigin;
 
     private String consignmentCurrency;

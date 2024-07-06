@@ -48,6 +48,11 @@ public class UpdateConsole {
 
     private String eventCode;
 
+
+    private String primaryDo;
+
+    private String secondaryDo;
+
     private String eventText;
 
     private Date eventTimestamp;

@@ -44,6 +44,7 @@ export class ConsoleTransferComponent {
 
 
   ngOnInit(): void {
+this.getConsoleDropdown();
     console.log(this.data)
     this.form.controls.fromConsoleId.patchValue(this.data[0].consoleId);
     this.form.controls.houseAirwayBill.patchValue(this.data[0].houseAirwayBill)
@@ -53,6 +54,21 @@ export class ConsoleTransferComponent {
     }
 
   }
+  consoleList:any[] = [];
+getConsoleDropdown(){
+    let obj: any = {};
+    obj.companyId = [this.auth.companyId];
+    obj.languageId = [this.auth.languageId];
+    this.spin.show();
+    this.service.search(obj).subscribe({next: (result) => {
+      this.consoleList = this.cas.foreachlist(result, {key: 'consoleId', value: 'consoleId'});
+      this.spin.hide();
+    }, error: (err) =>{
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  
+}
 selecetedTrasnfer:any[]=[];
 
   save() {
