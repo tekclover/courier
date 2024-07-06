@@ -5,6 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.consignmentstatus.AddConsi
 import com.courier.overc360.api.midmile.primary.model.consignmentstatus.ConsignmentStatus;
 import com.courier.overc360.api.midmile.primary.model.consignmentstatus.UpdateConsignmentStatus;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.ConsignmentStatusRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
@@ -108,16 +109,6 @@ public class ConsignmentStatusService {
                                               Date eventTimestamp, Date statusTimestamp, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<ConsignmentStatus> dbConsignmentStatus =
-                    consignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndStatusIdAndEventCodeAndDeletionIndicator(
-                    languageId,companyId, houseAirwayBill, pieceId, statusId, eventCode, 0L);
-
-
-            //Check if duplicate record exists
-            if (dbConsignmentStatus.isPresent()) {
-                throw new BadRequestException("Record is getting duplicated with the given value , statusId - " + statusId);
-            } else {
-
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
 
                 newConsignmentStatus.setCompanyId(companyId);
@@ -130,7 +121,6 @@ public class ConsignmentStatusService {
                 newConsignmentStatus.setHouseAirwayBill(houseAirwayBill);
                 newConsignmentStatus.setStatusText(statusText);
                 newConsignmentStatus.setEventCode(eventCode);
-
                 newConsignmentStatus.setPieceStatusId(pieceStatusId);
                 newConsignmentStatus.setPieceStatusText(pieceStatusText);
                 newConsignmentStatus.setEventText(eventText);
@@ -145,13 +135,9 @@ public class ConsignmentStatusService {
                 newConsignmentStatus.setUpdatedBy(loginUserID);
                 newConsignmentStatus.setUpdatedOn(new Date());
                 consignmentStatusRepository.save(newConsignmentStatus);
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
-
     }
 
     /**

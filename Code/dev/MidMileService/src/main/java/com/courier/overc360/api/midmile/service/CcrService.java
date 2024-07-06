@@ -126,8 +126,8 @@ public class CcrService {
 //                }
 
                 //Get Iatakd
-                IKeyValuePair iataData = ccrRepository.getIataKd(addCcr.getCountryOfOrigin(),
-                        addCcr.getLanguageId(), addCcr.getCompanyId());
+//                IKeyValuePair iataData = ccrRepository.getIataKd(addCcr.getCountryOfOrigin(),
+//                        addCcr.getLanguageId(), addCcr.getCompanyId());
 
                 //Calculate TotalDuty value
 //                IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(addCcr.getFreightCurrency());
@@ -170,9 +170,9 @@ public class CcrService {
                     newCcr.setLanguageDescription(lAndCDesc.getLangDesc());
                     newCcr.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                if(iataData != null && iataData.getIataKd() != null) {
-                    newCcr.setIataKd(iataData.getIataKd());
-                }
+//                if(iataData != null && iataData.getIataKd() != null) {
+//                    newCcr.setIataKd(iataData.getIataKd());
+//                }
                 //   newCcr.setTotalDuty(String.valueOf(totalDuty));
                 newCcr.setStatusId(STATUS_ID);
                 newCcr.setDeletionIndicator(0L);

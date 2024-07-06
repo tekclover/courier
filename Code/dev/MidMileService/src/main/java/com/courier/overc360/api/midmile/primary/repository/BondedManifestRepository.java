@@ -79,9 +79,9 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
     @Transactional
     @Modifying
     @Query(value = "UPDATE tblconsignment_entity " +
-            "SET event_code = 2, " +
+            "SET event_code = 4, " +
             "MANIFEST_INDICATOR = 1, " +
-            "event_text = 'Bonded Manifest Created', " +
+            "event_text = :eventText, " +
             "EVENT_TIMESTAMP = getDate() " +
             "WHERE c_id = :companyId " +
             "AND lang_id = :languageId " +
@@ -94,7 +94,8 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                                @Param("languageId") String languageId,
                                                @Param("partnerId") String partnerId,
                                                @Param("houseAirwayBill") String houseAirwayBill,
-                                               @Param("masterAirwayBill") String masterAirwayBill);
+                                               @Param("masterAirwayBill") String masterAirwayBill,
+                                               @Param("eventText") String eventText);
 
 
 }

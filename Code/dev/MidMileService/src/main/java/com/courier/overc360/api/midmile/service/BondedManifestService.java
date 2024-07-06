@@ -8,6 +8,7 @@ import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
+import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
@@ -46,6 +47,9 @@ public class BondedManifestService {
 
     @Autowired
     private ErrorLogService errorLogService;
+
+    @Autowired
+    ConsignmentEntityRepository consignmentEntityRepository;
 
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
@@ -122,20 +126,6 @@ public class BondedManifestService {
             log.info("next Value from NumberRange for BONDED_ID : " + BONDED_ID);
 
             for (AddBondedManifest addBondedManifest : addBondedManifestList) {
-                // If ShipperId matches with consignorId then create
-//                IKeyValuePair shipperData = bondedManifestRepository.getProductId(addBondedManifest.getShipperId(),
-//                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
-
-//                if (addBondedManifest.getProductId().equalsIgnoreCase(shipperData.getProductId()) &&
-//                        addBondedManifest.getSubProductId().equalsIgnoreCase(shipperData.getSubProductId())) {
-
-//                    Long companyCount = replicaBondedManifestHeaderRepository.companyRecordCount(
-//                            addBondedManifestHeader.getLanguageId(), addBondedManifestHeader.getCompanyId());
-//                    if (companyCount == null || companyCount == 0) {
-//                        throw new BadRequestException("LanguageId - " + addBondedManifestHeader.getLanguageId()
-//                                + " and companyId - " + addBondedManifestHeader.getCompanyId() + " doesn't exists");
-//                    }
-
                 //Check Duplicate
                 boolean duplicateRecord = replicaBondedManifestRepository.duplicateExists(
                         addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(),
@@ -145,20 +135,26 @@ public class BondedManifestService {
                 if (duplicateRecord) {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());
                 }
+
                 BondedManifest newBondedManifest = new BondedManifest();
                 BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
-                String STATUS_ID = "2 - Bonded Manifest Created";
-                newBondedManifest.setBondedId(BONDED_ID);
-
                 IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(
                         addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
+                IKeyValuePair eventStatus =  consignmentEntityRepository.getStatusEventText(addBondedManifest.getCompanyId(), "1", "4");
 
-                //   newBondedManifest.setTotalDuty(String.valueOf(totalDuty));
                 if (lAndCDesc != null) {
                     newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
                     newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                newBondedManifest.setStatusId(STATUS_ID);
+                if(eventStatus != null) {
+                    newBondedManifest.setStatusId("1");
+                    newBondedManifest.setEventCode("4");
+                    newBondedManifest.setStatusText(eventStatus.getStatusText());
+                    newBondedManifest.setEventText(eventStatus.getEventText());
+                    newBondedManifest.setEventTimestamp(new Date());
+                    newBondedManifest.setStatusTimestamp(new Date());
+                }
+                newBondedManifest.setBondedId(BONDED_ID);
                 newBondedManifest.setDeletionIndicator(0L);
                 newBondedManifest.setCreatedBy(loginUserID);
                 newBondedManifest.setCreatedOn(new Date());
@@ -170,7 +166,8 @@ public class BondedManifestService {
                     //Update Event From consignment
                     bondedManifestRepository.updateEventCodeFromConsignment(createdBondedManifest.getCompanyId(),
                             createdBondedManifest.getLanguageId(), createdBondedManifest.getPartnerId(),
-                            createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getMasterAirwayBill());
+                            createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getMasterAirwayBill(),
+                            createdBondedManifest.getEventText());
                 }
                 createdBondedManifestList.add(createdBondedManifest);
             }

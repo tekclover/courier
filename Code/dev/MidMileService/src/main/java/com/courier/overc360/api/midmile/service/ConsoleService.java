@@ -5,10 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.console.*;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
-import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
-import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
-import com.courier.overc360.api.midmile.primary.repository.ConsoleRepository;
-import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
+import com.courier.overc360.api.midmile.primary.repository.*;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
@@ -57,6 +54,8 @@ public class ConsoleService {
     @Autowired
     private CcrService ccrService;
 
+    @Autowired
+    private ConsignmentEntityRepository consignmentEntityRepository;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -464,18 +463,15 @@ public class ConsoleService {
 
                             // Pass ConsignmentCurrency
                             IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+                            IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                                    console.getLanguageId(), console.getCompanyId());
+                            // Get Iatakd
+                            IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
+                                    console.getLanguageId(), console.getCompanyId());
+                            IKeyValuePair eventStatus = consignmentEntityRepository.getStatusEventText(console.getCompanyId(), "1", "6");
 
                             Console newConsole = new Console();
                             BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
-
-                            String STATUS_ID = "6 - Console Created";
-                            IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
-                                    console.getLanguageId(), console.getCompanyId());
-
-                            if (lAndCDesc != null) {
-                                newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
-                                newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
-                            }
 
                             // Customs Value set multiply formula
                             String CUS_VAL = null;
@@ -483,16 +479,13 @@ public class ConsoleService {
                                 Double CON_VAL = Double.valueOf(console.getConsignmentValue());
                                 Double CURR_VAL = Double.valueOf(iKeyValuePair.getCurrencyValue());
                                 newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
+                                newConsole.setExchangeRate(iKeyValuePair.getCurrencyValue());
                                 CUS_VAL = String.valueOf(CON_VAL * CURR_VAL);
                             }
 
-                            // Get Iatakd
-                            IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
-                                    console.getLanguageId(), console.getCompanyId());
-
                             Double freightCharge = null;
-                            if (console.getFreightCharges() != null) {
-                                freightCharge = Double.valueOf(console.getFreightCharges());
+                            if (console.getConsignmentValue() != null) {
+                                freightCharge = Double.valueOf(console.getConsignmentValue());
                             }
                             // Set TotalDuty Value
                             double totalDuty = 0;
@@ -512,10 +505,22 @@ public class ConsoleService {
                             if (iataData != null && iataData.getIataKd() != null) {
                                 newConsole.setIataKd(iataData.getIataKd());
                             }
+                            if (lAndCDesc != null) {
+                                newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                                newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                            }
+
+                            if(eventStatus != null) {
+                                newConsole.setStatusId("1");
+                                newConsole.setEventCode("6");
+                                newConsole.setStatusText(eventStatus.getStatusText());
+                                newConsole.setEventText(eventStatus.getEventText());
+                                newConsole.setEventTimestamp(new Date());
+                                newConsole.setStatusTimestamp(new Date());
+                            }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setCustomsValue(CUS_VAL);
                             newConsole.setConsoleId(CONSOLE_ID);
-                            newConsole.setStatusId(STATUS_ID);
                             newConsole.setDeletionIndicator(0L);
                             newConsole.setCreatedBy(loginUserID);
                             newConsole.setCreatedOn(new Date());
@@ -550,10 +555,10 @@ public class ConsoleService {
                     if(console.getFreightCharges() != null) {
                          freightCharge = Double.parseDouble(console.getFreightCharges());
                     }
-                    IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getFreightCurrency());
+                    IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                     Double toCurrencyValue = 0.0;
-                    if (iKeyValue != null & iKeyValue.getCurrencyValue() != null) {
+                    if (iKeyValue != null && iKeyValue.getCurrencyValue() != null) {
                         toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
                     }
 
@@ -651,7 +656,7 @@ public class ConsoleService {
                         }
 
                         if (iataData != null && iataData.getIataKd() != null) {
-                            newConsole.setIataKd(iataData.getCurrencyValue());
+                            newConsole.setIataKd(iataData.getIataKd());
                         }
 
                         newConsole.setExpectedDuty(String.valueOf(totalDuty));
