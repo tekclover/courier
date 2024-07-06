@@ -90,13 +90,13 @@
                                         getErrorMessage()
                                         }}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="billOfLandingFor">
+                            <div class="col-6 marginFieldNew borderRadius12" id="billOfLadingFor">
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     Bill Of Landing For
                                 </p>
-                                <p-dropdown [options]="value" [style]="{'width': '100%'}" appendTo="body"
-                                    formControlName="billOfLandingFor" placeholder="Select "   />
-                                <mat-error *ngIf="errorHandling('billOfLandingFor')" class="text-danger"><small>{{
+                                <p-dropdown [options]="billOfLadingFor" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="billOfLadingFor" placeholder="Select "   />
+                                <mat-error *ngIf="errorHandling('billOfLadingFor')" class="text-danger"><small>{{
                                         getErrorMessage()
                                         }}</small></mat-error>
                             </div>
@@ -284,7 +284,7 @@
                                     Is Pending Shipment
                                 </p>
                                 <p-dropdown [options]="flag" [style]="{'width': '100%'}" appendTo="body"
-                                formControlName="isPendingShipment" placeholder="Select "   />
+                                    formControlName="isPendingShipment" placeholder="Select "   />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="bwhInvestor">
                                 <p class="formControlLabel f600 textBlack mb-0">

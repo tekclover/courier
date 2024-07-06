@@ -13,6 +13,7 @@ import { CommonServiceService } from '../../../common-service/common-service.ser
 import { PathNameService } from '../../../common-service/path-name.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ConsoleBulkComponent } from '../console/console-bulk/console-bulk.component';
 
 @Component({
   selector: 'app-ccr',
@@ -35,7 +36,7 @@ export class CcrComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'CCR'];
+    const dataToSend = ['Mid-Mile', 'CCR'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -63,7 +64,19 @@ export class CcrComponent {
       { field: 'referenceField5', header: 'Reference Field 5' },
     ];
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsoleBulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'CCR',code :  this.selectedCcr} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   initialCall() {
     setTimeout(() => {
       this.spin.show();

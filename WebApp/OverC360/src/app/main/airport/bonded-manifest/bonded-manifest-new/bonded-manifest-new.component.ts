@@ -23,7 +23,7 @@ export class BondedManifestNewComponent {
 
   flag: any[] = [];
 
-  value: any[] = [];
+  billOfLadingFor: any[] = [];
 
   constructor(
     private cs: CommonServiceService,
@@ -45,11 +45,11 @@ export class BondedManifestNewComponent {
       { value: '0', label: 'False'},
       { value: '1', label: 'True'}
     ];
-    this.value = [
-      { value: 'I', label: 'Import' },
-      { value: 'E', label: 'Export' },
-      { value: 'F', label: 'Free Zone' },
-      { value: 'T', label: 'Transit' },
+    this.billOfLadingFor = [
+      { value: 'Import', label: 'Import' },
+      { value: 'Export', label: 'Export' },
+      { value: 'Free Zone', label: 'Free Zone' },
+      { value: 'Transit', label: 'Transit' },
     ];
   }
 
@@ -60,7 +60,6 @@ export class BondedManifestNewComponent {
     // billOfLandingNumber: [,Validators.required],
     billOfLandingDate: [],
     description: [],
-    billOfLandingFor: [],
     netWeigth: [],
     manifestedGrossWeight: [],
     grossWeight: [],
@@ -121,6 +120,7 @@ export class BondedManifestNewComponent {
     markId: [],
     markType: [],
     masterAirwayBill: [],
+    billOfLadingFor: ['Import',],
     netWeight: [],
     noOfPackagesMawb: [],
     noOfPiecesHawb:[],

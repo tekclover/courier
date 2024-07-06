@@ -63,6 +63,8 @@ public class UpdateCcr {
     private Date eventTimestamp;
 
     private Date statusTimestamp;
+    private String primaryDo;
+    private String secondaryDo;
 
     private String notifyParty;
 

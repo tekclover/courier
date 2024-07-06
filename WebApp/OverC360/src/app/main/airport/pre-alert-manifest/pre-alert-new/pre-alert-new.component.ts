@@ -75,12 +75,14 @@ export class PreAlertNewComponent {
     masterAirwayBill: [],
     houseAirwayBill: [],
     consignmentCurrency: [],
+    airportDestinationCode: [],
     hsCode: [],
     partnerType: ['', ],
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
-    estimatedDepartureTime: [],
+    estimatedDepartureTime: ['',],
+    estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
     noOfCrt: [],
     totalShipmentWeight: [],
@@ -137,15 +139,20 @@ export class PreAlertNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.country.url,
-      this.cas.dropdownlist.setup.customer.url,
       this.cas.dropdownlist.setup.hsCode.url,
+      this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.customer.url,
 
 
     ]).subscribe({next: (results: any) => {
       this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
-      this.customerIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.customer.key);
-      this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[3], this.cas.dropdownlist.setup.hsCode.key);
+      this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[2], this.cas.dropdownlist.setup.hsCode.key);
+      const consitnor = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
+      const customer = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.customer.key);
+      customer.forEach(x => this.customerIdList.push(x));
+      consitnor.forEach(x => this.customerIdList.push(x));
+      this.customerIdList = this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
 
       this.spin.hide();
     },
@@ -160,6 +167,9 @@ export class PreAlertNewComponent {
     this.form.patchValue(line);
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+    if(this.form.controls.estimatedDepartureTime.value){
+      this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
+    }
   }
 
   save() {
@@ -180,7 +190,8 @@ export class PreAlertNewComponent {
       this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: 'Please fill required fields to continue' });
       return;
     }
-
+    const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
+this.form.controls.estimatedDepartureTime.patchValue(date)
     if (this.pageToken.pageflow != 'New') {
       this.spin.show()
       this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({

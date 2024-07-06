@@ -31,9 +31,8 @@ export class CustomerService {
     return this.http.patch<any>('/overc-idmaster-service/customer/update/list', obj);
   }
 
-  Delete(customerId: string, productId: string, subProductId: string) {
-    return this.http.delete<any>('/overc-idmaster-service/customer/' + customerId + '?productId=' + productId
-      + '&subProductId=' + subProductId + '&companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
+  Delete(obj:any) {
+    return this.http.post<any>('/overc-idmaster-service/customer/delete/list', obj);
   }
 
   DeleteBulk(obj: any) {

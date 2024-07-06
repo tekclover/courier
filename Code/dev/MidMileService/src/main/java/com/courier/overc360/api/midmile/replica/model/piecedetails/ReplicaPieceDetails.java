@@ -69,6 +69,9 @@ public class ReplicaPieceDetails {
     @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(50)")
     private String partnerName;
 
+    @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
+    private String hsCode;
+
     @Column(name = "PIECE_PRODUCT_CODE", columnDefinition = "nvarchar(50)")
     private String pieceProductCode;
 
@@ -104,6 +107,7 @@ public class ReplicaPieceDetails {
 
     @Column(name = "HEIGHT", columnDefinition = "nvarchar(50)")
     private String height;
+    
 
     @Column(name = "WEIGHT", columnDefinition = "nvarchar(50)")
     private String weight;

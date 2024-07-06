@@ -163,20 +163,20 @@ export class CustomerComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedCustomer[0]);
+        this.deleterecord(this.selectedCustomer);
       }
     });
   }
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.customerId, lines.productId, lines.subProductId).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail:  'Record Deleted successfully',
+          detail:  lines[0].customerId + '  Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();

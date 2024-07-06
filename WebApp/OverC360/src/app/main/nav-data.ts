@@ -224,15 +224,15 @@ export const navbarData: INavbarData[] = [
                 // routerLink: 'setup/list',
                 label: 'Admin',
                 items: [
-                    {
-                        routerId: 3201,
-                        routerLink: '/main/master/hub',
-                        label: 'Hub'
-                    },
+                    // {
+                    //     routerId: 3201,
+                    //     routerLink: '/main/master/hub',
+                    //     label: 'Hub'
+                    // },
                     {
                         routerId: 3202,
                         routerLink: '/main/master/numberrange',
-                        label: 'Number Range'
+                        label: 'Number Series'
                     },
                    
                 ]
@@ -240,7 +240,7 @@ export const navbarData: INavbarData[] = [
             {
                 routerId: 3003,
                 // routerLink: 'setup/list',
-                label: 'Airport',
+                label: 'Mid-Mile',
                 items: [
                     {
                         routerId: 3301,
@@ -314,7 +314,7 @@ export const navbarData: INavbarData[] = [
         routerLink: '/main/airport',
         src: './assets/sidebar/airport/Airport Hub.png',
         srcDark: './assets/sidebar/airport/Airport HubDark.png',
-        label: 'Airport',
+        label: 'Mid-Mile',
         items: [
             
             {

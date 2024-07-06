@@ -109,6 +109,7 @@ export class ConsignorValueComponent {
     this.customerService.search(obj).subscribe({
       next: (result) => {
         this.customerIdList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' });
+        this.customerIdList =  this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
         // this.form.patchValue(result[0]);
         console.log(this.customerIdList);
         this.spin.hide();
@@ -156,6 +157,7 @@ export class ConsignorValueComponent {
     this.subProductService.search(obj).subscribe({
       next: (result) => {
         this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'referenceField1' });
+        this.subProductValueList =  this.cs.removeDuplicatesFromArrayList(this.subProductValueList, 'value')
         // this.form.patchValue(result[0]);
         this.spin.hide();
       }, error: (err) => {

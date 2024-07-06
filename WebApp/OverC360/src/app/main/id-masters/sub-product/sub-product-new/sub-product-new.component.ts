@@ -97,7 +97,6 @@ export class SubProductNewComponent {
 
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
-
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.subProductId.disable();

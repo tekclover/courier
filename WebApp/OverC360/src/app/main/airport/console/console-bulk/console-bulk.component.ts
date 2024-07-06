@@ -133,6 +133,7 @@ export class ConsoleBulkComponent {
     specialApprovalValue: [],
     statusId: [],
     statusTimestamp: [],
+    customsCcrNo: [],
     subProductId: [],
     subProductName: [],
     primaryDo: [],
@@ -232,6 +233,11 @@ if(this.form.controls.secondaryDo != null){
     x.secondaryDo = this.form.controls.secondaryDo.value;
     });
 }
+if(this.form.controls.customsCcrNo != null){
+  this.Consigment.forEach((x: any) => {
+    x.customsCcrNo = this.form.controls.customsCcrNo.value;
+    });
+}
 if(this.data.title=='Console'){
    this.service.Update(this.Consigment).subscribe({
     next: (res) => {
@@ -255,7 +261,8 @@ if(this.data.title=='Console'){
   });
 }
 else{
-  this.service.Update(this.Consigment).subscribe({
+  
+  this.service.UpdateCCR(this.Consigment).subscribe({
     next: (res) => {
       this.messageService.add({
         severity: 'success',
@@ -264,7 +271,7 @@ else{
         detail: 'Selected Values has been updated successfully',
       });
         this.dialogRef.close()
-        this.router.navigate(['/main/airport/bondedManifest']);
+        this.router.navigate(['/main/airport/ccr']);
       
       this.spin.hide();
     },
@@ -282,7 +289,7 @@ else{
   }
   else{
     this.dialogRef.close()
-    this.router.navigate(['/main/airport/bondedManifest']);
+    this.router.navigate(['/main/airport/ccr']);
   }
  }
 

@@ -200,8 +200,7 @@ export class CustomerNewComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.subProductId = [line.subProductId];
-    obj.productId = [line.productId];
+    obj.customerId = [line.customerId];
 
     this.service.search(obj).subscribe({
       next: (res: any) => {
