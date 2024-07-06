@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -10,6 +10,8 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsignmentTypeService } from './consignment-type.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-consignment-type',
@@ -32,6 +34,7 @@ export class ConsignmentTypeComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
+    private fb: FormBuilder,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -86,6 +89,7 @@ export class ConsignmentTypeComponent {
         next: (res: any) => {
           console.log(res);
           this.consignmentTypeTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         }, error: (err: any) => {
           this.spin.hide();
@@ -145,6 +149,7 @@ export class ConsignmentTypeComponent {
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.consignmentTypeId).subscribe({
@@ -176,6 +181,78 @@ export class ConsignmentTypeComponent {
 
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Consignment Type');
+  }
+
+  searchform = this.fb.group({
+    consignmentTypeId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  companyDropdown: any = [];
+  consignmentTypeDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.consignmentTypeTable.forEach(res => {
+
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.consignmentTypeId != null) {
+        this.consignmentTypeDropdown.push({ value: res.consignmentTypeId, label: res.consignmentTypeText });
+        this.consignmentTypeDropdown = this.cs.removeDuplicatesFromArrayList(this.consignmentTypeDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('consignmentType') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.consignmentTypeTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      consignmentTypeId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
   }
 
 
