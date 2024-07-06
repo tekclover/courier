@@ -8,8 +8,13 @@
                 style="margin: 0 17px; height: 1.5rem;">
             <img type="button" (click)="deleteDialog()" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
-            <img type="button" (click)="customTable()" src="./assets/common/settings.png" alt="" srcset=""
-                style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
+                <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset="" style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
+                <p-overlayPanel [style]="{ width: '180' }" #op>
+                    <div class="d-flex flex-column">
+                       <button style="width: 8rem;" mat-menu-item class="w-100"(click)="updateBulk()" ><img
+                          src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
+                    </div>
+                </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
                     class="bi bi-plus-square pr-2"></i> Add New</button>
         </div>

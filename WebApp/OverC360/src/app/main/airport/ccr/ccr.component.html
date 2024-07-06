@@ -14,8 +14,8 @@
             <p-overlayPanel [style]="{ width: '180' }" #op>
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
-                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;"
-                            srcset="">Upload Bayan</button>
+                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload
+                        Bayan</button>
                 </div>
             </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
@@ -23,27 +23,76 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center my-2">
-        <p-iconField iconPosition="left" class="mr-5">
-            <p-inputIcon styleClass="pi pi-search" />
-            <input type="text" id="toolInput1" style="width: 20rem !important;" pInputText placeholder="Search"
-                (input)="bondedManifestTag.filterGlobal($any($event.target).value, 'contains')" />
+    <div class="d-flex justify-content-start align-items-center"
+        style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
+        <p-iconField iconPosition="right" class="mr-2">
+            <p-inputIcon type="button" (click)="ccr.toggle($event)" styleClass="pi pi-filter" />
+            <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
+                (input)="ccrTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
-        <div class="d-flex justify-content-end align-items-center">
-            <p class="mb-0 d-flex f600 float-right w-25 pr-2">Filter By</p>
-            <input type="text" id="toolInput" class="w-75" pInputText placeholder="Customer Name" />
-            <p-calendar id="toolInput" class="w-75" placeholder="Filter by Date" [iconDisplay]="'input'"
-                [showIcon]="true" />
-            <p-dropdown class=" d-flex float-right" optionLabel="name" placeholder="Filter by Product" />
-        </div>
+
+        <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}"
+            [styleClass]="'custom-overlay-panel'" #ccr>
+            <form [formGroup]="searchform" style="padding: 2rem;">
+                <div class="row">
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="masterAirwayBillDropdown"
+                            formControlName="masterAirwayBill" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">HAWB</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="houseAirwayBillDropdown"
+                            formControlName="houseAirwayBill" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Partner</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="partnerDropdown"
+                            formControlName="partnerId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">CCR ID</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="ccrIdDropdown"
+                            formControlName="ccrId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Console ID</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="consoleIdDropdown"
+                            formControlName="ConsoleId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="statusDropdown"
+                            formControlName="statusId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <img type="button" (click)="reset()" src="./assets/common/reset.png" alt="" srcset="">
+                    </div>
+                    <div>
+                        <button class="buttom1 textBlack mx-1" (click)="closeOverLay()">Cancel</button>
+                        <button class="buttom1 bgBlack text-white mx-1" (click)="search()">Apply</button>
+                    </div>
+                </div>
+            </form>
+        </p-overlayPanel>
+
+        <p-chips (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
     </div>
 
 
     <div class="tableProperties">
-        <p-table #bondedManifestTag [columns]="cols" [value]="ccrTable" class="custom-table" [scrollable]="true"
+        <p-table #ccrTag [columns]="cols" [value]="ccrTable" class="custom-table" [scrollable]="true"
             selectionMode="multiple" [(selection)]="selectedCcr" sortField="createdOn" [sortOrder]="-1"
             scrollHeight="calc(100vh - 18.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
-            sortField="createdOn" [sortOrder]="-1"
+            sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
             (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
             rowExpandMode="single">

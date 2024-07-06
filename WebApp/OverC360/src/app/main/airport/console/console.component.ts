@@ -11,6 +11,7 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsoleService } from './console.service';
+import { ConsoleBulkComponent } from './console-bulk/console-bulk.component';
 
 @Component({
   selector: 'app-console',
@@ -63,7 +64,19 @@ export class ConsoleComponent {
       { field: 'referenceField5', header: 'Reference Field 5' },
     ];
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsoleBulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'Console',code :  this.selectedConsole} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   initialCall() {
     setTimeout(() => {
     this.spin.show();

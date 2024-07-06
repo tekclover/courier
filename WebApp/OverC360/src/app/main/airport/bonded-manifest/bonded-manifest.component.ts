@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -12,6 +12,8 @@ import { CommonServiceService } from '../../../common-service/common-service.ser
 import { PathNameService } from '../../../common-service/path-name.service';
 import { BondedManifestService } from './bonded-manifest.service';
 import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-bonded-manifest',
@@ -25,15 +27,24 @@ export class BondedManifestComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: BondedManifestService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService, 
+  constructor(
+    private messageService: MessageService, 
+    private cs: CommonServiceService, 
+    private router: Router, 
+    private path: PathNameService, 
+    private service: BondedManifestService,
+    public dialog: MatDialog, 
+    private datePipe: DatePipe, 
+    private auth: AuthService, 
+    private fb: FormBuilder,
+    private spin: NgxSpinnerService, 
   ) { }
 
   fullDate: any;
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport Hub', 'Bonded Manifest '];
+    const dataToSend = ['Airport Hub', 'Bonded Manifest'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -187,4 +198,93 @@ export class BondedManifestComponent {
   isSelected(item:any): boolean {
     return this.selectedBondedManifest.includes(item);
   }
+
+  searchform = this.fb.group({
+    houseAirwayBill: [],
+    masterAirwayBill: [],
+    partnerId: [],
+    bondedId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  houseAirwayBillDropdown: any = [];
+  masterAirwayBillDropdown: any = [];
+  partnerDropdown: any = [];
+  statusDropdown: any = [];
+  bondedIdDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.bondedManifestTable.forEach(res => {
+
+      if (res.houseAirwayBill != null) {
+        this.houseAirwayBillDropdown.push({ value: res.houseAirwayBill, label: res.houseAirwayBill });
+        this.houseAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'value');
+      }
+      if (res.masterAirwayBill != null) {
+        this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
+        this.masterAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+      if (res.bondedId != null) {
+        this.bondedIdDropdown.push({ value: res.bondedId, label: res.bondedId });
+        this.bondedIdDropdown = this.cs.removeDuplicatesFromArrayList(this.bondedIdDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('bondedmanifest') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.bondedManifestTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      houseAirwayBill: [],
+      masterAirwayBill: [],
+      partnerId: [],
+      bondedId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }

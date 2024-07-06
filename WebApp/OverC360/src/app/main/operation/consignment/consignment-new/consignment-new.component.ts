@@ -24,6 +24,7 @@ export class ConsignmentNewComponent {
 
   activeIndex: number = 0;
   status: any[] = [];
+  partnerType: any[] = [];  
   paymentType: any[] = [];
   incoTerms: any[] = [];
   codCollectionMode: any[] = [];
@@ -55,6 +56,10 @@ export class ConsignmentNewComponent {
     this.status = [
       { value: '17', label: 'Inactive' },
       { value: '16', label: 'Active' }
+    ];
+    this.partnerType = [
+      { value: 'customer', label: 'Customer' },
+      { value: 'consignor', label: 'Consignor' }
     ];
     this.paymentType = [
       { value: 'Prepaid', label: 'Prepaid' },
@@ -723,7 +728,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.partnerId + ' has been updated successfully',
+            detail:  'Record has been updated successfully',
           });
           this.router.navigate(['/main/master/rate']);
           this.spin.hide();
@@ -742,7 +747,7 @@ export class ConsignmentNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.partnerId + ' has been created successfully',
+              detail: 'Record has been created successfully',
             });
             this.router.navigate(['/main/master/rate']);
             this.spin.hide();
