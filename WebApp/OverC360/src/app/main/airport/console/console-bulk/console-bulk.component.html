@@ -40,6 +40,11 @@
                             placeholder="Select" />
                         
                     </div>
+                    <div *ngIf="this.data.title =='CCR' " class="col-6 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Customs CCR NO </p>
+                        <input maxlength="50" pInputText formControlName="customsCcrNo"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Primary DO </p>
                         <input maxlength="50" pInputText formControlName="primaryDo"
