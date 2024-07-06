@@ -11,6 +11,7 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { BondedManifestService } from './bonded-manifest.service';
+import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 
 @Component({
   selector: 'app-bonded-manifest',
@@ -85,7 +86,19 @@ export class BondedManifestComponent {
     this.selectedBondedManifest.length = 0;
     this.selectedBondedManifest.push(choosen);
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'Bonded Manifest',code :  this.selectedBondedManifest} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   customTable() {
     const dialogRef = this.dialog.open(CustomTableComponent, {
       disableClose: true,
