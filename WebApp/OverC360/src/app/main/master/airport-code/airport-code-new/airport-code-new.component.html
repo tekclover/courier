@@ -41,8 +41,7 @@
                                 <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
                                     formControlName="countryId"
                                     [ngClass]="form.get('countryId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    appendTo="body" [style]="{'width': '100%'}"
-                                    [panelStyle]="{'width':'100%'}" />
+                                    appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('countryId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
@@ -58,8 +57,8 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Airport Name</p>
-                                <input maxlength="100" pInputText formControlName="airportName" class=" w-100" pInputText
-                                    placeholder="Enter"
+                                <input maxlength="100" pInputText formControlName="airportName" class=" w-100"
+                                    pInputText placeholder="Enter"
                                     [ngClass]="form.get('airportName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('airportName')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>

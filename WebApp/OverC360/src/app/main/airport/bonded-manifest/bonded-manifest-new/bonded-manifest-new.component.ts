@@ -50,7 +50,7 @@ export class BondedManifestNewComponent {
       { value: 'E', label: 'Export' },
       { value: 'F', label: 'Free Zone' },
       { value: 'T', label: 'Transit' },
-    ]
+    ];
   }
 
   pageToken: any;
@@ -183,8 +183,6 @@ export class BondedManifestNewComponent {
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
       this.form.controls.shipper.disable();
-      this.form.controls.isConsolidatedShipment.disable();
-      this.form.controls.isSplitBillOfLanding.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();

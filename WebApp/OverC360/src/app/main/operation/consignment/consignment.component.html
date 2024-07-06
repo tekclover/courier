@@ -11,7 +11,7 @@
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload</button>
-                            <button style="width: 8rem;" mat-menu-item class="w-100"(click)="updateBulk()" ><img
+                            <button style="width: 8rem;" mat-menu-item class="w-100" ><img
                                 src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
                 </div>
             </p-overlayPanel>
@@ -68,9 +68,9 @@
 
     <div class="tableProperties">
         <p-table #consignmentTag [columns]="cols" [value]="consignmentTable" class="custom-table" [scrollable]="true"
-        selectionMode="multiple" scrollHeight="calc(100vh - 19.8rem)" [paginator]="true" [rows]="100"  [(selection)]="selectedConsignment"
-        [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '130rem'}"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
+            selectionMode="single" scrollHeight="calc(100vh - 18.8rem)" [paginator]="true" [rows]="100"
+            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '130rem'}"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
@@ -85,10 +85,10 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
+                <tr [class.selectedRow]="selectedConsignment[0] === rowData">
                     <td style="width: 5rem; justify-content: center;">
-                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                          
+                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedConsignment" class="pl-3"
+                            [value]="rowData"></p-checkbox>
                     </td>
                     <td style="width: 5rem; justify-content: center;">
                         <img type="button" (click)="downloadLabel(rowData)" src="./assets/common/document.png" alt="" srcset=""

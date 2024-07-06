@@ -184,7 +184,13 @@ export class ConsignmentNewComponent {
    // consignmentValue: [],
     //actualCurrency: [],
     totalDuty: [],
+    customsCurrency:[],
     specialApprovalValue: [],
+    specialApprovalCharge: [],
+    iataCharge: [],
+    dduCharge: [],
+    exchangeRate: [],
+    dutyPercentage: ['5%',],
    // codAmount: [],
    // codFavorOf: [],
    // codCollectionMode: [],
@@ -520,7 +526,8 @@ export class ConsignmentNewComponent {
   serviceTypeIdList: any[] = [];
   consignmentTypeIdList: any[] = [];
   loadTypeIdList: any[] = [];
-  countryIdList: any[] = [];
+  countryIdListOrigin: any[] = [];
+  countryIdListDestination: any[] = [];
   cityIdList: any[] = [];
   provinceIdList: any[] = [];
   partnerName: any[] = [];
@@ -553,7 +560,8 @@ export class ConsignmentNewComponent {
         this.serviceTypeIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.serviceType.key);
         this.consignmentTypeIdList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignmentType.key);
         this.loadTypeIdList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.loadType.key);
-        this.countryIdList = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
+        this.countryIdListOrigin = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
+        this.countryIdListDestination = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
         this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
         this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
         this.partnerName = this.cas.forLanguageFilter(results[10], this.cas.dropdownlist.setup.consignor.key);
@@ -589,8 +597,10 @@ export class ConsignmentNewComponent {
       this.deliveryInfo.patchValue(line),
       this.billing.patchValue(line)
 
+      console.log(this.shipmentInfo.value)
+      console.log(line)
+
     this.patchForm(line);
-console.log(this.consignment.controls.invoiceDate.value)
     if(this.consignment.controls.invoiceDate.value){
       this.consignment.controls.invoiceDateFE.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
     }
@@ -912,11 +922,11 @@ console.log(this.consignment.controls.invoiceDate.value)
 
   saveFinal() {
     this.mainForm = this.fb.group({
-      ...this.shipmentInfo.value,
-      ...this.consignment.value,
-      ...this.senderInfo.value,
-      ...this.deliveryInfo.value,
-      ...this.billing.value,
+      ...this.shipmentInfo.getRawValue(),
+      ...this.consignment.getRawValue(),
+      ...this.senderInfo.getRawValue(),
+      ...this.deliveryInfo.getRawValue(),
+      ...this.billing.getRawValue(),
       pieceDetails: this.piece.controls.pieceDetails as FormArray,
       updatedBy: [,],
       updatedOn: ['',],

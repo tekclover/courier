@@ -39,7 +39,7 @@ export class AirportCodeComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Airport Code '];
+    const dataToSend = ['Master', 'Airport Code'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -47,7 +47,7 @@ export class AirportCodeComponent {
   }
 
   callTableHeader() {
-    this.cols = [    
+    this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'airportCode', header: 'Airport Code' },
       { field: 'airportText', header: 'Airport Name' },
@@ -97,7 +97,6 @@ export class AirportCodeComponent {
       })
     }, 1000);
   }
-
 
   onChange() {
     const choosen = this.selectedAirportCode[this.selectedAirportCode.length - 1];
@@ -149,6 +148,7 @@ export class AirportCodeComponent {
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({

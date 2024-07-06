@@ -90,7 +90,7 @@ export class CurrencyExchangeRateNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Master', 'Currency Exchange Rate', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Exchange Rate', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

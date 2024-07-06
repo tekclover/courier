@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,7 +15,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { ConsignmentService } from '../../operation/consignment/consignment.service';
 import { BondedManifestService } from '../bonded-manifest/bonded-manifest.service';
 import { ConsoleService } from '../console/console.service';
-import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-pre-alert-manifest',
@@ -31,14 +32,24 @@ import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/cons
 })
 export class PreAlertManifestComponent {
 
-
   preAlertManifestTable: any[] = [];
   selectedPreAlertManifest: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: ConsignmentService,
-    public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private spin: NgxSpinnerService, private manifest: BondedManifestService, private console: ConsoleService
+  constructor(
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
+    private service: ConsignmentService,
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
+    private spin: NgxSpinnerService,
+    private manifest: BondedManifestService,
+    private console: ConsoleService,
+    private fb: FormBuilder,
   ) { }
 
   fullDate: any;
@@ -54,14 +65,15 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-       { field: 'companyId', header: 'Company' },
+      { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code', format: 'code'},
-      { field: 'consoleIndicator', header: 'Console',  format: 'boolean'},
-      { field: 'manifestIndicator', header: 'Manifest', format: 'boolean' },
+      { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
+      { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'eventCode', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -92,7 +104,7 @@ export class PreAlertManifestComponent {
     })
   }
 
-  isSelected(item:any): boolean {
+  isSelected(item: any): boolean {
     return this.selectedPreAlertManifest.includes(item);
   }
 
@@ -117,19 +129,7 @@ export class PreAlertManifestComponent {
       }
     });
   }
-  updateBulk(){
-    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
-      disableClose: true,
-      width: '70%',
-      maxWidth: '80%',
-      position: { top: '6.5%', left: '30%' },
-      data: {title: 'PreAlertManifest',code :  this.selectedPreAlertManifest} ,
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-   this.initialCall();
-    });
-}
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedPreAlertManifest.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
@@ -158,6 +158,7 @@ export class PreAlertManifestComponent {
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
@@ -200,32 +201,126 @@ export class PreAlertManifestComponent {
     return this.cols.length + 2; // +1 for the expanded content column
   }
 
-  createConsole(){
+  createConsole() {
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     this.spin.show();
-    this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
-      this.spin.hide();
-    }, error: (err) =>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }})
+    this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
-  createManifest(){
+
+  createManifest() {
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
     this.spin.show();
-    this.manifest.Create(this.selectedPreAlertManifest).subscribe({next: (res) =>{
-      this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
-      this.spin.hide();
-    }, error: (err) =>{
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    }})
+    this.manifest.Create(this.selectedPreAlertManifest).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
+
+  searchform = this.fb.group({
+    houseAirwayBill: [],
+    masterAirwayBill: [],
+    partnerId: [],
+    pieceId: [],
+    pieceItemId: [],
+    shipperId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  houseAirwayBillDropdown: any = [];
+  masterAirwayBillDropdown: any = [];
+  partnerDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.preAlertManifestTable.forEach(res => {
+
+      if (res.houseAirwayBill != null) {
+        this.houseAirwayBillDropdown.push({ value: res.houseAirwayBill, label: res.houseAirwayBill });
+        this.houseAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'partnerId');
+      }
+      if (res.masterAirwayBill != null) {
+        this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
+        this.masterAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'partnerId');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'statusId');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('preAlertManifest') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.preAlertManifestTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      houseAirwayBill: [],
+      masterAirwayBill: [],
+      partnerId: [],
+      pieceId: [],
+      pieceItemId: [],
+      shipperId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }

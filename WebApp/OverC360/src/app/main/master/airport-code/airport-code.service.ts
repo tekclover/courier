@@ -7,26 +7,24 @@ import { AuthService } from '../../../core/core';
 })
 export class AirportCodeService {
 
-
   constructor(private http: HttpClient, private auth: AuthService) { }
-
 
   Get(airportCode: string) {
     return this.http.get<any>('/overc-idmaster-service/airportCode/' + airportCode);
   }
- 
+
   Create(obj: any) {
     return this.http.post<any>('/overc-idmaster-service/airportCode', obj);
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-idmaster-service/airportCode/'+ obj.airportCode +'?languageId='+ this.auth.languageId 
-      +'&companyId='+ this.auth.companyId , obj);
+    return this.http.patch<any>('/overc-idmaster-service/airportCode/' + obj.airportCode + '?languageId=' + this.auth.languageId
+      + '&companyId=' + this.auth.companyId, obj);
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-idmaster-service/airportCode/' + obj.airportCode +'?languageId='+ this.auth.languageId 
-      +'&companyId='+ this.auth.companyId);
+    return this.http.delete<any>('/overc-idmaster-service/airportCode/' + obj.airportCode + '?languageId=' + this.auth.languageId
+      + '&companyId=' + this.auth.companyId);
   }
 
   search(obj: any) {

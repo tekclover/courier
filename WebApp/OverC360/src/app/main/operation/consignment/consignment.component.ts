@@ -13,7 +13,6 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
-import { ConsignmentUpdatebulkComponent } from './consignment-updatebulk/consignment-updatebulk.component';
 
 @Component({
   selector: 'app-consignment',
@@ -117,19 +116,7 @@ export class ConsignmentComponent {
     this.selectedConsignment.length = 0;
     this.selectedConsignment.push(choosen);
   }
-  updateBulk(){
-    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
-      disableClose: true,
-      width: '70%',
-      maxWidth: '80%',
-      position: { top: '6.5%', left: '30%' },
-      data: {title: 'Consignment',code :  this.selectedConsignment} ,
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-    this.initialCall();
-    });
-}
   customTable() {
     const dialogRef = this.dialog.open(CustomTableComponent, {
       disableClose: true,
@@ -247,7 +234,7 @@ export class ConsignmentComponent {
     });
   }
 
-///  Filter Code
+  ///  Filter Code
 
   searchform = this.fb.group({
     houseAirwayBill: [],
@@ -257,37 +244,37 @@ export class ConsignmentComponent {
     pieceItemId: [],
     shipperId: [],
     statusId: [],
-    companyId: [[this.auth.companyId], ],
-    languageId: [[this.auth.languageId], ]
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
   })
 
   houseAirwayBillDropdown: any = [];
-  masterAirwayBillDropdown:any = [];
+  masterAirwayBillDropdown: any = [];
   partnerDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
-    
+
     this.consignmentTable.forEach(res => {
 
       if (res.houseAirwayBill != null) {
         this.houseAirwayBillDropdown.push({ value: res.houseAirwayBill, label: res.houseAirwayBill });
-        this.houseAirwayBillDropdown =  this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
+        this.houseAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBillDropdown, 'value');
       }
       if (res.partnerId != null) {
         this.partnerDropdown.push({ value: res.partnerId, label: res.partnerName });
-        this.partnerDropdown =  this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'partnerId');
+        this.partnerDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerDropdown, 'partnerId');
       }
       if (res.masterAirwayBill != null) {
         this.masterAirwayBillDropdown.push({ value: res.masterAirwayBill, label: res.masterAirwayBill });
-        this.masterAirwayBillDropdown =  this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'partnerId');
+        this.masterAirwayBillDropdown = this.cs.removeDuplicatesFromArrayList(this.masterAirwayBillDropdown, 'partnerId');
       }
       if (res.statusId != null) {
         this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
-        this.statusDropdown =  this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'statusId');
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'statusId');
       }
     })
-  //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
   @ViewChild('consignment') overlayPanel!: OverlayPanel;
@@ -301,7 +288,7 @@ export class ConsignmentComponent {
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
       .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
-    
+
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
@@ -315,7 +302,7 @@ export class ConsignmentComponent {
       },
     });
   }
-  reset(){
+  reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
       houseAirwayBill: [],
@@ -325,14 +312,14 @@ export class ConsignmentComponent {
       pieceItemId: [],
       shipperId: [],
       statusId: [],
-      companyId: [[this.auth.companyId], ],
-      languageId: [[this.auth.languageId], ]
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
     })
     this.search();
   }
 
-  chipClear(value:any){
-    this.searchform.get(value.value)?.reset(); 
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
     this.search();
   }
 }

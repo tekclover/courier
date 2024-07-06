@@ -230,13 +230,14 @@ if(this.form.controls.incoTerms != null){
     x.incoTerms = this.form.controls.incoTerms.value;
     });
 }
+if(this.data.title!='Bonded Manifest'){
    this.service.Update(this.Consigment).subscribe({
     next: (res) => {
       this.messageService.add({
         severity: 'success',
         summary: 'Updated',
         key: 'br',
-        detail: res.partnerId + ' has been updated successfully',
+        detail: 'Selected Values has been updated successfully',
       });
     
       if(this.data.title=='Consignment' ){
@@ -254,15 +255,40 @@ if(this.form.controls.incoTerms != null){
       this.cs.commonerrorNew(err);
     },
   });
+}
+else{
+  this.service.UpdateBondedManifest(this.Consigment).subscribe({
+    next: (res) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Updated',
+        key: 'br',
+        detail: 'Selected Values has been updated successfully',
+      });
+        this.dialogRef.close()
+        this.router.navigate(['/main/airport/bondedManifest']);
+      
+      this.spin.hide();
+    },
+    error: (err) => {
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    },
+  });
+}
  } 
  cancel(){
   if(this.data.title=='Consignment' ){
     this.dialogRef.close()
   this.router.navigate(['/main/operation/consignment']);
   }
-  else{
+  if(this.data.title=='PreAlertManifest'){
     this.dialogRef.close()
     this.router.navigate(['/main/airport/preAlertManifest']);
+  }
+  else{
+    this.dialogRef.close()
+    this.router.navigate(['/main/airport/bondedManifest']);
   }
  }
 
