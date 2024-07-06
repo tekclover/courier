@@ -38,6 +38,18 @@ public class AddConsole {
 
     private String netWeight;
 
+    private String exchangeRate;
+
+    private String customsCurrency;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
     private String manifestedGrossWeight;
 
     private String grossWeight;
@@ -101,8 +113,6 @@ public class AddConsole {
     private String expectedDuty;
 
     private String customsValue;
-
-    private String customsCurrency;
 
     private String actualCurrency;
 

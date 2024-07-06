@@ -42,6 +42,16 @@ public class UpdateConsole {
 
     private String description;
 
+    private String exchangeRate;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
     private String netWeight;
 
     private String primaryDo;

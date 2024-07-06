@@ -32,5 +32,9 @@ public interface IKeyValuePair {
 
     String getCustomerName();
 
+    String getStatusText();
+
+    String getEventText();
+
 
 }

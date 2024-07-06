@@ -230,7 +230,7 @@ export class SubProductNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.subProductId + ' has been updated successfully',
+            detail: res[0].subProductId + ' has been updated successfully',
           });
           this.router.navigate(['/main/idMaster/subProduct']);
           this.spin.hide();
@@ -257,7 +257,7 @@ export class SubProductNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.subProductId + ' has been created successfully',
+              detail: res[0].subProductId + ' has been created successfully',
             });
             this.router.navigate(['/main/idMaster/subProduct']);
             this.spin.hide();

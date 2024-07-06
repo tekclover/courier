@@ -70,6 +70,9 @@ public class PieceDetailsService {
 
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    ConsignmentStatusService consignmentStatusService;
     /*======================================================PRIMARY=============================================================*/
 
     /**
@@ -167,10 +170,11 @@ public class PieceDetailsService {
      * @throws CsvException
      */
     @Transactional
-    public List<AddPieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill,
-                                                        String houseAirwayBill, String companyName, String languageName, String partnerName,
-                                                        Long consignmentId, String partnerHawBill, String partnerMawBill, List<AddPieceDetails> addPieceDetailsList,
-                                                        String hsCode, String width, String height, String volume, String weightUnit, String codAmount,  String loginUserID)
+    public List<AddPieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
+                                                        String companyName, String languageName, String partnerName, Long consignmentId, String partnerHawBill,
+                                                        String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String width, String height,
+                                                        String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
+                                                        String eventText, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -186,7 +190,6 @@ public class PieceDetailsService {
                     } else {
 
                         String PIECE_ID = houseAirwayBill + String.format("%03d", pieceCounter++);
-//                    String PIECE_ID = houseAirwayBill + "001";
                         PieceDetails newPieceDetails = new PieceDetails();
                         BeanUtils.copyProperties(addPieceDetails, newPieceDetails, CommonUtils.getNullPropertyNames(addPieceDetails));
 
@@ -202,14 +205,15 @@ public class PieceDetailsService {
                         newPieceDetails.setLanguageDescription(languageName);
                         newPieceDetails.setPartnerName(partnerName);
                         newPieceDetails.setConsignmentId(consignmentId);
+                        newPieceDetails.setPieceStatusId(statusId);
+                        newPieceDetails.setPieceEventCode(eventCode);
+                        newPieceDetails.setPieceStatusText(statusText);
+                        newPieceDetails.setPieceEventText(eventText);
+                        newPieceDetails.setPieceStatusTimestamp(new Date());
+                        newPieceDetails.setPieceEventTimestamp(new Date());
                         if(hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
                         }
-//                        newPieceDetails.setWidth(width);
-//                        newPieceDetails.setWeight_unit(weightUnit);
-//                        newPieceDetails.setHeight(height);
-//                        newPieceDetails.setVolume(volume);
-//                        newPieceDetails.setCodAmount(codAmount);
                         newPieceDetails.setDeletionIndicator(0L);
                         newPieceDetails.setCreatedBy(loginUserID);
                         newPieceDetails.setCreatedOn(new Date());
@@ -246,6 +250,13 @@ public class PieceDetailsService {
                                 partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
                                 partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, loginUserID);
 
+                        // Save ConsignmentStatus
+                        consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
+                                savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(), savePieceDetails.getPieceId(), savePieceDetails.getPieceStatusId(),
+                                savePieceDetails.getMasterAirwayBill(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceStatusId(),
+                                savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceEventCode(), savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventCode(),
+                                savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceStatusTimestamp(), loginUserID );
+
                         AddPieceDetails pieceDetails = new AddPieceDetails();
                         BeanUtils.copyProperties(savePieceDetails, pieceDetails);
                         pieceDetails.setReferenceImageList(referenceImageList);
@@ -278,6 +289,12 @@ public class PieceDetailsService {
                 newPieceDetails.setHeight(height);
                 newPieceDetails.setVolume(volume);
                 newPieceDetails.setCodAmount(codAmount);
+                newPieceDetails.setPieceStatusId(statusId);
+                newPieceDetails.setPieceEventCode(eventCode);
+                newPieceDetails.setPieceStatusText(statusText);
+                newPieceDetails.setPieceEventText(eventText);
+                newPieceDetails.setPieceStatusTimestamp(new Date());
+                newPieceDetails.setPieceEventTimestamp(new Date());
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
@@ -297,6 +314,13 @@ public class PieceDetailsService {
                         PIECE_ID, partnerId, null, consignmentId,
                         partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount,loginUserID);
 
+                // Save ConsignmentStatus
+                consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
+                        savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(), savePieceDetails.getPieceId(), savePieceDetails.getPieceStatusId(),
+                        savePieceDetails.getMasterAirwayBill(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceStatusId(),
+                        savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceEventCode(), savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventCode(),
+                        savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceStatusTimestamp(), loginUserID );
+
                 AddPieceDetails pieceDetails = new AddPieceDetails();
                 BeanUtils.copyProperties(savePieceDetails, pieceDetails);
                 pieceDetails.setReferenceImageList(referenceImageList);
@@ -312,6 +336,7 @@ public class PieceDetailsService {
             }
         }
         return pieceDetailsList;
+
     }
 
     /**

@@ -70,6 +70,9 @@ public class Console {
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String statusText;
+
     @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
     private String primaryDo;
 
@@ -99,6 +102,9 @@ public class Console {
 
     @Column(name = "CUSTOMS_CURRENCY", columnDefinition = "nvarchar(50)")
     private String customsCurrency;
+
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
 
     @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
     private String description;
@@ -150,6 +156,18 @@ public class Console {
 
     @Column(name = "SHIPMENT_BAG_ID")
     private Long shipmentBagId;
+
+    @Column(name = "DUTY_PERCENTAGE", columnDefinition = "nvarchar(50)")
+    private String dutyPercentage;
+
+    @Column(name = "IATA_CHARGE", columnDefinition = "nvarchar(50)")
+    private String iataCharge;
+
+    @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
+    private String dduCharge;
+
+    @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
+    private String specialApprovalCharge;
 
     @Column(name = "CONSIGNEE_NAME", columnDefinition = "nvarchar(500)")
     private String consigneeName;
