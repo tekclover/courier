@@ -190,9 +190,9 @@ Consigment: any[] = [];
   }
 
 save() {
-  if(this.form.controls.partnerHouseAirwayBill !=  null){
+  if(this.form.controls.partnerMasterAirwayBill !=  null){
   this.Consigment.forEach((x: any) => {
-    x.partnerHouseAirwayBill = this.form.controls.partnerHouseAirwayBill.value;
+    x.partnerMasterAirwayBill = this.form.controls.partnerMasterAirwayBill.value;
     });
 }
 if(this.form.controls.countryOfOrigin != null){
