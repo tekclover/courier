@@ -168,6 +168,9 @@ public class ConsignmentEntity {
     @Column(name = "AIRPORT_ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String airportOriginCode;
 
+    @Column(name = "AIRPORT_DESTINATION_CODE", columnDefinition = "nvarchar(50)")
+    private String airportDestinationCode;
+
     @Column(name = "INVOICE_NUMBER", columnDefinition = "nvarchar(50)")
     private String invoiceNumber;
 

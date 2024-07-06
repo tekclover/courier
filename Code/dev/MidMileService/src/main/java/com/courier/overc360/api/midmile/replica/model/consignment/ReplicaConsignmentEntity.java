@@ -286,6 +286,9 @@ public class ReplicaConsignmentEntity {
     @Column(name = "DUTY_PERCENTAGE", columnDefinition = "nvarchar(50)")
     private String dutyPercentage;
 
+    @Column(name = "AIRPORT_DESTINATION_CODE", columnDefinition = "nvarchar(50)")
+    private String airportDestinationCode;
+
     @Column(name = "IATA_CHARGE", columnDefinition = "nvarchar(50)")
     private String iataCharge;
 

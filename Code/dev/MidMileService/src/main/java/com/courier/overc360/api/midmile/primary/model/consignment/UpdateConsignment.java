@@ -57,6 +57,8 @@ public class UpdateConsignment {
 
     private String flightName;
 
+    private String airportDestinationCode;
+
     private String flightArrivalTime;
 
     private String consigneeName;

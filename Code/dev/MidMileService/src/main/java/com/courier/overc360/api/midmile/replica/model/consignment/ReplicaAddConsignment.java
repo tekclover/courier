@@ -276,12 +276,12 @@ public class ReplicaAddConsignment {
 
     private String isExchange;
 
+    private String airportDestinationCode;
     private String countryOfDestination;
     private String noOfCrt;
     private String totalShipmentWeight;
     private String totalWeightHawb;
     private Date estimatedDepartureTime;
-
     private String reverseReason;
     private String eventCode;
     private String eventText;

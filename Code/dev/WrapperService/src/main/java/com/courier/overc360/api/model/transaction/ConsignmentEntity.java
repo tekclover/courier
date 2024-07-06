@@ -64,6 +64,8 @@ public class ConsignmentEntity {
 
     private String noOfPieceHawb;
 
+    private String airportDestinationCode;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;

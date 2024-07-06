@@ -255,12 +255,11 @@ public class ConsoleService {
         for (ReplicaAddConsignment consignment : replicaAddConsignment) {
             AddConsole console = new AddConsole();
 //            console.setFreightCurrency(consignment.getFreightCurrency());
+            BeanUtils.copyProperties(consignment, console, CommonUtils.getNullPropertyNames(consignment));
 //            console.setFreightCharges(consignment.getFreightCharges());
-            for (ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
-                for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()) {
-                    BeanUtils.copyProperties(replicaAddItemDetails, console, CommonUtils.getNullPropertyNames(replicaAddItemDetails));
-                }
-            }
+//            for (ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
+//                for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()) {
+//                }
             consoles.add(console);
         }
         return createConsoleList(consoles, loginUserID);
