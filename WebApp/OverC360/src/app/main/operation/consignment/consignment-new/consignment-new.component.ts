@@ -12,8 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ItemDetailsComponent } from './item-details/item-details.component';
 import { DimensionComponent } from './dimension/dimension.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
-import { ProvinceService } from '../../../id-masters/province/province.service';
-import { DistrictService } from '../../../id-masters/district/district.service';
+import { ProductService } from '../../../id-masters/product/product.service';
 
 @Component({
   selector: 'app-consignment-new',
@@ -51,9 +50,7 @@ export class ConsignmentNewComponent {
     private auth: AuthService,
     private el: ElementRef,
     public dialog: MatDialog,
-    private provinceService: ProvinceService,
-    private districtService: DistrictService,
-    
+    public productService: ProductService,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -982,17 +979,23 @@ export class ConsignmentNewComponent {
     }
   }
 
-  countryChanged(name:any){
+  subProductValueList: any[] = [];
+
+  productChanged() {  // subProduct should be confined according to the product onChange function
+
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-  //  obj.countryId = [this[name].country.value];
+    obj.productId = [this.shipmentInfo.controls.productId.value];
 
-    this.provinceIdList = [];
+    this.subProductIdList = [];
     this.spin.show();
-    this.provinceService.search(obj).subscribe({
+    this.productService.search(obj).subscribe({
       next: (result) => {
-        this.provinceIdList = this.cas.foreachlist(result, { key: 'provinceId', value: 'provinceName' });
+        // this.form.patchValue(result[0]);
+        // this.subProductIdList = this.cas.forLanguageFilter(result, this.cas.dropdownlist.setup.subProduct.key);
+        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductName', value: 'referenceField1',});
+        // this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -1000,6 +1003,8 @@ export class ConsignmentNewComponent {
       }
     })
   }
+
+
 
 }
 
