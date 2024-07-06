@@ -47,10 +47,11 @@
                                 <th>Partner MAWB</th>
                                 <th>Partner HAWB</th>
                                 <th>Airport Origin Code</th>
-                                <th>Currency</th>
                                 <th>HS Code</th>
                                 <th>Consignee Name</th>
-                                <th>Consignment Value</th>
+                                <th>Freight Charges</th>
+                                <th>Freight Currency </th>
+                                <th>Custom KD </th>
                                 <th>IATA KD</th>
                                 <th>Actions</th>
                             </tr>
@@ -80,10 +81,7 @@
                                     <p class="w-100 pl-2 ml-2">{{ item.airportOriginCode }}
                                     </p>
                                 </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.currency }}
-                                    </p>
-                                </td>
+                              
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.hsCode }}
                                     </p>
@@ -94,6 +92,14 @@
                                 </td>
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.consignmentValue }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.consignmentCurrency }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.customsKd }}
                                     </p>
                                 </td>
                                 <td>

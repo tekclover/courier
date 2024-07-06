@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,8 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 import { CurrencyService } from './currency.service';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 
 @Component({
@@ -34,6 +36,7 @@ export class CurrencyComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
+    private fb: FormBuilder,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -84,6 +87,7 @@ export class CurrencyComponent {
         next: (res: any) => {
           console.log(res);
           this.currencyTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -175,5 +179,70 @@ export class CurrencyComponent {
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Currency');
   }
+
+  searchform = this.fb.group({
+    currencyId: [],
+    statusId: []
+  })
+
+
+  currencyDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.currencyTable.forEach(res => {
+
+      if (res.currencyId != null) {
+        this.currencyDropdown.push({ value: res.currencyId, label: res.currencyDescription });
+        this.currencyDropdown = this.cs.removeDuplicatesFromArrayList(this.currencyDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('currency') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.currencyTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      currencyId: [],
+      statusId: []
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }
 

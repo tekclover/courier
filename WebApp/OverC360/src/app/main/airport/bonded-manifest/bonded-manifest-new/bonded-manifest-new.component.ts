@@ -187,6 +187,7 @@ export class BondedManifestNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+      this.form.controls.bondedId.disable();
     }
   }
 

@@ -179,6 +179,7 @@ export class ConsoleEditComponent {
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
     this.form.controls.consoleId.disable();
+    
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -187,6 +188,7 @@ export class ConsoleEditComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+      this.form.controls.statusId.disable();
     }
     
   }

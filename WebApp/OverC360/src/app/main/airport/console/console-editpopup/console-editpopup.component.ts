@@ -166,7 +166,7 @@ export class ConsoleEditpopupComponent {
       this.currencyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.currency.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
       this.consignorIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.consignor.key);
-      this.iataList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.iata.key);
+      this.iataList = this.cas.forLanguageFilterWithoutKey(results[3], this.cas.dropdownlist.setup.iata.key);
 
       this.spin.hide();
     },

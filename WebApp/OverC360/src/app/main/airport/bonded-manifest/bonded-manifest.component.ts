@@ -98,6 +98,7 @@ export class BondedManifestComponent {
     this.selectedBondedManifest.length = 0;
     this.selectedBondedManifest.push(choosen);
   }
+
   updateBulk(){
     const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
       disableClose: true,
@@ -155,6 +156,7 @@ export class BondedManifestComponent {
       }
     });
   }
+  
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete([lines]).subscribe({
