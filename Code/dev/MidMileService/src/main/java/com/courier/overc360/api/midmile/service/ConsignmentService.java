@@ -195,15 +195,20 @@ public class ConsignmentService {
                 newConsignment.setSubProductName(getProductIdFromCustomer.getSubProductName());
             }
 
+            // Set Event Status
+            IKeyValuePair statusEventText = consignmentEntityRepository.getStatusEventText(companyId, "1", "1");
+            if(statusEventText != null) {
+                newConsignment.setStatusId("1");
+                newConsignment.setEventCode("1");
+                newConsignment.setStatusDescription(statusEventText.getStatusText());
+                newConsignment.setEventText(statusEventText.getEventText());
+                newConsignment.setStatusTimestamp(new Date());
+                newConsignment.setEventTimestamp(new Date());
+            }
+
             newConsignment.setHouseAirwayBill(houseAirwayBill);
             newConsignment.setMasterAirwayBill(masterAirwayBill);
-            newConsignment.setStatusId("1");
-            newConsignment.setEventCode("1");
-            newConsignment.setStatusDescription("Consignment Created");
-            newConsignment.setEventText("Prealert Received");
             newConsignment.setCreatedBy(loginUserId);
-            newConsignment.setStatusTimestamp(new Date());
-            newConsignment.setEventTimestamp(new Date());
             newConsignment.setCreatedOn(new Date());
             newConsignment.setUpdatedBy(null);
             newConsignment.setUpdatedOn(null);
@@ -286,7 +291,8 @@ public class ConsignmentService {
             // PieceDetails Save
             List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount, loginUserId);
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount,
+                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), loginUserId);
 
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             for (AddPieceDetails pd : pieceDetails) {

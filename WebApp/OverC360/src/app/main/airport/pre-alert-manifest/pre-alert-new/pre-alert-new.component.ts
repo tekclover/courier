@@ -60,6 +60,7 @@ export class PreAlertNewComponent {
 
   form = this.fb.group({
     companyId: [this.auth.companyId, Validators.required],
+    languageId: [this.auth.languageId, Validators.required],
     partnerHouseAirwayBill: [],
     partnerMasterAirwayBill: [],
     originDetails: this.OriginDetails,
@@ -71,9 +72,11 @@ export class PreAlertNewComponent {
     description: [],
     weight: [,],
     consignmentValue: [],
+    masterAirwayBill: [],
+    houseAirwayBill: [],
     consignmentCurrency: [],
     hsCode: [],
-    partnerType: ['', Validators.required],
+    partnerType: ['', ],
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],

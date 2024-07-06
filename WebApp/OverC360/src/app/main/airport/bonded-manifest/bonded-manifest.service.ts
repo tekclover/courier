@@ -19,7 +19,7 @@ export class BondedManifestService {
   }
 
   Update(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/bondedManifest/', obj);
+    return this.http.patch<any>('/overc-midmile-service/bondedManifest/update/list', obj);
   }
 
   Delete(obj: any) {

@@ -125,6 +125,18 @@ public class PieceDetails {
     @Column(name = "PIECE_STATUS_TIMESTAMP")
     private Date pieceStatusTimestamp;
 
+    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String pieceStatusText;
+
+    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String pieceEventCode;
+
+    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String pieceEventText;
+
+    @Column(name = "PIECE_EVENT_TIMESTAMP")
+    private Date pieceEventTimestamp;
+
     @Column(name = "PIECE_VALUE", columnDefinition = "nvarchar(50)")
     private String pieceValue;
 
