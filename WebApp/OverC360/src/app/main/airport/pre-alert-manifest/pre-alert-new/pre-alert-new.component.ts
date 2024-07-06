@@ -145,7 +145,7 @@ export class PreAlertNewComponent {
       this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
       this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
       this.customerIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.customer.key);
-      this.hsCodeList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.hsCode.key);
+      this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[3], this.cas.dropdownlist.setup.hsCode.key);
 
       this.spin.hide();
     },
