@@ -755,7 +755,7 @@ export class ConsignmentNewComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '25%' },
-      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray, lineDetails: (this.piece.controls.pieceDetails as FormArray).at(index) },
+      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray, lineDetails: (this.piece.controls.pieceDetails as FormArray).at(index), type: 'piece' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1023,6 +1023,7 @@ export class ConsignmentNewComponent {
     });
 
     if (this.pageToken.pageflow != 'New') {
+      this.spin.show();
       this.service.Update([this.mainForm.getRawValue()]).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -1031,6 +1032,7 @@ export class ConsignmentNewComponent {
             key: 'br',
             detail: 'Consignment has been updated successfully',
           });
+          this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);
         }, error: (err) => {
           this.spin.hide();
@@ -1038,6 +1040,7 @@ export class ConsignmentNewComponent {
         }
       })
     } else {
+      this.spin.show();
       this.service.Create([this.mainForm.getRawValue()]).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -1046,6 +1049,7 @@ export class ConsignmentNewComponent {
             key: 'br',
             detail: 'Consignment has been created successfully',
           });
+          this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);
         }, error: (err) => {
           this.spin.hide();

@@ -178,7 +178,7 @@ export class ItemDetailsComponent {
         width: '70%',
         maxWidth: '82%',
         position: { top: '6.5%', left: '25%' },
-        data: { pageflow: type, line: (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray, lineDetails: (this.itemForm.controls.itemDetails as FormArray).at(index) },
+        data: { pageflow: type, line: (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray, lineDetails: (this.itemForm.controls.itemDetails as FormArray).at(index), type: 'item' },
       });
   
       dialogRef.afterClosed().subscribe(result => {
