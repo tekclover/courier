@@ -46,6 +46,7 @@ export class ConsoleTransferComponent {
   ngOnInit(): void {
 this.getConsoleDropdown();
     console.log(this.data)
+    this.selecetedTrasnfer=this.data;
     this.form.controls.fromConsoleId.patchValue(this.data[0].consoleId);
     this.form.controls.houseAirwayBill.patchValue(this.data[0].houseAirwayBill)
 
@@ -74,7 +75,9 @@ selecetedTrasnfer:any[]=[];
 
   save() {
     this.spin.show();
-    this.selecetedTrasnfer.push(this.form.getRawValue());
+    this.selecetedTrasnfer.forEach((x: any) => {
+      x.toConsoleId = this.form.controls.toConsoleId.value;
+    });
     this.service.Transfer(this.selecetedTrasnfer).subscribe({
       next: (res) => {
         this.messageService.add({
