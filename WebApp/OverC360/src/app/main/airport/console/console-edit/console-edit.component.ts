@@ -11,8 +11,8 @@ import { AuthService } from '../../../../core/core';
 import { SubProductsValuesComponent } from '../../../id-masters/sub-product/sub-products-values/sub-products-values.component';
 import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 import { ConsoleService } from '../console.service';
-import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
 import { ConsoleEditpopupComponent } from '../console-editpopup/console-editpopup.component';
+import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
 
 @Component({
   selector: 'app-console-edit',
@@ -179,7 +179,7 @@ export class ConsoleEditComponent {
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
     this.form.controls.consoleId.disable();
-    
+    console.log(this.selectedConsole)
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -318,21 +318,23 @@ lineSentforFill:any;
   
   }});
   }
+ 
   transfer(){
-    const dialogRef = this.dialog.open(ConsoleTransferComponent, {
-      disableClose: true,
+    console.log(this.selectedConsole)
+     const dialogRef = this.dialog.open(ConsoleTransferComponent, {
+       disableClose: true,
       width: '70%',
       height: '40%',
       maxWidth: '82%',
-      position: { top: '6.5%', left: '30%' },
-      data: this.selectedConsole,
-    });
+     position: { top: '6.5%', left: '30%' },
+       data: this.selectedConsole,
+     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
+     dialogRef.afterClosed().subscribe(result => {
+       console.log(result)
       if (result) {
-        this.subProductArray.push(result);
-      }
-    });
+        this.fill(this.pageToken.line)
+       }
+     });
   }
 }
