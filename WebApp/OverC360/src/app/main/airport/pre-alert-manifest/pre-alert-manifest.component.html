@@ -134,7 +134,7 @@
                                 'yes'}}</span>
                             <span *ngIf="col.field === 'manifestIndicator'">{{rowData[col.field] == 0 ? 'No' :
                                 'yes'}}</span>
-                            <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy'}}</span>
+                            <span *ngIf="col.format === 'date'">{{rowData[col.field]| date: 'dd-MM-yyyy HH:mm'  }}</span>
                         </ng-template>
                     </td>
                 </tr>
