@@ -95,7 +95,7 @@ public class ConsignmentController {
 
     //DeleteConsignment
     @ApiOperation(response = ConsignmentEntity.class, value = "Delete ConsignmentEntity")
-    @DeleteMapping("/delete/list")
+    @PostMapping("/delete/list")
     public ResponseEntity<?> deleteConsignmentEntity(@Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID) {
         consignmentService.deleteConsignmentEntity(consignmentDeletes, loginUserID );
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -93,7 +93,7 @@ public class MidMileController {
 
     //Delete Consignment
     @ApiOperation(response = ConsignmentEntity.class, value = "Delete Consignment")
-    @DeleteMapping("/consignment/delete/list")
+    @PostMapping("/consignment/delete/list")
     public ResponseEntity<?> deleteConsignment( @Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID,
                                                 @RequestParam String authToken) {
         midMileService.deleteConsignmentMultiple(consignmentDeletes, loginUserID, authToken);
