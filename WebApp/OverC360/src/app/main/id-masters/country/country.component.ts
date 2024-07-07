@@ -151,7 +151,7 @@ export class CountryComponent {
       }
     });
   }
-  
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.countryId).subscribe({
@@ -246,7 +246,7 @@ export class CountryComponent {
       },
     });
   }
-  
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({

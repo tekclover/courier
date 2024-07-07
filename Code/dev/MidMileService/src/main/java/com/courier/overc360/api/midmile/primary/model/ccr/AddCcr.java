@@ -30,6 +30,8 @@ public class AddCcr {
 
     private String ccrId;
 
+    private String statusText;
+
     private String customsCcrNo;
 
     private String pieceId;

@@ -67,6 +67,9 @@ public class Customer {
     @Column(name = "PRODUCT_NAME", columnDefinition = "nvarchar(100)")
     private String productName;
 
+    @Column(name = "PRODUCT_TEXT", columnDefinition = "nvarchar(100)")
+    private String productText;
+
     @Column(name = "CUSTOMER_NAME", columnDefinition = "nvarchar(100)")
     private String customerName;
 

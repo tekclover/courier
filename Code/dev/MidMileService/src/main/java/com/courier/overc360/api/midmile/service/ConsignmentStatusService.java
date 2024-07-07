@@ -106,11 +106,10 @@ public class ConsignmentStatusService {
                                               String pieceId, String statusId, String masterAirwayBill, String houseAirwayBill,
                                               String statusText, String pieceStatusId, String pieceStatusText, String eventCode,
                                               String eventText, String pieceEventCode, String pieceEventText, Date pieceEventTimestamp,
-                                              Date eventTimestamp, Date statusTimestamp, String loginUserID)
-            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+                                              Date eventTimestamp, Date statusTimestamp, String loginUserID) {
         try {
+            if(companyId != null && pieceId != null && languageId != null && houseAirwayBill != null && statusId != null && eventCode != null ) {
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
-
                 newConsignmentStatus.setCompanyId(companyId);
                 newConsignmentStatus.setCompanyName(companyName);
                 newConsignmentStatus.setLanguageId(languageId);
@@ -135,6 +134,8 @@ public class ConsignmentStatusService {
                 newConsignmentStatus.setUpdatedBy(loginUserID);
                 newConsignmentStatus.setUpdatedOn(new Date());
                 consignmentStatusRepository.save(newConsignmentStatus);
+                log.info("Consignment Status Table save " + houseAirwayBill);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

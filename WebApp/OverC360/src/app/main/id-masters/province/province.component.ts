@@ -154,7 +154,7 @@ export class ProvinceComponent {
     this.spin.show();
     this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.provinceId + lines.languageId + lines.countryId + lines.companyId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.provinceId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

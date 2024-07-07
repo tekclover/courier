@@ -36,7 +36,7 @@
                             class="bi bi-plus-square pr-2"></i>Add Values</button>
                 </div> -->
                 <div class="d-flex-row">
-                    <p-table [scrollable]="true" [tableStyle]="{'width': '100rem'}" scrollHeight="calc(100vh - 31.8rem)" [value]="subProductArray" [(selection)]="selectedConsole"    selectionMode="multiple">
+                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 27.8rem)" [tableStyle]="{'width': '120rem'}" [value]="subProductArray" [(selection)]="selectedConsole"    selectionMode="multiple">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 5rem;">
@@ -46,11 +46,15 @@
                                 <th>HAWB </th>
                                 <th>Partner MAWB</th>
                                 <th>Partner HAWB</th>
+                                <th>Commodity</th>
+                                <th>No of Piece</th>
+                                <th>Origin</th>
+                                <th>Weight</th>
                                 <th>Airport Origin Code</th>
                                 <th>HS Code</th>
                                 <th>Consignee Name</th>
-                                <th>Consginment Value</th>
-                                <th>Consginment Currency </th>
+                                <th>Consignment Value</th>
+                                <th>Consignment Currency </th>
                                 <th>Custom KD </th>
                                 <th>IATA KD</th>
                                 <th>Created  On</th>
@@ -76,6 +80,22 @@
                                 </td>
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.partnerHouseAirwayBill }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.goodsDescription }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.noOfPieceHawb }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.countryOfOrigin }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.grossWeight }}
                                     </p>
                                 </td>
                                 <td>
