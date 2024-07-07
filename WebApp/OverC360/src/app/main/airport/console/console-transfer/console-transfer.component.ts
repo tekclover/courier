@@ -61,7 +61,8 @@ getConsoleDropdown(){
     obj.languageId = [this.auth.languageId];
     this.spin.show();
     this.service.search(obj).subscribe({next: (result) => {
-      this.consoleList = this.cas.foreachlist(result, {key: 'consoleId', value: 'consoleId'});
+      this.consoleList = this.cas.forLanguageFilterWithoutKey(result, {key: 'consoleId', value: 'consoleId',languageId: 'languageId',companyId: 'companyId'});
+      this.consoleList = this.cs.removeDuplicatesFromArrayList(this.consoleList,'value')
       this.spin.hide();
     }, error: (err) =>{
       this.spin.hide();
