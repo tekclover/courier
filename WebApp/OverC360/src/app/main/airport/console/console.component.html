@@ -85,17 +85,17 @@
             selectionMode="multiple" [(selection)]="selectedConsole" sortField="createdOn" [sortOrder]="-1"
             scrollHeight="calc(100vh - 18.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
             sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
-            rowExpandMode="single">
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm" >
+            <!-- (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
+            rowExpandMode="single" -->
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
                     </th>
-                    <th style="width: 5rem;">
+                    <!-- <th style="width: 5rem;">
                        Actions
-                    </th>
+                    </th> -->
                     <th *ngFor="let col of columns">
                         {{ col.header }}
                     </th>
@@ -107,10 +107,10 @@
                     <td style="width: 5rem; justify-content: center;">
                         <p-tableCheckbox class="pl-3" [value]="rowData" />
                     </td>
-                    <td style="width: 5rem; justify-content: center;">
+                    <!-- <td style="width: 5rem; justify-content: center;">
                         <i style="font-size: 14px;" [pRowToggler]="rowData"
                             [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
-                    </td>
+                    </td> -->
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
                             {{ rowData[col.field] }}
@@ -121,7 +121,7 @@
                     </td>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="rowexpansion" let-rowData let-expanded="expanded">
+            <!-- <ng-template pTemplate="rowexpansion" let-rowData let-expanded="expanded">
                 <td [attr.colspan]="getColspan()" class="px-4">
                     <div class="d-flex justify-content animate__animated animate__fadeIn">
                         <div class="lineBorder"></div>
@@ -139,7 +139,7 @@
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip"
                                         [ngClass]="rowData.countryOfOrigin ? 'bgOrange text-dark' : ''">
-                                        {{rowData.destinationDetails.countryOfOrigin}}</p>
+                                        {{rowData.countryOfOrigin}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Flight No</p>
@@ -185,7 +185,7 @@
                         </div>
                     </div>
                 </td>
-            </ng-template>
+            </ng-template> -->
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td [attr.colspan]="4">
