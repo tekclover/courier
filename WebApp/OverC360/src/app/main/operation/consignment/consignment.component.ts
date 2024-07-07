@@ -180,7 +180,7 @@ export class ConsignmentComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedConsignment[0]);
+        this.deleterecord(this.selectedConsignment);
       }
     });
   }
@@ -193,7 +193,7 @@ export class ConsignmentComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.consignmentId + ' Deleted successfully',
+          detail:  'Selected records deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
