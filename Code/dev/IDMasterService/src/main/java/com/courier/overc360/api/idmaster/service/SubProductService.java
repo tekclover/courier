@@ -101,20 +101,6 @@ public class SubProductService {
     }
 
     /**
-     * @param languageId
-     * @param companyId
-     * @param subProductId
-     * @param subProductValue
-     * @return
-     */
-    public SubProduct getSubProductWithoutException(String languageId, String companyId, String subProductId, String subProductValue) {
-
-        SubProduct dbSubProduct = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndDeletionIndicator(
-                languageId, companyId, subProductId, subProductValue, 0L);
-        return dbSubProduct;
-    }
-
-    /**
      * Create SubProduct
      *
      * @param addSubProduct
@@ -346,8 +332,9 @@ public class SubProductService {
             List<SubProduct> updatedSubProductList = new ArrayList<>();
             for (UpdateSubProduct updateSubProduct : updateSubProductList) {
 
-                SubProduct dbSubProduct = getSubProductWithoutException(updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
-                        updateSubProduct.getSubProductId(), updateSubProduct.getSubProductValue());
+                SubProduct dbSubProduct = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndDeletionIndicator(
+                        updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
+                        updateSubProduct.getSubProductValue(), updateSubProduct.getSubProductId(), 0L);
                 if (dbSubProduct != null) {
                     subProductRepository.delete(dbSubProduct);
                 }
@@ -366,7 +353,6 @@ public class SubProductService {
                         newSubProduct.setStatusDescription(statusDesc);
                     }
                 }
-                newSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
                 newSubProduct.setCreatedBy(loginUserID);
                 newSubProduct.setCreatedOn(new Date());
                 newSubProduct.setUpdatedBy(loginUserID);
