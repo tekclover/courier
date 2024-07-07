@@ -8,6 +8,8 @@ import { CommonAPIService } from '../../../../../common-service/common-api.servi
 import { CommonServiceService } from '../../../../../common-service/common-service.service';
 import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-image-upload',
@@ -21,6 +23,7 @@ export class ImageUploadComponent {
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
     private route: ActivatedRoute,
+    private sanitizer: DomSanitizer,
     private router: Router,
     private fb: FormBuilder,
     private service: ConsignmentService,
@@ -101,6 +104,35 @@ export class ImageUploadComponent {
       pdfUrl: [image.pdfUrl],
       referenceImageUrl: [image.referenceImageUrl]
     });
+  }
+
+  fileUrldownload: any;
+  docurl: any;
+  async download(element:any) {
+    this.spin.show()
+    let obj: any = {};
+    obj.file=element.controls.fileName.value;
+    obj.storeId='document';
+    obj.requestId=element.controls.storeId.value;
+    const blob = await this.service.download(obj)
+      .catch((err: HttpErrorResponse) => {
+        this.cs.commonerrorNew(err);
+      });
+    this.spin.hide();
+    if (blob) {
+      const blobOb = new Blob([blob], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      this.fileUrldownload = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blobOb));
+      this.docurl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a')
+      a.href = this.docurl
+      a.download = element.controls.fileName.value;
+      a.click();
+      URL.revokeObjectURL(this.docurl);
+
+    }
+    this.spin.hide();
   }
 }
 

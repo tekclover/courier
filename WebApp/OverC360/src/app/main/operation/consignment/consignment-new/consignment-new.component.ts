@@ -259,6 +259,9 @@ export class ConsignmentNewComponent {
       itemDetails: this.fb.array([]),
       length: [''],
       packReferenceNumber: [''],
+      masterAirwayBill: [''],
+      partnerId: [''],
+      houseAirwayBill: [''],
       pieceProductCode: [''],
       tags: [''],
       partnerType: [''],
@@ -346,10 +349,10 @@ export class ConsignmentNewComponent {
     control.push(this.initPieceDetail());
   }
 
-  removePieceDetail(index: number) {
-    console.log(index)
+  removePieceDetail(index: number, data:any) {
     const control = this.piece.controls.pieceDetails as FormArray;
     control.removeAt(index);
+    this.service.DeletePiece(data.getRawValue()).subscribe({next: (res) => {}})
   }
 
   addItemDetail(pieceIndex: number) {
@@ -380,6 +383,9 @@ export class ConsignmentNewComponent {
       itemDetails: this.patchItemDetails(piece.itemDetails),
       length: [piece.length],
       packReferenceNumber: [piece.packReferenceNumber],
+      masterAirwayBill: [piece.masterAirwayBill],
+      houseAirwayBill: [piece.houseAirwayBill],
+      partnerId: [piece.partnerId],
       partnerType: [piece.partnerType],
       pieceId: [piece.pieceId],
       referenceField1: [piece.referenceField1],
@@ -463,6 +469,9 @@ export class ConsignmentNewComponent {
       quantity: [item.quantity],
       unitValue: [item.unitValue],
       currency: [item.currency],
+      masterAirwayBill: [item.masterAirwayBill],
+      houseAirwayBill: [item.houseAirwayBill],
+      partnerId: [item.partnerId],
     });
   }
 
@@ -711,6 +720,9 @@ export class ConsignmentNewComponent {
             quantity: item.quantity,
             unitValue: item.unitValue,
             currency: item.currency,
+            masterAirwayBill: item.masterAirwayBill,
+            partnerId: item.partnerId,
+            houseAirwayBill: item.houseAirwayBill,
             referenceImageList: this.patchReferenceImages(item.referenceImageList),
           }));
         });
@@ -739,7 +751,7 @@ export class ConsignmentNewComponent {
       width: '70%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '25%' },
-      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray },
+      data: { pageflow: type, line: (this.piece.controls.pieceDetails as FormArray).at(index).get('referenceImageList') as FormArray, lineDetails: (this.piece.controls.pieceDetails as FormArray).at(index) },
     });
 
     dialogRef.afterClosed().subscribe(result => {

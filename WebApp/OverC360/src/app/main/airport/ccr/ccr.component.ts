@@ -205,7 +205,7 @@ export class CcrComponent {
   }
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
-    const filePath = this.selectedCcr[0].ccrId + '/';
+    const filePath = '/' + this.selectedCcr[0].ccrId + '/';
     const file: File = event.target.files[0];
     this.selectedFiles = file;
     this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
