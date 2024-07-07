@@ -9,6 +9,7 @@ import { BondedManifestNewComponent } from './bonded-manifest/bonded-manifest-ne
 import { CcrNewComponent } from './ccr/ccr-new/ccr-new.component';
 import { ConsoleNewComponent } from './console/console-new/console-new.component';
 import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
+import { CcrEditComponent } from './ccr/ccr-edit/ccr-edit.component';
 
 const routes: Routes = [
   {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest' } },
@@ -24,6 +25,7 @@ const routes: Routes = [
 
   {path:'ccr',component: CcrComponent, data: { title: 'Mid-Mile', module: 'CCR' } },
   {path:'ccr-new/:code',component: CcrNewComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
+  {path:'ccr-edit/:code',component: CcrEditComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
 
 ];
 
