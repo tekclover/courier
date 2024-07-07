@@ -89,7 +89,7 @@ export class ConsignmentNewComponent {
     companyId: [this.auth.companyId,],
     priority: [],
     incoTerms: [],
-    partnerType: [],
+    partnerType: ['', Validators.required],
     consignmentId: [],
     partnerId: [, Validators.required],
     partnerName: [,],
@@ -562,6 +562,7 @@ export class ConsignmentNewComponent {
   cityIdList: any[] = [];
   provinceIdList: any[] = [];
   partnerName: any[] = [];
+  currencyDropdown: any[] = [];
 
   dropdownlist() {
     this.spin.show();
@@ -576,7 +577,9 @@ export class ConsignmentNewComponent {
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.city.url,
       this.cas.dropdownlist.setup.province.url,
-      this.cas.dropdownlist.setup.consignor.url
+      this.cas.dropdownlist.setup.currency.url,
+      this.cas.dropdownlist.setup.consignor.url,
+      this.cas.dropdownlist.setup.customer.url,
 
 
 
@@ -594,9 +597,13 @@ export class ConsignmentNewComponent {
         this.countryIdListOrigin = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
         this.countryIdListDestination = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.country.key);
         this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
-        this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key);
-        this.partnerName = this.cas.forLanguageFilter(results[10], this.cas.dropdownlist.setup.consignor.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key); 
+       this.currencyDropdown = this.cas.foreachlist(results[10], this.cas.dropdownlist.setup.currency.key);
 
+      const consitnor = this.cas.forLanguageFilter(results[11], this.cas.dropdownlist.setup.consignor.key);
+      const customer = this.cas.forLanguageFilter(results[12], this.cas.dropdownlist.setup.customer.key);
+      customer.forEach(x => this.partnerNameList.push(x));
+      consitnor.forEach(x => this.partnerNameList.push(x)); 
 
 
 
@@ -618,14 +625,12 @@ export class ConsignmentNewComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
-      // obj.customerId = [this.shipmentInfo.controls.customerId];
-
       this.partnerNameList = [];
       this.spin.show();
-      this.service.search(obj).subscribe({
+      this.customerService.search(obj).subscribe({
         next: (result) => {
-          this.partnerNameList = this.cas.foreachlist(result, { key: 'partnerType', value: 'partnerName' });
-        
+          this.partnerNameList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' });
+          this.partnerNameList =  this.cs.removeDuplicatesFromArrayList( this.partnerNameList, 'value');
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -638,14 +643,12 @@ export class ConsignmentNewComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
-      // obj.consignorId = [this.shipmentInfo.controls.consignorId];
-
       this.partnerNameList = [];
       this.spin.show();
-      this.service.search(obj).subscribe({
+      this.consignorService.search(obj).subscribe({
         next: (result) => {
-          this.partnerNameList = this.cas.foreachlist(result, { key: 'partnerType', value: 'partnerName' });
-        
+          this.partnerNameList = this.cas.foreachlist(result, { key: 'consignorId', value: 'consignorName' });
+          this.partnerNameList =  this.cs.removeDuplicatesFromArrayList( this.partnerNameList, 'value');
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -741,7 +744,8 @@ export class ConsignmentNewComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const control = (this.piece.controls.pieceDetails as FormArray).at(index)
+      const control = (this.piece.controls.pieceDetails as FormArray).at(index);
+      control.patchValue(result);
     })
   }
 
@@ -959,13 +963,13 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      if (this.pageToken.pageflow != 'New') {
+      // if (this.pageToken.pageflow != 'New') {
         this.activeIndex = 5;
         this.submitted = false;
         this.disabledBilling = false;
-      } else {
-        this.saveFinal();
-      }
+      // } else {
+      //   this.saveFinal();
+      // }
 
 
     }
@@ -1055,8 +1059,10 @@ export class ConsignmentNewComponent {
   showPaymentTypeFields = false;
   paymentChange() {
     const paymentTypeValue = this.shipmentInfo.controls.paymentType.value;
-    if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'cod') {
+    if (typeof paymentTypeValue === 'string' && paymentTypeValue === 'COD') {
       this.showPaymentTypeFields = true;
+    }else{
+      this.showPaymentTypeFields = false;
     }
   }
 
@@ -1076,6 +1082,7 @@ export class ConsignmentNewComponent {
         // this.form.patchValue(result[0]);
         // this.subProductIdList = this.cas.forLanguageFilter(result, this.cas.dropdownlist.setup.subProduct.key);
         this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductName', value: 'referenceField1', });
+        this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value');
         // this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
         this.spin.hide();
       }, error: (err) => {

@@ -77,8 +77,9 @@
                         </div> -->
 
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerType">
-                            <p class="formControlLabel f600 textBlack mb-0">Partner Type</p>
+                            <p class="formControlLabel f600 textBlack mb-0 required">Partner Type</p>
                             <p-dropdown formControlName="partnerType" [options]="partnerType" appendTo="body"
+                            [ngClass]="shipmentInfo.get('partnerType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" (onChange)="partnerTypeChanged()" />
                             <mat-error *ngIf="errorHandlingShipment('partnerType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
@@ -141,17 +142,17 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="noOfPackageMawb">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="noOfPackageMawb">
                             <p class="formControlLabel f600 textBlack mb-0">No of Packages MAWB</p>
                             <input maxlength="50" formControlName="noOfPackageMawb"
                                 [ngClass]="shipmentInfo.get('noOfPackageMawb')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingShipment('noOfPackageMawb')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                        </div> -->
 
                         <div class="col-3 marginFieldNew borderRadius12" id="noOfPieceHawb">
-                            <p class="formControlLabel f600 textBlack mb-0">No of Pieces HAWB</p>
+                            <p class="formControlLabel f600 textBlack mb-0">No of packages</p>
                             <input maxlength="50" formControlName="noOfPieceHawb"
                                 [ngClass]="shipmentInfo.get('noOfPieceHawb')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
@@ -318,7 +319,7 @@
                     </div>
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
-                    <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Back</button>
+                    <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="saveShipment()">Next</button>
                 </div>
             </p-tabPanel>
@@ -525,24 +526,26 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
-                            <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
-                            <input maxlength="500" formControlName="consignmentCurrency"
+                            <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>                                
+                            <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
+                                formControlName="consignmentCurrency"
                                 [ngClass]="consignment.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingConsignment('consignmentCurrency')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                     </div>
                     <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
+                        <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
                         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                         <button class="buttom1 bgBlack text-white mx-1" (click)="saveConsignment()">Next</button>
                     </div>
                 </form>
             </p-tabPanel>
 
-            <p-tabPanel header="Piece" [disabled]="disabledPiece">
+            <p-tabPanel header="Package Details" [disabled]="disabledPiece">
                 <form [formGroup]="piece" class="mt-1">
-                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
+                    <p-table class="paddingZero" [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
                         [value]="this.piece.controls.pieceDetails.controls">
                         <ng-template pTemplate="header">
                             <tr>
@@ -569,8 +572,11 @@
                                         formControlName="tags"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="pieceValue"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="pieceCurrency"></td>
+                                <td>
+                                        <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
+                                        formControlName="pieceCurrency"
+                                        appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                    </td>
                                 <td>
                                     <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                                         alt="" srcset="" style="height: 1.4rem;">
@@ -606,6 +612,8 @@
                         New</button>
                 </div>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
+                    <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
+
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="savePiece()">Next</button>
                 </div>
@@ -761,6 +769,8 @@
                     </div>
                 </form>
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
+                    <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
+
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="saveSender()">Next</button>
                 </div>
@@ -930,6 +940,8 @@
                         </div>
                     </div>
                     <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
+                        <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
+
                         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                         <button class="buttom1 bgBlack text-white mx-1" (click)="saveDelivery()">Next</button>
                     </div>

@@ -114,6 +114,7 @@ export class CommonAPIService {
         dropdownlist2.push(x)
       }
     })
+    dropdownlist2 = this.cs.removeDuplicatesFromArrayList(dropdownlist2, 'value');
     return dropdownlist2.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
 

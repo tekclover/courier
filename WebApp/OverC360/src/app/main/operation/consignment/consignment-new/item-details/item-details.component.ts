@@ -198,14 +198,16 @@ export class ItemDetailsComponent {
     }
 
     hsCodeList: any[] = [];
-    
+    currencyDropdown: any[] = [];
     dropdownlist() {
       this.spin.show();
       this.cas.getalldropdownlist([
         this.cas.dropdownlist.setup.hsCode.url,
+        this.cas.dropdownlist.setup.currency.url
       ]).subscribe({
         next: (results: any) => {
           this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[0], this.cas.dropdownlist.setup.hsCode.key);
+          this.currencyDropdown = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.currency.key);
           this.spin.hide();
         },
         error: (err: any) => {
@@ -213,5 +215,9 @@ export class ItemDetailsComponent {
           this.cs.commonerrorNew(err);
         },
       });
+    }
+
+    calculateTotalValue(value:any){
+      value.controls.declaredValue.patchValue(value.controls.quantity.value * value.controls.unitValue.value);
     }
 }
