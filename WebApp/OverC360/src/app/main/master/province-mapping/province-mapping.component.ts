@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ProvinceMappingService } from './province-mapping.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
@@ -10,6 +10,8 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-province-mapping',
@@ -32,6 +34,7 @@ export class ProvinceMappingComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
+    private fb: FormBuilder,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -153,6 +156,7 @@ export class ProvinceMappingComponent {
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
@@ -184,8 +188,90 @@ export class ProvinceMappingComponent {
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Province Mapping');
   }
+
+  searchform = this.fb.group({
+    partnerId: [],
+    provinceId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  languageDropdown: any = [];
+  companyDropdown: any = [];
+  provinceDropdown: any = [];
+  partnerIdDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.provinceMappingTable.forEach(res => {
+
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.provinceId != null) {
+        this.provinceDropdown.push({ value: res.provinceId, label: res.provinceName });
+        this.provinceDropdown = this.cs.removeDuplicatesFromArrayList(this.provinceDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerIdDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerIdDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerIdDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('provinceMapping') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.provinceMappingTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      provinceId: [],
+      partnerId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }
-
-
-
-

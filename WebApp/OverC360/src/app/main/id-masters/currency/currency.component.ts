@@ -21,7 +21,6 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class CurrencyComponent {
 
-
   currencyTable: any[] = [];
   selectedCurrency: any[] = [];
   cols: any[] = [];
@@ -185,7 +184,6 @@ export class CurrencyComponent {
     statusId: []
   })
 
-
   currencyDropdown: any = [];
   statusDropdown: any = [];
 
@@ -230,6 +228,7 @@ export class CurrencyComponent {
       },
     });
   }
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
