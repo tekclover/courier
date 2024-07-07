@@ -176,7 +176,7 @@ export class PreAlertManifestComponent {
     this.spin.show();
     this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.consignmentId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

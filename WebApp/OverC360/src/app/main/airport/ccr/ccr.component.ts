@@ -142,15 +142,15 @@ export class CcrComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedCcr[0]);
+        this.deleterecord(this.selectedCcr);
       }
     });
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete([lines]).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

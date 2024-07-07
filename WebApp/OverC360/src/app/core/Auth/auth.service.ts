@@ -98,9 +98,17 @@ ngOnDestroy(){
     if (sessionStorage.getItem("user"))
      return JSON.parse(sessionStorage.getItem("user") as '{}').userId;
   }
+  get userName() {
+    if (sessionStorage.getItem("user"))
+     return JSON.parse(sessionStorage.getItem("user") as '{}').userName;
+  }
   get companyId() {
     if (sessionStorage.getItem("user"))
       return JSON.parse(sessionStorage.getItem("user") as '{}').companyId;
+  }
+  get companyName() {
+    if (sessionStorage.getItem("user"))
+      return JSON.parse(sessionStorage.getItem("user") as '{}').companyIdAndDescription;
   }
   get languageId() {
     if (sessionStorage.getItem("user"))

@@ -250,7 +250,7 @@ export class BondedManifestNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: 'Record has been updated successfully',
+            detail:  res[0].bondedId + ' has been updated successfully',
           });
           this.router.navigate(['/main/airport/bondedManifest']);
           this.spin.hide();

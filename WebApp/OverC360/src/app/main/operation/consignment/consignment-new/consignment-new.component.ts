@@ -90,6 +90,7 @@ export class ConsignmentNewComponent {
     priority: [],
     incoTerms: [],
     partnerType: [],
+    consignmentId: [],
     partnerId: [, Validators.required],
     partnerName: [,],
     statusId: [,],
@@ -258,6 +259,8 @@ export class ConsignmentNewComponent {
       itemDetails: this.fb.array([]),
       length: [''],
       packReferenceNumber: [''],
+      pieceProductCode: [''],
+      tags: [''],
       partnerType: [''],
       pieceId: [''],
       referenceField1: [''],
@@ -331,7 +334,10 @@ export class ConsignmentNewComponent {
       volumeUnit: [''],
       weight: [''],
       weightUnit: [''],
-      width: ['']
+      width: [''],
+      quantity: [''],
+      unitValue: [''],
+      currency: [''],
     });
   }
 
@@ -405,6 +411,8 @@ export class ConsignmentNewComponent {
       hsCode: [piece.hsCode],
       pieceValue: [piece.pieceValue],
       pieceCurrency: [piece.pieceCurrency],
+      pieceProductCode: [piece.pieceProductCode],
+      tags:  [piece.tags],
     });
   }
 
@@ -451,7 +459,10 @@ export class ConsignmentNewComponent {
       volumeUnit: [item.volumeUnit],
       weight: [item.weight],
       weightUnit: [item.weightUnit],
-      width: [item.width]
+      width: [item.width],
+      quantity: [item.quantity],
+      unitValue: [item.unitValue],
+      currency: [item.currency],
     });
   }
 
@@ -695,6 +706,9 @@ export class ConsignmentNewComponent {
             weight: item.weight,
             weightUnit: item.weightUnit,
             width: item.width,
+            quantity: item.quantity,
+            unitValue: item.unitValue,
+            currency: item.currency,
             referenceImageList: this.patchReferenceImages(item.referenceImageList),
           }));
         });

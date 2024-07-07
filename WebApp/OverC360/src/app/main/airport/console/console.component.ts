@@ -154,16 +154,24 @@ export class ConsoleComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedConsole[0]);
+      const consoleID = this.selectedConsole.map(item => item.consoleId);
+        this.service.search({consoleId: consoleID, companyId: [this.auth.companyId]}).subscribe({
+          next: (res: any) => {
+          this.deleterecord(res);
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
       }
     });
   }
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete([lines]).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.consoleId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
