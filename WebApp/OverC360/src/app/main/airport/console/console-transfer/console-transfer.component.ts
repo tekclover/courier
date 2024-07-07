@@ -45,7 +45,6 @@ export class ConsoleTransferComponent {
 
   ngOnInit(): void {
 this.getConsoleDropdown();
-    console.log(this.data)
     this.selecetedTrasnfer=this.data;
     if(this.data.pageflow == "Edit"){
       this.form.patchValue(this.data.code)

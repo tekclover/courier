@@ -206,7 +206,6 @@ this.form.controls.estimatedDepartureTime.patchValue(date)
       })
     } else {
       this.spin.show()
-      console.log(this.form.getRawValue())
       this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
         if(res){

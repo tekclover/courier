@@ -156,8 +156,6 @@ export class CityNewComponent {
 
     ]).subscribe({
       next: (results: any) => {
-        console.log(this.cas.dropdownlist.setup.language.key);
-        console.log(this.cas.dropdownlist.setup.company.key);
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
         this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);

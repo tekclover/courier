@@ -87,7 +87,6 @@ export class ConsoleComponent {
     obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
         res = this.cs.removeDuplicatesFromArrayList(res, 'consoleId')
         this.consoleTable = res;
         this.getSearchDropdown();
@@ -186,7 +185,6 @@ export class ConsoleComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          console.log(3)
           exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
           exportItem[col.field] = item[col.field];

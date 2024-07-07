@@ -16,9 +16,7 @@ export class CustomTableComponent {
     @Inject(MAT_DIALOG_DATA) public data: any) {}
   
   ngOnInit() {    
-    console.log(this.data)
     this.sourceProducts = this.data.source;
-    console.log(this.sourceProducts)
     this.targetProducts = this.data.target;
 }
 }

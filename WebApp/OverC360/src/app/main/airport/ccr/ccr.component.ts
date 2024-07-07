@@ -176,7 +176,6 @@ export class CcrComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          console.log(3)
           exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
           exportItem[col.field] = item[col.field];
@@ -328,7 +327,6 @@ export class CcrComponent {
 
   generateLabel(){
    const filterResult = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'houseAirwayBill');
-   console.log(filterResult)
     this.label.generatePdfBarocdeMutiple(filterResult);
   }
 
