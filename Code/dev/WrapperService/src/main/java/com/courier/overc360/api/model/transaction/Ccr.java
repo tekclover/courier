@@ -24,6 +24,7 @@ public class Ccr {
     private String ccrId;
 
     private String customsCcrNo;
+    private String statusText;
 
     private String pieceId;
 

@@ -93,6 +93,9 @@ public class ReplicaCcr {
     @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
     private String primaryDo;
 
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String statusText;
+
     @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
     private String secondaryDo;
 

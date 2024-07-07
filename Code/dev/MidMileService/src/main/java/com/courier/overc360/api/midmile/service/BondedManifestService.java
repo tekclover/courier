@@ -51,6 +51,8 @@ public class BondedManifestService {
     @Autowired
     ConsignmentEntityRepository consignmentEntityRepository;
 
+    @Autowired
+    ConsignmentStatusService consignmentStatusService;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -97,10 +99,10 @@ public class BondedManifestService {
             AddBondedManifest bondedManifest = new AddBondedManifest();
             BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
 
-//            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
-//                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
-//                    bondedManifest.se
-//                }}
+            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
+                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+                    BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
+                }}
             addBondedManifest.add(bondedManifest);
         }
 
@@ -153,6 +155,7 @@ public class BondedManifestService {
                     newBondedManifest.setEventTimestamp(new Date());
                     newBondedManifest.setStatusTimestamp(new Date());
                 }
+
                 newBondedManifest.setBondedId(BONDED_ID);
                 newBondedManifest.setDeletionIndicator(0L);
                 newBondedManifest.setCreatedBy(loginUserID);
@@ -160,6 +163,13 @@ public class BondedManifestService {
                 newBondedManifest.setUpdatedBy(loginUserID);
                 newBondedManifest.setUpdatedOn(new Date());
                 BondedManifest createdBondedManifest = bondedManifestRepository.save(newBondedManifest);
+
+                // Save ConsignmentStatus
+                consignmentStatusService.createConsignmentStatusParams(createdBondedManifest.getCompanyId(), createdBondedManifest.getCompanyName(),
+                        createdBondedManifest.getLanguageId(), createdBondedManifest.getLanguageDescription(), createdBondedManifest.getPieceId(), createdBondedManifest.getStatusId(),
+                        createdBondedManifest.getMasterAirwayBill(), createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getStatusText(), createdBondedManifest.getStatusId(),
+                        createdBondedManifest.getStatusText(), createdBondedManifest.getEventCode(), createdBondedManifest.getEventText(), createdBondedManifest.getEventCode(),
+                        createdBondedManifest.getEventText(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getStatusTimestamp(), loginUserID );
 
                 if (createdBondedManifest != null) {
                     //Update Event From consignment

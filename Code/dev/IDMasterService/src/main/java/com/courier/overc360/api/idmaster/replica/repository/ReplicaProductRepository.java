@@ -27,7 +27,8 @@ public interface ReplicaProductRepository extends JpaRepository<ReplicaProduct, 
             "CONCAT (tcm.C_ID, ' - ', tcm.C_NAME) As companyDesc, \n" +
             "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) As subProductDesc, \n" +
             "tsp.REF_FIELD_1 As subProductValue, \n" +
-            "CONCAT (tp.PRODUCT_ID, ' - ', tp.PRODUCT_NAME) As productDesc \n" +
+            "CONCAT (tp.PRODUCT_ID, ' - ', tp.PRODUCT_NAME) As productDesc, \n" +
+            "tp.PRODUCT_NAME As productText \n " +
             "From tbllanguage tl \n" +
             "Join tblcompany tcm on tl.LANG_ID = tcm.LANG_ID \n" +
             "Join tblsubproduct tsp on tsp.LANG_ID = tl.LANG_ID and tsp.C_ID = tcm.C_ID \n" +

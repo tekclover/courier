@@ -227,6 +227,7 @@ public class ConsignorService {
                 newConsignor.setProductName(iKeyValuePair.getProductDesc());
                 newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
                 newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
+                newConsignor.setProductText(iKeyValuePair.getProductText());
             }
             String statusDesc = replicaStatusRepository.getStatusDescription(addConsignor.getStatusId());
             if (statusDesc != null) {
@@ -310,6 +311,7 @@ public class ConsignorService {
                     newConsignor.setProductName(iKeyValuePair.getProductDesc());
                     newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
                     newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
+                    newConsignor.setProductText(iKeyValuePair.getProductText());
                 }
                 String statusDesc = replicaStatusRepository.getStatusDescription(addConsignor.getStatusId());
                 if (statusDesc != null) {
