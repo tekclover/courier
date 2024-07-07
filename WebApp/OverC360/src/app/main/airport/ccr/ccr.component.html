@@ -21,6 +21,10 @@
                     <button style="width: 8rem;" mat-menu-item class="w-100"(click)="updateBulk()" ><img
                        src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
                  </div>
+                 <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel()" ><img
+                       src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Label  </button>
+                 </div>
             </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
                     class="bi bi-plus-square pr-2"></i> Add New</button>
@@ -66,7 +70,7 @@
                     <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Console ID</p>
                         <p-multiSelect placeholder="Select" filter="true" [options]="consoleIdDropdown"
-                            formControlName="ConsoleId" appendTo="body" [style]="{'width': '100%'}"
+                            formControlName="consoleId" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
                     </div>
                     <!-- <div class="col-3 mb-3 borderRadius12">
