@@ -62,7 +62,7 @@ export class ConsignmentComponent {
       { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem' },
       { field: 'countryOfDestination', header: 'Destination', style: 'min-width: 5rem' },
       { field: 'serviceTypeText', header: 'Service Type', style: 'min-width: 5rem' },
-      { field: 'loadType', header: 'Document Type', style: 'min-width: 5rem' },
+      { field: 'description', header: 'Document Type', style: 'min-width: 5rem' },
       { field: 'paymentType', header: 'Payment Type', style: 'min-width: 5rem' },
       { field: 'incoTerms', header: 'Inco Terms', style: 'min-width: 5rem' },
       { field: 'createdBy', header: 'Created By', style: 'min-width: 5rem' },
@@ -180,7 +180,7 @@ export class ConsignmentComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedConsignment[0]);
+        this.deleterecord(this.selectedConsignment);
       }
     });
   }
@@ -193,7 +193,7 @@ export class ConsignmentComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.consignmentId + ' Deleted successfully',
+          detail:  'Selected records deleted successfully',
         });
         this.spin.hide();
         this.initialCall();

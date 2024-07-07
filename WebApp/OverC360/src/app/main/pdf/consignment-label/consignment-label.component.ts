@@ -99,7 +99,7 @@ export class ConsignmentLabelComponent {
       { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
       { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
-      { text: (line.originDetails.country), bold: false, fontSize: 6, border: [false, false, false, true] }
+      { text: (line.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [false, false, false, true] }
     ]);
     bodyArray.push([
       { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
@@ -110,7 +110,7 @@ export class ConsignmentLabelComponent {
     ]);
     bodyArray.push([
       { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (line.consigneeName), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: (line.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: (line.destinationDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] }
@@ -131,7 +131,7 @@ export class ConsignmentLabelComponent {
     ]);
     bodyArray.push([
       { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: (line.description), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
@@ -270,10 +270,12 @@ export class ConsignmentLabelComponent {
     let pieceId: any[] = [];
     const pieceIdcode = this.generateBarcode(line.pieceDetails.length > 0 ? line.pieceDetails[0].pieceId : null);
     const partnercode = this.generateBarcode(line.partnerHouseAirwayBill);
-    pieceId.push([
-      { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-      { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-    ]);
+    if(line.pieceDetails.length > 0){
+  pieceId.push([
+    { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+    { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  ]);
+}
 
     pieceId.push([
       { image: pieceIdcode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
@@ -606,28 +608,28 @@ export class ConsignmentLabelComponent {
         { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
         { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: (line.originDetails.country), bold: false, fontSize: 6, border: [false, false, false, true] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, true] }
       ]);
       bodyArray.push([
         { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
         { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.consigneeName), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.subProductName), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
@@ -684,24 +686,24 @@ export class ConsignmentLabelComponent {
       let bodyArray2: any[] = [];
       bodyArray2.push([
         { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.originDetails.name), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
         { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
         { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.originDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
       ]);
       bodyArray2.push([
         { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.originDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.originDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray2.push([
         { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.originDetails.phone), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.originDetails.alternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -715,7 +717,7 @@ export class ConsignmentLabelComponent {
       let bodyArray3: any[] = [];
       bodyArray3.push([
         { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.originDetails.addressLine1 != null ? line.originDetails.addressLine1 : '') + ' ' + '' + (line.originDetails.addressLine2 != null ? line.originDetails.addressLine2 : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin != null ? line.countryOfOrigin : '') + ' ' + '' + (line.countryOfOrigin != null ? line.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -730,24 +732,24 @@ export class ConsignmentLabelComponent {
       let bodyArray4: any[] = [];
       bodyArray4.push([
         { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.destinationDetails.name), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
         { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
         { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.destinationDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
       ]);
       bodyArray4.push([
         { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray4.push([
         { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.phone), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.alternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -761,7 +763,7 @@ export class ConsignmentLabelComponent {
       let bodyArray5: any[] = [];
       bodyArray5.push([
         { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.addressLine1 != null ? line.destinationDetails.addressLine1 : '') + '' + (line.destinationDetails.addressLine1 != null ? line.destinationDetails.addressLine1 : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.countryOfOrigin != null ? line.countryOfOrigin : '') + '' + (line.countryOfOrigin != null ? line.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {

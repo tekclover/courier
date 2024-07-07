@@ -29,9 +29,7 @@ export class ConsignmentService {
   }
 
   Delete(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/consignment/' +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId + '&houseAirwayBill='+ obj.houseAirwayBill +'&masterAirwayBill='+ obj.masterAirwayBill
-      +'&partnerId='+ obj.partnerId
-    );
+    return this.http.post<any>('/overc-midmile-service/consignment/delete/list', obj);
   }
 
   DeletePreAlertManifest(obj: any) {
@@ -41,6 +39,9 @@ export class ConsignmentService {
 
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
+  }
+  searchPrealert(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/consignment/findPreAlertManifest', obj);
   }
 
   uploadFiles(files: FileList, location: any) {

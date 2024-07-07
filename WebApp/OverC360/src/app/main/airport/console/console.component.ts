@@ -49,7 +49,7 @@ export class ConsoleComponent {
       { field: 'consoleId', header: 'Console ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'description', header: 'Commodity' },
+      { field: 'goodsDescription', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
       { field: 'statusId', header: 'Status' },
       { field: 'eventText', header: 'Event' }, 
