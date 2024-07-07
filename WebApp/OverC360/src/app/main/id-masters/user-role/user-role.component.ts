@@ -55,11 +55,11 @@ export class UserRoleComponent {
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
       { field: 'description', header: 'Role Description' },
-      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'authorizationObjectValue', header: 'Authorization Object Value' }
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'userRoleId', header: 'UserRole ID' },
       { field: 'menuId', header: 'Menu ID' },
