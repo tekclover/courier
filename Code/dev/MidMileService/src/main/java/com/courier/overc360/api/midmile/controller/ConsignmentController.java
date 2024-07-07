@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.controller;
 
 import com.courier.overc360.api.midmile.primary.model.UploadResponse;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
+import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentDelete;
 import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentEntity;
 import com.courier.overc360.api.midmile.primary.model.consignment.UpdateConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
@@ -88,6 +89,14 @@ public class ConsignmentController {
                                                      @RequestParam(required = false) String pieceId, @RequestParam(required = false) String pieceItemId,
                                                      @RequestParam(required = false) String imageRefId, @RequestParam String loginUserID) {
         consignmentService.deleteConsignmentEntity(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId,imageRefId, loginUserID );
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //DeleteConsignment
+    @ApiOperation(response = ConsignmentEntity.class, value = "Delete ConsignmentEntity")
+    @DeleteMapping("/delete/list")
+    public ResponseEntity<?> deleteConsignmentEntity(@Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID) {
+        consignmentService.deleteConsignmentEntity(consignmentDeletes, loginUserID );
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

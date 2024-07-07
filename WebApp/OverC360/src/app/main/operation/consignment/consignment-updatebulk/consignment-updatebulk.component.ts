@@ -32,8 +32,8 @@ export class ConsignmentUpdatebulkComponent {
     private cas: CommonAPIService,
     private auth: AuthService,
   ) {  this.incoTerms = [
-    { value: 'ddu', label: 'DDU' },
-    { value: 'ddp', label: 'DDP' }
+    { value: 'DDU', label: 'DDU' },
+    { value: 'DDP', label: 'DDP' }
   ];
     
   }

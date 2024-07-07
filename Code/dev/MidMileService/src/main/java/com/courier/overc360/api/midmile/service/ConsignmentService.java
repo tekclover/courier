@@ -158,7 +158,7 @@ public class ConsignmentService {
 
             if (shipperData != null && shipperData.getProductName() != null) {
                 NUM_RAN_OBJ = shipperData.getProductName();
-            } else if(getProductIdFromCustomer != null && getProductIdFromCustomer.getProductName() != null) {
+            } else if (getProductIdFromCustomer != null && getProductIdFromCustomer.getProductName() != null) {
                 NUM_RAN_OBJ = getProductIdFromCustomer.getProductName();
             } else {
                 throw new BadRequestException("HouseAirwayBill NumberRange is NULL Check PartnerId match in Consignor table And ProductName match in NumberRange Table");
@@ -166,7 +166,7 @@ public class ConsignmentService {
 
             // Generating house and master airway bills
             String houseAirwayBill = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-            if(houseAirwayBill == null) {
+            if (houseAirwayBill == null) {
                 throw new BadRequestException("Number Range Object " + NUM_RAN_OBJ + " Doesn't exits in NumberRangeTable");
             }
 
@@ -202,7 +202,7 @@ public class ConsignmentService {
 
             // Set Event Status
             IKeyValuePair statusEventText = consignmentEntityRepository.getStatusEventText(companyId, "1", "1");
-            if(statusEventText != null) {
+            if (statusEventText != null) {
                 newConsignment.setStatusId("1");
                 newConsignment.setEventCode("1");
                 newConsignment.setStatusDescription(statusEventText.getStatusText());
@@ -352,13 +352,13 @@ public class ConsignmentService {
             dbConsignmentEntity.setUpdatedBy(loginUserID);
             dbConsignmentEntity.setUpdatedOn(new Date());
 
-            if(dbConsignmentEntity.getConsignmentInfo() != null) {
-                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo() , CommonUtils.getNullPropertyNames(dbConsignment));
+            if (dbConsignmentEntity.getConsignmentInfo() != null) {
+                BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo(), CommonUtils.getNullPropertyNames(dbConsignment));
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedBy(loginUserID);
             }
 
-            if(dbConsignmentEntity.getConsignmentRefs() != null) {
+            if (dbConsignmentEntity.getConsignmentRefs() != null) {
                 BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentRefs(), CommonUtils.getNullPropertyNames(dbConsignment));
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentRefs().setUpdatedBy(loginUserID);
@@ -413,7 +413,7 @@ public class ConsignmentService {
             //PieceDetails Update
             if (dbConsignment.getPieceDetails() != null && !dbConsignment.getPieceDetails().isEmpty()) {
                 List<UpdatePieceDetails> savedPieceDetails = pieceDetailsService.updatePieceDetails(dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getPartnerId(),
-                        dbConsignment.getMasterAirwayBill(), dbConsignment.getHouseAirwayBill(), dbConsignment.getPieceDetails(), loginUserID );
+                        dbConsignment.getMasterAirwayBill(), dbConsignment.getHouseAirwayBill(), dbConsignment.getPieceDetails(), loginUserID);
                 addConsignment.setPieceDetails(savedPieceDetails);
                 BeanUtils.copyProperties(savedPieceDetails, addConsignment.getPieceDetails());
             }
@@ -477,6 +477,57 @@ public class ConsignmentService {
         }
         if (imageRefId != null && !imageRefId.isEmpty()) {
             imageReferenceService.deleteImageReference(imageRefId, loginUserID);
+        }
+    }
+
+
+    //MultipleConsignment Delete
+
+    /**
+     *
+     * @param consignmentDeletes
+     * @param loginUserID
+     */
+    public void deleteConsignmentEntity(List<ConsignmentDelete> consignmentDeletes, String loginUserID) {
+
+        for (ConsignmentDelete con : consignmentDeletes) {
+
+            String pieceId = con.getPieceId();
+            String pieceItemId = con.getPieceItemId();
+            String companyId = con.getCompanyId();
+            String languageId = con.getLanguageId();
+            String partnerId = con.getPartnerId();
+            String imageRefId = con.getImageRefId();
+            String houseAirwayBill = con.getHouseAirwayBill();
+            String masterAirwayBill = con.getMasterAirwayBill();
+
+            if (pieceId == null && pieceItemId == null && imageRefId == null) {
+                ConsignmentEntity dbConsignmentEntity = consignmentEntityRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                        companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
+
+                if (dbConsignmentEntity == null) {
+                    throw new BadRequestException(" Given values doesn't exits CompanyId - " + companyId + " LanguageId " + languageId + " PartnerId " + partnerId +
+                            " MasterAirwayBill " + masterAirwayBill + " HouseAirwayBill " + houseAirwayBill);
+                } else {
+                    dbConsignmentEntity.setDeletionIndicator(1L);
+                    dbConsignmentEntity.setUpdatedBy(loginUserID);
+                    dbConsignmentEntity.setUpdatedOn(new Date());
+                    //MultipleImageDelete
+                    imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                    //MultiplePiece
+                    pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                    consignmentEntityRepository.save(dbConsignmentEntity);
+                }
+            }
+            if (pieceId != null && pieceItemId == null ) {
+                pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);
+            }
+            if (pieceItemId != null && pieceId != null) {
+                itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, loginUserID);
+            }
+            if (imageRefId != null) {
+                imageReferenceService.deleteImageReference(imageRefId, loginUserID);
+            }
         }
     }
 
@@ -788,71 +839,70 @@ public class ConsignmentService {
     }
 
     /**
-     *
      * @param addConsignment
      * @return
      */
     public AddConsignment consignmentNullValidation(AddConsignment addConsignment) {
         log.info("Consignment null validaiton input: " + addConsignment);
-        if(addConsignment != null) {
-            if(addConsignment.getOriginDetails() != null) {
-                if(addConsignment.getOriginDetails().getName() == null) {
+        if (addConsignment != null) {
+            if (addConsignment.getOriginDetails() != null) {
+                if (addConsignment.getOriginDetails().getName() == null) {
                     addConsignment.getOriginDetails().setName("1");
                 }
-                if(addConsignment.getOriginDetails().getPhone() == null) {
+                if (addConsignment.getOriginDetails().getPhone() == null) {
                     addConsignment.getOriginDetails().setPhone("1");
                 }
-                if(addConsignment.getOriginDetails().getAddressLine1() == null) {
+                if (addConsignment.getOriginDetails().getAddressLine1() == null) {
                     addConsignment.getOriginDetails().setAddressLine1("1");
                 }
-                if(addConsignment.getOriginDetails().getAddressLine2() == null) {
+                if (addConsignment.getOriginDetails().getAddressLine2() == null) {
                     addConsignment.getOriginDetails().setAddressLine2("1");
                 }
-                if(addConsignment.getOriginDetails().getCity() == null) {
+                if (addConsignment.getOriginDetails().getCity() == null) {
                     addConsignment.getOriginDetails().setCity("1");
                 }
-                if(addConsignment.getOriginDetails().getCountry() == null) {
+                if (addConsignment.getOriginDetails().getCountry() == null) {
                     addConsignment.getOriginDetails().setCountry("1");
                 }
             }
-            if(addConsignment.getDestinationDetails() != null) {
-                if(addConsignment.getDestinationDetails().getName() == null) {
+            if (addConsignment.getDestinationDetails() != null) {
+                if (addConsignment.getDestinationDetails().getName() == null) {
                     addConsignment.getDestinationDetails().setName("1");
                 }
-                if(addConsignment.getDestinationDetails().getPhone() == null) {
+                if (addConsignment.getDestinationDetails().getPhone() == null) {
                     addConsignment.getDestinationDetails().setPhone("1");
                 }
-                if(addConsignment.getDestinationDetails().getAddressLine1() == null) {
+                if (addConsignment.getDestinationDetails().getAddressLine1() == null) {
                     addConsignment.getDestinationDetails().setAddressLine1("1");
                 }
-                if(addConsignment.getDestinationDetails().getAddressLine2() == null) {
+                if (addConsignment.getDestinationDetails().getAddressLine2() == null) {
                     addConsignment.getDestinationDetails().setAddressLine2("1");
                 }
-                if(addConsignment.getDestinationDetails().getCity() == null) {
+                if (addConsignment.getDestinationDetails().getCity() == null) {
                     addConsignment.getDestinationDetails().setCity("1");
                 }
-                if(addConsignment.getDestinationDetails().getCountry() == null) {
+                if (addConsignment.getDestinationDetails().getCountry() == null) {
                     addConsignment.getDestinationDetails().setCountry("1");
                 }
             }
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
-            if(addConsignment.getPieceDetails() != null && !addConsignment.getPieceDetails().isEmpty()) {
-                for(AddPieceDetails pieceDetails : addConsignment.getPieceDetails()) {
+            if (addConsignment.getPieceDetails() != null && !addConsignment.getPieceDetails().isEmpty()) {
+                for (AddPieceDetails pieceDetails : addConsignment.getPieceDetails()) {
                     AddPieceDetails dbPieceDetails = new AddPieceDetails();
                     BeanUtils.copyProperties(pieceDetails, dbPieceDetails, CommonUtils.getNullPropertyNames(pieceDetails));
-                    if(pieceDetails.getPartnerHouseAirwayBill() == null) {
+                    if (pieceDetails.getPartnerHouseAirwayBill() == null) {
                         dbPieceDetails.setPartnerHouseAirwayBill("1");
                     }
-                    if(pieceDetails.getDescription() == null) {
+                    if (pieceDetails.getDescription() == null) {
                         dbPieceDetails.setDescription("1");
                     }
-                    if(pieceDetails.getDeclaredValue() == null) {
+                    if (pieceDetails.getDeclaredValue() == null) {
                         dbPieceDetails.setDeclaredValue("1");
                     }
-                    if(pieceDetails.getWeight() == null) {
+                    if (pieceDetails.getWeight() == null) {
                         dbPieceDetails.setWeight("1");
                     }
-                    if(pieceDetails.getHsCode() == null) {
+                    if (pieceDetails.getHsCode() == null) {
                         dbPieceDetails.setHsCode("1");
                     }
                     addPieceDetailsList.add(dbPieceDetails);
