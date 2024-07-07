@@ -128,6 +128,24 @@ public class MidMileService {
         }
     }
 
+    // Find PreAlertManifest
+    public PreAlertManifestConsignment[] findPreAlertManifest(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/findPreAlertManifest");
+            HttpEntity<?> entity = new HttpEntity<>(findPreAlertManifest, headers);
+            ResponseEntity<PreAlertManifestConsignment[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PreAlertManifestConsignment[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     /**
      * DeleteConsignment
      *

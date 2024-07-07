@@ -73,6 +73,13 @@ public class MidMileController {
         return midMileService.findIConsignmentEntity(findConsignment, authToken);
     }
 
+    // Find PreAlert Manifest
+    @ApiOperation(response = PreAlertManifestConsignment[].class, value = "Find PreAlert Manifest") //label for swagger
+    @PostMapping("/consignment/findPreAlertManifest")
+    public PreAlertManifestConsignment[] findPreAlertManifest(@Valid @RequestBody FindPreAlertManifest findPreAlertManifest, @RequestParam String authToken) throws Exception {
+        return midMileService.findPreAlertManifest(findPreAlertManifest, authToken);
+    }
+
     //Delete Consignment
     @ApiOperation(response = ConsignmentEntity.class, value = "Delete Consignment")
     @DeleteMapping("/consignment")

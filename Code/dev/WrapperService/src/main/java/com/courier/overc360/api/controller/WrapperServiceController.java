@@ -86,6 +86,9 @@ public class WrapperServiceController {
 
         try {
             String storedFileResponse = fileStorageService.storeFile(file, filePath);
+            if(!filePath.startsWith("/")){
+                filePath = "/" + filePath;
+            }
             String fileWithPath = filePath + "/" + storedFileResponse;
             UpdateCCR[] response = commonService.extractPdf(fileWithPath);
             return new ResponseEntity <> (response, HttpStatus.OK) ;

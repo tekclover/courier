@@ -746,6 +746,38 @@ public class ConsignmentService {
      * @return
      */
     public List<IConsignment> findIConsignment(FindIConsignment findConsignment) {
+
+        if(findConsignment.getConsignmentId() != null && findConsignment.getConsignmentId().isEmpty()) {
+            findConsignment.setConsignmentId(null);
+        }
+        if(findConsignment.getLanguageId() != null && findConsignment.getLanguageId().isEmpty()) {
+            findConsignment.setLanguageId(null);
+        }
+        if(findConsignment.getCompanyId() != null && findConsignment.getCompanyId().isEmpty()) {
+            findConsignment.setCompanyId(null);
+        }
+        if(findConsignment.getPartnerId() != null && findConsignment.getPartnerId().isEmpty()) {
+            findConsignment.setPartnerId(null);
+        }
+        if(findConsignment.getMasterAirwayBill() != null && findConsignment.getMasterAirwayBill().isEmpty()) {
+            findConsignment.setMasterAirwayBill(null);
+        }
+        if(findConsignment.getHouseAirwayBill() != null && findConsignment.getHouseAirwayBill().isEmpty()) {
+            findConsignment.setHouseAirwayBill(null);
+        }
+        if(findConsignment.getStatusId() != null && findConsignment.getStatusId().isEmpty()) {
+            findConsignment.setStatusId(null);
+        }
+        if(findConsignment.getShipperId() != null && findConsignment.getShipperId().isEmpty()) {
+            findConsignment.setShipperId(null);
+        }
+        if(findConsignment.getPartnerHouseAirwayBill() != null && findConsignment.getPartnerHouseAirwayBill().isEmpty()) {
+            findConsignment.setPartnerHouseAirwayBill(null);
+        }
+        if(findConsignment.getPartnerMasterAirwayBill() != null && findConsignment.getPartnerMasterAirwayBill().isEmpty()) {
+            findConsignment.setPartnerMasterAirwayBill(null);
+        }
+        log.info("Search Input - consignment(Null validation): " + findConsignment);
         List<IConsignment> consignmentList = new ArrayList<>();
         List<ConsignmentImpl> iconsignmentList = replicaConsignmentEntityRepository.getConsignmentImpl(
                 findConsignment.getConsignmentId(),
@@ -864,4 +896,44 @@ public class ConsignmentService {
         return addConsignment;
     }
 
+    /**
+     *
+     * @param findPreAlertManifest
+     * @return
+     */
+    public List<ReplicaAddConsignment> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
+        if (findPreAlertManifest.getManifestIndicator() == null) {
+            findPreAlertManifest.setManifestIndicator(Collections.singletonList(0L));
+        }
+        if (findPreAlertManifest.getConsoleIndicator() == null) {
+            findPreAlertManifest.setConsoleIndicator(Collections.singletonList(0L));
+        }
+        log.info("findPreAlertManifest: " + findPreAlertManifest);
+        PreAlertManifestConsignmentSpecification specification = new PreAlertManifestConsignmentSpecification(findPreAlertManifest);
+        List<ReplicaConsignmentEntity> results = replicaConsignmentEntityRepository.findAll(specification);
+        List<ReplicaAddConsignment> consignmentList = new ArrayList<>();
+        if(results != null && !results.isEmpty()) {
+            results.forEach(n-> {
+                ReplicaAddConsignment dbReplicaAddConsignment = new ReplicaAddConsignment();
+                BeanUtils.copyProperties(n, dbReplicaAddConsignment, CommonUtils.getNullPropertyNames(n));
+                if (n.getConsignmentInfo() != null) {
+                    BeanUtils.copyProperties(n.getConsignmentInfo(), dbReplicaAddConsignment);
+                }
+                if (n.getConsignmentRefs() != null) {
+                    BeanUtils.copyProperties(n.getConsignmentRefs(), dbReplicaAddConsignment);
+                }
+                if (n.getOriginDetails() != null) {
+                    BeanUtils.copyProperties(n.getOriginDetails(), dbReplicaAddConsignment.getOriginDetails());
+                }
+                if (n.getDestinationDetails() != null) {
+                    BeanUtils.copyProperties(n.getDestinationDetails(), dbReplicaAddConsignment.getDestinationDetails());
+                }
+                if (n.getReturnDetails() != null) {
+                    BeanUtils.copyProperties(n.getReturnDetails(), dbReplicaAddConsignment.getReturnDetails());
+                }
+                consignmentList.add(dbReplicaAddConsignment);
+            });
+        }
+        return consignmentList;
+    }
 }
