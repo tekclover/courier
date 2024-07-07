@@ -173,9 +173,10 @@ Consigment: any[] = [];
       this.hsCodeList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.hsCode.key);
       this.eventList= this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.event.key);
       const consitnor = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
-        const customer = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.customer.key);
-        customer.forEach(x => this.consignorIdList.push(x));
-        consitnor.forEach(x => this.consignorIdList.push(x));
+      const customer = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.customer.key);
+      customer.forEach(x => this.consignorIdList.push(x));
+      consitnor.forEach(x => this.consignorIdList.push(x));
+      this.consignorIdList = this.cs.removeDuplicatesFromArrayList(this.consignorIdList, 'value')
       this.spin.hide();
     },
     error: (err: any) => {
