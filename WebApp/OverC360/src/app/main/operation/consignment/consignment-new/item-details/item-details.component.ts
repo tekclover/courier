@@ -67,11 +67,15 @@ export class ItemDetailsComponent {
       quantity: [''],
       unitValue: [''],
       currency: [''],
+      masterAirwayBill: [''],
+      houseAirwayBill: [''],
+      partnerId:  [''],
       referenceImageList: this.fb.array([]),
     });
   }
-  removeItem(index: number) {
+  removeItem(index: number, data: any) {
     this.itemDetails.removeAt(index);
+    this.service.DeleteItem(data.getRawValue()).subscribe({next: (res) => {}})
   }
   ngOnInit() {
     this.dropdownlist();
@@ -127,6 +131,9 @@ export class ItemDetailsComponent {
       referenceField7: [item.referenceField7],
       referenceField8: [item.referenceField8],
       referenceField9: [item.referenceField9],
+      masterAirwayBill: [item.masterAirwayBill],
+      partnerId: [item.partnerId],
+      houseAirwayBill: [item.houseAirwayBill],
       referenceImageList: this.patchReferenceImages(item.referenceImageList),
       volume: [item.volume],
       volumeUnit: [item.volumeUnit],
@@ -163,7 +170,6 @@ export class ItemDetailsComponent {
     dialogRef.afterClosed().subscribe(result => {
       const control = (this.itemForm.controls.itemDetails as FormArray).at(index)
       control.patchValue(result);
-      console.log(this.itemForm)
     })}
 
     imageupload(type: any = 'New', index: any) {
@@ -172,7 +178,7 @@ export class ItemDetailsComponent {
         width: '70%',
         maxWidth: '82%',
         position: { top: '6.5%', left: '25%' },
-        data: { pageflow: type, line: (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray },
+        data: { pageflow: type, line: (this.itemForm.controls.itemDetails as FormArray).at(index).get('referenceImageList') as FormArray, lineDetails: (this.itemForm.controls.itemDetails as FormArray).at(index) },
       });
   
       dialogRef.afterClosed().subscribe(result => {
