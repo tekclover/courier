@@ -107,8 +107,8 @@ export class PreAlertManifestComponent {
     obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.preAlertManifestTable = res;
+        this.getSearchDropdown();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -305,6 +305,7 @@ export class PreAlertManifestComponent {
     this.service.search(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
         this.preAlertManifestTable = res;
+        this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'masterAirwayBill')
         this.spin.hide();
         this.overlayPanel.hide();
       },
