@@ -86,6 +86,7 @@ export class CcrComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           this.ccrTable = res;
+          this.ccrTable =  this.cs.removeDuplicatesFromArrayList(this.ccrTable, 'ccrId')
           this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {

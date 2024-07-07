@@ -177,7 +177,7 @@ export class ConsignmentLabelComponent {
         let bodyArray2: any[] = [];
         bodyArray2.push([
           { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-          { text: (line.shipperName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+          { text: (line.originDetails.name), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: (line.originDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
@@ -223,7 +223,7 @@ export class ConsignmentLabelComponent {
         let bodyArray4: any[] = [];
         bodyArray4.push([
           { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-          { text: (line.consigneeName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+          { text: (line.destinationDetails.name), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
           { text: (line.destinationDetails.country), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
@@ -289,6 +289,263 @@ export class ConsignmentLabelComponent {
           },
         }, '\n'
       )
+
+      pdfMake.createPdf(dd).open();
+  }
+
+  generatePdfInvoice(line:any){
+    console.log(line)
+    let createdOn = this.datePipe.transform(line.createdOn, 'dd-MMM-yyyy HH:mm')
+    var dd: any;
+    let headerTable: any[] = [];
+
+    headerTable.push([      
+        { image: iwExpressLogo.headerLogo, fit: [80, 80], alignment: 'left',  bold: false, fontSize: 12, border: [false, false, false, false] },
+       ]);
+
+    dd = {
+      pageSize: "A6",
+      pageOrientation: "portrait",
+      pageMargins: [10, 10, 10, 10],
+      // header(currentPage: number, pageCount: number, pageSize: any): any {
+      //   return [
+      //     {
+      //       table: {
+      //         headerRows: 1,
+      //         widths: ['*', '*'],
+      //         body: headerTable
+      //       },
+      //       margin: [5, 5, 5, 5]
+      //     }
+      //   ]
+      // },
+      styles: {
+        anotherStyle: {
+          bordercolor: '#6102D3'
+        }
+      },
+      footer(currentPage: number, pageCount: number, pageSize: any): any {
+        return [{
+          text: '', //Page ' + currentPage + ' of ' + pageCount
+          style: 'header',
+          alignment: 'center',
+          bold: true,
+          fontSize: 6
+        }]
+      },
+      content: ['\n'],
+    };
+
+
+    let barcodeAWB: any[] = [];
+    const barcodeImageData1 = this.generateBarcode(line.houseAirwayBill);
+    barcodeAWB.push([      
+      { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0],fit: [80, 80], alignment: 'left',  bold: false, fontSize: 12, border: [false, false, false, false] },
+            { text:'',  margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center',  bold: false, fontSize: 12, border: [false, false, false, false] },
+      { text:'', margin: [0, -10, 0, 0],fit: [50, 50], alignment: 'center',  bold: false, fontSize: 12, border: [false, false, false, false] },
+       ]);
+       barcodeAWB.push([      
+        {text:'', margin: [0, -15, 0, 0],fit: [80, 80], alignment: 'left',  bold: false, fontSize: 12, border: [false, false, false, false] },
+              { text:'Invoice',  margin: [0, -10, 15, 0], fit: [100, 100], alignment: 'center',  bold: false, fontSize: 13, border: [false, false, false, false] },
+        { text:'', margin: [0, -10, 0, 0],fit: [50, 50], alignment: 'center',  bold: false, fontSize: 12, border: [false, false, false, false] },
+         ]);
+   
+       dd.content.push(
+        {
+          table: {
+            headerRows: 1,
+            widths: [95, 80, '*'],
+            body: barcodeAWB,                
+          },
+        }, '\n'
+      )
+        let bodyArray67: any[] = [];
+        bodyArray67.push([
+          { text: 'Sender', bold: true, fontSize: 6,alignment: 'center', border: [true,true, true, false],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: '', bold: false, fontSize: 6,alignment: 'center', border: [false, false, false, false],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'Receiver', bold: true, fontSize: 6,alignment: 'center',border: [true,true, true, false],borderColor: ['#808080', '#808080', '#808080', '#808080']},
+         
+        ]);
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [127, '*', 127],
+              body: bodyArray67,                
+            },
+          }, '\n'
+        )
+        let bodyArray: any[] = [];
+        bodyArray.push([
+          { text:'1.'+ (line.originDetails.addressLine1), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: '', bold: false, fontSize: 6, border: [false, false, false, false],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: '1.'+(line.destinationDetails.addressLine1), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      
+        ]);
+        bodyArray.push([
+          { text:'2.'+ (line.originDetails.addressLine2), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: '', bold: false, fontSize: 6, border: [false, false, false, false],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text:'2.'+ (line.destinationDetails.addressLine2!= null ?line.destinationDetails.addressLine2:'' ), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      
+        ]);    
+     
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [127, '*', 127],
+              body: bodyArray,
+            },
+            margin: [0, -14, 0, 0],
+          },
+        )   
+        let bodyArray88: any[] = []; 
+        bodyArray88.push([
+          { text: 'City', bold: true, fontSize: 6, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: (line.originDetails.city), bold: false, fontSize: 6,  border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text:  'Country', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.originDetails.country), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: '', bold: false, fontSize: 6, border: [false, false, false, false] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: 'City ', bold: true, fontSize: 6, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: (line.destinationDetails.city), bold: false, fontSize: 6, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: 'Country', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.destinationDetails.country), bold: false, fontSize: 6,border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+         
+        ]); 
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [30,30,22,18, '*', 30,30,22,18],
+              body: bodyArray88,
+            },
+            margin: [0, -1, 0, 0],
+          },
+        )  
+        let bodyArray97: any[] = []; 
+        bodyArray97.push([
+          { text: 'Telephone', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.originDetails.phone), bold: false, fontSize: 6,  border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: '', bold: false, fontSize: 6, border: [false, false, false, false],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'Telephone', bold: true, fontSize: 6, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: (line.destinationDetails.phone), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      
+         
+        ]);     
+             
+           
+      
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [59,59, '*', 59,59],
+              body: bodyArray97,
+            },
+            margin: [0, -1, 0, 0],
+          },
+        )
+      
+        let bodyArray2: any[] = [];
+        bodyArray2.push([
+          { text: 'QTY', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'HS Code', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: 'Description', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'Weight', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: 'Unit Value', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: 'Total Value', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: 'Currency', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'Country of Origin', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'INCO TERMS', bold: true, margin: [0, 2, 0, 0],alignment: 'left', fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        ]);
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [22,22,22,22,22,22,22,22,23],
+              body: bodyArray2,
+            },
+            margin: [0, 20, 0, 0],
+          },
+        )
+        
+        for(let i =0;i<line.pieceDetails.length;i++){
+          let bodyArray6: any[] = [];
+        bodyArray6.push([
+          { text:(line.noOfPieceHawb) , bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.pieceDetails[i].hsCode), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.pieceDetails[i].description), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text:  (line.pieceDetails[i].weight), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text:  (line.pieceDetails[i].declaredValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text:  (line.pieceDetails[i].declaredValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.pieceDetails[i].currency), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true] ,borderColor: ['#808080', '#808080', '#808080', '#808080']},
+          { text: (line.countryOfOrigin), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text:(line.incoTerms), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        ]);
+       
+       
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [22,22,22,22,22,22,22,22,23],
+              body: bodyArray6,
+            },
+            margin: [0, -1, 0, 0],
+          },
+        )
+      }
+        let bodyArray3: any[] = [];
+        bodyArray3.push([
+          { text: 'Piece', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.originDetails.noOfPackageHawb ), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'DATE', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: createdOn, bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+        ]);
+        bodyArray3.push([
+          { text: 'Weight', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.weight ), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'AWB', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+        ]);
+        bodyArray3.push([
+          { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.consignmentValue ), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: 'Prepaid', bold: true, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+          { text: (line.paymentType =='Prepaid' ?(line.paymentType):'0'), bold: false, fontSize: 6, border: [true, true, true, true],borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+        ]);
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: [61,61,61,61],
+              body: bodyArray3,
+            },
+            margin: [0, 20, 0, 0],
+          },
+        )
+        let bodyArray125: any[] = []; 
+        bodyArray125.push([
+          { text: 'I DECLARE THAT ABOVE INFORMATION IS TRUE AND CORRECT TO MY KNOWLEDGE', bold: true, fontSize: 6,alignment: 'center', border: [false, false, false, false] },
+        
+      
+         
+        ]);     
+             
+           
+      
+        dd.content.push(
+          {
+            table: {
+              headerRows: 1,
+              widths: ['*'],
+              body: bodyArray125,
+            },
+            margin: [0, 30, 0, 0],
+          },
+        )
+       
+  
 
       pdfMake.createPdf(dd).open();
   }
