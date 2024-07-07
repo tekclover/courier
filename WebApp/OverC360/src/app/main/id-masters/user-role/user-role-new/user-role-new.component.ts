@@ -154,7 +154,7 @@ export class UserRoleNewComponent {
 
       this.spin.show();
       console.log(data)
-      this.moduleService.search({languageId: [this.auth.languageId], companyId: this.auth.companyId}).subscribe(moduleRes => {
+      this.moduleService.search({languageId: [this.auth.languageId], companyId: [this.auth.companyId]}).subscribe(moduleRes => {
         // this.sub.add(this.service.Get(data.roleId + this.auth.languageId + this.auth.companyId).subscribe(res => {
         //   this.form.patchValue(res[0]);
         //   let combined = this.cs.removeDuplicateObj(res, moduleRes);
@@ -244,6 +244,7 @@ export class UserRoleNewComponent {
   }
 
   onChange(menu: any, event: any) {
+    console.log(menu)
     menu.view = event.checked; menu.createUpdate = event.checked; menu.delete = event.checked;
   }
 
@@ -303,7 +304,7 @@ export class UserRoleNewComponent {
   }
 
   onCompanyChange(value: any) {
-    this.moduleService.search({companyId: value.value, languageId: [this.auth.languageId]}).subscribe(res => {
+    this.moduleService.search({companyId: [value.value], languageId: [this.auth.languageId]}).subscribe(res => {
       this.moduleResult = [];
       this.moduleResult.push(res);
       this.menuList = [];
@@ -397,14 +398,14 @@ export class UserRoleNewComponent {
   };
 
   getModuleId() {
-    this.moduleService.search({companyId: this.auth.companyId, languageId: [this.auth.languageId]}).subscribe(res => {
+    this.moduleService.search({companyId: [this.auth.companyId], languageId: [this.auth.languageId]}).subscribe(res => {
       this.moduleResult = [];
       this.moduleResult = res;
 
       this.menuList = [];
       this.menuList.push({
         mainMenu: "Setup",
-        Menu: this.moduleResult.filter((x: any) => x.moduleId == 2000)
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 2)
       });
       this.menuList.push({
         mainMenu: "Masters",
@@ -438,7 +439,7 @@ export class UserRoleNewComponent {
   }
 
   getModuleIDSuperAdmin() {
-    this.moduleService.search({companyId: this.form.controls.companyId.value, languageId: this.form.controls.languageId.value}).subscribe(res => {
+    this.moduleService.search({companyId: [this.form.controls.companyId.value], languageId: this.form.controls.languageId.value}).subscribe(res => {
       this.moduleResult = [];
       this.moduleResult.push(res);
       this.menuList = [];

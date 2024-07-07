@@ -131,7 +131,7 @@ export class ConsignmentLabelComponent {
     ]);
     bodyArray.push([
       { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: (line.description), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
