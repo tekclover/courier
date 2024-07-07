@@ -74,7 +74,7 @@ export class PreAlertManifestComponent {
       { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
       { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },
-      { field: 'eventCode', header: 'Event' },
+      { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -105,7 +105,6 @@ export class PreAlertManifestComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.houseAirwayBill = [20000000232]
     this.service.searchPrealert(obj).subscribe({
       next: (res: any) => {
         this.preAlertManifestTable = res;

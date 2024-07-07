@@ -99,7 +99,7 @@ export class ConsignmentLabelComponent {
       { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
       { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
-      { text: (line.originDetails.country), bold: false, fontSize: 6, border: [false, false, false, true] }
+      { text: (line.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [false, false, false, true] }
     ]);
     bodyArray.push([
       { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
@@ -110,7 +110,7 @@ export class ConsignmentLabelComponent {
     ]);
     bodyArray.push([
       { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (line.consigneeName), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: (line.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: (line.destinationDetails.state), bold: false, fontSize: 6, border: [false, false, false, false] }
@@ -131,7 +131,7 @@ export class ConsignmentLabelComponent {
     ]);
     bodyArray.push([
       { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: (line.description), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
@@ -270,10 +270,12 @@ export class ConsignmentLabelComponent {
     let pieceId: any[] = [];
     const pieceIdcode = this.generateBarcode(line.pieceDetails.length > 0 ? line.pieceDetails[0].pieceId : null);
     const partnercode = this.generateBarcode(line.partnerHouseAirwayBill);
-    pieceId.push([
-      { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-      { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-    ]);
+    if(line.pieceDetails.length > 0){
+  pieceId.push([
+    { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+    { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  ]);
+}
 
     pieceId.push([
       { image: pieceIdcode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
@@ -617,7 +619,7 @@ export class ConsignmentLabelComponent {
       ]);
       bodyArray.push([
         { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.consigneeName), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
