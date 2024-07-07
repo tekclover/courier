@@ -37,6 +37,19 @@ export class ConsignmentService {
       + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId);
   }
 
+  DeletePiece(obj: any) {
+    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
+      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId + '&pieceId='+obj.pieceId);
+  }
+  DeleteItem(obj: any) {
+    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
+      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId + '&pieceItemId='+obj.pieceItemId);
+  }
+  DeleteImage(obj: any) {
+    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
+      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId + '&imageRefId='+obj.imageRefId);
+  }
+
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
   }
@@ -57,6 +70,15 @@ export class ConsignmentService {
     formData.append('file', file);
     return this.http.post<any>('/consignment/upload/v2 ', formData);
   }
+
+  download(obj:any): Promise<File> {
+  return this.http
+  .get<any>(`/doc-storage/download?fileName=${obj.fileName}&location=${obj.location}`, {
+    responseType: 'blob' as 'json',
+  })
+  .toPromise();
+ }
+
 }
 
 

@@ -94,12 +94,12 @@ import { ProductValueComponent } from './product/product-value/product-value.com
     DistrictNewComponent,
     ProductComponent,
     ProductNewComponent,
-   
+
     NotificationComponent,
     NotificationNewComponent,
     CountryComponent,
     CountryNewComponent,
-   
+
     UsersComponent,
     UsersNewComponent,
     RateParameterComponent,

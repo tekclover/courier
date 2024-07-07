@@ -129,6 +129,14 @@ export class CcrComponent {
       this.router.navigate(['/main/airport/ccr-new/' + paramdata]);
     }
   }
+  openEdit(type: any = 'New', linedata: any = null): void {
+    if (this.selectedCcr.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCcr[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/airport/ccr-edit/' + paramdata]);
+    }
+  }
 
   deleteDialog() {
     if (this.selectedCcr.length === 0) {
@@ -205,7 +213,7 @@ export class CcrComponent {
   }
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
-    const filePath = this.selectedCcr[0].ccrId + '/';
+    const filePath = '/' + this.selectedCcr[0].ccrId + '/';
     const file: File = event.target.files[0];
     this.selectedFiles = file;
     this.service.uploadBayan(this.selectedFiles, filePath).subscribe({

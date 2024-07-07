@@ -46,9 +46,7 @@ export class ConsoleTransferComponent {
   ngOnInit(): void {
 this.getConsoleDropdown();
     console.log(this.data)
-    this.form.controls.fromConsoleId.patchValue(this.data[0].consoleId);
-    this.form.controls.houseAirwayBill.patchValue(this.data[0].houseAirwayBill)
-
+    this.selecetedTrasnfer=this.data;
     if(this.data.pageflow == "Edit"){
       this.form.patchValue(this.data.code)
     }
@@ -71,17 +69,22 @@ getConsoleDropdown(){
   
 }
 selecetedTrasnfer:any[]=[];
-
+selecetedTrasnfer2:any[]=[];
+fromConsoleId: any
   save() {
     this.spin.show();
-    this.selecetedTrasnfer.push(this.form.getRawValue());
+for (let i=0;i<this.selecetedTrasnfer.length;i++){
+  this.selecetedTrasnfer[i].fromConsoleId=this.selecetedTrasnfer[i].consoleId;
+  this.selecetedTrasnfer[i].houseAirwayBill=this.selecetedTrasnfer[i].houseAirwayBill;
+  this.selecetedTrasnfer[i].toConsoleId=this.form.controls.toConsoleId.value;
+}
     this.service.Transfer(this.selecetedTrasnfer).subscribe({
       next: (res) => {
         this.messageService.add({
          severity: 'success',
           summary: 'Updated',
           key: 'br',
-          detail: res[0].consoleId + ' has been Transfered successfully',
+          detail: 'Seelcted Values has been Transfered successfully',
      });
         //this.router.navigate(['/main/airport/console']);
        this.dialogRef.close();

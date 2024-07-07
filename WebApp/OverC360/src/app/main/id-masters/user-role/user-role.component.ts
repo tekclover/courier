@@ -13,6 +13,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-user-role',
@@ -33,7 +35,9 @@ export class UserRoleComponent {
     private path: PathNameService,
     private service: UserRoleService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -55,11 +59,11 @@ export class UserRoleComponent {
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
       { field: 'description', header: 'Role Description' },
-      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'authorizationObjectValue', header: 'Authorization Object Value' }
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
+      { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'userRoleId', header: 'UserRole ID' },
       { field: 'menuId', header: 'Menu ID' },
@@ -85,11 +89,12 @@ export class UserRoleComponent {
       this.spin.show();
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
-      obj.companyId = [this.auth.companyId];
+      obj.companyId = this.auth.companyId;
       this.service.search(obj).subscribe({
         next: (res: any) => {
           console.log(res);
           this.userRoleTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -181,5 +186,96 @@ export class UserRoleComponent {
     this.cs.exportAsExcel(exportData, 'UserRole');
   }
 
+  searchform = this.fb.group({
+    menuId: [],
+    subMenuId: [],
+    roleId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  languageDropdown: any = [];
+  companyDropdown: any = [];
+  menuDropdown: any = [];
+  subMenuDropdown: any = [];
+  roleDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.userRoleTable.forEach(res => {
+
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.menuId != null) {
+        this.menuDropdown.push({ value: res.menuId, label: res.menuName });
+        this.menuDropdown = this.cs.removeDuplicatesFromArrayList(this.menuDropdown, 'value');
+      }
+      if (res.subMenuId != null) {
+        this.subMenuDropdown.push({ value: res.subMenuId, label: res.subMenuName });
+        this.subMenuDropdown = this.cs.removeDuplicatesFromArrayList(this.subMenuDropdown, 'value');
+      }
+      if (res.roleId != null) {
+        this.roleDropdown.push({ value: res.roleId, label: res.roleId });
+        this.roleDropdown = this.cs.removeDuplicatesFromArrayList(this.roleDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('userRole') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.userRoleTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      menuId: [],
+      subMenuId: [],
+      roleId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
 
 }

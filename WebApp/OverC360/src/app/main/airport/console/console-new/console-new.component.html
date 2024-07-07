@@ -54,11 +54,11 @@
                                     getErrorMessage()}}</small></mat-error>
                             </div>
       
-                            <div class="col-6 marginFieldNew borderRadius12" id="countryOfOrigin">
-                                <p class="formControlLabel f600 textBlack mb-0">Origin</p>
-                                <input maxlength="50" pInputText formControlName="countryOfOrigin" [ngClass]="form.get('countryOfOrigin')?.invalid && form.get('countryOfOrigin')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('countryOfOrigin')" class="text-danger"><small>{{
-                                    getErrorMessage()}}</small></mat-error>
+                            <div class="col-6 marginFieldNew borderRadius12"  id="countryOfOrigin">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Origin</p>
+                                <p-dropdown [options]="countryIdList" formControlName="countryOfOrigin" appendTo="body"
+                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
+                                
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12"  id="airportOriginCode">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Airport Origin Code</p>
@@ -127,7 +127,7 @@
                             </div>
 
                         </div>
-                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/airport/console">Cancel</button>
                             <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
                                 != 'New' ? 'Update': 'Save'}}</button>
@@ -171,7 +171,7 @@
                                     placeholder="Enter" />
                             </div>
                         </div>
-                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                        <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
                             <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
                                 != 'New' ? 'Update': 'Save'}}</button>

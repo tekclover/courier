@@ -106,7 +106,6 @@ export class CityComponent {
     }, 1000);
   }
 
-
   onChange() {
     const choosen = this.selectedCity[this.selectedCity.length - 1];
     this.selectedCity.length = 0;

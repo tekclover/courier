@@ -7,8 +7,7 @@ import java.util.List;
 @Data
 public class FindRoleAccess {
 
-
-    private String companyId;
+    private List<String> companyId;
     private List<Long> roleId;
     private List<String> languageId;
     private List<Long> menuId;

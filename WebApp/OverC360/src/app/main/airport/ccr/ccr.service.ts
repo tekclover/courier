@@ -20,6 +20,9 @@ export class CcrService {
   Update(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/ccr/'+ obj.partnerId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId +'&cityId='+ obj.cityId, obj);
   }
+  UpdateList(obj: any) {
+    return this.http.patch<any>('/overc-midmile-service/ccr/update/list', obj);
+  }
 
   Delete(obj: any) {
     return this.http.post<any>('/overc-midmile-service/ccr/delete/list', obj);

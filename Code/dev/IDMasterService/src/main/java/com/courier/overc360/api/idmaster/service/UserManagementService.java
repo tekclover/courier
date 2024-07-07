@@ -269,7 +269,7 @@ public class UserManagementService {
 
         ReplicaUserManagementSpecification spec = new ReplicaUserManagementSpecification(findUserManagement);
         List<ReplicaUserManagement> results = replicaUserManagementRepository.findAll(spec);
-        log.info("found Users --> " + results);
+        log.info("found Users --> {}", results);
         return results;
     }
 

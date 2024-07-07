@@ -15,19 +15,38 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center my-2">
-        <p-iconField iconPosition="left" class="mr-5">
-            <p-inputIcon styleClass="pi pi-search" />
-            <input type="text" id="toolInput1" style="width: 20rem !important;" pInputText placeholder="Search"
+    <div class="d-flex justify-content-start align-items-center"
+        style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
+        <p-iconField iconPosition="right" class="mr-2">
+            <p-inputIcon type="button" (click)="opstatus.toggle($event)" styleClass="pi pi-filter" />
+            <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
                 (input)="opstatusTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
-        <div class="d-flex justify-content-end align-items-center">
-            <p class="mb-0 d-flex f600 float-right w-25 pr-2">Filter By:</p>
-            <input type="text" id="toolInput" class="w-75" pInputText placeholder="Province Name" />
-            <p-calendar id="toolInput" class="w-75" placeholder="Filter by Date" [iconDisplay]="'input'"
-                [showIcon]="true" />
-            <p-dropdown class=" d-flex float-right" optionLabel="name" placeholder="Filter by Product" />
-        </div>
+
+        <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}"
+            [styleClass]="'custom-overlay-panel'" #opstatus>
+            <form [formGroup]="searchform" style="padding: 2rem;">
+                <div class="row">
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">OP Status</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="statusCodeDropdown"
+                            formControlName="statusCode" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <img type="button" (click)="reset()" src="./assets/common/reset.png" alt="" srcset="">
+                    </div>
+                    <div>
+                        <button class="buttom1 textBlack mx-1" (click)="closeOverLay()">Cancel</button>
+                        <button class="buttom1 bgBlack text-white mx-1" (click)="search()">Apply</button>
+                    </div>
+                </div>
+            </form>
+        </p-overlayPanel>
+
+        <p-chips (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
     </div>
 
     <div class="tableProperties">

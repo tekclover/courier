@@ -244,7 +244,6 @@ export class UserRoleNewComponent {
   }
 
   onChange(menu: any, event: any) {
-    console.log(menu)
     menu.view = event.checked; menu.createUpdate = event.checked; menu.delete = event.checked;
   }
 
@@ -368,9 +367,9 @@ export class UserRoleNewComponent {
     this.spin.show();
 
     if (this.pageToken.pageflow != 'New') {
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.Update(data).subscribe({
         next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.roleId.value + 'has been updated successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].roleId.value + 'has been updated successfully' });
         this.router.navigate(['/main/idMaster/userrole'])
         this.spin.hide();
       }, error: (err) => {
@@ -380,10 +379,10 @@ export class UserRoleNewComponent {
       }
     });
     } else {
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.service.Create(data).subscribe({
         next: (res) => {
         if(res) {
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.roleId.value + 'has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res[0].roleId.value + 'has been created successfully' });
           this.router.navigate(['/main/idMaster/userrole']);
           this.spin.hide();
         }
