@@ -186,7 +186,7 @@ public class MidMileService {
             HttpEntity<?> entity = new HttpEntity<>(consignmentDeletes, headers);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/delete/list")
                     .queryParam("loginUserID", loginUserID);
-            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
             log.info("result : " + result);
             return true;
         } catch (Exception e) {

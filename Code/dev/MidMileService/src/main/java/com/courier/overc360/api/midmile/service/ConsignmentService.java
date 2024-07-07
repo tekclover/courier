@@ -491,7 +491,6 @@ public class ConsignmentService {
     public void deleteConsignmentEntity(List<ConsignmentDelete> consignmentDeletes, String loginUserID) {
 
         for (ConsignmentDelete con : consignmentDeletes) {
-
             String pieceId = con.getPieceId();
             String pieceItemId = con.getPieceItemId();
             String companyId = con.getCompanyId();
