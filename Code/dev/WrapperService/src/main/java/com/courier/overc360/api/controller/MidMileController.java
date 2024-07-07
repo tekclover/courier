@@ -91,6 +91,15 @@ public class MidMileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //Delete Consignment
+    @ApiOperation(response = ConsignmentEntity.class, value = "Delete Consignment")
+    @DeleteMapping("/consignment/delete/list")
+    public ResponseEntity<?> deleteConsignment( @Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID,
+                                                @RequestParam String authToken) {
+        midMileService.deleteConsignmentMultiple(consignmentDeletes, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     //===============================================ImageReference========================================================
     // Get all ImageReference Details
     @ApiOperation(response = ImageReference.class, value = "Get All ImageReference Details") // label for swagger

@@ -14,6 +14,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsoleBulkComponent } from '../console/console-bulk/console-bulk.component';
+import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-ccr',
@@ -22,7 +23,7 @@ import { ConsoleBulkComponent } from '../console/console-bulk/console-bulk.compo
 })
 export class CcrComponent {
 
-
+  actualResult: any[] = [];
   ccrTable: any[] = [];
   selectedCcr: any[] = [];
   cols: any[] = [];
@@ -30,7 +31,7 @@ export class CcrComponent {
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CcrService,
     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder, private spin: NgxSpinnerService,
-  ) { }
+  private label: ConsignmentLabelComponent) { }
 
   fullDate: any;
   today: any;
@@ -86,6 +87,7 @@ export class CcrComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           this.ccrTable = res;
+          this.actualResult = res;
           this.ccrTable =  this.cs.removeDuplicatesFromArrayList(this.ccrTable, 'ccrId')
           this.getSearchDropdown();
           this.spin.hide();
@@ -314,6 +316,12 @@ export class CcrComponent {
   chipClear(value: any) {
     this.searchform.get(value.value)?.reset();
     this.search();
+  }
+
+  generateLabel(){
+   const filterResult = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'houseAirwayBill');
+   console.log(filterResult)
+    this.label.generatePdfBarocdeMutiple(filterResult);
   }
 
 }

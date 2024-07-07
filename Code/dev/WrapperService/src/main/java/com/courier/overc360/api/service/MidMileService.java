@@ -1,6 +1,7 @@
 package com.courier.overc360.api.service;
 
 import com.courier.overc360.api.config.PropertiesConfig;
+import com.courier.overc360.api.model.idmaster.CustomerDeleteInput;
 import com.courier.overc360.api.model.transaction.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
@@ -177,6 +178,31 @@ public class MidMileService {
                     .queryParam("pieceId", pieceId)
                     .queryParam("imageRefId", imageRefId)
                     .queryParam("pieceItemId", pieceItemId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     *
+     * @param consignmentDeletes
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public boolean deleteConsignmentMultiple(List<ConsignmentDelete> consignmentDeletes, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Classic WMS's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(consignmentDeletes, headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/delete/list")
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
             log.info("result : " + result);
