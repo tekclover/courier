@@ -39,8 +39,7 @@ public interface ReplicaMenuRepository extends JpaRepository<ReplicaMenu, Long>,
             "AND (:#{#companyId == null ? 1 : 0} = 1 OR tm.C_ID IN (:companyId)) \n" +
             "AND (:#{#menuId == null ? 1 : 0} = 1 OR tm.MENU_ID IN (:menuId)) \n" +
             "AND (:#{#subMenuId == null ? 1 : 0} = 1 OR tm.SUB_MENU_ID IN (:subMenuId)) \n" +
-            "AND (:#{#authorizationObjectId == null ? 1 : 0} = 1 OR tm.AUT_OBJ_ID IN (:authorizationObjectId)) \n" +
-            "ORDER BY tm.CTD_ON DESC", nativeQuery = true)
+            "AND (:#{#authorizationObjectId == null ? 1 : 0} = 1 OR tm.AUT_OBJ_ID IN (:authorizationObjectId))", nativeQuery = true)
     List<ReplicaMenu> findMenusWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,

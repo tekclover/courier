@@ -118,7 +118,7 @@ public class RoleAccessService {
                     throw new IllegalAccessException("MenuId: " + addRoleAccess.getMenuId() + " and SubMenuId: "
                             + addRoleAccess.getSubMenuId() + " doesn't exists");
                 } else {
-                    log.info("new RoleAccess --> {}", addRoleAccess);
+//                    log.info("new RoleAccess --> {}", addRoleAccess);
                     RoleAccess roleAccess = new RoleAccess();
                     IKeyValuePair iKeyValuePair = replicaModuleRepository.getDescription(addRoleAccess.getLanguageId(),
                             addRoleAccess.getCompanyId(), addRoleAccess.getMenuId(), addRoleAccess.getSubMenuId());
@@ -143,7 +143,7 @@ public class RoleAccessService {
 
                     // Insert Record
                     RoleAccess createdRoleAccess = roleAccessRepository.save(roleAccess);
-                    log.info("new RoleAccess created --> " + createdRoleAccess);
+                    log.info("new RoleAccess created --> {}", createdRoleAccess);
                     newRoleAccessList.add(createdRoleAccess);
                 }
             }
@@ -257,7 +257,7 @@ public class RoleAccessService {
 
         ReplicaRoleAccessSpecification spec = new ReplicaRoleAccessSpecification(findRoleAccess);
         List<ReplicaRoleAccess> results = replicaRoleAccessRepository.findAll(spec);
-        log.info("results: " + results);
+        log.info("results --> {}", results);
         return results;
     }
 }
