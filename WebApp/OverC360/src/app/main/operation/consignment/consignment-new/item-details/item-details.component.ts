@@ -64,6 +64,9 @@ export class ItemDetailsComponent {
       weight: [],
       weightUnit: [],
       width: [],
+      quantity: [''],
+      unitValue: [''],
+      currency: [''],
       referenceImageList: this.fb.array([]),
     });
   }
@@ -128,7 +131,10 @@ export class ItemDetailsComponent {
       volumeUnit: [item.volumeUnit],
       weight: [item.weight],
       weightUnit: [item.weightUnit],
-      width: [item.width]
+      width: [item.width],
+      quantity: [item.quantity],
+      unitValue: [item.unitValue],
+      currency: [item.currency],
     });
   }
 

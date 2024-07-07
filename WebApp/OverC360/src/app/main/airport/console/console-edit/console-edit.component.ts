@@ -277,7 +277,6 @@ lineSentforFill:any;
       this.selectedConsole.forEach((x: any) => {
         x.eventCode = 10;
       });
-console.log(this.selectedConsole)
       this.service.Update(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({

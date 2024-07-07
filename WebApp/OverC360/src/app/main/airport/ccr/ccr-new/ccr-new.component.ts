@@ -244,7 +244,7 @@ export class CcrNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.partnerId + ' has been updated successfully',
+            detail: res[0].ccrId + ' has been updated successfully',
           });
           this.router.navigate(['/main/airport/ccr']);
           this.spin.hide();

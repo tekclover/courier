@@ -356,16 +356,16 @@ export const navbarData: INavbarData[] = [
                 routerLink: '/main/operation/consignment',
                 label: 'Consignment'
             },
-            {
-                routerId: 6102,
-                routerLink: '/main/operation/consignmentStatus',
-                label: 'Consignment Status'
-            },
-            {
-                routerId: 6103,
-                routerLink: '/main/operation/consignmentUploadProgram',
-                label: 'Consignment Upload Program'
-            }
+            // {
+            //     routerId: 6102,
+            //     routerLink: '/main/operation/consignmentStatus',
+            //     label: 'Consignment Status'
+            // },
+            // {
+            //     routerId: 6103,
+            //     routerLink: '/main/operation/consignmentUploadProgram',
+            //     label: 'Consignment Upload Program'
+            // }
 
         ]
     },

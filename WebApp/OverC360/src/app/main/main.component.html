@@ -62,8 +62,8 @@
           <img src="./assets/dashboard/notifications.png" class="img-fluid mr-5" alt="" srcset="">
 
           <div class="d-flex flex-column mr-2">
-            <p class="mb-1 headerPageName text-right">Mathieu Wade</p>
-            <p class="mb-0 breadcrumb-item  text-right">Owner</p>
+            <p class="mb-1 headerPageName text-right">{{this.auth.userName}}</p>
+            <p class="mb-0 breadcrumb-item  text-right">{{this.auth.companyName}}</p>
 
           </div>
           <img src="./assets/dashboard/User.png" [matMenuTriggerFor]="menu" class="img-fluid" alt="" srcset="">
