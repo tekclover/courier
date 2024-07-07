@@ -42,7 +42,7 @@ public class UpdateBondedManifest {
 
     private String statusText;
 
-    private String noOfPackagesMawb;
+    private String noOfPackageMawb;
 
     private String partnerMasterAirwayBill;
 
@@ -162,7 +162,7 @@ public class UpdateBondedManifest {
 
     private String lineNo;
 
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     private String consigneeCivilId;
 

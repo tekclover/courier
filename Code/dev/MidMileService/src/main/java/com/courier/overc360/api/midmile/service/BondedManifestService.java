@@ -19,6 +19,7 @@ import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,15 +98,25 @@ public class BondedManifestService {
             AddBondedManifest bondedManifest = new AddBondedManifest();
             BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
 
-//            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
-//                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
-//                    bondedManifest.se
-//                }}
+            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
+                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+                    BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
+                }
+            }
             addBondedManifest.add(bondedManifest);
         }
 
         return createBondedManifest(addBondedManifest, loginUserID);
     }
+
+    // bondedManifest.setConsigneeCivilId(consignment.getConsigneeCivilId());
+    //            bondedManifest.setInvoiceNumber(consignment.getInvoiceNumber());
+    //            bondedManifest.setInvoiceType(consignment.getInvoiceType());
+    //            bondedManifest.setInvoiceSupplierName(consignment.getInvoiceSupplierName());
+    //            bondedManifest.setHsCode(consignment.getHsCode());
+    //            bondedManifest.setGoodsDescription(consignment.getGoodsDescription());
+    //            bondedManifest.setFreightCharges(consignment.getFreightCharges());
+    //            bondedManifest.setFreightCurrency(consignment.getFreightCurrency());
 
     /**
      * Create BondedManifest

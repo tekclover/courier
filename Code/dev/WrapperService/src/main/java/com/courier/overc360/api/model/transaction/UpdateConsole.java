@@ -105,7 +105,7 @@ public class UpdateConsole {
 
     private String countryOfOrigin;
 
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     private String airportOriginCode;
 

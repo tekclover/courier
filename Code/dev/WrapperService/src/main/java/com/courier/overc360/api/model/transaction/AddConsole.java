@@ -104,7 +104,7 @@ public class AddConsole {
 
     private String countryOfOrigin;
 
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     private String airportOriginCode;
 

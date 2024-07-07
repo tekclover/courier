@@ -77,7 +77,6 @@ export class ServiceTypeComponent {
       { field: 'updatedBy', header: 'Updated By' },
       { field: 'updatedOn', header: 'Updated On', format: 'date' },
 
-
     ];
   }
 
@@ -151,6 +150,7 @@ export class ServiceTypeComponent {
       }
     });
   }
+  
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.serviceTypeId).subscribe({

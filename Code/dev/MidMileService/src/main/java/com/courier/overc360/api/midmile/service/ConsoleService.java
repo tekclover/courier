@@ -254,12 +254,12 @@ public class ConsoleService {
         List<AddConsole> consoles = new ArrayList<>();
         for (ReplicaAddConsignment consignment : replicaAddConsignment) {
             AddConsole console = new AddConsole();
-//            console.setFreightCurrency(consignment.getFreightCurrency());
             BeanUtils.copyProperties(consignment, console, CommonUtils.getNullPropertyNames(consignment));
-//            console.setFreightCharges(consignment.getFreightCharges());
-//            for (ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
-//                for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()) {
-//                }
+            for (ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
+                for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()) {
+                    BeanUtils.copyProperties(replicaAddItemDetails, console, CommonUtils.getNullPropertyNames(replicaAddItemDetails));
+                }
+            }
             consoles.add(console);
         }
         return createConsoleList(consoles, loginUserID);
@@ -456,7 +456,7 @@ public class ConsoleService {
                             boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                                     console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), 0L);
 
-                            if(duplicateConsole) {
+                            if (duplicateConsole) {
                                 throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
                             }
 
@@ -509,7 +509,7 @@ public class ConsoleService {
                                 newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                             }
 
-                            if(eventStatus != null) {
+                            if (eventStatus != null) {
                                 newConsole.setStatusId("1");
                                 newConsole.setEventCode("6");
                                 newConsole.setStatusText(eventStatus.getStatusText());
@@ -559,7 +559,7 @@ public class ConsoleService {
                         toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
                     }
                     Double totalDuty = 0.0;
-                    if(console.getConsignmentValue() != null) {
+                    if (console.getConsignmentValue() != null) {
                         consignmentValue = Double.parseDouble(console.getConsignmentValue());
                         totalDuty = toCurrencyValue * consignmentValue;
                     }
@@ -604,7 +604,7 @@ public class ConsoleService {
                         boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                                 console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), 0L);
 
-                        if(duplicateConsole) {
+                        if (duplicateConsole) {
                             throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
                         }
 
@@ -685,68 +685,68 @@ public class ConsoleService {
         return createdConsoleList;
     }
 
-     /**
-         * Create Console
-         *
-         * @param addConsoleList
-         * @param loginUserID
-         * @return
-         * @throws IllegalAccessException
-         * @throws InvocationTargetException
-         * @throws IOException
-         * @throws CsvException
-         */
-        @Transactional
-        public List<Console> createConsoleNormal(List<AddConsole> addConsoleList, String loginUserID)
-                throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-            try {
-                List<Console> createdConsoleList = new ArrayList<>();
+    /**
+     * Create Console
+     *
+     * @param addConsoleList
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws IOException
+     * @throws CsvException
+     */
+    @Transactional
+    public List<Console> createConsoleNormal(List<AddConsole> addConsoleList, String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        try {
+            List<Console> createdConsoleList = new ArrayList<>();
 
-                for (AddConsole addConsole : addConsoleList) {
+            for (AddConsole addConsole : addConsoleList) {
 
-                    boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
-                            addConsole.getLanguageId(), addConsole.getCompanyId(),
-                            addConsole.getPartnerId(), addConsole.getMasterAirwayBill(),
-                            addConsole.getHouseAirwayBill()) == 1;
-                    if (duplicateConsole) {
-                        throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addConsole.getHouseAirwayBill());
-                    }
-
-                    Console newConsole = new Console();
-                    BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
-
-                    String STATUS_ID = "2 - Console Created";
-
-                    String NUM_RAN_OBJ = "CONSOLEID";
-                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
-                    newConsole.setConsoleId(CONSOLE_ID);
-
-                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
-                            addConsole.getLanguageId(), addConsole.getCompanyId());
-
-                    if (lAndCDesc != null) {
-                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
-                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
-                    }
-                    newConsole.setStatusId(STATUS_ID);
-                    newConsole.setDeletionIndicator(0L);
-                    newConsole.setCreatedBy(loginUserID);
-                    newConsole.setCreatedOn(new Date());
-                    newConsole.setUpdatedBy(loginUserID);
-                    newConsole.setUpdatedOn(new Date());
-
-                    Console createdConsole = consoleRepository.save(newConsole);
-                    createdConsoleList.add(createdConsole);
+                boolean duplicateConsole = replicaConsoleRepository.duplicateExists(
+                        addConsole.getLanguageId(), addConsole.getCompanyId(),
+                        addConsole.getPartnerId(), addConsole.getMasterAirwayBill(),
+                        addConsole.getHouseAirwayBill()) == 1;
+                if (duplicateConsole) {
+                    throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addConsole.getHouseAirwayBill());
                 }
-                return createdConsoleList;
-            } catch (Exception e) {
-                // Error Log
-                createConsoleLog2(addConsoleList, e.toString());
-                e.printStackTrace();
-                throw new RuntimeException(e);
+
+                Console newConsole = new Console();
+                BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
+
+                String STATUS_ID = "2 - Console Created";
+
+                String NUM_RAN_OBJ = "CONSOLEID";
+                String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
+                newConsole.setConsoleId(CONSOLE_ID);
+
+                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                        addConsole.getLanguageId(), addConsole.getCompanyId());
+
+                if (lAndCDesc != null) {
+                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                }
+                newConsole.setStatusId(STATUS_ID);
+                newConsole.setDeletionIndicator(0L);
+                newConsole.setCreatedBy(loginUserID);
+                newConsole.setCreatedOn(new Date());
+                newConsole.setUpdatedBy(loginUserID);
+                newConsole.setUpdatedOn(new Date());
+
+                Console createdConsole = consoleRepository.save(newConsole);
+                createdConsoleList.add(createdConsole);
             }
+            return createdConsoleList;
+        } catch (Exception e) {
+            // Error Log
+            createConsoleLog2(addConsoleList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
 
 
     /**
@@ -778,12 +778,12 @@ public class ConsoleService {
 
                 Console updatedConsole = consoleRepository.save(dbConsole);
 
-                if(updateConsole.getEventCode() != null) {
+                if (updateConsole.getEventCode() != null) {
                     if ((updatedConsole.getEventCode()).equalsIgnoreCase("8")) {
                         //Fetch the console records based on houseAirwayBill
                         List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
-                        if(consoleData != null && !consoleData.isEmpty()) {
+                        if (consoleData != null && !consoleData.isEmpty()) {
                             //Check whether all the consoleData's eventcode is equal to 8
                             boolean allEventCodes = consoleData.stream()
                                     .allMatch(console -> "8".equalsIgnoreCase(console.getEventCode()));

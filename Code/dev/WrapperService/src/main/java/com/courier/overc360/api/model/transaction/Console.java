@@ -99,7 +99,7 @@ public class Console {
 
     private String countryOfOrigin;
 
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     private String airportOriginCode;
 

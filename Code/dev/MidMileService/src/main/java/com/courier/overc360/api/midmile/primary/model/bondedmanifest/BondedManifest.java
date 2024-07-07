@@ -72,7 +72,7 @@ public class BondedManifest {
     private String statusText;
 
     @Column(name = "NO_OF_PACKAGES_MAWB", columnDefinition = "nvarchar(50)")
-    private String noOfPackagesMawb;
+    private String noOfPackageMawb;
 
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
@@ -252,7 +252,7 @@ public class BondedManifest {
     private String lineNo;
 
     @Column(name = "NO_OF_PIECES_HAWB", columnDefinition = "nvarchar(50)")
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     @Column(name = "CONSIGNEE_CIVIL_ID", columnDefinition = "nvarchar(50)")
     private String consigneeCivilId;
