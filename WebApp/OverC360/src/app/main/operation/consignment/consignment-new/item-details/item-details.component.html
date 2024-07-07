@@ -6,32 +6,31 @@
   </div>
   <div class="mt-4">
     <form [formGroup]="itemForm" class="mt-1 mx-3">
-      <p-table [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
+      <p-table [scrollable]="true" class="paddingZero" scrollHeight="calc(100vh - 24.8rem)"
         [value]="itemDetails.controls" >
         <ng-template pTemplate="header">
           <tr>
-            <th >Description</th>
-            <th >Product Code</th>
             <th >HS Code</th>
-            <th >Declared Value</th>
-            <th >COD Amount</th>
+            <th >Description</th>
+            <th >Qty</th>
+            <th >Unit Value</th>
+            <th >Total Value</th>
+            <th >Currency</th>
             <th >Actions</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item let-i="rowIndex"  let-rowData>
           <tr [formGroup]="item">
+            <td>
+              <p-dropdown [options]="hsCodeList" placeholder="Select" filter="true"
+              formControlName="hsCode" appendTo="body"
+              [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+            </td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="description"></td>
-            <td ><input class="inputborderLess pl-3" placeholder="Enter" formControlName="itemCode"></td>
-            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode"></td>
+            <td ><input class="inputborderLess pl-3" placeholder="Enter" formControlName="quantity"></td>
+            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="unitValue"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="declaredValue"></td>
-            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="codAmount"></td>
-            <!-- <td class="d-flex justify-content-center">
-              <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png" alt="" srcset=""
-                style="height: 1.5rem;">
-                <i type="button" class="bi-chevron-up textBlack pl-3" style="font-size: 1.2rem;"
-                (click)="dimension(this.data.pageflow, 'item', i)"></i> 
-            </td> -->
-
+            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="currency"></td>
             <td>
               <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                   alt="" srcset="" style="height: 1.4rem;">

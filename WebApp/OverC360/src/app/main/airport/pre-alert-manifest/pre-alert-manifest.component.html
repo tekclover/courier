@@ -51,6 +51,18 @@
                             [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Console Status</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="indicatorDropdown"
+                            formControlName="consoleIndicator" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Manifest Status</p>
+                        <p-multiSelect placeholder="Select" selectionLimit="1" filter="true" [options]="indicatorDropdown"
+                            formControlName="manifestIndicator" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
                         <p-multiSelect placeholder="Select" filter="true" [options]="statusDropdown"
                             formControlName="statusId" appendTo="body" [style]="{'width': '100%'}"
