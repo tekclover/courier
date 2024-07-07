@@ -598,6 +598,7 @@ export class ConsignmentNewComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
+      // obj.customerId = [this.shipmentInfo.controls.customerId];
 
       this.partnerNameList = [];
       this.spin.show();
@@ -617,6 +618,7 @@ export class ConsignmentNewComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
+      // obj.consignorId = [this.shipmentInfo.controls.consignorId];
 
       this.partnerNameList = [];
       this.spin.show();
