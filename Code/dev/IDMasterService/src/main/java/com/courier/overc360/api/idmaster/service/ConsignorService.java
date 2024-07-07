@@ -427,6 +427,7 @@ public class ConsignorService {
                     newConsignor.setProductName(iKeyValuePair.getProductDesc());
                     newConsignor.setCustomerName(iKeyValuePair.getCustomerDesc());
                     newConsignor.setReferenceField1(iKeyValuePair.getSubProductValue());
+                    newConsignor.setProductText(iKeyValuePair.getProductText());
                 }
                 if (updateConsignor.getStatusId() != null && !updateConsignor.getStatusId().isEmpty()) {
                     String statusDesc = replicaStatusRepository.getStatusDescription(updateConsignor.getStatusId());
