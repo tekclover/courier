@@ -55,6 +55,8 @@ public class AddConsignment {
 
     private String subProductId;
 
+    private String airportDestinationCode;
+
 //    private String subProductName;
 
     private String serviceTypeId;

@@ -50,8 +50,8 @@ export class MainComponent {
   isMobile = true;
 
 
-  constructor(private observer: BreakpointObserver, private path: PathNameService, private router: Router,
-    private cdRef: ChangeDetectorRef, private auth: AuthService, private titleService: Title, private activatedRoute: ActivatedRoute,
+  constructor(private observer: BreakpointObserver, private path: PathNameService, private router: Router, 
+    private cdRef: ChangeDetectorRef, public auth: AuthService, private titleService: Title, private activatedRoute: ActivatedRoute,
   ) {
 
     this.router.events.pipe(

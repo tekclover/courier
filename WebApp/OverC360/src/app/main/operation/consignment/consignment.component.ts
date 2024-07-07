@@ -13,6 +13,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ConsignmentUpdatebulkComponent } from './consignment-updatebulk/consignment-updatebulk.component';
 
 @Component({
   selector: 'app-consignment',
@@ -61,7 +62,7 @@ export class ConsignmentComponent {
       { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem' },
       { field: 'countryOfDestination', header: 'Destination', style: 'min-width: 5rem' },
       { field: 'serviceTypeText', header: 'Service Type', style: 'min-width: 5rem' },
-      { field: 'loadType', header: 'Document Type', style: 'min-width: 5rem' },
+      { field: 'description', header: 'Document Type', style: 'min-width: 5rem' },
       { field: 'paymentType', header: 'Payment Type', style: 'min-width: 5rem' },
       { field: 'incoTerms', header: 'Inco Terms', style: 'min-width: 5rem' },
       { field: 'createdBy', header: 'Created By', style: 'min-width: 5rem' },
@@ -98,6 +99,7 @@ export class ConsignmentComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
+  //  obj.houseAirwayBill = [20000000232]
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.consignmentTable = res;
@@ -132,7 +134,19 @@ export class ConsignmentComponent {
       }
     });
   }
+  updateBulk(){
+    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: {title: 'Consignment',code :  this.selectedConsignment} ,
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+   this.initialCall();
+    });
+}
   openCrud(type: any = 'New', linedata: any = null): void {
     if (this.selectedConsignment.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
@@ -166,7 +180,7 @@ export class ConsignmentComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedConsignment[0]);
+        this.deleterecord(this.selectedConsignment);
       }
     });
   }
@@ -179,7 +193,7 @@ export class ConsignmentComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.consignmentId + ' Deleted successfully',
+          detail:  'Selected records deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
@@ -287,7 +301,7 @@ export class ConsignmentComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({

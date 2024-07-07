@@ -317,7 +317,7 @@
 
                     </div>
                 </form>
-                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                     <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="saveShipment()">Next</button>
                 </div>
@@ -533,7 +533,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                     </div>
-                    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                         <button class="buttom1 bgBlack text-white mx-1" (click)="saveConsignment()">Next</button>
                     </div>
@@ -546,13 +546,12 @@
                         [value]="this.piece.controls.pieceDetails.controls">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th *ngIf="this.pageToken.pageflow != 'New'">Piece ID</th>
+                                <th *ngIf="this.pageToken.pageflow != 'New'">Piece No</th>
                                 <th>Description</th>
-                                <th>HS Code</th>
-                                <th>Piece Value</th>
-                                <th>Piece Currency</th>
-                                <th>Declared Value</th>
-                                <th>COD Amount</th>
+                                <th>Product Type</th>
+                                <th>No of Items</th>
+                                <th>Total Value</th>
+                                <th>Currency</th>
                                 <th style="min-width: 9rem; justify-content: center;">
                                     Actions</th>
                             </tr>
@@ -561,26 +560,22 @@
                             <tr [formGroup]="item">
 
                                 <td *ngIf="this.pageToken.pageflow != 'New'"><input class="inputborderLess pl-3"
-                                        placeholder="Enter" [value]="i" formControlName="pieceId"></td>
+                                        placeholder="Enter" [value]="i" formControlName="packReferenceNumber"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="description"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode">
+                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="pieceProductCode">
                                 </td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                        formControlName="tags"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="pieceValue"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="pieceCurrency"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="declaredValue"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="codAmount">
-                                </td>
                                 <td>
                                     <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                                         alt="" srcset="" style="height: 1.4rem;">
                                     <p-overlayPanel [style]="{ width: '180' }" #op>
                                         <div class="d-flex flex-column">
-                                            <!-- <input type="file" #fileInput multiple style="display:none"
-                                                (change)="selectFiles($event, rowData)" /> -->
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
                                                 (click)="dimension(this.pageToken.pageflow, 'piece', i)"><img
                                                     src="./assets/common/dimension.png"
@@ -605,12 +600,12 @@
                         </ng-template>
                     </p-table>
                 </form>
-                <div class="d-flex mt-1 justify-content-center" style="position: absolute; right: 50%; bottom: 5%;">
+                <div class="d-flex mt-1 justify-content-center" style="position: absolute; right: 50%; bottom: 7%;">
                     <button (click)="addPieceDetail()" type="button"
                         class="btn ml-2 addNewbuttom bgOrange text-white"><i class="bi bi-plus-square pr-2"></i> Add
                         New</button>
                 </div>
-                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="savePiece()">Next</button>
                 </div>
@@ -765,7 +760,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="saveSender()">Next</button>
                 </div>
@@ -934,7 +929,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                     </div>
-                    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                         <button class="buttom1 bgBlack text-white mx-1" (click)="saveDelivery()">Next</button>
                     </div>
@@ -1112,14 +1107,14 @@
                             <mat-error *ngIf="errorHandlingBilling('codCollectionMode')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        <div class="col-3 marginFieldNew borderRadius12" id="declaredValueWithoutTax">
-                            <p class="formControlLabel f600 textBlack mb-0">Declared Value Without Tax </p>
-                            <input maxlength="50" formControlName="declaredValueWithoutTax"
-                                [ngClass]="senderInfo.get('declaredValueWithoutTax')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('declaredValueWithoutTax')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div> 
+                    <!-- <div class="col-3 marginFieldNew borderRadius12" id="declaredValueWithoutTax">
+                    <p class="formControlLabel f600 textBlack mb-0">Declared Value Without Tax </p>
+                    <input maxlength="50" formControlName="declaredValueWithoutTax"
+                        [ngClass]="senderInfo.get('declaredValueWithoutTax')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                        class=" w-100" pInputText placeholder="Enter" />
+                    <mat-error *ngIf="errorHandlingBilling('declaredValueWithoutTax')"
+                        class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                </div> 
                         <!-- <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Amount </p>
                             <input maxlength="50" formControlName="invoiceAmount"
@@ -1162,7 +1157,7 @@
                         </div> -->
                     </div>
                 </form>
-                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
                     <button class="buttom1 bgBlack text-white mx-1" (click)="saveBilling()">Save</button>
                 </div>
@@ -1192,7 +1187,7 @@
     
         </div>
     </form>
-    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 5%;">
+    <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
         <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
         <button class="buttom1 bgBlack text-white mx-1" (click)="saveCarrier()">Next</button>
     </div>

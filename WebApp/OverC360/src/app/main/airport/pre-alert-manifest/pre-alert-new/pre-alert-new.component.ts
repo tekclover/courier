@@ -196,7 +196,7 @@ this.form.controls.estimatedDepartureTime.patchValue(date)
       this.spin.show()
       this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: 'It has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].consignmentId + ' has been updated successfully' });
           this.router.navigate(['/main/airport/preAlertManifest']);
           this.spin.hide();
         }, error: (err) => {

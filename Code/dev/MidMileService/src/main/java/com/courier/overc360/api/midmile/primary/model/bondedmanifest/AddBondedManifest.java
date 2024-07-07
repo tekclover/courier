@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.primary.model.bondedmanifest;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -24,15 +25,33 @@ public class AddBondedManifest {
     @NotBlank(message = "House Airway Bill is mandatory")
     private String houseAirwayBill;
 
+    private String  bondedId;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String companyName;
+
     private String partnerType;
 
     private String partnerName;
+
+    private String statusId;
+
+    private String statusText;
+
+    private String noOfPackageMawb;
 
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
-    private String noOfPackagesMawb;
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String description;
 
@@ -51,10 +70,6 @@ public class AddBondedManifest {
     private String totalQuantity;
 
     private String volume;
-
-    private String primaryDo;
-
-    private String secondaryDo;
 
     private String finalDestination;
 
@@ -77,20 +92,6 @@ public class AddBondedManifest {
     private String shipperId;
 
     private String shipperName;
-
-    private String paymentType;
-
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
-
-    private String consolidatedBillNo;
-
-    private String billOfLoadingFor;
 
     private String remarks;
 
@@ -146,7 +147,23 @@ public class AddBondedManifest {
 
     private String countryOfOrigin;
 
-    private String noOfPiecesHawb;
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private Long deletionIndicator = 0L;
+
+    private String lineNo;
+
+    private String noOfPieceHawb;
 
     private String consigneeCivilId;
 
@@ -177,6 +194,8 @@ public class AddBondedManifest {
     private String actualCurrency;
 
     private String totalDuty;
+
+    private String specialApprovalValue;
 
     private String declaredValue;
 

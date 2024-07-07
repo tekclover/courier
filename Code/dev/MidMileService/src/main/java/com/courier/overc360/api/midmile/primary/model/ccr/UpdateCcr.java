@@ -32,7 +32,23 @@ public class UpdateCcr {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String companyName;
+
+    private String languageDescription;
+
     private String partnerType;
+
+    private String partnerName;
+
+    private String statusId;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String paymentType;
 
@@ -40,15 +56,9 @@ public class UpdateCcr {
 
     private String eventText;
 
-    private String primaryDo;
-
-    private String secondaryDo;
-
     private Date eventTimestamp;
 
     private Date statusTimestamp;
-
-    private String partnerName;
 
     private String partnerHouseAirwayBill;
 
@@ -56,15 +66,11 @@ public class UpdateCcr {
 
     private String noOfPackageMawb;
 
+    private String bondedId;
+
     private String description;
 
     private String netWeight;
-
-    private String manifestedGrossWeight;
-
-    private String grossWeight;
-
-    private String tareWeight;
 
     private String manifestedQuantity;
 
@@ -78,11 +84,27 @@ public class UpdateCcr {
 
     private String notifyParty;
 
-    private String consigneeName;
+    private String productId;
+
+    private String productName;
+
+    private String subProductId;
+
+    private String subProductName;
+
+    private String serviceTypeId;
+
+    private String serviceTypeName;
 
     private String shipperId;
 
     private String shipperName;
+
+    private String manifestedGrossWeight;
+
+    private String grossWeight;
+
+    private String tareWeight;
 
     private String remarks;
 
@@ -118,17 +140,7 @@ public class UpdateCcr {
 
     private String iataKd;
 
-    private String productId;
-
-    private String productName;
-
-    private String subProductId;
-
-    private String subProductName;
-
-    private String serviceTypeId;
-
-    private String serviceTypeName;
+    private String consigneeName;
 
     private String consigneeCivilId;
 
@@ -150,7 +162,7 @@ public class UpdateCcr {
 
     private String freightCurrency;
 
-    private String freightCharges;
+    private  String freightCharges;
 
     private String declaredValue;
 
@@ -168,7 +180,7 @@ public class UpdateCcr {
 
     private String flightArrivalTime;
 
-    private Long deletionIndicator;
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 

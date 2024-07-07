@@ -101,6 +101,8 @@ public class AddConsignment {
 
     private String netWeight;
 
+    private String airportDestinationCode;
+
     private String grossWeight;
 
     private String notifyParty;

@@ -13,14 +13,17 @@
                 style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
             <p-overlayPanel [style]="{ width: '180' }" #op>
                 <div class="d-flex flex-column">
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="uploadBayan()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload
                         Bayan</button>
-                        
                 </div>
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100"(click)="updateBulk()" ><img
                        src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
+                 </div>
+                 <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel()" ><img
+                       src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Label  </button>
                  </div>
             </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
@@ -41,6 +44,12 @@
             <form [formGroup]="searchform" style="padding: 2rem;">
                 <div class="row">
                     <div class="col-3 mb-3 borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">CCR ID</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="ccrIdDropdown"
+                            formControlName="ccrId" appendTo="body" [style]="{'width': '100%'}"
+                            [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
                         <p-multiSelect placeholder="Select" filter="true" [options]="masterAirwayBillDropdown"
                             formControlName="masterAirwayBill" appendTo="body" [style]="{'width': '100%'}"
@@ -59,23 +68,17 @@
                             [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">CCR ID</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="ccrIdDropdown"
-                            formControlName="ccrId" appendTo="body" [style]="{'width': '100%'}"
-                            [panelStyle]="{'width':'100%'}" />
-                    </div>
-                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Console ID</p>
                         <p-multiSelect placeholder="Select" filter="true" [options]="consoleIdDropdown"
-                            formControlName="ConsoleId" appendTo="body" [style]="{'width': '100%'}"
+                            formControlName="consoleId" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
                     </div>
-                    <div class="col-3 mb-3 borderRadius12">
+                    <!-- <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
                         <p-multiSelect placeholder="Select" filter="true" [options]="statusDropdown"
                             formControlName="statusId" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
-                    </div>
+                    </div> -->
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>
@@ -95,7 +98,7 @@
 
     <div class="tableProperties">
         <p-table #ccrTag [columns]="cols" [value]="ccrTable" class="custom-table" [scrollable]="true"
-            selectionMode="multiple" [(selection)]="selectedCcr" sortField="createdOn" [sortOrder]="-1"
+            selectionMode="single"  sortField="createdOn" [sortOrder]="-1"
             scrollHeight="calc(100vh - 18.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
             sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
@@ -104,10 +107,10 @@
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
-                        <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
+                      <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
                     </th>
                     <th style="width: 5rem;">
-                        <p-tableHeaderCheckbox class="pl-3 invisible" [disabled]="true"></p-tableHeaderCheckbox>
+                        Actions
                     </th>
                     <th *ngFor="let col of columns">
                         {{ col.header }}
@@ -115,9 +118,10 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                <tr [ngClass]="{'selectedRow': isSelected(rowData)}">
+                <tr [class.selectedRow]="selectedCcr[0] === rowData">
                     <td style="width: 5rem; justify-content: center;">
-                        <p-tableCheckbox class="pl-3" [value]="rowData" />
+                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedCcr" class="pl-3"
+                            [value]="rowData"></p-checkbox>
                     </td>
                     <td style="width: 5rem; justify-content: center;">
                         <i style="font-size: 14px;" [pRowToggler]="rowData"
@@ -128,7 +132,7 @@
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                            {{ rowData.createdOn | date: 'dd-MM-yyyy' }}
+                            {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm'   }}
                         </ng-template>
                     </td>
                 </tr>

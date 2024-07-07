@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CcrService } from './ccr.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
@@ -14,6 +14,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsoleBulkComponent } from '../console/console-bulk/console-bulk.component';
+import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-ccr',
@@ -22,7 +23,7 @@ import { ConsoleBulkComponent } from '../console/console-bulk/console-bulk.compo
 })
 export class CcrComponent {
 
-
+  actualResult: any[] = [];
   ccrTable: any[] = [];
   selectedCcr: any[] = [];
   cols: any[] = [];
@@ -30,7 +31,7 @@ export class CcrComponent {
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, private service: CcrService,
     public dialog: MatDialog, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder, private spin: NgxSpinnerService,
-  ) { }
+  private label: ConsignmentLabelComponent) { }
 
   fullDate: any;
   today: any;
@@ -51,8 +52,8 @@ export class CcrComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'eventText', header: 'Event' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -86,6 +87,9 @@ export class CcrComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           this.ccrTable = res;
+          this.actualResult = res;
+          this.ccrTable =  this.cs.removeDuplicatesFromArrayList(this.ccrTable, 'ccrId')
+          this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -141,15 +145,15 @@ export class CcrComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedCcr[0]);
+        this.deleterecord(this.selectedCcr);
       }
     });
   }
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete([lines]).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
@@ -190,9 +194,18 @@ export class CcrComponent {
     return this.selectedCcr.includes(item);
   }
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  
+  uploadBayan(){
+    if (this.selectedCcr.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    this.fileInput.nativeElement.click();
+  }
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
-    const filePath = 'dd';
+    const filePath = this.selectedCcr[0].ccrId + '/';
     const file: File = event.target.files[0];
     this.selectedFiles = file;
     this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
@@ -270,7 +283,7 @@ export class CcrComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -303,6 +316,12 @@ export class CcrComponent {
   chipClear(value: any) {
     this.searchform.get(value.value)?.reset();
     this.search();
+  }
+
+  generateLabel(){
+   const filterResult = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'houseAirwayBill');
+   console.log(filterResult)
+    this.label.generatePdfBarocdeMutiple(filterResult);
   }
 
 }

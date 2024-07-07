@@ -30,6 +30,10 @@ public class UpdateConsignment {
 
     private String houseAirwayBill;
 
+    private String noOfPackageMawb;
+
+    private String noOfPackageHawb;
+
     private String noOfPieceHawb;
 
     private String shipperId;
@@ -207,6 +211,8 @@ public class UpdateConsignment {
     private String upstreamCreationTime;
 
     private String upstreamCreationSource;
+
+    private String airportDestinationCode;
 
     private String allocationTime;
 

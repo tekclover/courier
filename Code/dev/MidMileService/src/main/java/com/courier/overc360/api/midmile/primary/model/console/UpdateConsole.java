@@ -104,11 +104,29 @@ public class UpdateConsole {
 
     private String countryOfOrigin;
 
-    private String noOfPiecesHawb;
+    private String noOfPieceHawb;
 
     private String airportOriginCode;
 
     private String customsKd;
+
+    private String noOfPackageMawb;
+
+    private String companyName;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String statusId;
+
+    private String statusText;
+
+    private String bondedId;
+
+    private Long shipmentBagId;
 
     private String consignmentCurrency;
 

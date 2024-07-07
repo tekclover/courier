@@ -69,12 +69,12 @@ export class PreAlertManifestComponent {
       { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'description', header: 'Commodity' },
+      { field: 'goodsDescription', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code', format: 'code'},
       { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
       { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },
-      { field: 'eventCode', header: 'Event' },
+      { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -105,10 +105,10 @@ export class PreAlertManifestComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
+    this.service.searchPrealert(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.preAlertManifestTable = res;
+        this.getSearchDropdown();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -167,7 +167,7 @@ export class PreAlertManifestComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedPreAlertManifest[0]);
+        this.deleterecord(this.selectedPreAlertManifest);
       }
     });
   }
@@ -176,7 +176,7 @@ export class PreAlertManifestComponent {
     this.spin.show();
     this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail:  'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
@@ -254,6 +254,8 @@ export class PreAlertManifestComponent {
     partnerId: [],
     pieceId: [],
     pieceItemId: [],
+    manifestIndicator: [],
+    consoleIndicator: [],
     shipperId: [],
     statusId: [],
     companyId: [[this.auth.companyId],],
@@ -264,7 +266,8 @@ export class PreAlertManifestComponent {
   masterAirwayBillDropdown: any = [];
   partnerDropdown: any = [];
   statusDropdown: any = [];
-
+  indicatorDropdown: any = [];
+  
   getSearchDropdown() {
 
     this.preAlertManifestTable.forEach(res => {
@@ -286,7 +289,7 @@ export class PreAlertManifestComponent {
         this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'statusId');
       }
     })
-    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+      this.indicatorDropdown = [{ value: 1, label: 'Created' }, { value: 0, label: 'Not Created' }];
   }
 
   @ViewChild('preAlertManifest') overlayPanel!: OverlayPanel;
@@ -299,12 +302,13 @@ export class PreAlertManifestComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
 
     this.spin.show();
-    this.service.search(this.searchform.getRawValue()).subscribe({
+    this.service.searchPrealert(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
         this.preAlertManifestTable = res;
+        this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'masterAirwayBill')
         this.spin.hide();
         this.overlayPanel.hide();
       },
@@ -325,6 +329,8 @@ export class PreAlertManifestComponent {
       pieceItemId: [],
       shipperId: [],
       statusId: [],
+      manifestIndicator: [],
+      consoleIndicator: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
     })

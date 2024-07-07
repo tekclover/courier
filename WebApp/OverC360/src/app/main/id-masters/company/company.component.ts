@@ -20,8 +20,6 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class CompanyComponent {
 
-
-
   companyTable: any[] = [];
   selectedCompany: any[] = [];
   cols: any[] = [];
@@ -220,68 +218,103 @@ export class CompanyComponent {
     this.cs.exportAsExcel(exportData, 'Company');
   }
 
-  searhform = this.fb.group({
-    cityId: [''],
-    companyId: [''],
-    countryId: [''],
-    districtId: [''],
-    languageId: [''],
-    provinceId: [''],
-    statusId: [''],
+  searchform = this.fb.group({
+    countryId: [],
+    provinceId: [],
+    districtId: [],
+    cityId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
   })
 
+  languageDropdown: any = [];
   companyDropdown: any = [];
-  countryDropdown:any = [];
-  districtDropdown:any = [];
-  provinceDropdown:any = [];
-  statusDropdown:any = [];
+  countryDropdown: any = [];
+  provinceDropdown: any = [];
+  districtDropdown: any = [];
+  cityDropdown: any = [];
+  statusDropdown: any = [];
 
   getSearchDropdown() {
+
     this.companyTable.forEach(res => {
 
-      if(res.companyId != null){
-        const company  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
-        this.companyDropdown.push({value: company.companyId, label: company.companyName});
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
       }
-      
-      if(res.countryId != null){
-        const country  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
-        this.countryDropdown.push({value: country.countryId, label: country.countryName});
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
       }
-
-      if(res.districtId != null){
-        const district  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
-        this.districtDropdown.push({value: district.districtId, label: district.districtName});
+      if (res.countryId != null) {
+        this.countryDropdown.push({ value: res.countryId, label: res.countryName });
+        this.countryDropdown = this.cs.removeDuplicatesFromArrayList(this.countryDropdown, 'value');
       }
-
-      if(res.provinceId != null){
-        const provinceId  = this.cs.removeDuplicatesFromArrayList(res, 'provinceId');
-        this.provinceDropdown.push({value: provinceId.provinceId, label: provinceId.provinceName});
+      if (res.provinceId != null) {
+        this.provinceDropdown.push({ value: res.provinceId, label: res.provinceName });
+        this.provinceDropdown = this.cs.removeDuplicatesFromArrayList(this.provinceDropdown, 'value');
       }
-    
+      if (res.districtId != null) {
+        this.districtDropdown.push({ value: res.districtId, label: res.districtName });
+        this.districtDropdown = this.cs.removeDuplicatesFromArrayList(this.districtDropdown, 'value');
+      }
+      if (res.cityId != null) {
+        this.cityDropdown.push({ value: res.cityId, label: res.cityName });
+        this.cityDropdown = this.cs.removeDuplicatesFromArrayList(this.cityDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
     })
-    this.statusDropdown = [{ value: '17', label: 'Inactive' },{ value: '16', label: 'Active' }];
-  }
-  
-  @ViewChild('company') overlayPanel!: OverlayPanel;
-  closeOverLay(){
-    this.overlayPanel.hide()
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
-  search(){
+  @ViewChild('company') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
     this.spin.show();
-      this.service.search(this.searhform.getRawValue()).subscribe({
-        next: (res: any) => {
-          console.log(res);
-          this.companyTable = res;
-          this.getSearchDropdown();
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.companyTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      countryId: [],
+      provinceId: [],
+      districtId: [],
+      cityId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
   }
 
 }

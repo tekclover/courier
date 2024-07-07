@@ -18,8 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     Optional<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String subProductValue, String productId, Long deletionIndicator);
 
-    Product findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndDeletionIndicator(
-            String languageId, String companyId, String productId, String subProductId, Long deletionIndicator);
+    Product findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+            String languageId, String companyId, String productId, String subProductId, String subProductValue, Long deletionIndicator);
 
     List<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);

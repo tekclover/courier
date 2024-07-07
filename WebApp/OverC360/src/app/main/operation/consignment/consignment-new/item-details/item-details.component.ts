@@ -64,6 +64,9 @@ export class ItemDetailsComponent {
       weight: [],
       weightUnit: [],
       width: [],
+      quantity: [''],
+      unitValue: [''],
+      currency: [''],
       referenceImageList: this.fb.array([]),
     });
   }
@@ -71,6 +74,7 @@ export class ItemDetailsComponent {
     this.itemDetails.removeAt(index);
   }
   ngOnInit() {
+    this.dropdownlist();
     this.patchForm(this.data.line.value)
   }
   save() {
@@ -128,7 +132,10 @@ export class ItemDetailsComponent {
       volumeUnit: [item.volumeUnit],
       weight: [item.weight],
       weightUnit: [item.weightUnit],
-      width: [item.width]
+      width: [item.width],
+      quantity: [item.quantity],
+      unitValue: [item.unitValue],
+      currency: [item.currency],
     });
   }
 
@@ -182,5 +189,23 @@ export class ItemDetailsComponent {
           console.log(this.itemForm)
         }
       })
+    }
+
+    hsCodeList: any[] = [];
+    
+    dropdownlist() {
+      this.spin.show();
+      this.cas.getalldropdownlist([
+        this.cas.dropdownlist.setup.hsCode.url,
+      ]).subscribe({
+        next: (results: any) => {
+          this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[0], this.cas.dropdownlist.setup.hsCode.key);
+          this.spin.hide();
+        },
+        error: (err: any) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
 }

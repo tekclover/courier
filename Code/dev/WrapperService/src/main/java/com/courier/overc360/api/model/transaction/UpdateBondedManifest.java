@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -17,23 +18,33 @@ public class UpdateBondedManifest {
 
     private String houseAirwayBill;
 
-    private String bondedId;
+    private String  bondedId;
 
-    private String paymentType;
+    private String pieceId;
 
-    private String consolidatedBillNo;
+    private String pieceItemId;
 
-    private String billOfLadingFor;
+    private String languageDescription;
+
+    private String companyName;
 
     private String partnerType;
 
     private String partnerName;
 
+    private String statusId;
+
+    private String statusText;
+
+    private String noOfPackageMawb;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
-    private String noOfPackagesMawb;
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String description;
 
@@ -59,21 +70,13 @@ public class UpdateBondedManifest {
 
     private String consigneeName;
 
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
-
-    private String billOfLoadingFor;
-
     private String productId;
 
     private String productName;
 
     private String subProductId;
+
+    private String subProductName;
 
     private String serviceTypeId;
 
@@ -137,11 +140,23 @@ public class UpdateBondedManifest {
 
     private String countryOfOrigin;
 
-    private Long deletionIndicator;
+    private String paymentType;
 
-    private String noOfPiecesHawb;
+    private String eventCode;
 
-    private String subProductName;
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private Long deletionIndicator = 0L;
+
+    private String lineNo;
+
+    private String noOfPieceHawb;
 
     private String consigneeCivilId;
 
@@ -173,9 +188,13 @@ public class UpdateBondedManifest {
 
     private String totalDuty;
 
+    private String specialApprovalValue;
+
     private String declaredValue;
 
     private String currency;
+
+    private String billOfLadingFor;
 
     private String referenceField1;
 

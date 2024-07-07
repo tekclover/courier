@@ -154,7 +154,7 @@ export class UserRoleNewComponent {
 
       this.spin.show();
       console.log(data)
-      this.moduleService.search({languageId: [this.auth.languageId], companyId: this.auth.companyId}).subscribe(moduleRes => {
+      this.moduleService.search({languageId: [this.auth.languageId], companyId: [this.auth.companyId]}).subscribe(moduleRes => {
         // this.sub.add(this.service.Get(data.roleId + this.auth.languageId + this.auth.companyId).subscribe(res => {
         //   this.form.patchValue(res[0]);
         //   let combined = this.cs.removeDuplicateObj(res, moduleRes);
@@ -303,7 +303,7 @@ export class UserRoleNewComponent {
   }
 
   onCompanyChange(value: any) {
-    this.moduleService.search({companyId: value.value, languageId: [this.auth.languageId]}).subscribe(res => {
+    this.moduleService.search({companyId: [value.value], languageId: [this.auth.languageId]}).subscribe(res => {
       this.moduleResult = [];
       this.moduleResult.push(res);
       this.menuList = [];
@@ -367,9 +367,9 @@ export class UserRoleNewComponent {
     this.spin.show();
 
     if (this.pageToken.pageflow != 'New') {
-      this.service.Update(this.form.getRawValue()).subscribe({
+      this.service.Update(data).subscribe({
         next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.roleId.value + 'has been updated successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].roleId.value + 'has been updated successfully' });
         this.router.navigate(['/main/idMaster/userrole'])
         this.spin.hide();
       }, error: (err) => {
@@ -379,10 +379,10 @@ export class UserRoleNewComponent {
       }
     });
     } else {
-      this.service.Create(this.form.getRawValue()).subscribe({
+      this.service.Create(data).subscribe({
         next: (res) => {
         if(res) {
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.roleId.value + 'has been created successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res[0].roleId.value + 'has been created successfully' });
           this.router.navigate(['/main/idMaster/userrole']);
           this.spin.hide();
         }
@@ -397,14 +397,14 @@ export class UserRoleNewComponent {
   };
 
   getModuleId() {
-    this.moduleService.search({companyId: this.auth.companyId, languageId: [this.auth.languageId]}).subscribe(res => {
+    this.moduleService.search({companyId: [this.auth.companyId], languageId: [this.auth.languageId]}).subscribe(res => {
       this.moduleResult = [];
       this.moduleResult = res;
 
       this.menuList = [];
       this.menuList.push({
         mainMenu: "Setup",
-        Menu: this.moduleResult.filter((x: any) => x.moduleId == 2000)
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 2)
       });
       this.menuList.push({
         mainMenu: "Masters",
@@ -438,7 +438,7 @@ export class UserRoleNewComponent {
   }
 
   getModuleIDSuperAdmin() {
-    this.moduleService.search({companyId: this.form.controls.companyId.value, languageId: this.form.controls.languageId.value}).subscribe(res => {
+    this.moduleService.search({companyId: [this.form.controls.companyId.value], languageId: this.form.controls.languageId.value}).subscribe(res => {
       this.moduleResult = [];
       this.moduleResult.push(res);
       this.menuList = [];

@@ -187,6 +187,7 @@ export class BondedManifestNewComponent {
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+      this.form.controls.bondedId.disable();
     }
   }
 
@@ -249,7 +250,7 @@ export class BondedManifestNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: 'Record has been updated successfully',
+            detail:  res[0].bondedId + ' has been updated successfully',
           });
           this.router.navigate(['/main/airport/bondedManifest']);
           this.spin.hide();

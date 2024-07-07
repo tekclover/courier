@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -17,15 +18,33 @@ public class AddBondedManifest {
 
     private String houseAirwayBill;
 
+    private String  bondedId;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String companyName;
+
     private String partnerType;
 
     private String partnerName;
+
+    private String statusId;
+
+    private String statusText;
+
+    private String noOfPackageMawb;
 
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
-    private String noOfPackagesMawb;
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String description;
 
@@ -68,20 +87,6 @@ public class AddBondedManifest {
     private String shipperName;
 
     private String remarks;
-
-    private String paymentType;
-
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
-
-    private String consolidatedBillNo;
-
-    private String billOfLoadingFor;
 
     private String isConsolidatedShipment;
 
@@ -135,7 +140,23 @@ public class AddBondedManifest {
 
     private String countryOfOrigin;
 
-    private String noOfPiecesHawb;
+    private String paymentType;
+
+    private String eventCode;
+
+    private String eventText;
+
+    private Date eventTimestamp;
+
+    private Date statusTimestamp;
+
+    private String consolidatedBillNo;
+
+    private Long deletionIndicator = 0L;
+
+    private String lineNo;
+
+    private String noOfPieceHawb;
 
     private String consigneeCivilId;
 
@@ -166,6 +187,8 @@ public class AddBondedManifest {
     private String actualCurrency;
 
     private String totalDuty;
+
+    private String specialApprovalValue;
 
     private String declaredValue;
 
@@ -212,7 +235,5 @@ public class AddBondedManifest {
     private String referenceField19;
 
     private String referenceField20;
-
-
 
 }

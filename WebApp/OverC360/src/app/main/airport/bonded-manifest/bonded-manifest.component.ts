@@ -59,8 +59,8 @@ export class BondedManifestComponent {
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'eventText', header: 'Event' },
       { field: 'statusDescription', header: 'Status' },
+      { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -98,6 +98,7 @@ export class BondedManifestComponent {
     this.selectedBondedManifest.length = 0;
     this.selectedBondedManifest.push(choosen);
   }
+
   updateBulk(){
     const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
       disableClose: true,
@@ -151,15 +152,16 @@ export class BondedManifestComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedBondedManifest[0]);
+        this.deleterecord(this.selectedBondedManifest);
       }
     });
   }
+  
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete([lines]).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.languageId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {

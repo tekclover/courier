@@ -156,6 +156,24 @@ export const navbarData: INavbarData[] = [
         label: 'Masters',
         items: [
             {
+                routerId: 3002,
+                // routerLink: 'setup/list',
+                label: 'Admin',
+                items: [
+                    // {
+                    //     routerId: 3201,
+                    //     routerLink: '/main/master/hub',
+                    //     label: 'Hub'
+                    // },
+                    {
+                        routerId: 3202,
+                        routerLink: '/main/master/numberrange',
+                        label: 'Number Series'
+                    },
+                   
+                ]
+            },
+            {
                 routerId: 3001,
                 // routerLink: 'setup/list',
                 label: 'Operations',
@@ -219,24 +237,7 @@ export const navbarData: INavbarData[] = [
                     
                 ]
             },
-            {
-                routerId: 3002,
-                // routerLink: 'setup/list',
-                label: 'Admin',
-                items: [
-                    // {
-                    //     routerId: 3201,
-                    //     routerLink: '/main/master/hub',
-                    //     label: 'Hub'
-                    // },
-                    {
-                        routerId: 3202,
-                        routerLink: '/main/master/numberrange',
-                        label: 'Number Series'
-                    },
-                   
-                ]
-            },
+          
             {
                 routerId: 3003,
                 // routerLink: 'setup/list',
@@ -356,16 +357,16 @@ export const navbarData: INavbarData[] = [
                 routerLink: '/main/operation/consignment',
                 label: 'Consignment'
             },
-            {
-                routerId: 6102,
-                routerLink: '/main/operation/consignmentStatus',
-                label: 'Consignment Status'
-            },
-            {
-                routerId: 6103,
-                routerLink: '/main/operation/consignmentUploadProgram',
-                label: 'Consignment Upload Program'
-            }
+            // {
+            //     routerId: 6102,
+            //     routerLink: '/main/operation/consignmentStatus',
+            //     label: 'Consignment Status'
+            // },
+            // {
+            //     routerId: 6103,
+            //     routerLink: '/main/operation/consignmentUploadProgram',
+            //     label: 'Consignment Upload Program'
+            // }
 
         ]
     },

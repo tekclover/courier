@@ -66,6 +66,20 @@ public class MidMileController {
         return midMileService.findConsignmentEntity(findConsignment, authToken);
     }
 
+    // Find IConsignmentEntity - null validation column
+    @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignment Null validation") //label for swagger
+    @PostMapping("/consignment/find/v2")
+    public IConsignment[] findIConsignment(@Valid @RequestBody FindIConsignment findConsignment, @RequestParam String authToken) throws Exception {
+        return midMileService.findIConsignmentEntity(findConsignment, authToken);
+    }
+
+    // Find PreAlert Manifest
+    @ApiOperation(response = PreAlertManifestConsignment[].class, value = "Find PreAlert Manifest") //label for swagger
+    @PostMapping("/consignment/findPreAlertManifest")
+    public PreAlertManifestConsignment[] findPreAlertManifest(@Valid @RequestBody FindPreAlertManifest findPreAlertManifest, @RequestParam String authToken) throws Exception {
+        return midMileService.findPreAlertManifest(findPreAlertManifest, authToken);
+    }
+
     //Delete Consignment
     @ApiOperation(response = ConsignmentEntity.class, value = "Delete Consignment")
     @DeleteMapping("/consignment")
@@ -74,6 +88,15 @@ public class MidMileController {
                                                @RequestParam(required = false) String pieceId, @RequestParam(required = false) String pieceItemId,
                                                @RequestParam(required = false) String imageRefId, @RequestParam String loginUserID, @RequestParam String authToken) {
         midMileService.deleteConsignment(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, loginUserID, imageRefId, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //Delete Consignment
+    @ApiOperation(response = ConsignmentEntity.class, value = "Delete Consignment")
+    @PostMapping("/consignment/delete/list")
+    public ResponseEntity<?> deleteConsignment( @Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID,
+                                                @RequestParam String authToken) {
+        midMileService.deleteConsignmentMultiple(consignmentDeletes, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

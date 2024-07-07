@@ -8,68 +8,84 @@
                 style="margin: 0 17px; height: 1.5rem;">
             <img type="button" (click)="deleteDialog()" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
-                <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset="" style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
-                <p-overlayPanel [style]="{ width: '180' }" #op>
-                    <div class="d-flex flex-column">
-                       <button style="width: 8rem;" mat-menu-item class="w-100"(click)="updateBulk()" ><img
-                          src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
-                    </div>
-                </p-overlayPanel>
+            <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
+                style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
+            <p-overlayPanel [style]="{ width: '180' }" #op>
+                <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
+                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
+                        Update</button>
+                </div>
+            </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
                     class="bi bi-plus-square pr-2"></i> Add New</button>
         </div>
     </div>
 
-    <div class="d-flex justify-content-start align-items-center"
+    <div class="d-flex justify-content-between align-items-center"
         style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
-        <p-iconField iconPosition="right" class="mr-2">
-            <p-inputIcon type="button" (click)="preAlertManifest.toggle($event)" styleClass="pi pi-filter" />
-            <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
-                (input)="preAlertManifestTag.filterGlobal($any($event.target).value, 'contains')" />
-        </p-iconField>
+        <div class="d-flex justify-content-end align-items-center">
+            <p-iconField iconPosition="right">
+                <p-inputIcon type="button" (click)="preAlertManifest.toggle($event)" styleClass="pi pi-filter" />
+                <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
+                    (input)="preAlertManifestTag.filterGlobal($any($event.target).value, 'contains')" />
+            </p-iconField>
 
-        <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}"
-            [styleClass]="'custom-overlay-panel'" #preAlertManifest>
-            <form [formGroup]="searchform" style="padding: 2rem;">
-                <div class="row">
-                    <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="masterAirwayBillDropdown"
-                            formControlName="masterAirwayBill" appendTo="body" [style]="{'width': '100%'}"
-                            [panelStyle]="{'width':'100%'}" />
+            <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}"
+                [styleClass]="'custom-overlay-panel'" #preAlertManifest>
+                <form [formGroup]="searchform" style="padding: 2rem;">
+                    <div class="row">
+                        <div class="col-3 mb-3 borderRadius12">
+                            <p class="formControlLabel f600 textBlack mb-0">MAWB</p>
+                            <p-multiSelect placeholder="Select" filter="true" [options]="masterAirwayBillDropdown"
+                                formControlName="masterAirwayBill" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
+                        <div class="col-3 mb-3 borderRadius12">
+                            <p class="formControlLabel f600 textBlack mb-0">HAWB</p>
+                            <p-multiSelect placeholder="Select" filter="true" [options]="houseAirwayBillDropdown"
+                                formControlName="houseAirwayBill" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
+                        <div class="col-3 mb-3 borderRadius12">
+                            <p class="formControlLabel f600 textBlack mb-0">Partner</p>
+                            <p-multiSelect placeholder="Select" filter="true" [options]="partnerDropdown"
+                                formControlName="partnerId" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
+                        <div class="col-3 mb-3 borderRadius12">
+                            <p class="formControlLabel f600 textBlack mb-0">Console Status</p>
+                            <p-multiSelect placeholder="Select" filter="true" [options]="indicatorDropdown"
+                                formControlName="consoleIndicator" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
+                        <div class="col-3 mb-3 borderRadius12">
+                            <p class="formControlLabel f600 textBlack mb-0">Manifest Status</p>
+                            <p-multiSelect placeholder="Select" selectionLimit="1" filter="true"
+                                [options]="indicatorDropdown" formControlName="manifestIndicator" appendTo="body"
+                                [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                        </div>
+                        <div class="col-3 mb-3 borderRadius12">
+                            <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                            <p-multiSelect placeholder="Select" filter="true" [options]="statusDropdown"
+                                formControlName="statusId" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
                     </div>
-                    <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">HAWB</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="houseAirwayBillDropdown"
-                            formControlName="houseAirwayBill" appendTo="body" [style]="{'width': '100%'}"
-                            [panelStyle]="{'width':'100%'}" />
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <img type="button" (click)="reset()" src="./assets/common/reset.png" alt="" srcset="">
+                        </div>
+                        <div>
+                            <button class="buttom1 textBlack mx-1" (click)="closeOverLay()">Cancel</button>
+                            <button class="buttom1 bgBlack text-white mx-1" (click)="search()">Apply</button>
+                        </div>
                     </div>
-                    <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Partner</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="partnerDropdown"
-                            formControlName="partnerId" appendTo="body" [style]="{'width': '100%'}"
-                            [panelStyle]="{'width':'100%'}" />
-                    </div>
-                    <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Status</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="statusDropdown"
-                            formControlName="statusId" appendTo="body" [style]="{'width': '100%'}"
-                            [panelStyle]="{'width':'100%'}" />
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <img type="button" (click)="reset()" src="./assets/common/reset.png" alt="" srcset="">
-                    </div>
-                    <div>
-                        <button class="buttom1 textBlack mx-1" (click)="closeOverLay()">Cancel</button>
-                        <button class="buttom1 bgBlack text-white mx-1" (click)="search()">Apply</button>
-                    </div>
-                </div>
-            </form>
-        </p-overlayPanel>
+                </form>
+            </p-overlayPanel>
 
-        <p-chips (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
+            <p-chips (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
+        </div>
         <div class="d-flex justify-content-end align-items-center">
             <button (click)="createConsole()" type="button" class="btn ml-2 addNewbuttom hoverButton"><i
                     class="bi bi-plus-circle pr-2"></i>Console</button>
@@ -107,7 +123,7 @@
                         <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
                     </th>
                     <th style="width: 5rem;">
-                        <p-tableHeaderCheckbox class="pl-3 invisible" [disabled]="true"></p-tableHeaderCheckbox>
+                        Actions
                     </th>
                     <th *ngFor="let col of columns">
                         {{ col.header }}
@@ -134,7 +150,7 @@
                                 'yes'}}</span>
                             <span *ngIf="col.field === 'manifestIndicator'">{{rowData[col.field] == 0 ? 'No' :
                                 'yes'}}</span>
-                            <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy'}}</span>
+                            <span *ngIf="col.format === 'date'">{{rowData[col.field]| date: 'dd-MM-yyyy HH:mm'  }}</span>
                         </ng-template>
                     </td>
                 </tr>

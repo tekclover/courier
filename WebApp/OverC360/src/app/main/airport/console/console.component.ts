@@ -49,10 +49,10 @@ export class ConsoleComponent {
       { field: 'consoleId', header: 'Console ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'description', header: 'Commodity' },
+      { field: 'goodsDescription', header: 'Commodity' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'eventText', header: 'Event' },
       { field: 'statusId', header: 'Status' },
+      { field: 'eventText', header: 'Event' }, 
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -90,6 +90,7 @@ export class ConsoleComponent {
         console.log(res);
         res = this.cs.removeDuplicatesFromArrayList(res, 'consoleId')
         this.consoleTable = res;
+        this.getSearchDropdown();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -153,15 +154,24 @@ export class ConsoleComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedConsole[0]);
+      const consoleID = this.selectedConsole.map(item => item.consoleId);
+        this.service.search({consoleId: consoleID, companyId: [this.auth.companyId]}).subscribe({
+          next: (res: any) => {
+          this.deleterecord(res);
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete([lines]).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.consoleId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
@@ -256,7 +266,7 @@ export class ConsoleComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined);
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -271,6 +281,7 @@ export class ConsoleComponent {
       },
     });
   }
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
