@@ -101,6 +101,7 @@ export class PreAlertManifestComponent {
     });
 }
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -115,6 +116,7 @@ export class PreAlertManifestComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
 
   isSelected(item: any): boolean {
