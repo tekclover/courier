@@ -12,7 +12,10 @@ import java.util.Optional;
 @Transactional
 public interface ReplicaEventRepository extends JpaRepository<ReplicaEvent, String>, JpaSpecificationExecutor<ReplicaEvent> {
 
-    Optional<ReplicaEvent> findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(
-            String languageId, String companyId, String statusCode, String eventCode, Long deletionIndicator);
+    Optional<ReplicaEvent> findByLanguageIdAndCompanyIdAndEventCodeAndDeletionIndicator(
+            String languageId, String companyId, String eventCode, Long deletionIndicator);
+
+    boolean existsByLanguageIdAndCompanyIdAndEventCodeAndDeletionIndicator(
+            String languageId, String companyId, String eventCode, Long deletionIndicator);
 
 }

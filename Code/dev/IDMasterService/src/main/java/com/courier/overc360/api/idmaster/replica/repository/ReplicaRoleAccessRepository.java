@@ -9,14 +9,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Transactional
 public interface ReplicaRoleAccessRepository extends JpaRepository<ReplicaRoleAccess, Long>, JpaSpecificationExecutor<ReplicaRoleAccess> {
 
-    Optional<ReplicaRoleAccess> findByLanguageIdAndCompanyIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator
-            (String languageId, String companyId, Long roleId, Long menuId, Long subMenuId, Long deletionIndicator);
+    Optional<ReplicaRoleAccess> findByLanguageIdAndCompanyIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+            String languageId, String companyId, Long roleId, Long menuId, Long subMenuId, Long deletionIndicator);
+
+    List<ReplicaRoleAccess> findByLanguageIdAndCompanyIdAndRoleIdAndDeletionIndicator(
+            String languageId, String companyId, Long roleId, Long deletionIndicator);
 
     @Query(value = "Select \n" +
             "CONCAT (tl.USR_ROLE_ID, ' - ', tl.USR_ROLE_NM) As userRoleDesc \n" +

@@ -404,15 +404,19 @@ public class ConsignorService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
         try {
             List<Consignor> updatedConsignorList = new ArrayList<>();
+
             for (UpdateConsignor updateConsignor : updateConsignorList) {
-                Consignor dbConsignor =
-                        consignorRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
-                                updateConsignor.getLanguageId(), updateConsignor.getCompanyId(), updateConsignor.getSubProductValue(),
+                List<Consignor> dbConsignorList =
+                        consignorRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+                                updateConsignor.getLanguageId(), updateConsignor.getCompanyId(),
                                 updateConsignor.getSubProductId(), updateConsignor.getProductId(),
                                 updateConsignor.getCustomerId(), updateConsignor.getConsignorId(), 0L);
-                if (dbConsignor != null) {
-                    consignorRepository.delete(dbConsignor);
+                if (dbConsignorList != null && !dbConsignorList.isEmpty()) {
+                    consignorRepository.deleteAll(dbConsignorList);
                 }
+            }
+
+            for (UpdateConsignor updateConsignor : updateConsignorList) {
 
                 Consignor newConsignor = new Consignor();
                 BeanUtils.copyProperties(updateConsignor, newConsignor, CommonUtils.getNullPropertyNames(updateConsignor));
@@ -442,7 +446,7 @@ public class ConsignorService {
                 newConsignor.setUpdatedOn(new Date());
                 Consignor consignor = consignorRepository.save(newConsignor);
                 log.info("Created Consignor --> {}", consignor);
-                updatedConsignorList.add(dbConsignor);
+                updatedConsignorList.add(consignor);
             }
             return updatedConsignorList;
         } catch (Exception e) {
