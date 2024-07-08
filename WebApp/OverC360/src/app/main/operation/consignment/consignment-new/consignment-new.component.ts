@@ -219,6 +219,7 @@ export class ConsignmentNewComponent {
     customsInsurance: [],
     consignmentValuwithIATA: [],
     actualDuty: [],
+    calculatedTotalDuty: [],
   })
 
   consignment = this.fb.group({
