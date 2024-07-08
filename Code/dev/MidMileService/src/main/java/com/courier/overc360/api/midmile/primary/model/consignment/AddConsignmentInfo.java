@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddConsignmentInfo {
 
+    private String loadTypeId;
+
     private String loadType;
 
     private String description;

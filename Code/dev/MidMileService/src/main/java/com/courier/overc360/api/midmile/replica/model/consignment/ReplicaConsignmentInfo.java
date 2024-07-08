@@ -14,6 +14,10 @@ public class ReplicaConsignmentInfo {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "CON_INFO_ID")
         private Long consignmentInfoId;
+
+        @Column(name = "LOAD_TYPE_ID", columnDefinition = "nvarchar(50)")
+        private String loadTypeId;
+
         @Column(name = "LOAD_TYPE", columnDefinition = "nvarchar(50)")
         private String loadType;
 

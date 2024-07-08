@@ -164,6 +164,8 @@ public class UpdateConsignment {
 
     private String workerCode;
 
+    private String loadTypeId;
+
     private String loadType;
 
     private String description;

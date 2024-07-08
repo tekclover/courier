@@ -52,8 +52,8 @@ export class CurrencyExchangeRateComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'fromCurrencyId', header: 'From Currency ID' },
-      { field: 'toCurrencyId', header: 'To Currency ID' },
+      { field: 'fromCurrencyId', header: 'From Currency' },
+      { field: 'toCurrencyId', header: 'To Currency' },
       { field: 'fromCurrencyValue', header: 'From Currency Value' },
       { field: 'toCurrencyValue', header: 'To Currency Value' },
       { field: 'statusDescription', header: 'Status' },

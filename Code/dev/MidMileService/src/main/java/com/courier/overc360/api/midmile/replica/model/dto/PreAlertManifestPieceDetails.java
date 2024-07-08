@@ -1,25 +1,35 @@
-package com.courier.overc360.api.midmile.primary.model.itemdetails;
+package com.courier.overc360.api.midmile.replica.model.dto;
+
 
 import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
+import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
+import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class UpdateItemDetails {
+public class PreAlertManifestPieceDetails {
 
-    private String pieceItemId;
+    private String languageId;
+
+    //    @NotBlank(message = "CompanyId is mandatory")
+    private String companyId;
+
+    //    @NotBlank(message = "PartnerId is mandatory")
+    private String partnerId;
+
+    //    @NotBlank(message = "MasterAirwayBill is mandatory")
+    private String masterAirwayBill;
+
+    //    @NotBlank(message = "HouseAirwayBill is mandatory")
+    private String houseAirwayBill;
+
+    private String pieceId;
 
     private String partnerType;
-
-    private String quantity;
-
-    private String unitValue;
-
-    private String currency;
 
     private String partnerName;
 
@@ -27,9 +37,9 @@ public class UpdateItemDetails {
 
     private String partnerHouseAirwayBill;
 
-    private String itemCode;
+    private String pieceProductCode;
 
-    private String hsCode;
+    private String description;
 
     private String declaredValue;
 
@@ -39,23 +49,28 @@ public class UpdateItemDetails {
 
     private String dimensionUnit;
 
-    private String description;
-
     private String width;
 
     private String height;
 
     private String weight;
 
-    private String weightUnit;
+    private String weight_unit;
 
     private String volume;
 
     private String volumeUnit;
 
+    private String hsCode;
+
+    private String pieceStatusId;
+    private Date pieceStatusTimestamp;
+
     private List<ReferenceImageList> referenceImageList;
 
-    private Long deletionIndicator;
+    private String packReferenceNumber;
+
+    private String tags;
 
     private String referenceField1;
 
@@ -96,24 +111,7 @@ public class UpdateItemDetails {
     private String referenceField19;
 
     private String referenceField20;
+    private Long consignmentId;
 
-
-    private String languageId;
-
-    private String companyId;
-
-    private String partnerId;
-
-    private String masterAirwayBill;
-
-    private String houseAirwayBill;
-
-    private String pieceId;
-
-    private String languageDescription;
-
-    private String companyName;
-
-
-
+    private List<ReplicaItemDetails> itemDetails = new ArrayList<>();
 }

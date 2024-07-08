@@ -70,7 +70,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Currency ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Currency</p>
                                 <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true"
                                     formControlName="currencyId" appendTo="body"
                                     [ngClass]="form.get('currencyId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"

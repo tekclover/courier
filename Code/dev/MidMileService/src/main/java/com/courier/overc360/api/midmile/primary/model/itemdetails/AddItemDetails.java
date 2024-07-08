@@ -3,21 +3,20 @@ package com.courier.overc360.api.midmile.primary.model.itemdetails;
 import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class AddItemDetails {
 
-//    @NotBlank(message = "Language Id is mandatory")
     private String languageId;
 
-//    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-//    @NotBlank(message = "Partner Id is mandatory")
     private String partnerId;
 
-//    @NotBlank(message = "MasterAirwayBill is mandatory")
     private String masterAirwayBill;
 
 //    @NotBlank(message = "HouseAirwayBill is mandatory")
@@ -115,5 +114,6 @@ public class AddItemDetails {
     private String referenceField19;
 
     private String referenceField20;
+
 
 }

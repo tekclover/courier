@@ -83,48 +83,6 @@ public class CustomerService {
         return dbCustomer.get();
     }
 
-//    public List<Customer> getCustomerList(String languageId, String companyId, String customerId, String subProductId, String subProductValue) {
-//
-//        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndCustomerIdAndDeletionIndicator(
-//                languageId, companyId, subProductId, subProductValue, customerId, 0L);
-//        if (dbCustomerList.isEmpty()) {
-//            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId + ", subProductId - " + subProductId +
-//                    ", subProductValue - " + subProductValue + " and customerId - " + customerId + " doesn't exists.";
-//            // Error Log
-//            createCustomerLog5(languageId, companyId, subProductId, customerId, subProductValue, errMsg);
-//            throw new BadRequestException(errMsg);
-//        }
-//        return dbCustomerList;
-//    }
-//
-//    public List<Customer> getCustomerList1(String languageId, String companyId, String customerId, String subProductId) {
-//
-//        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndCustomerIdAndDeletionIndicator(
-//                languageId, companyId, subProductId, customerId, 0L);
-//        if (dbCustomerList.isEmpty()) {
-//            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
-//                    + ", subProductId - " + subProductId + " and customerId - " + customerId + " doesn't exists.";
-//            // Error Log
-//            createCustomerLog6(languageId, companyId, subProductId, customerId, errMsg);
-//            throw new BadRequestException(errMsg);
-//        }
-//        return dbCustomerList;
-//    }
-//
-//    public List<Customer> getCustomerList2(String languageId, String companyId, String customerId) {
-//
-//        List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndCustomerIdAndDeletionIndicator(
-//                languageId, companyId, customerId, 0L);
-//        if (dbCustomerList.isEmpty()) {
-//            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
-//                    + " and customerId - " + customerId + " doesn't exists.";
-//            // Error Log
-//            createCustomerLog7(languageId, companyId, customerId, errMsg);
-//            throw new BadRequestException(errMsg);
-//        }
-//        return dbCustomerList;
-//    }
-
     /**
      * Create Customer
      *
@@ -294,13 +252,12 @@ public class CustomerService {
                 log.info("new Customer Name --> {}", newCustomerDesc);
                 String oldCustomerDesc = dbCustomer.getCustomerName();
                 try {
-                    // Updating customerName in ConsignorTable using SQL Query
+                    // Updating Customer Name in ConsignorTable using SQL Query
                     long noOfRecordsUpdated = customerRepository.updateCustomerName(languageId, companyId, subProductId, productId,
                             customerId, oldCustomerDesc, newCustomerDesc);
                     if (noOfRecordsUpdated > 0) {
                         log.info("{} records updated in the Consignor Table", noOfRecordsUpdated);
                     }
-                    log.info("new Customer Name - {} updated in Consignor Table", newCustomerDesc);
                 } catch (Exception e) {
                     log.error("Failed to update new Customer Name in Consignor Table : " + e);
                     e.printStackTrace();
@@ -429,14 +386,6 @@ public class CustomerService {
         }
     }
 
-    // Delete Customer Properties
-    private void deleteCustomerProperties(Customer dbCustomer, String loginUserID) {
-        dbCustomer.setDeletionIndicator(1L);
-        dbCustomer.setUpdatedBy(loginUserID);
-        dbCustomer.setUpdatedOn(new Date());
-        customerRepository.save(dbCustomer);
-    }
-
     /**
      * Delete Customer
      *
@@ -452,7 +401,10 @@ public class CustomerService {
 
         Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId, subProductValue);
         if (dbCustomer != null) {
-            deleteCustomerProperties(dbCustomer, loginUserID);
+            dbCustomer.setDeletionIndicator(1L);
+            dbCustomer.setUpdatedBy(loginUserID);
+            dbCustomer.setUpdatedOn(new Date());
+            customerRepository.save(dbCustomer);
         } else {
             // Error Log
             createCustomerLog1(languageId, companyId, subProductId, productId, customerId, subProductValue,
@@ -475,13 +427,15 @@ public class CustomerService {
     public List<Customer> getCustomerListForDelete(String languageId, String companyId, String subProductId,
                                                    String subProductValue, String productId, String customerId) {
 
-        List<Customer> customerList = customerRepository.getCustomersWithQry(languageId, companyId,
+        List<Customer> dbCustomerList = customerRepository.getCustomersWithQry(languageId, companyId,
                 subProductId, subProductValue, productId, customerId);
-        if (customerList.isEmpty()) {
-            throw new BadRequestException("There are no Customers with given values");
+        if (dbCustomerList.isEmpty()) {
+            String errMsg = "There are no Customers with given values";
+            // Error Log
+            createCustomerLog5(languageId, companyId, subProductId, subProductValue, productId, customerId, errMsg);
+            throw new BadRequestException(errMsg);
         }
-        log.info("Customer List for Delete --> {}", customerList);
-        return customerList;
+        return dbCustomerList;
     }
 
     /**
@@ -490,50 +444,21 @@ public class CustomerService {
      * @param customerDeleteInputList
      * @param loginUserID
      */
-//    public void deleteCustomerBulk(List<CustomerDeleteInput> customerDeleteInputList, String loginUserID) {
-//
-//        if (customerDeleteInputList != null && !customerDeleteInputList.isEmpty()) {
-//            for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
-//
-//                if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()
-//                        && deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()
-//                        && deleteInput.getProductId() != null && !deleteInput.getProductId().isEmpty()) {
-//                    // Call normal delete API
-//                    deleteCustomer(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-//                            deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId(), loginUserID);
-//
-//                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty() &&
-//                        deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
-//                    List<Customer> dbCustomerList = getCustomerList(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-//                            deleteInput.getCustomerId(), deleteInput.getSubProductId(), deleteInput.getSubProductValue());
-//                    for (Customer dbCustomer : dbCustomerList) {
-//                        deleteCustomerProperties(dbCustomer, loginUserID);
-//                    }
-//                } else if (deleteInput.getSubProductId() != null && !deleteInput.getSubProductId().isEmpty()) {
-//                    List<Customer> dbCustomerList = getCustomerList1(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-//                            deleteInput.getCustomerId(), deleteInput.getSubProductId());
-//                    for (Customer dbCustomer : dbCustomerList) {
-//                        deleteCustomerProperties(dbCustomer, loginUserID);
-//                    }
-//                } else {
-//                    List<Customer> dbCustomerList = getCustomerList2(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getCustomerId());
-//                    for (Customer dbCustomer : dbCustomerList) {
-//                        deleteCustomerProperties(dbCustomer, loginUserID);
-//                    }
-//                }
-//            }
-//        }
-//    }
     public void deleteCustomerBulk(List<CustomerDeleteInput> customerDeleteInputList, String loginUserID) {
 
         if (customerDeleteInputList != null && !customerDeleteInputList.isEmpty()) {
             for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
 
-                List<Customer> dbCustomerList = getCustomerListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-                        deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId());
+                List<Customer> dbCustomerList = getCustomerListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                        deleteInput.getSubProductId(), deleteInput.getSubProductValue(),
+                        deleteInput.getProductId(), deleteInput.getCustomerId());
+                log.info("Customer List for Delete --> {}", dbCustomerList);
 
                 for (Customer dbCustomer : dbCustomerList) {
-                    deleteCustomerProperties(dbCustomer, loginUserID);
+                    dbCustomer.setDeletionIndicator(1L);
+                    dbCustomer.setUpdatedBy(loginUserID);
+                    dbCustomer.setUpdatedOn(new Date());
+                    customerRepository.save(dbCustomer);
                 }
             }
         }
@@ -691,49 +616,27 @@ public class CustomerService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createCustomerLog5(String languageId, String companyId, String subProductId,
-                                    String customerId, String subProductValue, String error) {
+    private void createCustomerLog5(String languageId, String companyId, String subProductId, String subProductValue,
+                                    String productId, String customerId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
         errorLog.setLanguageId(languageId);
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(customerId);
-        errorLog.setMethod("Exception thrown in getCustomerList");
-        errorLog.setReferenceField1(subProductId);
-        errorLog.setReferenceField2(subProductValue);
+        errorLog.setMethod("Exception thrown in getCustomerListForDelete");
+        if (subProductId != null && !subProductId.isEmpty()) {
+            errorLog.setReferenceField1(subProductId);
+        }
+        if (subProductValue != null && !subProductValue.isEmpty()) {
+            errorLog.setReferenceField2(subProductValue);
+        }
+        if (productId != null && !productId.isEmpty()) {
+            errorLog.setReferenceField3(productId);
+        }
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
     }
-
-    private void createCustomerLog6(String languageId, String companyId, String subProductId,
-                                    String customerId, String error) {
-
-        ErrorLog errorLog = new ErrorLog();
-        errorLog.setLogDate(new Date());
-        errorLog.setLanguageId(languageId);
-        errorLog.setCompanyId(companyId);
-        errorLog.setRefDocNumber(customerId);
-        errorLog.setMethod("Exception thrown in getCustomerList1");
-        errorLog.setReferenceField1(subProductId);
-        errorLog.setErrorMessage(error);
-        errorLog.setCreatedBy("Admin");
-        errorLogRepository.save(errorLog);
-    }
-
-    private void createCustomerLog7(String languageId, String companyId, String customerId, String error) {
-
-        ErrorLog errorLog = new ErrorLog();
-        errorLog.setLogDate(new Date());
-        errorLog.setLanguageId(languageId);
-        errorLog.setCompanyId(companyId);
-        errorLog.setRefDocNumber(customerId);
-        errorLog.setMethod("Exception thrown in getCustomerList2");
-        errorLog.setErrorMessage(error);
-        errorLog.setCreatedBy("Admin");
-        errorLogRepository.save(errorLog);
-    }
-
 
 }
