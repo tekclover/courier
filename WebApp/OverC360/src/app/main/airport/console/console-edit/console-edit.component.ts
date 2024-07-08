@@ -171,7 +171,7 @@ export class ConsoleEditComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Airport', 'Console', this.pageToken.pageflow];
+    const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

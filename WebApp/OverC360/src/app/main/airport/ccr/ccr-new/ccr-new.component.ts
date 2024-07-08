@@ -158,7 +158,7 @@ export class CcrNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Airport', 'CCR', this.pageToken.pageflow];
+    const dataToSend = ['Mid-Mile', 'CCR', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
