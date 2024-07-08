@@ -36,7 +36,7 @@
                             class="bi bi-plus-square pr-2"></i>Add Values</button>
                 </div> -->
                 <div class="d-flex-row">
-                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 27.8rem)" [tableStyle]="{'width': '120rem'}" [value]="subProductArray" [(selection)]="selectedConsole"    selectionMode="multiple">
+                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 27.8rem)" [tableStyle]="{'width': '125rem'}" [value]="subProductArray" [(selection)]="selectedConsole"    selectionMode="multiple">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 5rem;">
@@ -55,6 +55,7 @@
                                 <th>Consignee Name</th>
                                 <th>Consignment Value</th>
                                 <th>Consignment Currency </th>
+                                <th>Customs Value </th>
                                 <th>Custom KD </th>
                                 <th>IATA KD</th>
                                 <th>Created  On</th>
@@ -117,6 +118,10 @@
                                 </td>
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.consignmentCurrency }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.customsValue }}
                                     </p>
                                 </td>
                                 <td>

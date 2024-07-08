@@ -75,6 +75,11 @@
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0 required">Customs Value</p>
+                        <input maxlength="50" pInputText formControlName="customsValue" [ngClass]="form.get('customsValue')?.invalid && form.get('customsKd')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                       
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 required">Customs KD</p>
                         <input maxlength="50" pInputText formControlName="customsKd" [ngClass]="form.get('customsKd')?.invalid && form.get('customsKd')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                        
