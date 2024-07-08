@@ -67,7 +67,7 @@ export class UsersNewComponent {
     userName: [],
     firstName: [],
     lastName: [],
-    statusId: [],
+    statusId: ["16",],
     dateFormatId: [],
     currencyDecimal: [0,],
     createHhtUser: [false, ],
@@ -139,6 +139,7 @@ export class UsersNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup,
 
     ]).subscribe({
       next: (results: any) => {
