@@ -97,17 +97,18 @@
                                 <mat-error *ngIf="errorHandling('emailId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
+                            <!-- <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Contact Number</p>
-                                <input formControlName="emailId" 
-                                    [ngClass]="form.get('emailId')?.invalid && form.get('emailId')?.dirty ? 'invalid' : ''"
+                                <input formControlName="contactNumber" 
+                                    [ngClass]="form.get('contactNumber')?.invalid && form.get('contactNumber')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('emailId')"
+                                <mat-error *ngIf="errorHandling('contactNumber')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
+                            </div> -->
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Status</p>
-                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body" formControlName="statusId"  placeholder="Select " />
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select " />
                             </div> 
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">

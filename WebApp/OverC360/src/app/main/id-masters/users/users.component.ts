@@ -53,13 +53,13 @@ export class UsersComponent {
     this.cols = [
       { field: 'companyIdAndDescription', header: 'Company' },
       { field: 'userRoleId', header: 'User Role' },
-      { field: 'userTypeIdAndDescription', header: 'User Type' },
       { field: 'userName', header: 'User Name' },
       { field: 'emailId', header: 'Email Id' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'userTypeIdAndDescription', header: 'User Type' },
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageIdAndDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
