@@ -56,7 +56,7 @@ export class UsersComponent {
       { field: 'userTypeIdAndDescription', header: 'User Type' },
       { field: 'userName', header: 'User Name' },
       { field: 'emailId', header: 'Email Id' },
-      { field: 'statusId', header: 'Status ID' },
+      { field: 'statusDescription', header: 'Status ID' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
