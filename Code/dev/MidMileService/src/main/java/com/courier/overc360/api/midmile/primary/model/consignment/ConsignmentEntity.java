@@ -298,6 +298,12 @@ public class ConsignmentEntity {
     @Column(name = "MANIFEST_INDICATOR")
     private Long manifestIndicator;
 
+    @Column(name = "MODE_OF_TRANSPORT", columnDefinition = "nvarchar(50)")
+    private String modeOfTransport;
+
+    @Column(name = "INSURANCE", columnDefinition = "nvarchar(50)")
+    private String insurance;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -333,6 +339,10 @@ public class ConsignmentEntity {
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
     //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "COND")
     private ReturnDetails returnDetails;
+
+    //Nullvalidation column
+    @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
+    private Long preAlertValidationIndicator;
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "CON_REF_ID")

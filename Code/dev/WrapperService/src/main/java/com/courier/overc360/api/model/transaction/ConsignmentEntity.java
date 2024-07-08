@@ -80,6 +80,10 @@ public class ConsignmentEntity {
 
     private String secondaryDo;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private Long consoleIndicator;
 
     private Long manifestIndicator;
@@ -350,6 +354,7 @@ public class ConsignmentEntity {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Long preAlertValidationIndicator;
     private DestinationDetails destinationDetails;
     private OriginationDetails originDetails;
     private ReturnDetails returnDetails;

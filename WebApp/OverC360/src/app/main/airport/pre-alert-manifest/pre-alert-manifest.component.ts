@@ -307,7 +307,7 @@ export class PreAlertManifestComponent {
     this.service.searchPrealert(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
         this.preAlertManifestTable = res;
-        this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'masterAirwayBill')
+      //  this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'masterAirwayBill')
         this.spin.hide();
         this.overlayPanel.hide();
       },

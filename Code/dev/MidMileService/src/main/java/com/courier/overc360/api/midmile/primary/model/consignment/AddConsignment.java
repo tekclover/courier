@@ -350,6 +350,10 @@ public class AddConsignment {
 
     private String reverseReason;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String referenceField1;
     private String referenceField2;
     private String referenceField3;
@@ -401,7 +405,7 @@ public class AddConsignment {
     private String referenceField49;
     private String referenceField50;
 
-
+    private Long preAlertValidationIndicator;
     private AddDestinationDetails destinationDetails = new AddDestinationDetails();
 
     private AddOriginDetails originDetails = new AddOriginDetails();

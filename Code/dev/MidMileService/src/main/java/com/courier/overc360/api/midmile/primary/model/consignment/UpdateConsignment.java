@@ -253,6 +253,10 @@ public class UpdateConsignment {
 
     private String isCustomsDeclarable;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String storageLocation;
     private List<ReferenceImageList> referenceImageList;
     private String isExchange;
@@ -313,6 +317,7 @@ public class UpdateConsignment {
     private String referenceField48;
     private String referenceField49;
     private String referenceField50;
+    private Long preAlertValidationIndicator;
 
     private UpdateDestinationDetails destinationDetails = new UpdateDestinationDetails();
 

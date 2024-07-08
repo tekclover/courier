@@ -166,7 +166,7 @@ export const navbarData: INavbarData[] = [
                     //     label: 'Hub'
                     // },
                     {
-                        routerId: 3202,
+                        routerId: 3201,
                         routerLink: '/main/master/numberrange',
                         label: 'Number Series'
                     },
@@ -180,22 +180,22 @@ export const navbarData: INavbarData[] = [
                 items: [
                     
                     {
-                        routerId: 3103,
+                        routerId: 3101,
                         routerLink: '/main/master/customer',
                         label: 'Customer'
                     },
                     {
-                        routerId: 3104,
+                        routerId: 3102,
                         routerLink: '/main/master/consignor',
                         label: 'Consignor'
                     },
                     {
-                        routerId: 3101,
+                        routerId: 3103,
                         routerLink: '/main/master/opstatus',
                         label: 'Status'
                     },
                     {
-                        routerId: 3102,
+                        routerId: 3104,
                         routerLink: '/main/master/event',
                         label: 'Event'
                     },
@@ -277,7 +277,7 @@ export const navbarData: INavbarData[] = [
                     //     label: 'Rate'
                     // },
                     {
-                        routerId: 3403,
+                        routerId: 3401,
                         routerLink: '/main/master/currencyExchangeRate',
                         label: 'Exchange Rate'
                     },
@@ -319,17 +319,17 @@ export const navbarData: INavbarData[] = [
         items: [
             
             {
-                routerId: 5105,
+                routerId: 5101,
                 routerLink: '/main/airport/preAlertManifest',
                 label: 'Pre Alert Manifest'
             },
             {
-                routerId: 5101,
+                routerId: 5102,
                 routerLink: '/main/airport/bondedManifest',
                 label: 'Bonded Manifest'
             },
             {
-                routerId: 5102,
+                routerId: 5103,
                 routerLink: '/main/airport/console',
                 label: 'Console'
             },

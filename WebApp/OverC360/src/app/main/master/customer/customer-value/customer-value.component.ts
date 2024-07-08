@@ -81,7 +81,7 @@ export class CustomerValueComponent {
   ngOnInit(): void {
 
     this.form.controls.customerId.patchValue(this.data);
-this.form.controls.referenceField1.disable();
+    // this.form.controls.referenceField1.disable();
     if (this.data.pageflow == "Edit") {
       this.form.patchValue(this.data.code)
     }
@@ -91,7 +91,6 @@ this.form.controls.referenceField1.disable();
 
   save() {
     this.submitted = true;
-    // console.log(this.form.value);
     this.dialogRef.close(this.form.value);
   }
 
@@ -109,6 +108,12 @@ this.form.controls.referenceField1.disable();
         this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
         this.productIdList = this.cs.removeDuplicatesFromArrayList(this.productIdList, 'value')
 
+        if(this.data.pageflow == 'Edit') {
+          this.form.patchValue(result[0]);
+          this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
+          this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
+          this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        }
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();

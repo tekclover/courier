@@ -90,8 +90,18 @@
                         <p-tableCheckbox class="pl-3"   [value]="rowData" />
                     </td>
                     <td style="width: 5rem; justify-content: center;">
-                        <img type="button" (click)="downloadLabel(rowData)" src="./assets/common/document.png" alt="" srcset=""
-                        style="margin: 0 5px; height: 1.3rem;">                  </td>
+                        <img type="button" (click)="label.toggle($event)" src="./assets/common/document.png" alt="" srcset=""
+                        style="margin: 0 5px; height: 1.3rem;">      
+                        
+                        <p-overlayPanel [style]="{ width: '180' }" #label>
+                            <div class="d-flex flex-column">
+                                <button style="width: 8rem;" mat-menu-item class="w-100"  (click)="downloadLabel(rowData, 'download')"><img
+                                        src="./assets/common/download.png" style="padding-right: 10px;width: 2rem;" srcset="">Download</button>
+                                        <button style="width: 8rem;" mat-menu-item class="w-100" (click)="downloadLabel(rowData, 'print')"><img
+                                            src="./assets/common/print.png" style="padding-right: 10px;width: 2rem;" srcset="">Print</button>
+                            </div>
+                        </p-overlayPanel>
+                    </td>
                     <td *ngFor="let col of columns" [style]="col.style">
                         <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
                             {{ rowData[col.field] }}

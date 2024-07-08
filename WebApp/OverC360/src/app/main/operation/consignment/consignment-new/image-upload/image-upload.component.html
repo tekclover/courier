@@ -23,10 +23,10 @@
               style="height: 1.4rem;">
             <p-overlayPanel [style]="{ width: '180' }" #op>
               <div class="d-flex flex-column">
-                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="removeItem(i)"><img
+                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="op.hide();removeItem(i)"><img
                     src="./assets/common/delete1x.png" style="padding-right: 10px;width: 2rem;"
                     srcset="">Delete</button>
-                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="download(rowData)"><img
+                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="op.hide();download(rowData)"><img
                     src="./assets/common/download.png" style="padding-right: 10px;width: 2rem;"
                     srcset="">Download</button>
               </div>

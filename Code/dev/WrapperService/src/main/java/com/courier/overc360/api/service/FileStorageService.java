@@ -253,6 +253,47 @@ public class FileStorageService {
 		return null;
 	}
 
+    private List<List<String>> readExcelConsignmentData(File file) {
+        try {
+            Workbook workbook = new XSSFWorkbook(file);
+            workbook.setMissingCellPolicy(Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+
+            List<List<String>> allRowsList = new ArrayList<>();
+            DataFormatter fmt = new DataFormatter();
+
+            // Start from the third row (index 2)
+            for (int rn = sheet.getFirstRowNum(); rn <= sheet.getLastRowNum(); rn++) {
+                Row row = sheet.getRow(rn);
+                log.info("Row:  " + row.getRowNum());
+                if (row == null || row.getRowNum() < 2) {
+                    // Skip first two rows and handle rows with no data
+                    continue;
+                }
+
+                List<String> listUploadData = new ArrayList<>();
+                for (int cn = 0; cn < row.getLastCellNum(); cn++) {
+                    Cell cell = row.getCell(cn);
+                    if (cell == null) {
+                        log.info("cell empty: " + cell);
+                        listUploadData.add("");
+                    } else {
+                        String cellStr = fmt.formatCellValue(cell);
+                        log.info("cellStr: " + cellStr);
+                        listUploadData.add(cellStr);
+                    }
+                }
+                allRowsList.add(listUploadData);
+            }
+
+            log.info("list data: " + allRowsList);
+            return allRowsList;
+        } catch (Exception ioe) {
+            ioe.printStackTrace();
+        }
+        return null;
+    }
+
 
     //ProcessConsignmentOrders-V2
     public Map<String, String> processConsignmentOrdersV2(MultipartFile file) {
@@ -280,7 +321,7 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             log.info("Copied : " + targetLocation);
 
-            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
+            List<List<String>> allRowsList = readExcelConsignmentData(targetLocation.toFile());
             List<AddConsignment> consignmentOrders = prepConsignmentDataV2(allRowsList);
             log.info("consignmentOrders : " + consignmentOrders);
 
@@ -1166,11 +1207,8 @@ public class FileStorageService {
 
         for (List<String> listUploadedData : allRowsList) {
 
-            if(listUploadedData.size() < 8) {
-                continue;
-            }
             // Consignment Key
-            String consignmentKey = String.join("_", listUploadedData.subList(0, 82));
+            String consignmentKey = String.join("_", listUploadedData.subList(66, 81));
             String pieceKey = listUploadedData.size() > 95 ? listUploadedData.get(95) : "";
 
             AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
@@ -1289,19 +1327,19 @@ public class FileStorageService {
             }
 
             AddPieceDetails pieceDetails = pieceDetailsMap.getOrDefault(pieceKey, new AddPieceDetails());
-            pieceDetails.setDescription(getValue(listUploadedData, 83));
-            pieceDetails.setDeclaredValue(getValue(listUploadedData, 84));
-            pieceDetails.setCodAmount(getValue(listUploadedData, 85));
-            pieceDetails.setLength(getValue(listUploadedData, 86));
-            pieceDetails.setDimensionUnit(getValue(listUploadedData, 87));
-            pieceDetails.setWidth(getValue(listUploadedData, 88));
-            pieceDetails.setHeight(getValue(listUploadedData, 89));
-            pieceDetails.setWeight(getValue(listUploadedData, 90));
-            pieceDetails.setPartnerType(getValue(listUploadedData, 91));
-            pieceDetails.setWeight_unit(getValue(listUploadedData, 92));
-            pieceDetails.setVolume(getValue(listUploadedData, 93));
-            pieceDetails.setVolumeUnit(getValue(listUploadedData, 94));
-            pieceDetails.setPackReferenceNumber(getValue(listUploadedData, 95));
+            pieceDetails.setPackReferenceNumber(getValue(listUploadedData, 83));
+            pieceDetails.setDescription(getValue(listUploadedData, 84));
+            pieceDetails.setDeclaredValue(getValue(listUploadedData, 85));
+            pieceDetails.setCodAmount(getValue(listUploadedData, 86));
+            pieceDetails.setLength(getValue(listUploadedData, 87));
+            pieceDetails.setDimensionUnit(getValue(listUploadedData, 88));
+            pieceDetails.setWidth(getValue(listUploadedData, 89));
+            pieceDetails.setHeight(getValue(listUploadedData, 90));
+            pieceDetails.setWeight(getValue(listUploadedData, 91));
+            pieceDetails.setPartnerType(getValue(listUploadedData, 92));
+            pieceDetails.setWeight_unit(getValue(listUploadedData, 93));
+            pieceDetails.setVolume(getValue(listUploadedData, 94));
+            pieceDetails.setVolumeUnit(getValue(listUploadedData, 95));
             pieceDetails.setTags(getValue(listUploadedData, 96));
 
             String pieceImageRef = getValue(listUploadedData, 97);
@@ -1329,9 +1367,12 @@ public class FileStorageService {
             itemDetails.setWeightUnit(getValue(listUploadedData,108));
             itemDetails.setVolume(getValue(listUploadedData,109));
             itemDetails.setVolumeUnit(getValue(listUploadedData, 110));
+            itemDetails.setQuantity(getValue(listUploadedData,111));
+            itemDetails.setUnitValue(getValue(listUploadedData,112));
+            itemDetails.setCurrency(getValue(listUploadedData,113));
             List<ReferenceImageList> imageReferenceList = new ArrayList<>();
 
-            String itemImageRef = getValue(listUploadedData,111);
+            String itemImageRef = getValue(listUploadedData,114);
             String[] itemImageUrl = itemImageRef.split(",");
             for(String imageUrl : itemImageUrl) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
@@ -1339,7 +1380,7 @@ public class FileStorageService {
                 imageReferenceList.add(referenceImageList);
             }
             if (getValue(listUploadedData,112).trim().length() > 0) {
-                itemDetails.setDescription(getValue(listUploadedData,112));
+                itemDetails.setDescription(getValue(listUploadedData,115));
             }
             itemDetails.setReferenceImageList(imageReferenceList);
 

@@ -233,6 +233,10 @@ public class ReplicaAddConsignment {
 
     private String rtoOtp;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String tags;
 
     private String serviceTime;
@@ -343,6 +347,9 @@ public class ReplicaAddConsignment {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+
+    private Long preAlertValidationIndicator;
+
     private ReplicaDestinationDetails destinationDetails = new ReplicaDestinationDetails();
 
     private ReplicaOriginDetails originDetails = new ReplicaOriginDetails();

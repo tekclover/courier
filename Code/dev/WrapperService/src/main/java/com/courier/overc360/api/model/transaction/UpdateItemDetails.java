@@ -9,6 +9,12 @@ public class UpdateItemDetails {
 
     private String pieceItemId;
 
+    private String quantity;
+
+    private String unitValue;
+
+    private String currency;
+
     private String partnerType;
 
     private String partnerName;
