@@ -72,7 +72,6 @@ export class LanguageComponent {
       this.spin.show();
       this.service.search({}).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.languageTable = res;
           this.spin.hide();
         }, error: (err) => {
@@ -152,7 +151,6 @@ export class LanguageComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          console.log(3)
           exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
           exportItem[col.field] = item[col.field];

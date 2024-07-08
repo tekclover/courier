@@ -94,7 +94,6 @@ export class CityComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.cityTable = res;
           this.getSearchDropdown();
           this.spin.hide();
@@ -105,7 +104,6 @@ export class CityComponent {
       })
     }, 1000);
   }
-
 
   onChange() {
     const choosen = this.selectedCity[this.selectedCity.length - 1];

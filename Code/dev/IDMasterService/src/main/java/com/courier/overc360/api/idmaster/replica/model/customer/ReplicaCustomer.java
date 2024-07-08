@@ -58,6 +58,9 @@ public class ReplicaCustomer {
     @Column(name = "PRODUCT_NAME", columnDefinition = "nvarchar(50)")
     private String productName;
 
+    @Column(name = "PRODUCT_TEXT", columnDefinition = "nvarchar(100)")
+    private String productText;
+
     @Id
     @Column(name = "SUB_PRODUCT_ID", columnDefinition = "nvarchar(50)")
     private String subProductId;

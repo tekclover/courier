@@ -179,7 +179,6 @@ export class ConsoleEditComponent {
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
     this.form.controls.consoleId.disable();
-    console.log(this.selectedConsole)
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -228,7 +227,6 @@ export class ConsoleEditComponent {
   }
 
   fill(line: any) {
-    console.log(this.pageToken.line)
     this.form.patchValue(line);
     this.spin.show();
     let obj: any = {};
@@ -237,7 +235,6 @@ export class ConsoleEditComponent {
     obj.consoleId = [line.consoleId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.subProductArray = res;
         this.spin.hide();
       },
@@ -252,7 +249,6 @@ export class ConsoleEditComponent {
 lineSentforFill:any;
   save() {
     this.submitted = true;
-    console.log(this.selectedConsole)
     if (this.form.invalid) {
       this.messageService.add({
        severity: 'error',
@@ -300,7 +296,6 @@ lineSentforFill:any;
   }
 
   editItem(data: any,item: any): void {
-    console.log(item)
     const dialogRef = this.dialog.open(ConsoleEditpopupComponent, {
       disableClose: true,
       width: '70%',
@@ -320,7 +315,6 @@ lineSentforFill:any;
   }
  
   transfer(){
-    console.log(this.selectedConsole)
      const dialogRef = this.dialog.open(ConsoleTransferComponent, {
        disableClose: true,
       width: '70%',
@@ -331,7 +325,6 @@ lineSentforFill:any;
      });
 
      dialogRef.afterClosed().subscribe(result => {
-       console.log(result)
       if (result) {
         this.fill(this.pageToken.line)
        }

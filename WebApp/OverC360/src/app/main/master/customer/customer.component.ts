@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CustomerService } from './customer.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
@@ -10,6 +10,8 @@ import { CustomTableComponent } from '../../../common-dialog/custom-table/custom
 import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-customer',
@@ -18,6 +20,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 })
 
 export class CustomerComponent {
+
   customerTable: any[] = [];
   selectedCustomer: any[] = [];
   cols: any[] = [];
@@ -30,7 +33,9 @@ export class CustomerComponent {
     private path: PathNameService,
     private service: CustomerService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private auth: AuthService,
     private spin: NgxSpinnerService
   ) { }
 
@@ -90,6 +95,7 @@ export class CustomerComponent {
           console.log(res);
           res = this.cs.removeDuplicatesFromArrayList(res, 'customerId');
           this.customerTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         },
         error: (err) => {
@@ -176,7 +182,7 @@ export class CustomerComponent {
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail:  lines[0].customerId + '  Deleted successfully',
+          detail: lines[0].customerId + '  Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
@@ -207,6 +213,104 @@ export class CustomerComponent {
 
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Customer');
+  }
+
+  searchform = this.fb.group({
+    subProductId: [],
+    subProductValue: [],
+    productId: [],
+    customerId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  languageDropdown: any = [];
+  companyDropdown: any = [];
+  subProductDropdown: any = [];
+  subProductValueDropdown: any = [];
+  productDropdown: any = [];
+  customerDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.customerTable.forEach(res => {
+
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.subProductId != null) {
+        this.subProductDropdown.push({ value: res.subProductId, label: res.subProductName });
+        this.subProductDropdown = this.cs.removeDuplicatesFromArrayList(this.subProductDropdown, 'value');
+      }
+      if (res.subProductValue != null) {
+        this.subProductValueDropdown.push({ value: res.subProductValue, label: res.referenceField1 });
+        this.subProductValueDropdown = this.cs.removeDuplicatesFromArrayList(this.subProductValueDropdown, 'value');
+      }
+      if (res.productId != null) {
+        this.productDropdown.push({ value: res.productId, label: res.productName });
+        this.productDropdown = this.cs.removeDuplicatesFromArrayList(this.productDropdown, 'value');
+      }
+      if (res.customerId != null) {
+        this.customerDropdown.push({ value: res.customerId, label: res.customerName });
+        this.customerDropdown = this.cs.removeDuplicatesFromArrayList(this.customerDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('customer') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.customerTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      subProductId: [],
+      subProductValue: [],
+      productId: [],
+      customerId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
   }
 
 }

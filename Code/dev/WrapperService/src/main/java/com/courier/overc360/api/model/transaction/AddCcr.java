@@ -155,6 +155,8 @@ public class AddCcr {
 
     private String hsCode;
 
+    private String statusText;
+
     private String goodsDescription;
 
     private String quantity;

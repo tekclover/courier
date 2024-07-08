@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -10,6 +10,8 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { DistrictMappingService } from './district-mapping.service';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-district-mapping',
@@ -32,6 +34,7 @@ export class DistrictMappingComponent {
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
+    private fb: FormBuilder,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -93,6 +96,7 @@ export class DistrictMappingComponent {
         next: (res: any) => {
           console.log(res);
           this.districtMappingTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -152,6 +156,7 @@ export class DistrictMappingComponent {
       }
     });
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
@@ -183,6 +188,92 @@ export class DistrictMappingComponent {
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'District Mapping');
   }
+
+  searchform = this.fb.group({
+    partnerId: [],
+    districtId: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  languageDropdown: any = [];
+  companyDropdown: any = [];
+  districtDropdown: any = [];
+  partnerIdDropdown: any = [];
+  statusDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.districtMappingTable.forEach(res => {
+
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.districtId != null) {
+        this.districtDropdown.push({ value: res.districtId, label: res.districtName });
+        this.districtDropdown = this.cs.removeDuplicatesFromArrayList(this.districtDropdown, 'value');
+      }
+      if (res.partnerId != null) {
+        this.partnerIdDropdown.push({ value: res.partnerId, label: res.partnerName });
+        this.partnerIdDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerIdDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('districtMapping') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.districtMappingTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      districtId: [],
+      partnerId: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
+  }
+
 }
 
 

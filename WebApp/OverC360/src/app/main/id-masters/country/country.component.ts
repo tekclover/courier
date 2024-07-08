@@ -88,7 +88,6 @@ export class CountryComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.countryTable = res;
           this.getSearchDropdown();
           this.spin.hide();
@@ -151,7 +150,7 @@ export class CountryComponent {
       }
     });
   }
-  
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines.countryId).subscribe({
@@ -171,7 +170,6 @@ export class CountryComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          console.log(3)
           exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
           exportItem[col.field] = item[col.field];
@@ -246,7 +244,7 @@ export class CountryComponent {
       },
     });
   }
-  
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({

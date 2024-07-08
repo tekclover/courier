@@ -70,13 +70,11 @@ export class LanguageNewComponent {
 
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
-    console.log(this.pageToken)
     const dataToSend = ['Setup', 'Language', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     if (this.pageToken.pageflow != 'New') {
       this.btnText = 'Update';
-      console.log(this.btnText)
       this.fill(this.pageToken.line)
     } else {
       this.spin.show();

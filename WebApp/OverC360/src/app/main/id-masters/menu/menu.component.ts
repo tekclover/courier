@@ -91,7 +91,6 @@ export class MenuComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.menuTable = res;
           this.getSearchDropdown();
           this.spin.hide();

@@ -33,8 +33,27 @@
                         [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" />
                         
                     </div>
-
-                   
+                    <div class="col-6 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Commodity</p>
+                        <input maxlength="50"  pInputText formControlName="goodsDescription"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Weight</p>
+                        <input maxlength="50"  pInputText formControlName="grossWeight"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">No Of Piece</p>
+                        <input maxlength="50"  pInputText formControlName="noOfPieceHawb"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0 ">Origin</p>
+                        <p-dropdown [options]="countryIdList" formControlName="countryOfOrigin" appendTo="body"
+                        [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
+                        
+                    </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">HS Code </p>
                         <input maxlength="50" pInputText formControlName="hsCode"
@@ -46,14 +65,19 @@
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Consginment Value </p>
+                        <p class="formControlLabel f600 textBlack mb-0">Consignment Value </p>
                         <input maxlength="50" pInputText formControlName="consignmentValue"
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >
-                        <p class="formControlLabel f600 textBlack mb-0 required">Consginment Currency</p>
+                        <p class="formControlLabel f600 textBlack mb-0 required">Consignment Currency</p>
                         <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="consignmentCurrency" appendTo="body"
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0 required">Customs Value</p>
+                        <input maxlength="50" pInputText formControlName="customsValue" [ngClass]="form.get('customsValue')?.invalid && form.get('customsKd')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
+                       
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 required">Customs KD</p>

@@ -7,6 +7,7 @@ import com.courier.overc360.api.midmile.primary.model.console.Console;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
 import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
+import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
@@ -51,6 +52,11 @@ public class CcrService {
     @Autowired
     private NumberRangeService numberRangeService;
 
+    @Autowired
+    ConsignmentEntityRepository consignmentEntityRepository;
+
+    @Autowired
+    ConsignmentStatusService consignmentStatusService;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -79,6 +85,8 @@ public class CcrService {
         }
         return dbCcr.get();
     }
+
+
     //Create ConsoleCcr
     @Transactional
     public List<Ccr> createConsoleCcr(List<Console> addCcrList, String loginUserID)
@@ -86,17 +94,11 @@ public class CcrService {
         try {
             List<Ccr> createdCcrList = new ArrayList<>();
 
-            String STATUS_ID = "2 - Ccr Created";
             String NUM_RAN_OBJ = "CCRID";
             String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
             log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
 
             for (Console addCcr : addCcrList) {
-
-//                boolean duplicate = replicaCcrRepository.duplicateExists(
-//                        addCcr.getLanguageId(), addCcr.getCompanyId(),
-//                        addCcr.getPartnerId(), addCcr.getMasterAirwayBill(),
-//                        addCcr.getHouseAirwayBill(), addCcr.getConsoleId()) == 1;
 
                 Optional<Ccr> duplicateConsole =  ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                         addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), 0L);
@@ -120,18 +122,17 @@ public class CcrService {
                 }
                 newCcr.setCcrId(CCR_ID);
 
-                IKeyValuePair lAndCDesc = ccrRepository.getLAndCDescription(
-                        addCcr.getLanguageId(), addCcr.getCompanyId());
+                IKeyValuePair eventStatus =  consignmentEntityRepository.getStatusEventText(addCcr.getCompanyId(), "6", "11");
 
-                if (lAndCDesc != null) {
-                    newCcr.setLanguageDescription(lAndCDesc.getLangDesc());
-                    newCcr.setCompanyName(lAndCDesc.getCompanyDesc());
+                if(eventStatus != null) {
+                    newCcr.setStatusId("6");
+                    newCcr.setEventCode("11");
+                    newCcr.setStatusText(eventStatus.getStatusText());
+                    newCcr.setEventText(eventStatus.getEventText());
+                    newCcr.setEventTimestamp(new Date());
+                    newCcr.setStatusTimestamp(new Date());
                 }
-//                if(iataData != null && iataData.getIataKd() != null) {
-//                    newCcr.setIataKd(iataData.getIataKd());
-//                }
-                //   newCcr.setTotalDuty(String.valueOf(totalDuty));
-                newCcr.setStatusId(STATUS_ID);
+
                 newCcr.setDeletionIndicator(0L);
                 newCcr.setCreatedBy(loginUserID);
                 newCcr.setCreatedOn(new Date());
@@ -139,6 +140,20 @@ public class CcrService {
                 newCcr.setUpdatedOn(new Date());
 
                 Ccr createdCcr = ccrRepository.save(newCcr);
+
+                // Save ConsignmentStatus
+                consignmentStatusService.createConsignmentStatusParams(createdCcr.getCompanyId(), createdCcr.getCompanyName(),
+                        createdCcr.getLanguageId(), createdCcr.getLanguageDescription(), createdCcr.getPieceId(), createdCcr.getStatusId(),
+                        createdCcr.getMasterAirwayBill(), createdCcr.getHouseAirwayBill(), createdCcr.getStatusText(), createdCcr.getStatusId(),
+                        createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
+                        createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID );
+
+                if (createdCcr != null) {
+                    ccrRepository.updateEventCodeFromConsignment(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
+                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getEventCode(), createdCcr.getEventText(),
+                            createdCcr.getStatusId(), createdCcr.getStatusText());
+                    log.info("CCR Created <-----------------------> Consignment Event Updated");
+                }
                 createdCcrList.add(createdCcr);
             }
             return createdCcrList;

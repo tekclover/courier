@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { Router } from '@angular/router';
 import { PathNameService } from '../../../common-service/path-name.service';
@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
+import { FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-iata',
@@ -30,7 +32,9 @@ export class IataComponent {
     private path: PathNameService,
     private service: IataService,
     public dialog: MatDialog,
-    private datePipe: DatePipe, private auth: AuthService,
+    private datePipe: DatePipe,
+    private fb: FormBuilder, 
+    private auth: AuthService,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -61,7 +65,6 @@ export class IataComponent {
       { field: 'companyId', header: 'Company ID' },
       { field: 'country', header: 'Origin Code' },
       { field: 'currencyId', header: 'Currency ID' },
-      { field: 'languageDescription', header: 'Language Description' },
       { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
@@ -88,6 +91,7 @@ export class IataComponent {
         next: (res: any) => {
           console.log(res);
           this.iataTable = res;
+          this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -147,6 +151,7 @@ export class IataComponent {
       }
     })
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
@@ -177,6 +182,91 @@ export class IataComponent {
 
     // Excel service
     this.cs.exportAsExcel(exportData, 'Iata');
+  }
+
+  searchform = this.fb.group({
+    originCode: [],
+    origin: [],
+    statusId: [],
+    companyId: [[this.auth.companyId],],
+    languageId: [[this.auth.languageId],]
+  })
+
+  languageDropdown: any = [];
+  companyDropdown: any = [];
+  statusDropdown: any = [];
+  originCodeDropdown: any = [];
+  originDropdown: any = [];
+
+  getSearchDropdown() {
+
+    this.iataTable.forEach(res => {
+
+      if (res.languageId != null) {
+        this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
+        this.languageDropdown = this.cs.removeDuplicatesFromArrayList(this.languageDropdown, 'value');
+      }
+      if (res.companyId != null) {
+        this.companyDropdown.push({ value: res.companyId, label: res.companyName });
+        this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
+      }
+      if (res.originCode != null) {
+        this.originCodeDropdown.push({ value: res.originCode, label: res.originCode });
+        this.originCodeDropdown = this.cs.removeDuplicatesFromArrayList(this.originCodeDropdown, 'value');
+      }
+      if (res.origin != null) {
+        this.originDropdown.push({ value: res.origin, label: res.origin });
+        this.originDropdown = this.cs.removeDuplicatesFromArrayList(this.originDropdown, 'value');
+      }
+      if (res.statusId != null) {
+        this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
+        this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
+      }
+    })
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+  }
+
+  @ViewChild('iata') overlayPanel!: OverlayPanel;
+  closeOverLay() {
+    this.overlayPanel.hide();
+  }
+
+  fieldsWithValue: any
+  search() {
+    this.fieldsWithValue = null;
+    const formValues = this.searchform.value;
+    this.fieldsWithValue = Object.keys(formValues)
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+
+    this.spin.show();
+    this.service.search(this.searchform.getRawValue()).subscribe({
+      next: (res: any) => {
+        this.iataTable = res;
+        this.spin.hide();
+        this.overlayPanel.hide();
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+  reset() {
+    this.searchform.reset();
+    this.searchform = this.fb.group({
+      originCode: [],
+      origin: [],
+      statusId: [],
+      companyId: [[this.auth.companyId],],
+      languageId: [[this.auth.languageId],]
+    })
+    this.search();
+  }
+
+  chipClear(value: any) {
+    this.searchform.get(value.value)?.reset();
+    this.search();
   }
 
 }

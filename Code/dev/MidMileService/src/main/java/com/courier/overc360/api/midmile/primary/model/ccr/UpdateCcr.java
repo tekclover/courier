@@ -48,6 +48,8 @@ public class UpdateCcr {
 
     private String primaryDo;
 
+    private String statusText;
+
     private String secondaryDo;
 
     private String paymentType;

@@ -188,7 +188,6 @@ Consigment: any[] = [];
   }
   ngOnInit(): void {
     this.dropdownlist();
-  console.log(this.data)
   this.Consigment=this.data.code;
 
   }

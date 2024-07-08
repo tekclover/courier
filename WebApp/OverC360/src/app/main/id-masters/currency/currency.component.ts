@@ -21,7 +21,6 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class CurrencyComponent {
 
-
   currencyTable: any[] = [];
   selectedCurrency: any[] = [];
   cols: any[] = [];
@@ -85,7 +84,6 @@ export class CurrencyComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.currencyTable = res;
           this.getSearchDropdown();
           this.spin.hide();
@@ -185,7 +183,6 @@ export class CurrencyComponent {
     statusId: []
   })
 
-
   currencyDropdown: any = [];
   statusDropdown: any = [];
 
@@ -230,6 +227,7 @@ export class CurrencyComponent {
       },
     });
   }
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({

@@ -87,7 +87,6 @@ export class ConsignmentTypeComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.consignmentTypeTable = res;
           this.getSearchDropdown();
           this.spin.hide();
@@ -169,7 +168,6 @@ export class ConsignmentTypeComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          console.log(3)
           exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
           exportItem[col.field] = item[col.field];

@@ -247,6 +247,13 @@ public class ConsignmentService {
                 newConsignment.getDestinationDetails().setCreatedOn(new Date());
                 newConsignment.getDestinationDetails().setUpdatedBy(null);
                 newConsignment.getDestinationDetails().setUpdatedOn(null);
+            } else {
+                DestinationDetails destinationDetails = new DestinationDetails();
+                destinationDetails.setCreatedBy(loginUserId);
+                destinationDetails.setCreatedOn(new Date());
+                destinationDetails.setUpdatedBy(null);
+                destinationDetails.setUpdatedOn(null);
+                newConsignment.setDestinationDetails(destinationDetails);
             }
 
             // Origination Details
@@ -258,17 +265,31 @@ public class ConsignmentService {
                 newConsignment.getOriginDetails().setCreatedOn(new Date());
                 newConsignment.getOriginDetails().setUpdatedBy(null);
                 newConsignment.getOriginDetails().setUpdatedOn(null);
+            } else {
+                OriginDetails originDetails = new OriginDetails();
+                originDetails.setCreatedBy(loginUserId);
+                originDetails.setCreatedOn(new Date());
+                originDetails.setUpdatedBy(null);
+                originDetails.setUpdatedOn(null);
+                newConsignment.setOriginDetails(originDetails);
             }
 
             // Return Details
             if (consignmentEntity.getReturnDetails() != null) {
                 ReturnDetails newReturnDetails = new ReturnDetails();
                 BeanUtils.copyProperties(consignmentEntity.getReturnDetails(), newReturnDetails, CommonUtils.getNullPropertyNames(consignmentEntity.getReturnDetails()));
+                newReturnDetails.setCreatedBy(loginUserId);
+                newReturnDetails.setCreatedOn(new Date());
+                newReturnDetails.setUpdatedBy(null);
+                newReturnDetails.setUpdatedOn(null);
                 newConsignment.setReturnDetails(newReturnDetails);
-                newConsignment.getReturnDetails().setCreatedBy(loginUserId);
-                newConsignment.getReturnDetails().setCreatedOn(new Date());
-                newConsignment.getReturnDetails().setUpdatedBy(null);
-                newConsignment.getReturnDetails().setUpdatedOn(null);
+            } else {
+                ReturnDetails newReturnDetails = new ReturnDetails();
+                newReturnDetails.setCreatedBy(loginUserId);
+                newReturnDetails.setCreatedOn(new Date());
+                newReturnDetails.setUpdatedBy(null);
+                newReturnDetails.setUpdatedOn(null);
+                newConsignment.setReturnDetails(newReturnDetails);
             }
 
             ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);

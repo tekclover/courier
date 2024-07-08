@@ -51,7 +51,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
     @Transactional
     @Modifying
     @Query(value = "UPDATE tblconsignment_entity " +
-            "SET event_code = 4, " +
+            "SET event_code = 6, " +
             "CONSOLE_INDICATOR = 1, " +
             "event_text = 'Console Created', " +
             "EVENT_TIMESTAMP = getDate() " +
