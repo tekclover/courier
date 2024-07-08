@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,6 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
     Optional<ReplicaItemDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId, Long deletionIndicator);
 
+    List<ReplicaItemDetails> findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
+            String languageId, String companyId, String pieceId, Long deletionIndicator);
 }

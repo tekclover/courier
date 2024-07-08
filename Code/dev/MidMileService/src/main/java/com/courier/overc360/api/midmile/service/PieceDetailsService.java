@@ -16,6 +16,7 @@ import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
 import com.courier.overc360.api.midmile.primary.repository.PieceDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.FindPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
@@ -73,6 +74,9 @@ public class PieceDetailsService {
 
     @Autowired
     ConsignmentStatusService consignmentStatusService;
+
+    @Autowired
+    ConsignmentService consignmentService;
     /*======================================================PRIMARY=============================================================*/
 
     /**
@@ -553,6 +557,51 @@ public class PieceDetailsService {
         }
         return dbPieceDetails.get();
     }
+    /**
+     * for Label pdf create
+     * @param languageId
+     * @param companyId
+     * @param pieceId
+     * @return
+     */
+    public ReplicaPieceDetails getReplicaPieceDetails(String languageId, String companyId, String pieceId) {
+
+        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator
+                (languageId, companyId, pieceId, 0l);
+
+        if (dbPieceDetails == null || dbPieceDetails.isEmpty()) {
+            createPieceDetailsLog(languageId, companyId, pieceId, "The given values : languageId - " + languageId +
+                    ", companyId - " + companyId + " and PieceId: " + pieceId + "  doesn't exists");
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + " and PieceId: " + pieceId + "  doesn't exists");
+        }
+        if(dbPieceDetails != null && !dbPieceDetails.isEmpty()) {
+            for(ReplicaPieceDetails dbReplicaPieceDetails : dbPieceDetails) {
+                ReplicaConsignmentEntity replicaConsignment = consignmentService.getConsignment(dbReplicaPieceDetails.getConsignmentId());
+            }
+        }
+        return dbPieceDetails.get(0);
+    }
+
+    /**
+     * for PreAlertManifest
+     * @param languageId
+     * @param companyId
+     * @param consignmentId
+     * @return
+     */
+    public List<ReplicaPieceDetails> getReplicaPieceDetailsForPreAlertManifest(String languageId, String companyId, Long consignmentId) {
+
+        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator
+                (languageId, companyId, consignmentId, 0l);
+
+        if (dbPieceDetails == null || dbPieceDetails.isEmpty()) {
+            createPieceDetailsLog(languageId, companyId, String.valueOf(consignmentId), "The given values : languageId - " + languageId +
+                    ", companyId - " + companyId + " and PieceId: " + consignmentId + "  doesn't exists");
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + " and consignmentId: " + consignmentId + "  doesn't exists");
+        }
+
+        return dbPieceDetails;
+    }
 
     /**
      * Find
@@ -599,6 +648,19 @@ public class PieceDetailsService {
         errorLog.setReferenceField1(partnerId);
         errorLog.setReferenceField2(masterAirwayBill);
         errorLog.setReferenceField3(houseAirwayBill);
+        errorLog.setMethod("Exception thrown in getPieceDetails");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createPieceDetailsLog(String languageId, String companyId, String pieceId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(pieceId);
         errorLog.setMethod("Exception thrown in getPieceDetails");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");

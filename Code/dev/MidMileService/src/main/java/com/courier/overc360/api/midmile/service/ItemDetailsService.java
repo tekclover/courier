@@ -376,6 +376,22 @@ public class ItemDetailsService {
     }
 
     /**
+     * for PreAlertManifest
+     * @param languageId
+     * @param companyId
+     * @param pieceId
+     * @return
+     */
+    public List<ReplicaItemDetails> replicaGetItemDetails(String languageId, String companyId, String pieceId) {
+        List<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
+                languageId, companyId, pieceId, 0L);
+        if (dbItemDetails.isEmpty()) {
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PieceId: " + pieceId + " doesn't exists");
+        }
+        return dbItemDetails;
+    }
+
+    /**
      * Find ItemDetails
      *
      * @param findItemDetails
