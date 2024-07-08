@@ -177,7 +177,6 @@ export class UserRoleNewComponent {
           console.log(res)
           this.form.patchValue(res[0]);
           let combined = this.cs.removeDuplicateObj(res, moduleRes);
-          this.form.controls.statusDescription.patchValue(this.form.controls.statusDescription.value ? 'Active' : 'Inactive');
           this.menuList = [];
           this.menuList.push({
             mainMenu: "Setup",
@@ -249,7 +248,7 @@ export class UserRoleNewComponent {
 
   // Form builder Initialize
   form = this.fb.group({
-    statusDescription: ["Active", [Validators.required]],
+    statusId: ["16", [Validators.required]],
     roleId: [,],
     userRoleName: [, [Validators.required]],
     languageId: [, [Validators.required]],
@@ -358,7 +357,7 @@ export class UserRoleNewComponent {
       x.Menu.forEach((y: any) => {
         y.languageId = this.form.controls.languageId.value;
         y.companyId = this.form.controls.companyId.value;
-        y.statusDescription = this.form.controls.statusDescription.value;
+        y.statusId = this.form.controls.statusId.value;
         y.edit = true;
         data.push(y);
       });
@@ -373,7 +372,7 @@ export class UserRoleNewComponent {
         this.router.navigate(['/main/idMaster/userrole'])
         this.spin.hide();
       }, error: (err) => {
-        this.form.controls.statusDescription.patchValue(this.form.controls.statusDescription.value ? 'Active' : 'Inactive');
+        this.form.controls.statusId.patchValue(this.form.controls.statusId.value ? 'Active' : 'Inactive');
         this.cs.commonerrorNew(err);
         this.spin.hide();
       }
@@ -387,7 +386,7 @@ export class UserRoleNewComponent {
           this.spin.hide();
         }
       }, error: (err) => {
-        this.form.controls.statusDescription.patchValue(this.form.controls.statusDescription.value ? 'Active' : 'InActive');
+        this.form.controls.statusId.patchValue(this.form.controls.statusId.value ? 'Active' : 'InActive');
 
         this.cs.commonerrorNew(err);
         this.spin.hide();

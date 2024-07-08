@@ -110,7 +110,13 @@ export class ConsignorValueComponent {
       next: (result) => {
         this.customerIdList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' });
         this.customerIdList =  this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
-        // this.form.patchValue(result[0]);
+        
+        if(this.data.pageflow == 'Edit') {
+          this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
+          this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
+          // this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        }
+
         console.log(this.customerIdList);
         this.spin.hide();
       }, error: (err) => {
