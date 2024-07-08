@@ -80,6 +80,10 @@ public class ConsignmentEntity {
 
     private String secondaryDo;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private Long consoleIndicator;
 
     private Long manifestIndicator;

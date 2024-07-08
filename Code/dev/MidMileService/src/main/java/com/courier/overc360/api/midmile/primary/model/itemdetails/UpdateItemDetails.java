@@ -12,6 +12,12 @@ public class UpdateItemDetails {
 
     private String partnerType;
 
+    private String quantity;
+
+    private String unitValue;
+
+    private String currency;
+
     private String partnerName;
 
     private String partnerMasterAirwayBill;

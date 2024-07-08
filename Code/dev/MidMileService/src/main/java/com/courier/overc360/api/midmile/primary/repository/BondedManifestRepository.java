@@ -39,7 +39,7 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
             "CONSIGNOR_NAME consignorName, \n" +
             "PRODUCT_ID productId, \n" +
             "SUB_PRODUCT_ID subProductId, \n" +
-            "PRODUCT_NAME productName, \n" +
+            "PRODUCT_TEXT productName, \n" +
             "SUB_PRODUCT_NAME subProductName \n" +
             "From tblconsignor  \n" +
             "Where \n" +
@@ -52,7 +52,7 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                @Param(value = "companyId") String companyId);
 
     @Query(value = "select customer_name customerName, \n" +
-            " product_id productId, product_name productName, \n " +
+            " product_id productId, product_text productName, \n " +
             " sub_product_id subProductId, sub_product_name subProductName \n " +
             " from tblcustomer where customer_id in (:customerId) and \n " +
             " lang_id in (:languageId) and \n " +

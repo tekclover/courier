@@ -233,6 +233,10 @@ public class ReplicaAddConsignment {
 
     private String rtoOtp;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String tags;
 
     private String serviceTime;

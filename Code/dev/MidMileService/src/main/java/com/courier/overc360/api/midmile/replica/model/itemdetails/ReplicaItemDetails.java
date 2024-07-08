@@ -53,6 +53,15 @@ public class ReplicaItemDetails {
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 
+    @Column(name = "QUANTITY" , columnDefinition = "nvarchar(50)")
+    private String quantity;
+
+    @Column(name = "UNITVALUE", columnDefinition = "nvarchar(50)")
+    private String unitValue;
+
+    @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
+    private String currency;
+
     @Column(name = "IMAGE_REF_ID", columnDefinition = "nvarchar(50)")
     private String imageRefId;
 

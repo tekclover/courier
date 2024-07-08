@@ -277,6 +277,12 @@ public class ReplicaConsignmentEntity {
     @Column(name = "MANIFEST_INDICATOR")
     private Long manifestIndicator;
 
+    @Column(name = "MODE_OF_TRANSPORT", columnDefinition = "nvarchar(50)")
+    private String modeOfTransport;
+
+    @Column(name = "INSURANCE", columnDefinition = "nvarchar(50)")
+    private String insurance;
+
     @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
     private String exchangeRate;
 

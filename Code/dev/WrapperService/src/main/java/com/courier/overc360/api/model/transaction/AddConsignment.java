@@ -181,6 +181,10 @@ public class AddConsignment {
 
     private String volume;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String volumeUnit;
 
     private String upstreamCreationTime;

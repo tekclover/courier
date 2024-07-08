@@ -223,20 +223,20 @@ public class ConsignmentService {
             // ConsignmentInfo
             ConsignmentInfo consignmentInfo = new ConsignmentInfo();
             BeanUtils.copyProperties(consignmentEntity, consignmentInfo, CommonUtils.getNullPropertyNames(consignmentEntity));
+            consignmentInfo.setCreatedOn(new Date());
+            consignmentInfo.setCreatedBy(loginUserId);
+            consignmentInfo.setUpdatedOn(null);
+            consignmentInfo.setUpdatedBy(null);
             newConsignment.setConsignmentInfo(consignmentInfo);
-            newConsignment.getConsignmentInfo().setCreatedOn(new Date());
-            newConsignment.getConsignmentInfo().setCreatedBy(loginUserId);
-            newConsignment.getConsignmentInfo().setUpdatedOn(null);
-            newConsignment.getConsignmentInfo().setUpdatedBy(null);
 
             // ConsignmentRef
             ConsignmentRef consignmentRef = new ConsignmentRef();
             BeanUtils.copyProperties(consignmentEntity, consignmentRef, CommonUtils.getNullPropertyNames(consignmentEntity));
+            consignmentRef.setCreatedBy(loginUserId);
+            consignmentRef.setCreatedOn(new Date());
+            consignmentRef.setUpdatedBy(null);
+            consignmentRef.setUpdatedOn(null);
             newConsignment.setConsignmentRefs(consignmentRef);
-            newConsignment.getConsignmentRefs().setCreatedBy(loginUserId);
-            newConsignment.getConsignmentRefs().setCreatedOn(new Date());
-            newConsignment.getConsignmentRefs().setUpdatedBy(null);
-            newConsignment.getConsignmentRefs().setUpdatedOn(null);
 
             // Destination Details
             if (consignmentEntity.getDestinationDetails() != null) {
