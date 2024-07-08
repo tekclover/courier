@@ -1209,7 +1209,7 @@ public class FileStorageService {
 
             // Consignment Key
             String consignmentKey = String.join("_", listUploadedData.subList(66, 81));
-            String pieceKey = listUploadedData.size() > 95 ? listUploadedData.get(95) : "";
+            String pieceKey = listUploadedData.size() > 85 ? listUploadedData.get(85) : "";
 
             AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
             Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
