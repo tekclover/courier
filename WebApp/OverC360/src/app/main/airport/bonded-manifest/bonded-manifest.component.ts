@@ -55,6 +55,7 @@ export class BondedManifestComponent {
     this.cols = [
       { field: 'companyId', header: 'Company' },
       { field: 'bondedId', header: 'Bonded ID' },
+      {  field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },

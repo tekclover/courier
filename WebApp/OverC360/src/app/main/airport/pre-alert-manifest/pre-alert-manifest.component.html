@@ -146,9 +146,10 @@
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                       
-                                <p-tag *ngIf="col.field === 'consoleIndicator'" severity="success" [value]="rowData[col.field] == 0 ? 'No' : 'yes'"/>
-                    
+                            <span *ngIf="col.field === 'consoleIndicator'" class="badge px-2 py-1" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
+                                'Yes'}}</span>
+                            <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-1" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
+                                'Yes'}}</span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field]| date: 'dd-MM-yyyy HH:mm'  }}</span>
                         </ng-template>
                     </td>

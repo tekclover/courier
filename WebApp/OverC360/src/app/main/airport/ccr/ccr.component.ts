@@ -50,8 +50,6 @@ export class CcrComponent {
       { field: 'ccrId', header: 'CCR ID' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'description', header: 'Commodity' },
-      { field: 'hsCode', header: 'HS Code' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
