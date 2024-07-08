@@ -128,7 +128,7 @@ export class NotificationNewComponent {
           this.spin.hide();
         },
         error: (err) => {
-          this.spin.hide();
+          this.spin.hide(); 
           this.cs.commonerrorNew(err);
         },
       });
@@ -220,6 +220,8 @@ export class NotificationNewComponent {
     this.productService.search(obj).subscribe({
       next: (result: any) => {
         this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
+        this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value');
+
         this.spin.hide();
       }, error: (err: any) => {
         this.spin.hide();
