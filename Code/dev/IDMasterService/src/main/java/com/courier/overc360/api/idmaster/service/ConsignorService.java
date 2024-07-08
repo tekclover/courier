@@ -340,11 +340,8 @@ public class ConsignorService {
             List<Consignor> updatedConsignorList = new ArrayList<>();
 
             for (UpdateConsignor updateConsignor : updateConsignorList) {
-                List<Consignor> dbConsignorList =
-                        consignorRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
-                                updateConsignor.getLanguageId(), updateConsignor.getCompanyId(),
-                                updateConsignor.getSubProductId(), updateConsignor.getProductId(),
-                                updateConsignor.getCustomerId(), updateConsignor.getConsignorId(), 0L);
+                List<Consignor> dbConsignorList = consignorRepository.findByLanguageIdAndCompanyIdAndConsignorIdAndDeletionIndicator(
+                        updateConsignor.getLanguageId(), updateConsignor.getCompanyId(), updateConsignor.getConsignorId(), 0L);
                 if (dbConsignorList != null && !dbConsignorList.isEmpty()) {
                     consignorRepository.deleteAll(dbConsignorList);
                 }

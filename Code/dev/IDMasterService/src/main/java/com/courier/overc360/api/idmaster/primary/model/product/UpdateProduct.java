@@ -22,6 +22,7 @@ public class UpdateProduct {
     @NotBlank(message = "ProductId is mandatory")
     private String productId;
 
+    @NotBlank(message = "Product Name is mandatory")
     private String productName;
 
     private String statusId;

@@ -25,6 +25,7 @@ public class UpdateCustomer {
     @NotBlank(message = "CustomerId is mandatory")
     private String customerId;
 
+    @NotBlank(message = "Customer Name is mandatory")
     private String customerName;
 
     private String statusId;
