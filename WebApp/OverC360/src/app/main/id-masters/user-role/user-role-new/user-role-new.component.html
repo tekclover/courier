@@ -56,13 +56,10 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Status</p>
-                                <div class="card flex">
-                                    <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
-                                        formControlName="statusId" placeholder="Select " />
-                                </div>
-                                <mat-error *ngIf="errorHandling('statusId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select " />
+        
                             </div>
                         </div>
                         </form>

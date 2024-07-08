@@ -44,17 +44,17 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">User Role ID</p>
                                 <input formControlName="userRoleId" 
-                                    [ngClass]="form.get('userRoldId')?.invalid && form.get('userRoleId')?.dirty ? 'invalid' : ''"
+                                    [ngClass]="form.get('userRoleId')?.invalid && form.get('userRoleId')?.dirty ? 'invalid' : ''"
                                     class="w-100"  pInputText pKeyFilter="num" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('userRoleId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">User Type ID</p>
-                                <p-dropdown [options]="userType" placeholder="Select" filter="true" formControlName="userTypeId"
+                                <p-dropdown [options]="userType" placeholder="Select" filter="true" formControlName="userTypeIdAndDescription"
                                     appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
                                     [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('userTypeId')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('userTypeIdAndDescription')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
