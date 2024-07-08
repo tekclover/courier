@@ -9,9 +9,9 @@
             <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset="" style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
             <p-overlayPanel [style]="{ width: '180' }" #op>
                 <div class="d-flex flex-column">
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="fileInput.click()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="op.hide(); fileInput.click()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload</button>
-                            <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
+                            <button style="width: 8rem;" mat-menu-item class="w-100" (click)="op.hide(); updateBulk()"><img
                                 src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
                 </div>
             </p-overlayPanel>
@@ -68,7 +68,7 @@
 
     <div class="tableProperties">
         <p-table #consignmentTag [columns]="cols" [value]="consignmentTable" class="custom-table" [scrollable]="true"
-        selectionMode="multiple"  [(selection)]="selectedConsignment" scrollHeight="calc(100vh - 18.8rem)" [paginator]="true" [rows]="100" 
+        selectionMode="multiple"  [(selection)]="selectedConsignment" scrollHeight="calc(100vh - 20.8rem)" [paginator]="true" [rows]="100" 
             [showCurrentPageReport]="true" sortField="consignmentId" [sortOrder]="-1" [tableStyle]="{'width': '130rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
@@ -95,9 +95,9 @@
                         
                         <p-overlayPanel [style]="{ width: '180' }" #label>
                             <div class="d-flex flex-column">
-                                <button style="width: 8rem;" mat-menu-item class="w-100"  (click)="downloadLabel(rowData, 'download')"><img
+                                <button style="width: 8rem;" mat-menu-item class="w-100"  (click)="label.hide(); downloadLabel(rowData, 'download')"><img
                                         src="./assets/common/download.png" style="padding-right: 10px;width: 2rem;" srcset="">Download</button>
-                                        <button style="width: 8rem;" mat-menu-item class="w-100" (click)="downloadLabel(rowData, 'print')"><img
+                                        <button style="width: 8rem;" mat-menu-item class="w-100" (click)="label.hide(); downloadLabel(rowData, 'print')"><img
                                             src="./assets/common/print.png" style="padding-right: 10px;width: 2rem;" srcset="">Print</button>
                             </div>
                         </p-overlayPanel>

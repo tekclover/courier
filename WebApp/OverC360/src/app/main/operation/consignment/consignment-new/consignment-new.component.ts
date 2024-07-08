@@ -214,6 +214,12 @@ export class ConsignmentNewComponent {
     customsValue: [],
     //  amount: [],
     //isCustomsDeclarable: [],
+    consignmentValueLocal: [],
+    consignmentInsurance: [],
+    customsInsurance: [],
+    consignmentValuwithIATA: [],
+    actualDuty: [],
+    calculatedTotalDuty: [],
   })
 
   consignment = this.fb.group({
@@ -578,14 +584,7 @@ export class ConsignmentNewComponent {
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.city.url,
       this.cas.dropdownlist.setup.province.url,
-      this.cas.dropdownlist.setup.currency.url,
-      this.cas.dropdownlist.setup.consignor.url,
-      this.cas.dropdownlist.setup.customer.url,
-
-
-
-
-
+      this.cas.dropdownlist.setup.currency.url
     ]).subscribe({
       next: (results: any) => {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
@@ -600,15 +599,6 @@ export class ConsignmentNewComponent {
         this.cityIdList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.city.key);
         this.provinceIdList = this.cas.forLanguageFilter(results[9], this.cas.dropdownlist.setup.province.key); 
        this.currencyDropdown = this.cas.foreachlist(results[10], this.cas.dropdownlist.setup.currency.key);
-
-      const consitnor = this.cas.forLanguageFilter(results[11], this.cas.dropdownlist.setup.consignor.key);
-      const customer = this.cas.forLanguageFilter(results[12], this.cas.dropdownlist.setup.customer.key);
-      customer.forEach(x => this.partnerNameList.push(x));
-      consitnor.forEach(x => this.partnerNameList.push(x)); 
-
-
-
-
         this.spin.hide();
       },
       error: (err: any) => {
@@ -659,6 +649,9 @@ export class ConsignmentNewComponent {
     }
   }
 
+  consignmentCurrency:any;
+  consignmentValue:any;
+
   fill(line: any) {
     this.form.patchValue(line);
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
@@ -670,19 +663,21 @@ export class ConsignmentNewComponent {
     this.disabledDelivery = false;
     this.disabledBilling = false;
 
-    this.shipmentInfo.patchValue(line),
+      this.shipmentInfo.patchValue(line),
       this.consignment.patchValue(line),
       this.senderInfo.patchValue(line),
       this.deliveryInfo.patchValue(line),
       this.billing.patchValue(line)
 
-    console.log(this.shipmentInfo.value)
-    console.log(line)
+
+      this.consignmentCurrency =  this.consignment.controls.consignmentCurrency.value;
+      this.consignmentValue =  this.consignment.controls.consignmentValue.value;
 
     this.patchForm(line);
     if (this.consignment.controls.invoiceDate.value) {
       this.consignment.controls.invoiceDateFE.patchValue(this.cs.pCalendar(this.consignment.controls.invoiceDate.value));
     }
+    this.partnerTypeChanged();
 
     this.shipmentInfo.controls.masterAirwayBill.disable();
     this.shipmentInfo.controls.houseAirwayBill.disable();
@@ -809,7 +804,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: 'Record has been updated successfully',
+            detail: res.consignmentId + ' has been updated successfully',
           });
           this.router.navigate(['/main/master/rate']);
           this.spin.hide();
@@ -828,7 +823,7 @@ export class ConsignmentNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: 'Record has been created successfully',
+              detail: res.consignmentId + ' has been created successfully',
             });
             this.router.navigate(['/main/master/rate']);
             this.spin.hide();
@@ -1031,7 +1026,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: 'Consignment has been updated successfully',
+            detail: res.consignmentId + ' has been updated successfully',
           });
           this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);
@@ -1048,7 +1043,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: 'Consignment has been created successfully',
+            detail: res.consignmentId + ' has been created successfully',
           });
           this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);
