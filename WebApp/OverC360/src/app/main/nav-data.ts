@@ -60,7 +60,7 @@ export const navbarData: INavbarData[] = [
                     },
                     {
                         routerId: 2107,
-                        routerLink: '/main/idMaster/userProfile',
+                        routerLink: '/main/idMaster/users',
                         label: 'User Profile'
                     },
                     {
