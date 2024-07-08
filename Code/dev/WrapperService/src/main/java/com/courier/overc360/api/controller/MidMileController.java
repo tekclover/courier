@@ -66,8 +66,8 @@ public class MidMileController {
         return midMileService.findConsignmentEntity(findConsignment, authToken);
     }
 
-    // Find IConsignmentEntity - null validation column
-    @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignment Null validation") //label for swagger
+    // Find IConsignmentEntity - null validation column preAlertValidationIndicator
+    @ApiOperation(response = IConsignment[].class, value = "Find Consignment preAlertValidationIndicator") //label for swagger
     @PostMapping("/consignment/find/v2")
     public IConsignment[] findIConsignment(@Valid @RequestBody FindIConsignment findConsignment, @RequestParam String authToken) throws Exception {
         return midMileService.findIConsignmentEntity(findConsignment, authToken);

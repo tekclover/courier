@@ -334,6 +334,10 @@ public class ConsignmentEntity {
     //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "COND")
     private ReturnDetails returnDetails;
 
+    //Nullvalidation column
+    @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
+    private Long preAlertValidationIndicator;
+
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "CON_REF_ID")
 //    private ConsignmentRef consignmentRefs;

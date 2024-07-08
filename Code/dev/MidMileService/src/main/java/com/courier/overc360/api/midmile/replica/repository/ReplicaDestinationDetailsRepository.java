@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ReplicaDestinationDetailsRepository extends JpaRepository<ReplicaDestinationDetails, Long> {
 
     @Query(value = "Select \n" +
-            "(case when NAME = '1' then null else NAME end) name,\n" +
-            "(case when PHONE = '1' then null else PHONE end) phone,\n" +
-            "(case when ADDRESS_LINE_1 = '1' then null else ADDRESS_LINE_1 end) addressLine1,\n" +
-            "(case when ADDRESS_LINE_2 = '1' then null else ADDRESS_LINE_2 end) addressLine2,\n" +
-            "(case when CITY = '1' then null else CITY end) city,\n" +
-            "(case when COUNTRY = '1' then null else COUNTRY end) country from tbldestdetails where \n" +
+            "NAME name,\n" +
+            "PHONE phone,\n" +
+            "ADDRESS_LINE_1 addressLine1,\n" +
+            "ADDRESS_LINE_2 addressLine2,\n" +
+            "CITY city,\n" +
+            "COUNTRY country from tbldestdetails where \n" +
             "DEST_DETAIL_ID = :consignmentId", nativeQuery = true)
     DestinationDetailsImpl getDestinationDetailsImpl(@Param(value = "consignmentId") Long consignmentId);
 }

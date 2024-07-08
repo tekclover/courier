@@ -313,6 +313,7 @@ public class UpdateConsignment {
     private String referenceField48;
     private String referenceField49;
     private String referenceField50;
+    private Long preAlertValidationIndicator;
 
     private UpdateDestinationDetails destinationDetails = new UpdateDestinationDetails();
 
