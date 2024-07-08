@@ -177,22 +177,6 @@ export class SubProductNewComponent {
 
   removeItem(index: number) {
     this.subProductArray.splice(index, 1);
-
-    this.service.Delete(this.subProductArray[0].subProductId, this.subProductArray[0].subProductValue).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Deleted',
-          key: 'br',
-          detail: this.subProductArray[0].subProductId + ' Deleted successfully',
-        });
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.cs.commonerrorNew(err);
-        this.spin.hide();
-      },
-    });
   }
 
   fill(line: any) {
