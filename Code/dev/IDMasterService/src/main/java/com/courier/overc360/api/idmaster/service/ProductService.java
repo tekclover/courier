@@ -391,6 +391,7 @@ public class ProductService {
                         newProduct.setStatusDescription(statusDesc);
                     }
                 }
+                newProduct.setDeletionIndicator(0L);
                 newProduct.setCreatedBy(loginUserID);
                 newProduct.setCreatedOn(new Date());
                 newProduct.setUpdatedBy(loginUserID);

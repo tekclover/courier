@@ -432,6 +432,7 @@ public class ConsignorService {
                         newConsignor.setStatusDescription(statusDesc);
                     }
                 }
+                newConsignor.setDeletionIndicator(0L);
                 newConsignor.setCreatedBy(loginUserID);
                 newConsignor.setCreatedOn(new Date());
                 newConsignor.setUpdatedBy(loginUserID);
