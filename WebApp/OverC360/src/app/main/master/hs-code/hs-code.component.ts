@@ -53,8 +53,6 @@ export class HsCodeComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'hsCode', header: 'HS Code' },
-      { field: 'itemCode', header: 'Item Code' },
-      { field: 'itemDescription', header: 'Item Description' },
       { field: 'itemGroup', header: 'Item Group' },
       { field: 'specialApprovalText', header: 'Special Approval' },
       { field: 'statusDescription', header: 'Status' },
@@ -63,6 +61,8 @@ export class HsCodeComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'itemCode', header: 'Item Code' },
+      { field: 'itemDescription', header: 'Item Description' },
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },

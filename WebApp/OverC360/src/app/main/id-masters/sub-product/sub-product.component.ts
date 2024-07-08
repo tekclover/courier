@@ -53,13 +53,13 @@ export class SubProductComponent {
       { field: 'companyName', header: 'Company' },
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'subProductName', header: 'Sub Product Name' },
-      { field: 'subProductValue', header: 'Sub Product Value' },
       { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'subProductValue', header: 'Sub Product Value' },
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },

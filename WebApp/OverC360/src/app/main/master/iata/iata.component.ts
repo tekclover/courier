@@ -54,7 +54,7 @@ export class IataComponent {
       { field: 'origin', header: 'Origin' },
       { field: 'iataKd', header: 'IATA Value ' },
       { field: 'iataCharge', header: 'IATA Charge' },
-      { field: 'currencyDescription', header: 'Currency Description' },
+      { field: 'currencyDescription', header: 'Currency' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
