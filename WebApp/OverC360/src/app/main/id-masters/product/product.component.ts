@@ -166,7 +166,21 @@ export class ProductComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedProduct);
+        let obj: any = {};
+        obj.languageId = [this.auth.languageId];
+        obj.companyId = [this.auth.companyId];
+        obj.productId = [this.selectedProduct[0].productId];
+
+        this.service.search(obj).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            this.deleterecord(res);
+          },
+          error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          },
+        });
       }
     });
   }

@@ -169,7 +169,21 @@ export class CustomerComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedCustomer);
+        let obj: any = {};
+        obj.languageId = [this.auth.languageId];
+        obj.companyId = [this.auth.companyId];
+        obj.customerId = [this.selectedCustomer[0].customerId];
+
+        this.service.search(obj).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            this.deleterecord(res);
+          },
+          error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          },
+        });
       }
     });
   }

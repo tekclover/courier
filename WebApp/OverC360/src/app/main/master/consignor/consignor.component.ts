@@ -94,6 +94,7 @@ export class ConsignorComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           console.log(res);
+          res = this.cs.removeDuplicatesFromArrayList(res, 'consignorId');
           this.consignorTable = res;
           this.getSearchDropdown();
           this.spin.hide();
@@ -169,7 +170,21 @@ export class ConsignorComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedConsignor);
+        let obj: any = {};
+        obj.languageId = [this.auth.languageId];
+        obj.companyId = [this.auth.companyId];
+        obj.consignorId = [this.selectedConsignor[0].consignorId];
+
+        this.service.search(obj).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            this.deleterecord(res);
+          },
+          error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          },
+        });
       }
     });
   }
