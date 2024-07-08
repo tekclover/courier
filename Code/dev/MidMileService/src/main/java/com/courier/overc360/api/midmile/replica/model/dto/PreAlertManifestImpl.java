@@ -4,19 +4,19 @@ import java.util.Date;
 
 public interface PreAlertManifestImpl {
 
-    String LanguageId();
-    String CompanyId();
-    String PartnerId();
-    String MasterAirwayBill();
-    String HouseAirwayBill();
-    String PieceId();
-    String PieceItemId();
-    String Quantity();
-    String UnitValue();
-    String Currency();
-    String ImageRefId();
-    String LanguageDescription();
-    String CompanyName();
+    String getLanguageId();
+    String getCompanyId();
+    String getPartnerId();
+    String getMasterAirwayBill();
+    String getHouseAirwayBill();
+    String getPieceId();
+    String getPieceItemId();
+    String getQuantity();
+    String getUnitValue();
+    String getCurrency();
+    String getImageRefId();
+    String getLanguageDescription();
+    String getCompanyName();
     String getPartnerType();
     String getPartnerName();
     String getPartnerMasterAirwayBill();
