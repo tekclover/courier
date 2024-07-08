@@ -141,6 +141,8 @@ export class SubProductComponent {
     }
   }
 
+
+
   deleteDialog() {
     if (this.selectedSubProduct.length === 0) {
       this.messageService.add({
@@ -165,7 +167,22 @@ export class SubProductComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedSubProduct);
+        let obj: any = {};
+        obj.languageId = [this.auth.languageId];
+        obj.companyId = [this.auth.companyId];
+        obj.subProductId = [this.selectedSubProduct[0].subProductId];
+        // obj.subProductValue = [this.selectedSubProduct[0].subProductValue];
+
+        this.service.search(obj).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            this.deleterecord(res);
+          },
+          error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          },
+        });
       }
     });
   }
