@@ -834,6 +834,15 @@
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.country')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
+                        <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="destinationDetails">
+                            <p class="formControlLabel f600 textBlack mb-0">State</p>
+                            <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
+                                formControlName="state"
+                                [ngClass]="deliveryInfo.get('destinationDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                            <mat-error *ngIf="errorHandlingDelivery('destinationDetails.state')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="district"
                             formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">District</p>
@@ -862,15 +871,6 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
-                        <div class="col-3 marginFieldNew borderRadius12" id="state" formGroupName="destinationDetails">
-                            <p class="formControlLabel f600 textBlack mb-0">State</p>
-                            <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
-                                formControlName="state"
-                                [ngClass]="deliveryInfo.get('destinationDetails.state')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                            <mat-error *ngIf="errorHandlingDelivery('destinationDetails.state')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="latitude"
                             formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Latitude</p>

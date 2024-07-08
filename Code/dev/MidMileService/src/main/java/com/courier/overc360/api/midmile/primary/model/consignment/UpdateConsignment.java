@@ -253,6 +253,10 @@ public class UpdateConsignment {
 
     private String isCustomsDeclarable;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String storageLocation;
     private List<ReferenceImageList> referenceImageList;
     private String isExchange;

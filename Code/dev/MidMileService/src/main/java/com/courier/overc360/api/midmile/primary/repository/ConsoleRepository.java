@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
 @Transactional
 @Repository
 public interface ConsoleRepository extends JpaRepository<Console, String>,
@@ -24,7 +25,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 
 
-// Get Description
+    // Get Description
     @Query(value = "Select \n" +
             "tl.lang_text langDesc, \n" +
             "tc.c_name companyDesc \n" +
@@ -39,9 +40,9 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                       @Param(value = "companyId") String companyId);
 
     @Query(value = "Select * From tblconsole tc \n" +
-            "Where \n"+
+            "Where \n" +
             "tc.CONSOLE_ID IN (:consoleId) and \n" +
-            "tc.is_deleted = 0 ", nativeQuery =  true)
+            "tc.is_deleted = 0 ", nativeQuery = true)
     List<Console> getConsoleData(@Param(value = "consoleId") String consoleId);
 
     Console findByHouseAirwayBillAndConsoleIdAndDeletionIndicator(String houseAirwayBill, String fromConsole, Long deletionIndicator);
@@ -68,18 +69,57 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                                @Param("houseAirwayBill") String houseAirwayBill,
                                                @Param("masterAirwayBill") String masterAirwayBill);
 
-//    @Transactional
-//    @Modifying
-//    @Query(value = "UPDATE tblconsignment_entity " +
-//            "SET CONSOLE_INDICATOR = 1 WHERE c_id = :companyId " +
-//            "AND lang_id = :languageId " +
-//            "AND partner_id = :partnerId " +
-//            "AND house_airway_bill = :houseAirwayBill " +
-//            "AND master_airway_bill = :masterAirwayBill " +
-//            "AND is_deleted = 0 ", nativeQuery = true)
-//    public void updateConsoleIndicator(@Param("companyId") String companyId,
-//                                       @Param("languageId") String languageId,
-//                                       @Param("partnerId") String partnerId,
-//                                       @Param("houseAirwayBill") String houseAirwayBill,
-//                                       @Param("masterAirwayBill") String masterAirwayBill);
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsignment_entity " +
+            "SET event_code = :eventCode, " +
+            "event_text = :eventText, " +
+            "STATUS_ID = :statusCode, " +
+            "STATUS_TEXT = :statusText, " +
+            "STATUS_TIMESTAMP = getDate(), " +
+            "EVENT_TIMESTAMP = getDate() " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void conUpdateBasedOnConsoleUpdate(@Param("companyId") String companyId,
+                                              @Param("languageId") String languageId,
+                                              @Param("partnerId") String partnerId,
+                                              @Param("houseAirwayBill") String houseAirwayBill,
+                                              @Param("masterAirwayBill") String masterAirwayBill,
+                                              @Param("statusCode") String statusCode,
+                                              @Param("eventCode") String eventCode,
+                                              @Param("statusText") String statusText,
+                                              @Param("eventText") String eventText);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsole " +
+            "SET event_code = :eventCode, " +
+            "event_text = :eventText, " +
+            "STATUS_ID = :statusCode, " +
+            "STATUS_TEXT = :statusText, " +
+            "STATUS_TIMESTAMP = getDate(), " +
+            "EVENT_TIMESTAMP = getDate() " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND CONSOLE_ID = :consoleId " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void consoleUpdateBasedOnCCRUpdate(@Param("companyId") String companyId,
+                                              @Param("languageId") String languageId,
+                                              @Param("partnerId") String partnerId,
+                                              @Param("houseAirwayBill") String houseAirwayBill,
+                                              @Param("masterAirwayBill") String masterAirwayBill,
+                                              @Param("statusCode") String statusCode,
+                                              @Param("eventCode") String eventCode,
+                                              @Param("statusText") String statusText,
+                                              @Param("eventText") String eventText,
+                                              @Param("consoleId") String consoleId);
 }

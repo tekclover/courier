@@ -16,6 +16,12 @@ public class ReplicaAddItemDetails {
 
     private String partnerId;
 
+    private String quantity;
+
+    private String unitValue;
+
+    private String currency;
+
     private String masterAirwayBill;
 
     private String houseAirwayBill;

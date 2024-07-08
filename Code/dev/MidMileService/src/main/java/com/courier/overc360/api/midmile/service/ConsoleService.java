@@ -433,8 +433,6 @@ public class ConsoleService {
             List<AddConsole> consoleList = entry.getValue();
             String hsCode = entry.getKey();
 
-//            String specialApproval = replicaConsoleRepository.getSpecialApproval(hsCode);
-
             String specialApproval = null;
             for (AddConsole getCompany : consoleList) {
                 specialApproval = replicaConsoleRepository.getSpecialApproval(getCompany.getCompanyId(), hsCode);
@@ -532,6 +530,7 @@ public class ConsoleService {
 
                             Console createdConsole = consoleRepository.save(newConsole);
 
+                            if (createdConsole != null) {
                             // Save ConsignmentStatus
                             consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
                                     createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
@@ -539,7 +538,7 @@ public class ConsoleService {
                                     createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
                                     createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID );
 
-                            if (createdConsole != null) {
+                            // Update ConsignmentEntity
                                 consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
                                         createdConsole.getLanguageId(), createdConsole.getPartnerId(),
                                         createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
@@ -693,6 +692,7 @@ public class ConsoleService {
 
                             Console createdConsole = consoleRepository.save(newConsole);
 
+                            if (createdConsole != null) {
                             // Save ConsignmentStatus
                             consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
                                     createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
@@ -700,7 +700,7 @@ public class ConsoleService {
                                     createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
                                     createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID );
 
-                            if (createdConsole != null) {
+                            // Save ConsignmentEntity
                                 consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
                                         createdConsole.getLanguageId(), createdConsole.getPartnerId(),
                                         createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
@@ -1069,12 +1069,38 @@ public class ConsoleService {
                         updateConsole.getPartnerId(), updateConsole.getMasterAirwayBill(),
                         updateConsole.getHouseAirwayBill(), updateConsole.getConsoleId());
 
-
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
+                if(dbConsole.getStatusId() != null && dbConsole.getEventCode() != null) {
+                    IKeyValuePair iKeyValuePair = consignmentEntityRepository.getStatusEventText(
+                            dbConsole.getCompanyId(), dbConsole.getStatusId(), dbConsole.getEventCode());
+
+                    dbConsole.setStatusId(dbConsole.getStatusId());
+                    dbConsole.setEventCode(dbConsole.getEventCode());
+                    if(iKeyValuePair != null) {
+                        dbConsole.setStatusText(iKeyValuePair.getStatusText());
+                        dbConsole.setEventText(iKeyValuePair.getEventText());
+                    }
+                    dbConsole.setStatusTimestamp(new Date());
+                    dbConsole.setEventTimestamp(new Date());
+                     }
 
                 Console updatedConsole = consoleRepository.save(dbConsole);
+
+                if(updatedConsole != null) {
+                    //Consignment Update
+                    consoleRepository.conUpdateBasedOnConsoleUpdate(updatedConsole.getCompanyId(), updatedConsole.getLanguageId(), updatedConsole.getPartnerId(),
+                            updatedConsole.getHouseAirwayBill(), updatedConsole.getMasterAirwayBill(), updatedConsole.getStatusId(), updatedConsole.getEventCode(),
+                            updatedConsole.getStatusText(), updatedConsole.getEventText());
+
+                    // Save ConsignmentStatus
+                    consignmentStatusService.createConsignmentStatusParams(updatedConsole.getCompanyId(), updatedConsole.getCompanyName(),
+                            updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(), updatedConsole.getPieceId(), updatedConsole.getPieceId(),
+                            updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getStatusText(), updatedConsole.getStatusId(),
+                            updatedConsole.getStatusText(), updatedConsole.getEventCode(), updatedConsole.getEventText(), updatedConsole.getEventCode(),
+                            updatedConsole.getEventText(), updatedConsole.getEventTimestamp(), updatedConsole.getEventTimestamp(), updatedConsole.getStatusTimestamp(), loginUserID );
+                }
 
                 if (updateConsole.getEventCode() != null) {
                     if ((updatedConsole.getEventCode()).equalsIgnoreCase("10")) {
