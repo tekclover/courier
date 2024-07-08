@@ -180,6 +180,22 @@ export class ProductNewComponent {
 
   removeItem(index: number) {
     this.productArray.splice(index, 1);
+
+    // this.service.Delete(this.productArray[0].productId, this.productArray[0].subProductId).subscribe({
+    //   next: (res) => {
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Deleted',
+    //       key: 'br',
+    //       detail: this.productArray[0].productId + ' Deleted successfully',
+    //     });
+    //     this.spin.hide();
+    //   },
+    //   error: (err) => {
+    //     this.cs.commonerrorNew(err);
+    //     this.spin.hide();
+    //   },
+    // });
   }
 
   save() {
@@ -257,7 +273,7 @@ export class ProductNewComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.subProductId = [line.subProductId];
+    obj.productId = [line.productId];
 
     this.service.search(obj).subscribe({
       next: (res: any) => {

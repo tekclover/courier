@@ -19,6 +19,7 @@ public class UpdateSubProduct {
     @NotBlank(message = "SubProduct Value is mandatory")
     private String subProductValue;
 
+    @NotBlank(message = "SubProduct Value is mandatory")
     private String subProductName;
 
     private String statusId;
@@ -27,6 +28,7 @@ public class UpdateSubProduct {
 
     private Long deletionIndicator;
 
+    @NotBlank(message = "SubProduct Value Description is mandatory")
     private String referenceField1;
 
     private String referenceField2;

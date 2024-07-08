@@ -4,6 +4,8 @@ import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
+import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
+import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestImpl;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.FindItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.service.ItemDetailsService;
@@ -90,6 +92,14 @@ public class ItemDetailsController {
     public ResponseEntity<?> findItemDetails(@RequestBody FindConsignment findItemDetails) throws Exception {
         List<ReplicaItemDetails> createdItemDetails = itemDetailsService.findItemDetails(findItemDetails);
         return new ResponseEntity<>(createdItemDetails, HttpStatus.OK);
+    }
+
+    // Find PreAlertManifest changed from consignment to Itemdetails
+    @ApiOperation(response = PreAlertManifestImpl.class, value = "Find PreAlertManifest") // label for swagger
+    @PostMapping("/findPreAlertManifest")
+    public ResponseEntity<?> findPreAlertManifest(@RequestBody FindPreAlertManifest findPreAlertManifest) throws Exception {
+        List<PreAlertManifestImpl> preAlertManifestList = itemDetailsService.findPreAlertManifest(findPreAlertManifest);
+        return new ResponseEntity<>(preAlertManifestList, HttpStatus.OK);
     }
 
 }

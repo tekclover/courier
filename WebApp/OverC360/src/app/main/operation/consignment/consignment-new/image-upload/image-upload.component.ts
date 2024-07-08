@@ -65,12 +65,13 @@ export class ImageUploadComponent {
       console.log('No files selected for upload.');
       return;
     }
-   if(this.data.type == 'piece'){
-    this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.pieceId + '/'
-   }
-   if(this.data.type == 'item'){
-    this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.itemCode + '/'
-   }
+  //  if(this.data.type == 'piece'){
+  //   this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.pieceId + '/'
+  //  }
+  //  if(this.data.type == 'item'){
+  //   this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.itemCode + '/'
+  //  }
+  this.fileLocation = '/' +  (new Date().getDate()) +'-'+ (new Date().getMonth() + 1) + '-' + new Date().getFullYear()  + '_' +this.cs.timeFormat(new Date()) + '/';
     this.service.uploadFiles(this.selectedFiles, this.fileLocation).subscribe({
       next: (result) => {
         this.messageService.add({

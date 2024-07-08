@@ -61,6 +61,10 @@ pCalendar(date: any): Date{
     const del_date = this.datepipe.transform(date, "dd-MM-yyyy HH:mm");
     return del_date;
   }
+  timeFormat(date: any) {
+    const del_date = this.datepipe.transform(date, 'HH:mm a');
+    return del_date;
+  }
 
   public filterArray(targetArray: any[], filters: any) {
     var filterKeys = Object.keys(filters);

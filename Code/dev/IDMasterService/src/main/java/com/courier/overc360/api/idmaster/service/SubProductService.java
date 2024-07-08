@@ -84,17 +84,17 @@ public class SubProductService {
      * @param languageId
      * @param companyId
      * @param subProductId
+     * @param subProductValue
      * @return
      */
-    public List<SubProduct> getSubProductList(String languageId, String companyId, String subProductId) {
+    public List<SubProduct> getSubProductListForDelete(String languageId, String companyId, String subProductId, String subProductValue) {
 
-        List<SubProduct> dbSubProductList = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
-                languageId, companyId, subProductId, 0L);
+        List<SubProduct> dbSubProductList = subProductRepository.getSubProductsWithQry(
+                languageId, companyId, subProductId, subProductValue);
         if (dbSubProductList.isEmpty()) {
-            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId +
-                    ", subProductId - " + subProductId + " and doesn't exists";
+            String errMsg = "There are no SubProducts with given values";
             // Error Log
-            createSubProductLog5(languageId, companyId, subProductId, errMsg);
+            createSubProductLog5(languageId, companyId, subProductId, subProductValue, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbSubProductList;
@@ -146,7 +146,6 @@ public class SubProductService {
             if (statusDesc != null) {
                 newSubProduct.setStatusDescription(statusDesc);
             }
-            newSubProduct.setReferenceField1(addSubProduct.getSubProductValue() + " - " + addSubProduct.getReferenceField1());
             newSubProduct.setDeletionIndicator(0L);
             newSubProduct.setCreatedBy(loginUserID);
             newSubProduct.setCreatedOn(new Date());
@@ -223,7 +222,6 @@ public class SubProductService {
                 if (statusDesc != null) {
                     newSubProduct.setStatusDescription(statusDesc);
                 }
-                newSubProduct.setReferenceField1(addSubProduct.getSubProductValue() + " - " + addSubProduct.getReferenceField1());
                 newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);
                 newSubProduct.setCreatedOn(new Date());
@@ -358,7 +356,6 @@ public class SubProductService {
                         newSubProduct.setStatusDescription(statusDesc);
                     }
                 }
-                newSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
                 newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);
                 newSubProduct.setCreatedOn(new Date());
@@ -419,19 +416,15 @@ public class SubProductService {
         if (subProductDeleteInputList != null && !subProductDeleteInputList.isEmpty()) {
             for (SubProductDeleteInput deleteInput : subProductDeleteInputList) {
 
-                if (deleteInput.getSubProductValue() != null && !deleteInput.getSubProductValue().isEmpty()) {
-                    // Call normal delete API
-                    deleteSubProduct(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
-                            deleteInput.getSubProductValue(), loginUserID);
-                } else {
-                    List<SubProduct> dbSubProductList = getSubProductList(deleteInput.getLanguageId(),
-                            deleteInput.getCompanyId(), deleteInput.getSubProductId());
-                    for (SubProduct dbSubProduct : dbSubProductList) {
-                        dbSubProduct.setDeletionIndicator(1L);
-                        dbSubProduct.setUpdatedBy(loginUserID);
-                        dbSubProduct.setUpdatedOn(new Date());
-                        subProductRepository.save(dbSubProduct);
-                    }
+                List<SubProduct> dbSubProductList = getSubProductListForDelete(deleteInput.getLanguageId(),
+                        deleteInput.getCompanyId(), deleteInput.getSubProductId(), deleteInput.getSubProductValue());
+                log.info("SubProduct List for Delete --> {}", dbSubProductList);
+
+                for (SubProduct dbSubProduct : dbSubProductList) {
+                    dbSubProduct.setDeletionIndicator(1L);
+                    dbSubProduct.setUpdatedBy(loginUserID);
+                    dbSubProduct.setUpdatedOn(new Date());
+                    subProductRepository.save(dbSubProduct);
                 }
             }
         }
@@ -575,14 +568,17 @@ public class SubProductService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createSubProductLog5(String languageId, String companyId, String subProductId, String error) {
+    private void createSubProductLog5(String languageId, String companyId, String subProductId, String subProductValue, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
         errorLog.setLanguageId(languageId);
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(subProductId);
-        errorLog.setMethod("Exception thrown in getSubProductList");
+        if (subProductValue != null) {
+            errorLog.setReferenceField1(subProductValue);
+        }
+        errorLog.setMethod("Exception thrown in getSubProductListForDelete");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);

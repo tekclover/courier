@@ -170,7 +170,7 @@ export class BondedManifestNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Airport', 'BondedManifest', this.pageToken.pageflow];
+    const dataToSend = ['Mid-Mile', 'BondedManifest', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

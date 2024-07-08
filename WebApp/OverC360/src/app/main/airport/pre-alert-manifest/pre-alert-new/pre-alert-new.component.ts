@@ -112,7 +112,7 @@ export class PreAlertNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Airport', 'Pre Alert Manifest', this.pageToken.pageflow];
+    const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();

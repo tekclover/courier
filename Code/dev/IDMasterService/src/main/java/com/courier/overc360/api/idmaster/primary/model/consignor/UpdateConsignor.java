@@ -28,6 +28,7 @@ public class UpdateConsignor {
     @NotBlank(message = "ConsignorId is mandatory")
     private String consignorId;
 
+    @NotBlank(message = "Consignor Name is mandatory")
     private String consignorName;
 
     private String statusId;

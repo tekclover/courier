@@ -44,7 +44,7 @@ export class AirportCodeNewComponent {
   //form builder initialize
   form = this.fb.group({
     airportCode: [, Validators.required],
-    airportName: [, Validators.required],
+    airportText: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
