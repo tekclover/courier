@@ -99,7 +99,7 @@ export class ConsignmentComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-  //  obj.houseAirwayBill = [20000000232]
+    obj.houseAirwayBill = [10000000097]
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.consignmentTable = res;
@@ -225,8 +225,8 @@ export class ConsignmentComponent {
     this.cs.exportAsExcel(exportData, 'Consignment');
   }
 
-  downloadLabel(line: any) {
-    this.pdf.generatePdfBarocde(line);
+  downloadLabel(line: any, type: any) {
+    this.pdf.generatePdfBarocde(line, type);
   }
 
   selectedFiles: File | null = null;
