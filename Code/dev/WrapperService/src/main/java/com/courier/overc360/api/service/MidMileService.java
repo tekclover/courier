@@ -111,7 +111,7 @@ public class MidMileService {
         }
     }
 
-    // Find IConsignmentEntity - null validation column
+    // Find IConsignmentEntity - preAlertValidationIndicator
     public IConsignment[] findIConsignmentEntity(FindIConsignment findConsignment, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();

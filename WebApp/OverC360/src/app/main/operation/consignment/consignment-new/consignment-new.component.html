@@ -22,7 +22,8 @@
                             <p-dropdown [options]="productIdList" placeholder="Select" filter="true"
                                 formControlName="productId"
                                 [ngClass]="shipmentInfo.get('productId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="productChanged()" />
+                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}"
+                                (onChange)="productChanged()" />
                             <mat-error *ngIf="errorHandlingShipment('productId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -79,11 +80,12 @@
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerType">
                             <p class="formControlLabel f600 textBlack mb-0 required">Partner Type</p>
                             <p-dropdown formControlName="partnerType" [options]="partnerType" appendTo="body"
-                            [ngClass]="shipmentInfo.get('partnerType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select" (onChange)="partnerTypeChanged()" />
+                                [ngClass]="shipmentInfo.get('partnerType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" placeholder="Select"
+                                (onChange)="partnerTypeChanged()" />
                             <mat-error *ngIf="errorHandlingShipment('partnerType')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div> 
+                        </div>
 
                         <div class="col-3 marginFieldNew borderRadius12" id="partnerId">
                             <p class="formControlLabel f600 textBlack mb-0 required">Partner</p>
@@ -180,18 +182,18 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="countryOfOrigin">
                             <p class="formControlLabel f600 textBlack mb-0">Country of Origin</p>
-                            <input maxlength="50" formControlName="countryOfOrigin"
-                                [ngClass]="shipmentInfo.get('countryOfOrigin')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
+                            <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
+                                formControlName="countryOfOrigin" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('countryOfOrigin')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
 
                         <div class="col-3 marginFieldNew borderRadius12" id="countryOfDestination">
                             <p class="formControlLabel f600 textBlack mb-0">Country of Destination</p>
-                            <input maxlength="50" formControlName="countryOfDestination"
-                                [ngClass]="shipmentInfo.get('countryOfDestination')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
+                            <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
+                                formControlName="countryOfDestination" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingShipment('countryOfDestination')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -213,7 +215,7 @@
                             <mat-error *ngIf="errorHandlingShipment('priority')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-<!-- 
+                        <!-- 
                         <div class="col-3 marginFieldNew borderRadius12" id="manufacturer">
                             <p class="formControlLabel f600 textBlack mb-0">Manufacturer</p>
                             <input maxlength="50" formControlName="manufacturer"
@@ -250,6 +252,15 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
 
+                        <div class="col-3 marginFieldNew borderRadius12" id="invoiceNumber">
+                            <p class="formControlLabel f600 textBlack mb-0">Invoice Number</p>
+                            <input maxlength="50" formControlName="invoiceNumber"
+                                [ngClass]="consignment.get('invoiceNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100" pInputText placeholder="Enter" />
+                            <mat-error *ngIf="errorHandlingConsignment('invoiceNumber')"
+                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        </div>
+                        
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Amount </p>
                             <input maxlength="50" formControlName="invoiceAmount"
@@ -476,14 +487,7 @@
                             <mat-error *ngIf="errorHandlingConsignment('grossWeight')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="invoiceNumber">
-                            <p class="formControlLabel f600 textBlack mb-0">Invoice Number</p>
-                            <input maxlength="50" formControlName="invoiceNumber"
-                                [ngClass]="consignment.get('invoiceNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingConsignment('invoiceNumber')"
-                                class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div>
+                   
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceDateFE">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Date</p>
                             <p-calendar formControlName="invoiceDateFE" appendTo="body"
@@ -526,7 +530,7 @@
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
-                            <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>                                
+                            <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
                             <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
                                 formControlName="consignmentCurrency"
                                 [ngClass]="consignment.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -561,38 +565,39 @@
                         <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
                             <tr [formGroup]="item">
 
-                                <td><input class="inputborderLess pl-3"
-                                        placeholder="Enter" [value]="i + 1" formControlName="packReferenceNumber"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="pieceProductCode">
-                                </td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="tags"></td>
+                                        formControlName="packReferenceNumber"></td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                        formControlName="pieceProductCode">
+                                </td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="tags"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="pieceValue"></td>
                                 <td>
-                                        <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
-                                        formControlName="pieceCurrency"
-                                        appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                    </td>
+                                    <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
+                                        formControlName="pieceCurrency" appendTo="body" [style]="{'width': '100%'}"
+                                        [panelStyle]="{'width':'100%'}" />
+                                </td>
                                 <td>
                                     <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                                         alt="" srcset="" style="height: 1.4rem;">
                                     <p-overlayPanel [style]="{ width: '180' }" #op>
                                         <div class="d-flex flex-column">
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="dimension(this.pageToken.pageflow, 'piece', i)"><img
+                                                (click)="dimension(this.pageToken.pageflow, 'piece', i); op.hide()"><img
                                                     src="./assets/common/dimension.png"
                                                     style="padding-right: 10px;width: 2rem;"
                                                     srcset="">Dimension</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="opendialog(this.pageToken.pageflow, i)"><img
+                                                (click)="opendialog(this.pageToken.pageflow, i); op.hide()"><img
                                                     src="./assets/common/add.png"
                                                     style="padding-right: 10px;width: 2rem;" srcset="">Item</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="removePieceDetail(i, rowData)"><img src="./assets/common/delete1x.png"
+                                                (click)="removePieceDetail(i, rowData); op.hide()"><img
+                                                    src="./assets/common/delete1x.png"
                                                     style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="imageupload(this.pageToken.pageflow, i)"><img
+                                                (click)="imageupload(this.pageToken.pageflow, i); op.hide()"><img
                                                     src="./assets/common/image.png"
                                                     style="padding-right: 10px;width: 2rem;" srcset="">Image</button>
                                         </div>
@@ -627,7 +632,7 @@
                             <mat-error *ngIf="errorHandlingSender('shipperId')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                        
+
                         <div class="col-3 marginFieldNew borderRadius12" id="name" formGroupName="originDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Name</p>
                             <input maxlength="50" formControlName="name"
@@ -823,7 +828,7 @@
                             formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Country</p>
                             <p-dropdown [options]="countryIdListDestination" placeholder="Select" filter="true"
-                                formControlName="country" 
+                                formControlName="country"
                                 [ngClass]="deliveryInfo.get('destinationDetails.country')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.country')"
@@ -847,7 +852,8 @@
                             <mat-error *ngIf="errorHandlingDelivery('destinationDetails.city')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="pinCode" formGroupName="destinationDetails">
+                        <div class="col-3 marginFieldNew borderRadius12" id="pinCode"
+                            formGroupName="destinationDetails">
                             <p class="formControlLabel f600 textBlack mb-0">Pincode</p>
                             <input maxlength="50" formControlName="pinCode"
                                 [ngClass]="senderInfo.get('destinationDetails.pinCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -1005,9 +1011,9 @@
                         </div> -->
                         <div class="col-3 marginFieldNew borderRadius12" id="countryOfSupply">
                             <p class="formControlLabel f600 textBlack mb-0">Country of Supply</p>
-                            <input maxlength="50" formControlName="countryOfSupply"
-                                [ngClass]="senderInfo.get('countryOfSupply')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100" pInputText placeholder="Enter" />
+                            <p-dropdown [options]="countryIdListOrigin" placeholder="Select" filter="true"
+                                formControlName="countryOfSupply" appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
                             <mat-error *ngIf="errorHandlingBilling('countryOfSupply')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
@@ -1018,7 +1024,7 @@
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingBilling('declaredValue')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                        </div> 
+                        </div>
                         <!-- <div class="col-3 marginFieldNew borderRadius12" id="consignmentCurrency">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
                             <input maxlength="50" formControlName="consignmentCurrency"
@@ -1036,7 +1042,7 @@
                             <mat-error *ngIf="errorHandlingBilling('exchangeRate')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                     
+
                         <div class="col-3 marginFieldNew borderRadius12" id="customsValue">
                             <p class="formControlLabel f600 textBlack mb-0">Customs Value</p>
                             <input maxlength="50" formControlName="customsValue"
@@ -1117,7 +1123,7 @@
                             <mat-error *ngIf="errorHandlingBilling('codCollectionMode')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div> -->
-                    <!-- <div class="col-3 marginFieldNew borderRadius12" id="declaredValueWithoutTax">
+                        <!-- <div class="col-3 marginFieldNew borderRadius12" id="declaredValueWithoutTax">
                     <p class="formControlLabel f600 textBlack mb-0">Declared Value Without Tax </p>
                     <input maxlength="50" formControlName="declaredValueWithoutTax"
                         [ngClass]="senderInfo.get('declaredValueWithoutTax')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"

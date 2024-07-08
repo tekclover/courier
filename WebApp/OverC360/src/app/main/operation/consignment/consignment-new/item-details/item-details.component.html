@@ -41,14 +41,14 @@
               <p-overlayPanel [style]="{ width: '180' }" #op>
                   <div class="d-flex flex-column">
                       <button style="width: 8rem;" mat-menu-item class="w-100"
-                          (click)="dimension(this.data.pageflow, 'item', i)"><img
+                          (click)="op.hide(); dimension(this.data.pageflow, 'item', i)"><img
                               src="./assets/common/dimension.png" style="padding-right: 10px;width: 2rem;"
                               srcset="">Dimension</button>
                       <button style="width: 8rem;" mat-menu-item class="w-100"
-                          (click)="removeItem(i, rowData)"><img
+                          (click)="op.hide(); removeItem(i, rowData)"><img
                               src="./assets/common/delete1x.png" style="padding-right: 10px;width: 2rem;"
                               srcset="">Delete</button>
-                      <button style="width: 8rem;" mat-menu-item class="w-100" (click)="imageupload(this.data.pageflow, i)"><img
+                      <button style="width: 8rem;" mat-menu-item class="w-100" (click)="op.hide(); imageupload(this.data.pageflow, i)"><img
                               src="./assets/common/image.png" style="padding-right: 10px;width: 2rem;"
                               srcset="">Image</button>
                   </div>
