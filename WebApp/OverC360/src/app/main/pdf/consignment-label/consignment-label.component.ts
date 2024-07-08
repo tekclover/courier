@@ -122,24 +122,24 @@ export class ConsignmentLabelComponent {
       ]);
       bodyArray.push([
         { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.subProductName), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.modeOfTransport), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.destinationDetails.city), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.declaredValue), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.pieceValue), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Inco-Terms', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.incoTerms), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.description), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.grossWeight), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'COD', bold: true, fontSize: 6, border: [false, false, false, false] },
@@ -150,24 +150,24 @@ export class ConsignmentLabelComponent {
       ]);
       bodyArray.push([
         { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Yes', bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.insurance), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.customsValue), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.totalDuty), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'Piece Count', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Currency Code', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.currency), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.consignmentCurrency), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       bodyArray.push([
         { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.noOfItemPiece), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.goodsDescription), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -661,7 +661,7 @@ export class ConsignmentLabelComponent {
       ]);
       bodyArray.push([
         { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Yes', bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (line.insurance), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.customsValue), bold: false, fontSize: 6, border: [false, false, false, false] }
