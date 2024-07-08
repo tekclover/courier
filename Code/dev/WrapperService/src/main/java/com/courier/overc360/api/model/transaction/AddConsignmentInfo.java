@@ -3,10 +3,13 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddConsignmentInfo {
+
+    private String loadTypeId;
 
     private String loadType;
 

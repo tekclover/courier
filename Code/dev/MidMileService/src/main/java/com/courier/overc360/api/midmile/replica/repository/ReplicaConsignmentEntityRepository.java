@@ -71,4 +71,5 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                        @Param(value = "partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
                                        @Param(value = "partnerMasterAirwayBill") List<String> partnerMasterAirwayBill);
     
+    ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);
 }

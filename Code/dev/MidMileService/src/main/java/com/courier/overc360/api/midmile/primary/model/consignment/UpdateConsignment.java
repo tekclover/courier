@@ -164,6 +164,8 @@ public class UpdateConsignment {
 
     private String workerCode;
 
+    private String loadTypeId;
+
     private String loadType;
 
     private String description;
@@ -252,6 +254,10 @@ public class UpdateConsignment {
     private String amount;
 
     private String isCustomsDeclarable;
+
+    private String modeOfTransport;
+
+    private String insurance;
 
     private String storageLocation;
     private List<ReferenceImageList> referenceImageList;

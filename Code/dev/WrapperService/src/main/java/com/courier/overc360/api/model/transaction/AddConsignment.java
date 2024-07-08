@@ -151,6 +151,8 @@ public class AddConsignment {
 
     private String workerCode;
 
+    private String loadTypeId;
+
     private String loadType;
 
     private String description;
@@ -180,6 +182,10 @@ public class AddConsignment {
     private String weightUnit;
 
     private String volume;
+
+    private String modeOfTransport;
+
+    private String insurance;
 
     private String volumeUnit;
 

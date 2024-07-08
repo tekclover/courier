@@ -3805,7 +3805,7 @@ public class IDMasterService {
     }
 
     // Get Event
-    public Event getEvent(String languageId, String companyId, String statusCode, String eventCode, String authToken) {
+    public Event getEvent(String languageId, String companyId, String eventCode, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -3813,8 +3813,7 @@ public class IDMasterService {
             headers.add("Authorization", "Bearer " + authToken);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "event/" + eventCode)
                     .queryParam("languageId", languageId)
-                    .queryParam("companyId", companyId)
-                    .queryParam("statusCode", statusCode);
+                    .queryParam("companyId", companyId);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<Event> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Event.class);
             log.info("result : " + result.getStatusCode());
@@ -3844,7 +3843,7 @@ public class IDMasterService {
     }
 
     // Update Event
-    public Event updateEvent(String languageId, String companyId, String statusCode, String eventCode,
+    public Event updateEvent(String languageId, String companyId, String eventCode,
                              UpdateEvent updateEvent, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -3858,7 +3857,6 @@ public class IDMasterService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "event/" + eventCode)
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
-                    .queryParam("statusCode", statusCode)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<Event> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Event.class);
             log.info("result : " + result.getStatusCode());
@@ -3870,7 +3868,7 @@ public class IDMasterService {
     }
 
     // Delete Event
-    public boolean deleteEvent(String languageId, String companyId, String statusCode, String eventCode, String loginUserID, String authToken) {
+    public boolean deleteEvent(String languageId, String companyId, String eventCode, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -3880,7 +3878,6 @@ public class IDMasterService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "event/" + eventCode)
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
-                    .queryParam("statusCode", statusCode)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
             log.info("result : " + result);
@@ -4338,6 +4335,26 @@ public class IDMasterService {
                     .queryParam("subMenuId", subMenuId);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<RoleAccess> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, RoleAccess.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get RoleAccess List
+    public RoleAccess[] getRoleAccessList(String companyId, String languageId, Long roleId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "roleAccess/" + roleId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("companyId", companyId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<RoleAccess[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, RoleAccess[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {

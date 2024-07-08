@@ -186,6 +186,7 @@ public class NotificationService {
         try {
             Notification dbNotification = getNotification(languageId, companyId, notificationId);
             BeanUtils.copyProperties(updateNotification, dbNotification, CommonUtils.getNullPropertyNames(updateNotification));
+
             if (updateNotification.getServiceTypeId() != null) {
                 String serviceTypDesc = replicaNotificationRepository.getServiceTypeDesc(updateNotification.getServiceTypeId(), languageId, companyId);
                 if (serviceTypDesc != null) {
@@ -193,8 +194,7 @@ public class NotificationService {
                 }
             }
             if (updateNotification.getSubProductId() != null && updateNotification.getProductId() != null) {
-                String subProductDesc = replicaNotificationRepository.getSubProductDesc(updateNotification.getSubProductId(),
-                        languageId, companyId);
+                String subProductDesc = replicaNotificationRepository.getSubProductDesc(updateNotification.getSubProductId(), languageId, companyId);
                 if (subProductDesc != null) {
                     dbNotification.setSubProductName(subProductDesc);
                 }

@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface EventRepository extends JpaRepository<Event,String>, JpaSpecificationExecutor<Event> {
-    Optional<Event> findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(
-            String languageId, String companyId, String statusCode, String eventCode, Long deletionIndicator);
+
+    Optional<Event> findByLanguageIdAndCompanyIdAndEventCodeAndDeletionIndicator(
+            String languageId, String companyId, String eventCode, Long deletionIndicator);
 }

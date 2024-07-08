@@ -3,11 +3,13 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 @Data
 public class ConsignmentInfo {
         private Long consignmentInfoId;
+        private String loadTypeId;
         private String loadType;
         private String description;
         private String notes;

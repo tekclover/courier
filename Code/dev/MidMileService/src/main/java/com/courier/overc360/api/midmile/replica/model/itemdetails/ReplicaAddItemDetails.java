@@ -4,17 +4,27 @@ package com.courier.overc360.api.midmile.replica.model.itemdetails;
 import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class ReplicaAddItemDetails {
+
 
     private String languageId;
 
     private String companyId;
 
     private String partnerId;
+
+    private String quantity;
+
+    private String unitValue;
+
+    private String currency;
 
     private String masterAirwayBill;
 
@@ -23,6 +33,10 @@ public class ReplicaAddItemDetails {
     private String pieceId;
 
     private String pieceItemId;
+
+    private String languageDescription;
+
+    private String companyName;
 
     private String partnerMasterAirwayBill;
 

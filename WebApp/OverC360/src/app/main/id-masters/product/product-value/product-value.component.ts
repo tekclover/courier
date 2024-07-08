@@ -77,8 +77,7 @@ export class ProductValueComponent {
   
   ngOnInit(): void {
     
-    this.form.controls.productValue.patchValue(this.data);
-    this.form.controls.referenceField1.disable();
+    // this.form.controls.referenceField1.disable();
     
     if(this.data.pageflow == "Edit"){
       this.form.patchValue(this.data.code)
@@ -90,6 +89,7 @@ export class ProductValueComponent {
 
   save() {
       this.submitted = true;
+      console.log(this.form.value);
       this.dialogRef.close(this.form.value);
   }
 

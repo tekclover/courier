@@ -3,6 +3,9 @@ package com.courier.overc360.api.midmile.primary.model.itemdetails;
 import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -11,6 +14,12 @@ public class UpdateItemDetails {
     private String pieceItemId;
 
     private String partnerType;
+
+    private String quantity;
+
+    private String unitValue;
+
+    private String currency;
 
     private String partnerName;
 
@@ -87,6 +96,24 @@ public class UpdateItemDetails {
     private String referenceField19;
 
     private String referenceField20;
+
+
+    private String languageId;
+
+    private String companyId;
+
+    private String partnerId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
+    private String pieceId;
+
+    private String languageDescription;
+
+    private String companyName;
+
 
 
 }

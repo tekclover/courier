@@ -69,7 +69,7 @@ export class PreAlertManifestComponent {
       { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'goodsDescription', header: 'Commodity' },
+      { field: 'consignmentId', header: 'Consignment Id' },
       { field: 'hsCode', header: 'HS Code', format: 'code'},
       { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
       { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
@@ -101,6 +101,7 @@ export class PreAlertManifestComponent {
     });
 }
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -115,7 +116,9 @@ export class PreAlertManifestComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }, 2000);
   }
+
 
   isSelected(item: any): boolean {
     return this.selectedPreAlertManifest.includes(item);
@@ -149,6 +152,14 @@ export class PreAlertManifestComponent {
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
       this.router.navigate(['/main/airport/preAlertManifest-new/' + paramdata]);
+    }
+  }
+  openConsignment(type: any = 'New', linedata: any = null): void {
+    if (this.selectedPreAlertManifest.length === 0 && type != 'New') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/operation/consignment-new/' + paramdata]);
     }
   }
 

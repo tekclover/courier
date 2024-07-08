@@ -84,7 +84,7 @@ export class ConsignorValueComponent {
   ngOnInit(): void {
 
     this.form.controls.customerId.patchValue(this.data);
-    this.form.controls.referenceField1.disable();
+    // this.form.controls.referenceField1.disable();
     if (this.data.pageflow == "Edit") {
       this.form.patchValue(this.data.code)
     }

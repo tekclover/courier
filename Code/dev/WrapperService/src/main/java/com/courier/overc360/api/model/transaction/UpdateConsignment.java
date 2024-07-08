@@ -78,6 +78,10 @@ public class UpdateConsignment {
 
     private String exchangeRate;
 
+    private String modeOfTransport;
+
+    private String insurance;
+
     private String customsCurrency;
 
     private String dutyPercentage;
@@ -155,6 +159,8 @@ public class UpdateConsignment {
     private String forwardReferenceNumber;
 
     private String workerCode;
+
+    private String loadTypeId;
 
     private String loadType;
 

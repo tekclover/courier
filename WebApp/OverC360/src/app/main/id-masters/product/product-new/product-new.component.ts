@@ -257,7 +257,7 @@ export class ProductNewComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.subProductId = [line.subProductId];
+    obj.productId = [line.productId];
 
     this.service.search(obj).subscribe({
       next: (res: any) => {
