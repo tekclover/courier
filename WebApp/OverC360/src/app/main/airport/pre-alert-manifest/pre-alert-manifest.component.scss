@@ -49,3 +49,14 @@
 
   .hoverButton{border: 1px solid var(--black) !important;color: var(--black);}
   .hoverButton:hover{background-color: var(--overcOrange); border: none !important; color: var(--white);}
+
+  .green{
+    color: #00742b;
+    background-color: #8efab6;
+    font-size: 12px;
+  }
+  .red{
+    color: #ef4444;
+    background-color: #ffacac;
+    font-size: 12px;
+  }

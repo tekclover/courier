@@ -66,12 +66,12 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'companyId', header: 'Company' },
+      { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'consignmentId', header: 'Consignment Id' },
-      { field: 'hsCode', header: 'HS Code', format: 'code'},
-      { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'goodsDescription', header: 'Description' },
+      { field: 'consoleIndicator', header: 'Console Status', format: 'boolean' },
       { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'eventText', header: 'Event' },
@@ -87,37 +87,37 @@ export class PreAlertManifestComponent {
       { field: 'referenceField5', header: 'Reference Field 5' },
     ];
   }
-  updateBulk(){
+  updateBulk() {
     const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
       disableClose: true,
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: {title: 'PreAlertManifest',code :  this.selectedPreAlertManifest} ,
+      data: { title: 'PreAlertManifest', code: this.selectedPreAlertManifest },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-   this.initialCall();
+      this.initialCall();
     });
-}
+  }
   initialCall() {
     setTimeout(() => {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.searchPrealert(obj).subscribe({
-      next: (res: any) => {
-        this.preAlertManifestTable = res;
-        console.log(res);
-        this.getSearchDropdown();
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }, 2000);
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.searchPrealert(obj).subscribe({
+        next: (res: any) => {
+          this.preAlertManifestTable = res;
+          console.log(res);
+          this.getSearchDropdown();
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 2000);
   }
 
 
@@ -180,7 +180,7 @@ export class PreAlertManifestComponent {
     this.spin.show();
     this.service.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail:  'Selected records deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err) => {
@@ -223,15 +223,21 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({
-      next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
+    const consignmentId = this.selectedPreAlertManifest.map(item => item.houseAirwayBill);
+    this.service.search({ houseAirwayBill: consignmentId }).subscribe({
+      next: (result) => {
+        this.console.CreateFromConsignment(result).subscribe({
+          next: (res) => {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
+            this.spin.hide();
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
       }
     })
+
   }
 
   createManifest() {
@@ -240,13 +246,18 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.manifest.Create(this.selectedPreAlertManifest).subscribe({
-      next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
+    const consignmentId = this.selectedPreAlertManifest.map(item => item.houseAirwayBill);
+    this.service.search({ houseAirwayBill: consignmentId }).subscribe({
+      next: (result) => {
+        this.manifest.Create(result).subscribe({
+          next: (res) => {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
+            this.spin.hide();
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
       }
     })
   }
@@ -270,7 +281,7 @@ export class PreAlertManifestComponent {
   partnerDropdown: any = [];
   statusDropdown: any = [];
   indicatorDropdown: any = [];
-  
+
   getSearchDropdown() {
 
     this.preAlertManifestTable.forEach(res => {
@@ -292,7 +303,7 @@ export class PreAlertManifestComponent {
         this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'statusId');
       }
     })
-      this.indicatorDropdown = [{ value: 1, label: 'Created' }, { value: 0, label: 'Not Created' }];
+    this.indicatorDropdown = [{ value: 1, label: 'Created' }, { value: 0, label: 'Not Created' }];
   }
 
   @ViewChild('preAlertManifest') overlayPanel!: OverlayPanel;
@@ -311,7 +322,7 @@ export class PreAlertManifestComponent {
     this.service.searchPrealert(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
         this.preAlertManifestTable = res;
-      //  this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'masterAirwayBill')
+        //  this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'masterAirwayBill')
         this.spin.hide();
         this.overlayPanel.hide();
       },
@@ -345,4 +356,9 @@ export class PreAlertManifestComponent {
     this.search();
   }
 
+  getSeverity(value: number) {
+    return value === 0 ? 'red' : 'green';
+  }
+  
+  
 }

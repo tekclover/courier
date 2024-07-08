@@ -44,7 +44,7 @@ export class EventNewComponent {
   form = this.fb.group({
     eventCode: [],
     eventDescription: [, Validators.required],
-    statusCode: [, Validators.required],
+    statusCode: [],
     opStatusDescription: [],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],

@@ -1026,7 +1026,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.consignmentId + ' has been updated successfully',
+            detail: res[0].consignmentId + ' has been updated successfully',
           });
           this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);
