@@ -353,6 +353,7 @@ public class SubProductService {
                         newSubProduct.setStatusDescription(statusDesc);
                     }
                 }
+                newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);
                 newSubProduct.setCreatedOn(new Date());
                 newSubProduct.setUpdatedBy(loginUserID);

@@ -61,7 +61,7 @@ export const navbarData: INavbarData[] = [
                     {
                         routerId: 2107,
                         routerLink: '/main/idMaster/users',
-                        label: 'User Profile'
+                        label: 'Users'
                     },
                     {
                         routerId: 2108,
