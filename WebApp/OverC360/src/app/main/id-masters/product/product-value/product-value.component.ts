@@ -108,7 +108,9 @@ export class ProductValueComponent {
       this.subProductIdList = this.cas.foreachlist(result, {key: 'subProductId', value: 'subProductName'});
       this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
 
-      // this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'subProductValue'});
+      if(this.data.pageflow == 'Edit') {
+        this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'subProductValue'});
+      }
       this.spin.hide();
     }, error: (err) => {
       this.spin.hide();
