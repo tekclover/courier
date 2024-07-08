@@ -61,7 +61,7 @@ ngOnDestroy(){
       this.sub.add(
         this.http.get<any>(`/overc-idmaster-service/login?userID=${user.userName}&password=${user.password}`).subscribe({next: (res) =>{
           sessionStorage.setItem("user", JSON.stringify(res));
-          this.router.navigate(['/main/idMaster/language']);
+          this.router.navigate(['/main/airport/preAlertManifest']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();

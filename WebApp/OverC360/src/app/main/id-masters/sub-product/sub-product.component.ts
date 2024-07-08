@@ -171,7 +171,6 @@ export class SubProductComponent {
         obj.languageId = [this.auth.languageId];
         obj.companyId = [this.auth.companyId];
         obj.subProductId = [this.selectedSubProduct[0].subProductId];
-        // obj.subProductValue = [this.selectedSubProduct[0].subProductValue];
 
         this.service.search(obj).subscribe({
           next: (res: any) => {

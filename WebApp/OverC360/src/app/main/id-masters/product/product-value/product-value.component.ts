@@ -129,7 +129,7 @@ export class ProductValueComponent {
     this.spin.show();
     this.subProductService.search(obj).subscribe({next: (result) => {
       this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'referenceField1'});
-      // this.form.patchValue(result[0]);
+      this.form.patchValue(result[0]);
       this.spin.hide();
     }, error: (err) => {
       this.spin.hide();
