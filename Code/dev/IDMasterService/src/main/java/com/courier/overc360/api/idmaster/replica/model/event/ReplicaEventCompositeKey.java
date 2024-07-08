@@ -16,7 +16,6 @@ public class ReplicaEventCompositeKey implements Serializable {
      */
     private String languageId;
     private String companyId;
-    private String statusCode;
     private String eventCode;
 
 }

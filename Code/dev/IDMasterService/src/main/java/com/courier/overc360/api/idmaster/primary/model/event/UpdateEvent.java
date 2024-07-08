@@ -7,6 +7,8 @@ public class UpdateEvent {
 
     private String eventDescription;
 
+    private String statusCode;
+
     private String remark;
 
     private Long deletionIndicator;

@@ -4,19 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(
-        name = "tblevent",
+@Table(name = "tblevent",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_event",
-                        columnNames = {"LANG_ID", "C_ID", "STATUS_CODE", "EVENT_CODE"})
+                        columnNames = {"LANG_ID", "C_ID", "EVENT_CODE"})
         }
 )
 @IdClass(ReplicaEventCompositeKey.class)
@@ -37,7 +41,6 @@ public class ReplicaEvent {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 
-    @Id
     @Column(name = "STATUS_CODE", columnDefinition = "nvarchar(50)")
     private String statusCode;
 

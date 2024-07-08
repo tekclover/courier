@@ -246,6 +246,22 @@ public class RoleAccessService {
     }
 
     /**
+     * @param companyId
+     * @param languageId
+     * @param roleId
+     * @return
+     */
+    public List<ReplicaRoleAccess> getReplicaRoleAccessList(String companyId, String languageId, Long roleId) {
+        List<ReplicaRoleAccess> dbRoleAccessList = replicaRoleAccessRepository.findByLanguageIdAndCompanyIdAndRoleIdAndDeletionIndicator(
+                languageId, companyId, roleId, 0L);
+        if (dbRoleAccessList.isEmpty()) {
+            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
+                    " roleId - " + roleId + " doesn't exists");
+        }
+        return dbRoleAccessList;
+    }
+
+    /**
      * Find RoleAccesses
      *
      * @param findRoleAccess

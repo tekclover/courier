@@ -367,12 +367,15 @@ public class ProductService {
             List<Product> updatedProductList = new ArrayList<>();
             for (UpdateProduct updateProduct : updateProductList) {
 
-                Product dbProduct = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndSubProductIdAndSubProductValueAndDeletionIndicator(
+                List<Product> dbProductList = productRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
                         updateProduct.getLanguageId(), updateProduct.getCompanyId(), updateProduct.getProductId(),
-                        updateProduct.getSubProductId(), updateProduct.getSubProductValue(), 0L);
-                if (dbProduct != null) {
-                    productRepository.delete(dbProduct);
+                        updateProduct.getSubProductId(), 0L);
+                if (dbProductList != null && !dbProductList.isEmpty()) {
+                    productRepository.deleteAll(dbProductList);
                 }
+            }
+
+            for (UpdateProduct updateProduct : updateProductList) {
 
                 Product newProduct = new Product();
                 BeanUtils.copyProperties(updateProduct, newProduct, CommonUtils.getNullPropertyNames(updateProduct));
