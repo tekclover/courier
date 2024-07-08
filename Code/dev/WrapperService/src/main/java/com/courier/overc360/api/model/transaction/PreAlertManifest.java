@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -107,5 +108,9 @@ public class PreAlertManifest {
     private Long consoleIndicator;
     private Long manifestIndicator;
     private Long preAlertValidationIndicator;
+    private String createdBy;
+    private Date createdOn;
+    private String updatedBy;
+    private Date updatedOn;
 
 }
