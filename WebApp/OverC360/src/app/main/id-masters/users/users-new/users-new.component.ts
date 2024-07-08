@@ -37,13 +37,13 @@ export class UsersNewComponent {
     private auth: AuthService
   ) {
     this.userType = [
-      { value: 'Portal', label: 'Portal' },
-      { value: 'Customer', label: 'Customer' },
-      { value: 'App', label: 'App' }
+      { value: 1, label: 'Portal' },
+      { value: 2, label: 'Customer' },
+      { value: 3, label: 'App' }
     ];
     this.status = [
-      { value: '17', label: 'Inactive' },
-      { value: '16', label: 'Active' }
+      { value: 17, label: 'Inactive' },
+      { value: 16, label: 'Active' }
     ];
     this.flag = [
       { value: '0', label: 'False'},
@@ -67,14 +67,14 @@ export class UsersNewComponent {
     userName: [],
     firstName: [],
     lastName: [],
-    statusId: [],
+    statusId: ["16",],
     dateFormatId: [],
-    currencyDecimal: [],
-    createHhtUser: [],
+    currencyDecimal: [0,],
+    createHhtUser: [false, ],
     timeZone: [],
-    portalLoggedIn: [],
-    hhtLoggedIn: [],
-    resetPassword: [],
+    portalLoggedIn: [false, ],
+    hhtLoggedIn: [false, ],
+    resetPassword: [false, ],
     emailId: [],
     referenceField1: [],
     referenceField10: [],
@@ -139,6 +139,7 @@ export class UsersNewComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup,
 
     ]).subscribe({
       next: (results: any) => {
@@ -168,7 +169,7 @@ export class UsersNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.userId + res.companyId + res.languageId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.userId + ' has been updated successfully' });
           this.router.navigate(['/main/idMaster/users']);
           this.spin.hide();
         }, error: (err) => {
@@ -181,7 +182,7 @@ export class UsersNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
           if (res) {
-            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.userId + res.companyId + res.languageId + ' has been created successfully' });
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.userId + ' has been created successfully' });
             this.router.navigate(['/main/idMaster/users']);
             this.spin.hide();
           }

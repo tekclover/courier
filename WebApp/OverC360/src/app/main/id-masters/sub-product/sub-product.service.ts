@@ -37,7 +37,7 @@ export class SubProductService {
   }
 
   DeleteBulk(obj: any) {
-    return this.http.delete<any>(
+    return this.http.post<any>(
       '/overc-idmaster-service/subProduct/delete/list', obj);
   }
 

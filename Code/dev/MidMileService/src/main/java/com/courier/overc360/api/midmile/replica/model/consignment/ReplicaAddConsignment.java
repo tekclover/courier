@@ -347,6 +347,9 @@ public class ReplicaAddConsignment {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+
+    private Long preAlertValidationIndicator;
+
     private ReplicaDestinationDetails destinationDetails = new ReplicaDestinationDetails();
 
     private ReplicaOriginDetails originDetails = new ReplicaOriginDetails();

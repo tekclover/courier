@@ -37,7 +37,7 @@ export class ConsignorService {
   }
 
   DeleteBulk(obj: any) {
-    return this.http.delete<any>('/overc-idmaster-service/consignor/', obj);
+    return this.http.post<any>('/overc-idmaster-service/consignor/delete/list', obj);
   }
 
   search(obj: any) {

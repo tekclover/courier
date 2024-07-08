@@ -407,6 +407,7 @@ public class CustomerService {
                         newCustomer.setStatusDescription(statusDesc);
                     }
                 }
+                newCustomer.setDeletionIndicator(0L);
                 newCustomer.setCreatedBy(loginUserID);
                 newCustomer.setCreatedOn(new Date());
                 newCustomer.setUpdatedBy(loginUserID);

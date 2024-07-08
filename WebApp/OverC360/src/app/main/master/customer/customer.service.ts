@@ -32,11 +32,11 @@ export class CustomerService {
   }
 
   Delete(obj:any) {
-    return this.http.post<any>('/overc-idmaster-service/customer/delete/list', obj);
+    return this.http.delete<any>('/overc-idmaster-service/customer/', obj);
   }
 
   DeleteBulk(obj: any) {
-    return this.http.delete<any>('/overc-idmaster-service/customer/', obj);
+    return this.http.post<any>('/overc-idmaster-service/customer/delete/list', obj);
   }
 
   search(obj: any) {

@@ -122,6 +122,7 @@ export class ConsignmentNewComponent {
     loadType: [, Validators.required],
     courierAccount: [],
     courierPartner: [],
+    invoiceNumber: [],
     courierPartnerReferenceNumber: [],
     invoiceAmount: [],
     invoiceUrl: [],
@@ -224,7 +225,6 @@ export class ConsignmentNewComponent {
     volumeUnit: [],
     weight: [],
     weightUnit: [],
-    invoiceNumber: [],
     invoiceDate: [new Date,],
     invoiceDateFE: [new Date,],
     invoiceSupplierName: [],
@@ -250,6 +250,7 @@ export class ConsignmentNewComponent {
   });
 
   initPieceDetail() {
+   const control =  this.piece.controls.pieceDetails as FormArray
     return this.fb.group({
       codAmount: [''],
       declaredValue: [''],
@@ -258,7 +259,7 @@ export class ConsignmentNewComponent {
       height: [''],
       itemDetails: this.fb.array([]),
       length: [''],
-      packReferenceNumber: [''],
+      packReferenceNumber: [control.value.length + 1, ],
       masterAirwayBill: [''],
       partnerId: [''],
       houseAirwayBill: [''],

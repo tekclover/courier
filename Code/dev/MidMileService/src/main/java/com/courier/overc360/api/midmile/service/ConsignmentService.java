@@ -105,7 +105,7 @@ public class ConsignmentService {
         for (AddConsignment consignmentEntity : consignmentEntityList) {
 
             //Null validation code
-            consignmentEntity = consignmentNullValidation(consignmentEntity);
+            consignmentEntity = createConsignmentNullValidation(consignmentEntity);
 
             // Fetching the description for a company
             IKeyValuePair iKeyValuePair = replicaConsignmentEntityRepository.getDescription(consignmentEntity.getCompanyId());
@@ -364,6 +364,9 @@ public class ConsignmentService {
                 throw new BadRequestException("Given Values Doesn't exist CompanyId " + dbConsignment.getCompanyId() + " LanguageId " + dbConsignment.getLanguageId() +
                         " PartnerId " + dbConsignment.getPartnerId() + " MasterAirwayBillNo " + dbConsignment.getMasterAirwayBill() + " HouseAirwayBillNo " + dbConsignment.getHouseAirwayBill());
             }
+
+            //Null validation code
+            dbConsignment = updateConsignmentNullValidation(dbConsignment);
 
             UpdateConsignment addConsignment = new UpdateConsignment();
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
@@ -894,76 +897,100 @@ public class ConsignmentService {
      * @param addConsignment
      * @return
      */
-    public AddConsignment consignmentNullValidation(AddConsignment addConsignment) {
+    public AddConsignment createConsignmentNullValidation(AddConsignment addConsignment) {
         log.info("Consignment null validaiton input: " + addConsignment);
+        List<String> nullValidationCheck = new ArrayList<>();
         if (addConsignment != null) {
             if (addConsignment.getOriginDetails() != null) {
-                if (addConsignment.getOriginDetails().getName() == null) {
-                    addConsignment.getOriginDetails().setName("1");
-                }
-                if (addConsignment.getOriginDetails().getPhone() == null) {
-                    addConsignment.getOriginDetails().setPhone("1");
-                }
-                if (addConsignment.getOriginDetails().getAddressLine1() == null) {
-                    addConsignment.getOriginDetails().setAddressLine1("1");
-                }
-                if (addConsignment.getOriginDetails().getAddressLine2() == null) {
-                    addConsignment.getOriginDetails().setAddressLine2("1");
-                }
-                if (addConsignment.getOriginDetails().getCity() == null) {
-                    addConsignment.getOriginDetails().setCity("1");
-                }
-                if (addConsignment.getOriginDetails().getCountry() == null) {
-                    addConsignment.getOriginDetails().setCountry("1");
+                if (addConsignment.getOriginDetails().getName() != null && addConsignment.getOriginDetails().getPhone() != null &&
+                        addConsignment.getOriginDetails().getAddressLine1() != null && addConsignment.getOriginDetails().getAddressLine2() != null &&
+                        addConsignment.getOriginDetails().getCity() != null && addConsignment.getOriginDetails().getCountry() != null) {
+                    nullValidationCheck.add("true");
+                } else {
+                    nullValidationCheck.add("false");
                 }
             }
             if (addConsignment.getDestinationDetails() != null) {
-                if (addConsignment.getDestinationDetails().getName() == null) {
-                    addConsignment.getDestinationDetails().setName("1");
+                if (addConsignment.getDestinationDetails().getName() != null && addConsignment.getDestinationDetails().getPhone() != null &&
+                        addConsignment.getDestinationDetails().getAddressLine1() != null && addConsignment.getDestinationDetails().getAddressLine2() != null &&
+                        addConsignment.getDestinationDetails().getCity() != null && addConsignment.getDestinationDetails().getCountry() != null) {
+                    nullValidationCheck.add("true");
+                } else {
+                    nullValidationCheck.add("false");
                 }
-                if (addConsignment.getDestinationDetails().getPhone() == null) {
-                    addConsignment.getDestinationDetails().setPhone("1");
                 }
-                if (addConsignment.getDestinationDetails().getAddressLine1() == null) {
-                    addConsignment.getDestinationDetails().setAddressLine1("1");
-                }
-                if (addConsignment.getDestinationDetails().getAddressLine2() == null) {
-                    addConsignment.getDestinationDetails().setAddressLine2("1");
-                }
-                if (addConsignment.getDestinationDetails().getCity() == null) {
-                    addConsignment.getDestinationDetails().setCity("1");
-                }
-                if (addConsignment.getDestinationDetails().getCountry() == null) {
-                    addConsignment.getDestinationDetails().setCountry("1");
-                }
-            }
-            List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             if (addConsignment.getPieceDetails() != null && !addConsignment.getPieceDetails().isEmpty()) {
                 for (AddPieceDetails pieceDetails : addConsignment.getPieceDetails()) {
-                    AddPieceDetails dbPieceDetails = new AddPieceDetails();
-                    BeanUtils.copyProperties(pieceDetails, dbPieceDetails, CommonUtils.getNullPropertyNames(pieceDetails));
-                    if (pieceDetails.getPartnerHouseAirwayBill() == null) {
-                        dbPieceDetails.setPartnerHouseAirwayBill("1");
-                    }
-                    if (pieceDetails.getDescription() == null) {
-                        dbPieceDetails.setDescription("1");
-                    }
-                    if (pieceDetails.getDeclaredValue() == null) {
-                        dbPieceDetails.setDeclaredValue("1");
-                    }
-                    if (pieceDetails.getWeight() == null) {
-                        dbPieceDetails.setWeight("1");
-                    }
-                    if (pieceDetails.getHsCode() == null) {
-                        dbPieceDetails.setHsCode("1");
-                    }
-                    addPieceDetailsList.add(dbPieceDetails);
+                    if (pieceDetails.getPartnerHouseAirwayBill() != null && pieceDetails.getDescription() != null &&
+                            pieceDetails.getDeclaredValue() != null && pieceDetails.getWeight() != null && pieceDetails.getHsCode() != null) {
+                        nullValidationCheck.add("true");
+                    } else {
+                        nullValidationCheck.add("false");
                 }
+                }
+                }
+            int nullValidationCheckSize = nullValidationCheck.size();
+            long nullValidation = nullValidationCheck.stream().filter(n->n.equalsIgnoreCase("true")).count();
+            boolean pass = nullValidationCheckSize == nullValidation;
+            if(pass) {
+                addConsignment.setPreAlertValidationIndicator(0L);
+                }
+            if(!pass) {
+                addConsignment.setPreAlertValidationIndicator(1L);
             }
-            addConsignment.setPieceDetails(addPieceDetailsList);
-        }
+                    }
         log.info("Consignment null validaiton output: " + addConsignment);
         return addConsignment;
+    }
+    /**
+     *
+     * @param updateConsignment
+     * @return
+     */
+    public UpdateConsignment updateConsignmentNullValidation(UpdateConsignment updateConsignment) {
+        log.info("Consignment null validaiton input: " + updateConsignment);
+        List<String> nullValidationCheck = new ArrayList<>();
+        if (updateConsignment != null) {
+            if (updateConsignment.getOriginDetails() != null) {
+                if (updateConsignment.getOriginDetails().getName() != null && updateConsignment.getOriginDetails().getPhone() != null &&
+                        updateConsignment.getOriginDetails().getAddressLine1() != null && updateConsignment.getOriginDetails().getAddressLine2() != null &&
+                        updateConsignment.getOriginDetails().getCity() != null && updateConsignment.getOriginDetails().getCountry() != null) {
+                    nullValidationCheck.add("true");
+                } else {
+                    nullValidationCheck.add("false");
+                }
+            }
+            if (updateConsignment.getDestinationDetails() != null) {
+                if (updateConsignment.getDestinationDetails().getName() != null && updateConsignment.getDestinationDetails().getPhone() != null &&
+                        updateConsignment.getDestinationDetails().getAddressLine1() != null && updateConsignment.getDestinationDetails().getAddressLine2() != null &&
+                        updateConsignment.getDestinationDetails().getCity() != null && updateConsignment.getDestinationDetails().getCountry() != null) {
+                    nullValidationCheck.add("true");
+                } else {
+                    nullValidationCheck.add("false");
+                }
+                    }
+            if (updateConsignment.getPieceDetails() != null && !updateConsignment.getPieceDetails().isEmpty()) {
+                for (UpdatePieceDetails pieceDetails : updateConsignment.getPieceDetails()) {
+                    if (pieceDetails.getPartnerHouseAirwayBill() != null && pieceDetails.getDescription() != null &&
+                            pieceDetails.getDeclaredValue() != null && pieceDetails.getWeight() != null && pieceDetails.getHsCode() != null) {
+                        nullValidationCheck.add("true");
+                    } else {
+                        nullValidationCheck.add("false");
+                    }
+                    }
+                    }
+            int nullValidationCheckSize = nullValidationCheck.size();
+            long nullValidation = nullValidationCheck.stream().filter(n->n.equalsIgnoreCase("true")).count();
+            boolean pass = nullValidationCheckSize == nullValidation;
+            if(pass) {
+                updateConsignment.setPreAlertValidationIndicator(0L);
+                }
+            if(!pass) {
+                updateConsignment.setPreAlertValidationIndicator(1L);
+            }
+        }
+        log.info("Consignment null validaiton output: " + updateConsignment);
+        return updateConsignment;
     }
 
     /**
