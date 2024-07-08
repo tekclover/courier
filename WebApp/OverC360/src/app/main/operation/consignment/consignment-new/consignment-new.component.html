@@ -584,20 +584,20 @@
                                     <p-overlayPanel [style]="{ width: '180' }" #op>
                                         <div class="d-flex flex-column">
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="dimension(this.pageToken.pageflow, 'piece', i)"><img
+                                                (click)="dimension(this.pageToken.pageflow, 'piece', i); op.hide()"><img
                                                     src="./assets/common/dimension.png"
                                                     style="padding-right: 10px;width: 2rem;"
                                                     srcset="">Dimension</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="opendialog(this.pageToken.pageflow, i)"><img
+                                                (click)="opendialog(this.pageToken.pageflow, i); op.hide()"><img
                                                     src="./assets/common/add.png"
                                                     style="padding-right: 10px;width: 2rem;" srcset="">Item</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="removePieceDetail(i, rowData)"><img
+                                                (click)="removePieceDetail(i, rowData); op.hide()"><img
                                                     src="./assets/common/delete1x.png"
                                                     style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
                                             <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="imageupload(this.pageToken.pageflow, i)"><img
+                                                (click)="imageupload(this.pageToken.pageflow, i); op.hide()"><img
                                                     src="./assets/common/image.png"
                                                     style="padding-right: 10px;width: 2rem;" srcset="">Image</button>
                                         </div>
