@@ -144,6 +144,9 @@ export class ConsignorValueComponent {
         this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
         this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
         this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        this.productIdList = this.cs.removeDuplicatesFromArrayList(this.productIdList, 'value');
+        this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value');
+
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();

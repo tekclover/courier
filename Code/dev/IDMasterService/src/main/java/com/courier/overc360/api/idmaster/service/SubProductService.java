@@ -146,7 +146,6 @@ public class SubProductService {
             if (statusDesc != null) {
                 newSubProduct.setStatusDescription(statusDesc);
             }
-            newSubProduct.setReferenceField1(addSubProduct.getSubProductValue() + " - " + addSubProduct.getReferenceField1());
             newSubProduct.setDeletionIndicator(0L);
             newSubProduct.setCreatedBy(loginUserID);
             newSubProduct.setCreatedOn(new Date());
@@ -223,7 +222,6 @@ public class SubProductService {
                 if (statusDesc != null) {
                     newSubProduct.setStatusDescription(statusDesc);
                 }
-                newSubProduct.setReferenceField1(addSubProduct.getSubProductValue() + " - " + addSubProduct.getReferenceField1());
                 newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);
                 newSubProduct.setCreatedOn(new Date());
@@ -292,7 +290,6 @@ public class SubProductService {
                     dbSubProduct.setStatusDescription(statusDesc);
                 }
             }
-            dbSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
             dbSubProduct.setUpdatedBy(loginUserID);
             dbSubProduct.setUpdatedOn(new Date());
             return subProductRepository.save(dbSubProduct);
@@ -358,9 +355,6 @@ public class SubProductService {
                     if (statusDesc != null) {
                         newSubProduct.setStatusDescription(statusDesc);
                     }
-                }
-                if (updateSubProduct.getReferenceField1() != null && !updateSubProduct.getReferenceField1().isEmpty()) {
-                    newSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
                 }
                 newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);

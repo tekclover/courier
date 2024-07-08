@@ -40,7 +40,7 @@ public interface SubProductRepository extends JpaRepository<SubProduct, String>,
             "AND COALESCE(:languageId, tsp.LANG_ID) = tsp.LANG_ID \n" +
             "AND COALESCE(:companyId, tsp.C_ID) = tsp.C_ID \n" +
             "AND COALESCE(:subProductId, tsp.SUB_PRODUCT_ID) = tsp.SUB_PRODUCT_ID \n" +
-            "AND COALESCE(:subProductValue, tc.SUB_PRODUCT_VALUE) = tsp.SUB_PRODUCT_VALUE ", nativeQuery = true)
+            "AND COALESCE(:subProductValue, tsp.SUB_PRODUCT_VALUE) = tsp.SUB_PRODUCT_VALUE ", nativeQuery = true)
     List<SubProduct> getSubProductsWithQry(
             @Param("languageId") String languageId,
             @Param("companyId") String companyId,
