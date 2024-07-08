@@ -57,10 +57,10 @@
 
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Airport Name</p>
-                                <input maxlength="100" pInputText formControlName="airportName" class=" w-100"
+                                <input maxlength="100" pInputText formControlName="airportText" class=" w-100"
                                     pInputText placeholder="Enter"
-                                    [ngClass]="form.get('airportName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('airportName')"
+                                    [ngClass]="form.get('airportText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('airportText')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
 
