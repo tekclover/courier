@@ -254,7 +254,7 @@
 
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceNumber">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Number</p>
-                            <input maxlength="50" formControlName="invoiceNumber"
+                            <input maxlength="50" pKeyFilter="num" formControlName="invoiceNumber"
                                 [ngClass]="consignment.get('invoiceNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingConsignment('invoiceNumber')"
@@ -263,7 +263,7 @@
                         
                         <div class="col-3 marginFieldNew borderRadius12" id="invoiceAmount">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Amount </p>
-                            <input maxlength="50" formControlName="invoiceAmount"
+                            <input maxlength="50" pKeyFilter="num" formControlName="invoiceAmount"
                                 [ngClass]="shipmentInfo.get('invoiceAmount')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
                             <mat-error *ngIf="errorHandlingShipment('invoiceAmount')"

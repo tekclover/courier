@@ -19,8 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     Optional<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndSubProductValueAndProductIdAndDeletionIndicator(
             String languageId, String companyId, String subProductId, String subProductValue, String productId, Long deletionIndicator);
 
-    List<Product> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId, String productId, Long deletionIndicator);
+    List<Product> findByLanguageIdAndCompanyIdAndProductIdAndDeletionIndicator(
+            String languageId, String companyId, String productId, Long deletionIndicator);
 
 
     // Updating productName in Consignor & Customer Tables using Stored Procedure

@@ -292,9 +292,7 @@ public class SubProductService {
                     dbSubProduct.setStatusDescription(statusDesc);
                 }
             }
-            if (updateSubProduct.getReferenceField1() != null && !updateSubProduct.getReferenceField1().isEmpty()) {
-                dbSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
-            }
+            dbSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
             dbSubProduct.setUpdatedBy(loginUserID);
             dbSubProduct.setUpdatedOn(new Date());
             return subProductRepository.save(dbSubProduct);

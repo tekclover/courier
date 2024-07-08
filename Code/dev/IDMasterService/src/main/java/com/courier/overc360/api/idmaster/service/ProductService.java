@@ -344,11 +344,11 @@ public class ProductService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
         try {
             List<Product> updatedProductList = new ArrayList<>();
-            for (UpdateProduct updateProduct : updateProductList) {
 
-                List<Product> dbProductList = productRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndDeletionIndicator(
-                        updateProduct.getLanguageId(), updateProduct.getCompanyId(), updateProduct.getProductId(),
-                        updateProduct.getSubProductId(), 0L);
+            for (UpdateProduct updateProduct : updateProductList) {
+                List<Product> dbProductList = productRepository.findByLanguageIdAndCompanyIdAndProductIdAndDeletionIndicator(
+                        updateProduct.getLanguageId(), updateProduct.getCompanyId(), updateProduct.getProductId(), 0L);
+
                 if (dbProductList != null && !dbProductList.isEmpty()) {
                     productRepository.deleteAll(dbProductList);
                 }

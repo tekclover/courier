@@ -339,9 +339,8 @@ public class CustomerService {
 
             for (UpdateCustomer updateCustomer : updateCustomerList) {
 
-                List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
-                        updateCustomer.getLanguageId(), updateCustomer.getCompanyId(), updateCustomer.getSubProductId(),
-                        updateCustomer.getProductId(), updateCustomer.getCustomerId(), 0L);
+                List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndCustomerIdAndDeletionIndicator(
+                        updateCustomer.getLanguageId(), updateCustomer.getCompanyId(), updateCustomer.getCustomerId(), 0L);
                 if (dbCustomerList != null && !dbCustomerList.isEmpty()) {
                     customerRepository.deleteAll(dbCustomerList);
                 }

@@ -20,9 +20,8 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
             String languageId, String companyId, String subProductId, String subProductValue,
             String productId, String customerId, Long deletionIndicator);
 
-    List<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
-            String languageId, String companyId, String subProductId,
-            String productId, String customerId, Long deletionIndicator);
+    List<Customer> findByLanguageIdAndCompanyIdAndCustomerIdAndDeletionIndicator(
+            String languageId, String companyId, String customerId, Long deletionIndicator);
 
 
 //    // Updating customerName in ConsignorTable using Stored Procedure
