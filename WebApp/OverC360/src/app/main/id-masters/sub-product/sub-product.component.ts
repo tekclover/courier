@@ -165,7 +165,7 @@ export class SubProductComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedSubProduct[0]);
+        this.deleterecord(this.selectedSubProduct);
       }
     });
   }

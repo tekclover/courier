@@ -56,6 +56,9 @@ public class ConsoleService {
 
     @Autowired
     private ConsignmentEntityRepository consignmentEntityRepository;
+
+    @Autowired
+    ConsignmentStatusService consignmentStatusService;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -467,7 +470,6 @@ public class ConsoleService {
                             // Get Iatakd
                             IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
                                     console.getLanguageId(), console.getCompanyId());
-                            IKeyValuePair eventStatus = consignmentEntityRepository.getStatusEventText(console.getCompanyId(), "1", "6");
 
                             Console newConsole = new Console();
                             BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
@@ -509,6 +511,8 @@ public class ConsoleService {
                                 newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                             }
 
+                            IKeyValuePair eventStatus = consignmentEntityRepository.getStatusEventText(console.getCompanyId(), "1", "6");
+
                             if (eventStatus != null) {
                                 newConsole.setStatusId("1");
                                 newConsole.setEventCode("6");
@@ -527,6 +531,14 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             Console createdConsole = consoleRepository.save(newConsole);
+
+                            // Save ConsignmentStatus
+                            consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
+                                    createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
+                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getStatusText(), createdConsole.getStatusId(),
+                                    createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
+                                    createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID );
+
                             if (createdConsole != null) {
                                 consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
                                         createdConsole.getLanguageId(), createdConsole.getPartnerId(),
@@ -618,8 +630,8 @@ public class ConsoleService {
                             Console newConsole = new Console();
                             BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
 
-                            String STATUS_ID = "2 - Console Created";
                             IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(console.getLanguageId(), console.getCompanyId());
+                            IKeyValuePair eventStatus = consignmentEntityRepository.getStatusEventText(console.getCompanyId(), "1", "6");
 
                             if (lAndCDesc != null) {
                                 newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
@@ -662,10 +674,17 @@ public class ConsoleService {
                                 newConsole.setIataKd(iataData.getIataKd());
                             }
 
+                            if (eventStatus != null) {
+                                newConsole.setStatusId("1");
+                                newConsole.setEventCode("6");
+                                newConsole.setStatusText(eventStatus.getStatusText());
+                                newConsole.setEventText(eventStatus.getEventText());
+                                newConsole.setEventTimestamp(new Date());
+                                newConsole.setStatusTimestamp(new Date());
+                            }
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setCustomsValue(CUS_VAL);
                             newConsole.setConsoleId(SUB_CONSOLE_ID);
-                            newConsole.setStatusId(STATUS_ID);
                             newConsole.setDeletionIndicator(0L);
                             newConsole.setCreatedBy(loginUserID);
                             newConsole.setCreatedOn(new Date());
@@ -673,6 +692,14 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             Console createdConsole = consoleRepository.save(newConsole);
+
+                            // Save ConsignmentStatus
+                            consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
+                                    createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
+                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getStatusText(), createdConsole.getStatusId(),
+                                    createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
+                                    createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID );
+
                             if (createdConsole != null) {
                                 consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
                                         createdConsole.getLanguageId(), createdConsole.getPartnerId(),
@@ -1050,14 +1077,14 @@ public class ConsoleService {
                 Console updatedConsole = consoleRepository.save(dbConsole);
 
                 if (updateConsole.getEventCode() != null) {
-                    if ((updatedConsole.getEventCode()).equalsIgnoreCase("8")) {
+                    if ((updatedConsole.getEventCode()).equalsIgnoreCase("10")) {
                         //Fetch the console records based on houseAirwayBill
                         List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
                         if (consoleData != null && !consoleData.isEmpty()) {
-                            //Check whether all the consoleData's eventcode is equal to 8
+                            //Check whether all the consoleData's eventcode is equal to 10
                             boolean allEventCodes = consoleData.stream()
-                                    .allMatch(console -> "8".equalsIgnoreCase(console.getEventCode()));
+                                    .allMatch(console -> "10".equalsIgnoreCase(console.getEventCode()));
 
                             if (allEventCodes) {
                                 ccrService.createConsoleCcr(consoleData, loginUserID);

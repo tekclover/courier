@@ -95,7 +95,6 @@ export class CompanyComponent {
       obj.languageId = [this.auth.languageId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.companyTable = res;
           this.getSearchDropdown();
           this.spin.hide();
@@ -131,7 +130,6 @@ export class CompanyComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    console.log(3)
     if (this.selectedCompany.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',
@@ -202,7 +200,6 @@ export class CompanyComponent {
       const exportItem: any = {};
       this.cols.forEach((col) => {
         if (col.format == 'date') {
-          console.log(3);
           exportItem[col.field] = this.datePipe.transform(
             item[col.field],
             'dd-MM-yyyy'

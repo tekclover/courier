@@ -73,7 +73,7 @@ export class ConsignmentService {
 
   download(obj:any): Promise<File> {
   return this.http
-  .get<any>(`/doc-storage/download?fileName=${obj.fileName}&location=${obj.location}`, {
+  .get<any>(`/doc-storage/download?fileName=${obj.imageRefId}&location=${obj.referenceImageUrl}`, {
     responseType: 'blob' as 'json',
   })
   .toPromise();

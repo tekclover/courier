@@ -88,7 +88,6 @@ export class LoadTypeComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.loadTypeTable = res;
           this.getSearchDropdown();
           this.spin.hide();

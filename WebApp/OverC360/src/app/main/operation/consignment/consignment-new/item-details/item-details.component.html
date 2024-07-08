@@ -27,10 +27,14 @@
               [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
             </td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="description"></td>
-            <td ><input class="inputborderLess pl-3" placeholder="Enter" formControlName="quantity"></td>
-            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="unitValue"></td>
+            <td ><input class="inputborderLess pl-3" placeholder="Enter" (change)="calculateTotalValue(rowData)" formControlName="quantity"></td>
+            <td><input class="inputborderLess pl-3" placeholder="Enter" (change)="calculateTotalValue(rowData)" formControlName="unitValue"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="declaredValue"></td>
-            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="currency"></td>
+            <td>
+              <p-dropdown [options]="currencyDropdown" placeholder="Select" filter="true"
+              formControlName="currency" appendTo="body"
+              [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+            </td>
             <td>
               <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
                   alt="" srcset="" style="height: 1.4rem;">

@@ -22,7 +22,7 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
     ConsignmentEntity findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String companyId, String languageId, String partnerId, String mawb, String hawb, Long deletionIndicator);
 
-    @Query(value = "SELECT status_text AS statusText, event_text AS eventText " +
+    @Query(value = "SELECT status_code AS statusId, status_text AS statusText, event_text AS eventText " +
             "FROM tblevent " +
             "WHERE C_ID = :companyId AND " +
             "STATUS_CODE = :statusCode AND " +

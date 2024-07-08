@@ -61,7 +61,6 @@ ngOnDestroy(){
 }
 
 login1(a: any){
-console.log(2)
 }
   login(user: { userName: string; password: any; }) {
     sessionStorage.clear();

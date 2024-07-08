@@ -230,7 +230,6 @@ export class CcrEditComponent {
   }
 
   fill(line: any) {
-    console.log(this.pageToken.line)
     this.form.patchValue(this.pageToken.line);
     this.spin.show();
     let obj: any = {};
@@ -239,7 +238,6 @@ export class CcrEditComponent {
     obj.ccrId = [line.ccrId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.subProductArray = res;
         this.spin.hide();
       },
@@ -254,7 +252,6 @@ export class CcrEditComponent {
 lineSentforFill:any;
   save() {
     this.submitted = true;
-    console.log(this.selectedConsole)
     if (this.form.invalid) {
       this.messageService.add({
        severity: 'error',
@@ -299,7 +296,6 @@ lineSentforFill:any;
   }
 
   editItem(data: any,item: any): void {
-    console.log(item)
     const dialogRef = this.dialog.open(CcrEditpopupComponent, {
       disableClose: true,
       width: '70%',
@@ -328,7 +324,6 @@ lineSentforFill:any;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if (result) {
         this.subProductArray.push(result);
       }

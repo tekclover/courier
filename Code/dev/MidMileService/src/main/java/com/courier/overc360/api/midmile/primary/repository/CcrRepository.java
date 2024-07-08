@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.ccr.Ccr;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -56,5 +57,32 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
 
     Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsignment_entity " +
+            "SET event_code = :eventCode, " +
+            "event_text = :eventText, " +
+            "status_id = :statusId, " +
+            "status_text = :statusText, " +
+            "status_timestamp = getDate(), " +
+            "EVENT_TIMESTAMP = getDate() " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void updateEventCodeFromConsignment(@Param("companyId") String companyId,
+                                               @Param("languageId") String languageId,
+                                               @Param("partnerId") String partnerId,
+                                               @Param("houseAirwayBill") String houseAirwayBill,
+                                               @Param("masterAirwayBill") String masterAirwayBill,
+                                               @Param("eventCode") String eventCode,
+                                               @Param("eventText") String eventText,
+                                               @Param("statusId") String statusId,
+                                               @Param("statusText") String statusText);
+
 }
 

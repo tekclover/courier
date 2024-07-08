@@ -78,6 +78,9 @@ public class Ccr {
     @Column(name = "STATUS_ID" , columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String statusText;
+
     @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
     private String primaryDo;
 

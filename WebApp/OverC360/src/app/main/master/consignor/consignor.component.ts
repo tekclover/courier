@@ -169,14 +169,14 @@ export class ConsignorComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedConsignor[0]);
+        this.deleterecord(this.selectedConsignor);
       }
     });
   }
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.consignorId, lines.customerId, lines.productId, lines.subProductId).subscribe({
+    this.service.DeleteBulk(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',

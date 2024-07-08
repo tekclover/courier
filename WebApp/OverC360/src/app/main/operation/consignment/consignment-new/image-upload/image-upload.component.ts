@@ -46,7 +46,7 @@ export class ImageUploadComponent {
   }
 
   ngOnInit() {
-    console.log(this.data.line)
+    console.log(this.data)
     this.patchForm(this.data.line.value)
   }
 
@@ -59,13 +59,19 @@ export class ImageUploadComponent {
   }
 
   imageDetailsTable: any[] = [];
+  fileLocation:any;
   uploadFile() {
     if (!this.selectedFiles || this.selectedFiles.length === 0) {
       console.log('No files selected for upload.');
       return;
     }
-    const location = 'test'
-    this.service.uploadFiles(this.selectedFiles, location).subscribe({
+   if(this.data.type == 'piece'){
+    this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.pieceId + '/'
+   }
+   if(this.data.type == 'item'){
+    this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.itemCode + '/'
+   }
+    this.service.uploadFiles(this.selectedFiles, this.fileLocation).subscribe({
       next: (result) => {
         this.messageService.add({
           severity: 'success',
@@ -110,11 +116,7 @@ export class ImageUploadComponent {
   docurl: any;
   async download(element:any) {
     this.spin.show()
-    let obj: any = {};
-    obj.file=element.controls.fileName.value;
-    obj.storeId='document';
-    obj.requestId=element.controls.storeId.value;
-    const blob = await this.service.download(obj)
+    const blob = await this.service.download(element.value)
       .catch((err: HttpErrorResponse) => {
         this.cs.commonerrorNew(err);
       });
@@ -127,7 +129,7 @@ export class ImageUploadComponent {
       this.docurl = window.URL.createObjectURL(blob);
       const a = document.createElement('a')
       a.href = this.docurl
-      a.download = element.controls.fileName.value;
+      a.download = element.value.imageRefId;
       a.click();
       URL.revokeObjectURL(this.docurl);
 
