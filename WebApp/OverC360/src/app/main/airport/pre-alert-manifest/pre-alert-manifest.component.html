@@ -115,7 +115,7 @@
             [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="consignmentId"
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="houseAirwayBill"
             rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -146,9 +146,9 @@
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                            <span *ngIf="col.field === 'consoleIndicator'" class="badge px-2 py-1" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
+                            <span *ngIf="col.field === 'consoleIndicator'" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
                                 'Yes'}}</span>
-                            <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-1" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
+                            <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
                                 'Yes'}}</span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field]| date: 'dd-MM-yyyy HH:mm'  }}</span>
                         </ng-template>
@@ -162,90 +162,61 @@
                         <div class="contentBox ">
                             <div class="row">
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Origin</p>
+                                    <p class="mb-0 headerText">Partner MAWB</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.countryOfOrigin}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.partnerMasterAirwayBill}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Destination</p>
+                                    <p class="mb-0 headerText">Qty</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.destinationDetails.country ? 'bgOrange text-dark' : ''">
-                                        {{rowData.destinationDetails.country}}</p>
+                                        [ngClass]="rowData.quantity ? 'bgOrange text-dark w-75 textCenter' : ''">
+                                        {{rowData.quantity}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Flight No</p>
+                                    <p class="mb-0 headerText">Unit Value</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.flightNo}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.unitValue}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">No of Pieces</p>
+                                    <p class="mb-0 headerText">Total Value</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.noOfPieceHawb ? 'bgOrange text-dark' : ''">
-                                        {{rowData.noOfPieceHawb}}</p>
+                                        [ngClass]="rowData.declaredValue ? 'bgOrange text-dark w-75 textCenter' : ''">
+                                        {{rowData.declaredValue}}</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 headerText">Currency</p>
+                                </div>
+                                <div class="col-2 spacingBottom">
+                                    <p class="mb-0 valueText chip">{{rowData.currency}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Gross Weight</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.grossWeight}}</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">ETA</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
                                     <p class="mb-0 valueText chip"
-                                        [ngClass]="rowData.flightArrivalTime ? 'bgOrange text-dark' : ''">
-                                        {{rowData.flightArrivalTime | date: 'dd-MM-yyyy HH:mm'}}</p>
+                                        [ngClass]="rowData.weight ? 'bgOrange text-dark w-75 textCenter' : ''">
+                                        {{rowData.weight}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Consignment Value</p>
+                                    <p class="mb-0 headerText">Net Weight</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.consignmentValue}}</p>
-                                </div>
-
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Currency</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.consignmentCurrency}}</p>
-                                </div>
-
-
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Invoice No</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.invoiceNumber}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.weight}}</p>
                                 </div>
 
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Sender</p>
+                                    <p class="mb-0 headerText">Weight Unit</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.originDetails.name}}</p>
-                                </div>
-
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Receiver</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.destinationDetails.name}}</p>
-                                </div>
-
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 headerText">Inco Terms</p>
-                                </div>
-                                <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.incoTerms}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.weightUnit}}</p>
                                 </div>
                             </div>
                         </div>

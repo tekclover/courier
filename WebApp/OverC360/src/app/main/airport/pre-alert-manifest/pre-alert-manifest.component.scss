@@ -21,7 +21,8 @@
     color: var(--white);
   }
   .lineBorder {width: 8px;flex-grow: 0;margin: 10px 7px 10px 0;border-radius: 20px;background-color: var(--overcOrange);}
-.chip{padding: 3px 1rem; border-radius: 6px; text-align: center !important;}
+.chip{padding: 3px 1rem 3px 0px; border-radius: 6px; text-align: center;}
+
   .headerText {
     flex-grow: 1;
     font-family: Nunito;
@@ -53,10 +54,12 @@
   .green{
     color: #00742b;
     background-color: #8efab6;
-    font-size: 12px;
+    font-size: 10px;
+    padding:1px 2px;
   }
   .red{
     color: #ef4444;
     background-color: #ffacac;
-    font-size: 12px;
+    font-size: 10px;
+    padding:1px 2px;
   }
