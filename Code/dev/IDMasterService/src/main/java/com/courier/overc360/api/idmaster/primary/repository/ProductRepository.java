@@ -36,13 +36,13 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
 
 
     // Get Products With Query
-    @Query(value = "Select * From tblproduct tc \n" +
-            "Where tc.IS_DELETED = 0 \n" +
-            "AND COALESCE(:languageId, tc.LANG_ID) = tc.LANG_ID \n" +
-            "AND COALESCE(:companyId, tc.C_ID) = tc.C_ID \n" +
-            "AND COALESCE(:subProductId, tc.SUB_PRODUCT_ID) = tc.SUB_PRODUCT_ID \n" +
-            "AND COALESCE(:subProductValue, tc.SUB_PRODUCT_VALUE) = tc.SUB_PRODUCT_VALUE \n" +
-            "AND COALESCE(:productId, tc.PRODUCT_ID) = tc.PRODUCT_ID", nativeQuery = true)
+    @Query(value = "Select * From tblproduct tp \n" +
+            "Where tp.IS_DELETED = 0 \n" +
+            "AND COALESCE(:languageId, tp.LANG_ID) = tp.LANG_ID \n" +
+            "AND COALESCE(:companyId, tp.C_ID) = tp.C_ID \n" +
+            "AND COALESCE(:subProductId, tp.SUB_PRODUCT_ID) = tp.SUB_PRODUCT_ID \n" +
+            "AND COALESCE(:subProductValue, tp.SUB_PRODUCT_VALUE) = tp.SUB_PRODUCT_VALUE \n" +
+            "AND COALESCE(:productId, tp.PRODUCT_ID) = tp.PRODUCT_ID", nativeQuery = true)
     List<Product> getProductsWithQry(
             @Param("languageId") String languageId,
             @Param("companyId") String companyId,

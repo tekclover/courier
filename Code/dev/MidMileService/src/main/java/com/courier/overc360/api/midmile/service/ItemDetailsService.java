@@ -13,6 +13,8 @@ import com.courier.overc360.api.midmile.primary.repository.ImageReferenceReposit
 import com.courier.overc360.api.midmile.primary.repository.ItemDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
+import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
+import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestImpl;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.FindItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
@@ -26,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -403,6 +402,68 @@ public class ItemDetailsService {
         List<ReplicaItemDetails> results = replicaItemDetailsRepository.findAll(spec);
         log.info("found Cities --> " + results);
         return results;
+    }
+    /**
+     *
+     * @param findPreAlertManifest
+     * @return
+     */
+    public List<PreAlertManifestImpl> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
+        if (findPreAlertManifest.getConsignmentId() != null && findPreAlertManifest.getConsignmentId().isEmpty()) {
+            findPreAlertManifest.setConsignmentId(null);
+        }
+        if (findPreAlertManifest.getLanguageId() != null && findPreAlertManifest.getLanguageId().isEmpty()) {
+            findPreAlertManifest.setLanguageId(null);
+        }
+        if (findPreAlertManifest.getCompanyId() != null && findPreAlertManifest.getCompanyId().isEmpty()) {
+            findPreAlertManifest.setCompanyId(null);
+        }
+        if (findPreAlertManifest.getPartnerId() != null && findPreAlertManifest.getPartnerId().isEmpty()) {
+            findPreAlertManifest.setPartnerId(null);
+        }
+        if (findPreAlertManifest.getStatusId() != null && findPreAlertManifest.getStatusId().isEmpty()) {
+            findPreAlertManifest.setStatusId(null);
+        }
+        if (findPreAlertManifest.getConsoleIndicator() != null && findPreAlertManifest.getConsoleIndicator().isEmpty()) {
+            findPreAlertManifest.setConsoleIndicator(null);
+        }
+        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getManifestIndicator().isEmpty()) {
+            findPreAlertManifest.setManifestIndicator(null);
+        }
+        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
+        List<PreAlertManifestImpl> results = null;
+        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() == null) {
+            results = replicaItemDetailsRepository.getPreAlertManifest(
+                    findPreAlertManifest.getConsignmentId(),
+                    findPreAlertManifest.getLanguageId(),
+                    findPreAlertManifest.getCompanyId(),
+                    findPreAlertManifest.getPartnerId(),
+                    findPreAlertManifest.getStatusId());
+            log.info("PreAlert Manifest result: " + results.size());
+            return results;
+        }
+
+        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() != null && !findPreAlertManifest.getConsoleIndicator().isEmpty()) {
+            findPreAlertManifest.setManifestIndicator(Collections.singletonList(0L));
+        }
+        if (findPreAlertManifest.getConsoleIndicator() == null && findPreAlertManifest.getManifestIndicator() != null && !findPreAlertManifest.getManifestIndicator().isEmpty()) {
+            findPreAlertManifest.setConsoleIndicator(Collections.singletonList(0L));
+        }
+
+        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
+        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getConsoleIndicator() != null) {
+            results = replicaItemDetailsRepository.getPreAlertManifest(
+                    findPreAlertManifest.getConsignmentId(),
+                    findPreAlertManifest.getLanguageId(),
+                    findPreAlertManifest.getCompanyId(),
+                    findPreAlertManifest.getPartnerId(),
+                    findPreAlertManifest.getStatusId(),
+                    findPreAlertManifest.getConsoleIndicator(),
+                    findPreAlertManifest.getManifestIndicator());
+            log.info("PreAlert Manifest Output : " + results.size());
+            return results;
+        }
+        return null;
     }
 
 
