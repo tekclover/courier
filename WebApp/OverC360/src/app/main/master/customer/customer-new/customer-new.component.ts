@@ -186,6 +186,7 @@ export class CustomerNewComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.customerArray.push(result);
+        console.log(this.customerArray)
       }
     });
   }

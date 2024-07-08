@@ -109,7 +109,6 @@ export class CustomerValueComponent {
         this.productIdList = this.cs.removeDuplicatesFromArrayList(this.productIdList, 'value')
 
         if(this.data.pageflow == 'Edit') {
-          this.form.patchValue(result[0]);
           this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
           this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
           this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
@@ -136,10 +135,10 @@ export class CustomerValueComponent {
     this.spin.show();
     this.productService.search(obj).subscribe({
       next: (result) => {
-        this.form.patchValue(result[0]);
         this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
         this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
         this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        this.form.patchValue(result[0]);
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -158,7 +157,7 @@ export class CustomerValueComponent {
     this.spin.show();
     this.subProductService.search(obj).subscribe({next: (result) => {
       this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'referenceField1'});
-      // this.form.patchValue(result[0]);
+      this.form.patchValue(result[0]);
       this.spin.hide();
     }, error: (err) => {
       this.spin.hide();

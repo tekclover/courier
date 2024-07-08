@@ -12,6 +12,7 @@ import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsign
 import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.IConsignment;
+import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestConsignment;
 import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.service.CommonService;
@@ -137,7 +138,7 @@ public class ConsignmentController {
     @ApiOperation(response = ReplicaConsignmentEntity.class, value = "Find Pre Alert Manifest") // label for swagger
     @PostMapping("/findPreAlertManifest")
     public ResponseEntity<?> findPreAlertManifest(@RequestBody FindPreAlertManifest findPreAlertManifest) throws Exception {
-        List<ReplicaAddConsignment> consignmentEntityList = consignmentService.findPreAlertManifest(findPreAlertManifest);
+        List<PreAlertManifestConsignment> consignmentEntityList = consignmentService.findPreAlertManifest(findPreAlertManifest);
         return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
     }
 }

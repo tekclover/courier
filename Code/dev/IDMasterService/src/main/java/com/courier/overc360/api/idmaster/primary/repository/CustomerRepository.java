@@ -21,6 +21,10 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
             String languageId, String companyId, String subProductId, String subProductValue,
             String productId, String customerId, Long deletionIndicator);
 
+    List<Customer> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId,
+            String productId, String customerId, Long deletionIndicator);
+
     Customer findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
             String languageId, String companyId, String subProductValue, String subProductId,
             String productId, String customerId, Long deletionIndicator);

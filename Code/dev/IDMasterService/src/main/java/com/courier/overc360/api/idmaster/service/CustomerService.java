@@ -379,14 +379,18 @@ public class CustomerService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
         try {
             List<Customer> updatedCustomerList = new ArrayList<>();
+
             for (UpdateCustomer updateCustomer : updateCustomerList) {
 
-                Customer dbCustomer = customerRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
-                        updateCustomer.getLanguageId(), updateCustomer.getCompanyId(), updateCustomer.getSubProductValue(),
-                        updateCustomer.getSubProductId(), updateCustomer.getProductId(), updateCustomer.getCustomerId(), 0L);
-                if (dbCustomer != null) {
-                    customerRepository.delete(dbCustomer);
+                List<Customer> dbCustomerList = customerRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndDeletionIndicator(
+                        updateCustomer.getLanguageId(), updateCustomer.getCompanyId(), updateCustomer.getSubProductId(),
+                        updateCustomer.getProductId(), updateCustomer.getCustomerId(), 0L);
+                if (dbCustomerList != null && !dbCustomerList.isEmpty()) {
+                    customerRepository.deleteAll(dbCustomerList);
                 }
+            }
+
+            for (UpdateCustomer updateCustomer : updateCustomerList) {
 
                 Customer newCustomer = new Customer();
                 BeanUtils.copyProperties(updateCustomer, newCustomer, CommonUtils.getNullPropertyNames(updateCustomer));
@@ -468,8 +472,8 @@ public class CustomerService {
      * @param customerId
      * @return
      */
-    public List<Customer> getCustomerList(String languageId, String companyId, String subProductId,
-                                          String subProductValue, String productId, String customerId) {
+    public List<Customer> getCustomerListForDelete(String languageId, String companyId, String subProductId,
+                                                   String subProductValue, String productId, String customerId) {
 
         List<Customer> customerList = customerRepository.getCustomersWithQry(languageId, companyId,
                 subProductId, subProductValue, productId, customerId);
@@ -525,7 +529,7 @@ public class CustomerService {
         if (customerDeleteInputList != null && !customerDeleteInputList.isEmpty()) {
             for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
 
-                List<Customer> dbCustomerList = getCustomerList(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+                List<Customer> dbCustomerList = getCustomerListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
                         deleteInput.getSubProductValue(), deleteInput.getProductId(), deleteInput.getCustomerId());
 
                 for (Customer dbCustomer : dbCustomerList) {

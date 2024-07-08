@@ -289,7 +289,7 @@ public class IDMasterServiceController {
     }
 
     // Delete SubProducts - bulk
-    @ApiOperation(response = SubProduct[].class, value = "Delete SubProducts - bulk") // label for swagger
+    @ApiOperation(response = SubProduct.class, value = "Delete SubProducts - bulk") // label for swagger
     @PostMapping("/subProduct/delete/list")
     public ResponseEntity<?> deleteSubProductBulk(@RequestBody List<SubProductDeleteInput> deleteInputs,
                                                   @RequestParam String loginUserID, @RequestParam String authToken) {
@@ -1739,9 +1739,9 @@ public class IDMasterServiceController {
     // Get Event
     @ApiOperation(response = Event.class, value = "Get Event") // label for swagger
     @GetMapping("/event/{eventCode}")
-    public ResponseEntity<?> getEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId,
-                                      @RequestParam String statusCode, @RequestParam String authToken) {
-        Event event = idmasterService.getEvent(languageId, companyId, statusCode, eventCode, authToken);
+    public ResponseEntity<?> getEvent(@PathVariable String eventCode, @RequestParam String languageId,
+                                      @RequestParam String companyId, @RequestParam String authToken) {
+        Event event = idmasterService.getEvent(languageId, companyId, eventCode, authToken);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
@@ -1756,10 +1756,10 @@ public class IDMasterServiceController {
     // Update Event
     @ApiOperation(response = Event.class, value = "Update Event") // label for swagger
     @PatchMapping("/event/{eventCode}")
-    public ResponseEntity<?> updateEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId,
-                                         @RequestParam String statusCode, @RequestParam String loginUserID,
+    public ResponseEntity<?> updateEvent(@PathVariable String eventCode, @RequestParam String languageId,
+                                         @RequestParam String companyId, @RequestParam String loginUserID,
                                          @RequestBody UpdateEvent updateEvent, @RequestParam String authToken) {
-        Event event = idmasterService.updateEvent(languageId, companyId, statusCode, eventCode, updateEvent, loginUserID, authToken);
+        Event event = idmasterService.updateEvent(languageId, companyId, eventCode, updateEvent, loginUserID, authToken);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
@@ -1767,9 +1767,9 @@ public class IDMasterServiceController {
     @ApiOperation(response = Event.class, value = "Delete Event") // label for swagger
     @DeleteMapping("/event/{eventCode}")
     public ResponseEntity<?> deleteEvent(@PathVariable String eventCode, @RequestParam String languageId,
-                                         @RequestParam String companyId, @RequestParam String statusCode,
+                                         @RequestParam String companyId,
                                          @RequestParam String loginUserID, @RequestParam String authToken) {
-        idmasterService.deleteEvent(languageId, companyId, statusCode, eventCode, loginUserID, authToken);
+        idmasterService.deleteEvent(languageId, companyId, eventCode, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -1966,12 +1966,21 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(roleAccess, HttpStatus.OK);
     }
 
-    // Get RoleAccess
-    @ApiOperation(response = RoleAccess.class, value = "Get RoleAccess") // label for swagger
+//    // Get RoleAccess
+//    @ApiOperation(response = RoleAccess.class, value = "Get RoleAccess") // label for swagger
+//    @GetMapping("/roleAccess/{roleId}")
+//    public ResponseEntity<?> getRoleAccess(@PathVariable Long roleId, @RequestParam Long menuId, @RequestParam String companyId,
+//                                           @RequestParam String languageId, @RequestParam Long subMenuId, @RequestParam String authToken) {
+//        RoleAccess roleAccesses = idmasterService.getRoleAccess(companyId, languageId, roleId, menuId, subMenuId, authToken);
+//        return new ResponseEntity<>(roleAccesses, HttpStatus.OK);
+//    }
+
+    // Get RoleAccess List
+    @ApiOperation(response = RoleAccess[].class, value = "Get RoleAccess List") // label for swagger
     @GetMapping("/roleAccess/{roleId}")
-    public ResponseEntity<?> getRoleAccess(@PathVariable Long roleId, @RequestParam Long menuId, @RequestParam String companyId,
-                                           @RequestParam String languageId, @RequestParam Long subMenuId, @RequestParam String authToken) {
-        RoleAccess roleAccesses = idmasterService.getRoleAccess(companyId, languageId, roleId, menuId, subMenuId, authToken);
+    public ResponseEntity<?> getRoleAccessList(@PathVariable Long roleId, @RequestParam String companyId,
+                                               @RequestParam String languageId, @RequestParam String authToken) {
+        RoleAccess[] roleAccesses = idmasterService.getRoleAccessList(companyId, languageId, roleId, authToken);
         return new ResponseEntity<>(roleAccesses, HttpStatus.OK);
     }
 

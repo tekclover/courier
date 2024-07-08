@@ -5,6 +5,10 @@ import lombok.Data;
 @Data
 public class UpdateMenu {
 
+    private String menuName;
+
+    private String subMenuName;
+
     private String authorizationObject;
 
     private String authorizationObjectValue;

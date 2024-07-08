@@ -146,6 +146,7 @@ public class SubProductService {
             if (statusDesc != null) {
                 newSubProduct.setStatusDescription(statusDesc);
             }
+            newSubProduct.setReferenceField1(addSubProduct.getSubProductValue() + " - " + addSubProduct.getReferenceField1());
             newSubProduct.setDeletionIndicator(0L);
             newSubProduct.setCreatedBy(loginUserID);
             newSubProduct.setCreatedOn(new Date());
@@ -330,14 +331,18 @@ public class SubProductService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
         try {
             List<SubProduct> updatedSubProductList = new ArrayList<>();
-            for (UpdateSubProduct updateSubProduct : updateSubProductList) {
 
-                SubProduct dbSubProduct = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndDeletionIndicator(
+            for (UpdateSubProduct updateSubProduct : updateSubProductList) {
+                List<SubProduct> dbSubProductList = subProductRepository.findByLanguageIdAndCompanyIdAndSubProductIdAndDeletionIndicator(
                         updateSubProduct.getLanguageId(), updateSubProduct.getCompanyId(),
-                        updateSubProduct.getSubProductValue(), updateSubProduct.getSubProductId(), 0L);
-                if (dbSubProduct != null) {
-                    subProductRepository.delete(dbSubProduct);
+                        updateSubProduct.getSubProductId(), 0L);
+
+                if (dbSubProductList != null && !dbSubProductList.isEmpty()) {
+                    subProductRepository.deleteAll(dbSubProductList);
                 }
+            }
+
+            for (UpdateSubProduct updateSubProduct : updateSubProductList) {
 
                 SubProduct newSubProduct = new SubProduct();
                 BeanUtils.copyProperties(updateSubProduct, newSubProduct, CommonUtils.getNullPropertyNames(updateSubProduct));
@@ -353,6 +358,7 @@ public class SubProductService {
                         newSubProduct.setStatusDescription(statusDesc);
                     }
                 }
+                newSubProduct.setReferenceField1(updateSubProduct.getSubProductValue() + " - " + updateSubProduct.getReferenceField1());
                 newSubProduct.setDeletionIndicator(0L);
                 newSubProduct.setCreatedBy(loginUserID);
                 newSubProduct.setCreatedOn(new Date());

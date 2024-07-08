@@ -685,6 +685,11 @@ public class ConsignmentService {
 //        return consignmentList;
 //    }
 
+    // Get - for label create
+    public ReplicaConsignmentEntity getConsignment(Long consignmentId) {
+        ReplicaConsignmentEntity consignmentEntity = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
+        return consignmentEntity;
+    }
 
     /**
      * FindConsignment
@@ -998,7 +1003,7 @@ public class ConsignmentService {
      * @param findPreAlertManifest
      * @return
      */
-    public List<ReplicaAddConsignment> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
+    public List<PreAlertManifestConsignment> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
         if (findPreAlertManifest.getManifestIndicator() == null) {
             findPreAlertManifest.setManifestIndicator(Collections.singletonList(0L));
         }
@@ -1008,10 +1013,10 @@ public class ConsignmentService {
         log.info("findPreAlertManifest: " + findPreAlertManifest);
         PreAlertManifestConsignmentSpecification specification = new PreAlertManifestConsignmentSpecification(findPreAlertManifest);
         List<ReplicaConsignmentEntity> results = replicaConsignmentEntityRepository.findAll(specification);
-        List<ReplicaAddConsignment> consignmentList = new ArrayList<>();
+        List<PreAlertManifestConsignment> consignmentList = new ArrayList<>();
         if(results != null && !results.isEmpty()) {
             results.forEach(n-> {
-                ReplicaAddConsignment dbReplicaAddConsignment = new ReplicaAddConsignment();
+                PreAlertManifestConsignment dbReplicaAddConsignment = new PreAlertManifestConsignment();
                 BeanUtils.copyProperties(n, dbReplicaAddConsignment, CommonUtils.getNullPropertyNames(n));
                 if (n.getConsignmentInfo() != null) {
                     BeanUtils.copyProperties(n.getConsignmentInfo(), dbReplicaAddConsignment);
@@ -1027,6 +1032,20 @@ public class ConsignmentService {
                 }
                 if (n.getReturnDetails() != null) {
                     BeanUtils.copyProperties(n.getReturnDetails(), dbReplicaAddConsignment.getReturnDetails());
+                }
+                List<ReplicaPieceDetails> replicaAddPieceDetailsList = pieceDetailsService.getReplicaPieceDetailsForPreAlertManifest(n.getLanguageId(), n.getCompanyId(), n.getConsignmentId());
+                List<PreAlertManifestPieceDetails> pieceDetailsList = new ArrayList<>();
+                if (replicaAddPieceDetailsList != null && !replicaAddPieceDetailsList.isEmpty()) {
+                    replicaAddPieceDetailsList.forEach(a -> {
+                        PreAlertManifestPieceDetails replicaAddPieceDetails = new PreAlertManifestPieceDetails();
+                        BeanUtils.copyProperties(a, replicaAddPieceDetails, CommonUtils.getNullPropertyNames(a));
+                        List<ReplicaItemDetails> replicaItemDetailsList = itemDetailsService.replicaGetItemDetails(a.getLanguageId(), a.getCompanyId(), a.getPieceId());
+                        if (replicaItemDetailsList != null && !replicaItemDetailsList.isEmpty()) {
+                            replicaAddPieceDetails.setItemDetails(replicaItemDetailsList);
+                        }
+                        pieceDetailsList.add(replicaAddPieceDetails);
+                    });
+                    dbReplicaAddConsignment.setPieceDetails(pieceDetailsList);
                 }
                 consignmentList.add(dbReplicaAddConsignment);
             });

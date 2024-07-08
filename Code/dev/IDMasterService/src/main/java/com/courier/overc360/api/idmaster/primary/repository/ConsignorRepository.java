@@ -17,6 +17,10 @@ public interface ConsignorRepository extends JpaRepository<Consignor, String>, J
             String languageId, String companyId, String subProductId, String subProductValue,
             String productId, String customerId, String consignorId, Long deletionIndicator);
 
+    List<Consignor> findByLanguageIdAndCompanyIdAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
+            String languageId, String companyId, String subProductId, String productId,
+            String customerId, String consignorId, Long deletionIndicator);
+
     Consignor findByLanguageIdAndCompanyIdAndSubProductValueAndSubProductIdAndProductIdAndCustomerIdAndConsignorIdAndDeletionIndicator(
             String languageId, String companyId, String subProductValue, String subProductId,
             String productId, String customerId, String consignorId, Long deletionIndicator);
