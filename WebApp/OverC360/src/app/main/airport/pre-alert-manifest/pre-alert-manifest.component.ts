@@ -66,11 +66,11 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'companyId', header: 'Company' },
+      {  field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'consignmentId', header: 'Consignment Id' },
-      { field: 'hsCode', header: 'HS Code', format: 'code'},
+      { field: 'hsCode', header: 'HS Code'},
+      { field: 'goodsDescription', header: 'Description'},
       { field: 'consoleIndicator', header: 'Console Status',  format: 'boolean'},
       { field: 'manifestIndicator', header: 'Bonded Status', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },

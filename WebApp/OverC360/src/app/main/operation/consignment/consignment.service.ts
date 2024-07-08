@@ -54,7 +54,7 @@ export class ConsignmentService {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
   }
   searchPrealert(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/consignment/findPreAlertManifest', obj);
+    return this.http.post<any>('/overc-midmile-service/itemDetails/findPreAlertManifest', obj);
   }
 
   uploadFiles(files: FileList, location: any) {

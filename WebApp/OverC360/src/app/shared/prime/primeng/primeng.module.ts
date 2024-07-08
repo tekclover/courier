@@ -22,7 +22,7 @@ import { ChipsModule } from 'primeng/chips';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MultiSelectModule } from 'primeng/multiselect';
-
+import { TagModule } from 'primeng/tag';
 @NgModule({
   declarations: [],
   imports: [
@@ -48,7 +48,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
     ChipsModule,
     OverlayPanelModule,
     FileUploadModule ,
-    MultiSelectModule
+    MultiSelectModule,
+    TagModule
   ], 
   exports: [
     CommonModule,
@@ -73,7 +74,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
     ChipsModule,
     OverlayPanelModule,
     FileUploadModule ,
-    MultiSelectModule
+    MultiSelectModule,
+    TagModule
   ]
 })
 export class PrimengModule { }

@@ -53,7 +53,7 @@ export class ConsignmentComponent {
   callTableHeader() {
     this.cols = [
 
-      { field: 'houseAirwayBill', header: 'CN', style: 'min-width: 5rem' },
+      { field: 'houseAirwayBill', header: 'Consignment No', style: 'min-width: 5rem' },
       { field: 'statusDescription', header: 'Status', style: 'min-width: 5rem' },
       { field: 'eventText', header: 'Event', style: 'min-width: 5rem' },
       { field: 'partnerName', header: 'Partner', style: 'min-width: 5rem' },
@@ -98,7 +98,6 @@ export class ConsignmentComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-   // obj.houseAirwayBill = [20000000001]
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.consignmentTable = res;
@@ -241,6 +240,7 @@ export class ConsignmentComponent {
           key: 'br',
           detail: 'File uploaded successfully',
         });
+        this.initialCall();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
