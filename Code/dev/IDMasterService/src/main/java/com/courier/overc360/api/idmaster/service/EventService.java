@@ -5,14 +5,13 @@ import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.event.AddEvent;
 import com.courier.overc360.api.idmaster.primary.model.event.Event;
 import com.courier.overc360.api.idmaster.primary.model.event.UpdateEvent;
-import com.courier.overc360.api.idmaster.primary.model.opstatus.OpStatus;
 import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.EventRepository;
-import com.courier.overc360.api.idmaster.primary.repository.OpStatusRepository;
 import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.event.FindEvent;
 import com.courier.overc360.api.idmaster.replica.model.event.ReplicaEvent;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaEventRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaOpStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaEventSpecification;
@@ -34,15 +33,14 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class EventService {
-
     @Autowired
     private ReplicaOpStatusRepository replicaOpStatusRepository;
 
     @Autowired
-    private EventRepository eventRepository;
+    private ReplicaCompanyRepository replicaCompanyRepository;
 
     @Autowired
-    private OpStatusRepository opStatusRepository;
+    private EventRepository eventRepository;
 
     @Autowired
     private ReplicaEventRepository replicaEventRepository;
@@ -63,19 +61,18 @@ public class EventService {
      *
      * @param languageId
      * @param companyId
-     * @param statusCode
      * @param eventCode
      * @return
      */
 
-    public Event getEvent(String languageId, String companyId, String statusCode, String eventCode) {
-        Optional<Event> dbEvent = eventRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(
-                languageId, companyId, statusCode, eventCode, 0L);
+    public Event getEvent(String languageId, String companyId, String eventCode) {
+        Optional<Event> dbEvent = eventRepository.findByLanguageIdAndCompanyIdAndEventCodeAndDeletionIndicator(
+                languageId, companyId, eventCode, 0L);
         if (dbEvent.isEmpty()) {
             String errMsg = "The given values - languageId - " + languageId + ", companyId -  " + companyId
-                    + ", statusCode - " + statusCode + " and eventCode - " + eventCode + " doesn't exists";
+                    + " and eventCode - " + eventCode + " doesn't exists";
             // Error Log
-            createEventLog1(languageId, companyId, statusCode, eventCode, errMsg);
+            createEventLog1(languageId, companyId, eventCode, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbEvent.get();
@@ -95,43 +92,49 @@ public class EventService {
     public Event createEvent(AddEvent addEvent, String loginUserID) throws IllegalAccessException, InvocationTargetException,
             IOException, CsvException {
         try {
-            Optional<Event> duplicateEvent = eventRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator
-                    (addEvent.getLanguageId(), addEvent.getCompanyId(), addEvent.getStatusCode(), addEvent.getEventCode(), 0L);
-            Optional<OpStatus> dbOpStatus = opStatusRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndDeletionIndicator
-                    (addEvent.getLanguageId(), addEvent.getCompanyId(), addEvent.getStatusCode(), 0L);
-
-
-            if (dbOpStatus.isEmpty()) {
-                throw new BadRequestException("The given values - LanguageId: " + addEvent.getLanguageId() + ", CompanyId: " + addEvent.getCompanyId() +
-                        ", StatusCode: " + addEvent.getStatusCode() + " doesn't exists");
-            } else if (duplicateEvent.isPresent()) {
-                throw new BadRequestException("Record is getting Duplicated with the given values : EventCode - " + addEvent.getEventCode());
-            } else {
-                log.info("new Event --> " + addEvent);
-                IKeyValuePair iKeyValuePair = replicaOpStatusRepository.getDescription(addEvent.getLanguageId(),
-                        addEvent.getCompanyId(), addEvent.getStatusCode());
-                Event newEvent = new Event();
-                BeanUtils.copyProperties(addEvent, newEvent, CommonUtils.getNullPropertyNames(addEvent));
-                if ((addEvent.getEventCode() != null &&
-                        (addEvent.getReferenceField10() != null && addEvent.getReferenceField10().equalsIgnoreCase("true"))) ||
-                        addEvent.getEventCode() == null || addEvent.getEventCode().isBlank()) {
-                    String NUM_RAN_OBJ = "EVENT";
-                    String EVENT_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for EVENT_CODE : " + EVENT_CODE);
-                    newEvent.setEventCode(EVENT_CODE);
-                }
-                if (iKeyValuePair != null) {
-                    newEvent.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newEvent.setCompanyName(iKeyValuePair.getCompanyDesc());
-                    newEvent.setOpStatusDescription(iKeyValuePair.getStatusDesc());
-                }
-                newEvent.setDeletionIndicator(0L);
-                newEvent.setCreatedBy(loginUserID);
-                newEvent.setCreatedOn(new Date());
-                newEvent.setUpdatedBy(loginUserID);
-                newEvent.setUpdatedOn(new Date());
-                return eventRepository.save(newEvent);
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
+                    addEvent.getCompanyId(), addEvent.getLanguageId(), 0L);
+            if (!dbCompanyPresent) {
+                throw new BadRequestException("LanguageId: " + addEvent.getLanguageId()
+                        + ", CompanyId: " + addEvent.getCompanyId() + " doesn't exists");
             }
+
+            boolean duplicateEvent = replicaEventRepository.existsByLanguageIdAndCompanyIdAndEventCodeAndDeletionIndicator(
+                    addEvent.getLanguageId(), addEvent.getCompanyId(), addEvent.getEventCode(), 0L);
+            if (duplicateEvent) {
+                throw new BadRequestException("Record is getting Duplicated with the given values : EventCode - " + addEvent.getEventCode());
+            }
+
+            log.info("new Event --> {}", addEvent);
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addEvent.getLanguageId(), addEvent.getCompanyId());
+            Event newEvent = new Event();
+            BeanUtils.copyProperties(addEvent, newEvent, CommonUtils.getNullPropertyNames(addEvent));
+            if ((addEvent.getEventCode() != null &&
+                    (addEvent.getReferenceField10() != null && addEvent.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addEvent.getEventCode() == null || addEvent.getEventCode().isBlank()) {
+                String NUM_RAN_OBJ = "EVENT";
+                String EVENT_CODE = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for EVENT_CODE : {}", EVENT_CODE);
+                newEvent.setEventCode(EVENT_CODE);
+            }
+            if (iKeyValuePair != null) {
+                newEvent.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newEvent.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            if (addEvent.getStatusCode() != null && !addEvent.getStatusCode().isEmpty()) {
+                String opStatusDesc = replicaOpStatusRepository.getOpStatusDescription(addEvent.getLanguageId(),
+                        addEvent.getCompanyId(), addEvent.getStatusCode());
+                if (opStatusDesc != null) {
+                    newEvent.setOpStatusDescription(opStatusDesc);
+                }
+            }
+            newEvent.setDeletionIndicator(0L);
+            newEvent.setCreatedBy(loginUserID);
+            newEvent.setCreatedOn(new Date());
+            newEvent.setUpdatedBy(loginUserID);
+            newEvent.setUpdatedOn(new Date());
+            return eventRepository.save(newEvent);
+
         } catch (Exception e) {
             // Error Log
             createEventLog2(addEvent, e.toString());
@@ -146,7 +149,6 @@ public class EventService {
      *
      * @param languageId
      * @param companyId
-     * @param statusCode
      * @param eventCode
      * @param updateEvent
      * @param loginUserID
@@ -155,17 +157,24 @@ public class EventService {
      * @throws InvocationTargetException
      */
     @Transactional
-    public Event updateEvent(String languageId, String companyId, String statusCode, String eventCode, String loginUserID, UpdateEvent updateEvent)
+    public Event updateEvent(String languageId, String companyId, String eventCode, String loginUserID, UpdateEvent updateEvent)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Event dbEvent = getEvent(languageId, companyId, statusCode, eventCode);
+            Event dbEvent = getEvent(languageId, companyId, eventCode);
             BeanUtils.copyProperties(updateEvent, dbEvent, CommonUtils.getNullPropertyNames(updateEvent));
+            if (updateEvent.getStatusCode() != null && !updateEvent.getStatusCode().isEmpty()) {
+                String opStatusDesc = replicaOpStatusRepository.getOpStatusDescription(languageId,
+                        companyId, updateEvent.getStatusCode());
+                if (opStatusDesc != null) {
+                    dbEvent.setOpStatusDescription(opStatusDesc);
+                }
+            }
             dbEvent.setUpdatedBy(loginUserID);
             dbEvent.setUpdatedOn(new Date());
             return eventRepository.save(dbEvent);
         } catch (Exception e) {
             //Error log
-            createEventLog(languageId, companyId, statusCode, eventCode, e.toString());
+            createEventLog(languageId, companyId, eventCode, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -176,12 +185,11 @@ public class EventService {
      *
      * @param languageId
      * @param companyId
-     * @param statusCode
      * @param eventCode
      * @param loginUserID
      */
-    public void deleteEvent(String languageId, String companyId, String statusCode, String eventCode, String loginUserID) {
-        Event dbEvent = getEvent(languageId, companyId, statusCode, eventCode);
+    public void deleteEvent(String languageId, String companyId, String eventCode, String loginUserID) {
+        Event dbEvent = getEvent(languageId, companyId, eventCode);
         if (dbEvent != null) {
             dbEvent.setDeletionIndicator(1L);
             dbEvent.setUpdatedBy(loginUserID);
@@ -189,7 +197,7 @@ public class EventService {
             eventRepository.save(dbEvent);
         } else {
             // Error Log
-            createEventLog1(languageId, companyId, statusCode, eventCode, "Error in deleting eventCode - " + eventCode);
+            createEventLog1(languageId, companyId, eventCode, "Error in deleting eventCode - " + eventCode);
             throw new BadRequestException("Error in deleting eventCode - " + eventCode);
         }
     }
@@ -212,19 +220,18 @@ public class EventService {
      *
      * @param languageId
      * @param companyId
-     * @param statusCode
      * @param eventCode
      * @return
      */
 
-    public ReplicaEvent replicaGetEvent(String languageId, String companyId, String statusCode, String eventCode) {
-        Optional<ReplicaEvent> dbEvent = replicaEventRepository.findByLanguageIdAndCompanyIdAndStatusCodeAndEventCodeAndDeletionIndicator(
-                languageId, companyId, statusCode, eventCode, 0L);
+    public ReplicaEvent replicaGetEvent(String languageId, String companyId, String eventCode) {
+        Optional<ReplicaEvent> dbEvent = replicaEventRepository.findByLanguageIdAndCompanyIdAndEventCodeAndDeletionIndicator(
+                languageId, companyId, eventCode, 0L);
         if (dbEvent.isEmpty()) {
             String errMsg = "The given values - languageId - " + languageId + ", companyId -  " + companyId
-                    + ", statusCode - " + statusCode + " and eventCode - " + eventCode + " doesn't exists";
+                    + " and eventCode - " + eventCode + " doesn't exists";
             // Error Log
-            createEventLog1(languageId, companyId, statusCode, eventCode, errMsg);
+            createEventLog1(languageId, companyId, eventCode, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbEvent.get();
@@ -237,16 +244,16 @@ public class EventService {
      * @return
      */
 
-    public List<ReplicaEvent> findEvent(FindEvent findEvent) {
+    public List<ReplicaEvent> findEvents(FindEvent findEvent) {
 
         ReplicaEventSpecification spec = new ReplicaEventSpecification(findEvent);
         List<ReplicaEvent> result = replicaEventRepository.findAll(spec);
-        log.info("found Event --> " + result);
+        log.info("found Events --> {}", result);
         return result;
     }
 
     //=============================================Event_ErrorLog=======================================================
-    private void createEventLog(String languageId, String companyId, String statusCode, String eventCode,
+    private void createEventLog(String languageId, String companyId, String eventCode,
                                 String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
@@ -255,7 +262,6 @@ public class EventService {
         errorLog.setLanguageId(languageId);
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(eventCode);
-        errorLog.setReferenceField1(statusCode);
         errorLog.setMethod("Exception thrown in updateEvent");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
@@ -264,14 +270,13 @@ public class EventService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createEventLog1(String languageId, String companyId, String statusCode, String eventCode, String error) {
+    private void createEventLog1(String languageId, String companyId, String eventCode, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
         errorLog.setLanguageId(languageId);
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(eventCode);
-        errorLog.setReferenceField1(statusCode);
         errorLog.setMethod("Exception thrown in getEvent");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
@@ -286,7 +291,9 @@ public class EventService {
         errorLog.setLanguageId(addEvent.getLanguageId());
         errorLog.setCompanyId(addEvent.getCompanyId());
         errorLog.setRefDocNumber(addEvent.getEventCode());
-        errorLog.setReferenceField1(addEvent.getStatusCode());
+        if (addEvent.getStatusCode() != null) {
+            errorLog.setReferenceField1(addEvent.getStatusCode());
+        }
         errorLog.setMethod("Exception thrown in createEvent");
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");

@@ -18,7 +18,7 @@ public interface ReplicaNotificationRepository extends JpaRepository<ReplicaNoti
             (String languageId, String companyId, String notificationId, Long deletionIndicator);
 
 
-    // Get Service Type Desc
+    // Get Service Type Name
     @Query(value = "Select \n" +
             "CONCAT (tst.SERVICE_TYPE_ID, ' - ', tst.SERVICE_TYPE_TEXT)\n" +
             "From tblservicetype tst \n" +
@@ -31,8 +31,8 @@ public interface ReplicaNotificationRepository extends JpaRepository<ReplicaNoti
                               @Param(value = "languageId") String languageId,
                               @Param(value = "companyId") String companyId);
 
-    // Get Product Desc
-    @Query(value = "Select \n" +
+    // Get Product Name
+    @Query(value = "Select Top 1 \n" +
             "CONCAT (tp.PRODUCT_ID, ' - ', tp.PRODUCT_NAME)\n" +
             "From tblproduct tp \n" +
             "Where \n" +
@@ -44,11 +44,11 @@ public interface ReplicaNotificationRepository extends JpaRepository<ReplicaNoti
     String getProductDesc(@Param(value = "productId") String productId,
                           @Param(value = "languageId") String languageId,
                           @Param(value = "companyId") String companyId,
-                          @Param(value = "subProductId")String subProductId);
+                          @Param(value = "subProductId") String subProductId);
 
 
-    // Get SubProduct Desc
-    @Query(value = "Select \n" +
+    // Get SubProduct Name
+    @Query(value = "Select Top 1 \n" +
             "CONCAT (tsp.SUB_PRODUCT_ID, ' - ', tsp.SUB_PRODUCT_NAME) \n" +
             "From tblsubproduct tsp \n" +
             "Where \n" +

@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
 @Slf4j
 @Validated
 @Api(tags = {"Event"}, value = "Event operations related to EventController") // label for swagger
@@ -49,18 +50,18 @@ public class EventController {
     @ApiOperation(response = Event.class, value = "Update Event") // label for swagger
     @PatchMapping("/{eventCode}")
     public ResponseEntity<?> patchEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId,
-                                        @RequestParam String statusCode, @RequestParam String loginUserID, @RequestBody UpdateEvent updateEvent)
+                                        @RequestParam String loginUserID, @RequestBody UpdateEvent updateEvent)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        Event updatedEvent = eventService.updateEvent(languageId, companyId, statusCode, eventCode, loginUserID, updateEvent);
+        Event updatedEvent = eventService.updateEvent(languageId, companyId, eventCode, loginUserID, updateEvent);
         return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
     }
 
     // Delete Event
     @ApiOperation(response = Event.class, value = "Delete Event") // label for swagger
     @DeleteMapping("/{eventCode}")
-    public ResponseEntity<?> deleteEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId,
-                                         @RequestParam String statusCode, @RequestParam String loginUserID) {
-        eventService.deleteEvent(languageId, companyId, statusCode, eventCode, loginUserID);
+    public ResponseEntity<?> deleteEvent(@PathVariable String eventCode, @RequestParam String languageId,
+                                         @RequestParam String companyId, @RequestParam String loginUserID) {
+        eventService.deleteEvent(languageId, companyId, eventCode, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -75,11 +76,10 @@ public class EventController {
     }
 
     // Get Event
-    @ApiOperation(response = ReplicaEvent.class, value = "Get a Event") // label for swagger
+    @ApiOperation(response = ReplicaEvent.class, value = "Get Event") // label for swagger
     @GetMapping("/{eventCode}")
-    public ResponseEntity<?> getEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId, @RequestParam String statusCode) {
-
-        ReplicaEvent event = eventService.replicaGetEvent(languageId, companyId, statusCode, eventCode);
+    public ResponseEntity<?> getEvent(@PathVariable String eventCode, @RequestParam String languageId, @RequestParam String companyId) {
+        ReplicaEvent event = eventService.replicaGetEvent(languageId, companyId, eventCode);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
@@ -87,7 +87,7 @@ public class EventController {
     @ApiOperation(response = ReplicaEvent.class, value = "Find Event") // label for swagger
     @PostMapping("/find")
     public ResponseEntity<?> findEvent(@RequestBody FindEvent findEvent) throws Exception {
-        List<ReplicaEvent> createdEvent = eventService.findEvent(findEvent);
+        List<ReplicaEvent> createdEvent = eventService.findEvents(findEvent);
         return new ResponseEntity<>(createdEvent, HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.courier.overc360.api.idmaster.primary.model.event;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+
 @Data
 public class AddEvent {
 
@@ -12,7 +13,7 @@ public class AddEvent {
     @NotBlank(message = "Company Id is mandatory")
     private String companyId;
 
-    @NotBlank(message = "Status Code is mandatory")
+    //    @NotBlank(message = "Status Code is mandatory")
     private String statusCode;
 
     private String eventCode;

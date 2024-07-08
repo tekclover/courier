@@ -76,13 +76,21 @@ public class RoleAccessController {
         return new ResponseEntity<>(roleAccessList, HttpStatus.OK);
     }
 
+//    // Get RoleAccess
+//    @ApiOperation(response = ReplicaRoleAccess.class, value = "Get RoleAccess") // label for swagger
+//    @GetMapping("/{roleId}")
+//    public ResponseEntity<?> getRoleAccess(@PathVariable Long roleId, @RequestParam Long menuId, @RequestParam String companyId,
+//                                           @RequestParam String languageId, @RequestParam Long subMenuId) {
+//        ReplicaRoleAccess roleAccesses = roleAccessService.getReplicaRoleAccess(companyId, languageId, roleId, menuId, subMenuId);
+//        return new ResponseEntity<>(roleAccesses, HttpStatus.OK);
+//    }
 
-    // Get RoleAccess
-    @ApiOperation(response = ReplicaRoleAccess.class, value = "Get RoleAccess") // label for swagger
+    // Get RoleAccess List
+    @ApiOperation(response = ReplicaRoleAccess.class, value = "Get RoleAccess List") // label for swagger
     @GetMapping("/{roleId}")
-    public ResponseEntity<?> getRoleAccess(@PathVariable Long roleId, @RequestParam Long menuId, @RequestParam String companyId,
-                                           @RequestParam String languageId, @RequestParam Long subMenuId) {
-        ReplicaRoleAccess roleAccesses = roleAccessService.getReplicaRoleAccess(companyId, languageId, roleId, menuId, subMenuId);
+    public ResponseEntity<?> getRoleAccessList(@PathVariable Long roleId, @RequestParam String companyId,
+                                               @RequestParam String languageId) {
+        List<ReplicaRoleAccess> roleAccesses = roleAccessService.getReplicaRoleAccessList(companyId, languageId, roleId);
         return new ResponseEntity<>(roleAccesses, HttpStatus.OK);
     }
 
