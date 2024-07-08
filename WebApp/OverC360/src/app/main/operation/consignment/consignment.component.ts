@@ -58,11 +58,10 @@ export class ConsignmentComponent {
       { field: 'eventText', header: 'Event', style: 'min-width: 5rem' },
       { field: 'partnerName', header: 'Partner', style: 'min-width: 5rem' },
       { field: 'productName', header: 'Product', style: 'min-width: 10rem' },
-      { field: 'subProductName', header: 'Sub Product', style: 'min-width: 10rem' },
+   //   { field: 'subProductName', header: 'Sub Product', style: 'min-width: 10rem' },
       { field: 'countryOfOrigin', header: 'Origin', style: 'min-width: 5rem' },
       { field: 'countryOfDestination', header: 'Destination', style: 'min-width: 5rem' },
       { field: 'serviceTypeText', header: 'Service Type', style: 'min-width: 5rem' },
-      { field: 'description', header: 'Document Type', style: 'min-width: 5rem' },
       { field: 'paymentType', header: 'Payment Type', style: 'min-width: 5rem' },
       { field: 'incoTerms', header: 'Inco Terms', style: 'min-width: 5rem' },
       { field: 'createdBy', header: 'Created By', style: 'min-width: 5rem' },
@@ -99,7 +98,7 @@ export class ConsignmentComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.houseAirwayBill = [10000000097]
+    obj.houseAirwayBill = [20000000001]
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.consignmentTable = res;
@@ -233,6 +232,7 @@ export class ConsignmentComponent {
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     this.selectedFiles = file;
+    this.spin.show();
     this.service.uploadConsignment(this.selectedFiles).subscribe({
       next: (result) => {
         this.messageService.add({
@@ -241,6 +241,7 @@ export class ConsignmentComponent {
           key: 'br',
           detail: 'File uploaded successfully',
         });
+        this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
         this.cs.commonerrorNew(err);

@@ -206,7 +206,7 @@ export class ItemDetailsComponent {
         this.cas.dropdownlist.setup.currency.url
       ]).subscribe({
         next: (results: any) => {
-          this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[0], this.cas.dropdownlist.setup.hsCode.key);
+         this.hsCodeList =  this.cas.forLanguageFilter(results[0], {key: 'hsCode', value: 'itemGroup', languageId: 'languageId',companyId: 'companyId'});
           this.currencyDropdown = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.currency.key);
           this.spin.hide();
         },
@@ -219,5 +219,10 @@ export class ItemDetailsComponent {
 
     calculateTotalValue(value:any){
       value.controls.declaredValue.patchValue(value.controls.quantity.value * value.controls.unitValue.value);
+    }
+
+    hsCodeChange(value:any, control:any){
+     let desc =  this.hsCodeList.find(option => option.value === control.controls.hsCode.value)?.label;
+      control.controls.description.patchValue(desc);
     }
 }
