@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,10 +85,11 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "DST_ADDRESS nvarchar(50), \n" +
             "DST_CITY nvarchar(50), \n" +
             "DST_STATE nvarchar(50), \n" +
-            "DST_COUNTRY nvarchar(50)); \n" +
+            "DST_COUNTRY nvarchar(50),\n" +
+            "DATE dateTime); \n" +
 
-            "INSERT INTO #LFO(CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE) \n" +
-            "SELECT CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE FROM tblpiecedetails where is_deleted = 0 and \n" +
+            "INSERT INTO #LFO(CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, DATE) \n" +
+            "SELECT CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, :date FROM tblpiecedetails where is_deleted = 0 and \n" +
             "(COALESCE(:piecesId, null) IS NULL OR (PIECE_ID IN (:piecesId))) and \n" +
             "(COALESCE(:languageId, null) IS NULL OR (LANG_ID IN (:languageId))) and \n" +
             "(COALESCE(:companyId, null) IS NULL OR (C_ID IN (:companyId)))\n" +
@@ -154,10 +156,12 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "DST_ADDRESS destinationAddress, \n" +
             "DST_CITY destinationCity, \n" +
             "DST_STATE destinationState, \n" +
-            "DST_COUNTRY destinationCountry \n" +
+            "DST_COUNTRY destinationCountry, \n" +
+            "DATE createdOn \n" +
             "from #LFO ", nativeQuery = true)
     List<LabelFormOutput> getLabelPdfOutput(@Param(value = "languageId") List<String> languageId,
                                             @Param(value = "companyId") List<String> companyId,
-                                            @Param(value = "piecesId") List<String> piecesId);
+                                            @Param(value = "piecesId") List<String> piecesId,
+                                            @Param(value = "date") Date date);
 }
 

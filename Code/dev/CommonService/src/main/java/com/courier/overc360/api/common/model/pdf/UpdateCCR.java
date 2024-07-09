@@ -11,4 +11,5 @@ public class UpdateCCR {
     private String customsKd;
     private String hsCode;
     private String consignmentValue;
+    private String totalDuty;
 }
