@@ -177,27 +177,31 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
-
             //PieceDetails Count
             List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
             int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
 
-
             int totalItemCount = 0;
-
+            String currency = null;
             for (AddPieceDetails pieceDetails : consignmentEntity.getPieceDetails()) {
                 List<AddItemDetails> addItemDetails = pieceDetails.getItemDetails();
+
                 int itemCount = addItemDetails != null ? addItemDetails.size() : 0;
                 totalItemCount += itemCount;
-            }
 
-            // Set noOfPieceHawb based on the total item count
-            if (totalItemCount == 0) {
-                consignmentEntity.setNoOfPieceHawb("1");
-            } else {
-                consignmentEntity.setNoOfPieceHawb(String.valueOf(totalItemCount));
-            }
+                if (addItemDetails != null) {
+                    for (AddItemDetails itemDetail : addItemDetails) {
+                        currency = itemDetail.getCurrency();
+                    }
+                }
 
+                // Set noOfPieceHawb based on the total item count
+                if (totalItemCount == 0) {
+                    consignmentEntity.setNoOfPieceHawb("1");
+                } else {
+                    consignmentEntity.setNoOfPieceHawb(String.valueOf(totalItemCount));
+                }
+            }
             BeanUtils.copyProperties(consignmentEntity, newConsignment, CommonUtils.getNullPropertyNames(consignmentEntity));
 
             if (iKeyValuePair != null) {
@@ -231,14 +235,17 @@ public class ConsignmentService {
                 newConsignment.setEventTimestamp(new Date());
             }
 
+            if (pieceCount == 0) {
+                newConsignment.setNoOfPackageHawb("1");
+            } else {
+                newConsignment.setNoOfPackageHawb(String.valueOf(pieceCount));
+            }
+            if (currency != null) {
+                newConsignment.setConsignmentCurrency(currency);
+            }
             newConsignment.setHouseAirwayBill(houseAirwayBill);
             newConsignment.setMasterAirwayBill(masterAirwayBill);
             newConsignment.setCreatedBy(loginUserId);
-            if(pieceCount == 0) {
-                newConsignment.setNoOfPackageHawb("1");
-            }else {
-                newConsignment.setNoOfPackageHawb(String.valueOf(pieceCount));
-            }
             newConsignment.setCreatedOn(new Date());
             newConsignment.setUpdatedBy(null);
             newConsignment.setUpdatedOn(null);
@@ -377,7 +384,8 @@ public class ConsignmentService {
      * @param loginUserID
      * @return
      */
-    public List<UpdateConsignment> updateConsignmentEntity(List<UpdateConsignment> consignment, String loginUserID)
+    public List<UpdateConsignment> updateConsignmentEntity(List<UpdateConsignment> consignment, String
+            loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
 
         List<UpdateConsignment> addConsignmentList = new ArrayList<>();
@@ -499,7 +507,8 @@ public class ConsignmentService {
      * @param masterAirwayBill
      * @param houseAirwayBill
      */
-    public void deleteConsignmentEntity(String companyId, String languageId, String partnerId, String masterAirwayBill,
+    public void deleteConsignmentEntity(String companyId, String languageId, String partnerId, String
+            masterAirwayBill,
                                         String houseAirwayBill, String pieceId, String pieceItemId, String imageRefId, String loginUserID) {
 
         if (pieceId.isEmpty() && pieceItemId.isEmpty() && imageRefId.isEmpty()) {
