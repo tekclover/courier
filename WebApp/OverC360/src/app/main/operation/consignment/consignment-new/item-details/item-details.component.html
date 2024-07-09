@@ -22,11 +22,12 @@
         <ng-template pTemplate="body" let-item let-i="rowIndex"  let-rowData>
           <tr [formGroup]="item">
             <td>
-              <p-dropdown [options]="hsCodeList" #hscode placeholder="Select" filter="true"
+              <p-dropdown *ngIf="!showInput" (dblclick)="toggleInput()" [options]="hsCodeList" #hscode placeholder="Select" filter="true"
               formControlName="hsCode" appendTo="body" (onChange)="hsCodeChange(hscode, rowData)"
               [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+              <input  (dblclick)="toggleInput()" *ngIf="showInput" class="inputborderLess pl-3" placeholder="Enter" formControlName="hsCode">
             </td>
-            <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="description"></td>
+            <td><input   class="inputborderLess pl-3" placeholder="Enter" formControlName="description"></td>
             <td ><input class="inputborderLess pl-3" placeholder="Enter" (change)="calculateTotalValue(rowData)" formControlName="quantity"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" (change)="calculateTotalValue(rowData)" formControlName="unitValue"></td>
             <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="declaredValue"></td>

@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
+import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcr;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -43,5 +44,30 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
                                @Param(value = "masterAirwayBill") String masterAirwayBill,
                                @Param(value = "houseAirwayBill") String houseAirwayBill,
                                 @Param(value = "consoleId") String consoleId);
+
+    //Get IataKd
+    @Query(value = "Select \n" +
+            "IATA_KD iataKd \n" +
+            "From tbliata  \n" +
+            "Where \n" +
+            "ORIGIN_CODE IN (:countryOfOrigin) and \n" +
+            "LANG_ID IN (:languageId) and \n" +
+            "C_ID IN (:companyId) and \n" +
+            "is_deleted = 0", nativeQuery = true)
+    IKeyValuePair getIataKd(@Param(value = "countryOfOrigin") String countryOfOrigin,
+                            @Param(value = "languageId") String languageId,
+                            @Param(value = "companyId") String companyId);
+
+    @Query(value = "select \n" +
+            "(select to_currency_value currencyValue from tblcurrencyexchangerate where " +
+            "c_id = :companyId and from_currency_id = :currencyId and is_deleted = 0) as currencyValue, \n" +
+            "(select iata_kd iataKd from tbliata where " +
+            "origin_code = :originCode and lang_id = :languageId and c_id = :companyId and is_deleted = 0) as iataKd",
+            nativeQuery = true)
+    Optional<IKeyValuePair> getIataCurrencyValue(@Param("companyId") String companyId,
+                                                 @Param("languageId") String languageId,
+                                                 @Param("currencyId") String currencyId,
+                                                 @Param("originCode") String originCode);
+
 
 }

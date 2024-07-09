@@ -83,8 +83,27 @@ export class ItemDetailsComponent {
   }
   save() {
     const control = (this.itemForm.controls.itemDetails as FormArray)
-    console.log(control.value)
-    this.dialogRef.close(this.itemForm.controls.itemDetails.value)
+    const pieceValue = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.declaredValue), 0);
+    const length = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.length), 0);
+    const width = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.width), 0);
+    const height = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.height), 0);
+    const weight = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.weight), 0);
+    const volume = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.volume), 0);
+
+    let obj: any = {};
+    obj.lines = this.itemForm.controls.itemDetails.value;
+    obj.pieceValue = pieceValue;
+    obj.length = length;
+    obj.width = width;
+    obj.height = height;
+    obj.weight = weight;
+    obj.volume = volume;
+    obj.tags = control.length;
+    obj.volumeUnit = control.value[0].volumeUnit;
+    obj.dimensionUnit = control.value[0].dimensionUnit;
+    obj.weightUnit = control.value[0].weightUnit;
+    obj.currency = control.value[0].currency;
+    this.dialogRef.close(obj)
   }
   calculateVolume(formName: any) {
     const volume = formName.controls.length.value as number * formName.controls.width.value as number * formName.controls.height.value as number;
@@ -226,5 +245,12 @@ export class ItemDetailsComponent {
     hsCodeChange(value:any, control:any){
      let desc =  this.hsCodeList.find(option => option.value === control.controls.hsCode.value)?.label;
       control.controls.description.patchValue(desc);
+    }
+
+    showInput = true
+
+    toggleInput(){
+      this.showInput = !this.showInput;
+      console.log(this.showInput)
     }
 }

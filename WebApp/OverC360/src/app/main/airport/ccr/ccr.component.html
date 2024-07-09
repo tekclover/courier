@@ -112,8 +112,8 @@
                     <th style="width: 5rem;">
                         Actions
                     </th>
-                    <th *ngFor="let col of columns">
-                        {{ col.header }}
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
             </ng-template>
@@ -187,7 +187,7 @@
                                     <p class="mb-0 headerText">No of Pcs</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
-                                    <p class="mb-0 valueText chip">{{rowData.noOfPieceHawb}}</p>
+                                    <p class="mb-0 valueText chip">{{rowData.quantity}}</p>
                                 </div>
                                 <div class="col-2 spacingBottom">
                                     <p class="mb-0 headerText">Weight</p>

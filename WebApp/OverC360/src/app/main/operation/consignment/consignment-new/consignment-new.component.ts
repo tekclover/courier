@@ -231,7 +231,7 @@ export class ConsignmentNewComponent {
     volumeUnit: [],
     weight: [],
     weightUnit: [],
-    invoiceDate: [new Date,],
+    invoiceDate: [,],
     invoiceDateFE: [new Date,],
     invoiceSupplierName: [],
     goodsDescription: [],
@@ -698,9 +698,18 @@ export class ConsignmentNewComponent {
         itemDetailsFormArray.clear();
        const getPieceForm = (this.piece.controls.pieceDetails as FormArray).at(index);
        getPieceForm.patchValue({
-        pieceValue: result.pieceValue
+        pieceValue: result.pieceValue,
+        length: result.length,
+        width: result.width,
+        height: result.height,
+        weight: result.weight,
+        tags: result.tags,
+        volume: result.volume,
+        weightUnit: result.weightUnit,
+        volumeUnit: result.volumeUnit,
+        dimensionUnit: result.dimensionUnit,
+        pieceCurrency: result.currency,
       });
-       console.log(this.piece)
         result.lines.forEach((item: any) => {
           itemDetailsFormArray.push(this.fb.group({
             codAmount: item.codAmount,
@@ -906,6 +915,19 @@ export class ConsignmentNewComponent {
     }
   }
   savePiece() {
+
+    const control = (this.piece.controls.pieceDetails as FormArray)
+    this.consignment.controls.length.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.length), 0));
+    this.consignment.controls.width.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.width), 0));
+    this.consignment.controls.height.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.height), 0));
+    this.consignment.controls.volume.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.volume), 0));
+    this.consignment.controls.weight.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.weight), 0));
+    this.consignment.controls.consignmentValue.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.pieceValue), 0));
+    this.consignment.controls.volumeUnit.patchValue(control.value[0].volumeUnit);
+    this.consignment.controls.dimensionUnit.patchValue(control.value[0].dimensionUnit);
+    this.consignment.controls.weightUnit.patchValue(control.value[0].weightUnit);
+    this.consignment.controls.consignmentCurrency.patchValue(control.value[0].pieceCurrency);
+
     this.activeIndex = 2;
     this.submitted = false;
     this.disabledConsignment = false;

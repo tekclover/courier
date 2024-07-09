@@ -141,17 +141,19 @@ public class BondedManifestService {
                 BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
                 IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(
                         addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
-                IKeyValuePair eventStatus =  consignmentEntityRepository.getStatusEventText(addBondedManifest.getCompanyId(), "1", "4");
+                Optional<IKeyValuePair> eventStatus =  consignmentEntityRepository.getStatusEventText(newBondedManifest.getLanguageId(),
+                        newBondedManifest.getCompanyId(), "1", "4");
 
                 if (lAndCDesc != null) {
                     newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
                     newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                if(eventStatus != null) {
+                if(eventStatus.isPresent()) {
+                    IKeyValuePair iKeyValuePair = eventStatus.get();
                     newBondedManifest.setStatusId("1");
                     newBondedManifest.setEventCode("4");
-                    newBondedManifest.setStatusText(eventStatus.getStatusText());
-                    newBondedManifest.setEventText(eventStatus.getEventText());
+                    newBondedManifest.setStatusText(iKeyValuePair.getStatusText());
+                    newBondedManifest.setEventText(iKeyValuePair.getEventText());
                     newBondedManifest.setEventTimestamp(new Date());
                     newBondedManifest.setStatusTimestamp(new Date());
                 }

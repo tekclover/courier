@@ -28,15 +28,15 @@
             <form [formGroup]="searchform" style="padding: 2rem;">
                 <div class="row">
                     <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Number Range Code</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="numberRangeCodeDropdown"
-                            formControlName="numberRangeCode" appendTo="body" [style]="{'width': '100%'}"
+                        <p class="formControlLabel f600 textBlack mb-0">Process/Master</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="numberRangeObjectDropdown"
+                            formControlName="numberRangeObject" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Number Range Object</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="numberRangeObjectDropdown"
-                            formControlName="numberRangeObject" appendTo="body" [style]="{'width': '100%'}"
+                        <p class="formControlLabel f600 textBlack mb-0">ID</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="numberRangeCodeDropdown"
+                            formControlName="numberRangeCode" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-3 mb-3 borderRadius12">
@@ -71,8 +71,8 @@
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
                     </th>
-                    <th *ngFor="let col of columns">
-                        {{ col.header }}
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
             </ng-template>

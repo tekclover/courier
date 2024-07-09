@@ -955,16 +955,18 @@
             <p-tabPanel header="Billing" [disabled]="disabledBilling">
                 <form [formGroup]="billing">
                     <div class="row ">
+                        <form [formGroup]="consignment">
                         <div class="col-3 marginFieldNew borderRadius12">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
-                            <input maxlength="500" [value]="this.consignmentCurrency" [disabled]="true"
+                            <input maxlength="500" [value]="this.consignment.controls.consignmentCurrency.value" [disabled]="true"
                                 class=" w-100" pInputText placeholder="Enter" />
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Value</p>
-                            <input maxlength="500" [value]="this.consignmentValue" [disabled]="true"
+                            <input maxlength="500" [value]="this.consignment.controls.consignmentValue.value"  [disabled]="true"
                             class=" w-100" pInputText placeholder="Enter" />
                         </div>
+                        </form>
                         <div class="col-3 marginFieldNew borderRadius12" id="exchangeRate">
                             <p class="formControlLabel f600 textBlack mb-0">Exchange Rate</p>
                             <input maxlength="50" formControlName="exchangeRate"

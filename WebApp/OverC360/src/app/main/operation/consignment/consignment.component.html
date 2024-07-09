@@ -79,8 +79,8 @@
                     <th style="width: 5rem;">
                        Label
                     </th>
-                    <th *ngFor="let col of columns"  [style]="col.style">
-                        {{ col.header }}
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
             </ng-template>

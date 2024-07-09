@@ -34,6 +34,8 @@ public interface IKeyValuePair {
 
     String getStatusText();
 
+    String getEventCode();
+
     String getEventText();
 
 
