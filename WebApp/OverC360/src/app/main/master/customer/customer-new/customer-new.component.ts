@@ -247,7 +247,7 @@ export class CustomerNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: 'Record has been updated successfully',
+            detail: res[0].customerId + ' has been updated successfully',
           });
           this.router.navigate(['/main/master/customer']);
           this.spin.hide();
@@ -275,7 +275,7 @@ export class CustomerNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: 'Record has been created successfully',
+              detail: res[0].customerId + ' has been created successfully',
             });
             this.router.navigate(['/main/master/customer']);
             this.spin.hide();

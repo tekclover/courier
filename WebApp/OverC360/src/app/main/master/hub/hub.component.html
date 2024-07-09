@@ -64,15 +64,15 @@
     <div class="tableProperties">
         <p-table #hubTag [columns]="cols" [value]="hubTable" class="custom-table" [scrollable]="true"
             selectionMode="single" scrollHeight="calc(100vh - 20.8rem)" [paginator]="true" [rows]="100"
-            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '120rem'}"
+            [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '140rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
                     </th>
-                    <th *ngFor="let col of columns">
-                        {{ col.header }}
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
             </ng-template>

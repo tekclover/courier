@@ -75,7 +75,7 @@
     <div class="tableProperties">
         <p-table #bondedManifestTag [columns]="cols" [value]="bondedManifestTable" class="custom-table" [scrollable]="true"
         selectionMode="multiple"  [(selection)]="selectedBondedManifest" sortField="createdOn" [sortOrder]="-1" scrollHeight="calc(100vh - 20.8rem)"
-            [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
+            [paginator]="true" [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '110rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
             (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"  rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
@@ -86,8 +86,8 @@
                     <th style="width: 5rem;">
                      Actions
                     </th>
-                    <th *ngFor="let col of columns">
-                        {{ col.header }}
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
             </ng-template>
