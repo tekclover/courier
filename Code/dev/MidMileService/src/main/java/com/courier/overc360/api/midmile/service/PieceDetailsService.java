@@ -197,6 +197,10 @@ public class PieceDetailsService {
 
                         String PIECE_ID = houseAirwayBill + String.format("%03d", pieceCounter++);
                         PieceDetails newPieceDetails = new PieceDetails();
+
+                        List<ItemDetails> itemDetails = addPieceDetails.getItemDetails();
+
+                        // i want to how many itemdetails record save in piece table tag how give me code
                         BeanUtils.copyProperties(addPieceDetails, newPieceDetails, CommonUtils.getNullPropertyNames(addPieceDetails));
 
                         newPieceDetails.setPieceId(PIECE_ID);

@@ -564,8 +564,7 @@ public class ConsoleService {
                 // Process each smaller group
                 for (List<AddConsole> smallerGroup : smallerGroups) {
                     // Generate a new CONSOLE_ID for each smaller group
-                    String NUM_RAN_OBJ = "CONSOLEID";
-                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 
                     // Further group the consignments based on the total value condition
                     List<List<AddConsole>> subGroups = new ArrayList<>();
@@ -617,6 +616,7 @@ public class ConsoleService {
                     // Process each subgroup
                     for (List<AddConsole> subGroup : subGroups) {
                         // Generate a new CONSOLE_ID for each subgroup
+                        String NUM_RAN_OBJ = "CONSOLEID";
                         String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
 
                         for (AddConsole console : subGroup) {
