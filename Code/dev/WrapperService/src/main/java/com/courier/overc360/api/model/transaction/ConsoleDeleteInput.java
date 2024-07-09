@@ -17,5 +17,8 @@ public class ConsoleDeleteInput {
 
     private String houseAirwayBill;
 
+    private String pieceId;
+
+    private String pieceItemId;
 
 }

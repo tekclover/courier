@@ -74,13 +74,14 @@ public class ConsoleService {
      * @param consoleId
      * @return
      */
-    private Console getConsole(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId) {
-        Optional<Console> dbConsole = consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndDeletionIndicator(
-                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, 0L);
+    private Console getConsole(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill,
+                               String consoleId, String pieceId, String pieceItemId) {
+        Optional<Console> dbConsole = consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, pieceId, pieceItemId, 0L);
         if (dbConsole.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
-                    + ", houseAirwayBill - " + houseAirwayBill + " and consoleId - " + consoleId + " doesn't exists";
+                    + ", houseAirwayBill - " + houseAirwayBill + " and consoleId - " + consoleId + " and pieceId " + pieceId + " pieceItemId " + pieceItemId + " doesn't exists";
             // Error Log
             createConsoleLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, errMsg);
             throw new BadRequestException(errMsg);
@@ -460,8 +461,8 @@ public class ConsoleService {
                         String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                         for (AddConsole console : consoleEntryList) {
 
-                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), 0L);
+                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), console.getPieceId(), console.getPieceItemId(), 0L);
 
                             if (duplicateConsole) {
                                 throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
@@ -623,8 +624,8 @@ public class ConsoleService {
 
                         for (AddConsole console : subGroup) {
                             // Duplicate Check
-                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), 0L);
+                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), console.getPieceId(), console.getPieceItemId(), 0L);
 
                             if (duplicateConsole) {
                                 throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
@@ -1075,7 +1076,8 @@ public class ConsoleService {
                 Console dbConsole = getConsole(
                         updateConsole.getLanguageId(), updateConsole.getCompanyId(),
                         updateConsole.getPartnerId(), updateConsole.getMasterAirwayBill(),
-                        updateConsole.getHouseAirwayBill(), updateConsole.getConsoleId());
+                        updateConsole.getHouseAirwayBill(), updateConsole.getConsoleId(),
+                        updateConsole.getPieceId(), updateConsole.getPieceItemId());
 
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
                 dbConsole.setUpdatedBy(loginUserID);
@@ -1100,8 +1102,8 @@ public class ConsoleService {
                 if(updatedConsole != null) {
                     //Consignment Update
                     consoleRepository.conUpdateBasedOnConsoleUpdate(updatedConsole.getCompanyId(), updatedConsole.getLanguageId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getHouseAirwayBill(), updatedConsole.getMasterAirwayBill(), updatedConsole.getStatusId(), updatedConsole.getEventCode(),
-                            updatedConsole.getStatusText(), updatedConsole.getEventText());
+                            updatedConsole.getHouseAirwayBill(), updatedConsole.getMasterAirwayBill(),updatedConsole.getPieceId(), updatedConsole.getPieceItemId(),
+                            updatedConsole.getStatusId(), updatedConsole.getEventCode(), updatedConsole.getStatusText(), updatedConsole.getEventText());
 
                     // Save ConsignmentStatus
                     consignmentStatusService.createConsignmentStatusParams(updatedConsole.getCompanyId(), updatedConsole.getCompanyName(),
@@ -1157,7 +1159,8 @@ public class ConsoleService {
                 for (ConsoleDeleteInput deleteInput : deleteInputList) {
 
                     Console dbConsole = getConsole(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(), deleteInput.getConsoleId());
+                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(),
+                            deleteInput.getConsoleId(), deleteInput.getPieceId(), deleteInput.getPieceItemId());
 
                     if (dbConsole != null) {
                         dbConsole.setDeletionIndicator(1L);

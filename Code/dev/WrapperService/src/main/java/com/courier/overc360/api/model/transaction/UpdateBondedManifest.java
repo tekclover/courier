@@ -18,7 +18,7 @@ public class UpdateBondedManifest {
 
     private String houseAirwayBill;
 
-    private String  bondedId;
+    private String bondedId;
 
     private String pieceId;
 
