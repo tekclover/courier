@@ -192,13 +192,13 @@ Consigment: any[] = [];
   ngOnInit(): void {
     this.dropdownlist();
   console.log(this.data)
+  console.log(this.data.title)
   this.Consigment=this.data.code;
 
   }
   showHub=false;
   eventChange(){
-    if(this.form.controls.eventCode.value == '15'){
-      if(this.data.line.pageflow == 'Consignment')
+    if((this.form.controls.eventCode.value == '15') && (this.data.title == 'Consignment')){
       this.showHub=true;
       console.log()
     }
@@ -249,7 +249,7 @@ if(this.form.controls.hubCode != null){
     x.hubCode = this.form.controls.hubCode.value;
     });
 }
-if((this.data.title !='Bonded Manifest') &&((this.data.tile == 'Consignment')|| (this.data.tile == 'PreAlertManifest'))){
+if((this.data.title !='Bonded Manifest')){
    this.service.Update(this.Consigment).subscribe({
     next: (res) => {
       this.messageService.add({

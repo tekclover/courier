@@ -199,8 +199,7 @@ hubList:any[]=[];
   }
   showHub=false;
   eventChange(){
-    if(this.form.controls.eventCode.value == '15'){
-      if(this.data.line.pageflow != 'Console')
+    if((this.form.controls.eventCode.value == '15') && (this.data.title != 'Console')){
       this.showHub=true;
       console.log()
     }
