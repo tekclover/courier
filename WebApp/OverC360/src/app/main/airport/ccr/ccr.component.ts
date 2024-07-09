@@ -326,9 +326,40 @@ export class CcrComponent {
   removeDuplicated: any [] = []
   generateLabel(){
     this.removeDuplicated = [];
+    let obj: any = {};
+    obj.ccrId=[this.selectedCcr[0].ccrId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.actualResult = res;
+     
+      },
+      error: (err) => {
+       
+      },
+    });
     this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'pieceId');
    const pieceIdArray = this.removeDuplicated.map(item => item.pieceId);
-    this.label.generatePdfBarocdeMutiple(pieceIdArray);
+   this.label.labelGenerate(pieceIdArray)
+   // this.label.generatePdfBarocdeMutipleCCR(pieceIdArray);
+  }
+  houseAirwayBill:any;
+  generateInvoice(){
+    this.removeDuplicated = [];
+    let obj: any = {};
+    obj.ccrId=[this.selectedCcr[0].ccrId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.houseAirwayBill = res;
+     
+      },
+      error: (err) => {
+       
+      },
+    });
+    this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBill, 'houseAirwayBill');
+   const houseAirwayBillArray = this.removeDuplicated.map(item => item.houseAirwayBill);
+   this.label.genearteInvoice(houseAirwayBillArray)
+   // this.label.generatePdfBarocdeMutipleCCR(pieceIdArray);
   }
 
 }

@@ -192,7 +192,7 @@ export const navbarData: INavbarData[] = [
                     {
                         routerId: 3103,
                         routerLink: '/main/master/opstatus',
-                        label: 'Status'
+                        label: 'OP Status'
                     },
                     {
                         routerId: 3104,
