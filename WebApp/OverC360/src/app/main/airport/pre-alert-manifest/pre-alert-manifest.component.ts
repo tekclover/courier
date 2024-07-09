@@ -18,6 +18,7 @@ import { ConsoleService } from '../console/console.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
+import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
 
 @Component({
   selector: 'app-pre-alert-manifest',
@@ -359,6 +360,24 @@ export class PreAlertManifestComponent {
 
   getSeverity(value: number) {
     return value === 0 ? 'red' : 'green';
+  }
+
+  preAlertIndicator(line: any[]) {
+    console.log(line)
+    const dialogRef = this.dialog.open(PreAlertManifestIndicatorComponent, {
+      disableClose: true,
+      width: '70%',
+      height: '70%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: line, },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result) {
+      //   this.deleterecord(this.selectedPreAlertManifest[0]);
+      // }
+    });
   }
     
 }
