@@ -115,7 +115,7 @@
             [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             [tableStyle]="{'width': '125rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="houseAirwayBill"
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="pieceItemId"
             rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>

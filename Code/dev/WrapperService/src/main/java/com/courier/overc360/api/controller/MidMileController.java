@@ -551,10 +551,17 @@ public class MidMileController {
         return new ResponseEntity<>(pdfLabelFormOutput, HttpStatus.OK);
     }
 
+//    // Find ConsignmentInvoice
+//    @ApiOperation(response = ConsignmentInvoice[].class, value = "Find ConsignmentInvoice") //label for swagger
+//    @PostMapping("/consignment/findConsignmentInvoice")
+//    public ConsignmentInvoice[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+//        return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
+//    }
+
     // Find ConsignmentInvoice
-    @ApiOperation(response = ConsignmentInvoice[].class, value = "Find ConsignmentInvoice") //label for swagger
+    @ApiOperation(response = InvoiceForm[].class, value = "Find ConsignmentInvoice") //label for swagger
     @PostMapping("/consignment/findConsignmentInvoice")
-    public ConsignmentInvoice[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
     }
 }

@@ -1200,15 +1200,33 @@ public class MidMileService {
     }
 
     // Find ConsignmentInvoice
-    public ConsignmentInvoice[] findConsignmentInvoice(FindConsignmentInvoice findConsignmentInvoice, String authToken) throws Exception {
+//    public ConsignmentInvoice[] findConsignmentInvoice(FindConsignmentInvoice findConsignmentInvoice, String authToken) throws Exception {
+//        try {
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//            headers.add("User-Agent", "RestTemplate");
+//            headers.add("Authorization", "Bearer " + authToken);
+//            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/findConsignmentInvoice");
+//            HttpEntity<?> entity = new HttpEntity<>(findConsignmentInvoice, headers);
+//            ResponseEntity<ConsignmentInvoice[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentInvoice[].class);
+//            log.info("result : " + result.getStatusCode());
+//            return result.getBody();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
+
+    // Find ConsignmentInvoice
+    public InvoiceForm[] findConsignmentInvoice(FindConsignmentInvoice findConsignmentInvoice, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/findConsignmentInvoice");
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/consignmentInvoiceGenerate");
             HttpEntity<?> entity = new HttpEntity<>(findConsignmentInvoice, headers);
-            ResponseEntity<ConsignmentInvoice[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentInvoice[].class);
+            ResponseEntity<InvoiceForm[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, InvoiceForm[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
