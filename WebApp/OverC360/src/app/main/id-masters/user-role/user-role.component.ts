@@ -203,7 +203,6 @@ export class UserRoleComponent {
     statusId: 'Status'
   };
 
-
   languageDropdown: any = [];
   companyDropdown: any = [];
   menuDropdown: any = [];

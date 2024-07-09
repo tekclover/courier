@@ -79,6 +79,10 @@ export class ConsignmentService {
   .toPromise();
  }
 
+ findConsignmentPreAlertIndicator(obj: any) {
+  return this.http.post<any>(`/overc-midmile-service/consignment/find/v2`, obj);
+ }
+
 }
 
 

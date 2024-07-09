@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.beans.BeanUtils;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -327,8 +328,8 @@ public class CcrService {
                 if(updatedCcr != null) {
                     //Consignment Update
                     ccrRepository.updateEventCodeFromConsignment(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(),
-                            updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getStatusId(), updatedCcr.getEventCode(),
-                            updatedCcr.getStatusText(), updatedCcr.getEventText());
+                            updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getEventCode(), updatedCcr.getEventText(),
+                            updatedCcr.getStatusId(), updatedCcr.getStatusText());
 
                     //Console Update
                     consoleRepository.consoleUpdateBasedOnCCRUpdate(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(), updatedCcr.getHouseAirwayBill(),
@@ -579,17 +580,42 @@ public class CcrService {
     @Transactional
     public String updateCCRFromBayan(List<UpdateCCR> updateCcrList) throws IOException, CsvException {
         try {
+            log.info("Bayan Update CCR Initiated: " + updateCcrList.size());
             List<Ccr> updatedCcrList = new ArrayList<>();
             for (UpdateCCR updateCcr : updateCcrList) {
                 List<Ccr> dbCcrList = getCcr(updateCcr.getCcrId());
                 if (dbCcrList != null && !dbCcrList.isEmpty()) {
                     for (Ccr dbCcr : dbCcrList) {
+                        String customsConsignmentValue = null;
+                        String dbConsignmentValue = null;
+                        boolean pass = false;
+                        if (updateCcr.getConsignmentValue() != null) {
+                            if (updateCcr.getConsignmentValue().contains(".")) {
+                                DecimalFormat decimalFormat = new DecimalFormat("0.#####");
+                                customsConsignmentValue = decimalFormat.format(Double.valueOf(updateCcr.getConsignmentValue()));
+                            } else {
+                                customsConsignmentValue = updateCcr.getConsignmentValue();
+                            }
+                        }
+                        if (dbCcr.getConsignmentValue() != null) {
+                            if (dbCcr.getConsignmentValue().contains(".")) {
+                                DecimalFormat decimalFormat = new DecimalFormat("0.#####");
+                                dbConsignmentValue = decimalFormat.format(Double.valueOf(dbCcr.getConsignmentValue()));
+                            } else {
+                                dbConsignmentValue = dbCcr.getConsignmentValue();
+                            }
+                        }
+                        if(customsConsignmentValue != null && dbConsignmentValue != null) {
+                            pass = customsConsignmentValue.equalsIgnoreCase(dbConsignmentValue);
+                        }
                         if (dbCcr.getCcrId().equalsIgnoreCase(updateCcr.getCcrId()) &&
                                 dbCcr.getHsCode().equalsIgnoreCase(updateCcr.getHsCode()) &&
-                                dbCcr.getConsignmentValue().equalsIgnoreCase(updateCcr.getConsignmentValue())) {
+                                pass) {
+                            log.info("Updating CCR from Pdf: " + updateCcr);
                             dbCcr.setCustomsCcrNo(updateCcr.getCustomsCcrNo());
                             dbCcr.setPrimaryDo(updateCcr.getPrimaryDo());
                             dbCcr.setCustomsKd(updateCcr.getCustomsKd());
+                            dbCcr.setTotalDuty(updateCcr.getTotalDuty());
                             dbCcr.setUpdatedBy("Bayan");
                             dbCcr.setUpdatedOn(new Date());
                             Ccr updatedCcr = ccrRepository.save(dbCcr);

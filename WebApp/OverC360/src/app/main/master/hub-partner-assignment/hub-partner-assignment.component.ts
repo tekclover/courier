@@ -192,16 +192,26 @@ export class HubPartnerAssignmentComponent {
     hubCode: [],
     hubCategory: [],
     partnerId: [],
+    partnerType: [],
     statusId: [],
     companyId: [[this.auth.companyId],],
     languageId: [[this.auth.languageId],]
   })
+
+  readonly fieldDisplayNames: Record<string, string> = {
+    hubCode: 'Hub',
+    hubCategory: 'Hub Category',
+    partnerId: 'Partner',
+    partnerType: 'Partner Type',
+    statusId: 'Status'
+  };
 
   languageDropdown: any = [];
   companyDropdown: any = [];
   hubCodeDropdown: any = [];
   hubCategoryDropdown: any = [];
   partnerIdDropdown: any = [];
+  partnerTypeDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
@@ -228,6 +238,10 @@ export class HubPartnerAssignmentComponent {
         this.partnerIdDropdown.push({ value: res.partnerId, label: res.partnerName });
         this.partnerIdDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerIdDropdown, 'value');
       }
+      if (res.partnerType != null) {
+        this.partnerTypeDropdown.push({ value: res.partnerType, label: res.partnerType });
+        this.partnerTypeDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerTypeDropdown, 'value');
+      }
       if (res.statusId != null) {
         this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
         this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
@@ -246,7 +260,8 @@ export class HubPartnerAssignmentComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -268,6 +283,7 @@ export class HubPartnerAssignmentComponent {
       hubCode: [],
       hubCategory: [],
       partnerId: [],
+      partnerType: [],
       statusId: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
@@ -276,8 +292,11 @@ export class HubPartnerAssignmentComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
 }

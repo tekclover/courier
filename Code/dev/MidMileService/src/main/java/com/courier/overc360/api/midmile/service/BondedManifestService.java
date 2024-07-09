@@ -216,10 +216,42 @@ public class BondedManifestService {
                         updateBondedManifest.getHouseAirwayBill(), updateBondedManifest.getBondedId());
 
                 BeanUtils.copyProperties(updatedBondedManifestList, dbBondedManifest, CommonUtils.getNullPropertyNames(updatedBondedManifestList));
+
+                Optional<IKeyValuePair> eventStatus =  consignmentEntityRepository.getStatusEventText(dbBondedManifest.getLanguageId(),
+                        dbBondedManifest.getCompanyId(), "2", dbBondedManifest.getEventCode());
+
+                if(eventStatus.isPresent()) {
+                    IKeyValuePair iKeyValuePair = eventStatus.get();
+                    dbBondedManifest.setStatusId("2");
+                    if(dbBondedManifest.getEventCode() != null) {
+                        dbBondedManifest.setEventCode(dbBondedManifest.getEventCode());
+                    }
+                    dbBondedManifest.setStatusText(iKeyValuePair.getStatusText());
+                    dbBondedManifest.setEventText(iKeyValuePair.getEventText());
+                    dbBondedManifest.setEventTimestamp(new Date());
+                    dbBondedManifest.setStatusTimestamp(new Date());
+                }
+
                 dbBondedManifest.setUpdatedBy(loginUserID);
                 dbBondedManifest.setUpdatedOn(new Date());
 
                 BondedManifest updatedBondedManifest = bondedManifestRepository.save(dbBondedManifest);
+
+                // Save ConsignmentStatus
+                consignmentStatusService.createConsignmentStatusParams(updatedBondedManifest.getCompanyId(), updatedBondedManifest.getCompanyName(),
+                        updatedBondedManifest.getLanguageId(), updatedBondedManifest.getLanguageDescription(), updatedBondedManifest.getPieceId(), updatedBondedManifest.getStatusId(),
+                        updatedBondedManifest.getMasterAirwayBill(), updatedBondedManifest.getHouseAirwayBill(), updatedBondedManifest.getStatusText(), updatedBondedManifest.getStatusId(),
+                        updatedBondedManifest.getStatusText(), updatedBondedManifest.getEventCode(), updatedBondedManifest.getEventText(), updatedBondedManifest.getEventCode(),
+                        updatedBondedManifest.getEventText(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getStatusTimestamp(), loginUserID );
+
+                if (updatedBondedManifest != null) {
+                    //Update Event From consignment
+                    bondedManifestRepository.updateEventCodeFromConsignment(updatedBondedManifest.getCompanyId(),
+                            updatedBondedManifest.getLanguageId(), updatedBondedManifest.getPartnerId(),
+                            updatedBondedManifest.getHouseAirwayBill(), updatedBondedManifest.getMasterAirwayBill(),
+                            updatedBondedManifest.getEventText());
+                }
+
                 updatedBondedManifestList.add(updatedBondedManifest);
             }
             return updatedBondedManifestList;

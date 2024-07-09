@@ -258,16 +258,16 @@ public class ConsoleService {
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
         List<AddConsole> consoles = new ArrayList<>();
         for (ReplicaAddConsignment consignment : replicaAddConsignment) {
-            AddConsole console = new AddConsole();
-            console.setConsigneeName(consignment.getDestinationDetails().getName());
-            console.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
-            BeanUtils.copyProperties(consignment, console, CommonUtils.getNullPropertyNames(consignment));
             for (ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
                 for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()) {
-                    BeanUtils.copyProperties(replicaAddItemDetails, console, CommonUtils.getNullPropertyNames(replicaAddItemDetails));
+                    AddConsole itemConsole = new AddConsole();
+                    itemConsole.setConsigneeName(consignment.getDestinationDetails().getName());
+                    itemConsole.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
+                    BeanUtils.copyProperties(consignment, itemConsole, CommonUtils.getNullPropertyNames(consignment));
+                    BeanUtils.copyProperties(replicaAddItemDetails, itemConsole, CommonUtils.getNullPropertyNames(replicaAddItemDetails));
+                    consoles.add(itemConsole);
                 }
             }
-            consoles.add(console);
         }
         return createConsoleList(consoles, loginUserID);
     }

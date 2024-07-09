@@ -233,7 +233,8 @@ export class NumberrangeComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'languageId').map(key => this.fieldDisplayNames[key] || key);
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
