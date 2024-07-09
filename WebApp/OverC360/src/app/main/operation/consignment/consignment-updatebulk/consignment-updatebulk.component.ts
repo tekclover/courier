@@ -176,6 +176,7 @@ Consigment: any[] = [];
         consitnor.forEach(x => this.consignorIdList.push(x));
         this.consignorIdList = this.cs.removeDuplicatesFromArrayList(this.consignorIdList, 'value')
         this.statusList=this.cs.removeDuplicatesFromArrayList(this.statusList,'value')
+        this.eventList=this.cs.removeDuplicatesFromArrayList(this.eventList,'value')
       this.spin.hide();
     },
     error: (err: any) => {
@@ -233,7 +234,7 @@ if(this.form.controls.incoTerms != null){
     x.incoTerms = this.form.controls.incoTerms.value;
     });
 }
-if(this.data.title!='Bonded Manifest'){
+if((this.data.title !='Bonded Manifest') &&((this.data.tile == 'Consignment')|| (this.data.tile == 'PreAlertManifest'))){
    this.service.Update(this.Consigment).subscribe({
     next: (res) => {
       this.messageService.add({
@@ -243,7 +244,7 @@ if(this.data.title!='Bonded Manifest'){
         detail: 'Selected Values has been updated successfully',
       });
     
-      if(this.data.title=='Consignment' ){
+      if(this.data.title == 'Consignment' ){
         this.dialogRef.close()
       this.router.navigate(['/main/operation/consignment']);
       }
@@ -281,7 +282,7 @@ else{
 }
  } 
  cancel(){
-  if(this.data.title=='Consignment' ){
+  if(this.data.title.value =='Consignment' ){
     this.dialogRef.close()
   this.router.navigate(['/main/operation/consignment']);
   }
@@ -289,7 +290,7 @@ else{
     this.dialogRef.close()
     this.router.navigate(['/main/airport/preAlertManifest']);
   }
-  else{
+  if(this.data.line == 'Bonded Manifest'){
     this.dialogRef.close()
     this.router.navigate(['/main/airport/bondedManifest']);
   }

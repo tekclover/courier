@@ -178,6 +178,7 @@ Consigment: any[] = [];
       consitnor.forEach(x => this.consignorIdList.push(x));
       this.consignorIdList = this.cs.removeDuplicatesFromArrayList(this.consignorIdList, 'value')
       this.statusList=this.cs.removeDuplicatesFromArrayList(this.statusList,'value')
+      this.eventList=this.cs.removeDuplicatesFromArrayList(this.eventList,'value')
       this.spin.hide();
     },
     error: (err: any) => {
