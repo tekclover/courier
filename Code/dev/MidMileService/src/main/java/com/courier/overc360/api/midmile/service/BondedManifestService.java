@@ -69,14 +69,14 @@ public class BondedManifestService {
      * @return
      */
     private BondedManifest getBondedManifest(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                             String houseAirwayBill, String bondedId) {
+                                             String houseAirwayBill, String bondedId, String pieceId, String pieceItemId) {
         Optional<BondedManifest> dbBondedManifest =
-                bondedManifestRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, 0L);
+                bondedManifestRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, pieceId, pieceItemId, 0L);
         if (dbBondedManifest.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
-                    + ", houseAirwayBill - " + houseAirwayBill + " and bondedId - " + bondedId + " doesn't exists";
+                    + ", houseAirwayBill - " + houseAirwayBill + " and bondedId - " + bondedId + " and pieceId " + pieceId + " pieceItemId " + pieceItemId + " doesn't exists";
             // Error Log
             createBondedManifestLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, errMsg);
             throw new BadRequestException(errMsg);
@@ -221,7 +221,8 @@ public class BondedManifestService {
                 BondedManifest dbBondedManifest = getBondedManifest(
                         updateBondedManifest.getLanguageId(), updateBondedManifest.getCompanyId(),
                         updateBondedManifest.getPartnerId(), updateBondedManifest.getMasterAirwayBill(),
-                        updateBondedManifest.getHouseAirwayBill(), updateBondedManifest.getBondedId());
+                        updateBondedManifest.getHouseAirwayBill(), updateBondedManifest.getBondedId(),
+                        updateBondedManifest.getPieceId(), updateBondedManifest.getPieceItemId());
 
                 BeanUtils.copyProperties(updatedBondedManifestList, dbBondedManifest, CommonUtils.getNullPropertyNames(updatedBondedManifestList));
 
@@ -286,7 +287,8 @@ public class BondedManifestService {
             if (deleteInputList != null || !deleteInputList.isEmpty()) {
                 for (BondedManifestDeleteInput deleteInput : deleteInputList) {
                     BondedManifest dbBondedManifest = getBondedManifest(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(), deleteInput.getBondedId());
+                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(), deleteInput.getBondedId(),
+                            deleteInput.getPieceId(), deleteInput.getPieceItemId());
 
                     if (dbBondedManifest != null) {
                         dbBondedManifest.setDeletionIndicator(1L);

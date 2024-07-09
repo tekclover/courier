@@ -27,6 +27,12 @@ public class UpdateConsole {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    @NotBlank(message = "PieceId is mandatory")
+    private String pieceId;
+
+    @NotBlank(message = "PieceItemId is mandatory")
+    private String pieceItemId;
+
     private String partnerType;
 
     private String expectedDuty;
@@ -114,10 +120,6 @@ public class UpdateConsole {
     private String noOfPackageMawb;
 
     private String companyName;
-
-    private String pieceId;
-
-    private String pieceItemId;
 
     private String languageDescription;
 

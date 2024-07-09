@@ -33,8 +33,8 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
 
-    Optional<BondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
+    Optional<BondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, String pieceId, String pieceItemId, Long deletionIndicator);
 
     @Query(value = "Select \n" +
             "top 1 CONSIGNOR_NAME consignorName, \n" +
