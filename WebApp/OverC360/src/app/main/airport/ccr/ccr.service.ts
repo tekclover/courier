@@ -44,6 +44,7 @@ export class CcrService {
     formData.append('file', file);
     return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
   }
+  
   public uploadfile(file: File, location:any) {
     let formParams = new FormData();
     formParams.append('file', file)

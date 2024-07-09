@@ -2,7 +2,10 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
-import com.courier.overc360.api.midmile.primary.model.bondedmanifest.*;
+import com.courier.overc360.api.midmile.primary.model.bondedmanifest.AddBondedManifest;
+import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifest;
+import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestDeleteInput;
+import com.courier.overc360.api.midmile.primary.model.bondedmanifest.UpdateBondedManifest;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
@@ -14,7 +17,6 @@ import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
-import com.courier.overc360.api.midmile.replica.repository.specification.BondedManifestSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -373,12 +375,23 @@ public class BondedManifestService {
      * @return
      * @throws Exception
      */
+//    public List<ReplicaBondedManifest> findBondedManifest(FindBondedManifest findBondedManifest) throws Exception {
+//
+//        log.info("given Params for find -- > {}", findBondedManifest);
+//        BondedManifestSpecification spec = new BondedManifestSpecification(findBondedManifest);
+//        List<ReplicaBondedManifest> results = replicaBondedManifestRepository.findAll(spec);
+//        log.info("found BondedManifests  --> {}", results);
+//        return results;
+//    }
     public List<ReplicaBondedManifest> findBondedManifest(FindBondedManifest findBondedManifest) throws Exception {
 
-        BondedManifestSpecification spec = new BondedManifestSpecification(findBondedManifest);
-        List<ReplicaBondedManifest> results = replicaBondedManifestRepository.findAll(spec);
-        log.info("found BondedManifest  --> " + results);
-        return results;
+        log.info("given Params for find -- > {}", findBondedManifest);
+        List<ReplicaBondedManifest> bondedManifestList = replicaBondedManifestRepository.findBondedManifestsWithQry(
+                findBondedManifest.getLanguageId(), findBondedManifest.getCompanyId(), findBondedManifest.getPartnerId(),
+                findBondedManifest.getMasterAirwayBill(), findBondedManifest.getHouseAirwayBill(), findBondedManifest.getBondedId(),
+                findBondedManifest.getHsCode(), findBondedManifest.getPieceId(), findBondedManifest.getPieceItemId());
+//        log.info("found BondedManifests  --> {}", bondedManifestList);
+        return bondedManifestList;
     }
 
 

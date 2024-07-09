@@ -44,10 +44,10 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
             "Else 0 \n" +
             "End", nativeQuery = true)
     Long duplicateExists(@Param(value = "languageId") String languageId,
-                               @Param(value = "companyId") String companyId,
-                               @Param(value = "partnerId") String partnerId,
-                               @Param(value = "masterAirwayBill") String masterAirwayBill,
-                               @Param(value = "houseAirwayBill") String houseAirwayBill);
+                         @Param(value = "companyId") String companyId,
+                         @Param(value = "partnerId") String partnerId,
+                         @Param(value = "masterAirwayBill") String masterAirwayBill,
+                         @Param(value = "houseAirwayBill") String houseAirwayBill);
 
     @Query(value = "Select \n" +
             "TO_CURRENCY_VALUE currencyValue, \n" +
@@ -66,5 +66,29 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
     @Query(value = "Select * From tblbondedmanifest h \n" +
             "Where h.IS_DELETED = 0", nativeQuery = true)
     List<ReplicaBondedManifest> getAllNonDeleted();
+
+
+    // Find BondedManifests with given Params Only
+    @Query(value = "SELECT * FROM tblbondedmanifest tm \n" +
+            "WHERE tm.IS_DELETED = 0 \n" +
+            "AND (:#{#languageId == null ? 1 : 0} = 1 OR tm.LANG_ID IN (:languageId)) \n" +
+            "AND (:#{#companyId == null ? 1 : 0} = 1 OR tm.C_ID IN (:companyId)) \n" +
+            "AND (:#{#partnerId == null ? 1 : 0} = 1 OR tm.PARTNER_ID IN (:partnerId)) \n" +
+            "AND (:#{#masterAirwayBill == null ? 1 : 0} = 1 OR tm.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
+            "AND (:#{#houseAirwayBill == null ? 1 : 0} = 1 OR tm.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
+            "AND (:#{#hsCode == null ? 1 : 0} = 1 OR tm.HS_CODE IN (:hsCode)) \n" +
+            "AND (:#{#pieceId == null ? 1 : 0} = 1 OR tm.PIECE_ID IN (:pieceId)) \n" +
+            "AND (:#{#pieceItemId == null ? 1 : 0} = 1 OR tm.PIECE_ITEM_ID IN (:pieceItemId)) \n" +
+            "AND (:#{#bondedId == null ? 1 : 0} = 1 OR tm.BONDED_ID IN (:bondedId))", nativeQuery = true)
+    List<ReplicaBondedManifest> findBondedManifestsWithQry(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("partnerId") List<String> partnerId,
+            @Param("masterAirwayBill") List<String> masterAirwayBill,
+            @Param("houseAirwayBill") List<String> houseAirwayBill,
+            @Param("bondedId") List<String> bondedId,
+            @Param("hsCode") List<String> hsCode,
+            @Param("pieceId") List<String> pieceId,
+            @Param("pieceItemId") List<String> pieceItemId);
 
 }

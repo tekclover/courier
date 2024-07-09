@@ -1092,4 +1092,23 @@ public class ConsignmentService {
         log.info("found Consignments -->" + results);
         return results;
     }
+
+    public List<InvoiceForm> ConsignmentInvoicePdfGenerate(FindConsignmentInvoice findConsignmentInvoice) {
+        List<ConsignmentInvoice> results = replicaConsignmentEntityRepository.getConsignmentInvoiceHeader(findConsignmentInvoice.getHouseAirwayBill(),
+                findConsignmentInvoice.getPartnerHouseAirwayBill(), findConsignmentInvoice.getPartnerMasterAirwayBill(), findConsignmentInvoice.getCompanyId());
+        List<InvoiceForm> invoiceFormList = new ArrayList<>();
+        if(results != null && !results.isEmpty()) {
+            results.forEach(n->{
+                InvoiceForm dbInvoiceHeader = new InvoiceForm();
+                BeanUtils.copyProperties(n,dbInvoiceHeader,CommonUtils.getNullPropertyNames(n));
+                List<ConsignmentInvoice> lineResults = replicaConsignmentEntityRepository.getConsignmentInvoiceLine(n.getConsignmentId());
+                if(lineResults != null && !lineResults.isEmpty()) {
+                    dbInvoiceHeader.setInvoiceFormLines(lineResults);
+                }
+                invoiceFormList.add(dbInvoiceHeader);
+            });
+        }
+        log.info("found Consignments -->" + results.size());
+        return invoiceFormList;
+    }
 }

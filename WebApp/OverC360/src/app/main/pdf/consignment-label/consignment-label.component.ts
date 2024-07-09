@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { CcrService } from '../../airport/ccr/ccr.service.js';
 import { CommonServiceService } from '../../../common-service/common-service.service.js';
 import { ConsignmentService } from '../../operation/consignment/consignment.service.js';
+import { NgxSpinnerService } from 'ngx-spinner';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 //pdfMake.fonts = fonts;
 pdfMake.fonts = {
@@ -31,14 +32,16 @@ pdfMake.fonts = {
 export class ConsignmentLabelComponent {
   constructor(
     public datePipe: DatePipe,
-  public ccrService:CcrService,
-  public consginementService:ConsignmentService,
-  private cs: CommonServiceService,) { }
+    public ccrService: CcrService,
+    public consginementService: ConsignmentService,
+    private spin: NgxSpinnerService,
+    private cs: CommonServiceService,) { }
   generateBarcode(text: string) {
     const canvas = document.createElement('canvas');
     JsBarcode(canvas, text, { height: 80 });
     return canvas.toDataURL('image/png');
   }
+  
   generatePdfBarocde(line: any, type: any) {
     let createdOn = this.datePipe.transform(line.createdOn, 'dd-MMM-yyyy HH:mm')
     var dd: any;
@@ -308,9 +311,33 @@ export class ConsignmentLabelComponent {
     }
   }
 
-  generatePdfInvoice(line: any) {
-    console.log(line)
-    let createdOn = this.datePipe.transform(line[0].createdOn, 'dd-MMM-yyyy HH:mm')
+
+  fileNameList: any[] = [];
+  generateMutiple(labelResult: any, invoiceResult: any) {
+    this.fileNameList = [];
+    this.ccrService.genearateLabel({ pieceId: labelResult }).subscribe({
+      next: (res: any) => {
+        res.forEach((x: any) => {
+          this.generateMutipleLabel(x);
+        })
+      }, error: (err: any) => {
+        this.cs.commonerrorNew(err);
+      }
+    })
+
+    this.ccrService.genearateInvoice({ houseAirwayBill: invoiceResult }).subscribe({
+      next: (res: any) => {
+        res.forEach((x: any) => {
+          this.generateMultipleInvoice(x)
+        })
+      }, error: (err: any) => {
+        this.cs.commonerrorNew(err);
+      }
+    })
+  }
+
+  generateMultipleInvoice(result: any) {
+    let createdOn = this.datePipe.transform(result.createdOn, 'dd-MMM-yyyy HH:mm')
     var dd: any;
     let headerTable: any[] = [];
 
@@ -322,18 +349,6 @@ export class ConsignmentLabelComponent {
       pageSize: "A6",
       pageOrientation: "portrait",
       pageMargins: [10, 10, 10, 10],
-      // header(currentPage: number, pageCount: number, pageSize: any): any {
-      //   return [
-      //     {
-      //       table: {
-      //         headerRows: 1,
-      //         widths: ['*', '*'],
-      //         body: headerTable
-      //       },
-      //       margin: [5, 5, 5, 5]
-      //     }
-      //   ]
-      // },
       styles: {
         anotherStyle: {
           bordercolor: '#6102D3'
@@ -353,7 +368,7 @@ export class ConsignmentLabelComponent {
 
 
     let barcodeAWB: any[] = [];
-    const barcodeImageData1 = this.generateBarcode(line.houseAirwayBill);
+    const barcodeImageData1 = this.generateBarcode(result.houseAirwayBill);
     barcodeAWB.push([
       { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
       { text: '', margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
@@ -392,15 +407,15 @@ export class ConsignmentLabelComponent {
     )
     let bodyArray: any[] = [];
     bodyArray.push([
-      { text: '1.' + (line[0].orgAddressLine1), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: '1.' + (result.orgAddressLine1), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: '', bold: false, fontSize: 6, border: [false, false, false, false], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: '1.' + (line[0].destAddressLine1), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: '1.' + (result.destAddressLine1), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
 
     ]);
     bodyArray.push([
-      { text: '2.' + (line[0].orgAddressLine2), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: '2.' + (result.orgAddressLine2), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: '', bold: false, fontSize: 6, border: [false, false, false, false], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: '2.' + (line[0].destAddressLine2), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: '2.' + (result.destAddressLine2), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
 
     ]);
 
@@ -417,14 +432,14 @@ export class ConsignmentLabelComponent {
     let bodyArray88: any[] = [];
     bodyArray88.push([
       { text: 'City', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].orgCity), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.orgCity), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'Country', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].orgCountry), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.orgCountry), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: '', bold: false, fontSize: 6, border: [false, false, false, false], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'City ', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].destCity), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.destCity), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'Country', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].destCountry), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.destCountry), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
 
     ]);
     dd.content.push(
@@ -440,10 +455,10 @@ export class ConsignmentLabelComponent {
     let bodyArray97: any[] = [];
     bodyArray97.push([
       { text: 'Telephone', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].orgPhone), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.orgPhone), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: '', bold: false, fontSize: 6, border: [false, false, false, false], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'Telephone', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].destPhone), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.destPhone), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
 
 
     ]);
@@ -484,18 +499,18 @@ export class ConsignmentLabelComponent {
       },
     )
 
-    for (let i = 0; i < line.length; i++) {
+    for (let i = 0; i < result.lines.length; i++) {
       let bodyArray6: any[] = [];
       bodyArray6.push([
-        { text: (line[i].quantity), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].hsCode), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].goodsDescription), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].itemWeight), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].unitValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].totalValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].currency), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].countryOfOrigin), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (line[i].incoTerms), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].quantity), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].hsCode), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].goodsDescription), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].itemWeight), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].unitValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].totalValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].currency), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].countryOfOrigin), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.lines[i].incoTerms), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       ]);
 
 
@@ -513,21 +528,21 @@ export class ConsignmentLabelComponent {
     let bodyArray3: any[] = [];
     bodyArray3.push([
       { text: 'Piece', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].pieces), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.header.pieces), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'DATE', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: createdOn, bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     bodyArray3.push([
       { text: 'Weight', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].weight), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.header.weight), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'AWB', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+      { text: (result.header.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     bodyArray3.push([
       { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].totalCiv), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.header.totalCiv), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'Prepaid', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (line[0].getPrepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+      { text: (result.header.getPrepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     dd.content.push(
       {
@@ -562,34 +577,21 @@ export class ConsignmentLabelComponent {
 
 
 
-    pdfMake.createPdf(dd).open();
+   // pdfMake.createPdf(dd).open();
+    const pdfDocGenerator = pdfMake.createPdf(dd);
+    pdfDocGenerator.getBlob((blob) => {
+      var file = new File([blob], result.houseAirwayBill + '_' + 'labels' + ".pdf");
+      var filepath = result.houseAirwayBill + '/' + 'label/';
+      if (file) {
+        this.consginementService.uploadsinglefile(file, filepath).subscribe((resp: any) => {
+          this.fileNameList.push(resp.file);
+        });
+      }
+    });
+
   }
-  labelGenerate(result:any){
-    let obj: any = {};
-    obj.pieceId=result
-       this.ccrService.genearateLabel(obj).subscribe({
-       next: (res: any) => {
-       res.forEach((x:any)=>{
-         this.generatePdfBarocdeMutipleCCR(x);
-       }) 
-       }, error: (err: any) => {
-        this.cs.commonerrorNew(err);  
-       }
-     })
-   }
-   genearteInvoice(result:any){
-    console.log(result)
-    let obj: any = {};
-    obj.houseAirwayBill=result
-       this.ccrService.genearateInvoice(obj).subscribe({
-       next: (res: any) => {
-         this.generatePdfInvoice(res);
-       }, error: (err: any) => {
-        this.cs.commonerrorNew(err);  
-       }
-     })
-   }
-  generatePdfBarocdeMutipleCCR(result: any) {
+
+  generateMutipleLabel(result: any) {
     let createdOn = this.datePipe.transform(result.createdOn, 'dd-MMM-yyyy HH:mm')
     var dd: any;
     let headerTable: any[] = [];
@@ -637,466 +639,466 @@ export class ConsignmentLabelComponent {
         },
       }, '\n'
     )
-  
-      let bodyArray: any[] = [];
-      bodyArray.push([
-        { text: 'Label Date', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: (result.customerReferenceNumber), bold: false, fontSize: 6, border: [false, false, false, true] }
-      ]);
-      bodyArray.push([
-        { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: (result.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationCountry), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.originState), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.modeOfTransport), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationCity), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.pieceValue), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Inco-Terms', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.incoTerms), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.grossWeight), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'COD', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: ((result.paymentType) == "COD" ? 'Yes' : 'No'), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Service Type', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.serviceTypeText), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.insurance), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.totalDuty), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Piece Count', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Currency Code', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.consignmentCurrency), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, 60, 5, 60, 60],
-            body: bodyArray,
-          },
+
+    let bodyArray: any[] = [];
+    bodyArray.push([
+      { text: 'Label Date', bold: true, fontSize: 6, border: [false, false, false, true] },
+      { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
+      { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
+      { text: (result.customerReferenceNumber), bold: false, fontSize: 6, border: [false, false, false, true] }
+    ]);
+    bodyArray.push([
+      { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+      { text: (result.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+      { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationCountry), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.originState), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.modeOfTransport), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationCity), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.pieceValue), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Inco-Terms', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.incoTerms), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.grossWeight), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'COD', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: ((result.paymentType) == "COD" ? 'Yes' : 'No'), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Service Type', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.serviceTypeText), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.insurance), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.totalDuty), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'Piece Count', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Currency Code', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.consignmentCurrency), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray.push([
+      { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    dd.content.push(
+      {
+        table: {
+          headerRows: 1,
+          widths: [60, 60, 5, 60, 60],
+          body: bodyArray,
         },
-      )
+      },
+    )
 
-      let bodyArray2: any[] = [];
-      bodyArray2.push([
-        { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (result.originName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (result.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
-      ]);
-      bodyArray2.push([
-        { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.originState), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.originCity), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray2.push([
-        { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.originPhone), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.originAlternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, 60, 5, 60, 60],
-            body: bodyArray2,
-          },
+    let bodyArray2: any[] = [];
+    bodyArray2.push([
+      { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: (result.originName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: (result.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+    ]);
+    bodyArray2.push([
+      { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.originState), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.originCity), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray2.push([
+      { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.originPhone), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.originAlternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    dd.content.push(
+      {
+        table: {
+          headerRows: 1,
+          widths: [60, 60, 5, 60, 60],
+          body: bodyArray2,
         },
-      )
-      let bodyArray3: any[] = [];
-      bodyArray3.push([
-        { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.countryOfOrigin != null ? result.countryOfOrigin : '') + ' ' + '' + (result.countryOfOrigin != null ? result.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, '*'],
-            body: bodyArray3,
-          },
+      },
+    )
+    let bodyArray3: any[] = [];
+    bodyArray3.push([
+      { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.countryOfOrigin != null ? result.countryOfOrigin : '') + ' ' + '' + (result.countryOfOrigin != null ? result.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    dd.content.push(
+      {
+        table: {
+          headerRows: 1,
+          widths: [60, '*'],
+          body: bodyArray3,
         },
-      )
+      },
+    )
 
-      let bodyArray4: any[] = [];
-      bodyArray4.push([
-        { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (result.destinationName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (result.destinationCountry), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
-      ]);
-      bodyArray4.push([
-        { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationState), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationCity), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray4.push([
-        { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationPhone), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationAlternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, 60, 5, 60, 60],
-            body: bodyArray4,
-          },
+    let bodyArray4: any[] = [];
+    bodyArray4.push([
+      { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: (result.destinationName), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: (result.destinationCountry), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+    ]);
+    bodyArray4.push([
+      { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationState), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationCity), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    bodyArray4.push([
+      { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationPhone), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationAlternatePhone), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    dd.content.push(
+      {
+        table: {
+          headerRows: 1,
+          widths: [60, 60, 5, 60, 60],
+          body: bodyArray4,
         },
-      )
-      let bodyArray5: any[] = [];
-      bodyArray5.push([
-        { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (result.destinationAddress), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, '*'],
-            body: bodyArray5,
-          },
+      },
+    )
+    let bodyArray5: any[] = [];
+    bodyArray5.push([
+      { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.destinationAddress), bold: false, fontSize: 6, border: [false, false, false, false] }
+    ]);
+    dd.content.push(
+      {
+        table: {
+          headerRows: 1,
+          widths: [60, '*'],
+          body: bodyArray5,
         },
-      )
+      },
+    )
 
 
-      let pieceId: any[] = [];
-      const pieceIdcode = this.generateBarcode( result.pieceId );
-      const partnercode = this.generateBarcode(result.partnerHouseAirwayBill);
-      pieceId.push([
-        { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-      ]);
-
-      pieceId.push([
-        { image: pieceIdcode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-        { image: partnercode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'right', bold: false, fontSize: 12, border: [false, false, false, false] },
-      ]);
-
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [30, '*'],
-            body: pieceId,
-          },
-        }, '\n'
-      )
-      
-    //pdfMake.createPdf(dd).open();
-    const pdfDocGenerator = pdfMake.createPdf(dd);
-    pdfDocGenerator.getBlob((blob) => {
-      let selectedFiles: FileList | null = null;
-      let file = new File([blob], result.houseAirwayBill + ".pdf");
-     // selectedFiles = [file];
-      var filepath=result.houseAirwayBill;
-      if(file){
-       // this.consginementService.uploadFiles(selectedFiles, filepath).subscribe((resp: any) => {});
-      }
-});
-  }
- 
-
-  generatePdfBarocdeMutiple(result: any) {
-    let createdOn = this.datePipe.transform(result[0].createdOn, 'dd-MMM-yyyy HH:mm')
-    var dd: any;
-    let headerTable: any[] = [];
-
-    headerTable.push([
-      { image: iwExpressLogo.headerLogo, fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+    let pieceId: any[] = [];
+    const pieceIdcode = this.generateBarcode(result.pieceId);
+    const partnercode = this.generateBarcode(result.partnerHouseAirwayBill);
+    pieceId.push([
+      { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+      { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
     ]);
 
-    dd = {
-      pageSize: "A6",
-      pageOrientation: "portrait",
-      pageMargins: [10, 10, 10, 10],
-      styles: {
-        anotherStyle: {
-          bordercolor: '#6102D3'
-        }
-      },
-      footer(currentPage: number, pageCount: number, pageSize: any): any {
-        return [{
-          text: '', //Page ' + currentPage + ' of ' + pageCount
-          style: 'header',
-          alignment: 'center',
-          bold: true,
-          fontSize: 6
-        }]
-      },
-      content: ['\n'],
-    };
-
-
-    let barcodeAWB: any[] = [];
-    const barcodeImageData1 = this.generateBarcode(result[0].houseAirwayBill);
-    barcodeAWB.push([
-      { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-      { image: barcodeImageData1, margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
-      { image: iwExpressLogo.jntLogo, margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    pieceId.push([
+      { image: pieceIdcode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+      { image: partnercode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'right', bold: false, fontSize: 12, border: [false, false, false, false] },
     ]);
 
     dd.content.push(
       {
         table: {
           headerRows: 1,
-          widths: [95, 80, '*'],
-          body: barcodeAWB,
+          widths: [30, '*'],
+          body: pieceId,
         },
       }, '\n'
     )
-    result.forEach((line: any) => {
-      let bodyArray: any[] = [];
-      bodyArray.push([
-        { text: 'Label Date', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, true] }
-      ]);
-      bodyArray.push([
-        { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.subProductName), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.declaredValue), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Inco-Terms', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.incoTerms), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'COD', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: ((line.paymentType) == "COD" ? 'Yes' : 'No'), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Service Type', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.serviceTypeText), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.insurance), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.customsValue), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'Piece Count', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Currency Code', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.currency), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray.push([
-        { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.noOfItemPiece), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.goodsDescription), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, 60, 5, 60, 60],
-            body: bodyArray,
-          },
-        },
-      )
 
-      let bodyArray2: any[] = [];
-      bodyArray2.push([
-        { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
-      ]);
-      bodyArray2.push([
-        { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray2.push([
-        { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, 60, 5, 60, 60],
-            body: bodyArray2,
-          },
-        },
-      )
-      let bodyArray3: any[] = [];
-      bodyArray3.push([
-        { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin != null ? line.countryOfOrigin : '') + ' ' + '' + (line.countryOfOrigin != null ? line.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, '*'],
-            body: bodyArray3,
-          },
-        },
-      )
-
-      let bodyArray4: any[] = [];
-      bodyArray4.push([
-        { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
-      ]);
-      bodyArray4.push([
-        { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      bodyArray4.push([
-        { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
-        { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, 60, 5, 60, 60],
-            body: bodyArray4,
-          },
-        },
-      )
-      let bodyArray5: any[] = [];
-      bodyArray5.push([
-        { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.countryOfOrigin != null ? line.countryOfOrigin : '') + '' + (line.countryOfOrigin != null ? line.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
-      ]);
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [60, '*'],
-            body: bodyArray5,
-          },
-        },
-      )
-
-
-      let pieceId: any[] = [];
-      const pieceIdcode = this.generateBarcode(line.pieceDetails.length > 0 ? line.pieceDetails[0].pieceId : null);
-      const partnercode = this.generateBarcode(line.partnerHouseAirwayBill);
-      pieceId.push([
-        { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-        { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
-      ]);
-
-      pieceId.push([
-        { image: pieceIdcode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-        { image: partnercode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'right', bold: false, fontSize: 12, border: [false, false, false, false] },
-      ]);
-
-      dd.content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [30, '*'],
-            body: pieceId,
-          },
-        }, '\n'
-      )
-    })
-
-
-    pdfMake.createPdf(dd).open();
+    //pdfMake.createPdf(dd).open();
+    const pdfDocGenerator = pdfMake.createPdf(dd);
+    pdfDocGenerator.getBlob((blob) => {
+      var file = new File([blob], result.houseAirwayBill + '_' + 'labels' + ".pdf");
+      var filepath = result.houseAirwayBill + '/' + 'label/';
+      if (file) {
+        this.consginementService.uploadsinglefile(file, filepath).subscribe((resp: any) => {
+          this.fileNameList.push(resp.file);
+        });
+      }
+    });
   }
+
+
+  //   generatePdfBarocdeMutiple(result: any) {
+  //     let createdOn = this.datePipe.transform(result[0].createdOn, 'dd-MMM-yyyy HH:mm')
+  //     var dd: any;
+  //     let headerTable: any[] = [];
+
+  //     headerTable.push([
+  //       { image: iwExpressLogo.headerLogo, fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+  //     ]);
+
+  //     dd = {
+  //       pageSize: "A6",
+  //       pageOrientation: "portrait",
+  //       pageMargins: [10, 10, 10, 10],
+  //       styles: {
+  //         anotherStyle: {
+  //           bordercolor: '#6102D3'
+  //         }
+  //       },
+  //       footer(currentPage: number, pageCount: number, pageSize: any): any {
+  //         return [{
+  //           text: '', //Page ' + currentPage + ' of ' + pageCount
+  //           style: 'header',
+  //           alignment: 'center',
+  //           bold: true,
+  //           fontSize: 6
+  //         }]
+  //       },
+  //       content: ['\n'],
+  //     };
+
+
+  //     let barcodeAWB: any[] = [];
+  //     const barcodeImageData1 = this.generateBarcode(result[0].houseAirwayBill);
+  //     barcodeAWB.push([
+  //       { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+  //       { image: barcodeImageData1, margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+  //       { image: iwExpressLogo.jntLogo, margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+  //     ]);
+
+  //     dd.content.push(
+  //       {
+  //         table: {
+  //           headerRows: 1,
+  //           widths: [95, 80, '*'],
+  //           body: barcodeAWB,
+  //         },
+  //       }, '\n'
+  //     )
+  //     result.forEach((line: any) => {
+  //       let bodyArray: any[] = [];
+  //       bodyArray.push([
+  //         { text: 'Label Date', bold: true, fontSize: 6, border: [false, false, false, true] },
+  //         { text: createdOn, bold: false, fontSize: 6, border: [false, false, false, true] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, true] },
+  //         { text: 'Cus Ref No', bold: true, fontSize: 6, border: [false, false, false, true] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, true] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Cust Name', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.partnerName), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Dest State', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Mode', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.subProductName), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Dest City', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Declared Value', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.declaredValue), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Inco-Terms', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.incoTerms), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Load Type ', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.loadType), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Weight', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.weight), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'COD', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: ((line.paymentType) == "COD" ? 'Yes' : 'No'), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Service Type', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.serviceTypeText), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Insurance', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.insurance), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Customs Charge', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.customsValue), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'Piece Count', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Currency Code', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.currency), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray.push([
+  //         { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.noOfItemPiece), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.goodsDescription), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       dd.content.push(
+  //         {
+  //           table: {
+  //             headerRows: 1,
+  //             widths: [60, 60, 5, 60, 60],
+  //             body: bodyArray,
+  //           },
+  //         },
+  //       )
+
+  //       let bodyArray2: any[] = [];
+  //       bodyArray2.push([
+  //         { text: 'Shipper Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: 'Org Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+  //       ]);
+  //       bodyArray2.push([
+  //         { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray2.push([
+  //         { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       dd.content.push(
+  //         {
+  //           table: {
+  //             headerRows: 1,
+  //             widths: [60, 60, 5, 60, 60],
+  //             body: bodyArray2,
+  //           },
+  //         },
+  //       )
+  //       let bodyArray3: any[] = [];
+  //       bodyArray3.push([
+  //         { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin != null ? line.countryOfOrigin : '') + ' ' + '' + (line.countryOfOrigin != null ? line.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       dd.content.push(
+  //         {
+  //           table: {
+  //             headerRows: 1,
+  //             widths: [60, '*'],
+  //             body: bodyArray3,
+  //           },
+  //         },
+  //       )
+
+  //       let bodyArray4: any[] = [];
+  //       bodyArray4.push([
+  //         { text: 'Recipient Name', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: '', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: 'Dest Country', bold: true, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, margin: [0, 2, 0, 0], fontSize: 6, border: [false, true, false, false] }
+  //       ]);
+  //       bodyArray4.push([
+  //         { text: 'State', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'City', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       bodyArray4.push([
+  //         { text: 'Phone', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] },
+  //         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: 'Phone 2', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       dd.content.push(
+  //         {
+  //           table: {
+  //             headerRows: 1,
+  //             widths: [60, 60, 5, 60, 60],
+  //             body: bodyArray4,
+  //           },
+  //         },
+  //       )
+  //       let bodyArray5: any[] = [];
+  //       bodyArray5.push([
+  //         { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
+  //         { text: (line.countryOfOrigin != null ? line.countryOfOrigin : '') + '' + (line.countryOfOrigin != null ? line.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+  //       ]);
+  //       dd.content.push(
+  //         {
+  //           table: {
+  //             headerRows: 1,
+  //             widths: [60, '*'],
+  //             body: bodyArray5,
+  //           },
+  //         },
+  //       )
+
+
+  //       let pieceId: any[] = [];
+  //       const pieceIdcode = this.generateBarcode(line.pieceDetails.length > 0 ? line.pieceDetails[0].pieceId : null);
+  //       const partnercode = this.generateBarcode(line.partnerHouseAirwayBill);
+  //       pieceId.push([
+  //         { text: 'Piece Id', bold: true, alignment: 'left', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //         { text: 'Partner AWB', bold: true, alignment: 'right', margin: [0, 5, 0, 0], fontSize: 6, border: [false, true, false, false] },
+  //       ]);
+
+  //       pieceId.push([
+  //         { image: pieceIdcode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+  //         { image: partnercode, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'right', bold: false, fontSize: 12, border: [false, false, false, false] },
+  //       ]);
+
+  //       dd.content.push(
+  //         {
+  //           table: {
+  //             headerRows: 1,
+  //             widths: [30, '*'],
+  //             body: pieceId,
+  //           },
+  //         }, '\n'
+  //       )
+  //     })
+
+
+  //     pdfMake.createPdf(dd).open();
+  //   }
 }
