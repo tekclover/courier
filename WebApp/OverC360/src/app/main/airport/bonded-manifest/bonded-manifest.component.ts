@@ -28,16 +28,16 @@ export class BondedManifestComponent {
   target: any[] = [];
 
   constructor(
-    private messageService: MessageService, 
-    private cs: CommonServiceService, 
-    private router: Router, 
-    private path: PathNameService, 
+    private messageService: MessageService,
+    private cs: CommonServiceService,
+    private router: Router,
+    private path: PathNameService,
     private service: BondedManifestService,
-    public dialog: MatDialog, 
-    private datePipe: DatePipe, 
-    private auth: AuthService, 
+    public dialog: MatDialog,
+    private datePipe: DatePipe,
+    private auth: AuthService,
     private fb: FormBuilder,
-    private spin: NgxSpinnerService, 
+    private spin: NgxSpinnerService,
   ) { }
 
   fullDate: any;
@@ -55,7 +55,7 @@ export class BondedManifestComponent {
     this.cols = [
       { field: 'companyId', header: 'Company' },
       { field: 'bondedId', header: 'Bonded ID' },
-      {  field: 'houseAirwayBill', header: 'Consignment No' },
+      { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -76,21 +76,21 @@ export class BondedManifestComponent {
 
   initialCall() {
     setTimeout(() => {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        this.bondedManifestTable = res;
-        this.getSearchDropdown();
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }, 2000);
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          this.bondedManifestTable = res;
+          this.getSearchDropdown();
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 2000);
   }
 
   onChange() {
@@ -99,19 +99,19 @@ export class BondedManifestComponent {
     this.selectedBondedManifest.push(choosen);
   }
 
-  updateBulk(){
+  updateBulk() {
     const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
       disableClose: true,
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: {title: 'Bonded Manifest',code :  this.selectedBondedManifest} ,
+      data: { title: 'Bonded Manifest', code: this.selectedBondedManifest },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-   this.initialCall();
+      this.initialCall();
     });
-}
+  }
   customTable() {
     const dialogRef = this.dialog.open(CustomTableComponent, {
       disableClose: true,
@@ -156,7 +156,7 @@ export class BondedManifestComponent {
       }
     });
   }
-  
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
@@ -197,7 +197,7 @@ export class BondedManifestComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
-  isSelected(item:any): boolean {
+  isSelected(item: any): boolean {
     return this.selectedBondedManifest.includes(item);
   }
 
@@ -206,15 +206,26 @@ export class BondedManifestComponent {
     masterAirwayBill: [],
     partnerId: [],
     bondedId: [],
+    hsCode: [],
     statusId: [],
     companyId: [[this.auth.companyId],],
     languageId: [[this.auth.languageId],]
   })
 
+  readonly fieldDisplayNames: Record<string, string> = {
+    houseAirwayBill: 'Consignment No',
+    masterAirwayBill: 'MAWB',
+    partnerId: 'Partner',
+    bondedId: 'Bonded ID',
+    hsCode: 'HS Code',
+    statusId: 'Status'
+  };
+
   houseAirwayBillDropdown: any = [];
   masterAirwayBillDropdown: any = [];
   partnerDropdown: any = [];
   statusDropdown: any = [];
+  hsCodeDropdown: any = [];
   bondedIdDropdown: any = [];
 
   getSearchDropdown() {
@@ -241,6 +252,10 @@ export class BondedManifestComponent {
         this.bondedIdDropdown.push({ value: res.bondedId, label: res.bondedId });
         this.bondedIdDropdown = this.cs.removeDuplicatesFromArrayList(this.bondedIdDropdown, 'value');
       }
+      if (res.hsCode != null) {
+        this.hsCodeDropdown.push({ value: res.hsCode, label: res.hsCode });
+        this.hsCodeDropdown = this.cs.removeDuplicatesFromArrayList(this.hsCodeDropdown, 'value');
+      }
     })
     //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
@@ -255,7 +270,8 @@ export class BondedManifestComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -270,6 +286,7 @@ export class BondedManifestComponent {
       },
     });
   }
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
@@ -277,6 +294,7 @@ export class BondedManifestComponent {
       masterAirwayBill: [],
       partnerId: [],
       bondedId: [],
+      hsCode: [],
       statusId: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
@@ -285,8 +303,11 @@ export class BondedManifestComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
 }

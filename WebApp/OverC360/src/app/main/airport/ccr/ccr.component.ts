@@ -239,6 +239,15 @@ export class CcrComponent {
     languageId: [[this.auth.languageId],]
   })
 
+  readonly fieldDisplayNames: Record<string, string> = {
+    houseAirwayBill: 'Consignment No',
+    masterAirwayBill: 'MAWB',
+    partnerId: 'Partner',
+    ccrId: 'CCR ID',
+    consoleId: 'Console ID',
+    statusId: 'Status'
+  };
+
   houseAirwayBillDropdown: any = [];
   masterAirwayBillDropdown: any = [];
   partnerDropdown: any = [];
@@ -288,7 +297,8 @@ export class CcrComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -303,6 +313,7 @@ export class CcrComponent {
       },
     });
   }
+
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
@@ -319,8 +330,11 @@ export class CcrComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
   removeDuplicated: any [] = []
