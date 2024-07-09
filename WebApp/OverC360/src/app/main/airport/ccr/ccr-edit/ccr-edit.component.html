@@ -26,6 +26,16 @@
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Primary DO</p>
+                        <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="primaryDo"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Secondary DO</p>
+                        <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="secondaryDo"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-4 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
                         <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusId"
                         class="w-100" pInputText placeholder="Enter" />
@@ -49,6 +59,7 @@
                                 <th>Customs CCR No</th>
                                 <th>Airport Origin Code</th>
                                 <th>HS Code</th>
+                                <th>Origin</th>
                                 <th>Consignee Name</th>
                                 <th>Consignment Value</th>
                                 <th>Consignment Currency </th>
@@ -90,6 +101,10 @@
                               
                                 <td>
                                     <p class="w-100 pl-2 ml-2">{{ item.hsCode }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="w-100 pl-2 ml-2">{{ item.countryOfOrigin }}
                                     </p>
                                 </td>
                                 <td>
