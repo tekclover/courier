@@ -154,6 +154,7 @@ export class UserRoleComponent {
       }
     })
   }
+
   deleterecord(lines: any) {
     this.spin.show();
     this.service.Delete(lines).subscribe({
@@ -194,6 +195,14 @@ export class UserRoleComponent {
     companyId: [[this.auth.companyId],],
     languageId: [[this.auth.languageId],]
   })
+
+  readonly fieldDisplayNames: Record<string, string> = {
+    menuId: 'Menu',
+    subMenuId: 'Sub Menu',
+    roleId: 'Role ID',
+    statusId: 'Status'
+  };
+
 
   languageDropdown: any = [];
   companyDropdown: any = [];
@@ -244,7 +253,8 @@ export class UserRoleComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -274,8 +284,11 @@ export class UserRoleComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
 }
