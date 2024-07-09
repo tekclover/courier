@@ -114,6 +114,31 @@ public class UpdateItemDetails {
 
     private String companyName;
 
+    private Long consignmentId;
+
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
+
 
 
 }

@@ -180,7 +180,7 @@ public class PieceDetailsService {
                                                         String companyName, String languageName, String partnerName, Long consignmentId, String partnerHawBill,
                                                         String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String width, String height,
                                                         String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
-                                                        String eventText, String loginUserID)
+                                                        String eventText, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -254,7 +254,7 @@ public class PieceDetailsService {
                         //ItemDetails Create
                         List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId, companyName, languageName,
                                 partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
-                                partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, loginUserID);
+                                partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, country, loginUserID);
 
                         // Save ConsignmentStatus
                         consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
@@ -318,7 +318,7 @@ public class PieceDetailsService {
                 List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
                         companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
                         PIECE_ID, partnerId, null, consignmentId,
-                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount,loginUserID);
+                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount,country, loginUserID);
 
                 // Save ConsignmentStatus
                 consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
@@ -559,7 +559,6 @@ public class PieceDetailsService {
         }
         return dbPieceDetails.get();
     }
-
     /**
      *
      * @param labelFormInput

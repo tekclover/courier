@@ -22,14 +22,25 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
     ConsignmentEntity findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String companyId, String languageId, String partnerId, String mawb, String hawb, Long deletionIndicator);
 
-    @Query(value = "SELECT status_code AS statusId, status_text AS statusText, event_text AS eventText " +
-            "FROM tblevent " +
-            "WHERE C_ID = :companyId AND " +
-            "STATUS_CODE = :statusCode AND " +
-            "EVENT_CODE = :eventCode AND " +
-            "IS_DELETED = 0", nativeQuery = true)
-    IKeyValuePair getStatusEventText(@Param("companyId") String companyId,
-                                               @Param("statusCode") String statusCode,
+//    @Query(value = "SELECT status_code AS statusId, status_text AS statusText, event_text AS eventText " +
+//            "FROM tblevent " +
+//            "WHERE C_ID = :companyId AND " +
+//            "STATUS_CODE = :statusCode AND " +
+//            "EVENT_CODE = :eventCode AND " +
+//            "IS_DELETED = 0", nativeQuery = true)
+//    IKeyValuePair getStatusEventText(@Param("companyId") String companyId,
+//                                               @Param("statusCode") String statusCode,
+//                                               @Param("eventCode") String eventCode);
+
+    @Query(value = "SELECT " +
+            "(SELECT status_text FROM tblstatus WHERE " +
+            "lang_id = :languageId AND status_id = :statusId AND is_deleted = 0) AS statusText, " +
+            "(SELECT event_text FROM tblevent WHERE " +
+            "c_id = :companyId AND event_code = :eventCode AND lang_id = :languageId AND is_deleted = 0) AS eventText",
+            nativeQuery = true)
+    Optional<IKeyValuePair> getStatusEventText(@Param("languageId") String languageId,
+                                               @Param("companyId") String companyId,
+                                               @Param("statusId") String statusId,
                                                @Param("eventCode") String eventCode);
 
 }

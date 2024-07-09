@@ -9,10 +9,7 @@ import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetai
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.*;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
-import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
+import com.courier.overc360.api.midmile.replica.model.consignment.*;
 import com.courier.overc360.api.midmile.replica.model.dto.*;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
@@ -201,12 +198,13 @@ public class ConsignmentService {
             }
 
             // Set Event Status
-            IKeyValuePair statusEventText = consignmentEntityRepository.getStatusEventText(companyId, "1", "1");
-            if (statusEventText != null) {
+            Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(languageId, companyId, "1", "1");
+            if (statusEventText.isPresent()) {
+                IKeyValuePair keyValuePair = statusEventText.get();
                 newConsignment.setStatusId("1");
                 newConsignment.setEventCode("1");
-                newConsignment.setStatusDescription(statusEventText.getStatusText());
-                newConsignment.setEventText(statusEventText.getEventText());
+                newConsignment.setStatusDescription(keyValuePair.getStatusText());
+                newConsignment.setEventText(keyValuePair.getEventText());
                 newConsignment.setStatusTimestamp(new Date());
                 newConsignment.setEventTimestamp(new Date());
             }
@@ -260,11 +258,11 @@ public class ConsignmentService {
             if (consignmentEntity.getOriginDetails() != null) {
                 OriginDetails originDetails = new OriginDetails();
                 BeanUtils.copyProperties(consignmentEntity.getOriginDetails(), originDetails, CommonUtils.getNullPropertyNames(consignmentEntity.getOriginDetails()));
+                originDetails.setCreatedBy(loginUserId);
+                originDetails.setCreatedOn(new Date());
+                originDetails.setUpdatedBy(null);
+                originDetails.setUpdatedOn(null);
                 newConsignment.setOriginDetails(originDetails);
-                newConsignment.getOriginDetails().setCreatedBy(loginUserId);
-                newConsignment.getOriginDetails().setCreatedOn(new Date());
-                newConsignment.getOriginDetails().setUpdatedBy(null);
-                newConsignment.getOriginDetails().setUpdatedOn(null);
             } else {
                 OriginDetails originDetails = new OriginDetails();
                 originDetails.setCreatedBy(loginUserId);
@@ -314,11 +312,13 @@ public class ConsignmentService {
                 }
             }
 
+
+            String country = saveConsignment.getOriginDetails().getCountry();
             // PieceDetails Save
             List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
                     partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), loginUserId);
+                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(),country,  loginUserId);
 
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             for (AddPieceDetails pd : pieceDetails) {
@@ -685,6 +685,12 @@ public class ConsignmentService {
 //        return consignmentList;
 //    }
 
+    // Get - for label create
+    public ReplicaConsignmentEntity getConsignment(Long consignmentId) {
+        ReplicaConsignmentEntity consignmentEntity = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
+        return consignmentEntity;
+    }
+
     /**
      * FindConsignment
      *
@@ -1045,5 +1051,17 @@ public class ConsignmentService {
             });
         }
         return consignmentList;
+    }
+
+    /**
+     * FindConsignmentInvoice
+     *
+     * @param findConsignmentInvoice
+     * @return
+     */
+    public List<ConsignmentInvoice> findConsignmentInvoice(FindConsignmentInvoice findConsignmentInvoice) {
+        List<ConsignmentInvoice> results = replicaConsignmentEntityRepository.getConsignmentInvoice(findConsignmentInvoice.getHouseAirwayBill(), findConsignmentInvoice.getPartnerHouseAirwayBill(), findConsignmentInvoice.getPartnerMasterAirwayBill(), findConsignmentInvoice.getCompanyId());
+        log.info("found Consignments -->" + results);
+        return results;
     }
 }

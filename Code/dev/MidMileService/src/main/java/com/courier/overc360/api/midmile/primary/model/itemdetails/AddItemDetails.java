@@ -69,6 +69,28 @@ public class AddItemDetails {
 
     private String volumeUnit;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private List<ReferenceImageList> referenceImageList;
 
     private String imageReferenceId;
@@ -114,6 +136,8 @@ public class AddItemDetails {
     private String referenceField19;
 
     private String referenceField20;
+
+
 
 
 }
