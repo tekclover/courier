@@ -317,26 +317,28 @@ export class ConsignmentLabelComponent {
     this.fileNameList = [];
     this.ccrService.genearateLabel({ pieceId: labelResult }).subscribe({
       next: (res: any) => {
-        res.forEach((x: any) => {
+        res.forEach((x: any, i:any) => {
           this.generateMutipleLabel(x);
+          if(i +1  == res.length){
+            this.ccrService.genearateInvoice({ houseAirwayBill: invoiceResult }).subscribe({
+              next: (res: any) => {
+                res.forEach((x: any, i:any) => {
+                  this.generateMultipleInvoice(x, i + 1, res.length)
+                })
+              }, error: (err: any) => {
+                this.cs.commonerrorNew(err);
+              }
+            })
+          }
         })
       }, error: (err: any) => {
         this.cs.commonerrorNew(err);
       }
     })
-
-    this.ccrService.genearateInvoice({ houseAirwayBill: invoiceResult }).subscribe({
-      next: (res: any) => {
-        res.forEach((x: any) => {
-          this.generateMultipleInvoice(x)
-        })
-      }, error: (err: any) => {
-        this.cs.commonerrorNew(err);
-      }
-    })
+  
   }
 
-  generateMultipleInvoice(result: any) {
+  generateMultipleInvoice(result: any, index:any, resultIndex: any) {
     let createdOn = this.datePipe.transform(result.createdOn, 'dd-MMM-yyyy HH:mm')
     var dd: any;
     let headerTable: any[] = [];
@@ -499,18 +501,18 @@ export class ConsignmentLabelComponent {
       },
     )
 
-    for (let i = 0; i < result.lines.length; i++) {
+    for (let i = 0; i < result.invoiceFormLines.length; i++) {
       let bodyArray6: any[] = [];
       bodyArray6.push([
-        { text: (result.lines[i].quantity), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].hsCode), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].goodsDescription), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].itemWeight), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].unitValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].totalValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].currency), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].countryOfOrigin), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-        { text: (result.lines[i].incoTerms), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].quantity), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].hsCode), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].goodsDescription), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].itemWeight), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].unitValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].totalValue), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].currency), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].countryOfOrigin), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+        { text: (result.invoiceFormLines[i].incoTerms), bold: true, margin: [0, 2, 0, 0], fontSize: 5, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       ]);
 
 
@@ -528,21 +530,21 @@ export class ConsignmentLabelComponent {
     let bodyArray3: any[] = [];
     bodyArray3.push([
       { text: 'Piece', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.header.pieces), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.pieces), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'DATE', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: createdOn, bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     bodyArray3.push([
       { text: 'Weight', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.header.weight), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.weight), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'AWB', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.header.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+      { text: (result.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     bodyArray3.push([
       { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.header.totalCiv), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
+      { text: (result.totalCiv), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'Prepaid', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.header.getPrepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+      { text: (result.getPrepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     dd.content.push(
       {
@@ -574,18 +576,17 @@ export class ConsignmentLabelComponent {
         margin: [0, 30, 0, 0],
       },
     )
-
-
-
    // pdfMake.createPdf(dd).open();
     const pdfDocGenerator = pdfMake.createPdf(dd);
     pdfDocGenerator.getBlob((blob) => {
-      var file = new File([blob], result.houseAirwayBill + '_' + 'labels' + ".pdf");
-      var filepath = result.houseAirwayBill + '/' + 'label/';
+      var file = new File([blob], result.houseAirwayBill + '_' + 'invoice' + ".pdf");
+      var filepath = result.houseAirwayBill + '/' + 'invoice/';
       if (file) {
         this.consginementService.uploadsinglefile(file, filepath).subscribe((resp: any) => {
           this.fileNameList.push(resp.location + resp.file);
-          console.log(this.fileNameList)
+          if(index == resultIndex){
+            console.log(this.fileNameList)
+          }
         });
       }
     });
@@ -846,7 +847,6 @@ export class ConsignmentLabelComponent {
       if (file) {
         this.consginementService.uploadsinglefile(file, filepath).subscribe((resp: any) => {
           this.fileNameList.push(resp.location + resp.file);
-          console.log(this.fileNameList)
         });
       }
     });

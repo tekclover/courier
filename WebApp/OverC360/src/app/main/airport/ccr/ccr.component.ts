@@ -379,7 +379,7 @@ export class CcrComponent {
     });
     this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBill, 'houseAirwayBill');
    const houseAirwayBillArray = this.removeDuplicated.map(item => item.houseAirwayBill);
-   this.label.generateMultipleInvoice(houseAirwayBillArray)
+ //  this.label.generateMultipleInvoice(houseAirwayBillArray)
   }
 
 
