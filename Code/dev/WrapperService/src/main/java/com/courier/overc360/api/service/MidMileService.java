@@ -1180,4 +1180,23 @@ public class MidMileService {
         return result.getBody();
     }
 
+    //----------------------getPdfLabelForm------------------------------------------------------------------
+    // get pdf label form
+    public PdfLabelFormOutput[] getPdfLabelForm(LabelFormInput labelFormInput, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "piecedetails/pdfLabel");
+            HttpEntity<?> entity = new HttpEntity<>(labelFormInput, headers);
+            ResponseEntity<PdfLabelFormOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PdfLabelFormOutput[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 }
