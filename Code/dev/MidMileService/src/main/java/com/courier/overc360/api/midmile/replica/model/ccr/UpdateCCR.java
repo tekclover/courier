@@ -10,5 +10,6 @@ public class UpdateCCR {
     private String primaryDo;
     private String customsKd;
     private String hsCode;
+    private String totalDuty;
     private String consignmentValue;
 }

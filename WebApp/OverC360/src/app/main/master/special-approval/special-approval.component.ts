@@ -216,6 +216,11 @@ export class SpecialApprovalComponent {
     languageId: [[this.auth.languageId],]
   })
 
+  readonly fieldDisplayNames: Record<string, string> = {
+    specialApprovalId: 'Special Approval',
+    statusId: 'Status'
+  };
+
   languageDropdown: any = [];
   companyDropdown: any = [];
   specialApprovalDropdown: any = [];
@@ -255,7 +260,8 @@ export class SpecialApprovalComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -283,8 +289,11 @@ export class SpecialApprovalComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
 }

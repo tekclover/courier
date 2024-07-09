@@ -161,6 +161,9 @@ public class ReplicaBondedManifest {
     @Column(name = "EVENT_TIMESTAMP")
     private Date eventTimestamp;
 
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String statusText;
+
     @Column(name = "STATUS_TIMESTAMP")
     private Date statusTimestamp;
 

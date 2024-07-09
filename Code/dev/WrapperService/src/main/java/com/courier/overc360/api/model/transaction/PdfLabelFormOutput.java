@@ -2,9 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class PdfLabelFormOutput {
@@ -42,4 +40,5 @@ public class PdfLabelFormOutput {
     private String pieceId;
     private String pieceProductCode;
     private String pieceValue;
+    private Date createdOn;
 }
