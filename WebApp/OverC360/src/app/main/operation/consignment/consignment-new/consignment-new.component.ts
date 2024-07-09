@@ -694,10 +694,14 @@ export class ConsignmentNewComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result)
         const itemDetailsFormArray = (this.piece.controls.pieceDetails as FormArray).at(index).get('itemDetails') as FormArray;
         itemDetailsFormArray.clear();
-        result.forEach((item: any) => {
+       const getPieceForm = (this.piece.controls.pieceDetails as FormArray).at(index);
+       getPieceForm.patchValue({
+        pieceValue: result.pieceValue
+      });
+       console.log(this.piece)
+        result.lines.forEach((item: any) => {
           itemDetailsFormArray.push(this.fb.group({
             codAmount: item.codAmount,
             declaredValue: item.declaredValue,
