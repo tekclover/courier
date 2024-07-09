@@ -192,6 +192,7 @@ export class CountryMappingComponent {
 
   searchform = this.fb.group({
     partnerId: [],
+    partnerType: [],
     countryId: [],
     statusId: [],
     companyId: [[this.auth.companyId],],
@@ -201,6 +202,7 @@ export class CountryMappingComponent {
   readonly fieldDisplayNames: Record<string, string> = {
     countryId: 'Country',
     partnerId: 'Partner',
+    partnerType: 'Partner Type',
     statusId: 'Status'
   };
 
@@ -208,6 +210,7 @@ export class CountryMappingComponent {
   companyDropdown: any = [];
   countryDropdown: any = [];
   partnerIdDropdown: any = [];
+  partnerTypeDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
@@ -229,6 +232,10 @@ export class CountryMappingComponent {
       if (res.partnerId != null) {
         this.partnerIdDropdown.push({ value: res.partnerId, label: res.partnerName });
         this.partnerIdDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerIdDropdown, 'value');
+      }
+      if (res.partnerType != null) {
+        this.partnerTypeDropdown.push({ value: res.partnerType, label: res.partnerType });
+        this.partnerTypeDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerTypeDropdown, 'value');
       }
       if (res.statusId != null) {
         this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
@@ -270,6 +277,7 @@ export class CountryMappingComponent {
     this.searchform = this.fb.group({
       countryId: [],
       partnerId: [],
+      partnerType: [],
       statusId: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
