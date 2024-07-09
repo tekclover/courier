@@ -541,4 +541,13 @@ public class MidMileController {
                                                      @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentStatus(findConsignmentStatus, authToken);
     }
+
+    // getPdfLabelForm
+    @ApiOperation(response = PdfLabelFormOutput[].class, value = "get PdfLabelFormOutput")//label for swagger
+    @PostMapping("/pdf/Label")
+    public ResponseEntity<?> getPdfLabelFormOutput(@RequestBody LabelFormInput labelFormInput,
+                                                   @RequestParam String authToken) throws Exception {
+        PdfLabelFormOutput[] pdfLabelFormOutput = midMileService.getPdfLabelForm(labelFormInput, authToken);
+        return new ResponseEntity<>(pdfLabelFormOutput, HttpStatus.OK);
+    }
 }

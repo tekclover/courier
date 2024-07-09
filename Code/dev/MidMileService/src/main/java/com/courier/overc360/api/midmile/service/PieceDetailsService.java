@@ -17,6 +17,8 @@ import com.courier.overc360.api.midmile.primary.repository.ImageReferenceReposit
 import com.courier.overc360.api.midmile.primary.repository.PieceDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
+import com.courier.overc360.api.midmile.replica.model.dto.LabelFormInput;
+import com.courier.overc360.api.midmile.replica.model.dto.LabelFormOutput;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.FindPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
@@ -557,29 +559,21 @@ public class PieceDetailsService {
         }
         return dbPieceDetails.get();
     }
+
     /**
-     * for Label pdf create
-     * @param languageId
-     * @param companyId
-     * @param pieceId
+     *
+     * @param labelFormInput
      * @return
      */
-    public ReplicaPieceDetails getReplicaPieceDetails(String languageId, String companyId, String pieceId) {
+    public List<LabelFormOutput> getLabelFormOutput(LabelFormInput labelFormInput) {
 
-        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator
-                (languageId, companyId, pieceId, 0l);
-
-        if (dbPieceDetails == null || dbPieceDetails.isEmpty()) {
-            createPieceDetailsLog(languageId, companyId, pieceId, "The given values : languageId - " + languageId +
-                    ", companyId - " + companyId + " and PieceId: " + pieceId + "  doesn't exists");
-            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + " and PieceId: " + pieceId + "  doesn't exists");
-        }
-        if(dbPieceDetails != null && !dbPieceDetails.isEmpty()) {
-            for(ReplicaPieceDetails dbReplicaPieceDetails : dbPieceDetails) {
-                ReplicaConsignmentEntity replicaConsignment = consignmentService.getConsignment(dbReplicaPieceDetails.getConsignmentId());
-            }
-        }
-        return dbPieceDetails.get(0);
+        log.info("labelFormInput : " + labelFormInput);
+        List<LabelFormOutput> labelFormOutputList = replicaPieceDetailsRepository.getLabelPdfOutput(
+                labelFormInput.getLanguageId(),
+                labelFormInput.getCompanyId(),
+                labelFormInput.getPieceId());
+        log.info("labelForm output: " + labelFormOutputList.size());
+        return labelFormOutputList;
     }
 
     /**
