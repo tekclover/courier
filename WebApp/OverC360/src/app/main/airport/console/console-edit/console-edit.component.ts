@@ -281,7 +281,18 @@ lineSentforFill:any;
             key: 'br',
             detail: res[0].consoleId + ' has been updated successfully',
        });
-          //this.router.navigate(['/main/airport/console']);
+       for(let i = 0;i< this.subProductArray.length;i++){
+        if(this.subProductArray[i].eventCode !='10'){
+          let line:any={};
+          line.consoleId=this.subProductArray[0].consoleId;
+          this.fill(line);
+        }
+        else{
+          this.router.navigate(['/main/airport/console']);
+        }
+
+       }
+         // this.router.navigate(['/main/airport/console']);
           let line:any={};
           line.consoleId=this.subProductArray[0].consoleId;
           this.fill(line);

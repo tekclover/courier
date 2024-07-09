@@ -93,7 +93,64 @@ public class FileStorageService {
 //		return Collections.singletonMap("message", "File uploaded successfully!");
 		return fileName;
 	}
+    /**
+     *
+     * @param file
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
+    public Map<String, String> storeSingleFile(MultipartFile file, String filePath) throws Exception {
 
+		if(!filePath.startsWith("/")){
+			filePath = "/" + filePath;
+		}
+
+		this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
+		if (!Files.exists(fileStorageLocation)) {
+			try {
+				Files.createDirectories(this.fileStorageLocation);
+			} catch (Exception ex) {
+				throw new BadRequestException(
+						"Could not create the directory where the uploaded files will be stored.");
+			}
+		}
+
+		log.info("location : " + fileStorageLocation);
+
+		// Normalize file name
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		log.info("filename before: " + fileName);
+		fileName = fileName.replace(" ", "_");
+		log.info("filename after: " + fileName);
+		try {
+			// Check if the file's name contains invalid characters
+			if (fileName.contains("..")) {
+				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+			}
+
+			// Copy file to the target location (Replacing existing file with the same name)
+			Path targetLocation = this.fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			log.info("Copied : " + targetLocation);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+		}
+
+        Map<String, String> mapFileProps = new HashMap<>();
+        mapFileProps.put("file", fileName);
+        mapFileProps.put("location", filePath);
+        mapFileProps.put("status", "UPLOADED");
+		return mapFileProps;
+	}
+    /**
+     *
+     * @param file
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
 	public String[] storeFileWithReturnLocation(MultipartFile file, String filePath) throws Exception {
 
 		if(!filePath.startsWith("/")){

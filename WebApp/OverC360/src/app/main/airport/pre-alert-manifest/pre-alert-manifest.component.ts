@@ -232,6 +232,7 @@ export class PreAlertManifestComponent {
           next: (res) => {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
             this.spin.hide();
+            this.initialCall();
           }, error: (err) => {
             this.spin.hide();
             this.cs.commonerrorNew(err);

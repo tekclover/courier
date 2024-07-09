@@ -62,8 +62,8 @@ export class DistrictMappingComponent {
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
-    this.target = [
 
+    this.target = [
       { field: 'languageDescription', header: 'Language' },
       { field: 'partnerDistrictId', header: 'Partner District ID' },
       { field: 'districtId', header: 'District ID' },
@@ -191,6 +191,7 @@ export class DistrictMappingComponent {
 
   searchform = this.fb.group({
     partnerId: [],
+    partnerType: [],
     districtId: [],
     statusId: [],
     companyId: [[this.auth.companyId],],
@@ -200,6 +201,7 @@ export class DistrictMappingComponent {
   readonly fieldDisplayNames: Record<string, string> = {
     districtId: 'District',
     partnerId: 'Partner',
+    partnerType: 'Partner Type',
     statusId: 'Status'
   };
 
@@ -207,6 +209,7 @@ export class DistrictMappingComponent {
   companyDropdown: any = [];
   districtDropdown: any = [];
   partnerIdDropdown: any = [];
+  partnerTypeDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
@@ -228,6 +231,10 @@ export class DistrictMappingComponent {
       if (res.partnerId != null) {
         this.partnerIdDropdown.push({ value: res.partnerId, label: res.partnerName });
         this.partnerIdDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerIdDropdown, 'value');
+      }
+      if (res.partnerType != null) {
+        this.partnerTypeDropdown.push({ value: res.partnerType, label: res.partnerType });
+        this.partnerTypeDropdown = this.cs.removeDuplicatesFromArrayList(this.partnerTypeDropdown, 'value');
       }
       if (res.statusId != null) {
         this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
@@ -269,6 +276,7 @@ export class DistrictMappingComponent {
     this.searchform = this.fb.group({
       districtId: [],
       partnerId: [],
+      partnerType: [],
       statusId: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
