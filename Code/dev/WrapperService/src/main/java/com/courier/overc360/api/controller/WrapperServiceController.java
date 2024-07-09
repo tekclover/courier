@@ -192,6 +192,17 @@ public class WrapperServiceController {
         }
     }
 
+    @ApiOperation(response = Optional.class, value = "Single Document Storage Upload") // label for swagger
+    @PostMapping("/doc-storage/Upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String location) {
+        try {
+            Map<String, String> response = fileStorageService.storeSingleFile(file, location);
+            return new ResponseEntity <> (response, HttpStatus.OK) ;
+        } catch (Exception e) {
+            return new ResponseEntity <> ("file upload failed!", HttpStatus.EXPECTATION_FAILED) ;
+        }
+    }
+
     @ApiOperation(response = Optional.class, value = "Multiple Pdf Merge and download as Zip") // label for swagger
     @PostMapping("/pdf/downloadZip")
     public void downloadFile(HttpServletResponse response, @RequestBody List<PDFMerger> pdfMergerList) {
