@@ -559,6 +559,7 @@ public class PieceDetailsService {
         }
         return dbPieceDetails.get();
     }
+
     /**
      *
      * @param labelFormInput
@@ -570,7 +571,8 @@ public class PieceDetailsService {
         List<LabelFormOutput> labelFormOutputList = replicaPieceDetailsRepository.getLabelPdfOutput(
                 labelFormInput.getLanguageId(),
                 labelFormInput.getCompanyId(),
-                labelFormInput.getPieceId());
+                labelFormInput.getPieceId(),
+                new Date());
         log.info("labelForm output: " + labelFormOutputList.size());
         return labelFormOutputList;
     }

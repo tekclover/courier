@@ -14,7 +14,7 @@ public interface PreAlertManifestImpl {
     String getQuantity();
     String getUnitValue();
     String getCurrency();
-    String getImageRefId();
+    String getImageReferenceId();
     String getLanguageDescription();
     String getCompanyName();
     String getPartnerType();
@@ -63,5 +63,10 @@ public interface PreAlertManifestImpl {
     Date getCreatedOn();
     String getUpdatedBy();
     Date getUpdatedOn();
+
+    String getEventCode();
+    String getEventText();
+    String getStatusId();
+    String getStatusDescription();
 
 }
