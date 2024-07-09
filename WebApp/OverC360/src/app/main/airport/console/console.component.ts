@@ -50,7 +50,7 @@ export class ConsoleComponent {
       {  field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'statusId', header: 'Status' },
+      { field: 'statusText', header: 'Status' },
       { field: 'eventText', header: 'Event' }, 
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },

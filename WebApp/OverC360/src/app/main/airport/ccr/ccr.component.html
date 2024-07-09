@@ -102,7 +102,7 @@
 
     <div class="tableProperties">
         <p-table #ccrTag [columns]="cols" [value]="ccrTable" class="custom-table" [scrollable]="true"
-            selectionMode="single"  sortField="createdOn" [sortOrder]="-1"
+            selectionMode="multiple"  sortField="createdOn" [sortOrder]="-1"  [(selection)]="selectedCcr"
             scrollHeight="calc(100vh - 20.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
             sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
@@ -122,10 +122,9 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                <tr [class.selectedRow]="selectedCcr[0] === rowData">
+                <tr>
                     <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedCcr" class="pl-3"
-                            [value]="rowData"></p-checkbox>
+                        <p-tableCheckbox class="pl-3"   [value]="rowData" />
                     </td>
                     <td style="width: 5rem; justify-content: center;">
                         <i style="font-size: 14px;" [pRowToggler]="rowData"
