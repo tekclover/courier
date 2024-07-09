@@ -48,6 +48,7 @@ export class CcrComponent {
     this.cols = [
       { field: 'companyId', header: 'Company' },
       { field: 'ccrId', header: 'CCR ID' },
+      { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'statusText', header: 'Status' },

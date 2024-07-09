@@ -5,6 +5,7 @@ import com.courier.overc360.api.midmile.controller.exception.BadRequestException
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.*;
@@ -176,6 +177,27 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
+
+            //PieceDetails Count
+            List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
+            int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
+
+
+            int totalItemCount = 0;
+
+            for (AddPieceDetails pieceDetails : consignmentEntity.getPieceDetails()) {
+                List<AddItemDetails> addItemDetails = pieceDetails.getItemDetails();
+                int itemCount = addItemDetails != null ? addItemDetails.size() : 0;
+                totalItemCount += itemCount;
+            }
+
+            // Set noOfPieceHawb based on the total item count
+            if (totalItemCount == 0) {
+                consignmentEntity.setNoOfPieceHawb("1");
+            } else {
+                consignmentEntity.setNoOfPieceHawb(String.valueOf(totalItemCount));
+            }
+
             BeanUtils.copyProperties(consignmentEntity, newConsignment, CommonUtils.getNullPropertyNames(consignmentEntity));
 
             if (iKeyValuePair != null) {
@@ -212,6 +234,11 @@ public class ConsignmentService {
             newConsignment.setHouseAirwayBill(houseAirwayBill);
             newConsignment.setMasterAirwayBill(masterAirwayBill);
             newConsignment.setCreatedBy(loginUserId);
+            if(pieceCount == 0) {
+                newConsignment.setNoOfPackageHawb("1");
+            }else {
+                newConsignment.setNoOfPackageHawb(String.valueOf(pieceCount));
+            }
             newConsignment.setCreatedOn(new Date());
             newConsignment.setUpdatedBy(null);
             newConsignment.setUpdatedOn(null);
@@ -318,7 +345,7 @@ public class ConsignmentService {
             List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
                     partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(),country,  loginUserId);
+                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserId);
 
             List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
             for (AddPieceDetails pd : pieceDetails) {
@@ -508,7 +535,6 @@ public class ConsignmentService {
     //MultipleConsignment Delete
 
     /**
-     *
      * @param consignmentDeletes
      * @param loginUserID
      */
@@ -542,7 +568,7 @@ public class ConsignmentService {
                     consignmentEntityRepository.save(dbConsignmentEntity);
                 }
             }
-            if (pieceId != null && pieceItemId == null ) {
+            if (pieceId != null && pieceItemId == null) {
                 pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);
             }
             if (pieceItemId != null && pieceId != null) {
@@ -820,34 +846,34 @@ public class ConsignmentService {
      */
     public List<IConsignment> findIConsignment(FindIConsignment findConsignment) {
 
-        if(findConsignment.getConsignmentId() != null && findConsignment.getConsignmentId().isEmpty()) {
+        if (findConsignment.getConsignmentId() != null && findConsignment.getConsignmentId().isEmpty()) {
             findConsignment.setConsignmentId(null);
         }
-        if(findConsignment.getLanguageId() != null && findConsignment.getLanguageId().isEmpty()) {
+        if (findConsignment.getLanguageId() != null && findConsignment.getLanguageId().isEmpty()) {
             findConsignment.setLanguageId(null);
         }
-        if(findConsignment.getCompanyId() != null && findConsignment.getCompanyId().isEmpty()) {
+        if (findConsignment.getCompanyId() != null && findConsignment.getCompanyId().isEmpty()) {
             findConsignment.setCompanyId(null);
         }
-        if(findConsignment.getPartnerId() != null && findConsignment.getPartnerId().isEmpty()) {
+        if (findConsignment.getPartnerId() != null && findConsignment.getPartnerId().isEmpty()) {
             findConsignment.setPartnerId(null);
         }
-        if(findConsignment.getMasterAirwayBill() != null && findConsignment.getMasterAirwayBill().isEmpty()) {
+        if (findConsignment.getMasterAirwayBill() != null && findConsignment.getMasterAirwayBill().isEmpty()) {
             findConsignment.setMasterAirwayBill(null);
         }
-        if(findConsignment.getHouseAirwayBill() != null && findConsignment.getHouseAirwayBill().isEmpty()) {
+        if (findConsignment.getHouseAirwayBill() != null && findConsignment.getHouseAirwayBill().isEmpty()) {
             findConsignment.setHouseAirwayBill(null);
         }
-        if(findConsignment.getStatusId() != null && findConsignment.getStatusId().isEmpty()) {
+        if (findConsignment.getStatusId() != null && findConsignment.getStatusId().isEmpty()) {
             findConsignment.setStatusId(null);
         }
-        if(findConsignment.getShipperId() != null && findConsignment.getShipperId().isEmpty()) {
+        if (findConsignment.getShipperId() != null && findConsignment.getShipperId().isEmpty()) {
             findConsignment.setShipperId(null);
         }
-        if(findConsignment.getPartnerHouseAirwayBill() != null && findConsignment.getPartnerHouseAirwayBill().isEmpty()) {
+        if (findConsignment.getPartnerHouseAirwayBill() != null && findConsignment.getPartnerHouseAirwayBill().isEmpty()) {
             findConsignment.setPartnerHouseAirwayBill(null);
         }
-        if(findConsignment.getPartnerMasterAirwayBill() != null && findConsignment.getPartnerMasterAirwayBill().isEmpty()) {
+        if (findConsignment.getPartnerMasterAirwayBill() != null && findConsignment.getPartnerMasterAirwayBill().isEmpty()) {
             findConsignment.setPartnerMasterAirwayBill(null);
         }
         log.info("Search Input - consignment(Null validation): " + findConsignment);
@@ -917,7 +943,7 @@ public class ConsignmentService {
                 } else {
                     nullValidationCheck.add("false");
                 }
-                }
+            }
             if (addConsignment.getPieceDetails() != null && !addConsignment.getPieceDetails().isEmpty()) {
                 for (AddPieceDetails pieceDetails : addConsignment.getPieceDetails()) {
                     if (pieceDetails.getPartnerHouseAirwayBill() != null && pieceDetails.getDescription() != null &&
@@ -925,24 +951,24 @@ public class ConsignmentService {
                         nullValidationCheck.add("true");
                     } else {
                         nullValidationCheck.add("false");
+                    }
                 }
-                }
-                }
+            }
             int nullValidationCheckSize = nullValidationCheck.size();
-            long nullValidation = nullValidationCheck.stream().filter(n->n.equalsIgnoreCase("true")).count();
+            long nullValidation = nullValidationCheck.stream().filter(n -> n.equalsIgnoreCase("true")).count();
             boolean pass = nullValidationCheckSize == nullValidation;
-            if(pass) {
+            if (pass) {
                 addConsignment.setPreAlertValidationIndicator(0L);
-                }
-            if(!pass) {
+            }
+            if (!pass) {
                 addConsignment.setPreAlertValidationIndicator(1L);
             }
-                    }
+        }
         log.info("Consignment null validaiton output: " + addConsignment);
         return addConsignment;
     }
+
     /**
-     *
      * @param updateConsignment
      * @return
      */
@@ -967,7 +993,7 @@ public class ConsignmentService {
                 } else {
                     nullValidationCheck.add("false");
                 }
-                    }
+            }
             if (updateConsignment.getPieceDetails() != null && !updateConsignment.getPieceDetails().isEmpty()) {
                 for (UpdatePieceDetails pieceDetails : updateConsignment.getPieceDetails()) {
                     if (pieceDetails.getPartnerHouseAirwayBill() != null && pieceDetails.getDescription() != null &&
@@ -976,15 +1002,15 @@ public class ConsignmentService {
                     } else {
                         nullValidationCheck.add("false");
                     }
-                    }
-                    }
-            int nullValidationCheckSize = nullValidationCheck.size();
-            long nullValidation = nullValidationCheck.stream().filter(n->n.equalsIgnoreCase("true")).count();
-            boolean pass = nullValidationCheckSize == nullValidation;
-            if(pass) {
-                updateConsignment.setPreAlertValidationIndicator(0L);
                 }
-            if(!pass) {
+            }
+            int nullValidationCheckSize = nullValidationCheck.size();
+            long nullValidation = nullValidationCheck.stream().filter(n -> n.equalsIgnoreCase("true")).count();
+            boolean pass = nullValidationCheckSize == nullValidation;
+            if (pass) {
+                updateConsignment.setPreAlertValidationIndicator(0L);
+            }
+            if (!pass) {
                 updateConsignment.setPreAlertValidationIndicator(1L);
             }
         }
@@ -993,7 +1019,6 @@ public class ConsignmentService {
     }
 
     /**
-     *
      * @param findPreAlertManifest
      * @return
      */
@@ -1008,8 +1033,8 @@ public class ConsignmentService {
         PreAlertManifestConsignmentSpecification specification = new PreAlertManifestConsignmentSpecification(findPreAlertManifest);
         List<ReplicaConsignmentEntity> results = replicaConsignmentEntityRepository.findAll(specification);
         List<PreAlertManifestConsignment> consignmentList = new ArrayList<>();
-        if(results != null && !results.isEmpty()) {
-            results.forEach(n-> {
+        if (results != null && !results.isEmpty()) {
+            results.forEach(n -> {
                 PreAlertManifestConsignment dbReplicaAddConsignment = new PreAlertManifestConsignment();
                 BeanUtils.copyProperties(n, dbReplicaAddConsignment, CommonUtils.getNullPropertyNames(n));
                 if (n.getConsignmentInfo() != null) {

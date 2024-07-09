@@ -100,6 +100,10 @@ public class BondedManifestService {
             for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
                 for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
                     AddBondedManifest bondedManifest = new AddBondedManifest();
+                    bondedManifest.setConsigneeName(consignment.getDestinationDetails().getName());
+                    bondedManifest.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
+                    bondedManifest.setShipperId(consignment.getPartnerId());
+                    bondedManifest.setShipperName(consignment.getPartnerName());
                     BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
                     BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
                     addBondedManifest.add(bondedManifest);
@@ -131,8 +135,9 @@ public class BondedManifestService {
 
             for (AddBondedManifest addBondedManifest : addBondedManifestList) {
                 //Check Duplicate
-                boolean duplicateRecord = bondedManifestRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(), addBondedManifest.getHouseAirwayBill(), 0L);
+                boolean duplicateRecord = bondedManifestRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(), addBondedManifest.getMasterAirwayBill(),
+                        addBondedManifest.getHouseAirwayBill(), addBondedManifest.getPieceId(), addBondedManifest.getPieceItemId(), 0L);
 
                 if (duplicateRecord) {
                     throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());

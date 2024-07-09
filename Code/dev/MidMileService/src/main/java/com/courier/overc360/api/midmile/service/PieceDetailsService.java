@@ -187,6 +187,10 @@ public class PieceDetailsService {
             Long pieceCounter = 1L;
             if (addPieceDetailsList != null && !addPieceDetailsList.isEmpty()) {
                 for (AddPieceDetails addPieceDetails : addPieceDetailsList) {
+
+                    List<AddItemDetails> itemDetailsList = addPieceDetails.getItemDetails();
+                    int itemCount = itemDetailsList != null ? itemDetailsList.size() : 0; // Count the item details
+
                     Optional<PieceDetails> duplicatePieceDetails =
                             pieceDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
                                     languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, addPieceDetails.getPieceId(), 0l);
@@ -221,6 +225,7 @@ public class PieceDetailsService {
                         newPieceDetails.setPieceEventText(eventText);
                         newPieceDetails.setPieceStatusTimestamp(new Date());
                         newPieceDetails.setPieceEventTimestamp(new Date());
+                        newPieceDetails.setTags(String.valueOf(itemCount));
                         if(hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
                         }
@@ -291,6 +296,7 @@ public class PieceDetailsService {
                 newPieceDetails.setLanguageDescription(languageName);
                 newPieceDetails.setPartnerName(partnerName);
                 newPieceDetails.setConsignmentId(consignmentId);
+                newPieceDetails.setTags("1");
                 if(hsCode != null) {
                     newPieceDetails.setHsCode(hsCode);
                 }
