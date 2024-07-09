@@ -23,9 +23,14 @@
                         <p-dropdown [options]="statusList" placeholder="Select" filter="true" formControlName="statusId" appendTo="body"
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
-                    <div class="col-6 marginFieldNew borderRadius12" >
+                    <div  class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 ">Event</p>
-                        <p-dropdown [options]="eventList" placeholder="Select" filter="true" formControlName="eventCode" appendTo="body" 
+                        <p-dropdown [options]="eventList" placeholder="Select" filter="true" formControlName="eventCode" appendTo="body"  (onChange)="eventChange()"
+                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div *ngIf="this.showHub == true" class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0 ">HUB</p>
+                        <p-dropdown [options]="hubList" placeholder="Select" filter="true" formControlName="hubCode" appendTo="body" 
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
