@@ -565,7 +565,6 @@ export class ConsignmentLabelComponent {
     pdfMake.createPdf(dd).open();
   }
   labelGenerate(result:any){
-    console.log(result)
     let obj: any = {};
     obj.pieceId=result
        this.ccrService.genearateLabel(obj).subscribe({
@@ -835,18 +834,16 @@ export class ConsignmentLabelComponent {
           },
         }, '\n'
       )
-    
-
-
+      
     //pdfMake.createPdf(dd).open();
     const pdfDocGenerator = pdfMake.createPdf(dd);
     pdfDocGenerator.getBlob((blob) => {
       var file = new File([blob], result.houseAirwayBill + ".pdf");
+      const files: FileList = new FileList();
       console.log(file)
       var filepath=result.houseAirwayBill;
       if(file){
-        this.consginementService.uploadFiles(file, filepath).subscribe((resp: any) => {});
-
+        // /this.consginementService.uploadFiles(file, filepath).subscribe((resp: any) => {});
       }
 });
   }

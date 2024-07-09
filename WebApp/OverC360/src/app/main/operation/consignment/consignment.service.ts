@@ -57,7 +57,7 @@ export class ConsignmentService {
     return this.http.post<any>('/overc-midmile-service/itemDetails/findPreAlertManifest', obj);
   }
 
-  uploadFiles(files: any, location: any) {
+  uploadFiles(files: FileList, location: any) {
     const formData: FormData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i], files[i].name);
