@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">HS Code</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="hsCode"
+                                <input maxlength="50" pInputText pKeyFilter="num" formControlName="hsCode"
                                     [ngClass]="form.get('hsCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                             </div>

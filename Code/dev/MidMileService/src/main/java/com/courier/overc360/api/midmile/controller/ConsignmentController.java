@@ -147,4 +147,12 @@ public class ConsignmentController {
         List<ConsignmentInvoice> consignmentInvoiceList = consignmentService.findConsignmentInvoice(findConsignmentInvoice);
         return new ResponseEntity<>(consignmentInvoiceList, HttpStatus.OK);
     }
+
+    // Consignment Invoice
+    @ApiOperation(response = InvoiceForm.class, value = "Find ConsignmentInvoice Header Line")
+    @PostMapping("/consignmentInvoiceGenerate")
+    public ResponseEntity<?> findConsignmentInvoiceGenerate(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice) throws Exception {
+        List<InvoiceForm> consignmentInvoiceList = consignmentService.ConsignmentInvoicePdfGenerate(findConsignmentInvoice);
+        return new ResponseEntity<>(consignmentInvoiceList, HttpStatus.OK);
+    }
 }

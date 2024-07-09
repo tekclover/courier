@@ -19,5 +19,6 @@ public class BondedManifestCompositeKey implements Serializable {
     private String bondedId;
     private String masterAirwayBill;
     private String houseAirwayBill;
-
+    private String pieceId;
+    private String pieceItemId;
 }

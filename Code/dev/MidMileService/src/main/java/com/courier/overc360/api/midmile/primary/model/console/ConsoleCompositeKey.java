@@ -2,6 +2,8 @@ package com.courier.overc360.api.midmile.primary.model.console;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -19,5 +21,7 @@ public class ConsoleCompositeKey implements Serializable {
     private String masterAirwayBill;
     private String houseAirwayBill;
     private String consoleId;
+    private String pieceId;
+    private String pieceItemId;
 
 }
