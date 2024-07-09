@@ -91,7 +91,7 @@ export class ConsignorValueComponent {
 
     this.customerDropdown();
 
-    this.form.controls.referenceField1.disable();
+    // this.form.controls.referenceField1.disable();
   }
 
   save() {
@@ -143,9 +143,9 @@ export class ConsignorValueComponent {
     this.customerService.search(obj).subscribe({
       next: (result) => {
         this.form.patchValue(result[0]);
-        this.productIdList = this.cas.foreachlist(result, { key: 'productId', value: 'productName' });
-        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
-        this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        this.productIdList = this.cas.foreachlistWithoutKey(result, { key: 'productId', value: 'productName' });
+        this.subProductIdList = this.cas.foreachlistWithoutKey(result, { key: 'subProductId', value: 'subProductName' });
+        this.subProductValueList = this.cas.foreachlistWithoutKey(result, { key: 'subProductValue', value: 'subProductValue' });
         this.productIdList = this.cs.removeDuplicatesFromArrayList(this.productIdList, 'value');
         this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value');
 

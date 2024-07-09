@@ -263,6 +263,8 @@ public class ConsoleService {
                     AddConsole itemConsole = new AddConsole();
                     itemConsole.setConsigneeName(consignment.getDestinationDetails().getName());
                     itemConsole.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
+                    itemConsole.setShipperId(consignment.getPartnerId());
+                    itemConsole.setShipperName(consignment.getPartnerName());
                     BeanUtils.copyProperties(consignment, itemConsole, CommonUtils.getNullPropertyNames(consignment));
                     BeanUtils.copyProperties(replicaAddItemDetails, itemConsole, CommonUtils.getNullPropertyNames(replicaAddItemDetails));
                     consoles.add(itemConsole);
