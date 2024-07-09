@@ -96,14 +96,15 @@ public class BondedManifestService {
 
         List<AddBondedManifest> addBondedManifest = new ArrayList<>();
         for (AddConsignment consignment : addConsignments) {
-            AddBondedManifest bondedManifest = new AddBondedManifest();
-            BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
 
             for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
                 for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+                    AddBondedManifest bondedManifest = new AddBondedManifest();
+                    BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
                     BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
-                }}
-            addBondedManifest.add(bondedManifest);
+                    addBondedManifest.add(bondedManifest);
+                }
+            }
         }
 
         return createBondedManifest(addBondedManifest, loginUserID);
@@ -141,14 +142,14 @@ public class BondedManifestService {
                 BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
                 IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(
                         addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
-                Optional<IKeyValuePair> eventStatus =  consignmentEntityRepository.getStatusEventText(newBondedManifest.getLanguageId(),
+                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(newBondedManifest.getLanguageId(),
                         newBondedManifest.getCompanyId(), "1", "4");
 
                 if (lAndCDesc != null) {
                     newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
                     newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                if(eventStatus.isPresent()) {
+                if (eventStatus.isPresent()) {
                     IKeyValuePair iKeyValuePair = eventStatus.get();
                     newBondedManifest.setStatusId("1");
                     newBondedManifest.setEventCode("4");
@@ -171,7 +172,7 @@ public class BondedManifestService {
                         createdBondedManifest.getLanguageId(), createdBondedManifest.getLanguageDescription(), createdBondedManifest.getPieceId(), createdBondedManifest.getStatusId(),
                         createdBondedManifest.getMasterAirwayBill(), createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getStatusText(), createdBondedManifest.getStatusId(),
                         createdBondedManifest.getStatusText(), createdBondedManifest.getEventCode(), createdBondedManifest.getEventText(), createdBondedManifest.getEventCode(),
-                        createdBondedManifest.getEventText(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getStatusTimestamp(), loginUserID );
+                        createdBondedManifest.getEventText(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getStatusTimestamp(), loginUserID);
 
                 if (createdBondedManifest != null) {
                     //Update Event From consignment
@@ -217,13 +218,13 @@ public class BondedManifestService {
 
                 BeanUtils.copyProperties(updatedBondedManifestList, dbBondedManifest, CommonUtils.getNullPropertyNames(updatedBondedManifestList));
 
-                Optional<IKeyValuePair> eventStatus =  consignmentEntityRepository.getStatusEventText(dbBondedManifest.getLanguageId(),
+                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(dbBondedManifest.getLanguageId(),
                         dbBondedManifest.getCompanyId(), "2", dbBondedManifest.getEventCode());
 
-                if(eventStatus.isPresent()) {
+                if (eventStatus.isPresent()) {
                     IKeyValuePair iKeyValuePair = eventStatus.get();
                     dbBondedManifest.setStatusId("2");
-                    if(dbBondedManifest.getEventCode() != null) {
+                    if (dbBondedManifest.getEventCode() != null) {
                         dbBondedManifest.setEventCode(dbBondedManifest.getEventCode());
                     }
                     dbBondedManifest.setStatusText(iKeyValuePair.getStatusText());
@@ -242,7 +243,7 @@ public class BondedManifestService {
                         updatedBondedManifest.getLanguageId(), updatedBondedManifest.getLanguageDescription(), updatedBondedManifest.getPieceId(), updatedBondedManifest.getStatusId(),
                         updatedBondedManifest.getMasterAirwayBill(), updatedBondedManifest.getHouseAirwayBill(), updatedBondedManifest.getStatusText(), updatedBondedManifest.getStatusId(),
                         updatedBondedManifest.getStatusText(), updatedBondedManifest.getEventCode(), updatedBondedManifest.getEventText(), updatedBondedManifest.getEventCode(),
-                        updatedBondedManifest.getEventText(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getStatusTimestamp(), loginUserID );
+                        updatedBondedManifest.getEventText(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getStatusTimestamp(), loginUserID);
 
                 if (updatedBondedManifest != null) {
                     //Update Event From consignment
