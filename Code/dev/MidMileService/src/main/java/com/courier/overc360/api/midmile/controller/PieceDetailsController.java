@@ -3,6 +3,8 @@ package com.courier.overc360.api.midmile.controller;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
+import com.courier.overc360.api.midmile.replica.model.dto.LabelFormInput;
+import com.courier.overc360.api.midmile.replica.model.dto.LabelFormOutput;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.FindPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import com.courier.overc360.api.midmile.service.PieceDetailsService;
@@ -91,6 +93,14 @@ public class PieceDetailsController {
     public ResponseEntity<?> findPieceDetails(@Valid @RequestBody FindPieceDetails findPieceDetails) throws Exception {
         List<ReplicaPieceDetails> pieceDetailsList = pieceDetailsService.findPieceDetails(findPieceDetails);
         return new ResponseEntity<>(pieceDetailsList, HttpStatus.OK);
+    }
+
+    //getLabelFormOutput
+    @ApiOperation(response = LabelFormOutput.class, value = "get pdf LabelFormOutput")
+    @PostMapping("/pdfLabel")
+    public ResponseEntity<?> findLabelFormOutput(@Valid @RequestBody LabelFormInput labelFormInput) throws Exception {
+        List<LabelFormOutput> labelFormOutputList = pieceDetailsService.getLabelFormOutput(labelFormInput);
+        return new ResponseEntity<>(labelFormOutputList, HttpStatus.OK);
     }
 
 }
