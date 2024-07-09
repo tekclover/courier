@@ -27,7 +27,6 @@
                                 <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
@@ -35,8 +34,6 @@
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Country</p>
                                 <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
@@ -47,7 +44,6 @@
                                 <mat-error *ngIf="errorHandling('countryId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Province</p>
                                 <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
@@ -57,7 +53,6 @@
                                 <mat-error *ngIf="errorHandling('provinceId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">District ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="districtId"
@@ -66,7 +61,6 @@
                                 <mat-error *ngIf="errorHandling('districtId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">District Name</p>
                                 <input maxlength="100" pInputText formControlName="districtName" class=" w-100"
@@ -75,19 +69,16 @@
                                 <mat-error *ngIf="errorHandling('districtName')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
                                 <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
                                     formControlName="statusId" placeholder="Select" />
                             </div>
-
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
                                 <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
                                     placeholder="Enter" />
                             </div>
-
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
                             <button class="buttom1 textBlack mx-1" routerLink="/main/idMaster/district">Cancel</button>
