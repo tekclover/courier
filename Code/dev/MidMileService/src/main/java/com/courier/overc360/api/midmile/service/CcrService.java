@@ -118,6 +118,9 @@ public class CcrService {
 
                 if(customsValue != null && customsValue < 100){
                     newCcr.setIsExempted("yes");
+                    newCcr.setExemptionFor("Regulation 94-2020");
+                    newCcr.setExemptionBeneficiary("others");
+                    newCcr.setExemptionReference("99");
                 }else {
                     newCcr.setIsExempted("No");
                 }
