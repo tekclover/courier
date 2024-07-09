@@ -87,6 +87,8 @@ export class CustomerValueComponent {
     }
 
     this.productDropdown();
+
+    this.form.controls.referenceField1.disable();
   }
 
   save() {
@@ -157,6 +159,7 @@ export class CustomerValueComponent {
     this.spin.show();
     this.subProductService.search(obj).subscribe({next: (result) => {
       this.subProductValueList = this.cas.foreachlist(result, {key: 'subProductValue', value: 'referenceField1'});
+      this.subProductValueList = this.cs.removeDuplicatesFromArrayList(this.subProductValueList, 'value')
       this.form.patchValue(result[0]);
       this.spin.hide();
     }, error: (err) => {

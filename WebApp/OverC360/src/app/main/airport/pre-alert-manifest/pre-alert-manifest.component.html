@@ -125,8 +125,8 @@
                     <th style="width: 5rem;">
                         Actions
                     </th>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                        {{ col.header }} <p-sortIcon [field]="col.field" />
+                    <th *ngFor="let col of columns">
+                        {{ col.header }}
                     </th>
                 </tr>
             </ng-template>
@@ -150,8 +150,8 @@
                                 'Yes'}}</span>
                             <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
                                 'Yes'}}</span>
-                            <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator(rowData)" [ngStyle]="{ 'cursor': rowData[col.field] == 0 ? 'pointer' : 'pointer' }" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
-                                'Yes'}}</span>
+                            <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator(rowData)" [ngStyle]="{ 'cursor': rowData[col.field] == 0 ? 'pointer' : 'pointer' }" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'green' : 'red'">{{rowData[col.field] == 0 ? 'Yes' :
+                                'No'}}</span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field]| date: 'dd-MM-yyyy HH:mm'  }}</span>
                         </ng-template>
                     </td>
