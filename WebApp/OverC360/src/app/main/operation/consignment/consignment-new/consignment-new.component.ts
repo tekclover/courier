@@ -867,7 +867,7 @@ export class ConsignmentNewComponent {
       return;
     } else {
       this.activeIndex = 1;
-      this.disabledConsignment = false;
+      this.disabledPiece = false;
       this.submitted = false;
     }
   }
@@ -896,15 +896,15 @@ export class ConsignmentNewComponent {
       });
       return;
     } else {
-      this.activeIndex = 2;
+      this.activeIndex = 3;
       this.submitted = false;
-      this.disabledPiece = false;
+      this.disabledSender = false;
     }
   }
   savePiece() {
-    this.activeIndex = 3;
+    this.activeIndex = 2;
     this.submitted = false;
-    this.disabledSender = false;
+    this.disabledConsignment = false;
   }
   saveSender() {
     this.submitted = true;
@@ -1026,7 +1026,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res[0].consignmentId + ' has been updated successfully',
+            detail: res[0].houseAirwayBill + ' has been updated successfully',
           });
           this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);
@@ -1043,7 +1043,7 @@ export class ConsignmentNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.consignmentId + ' has been created successfully',
+            detail: res.houseAirwayBill + ' has been created successfully',
           });
           this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);

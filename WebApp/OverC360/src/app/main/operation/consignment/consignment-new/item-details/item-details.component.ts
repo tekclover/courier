@@ -82,6 +82,8 @@ export class ItemDetailsComponent {
     this.patchForm(this.data.line.value)
   }
   save() {
+    const control = (this.itemForm.controls.itemDetails as FormArray)
+    console.log(control.value)
     this.dialogRef.close(this.itemForm.controls.itemDetails.value)
   }
   calculateVolume(formName: any) {

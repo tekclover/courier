@@ -335,6 +335,80 @@
                 </div>
             </p-tabPanel>
 
+            <p-tabPanel header="Package Details" [disabled]="disabledPiece">
+                <form [formGroup]="piece" class="mt-1">
+                    <p-table class="paddingZero" [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
+                        [value]="this.piece.controls.pieceDetails.controls">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Piece No</th>
+                                <th>Product Type</th>
+                                <th>No of Items</th>
+                                <th>Total Value</th>
+                                <th>Currency</th>
+                                <th style="min-width: 9rem; justify-content: center;">
+                                    Actions</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
+                            <tr [formGroup]="item">
+
+                                <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                        formControlName="packReferenceNumber"></td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                        formControlName="pieceProductCode">
+                                </td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="tags"></td>
+                                <td><input class="inputborderLess pl-3" placeholder="Enter"
+                                        formControlName="pieceValue"></td>
+                                <td>
+                                    <p-dropdown [options]="currencyDropdown" placeholder="Select" filter="true"
+                                        formControlName="pieceCurrency" appendTo="body" [style]="{'width': '100%'}"
+                                        [panelStyle]="{'width':'100%'}" />
+                                </td>
+                                <td style="padding-left: 1.5rem !important;">
+                                    <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
+                                        alt="" srcset="" style="height: 1.4rem;">
+                                    <p-overlayPanel [style]="{ width: '180' }" #op>
+                                        <div class="d-flex flex-column">
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="dimension(this.pageToken.pageflow, 'piece', i); op.hide()"><img
+                                                    src="./assets/common/dimension.png"
+                                                    style="padding-right: 10px;width: 2rem;"
+                                                    srcset="">Dimension</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="opendialog(this.pageToken.pageflow, i); op.hide()"><img
+                                                    src="./assets/common/add.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Item</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="removePieceDetail(i, rowData); op.hide()"><img
+                                                    src="./assets/common/delete1x.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="imageupload(this.pageToken.pageflow, i); op.hide()"><img
+                                                    src="./assets/common/image.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Image</button>
+                                        </div>
+                                    </p-overlayPanel>
+                                </td>
+                            </tr>
+
+                        </ng-template>
+                    </p-table>
+                </form>
+                <div class="d-flex mt-1 justify-content-center" style="position: absolute; right: 50%; bottom: 7%;">
+                    <button (click)="addPieceDetail()" type="button"
+                        class="btn ml-2 addNewbuttom bgOrange text-white"><i class="bi bi-plus-square pr-2"></i> Add
+                        New</button>
+                </div>
+                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
+                    <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
+
+                    <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
+                    <button class="buttom1 bgBlack text-white mx-1" (click)="savePiece()">Next</button>
+                </div>
+            </p-tabPanel>
+
             <p-tabPanel header="Consignment" [disabled]="disabledConsignment">
                 <form [formGroup]="consignment">
                     <div class="row scrollNew22">
@@ -547,79 +621,7 @@
                 </form>
             </p-tabPanel>
 
-            <p-tabPanel header="Package Details" [disabled]="disabledPiece">
-                <form [formGroup]="piece" class="mt-1">
-                    <p-table class="paddingZero" [scrollable]="true" scrollHeight="calc(100vh - 24.8rem)"
-                        [value]="this.piece.controls.pieceDetails.controls">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th>Piece No</th>
-                                <th>Product Type</th>
-                                <th>No of Items</th>
-                                <th>Total Value</th>
-                                <th>Currency</th>
-                                <th style="min-width: 9rem; justify-content: center;">
-                                    Actions</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-item let-i="rowIndex" let-rowData>
-                            <tr [formGroup]="item">
-
-                                <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="packReferenceNumber"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="pieceProductCode">
-                                </td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter" formControlName="tags"></td>
-                                <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="pieceValue"></td>
-                                <td>
-                                    <p-dropdown [options]="currencyDropdown" placeholder="Select" filter="true"
-                                        formControlName="pieceCurrency" appendTo="body" [style]="{'width': '100%'}"
-                                        [panelStyle]="{'width':'100%'}" />
-                                </td>
-                                <td>
-                                    <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
-                                        alt="" srcset="" style="height: 1.4rem;">
-                                    <p-overlayPanel [style]="{ width: '180' }" #op>
-                                        <div class="d-flex flex-column">
-                                            <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="dimension(this.pageToken.pageflow, 'piece', i); op.hide()"><img
-                                                    src="./assets/common/dimension.png"
-                                                    style="padding-right: 10px;width: 2rem;"
-                                                    srcset="">Dimension</button>
-                                            <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="opendialog(this.pageToken.pageflow, i); op.hide()"><img
-                                                    src="./assets/common/add.png"
-                                                    style="padding-right: 10px;width: 2rem;" srcset="">Item</button>
-                                            <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="removePieceDetail(i, rowData); op.hide()"><img
-                                                    src="./assets/common/delete1x.png"
-                                                    style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
-                                            <button style="width: 8rem;" mat-menu-item class="w-100"
-                                                (click)="imageupload(this.pageToken.pageflow, i); op.hide()"><img
-                                                    src="./assets/common/image.png"
-                                                    style="padding-right: 10px;width: 2rem;" srcset="">Image</button>
-                                        </div>
-                                    </p-overlayPanel>
-                                </td>
-                            </tr>
-
-                        </ng-template>
-                    </p-table>
-                </form>
-                <div class="d-flex mt-1 justify-content-center" style="position: absolute; right: 50%; bottom: 7%;">
-                    <button (click)="addPieceDetail()" type="button"
-                        class="btn ml-2 addNewbuttom bgOrange text-white"><i class="bi bi-plus-square pr-2"></i> Add
-                        New</button>
-                </div>
-                <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 5%; bottom: 7%;">
-                    <button class="buttom1 textBlack mx-1" routerLink="/main/operation/consignment">Cancel</button>
-
-                    <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>
-                    <button class="buttom1 bgBlack text-white mx-1" (click)="savePiece()">Next</button>
-                </div>
-            </p-tabPanel>
+ 
 
             <p-tabPanel header="Origin" [disabled]="disabledSender">
                 <form [formGroup]="senderInfo">
