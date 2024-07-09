@@ -137,9 +137,9 @@ export class CustomerValueComponent {
     this.spin.show();
     this.productService.search(obj).subscribe({
       next: (result) => {
-        this.subProductIdList = this.cas.foreachlist(result, { key: 'subProductId', value: 'subProductName' });
+        this.subProductIdList = this.cas.foreachlistWithoutKey(result, { key: 'subProductId', value: 'subProductName' });
         this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
-        this.subProductValueList = this.cas.foreachlist(result, { key: 'subProductValue', value: 'subProductValue' });
+        this.subProductValueList = this.cas.foreachlistWithoutKey(result, { key: 'subProductValue', value: 'subProductValue' });
         this.form.patchValue(result[0]);
         this.spin.hide();
       }, error: (err) => {
