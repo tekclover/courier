@@ -1,31 +1,35 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">Console - {{this.pageToken.pageflow}}</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button"   *ngIf="this.pageToken.pageflow=='Edit'"class="buttom1 bgBlack text-white ml-2" (click)="transfer()">Transfer</button>
+        </div>
     </div>
+
     <div class="mx-auto mt-4">
         <form [formGroup]="form">
             <div class="d-flex-row">
                 <div class="row scrollNew">
-                    <div class="col-4 marginFieldNew borderRadius12">
+                    <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Language</p>
                         <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                             [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                         <mat-error *ngIf="errorHandling('languageId')"
                             class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                     </div>
-                    <div class="col-4 marginFieldNew borderRadius12">
+                    <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Company</p>
                         <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                             [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
                         <mat-error *ngIf="errorHandling('companyId')"
                             class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                     </div>
-                    <div class="col-4 marginFieldNew borderRadius12">
+                    <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Console ID</p>
                         <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="consoleId"
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
-                    <div class="col-4 marginFieldNew borderRadius12">
+                    <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
                         <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusId"
                         class="w-100" pInputText placeholder="Enter" />
@@ -152,8 +156,6 @@
                 <button class="buttom1 textBlack mx-1" routerLink="/main/airport/console">Cancel</button>
                 <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
                     != 'New' ? 'Confirm': 'Save'}}</button>
-                <button *ngIf="this.pageToken.pageflow=='Edit'" class="buttom1 bgBlack text-white mx-1" (click)="transfer()">{{
-                   'Transfer'}}</button>
             </div>
         </form>
     </div>
