@@ -65,6 +65,19 @@ export class ConsignmentService {
     return this.http.post<any>('/doc-storage/multiUpload'+'?location='+ location , formData);
   }
 
+  
+  public uploadsinglefile(file: File, location:any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post('/document/Upload' + '?filePath=' + location, formData);
+  }
+
+  uploadBayan(file: File, filePath:any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
+  }
+
   uploadConsignment(file: File) {
     const formData = new FormData();
     formData.append('file', file);
