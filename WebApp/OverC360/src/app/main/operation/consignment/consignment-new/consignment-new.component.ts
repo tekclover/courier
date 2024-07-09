@@ -231,7 +231,7 @@ export class ConsignmentNewComponent {
     volumeUnit: [],
     weight: [],
     weightUnit: [],
-    invoiceDate: [new Date,],
+    invoiceDate: [,],
     invoiceDateFE: [new Date,],
     invoiceSupplierName: [],
     goodsDescription: [],
@@ -698,9 +698,18 @@ export class ConsignmentNewComponent {
         itemDetailsFormArray.clear();
        const getPieceForm = (this.piece.controls.pieceDetails as FormArray).at(index);
        getPieceForm.patchValue({
-        pieceValue: result.pieceValue
+        pieceValue: result.pieceValue,
+        length: result.length,
+        width: result.width,
+        height: result.height,
+        weight: result.weight,
+        tags: result.tags,
+        volume: result.volume,
+        weightUnit: result.weightUnit,
+        volumeUnit: result.volumeUnit,
+        dimensionUnit: result.dimensionUnit,
+        pieceCurrency: result.currency,
       });
-       console.log(this.piece)
         result.lines.forEach((item: any) => {
           itemDetailsFormArray.push(this.fb.group({
             codAmount: item.codAmount,
@@ -906,6 +915,15 @@ export class ConsignmentNewComponent {
     }
   }
   savePiece() {
+
+    const control = (this.piece.controls.pieceDetails as FormArray)
+    this.consignment.controls.length.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.pieceValue), 0));
+    const length = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.length), 0);
+    const width = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.width), 0);
+    const height = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.height), 0);
+    const weight = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.weight), 0);
+    const volume = control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.volume), 0);
+
     this.activeIndex = 2;
     this.submitted = false;
     this.disabledConsignment = false;
