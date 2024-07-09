@@ -94,6 +94,22 @@ export class CommonAPIService {
     return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
 
+  foreachlistWithoutKey(list: any, val: { key: any, value: any }, _filter: any = {}, addblank: boolean = false,) {
+    let dropdownlist: dropdownelement[] = [];
+    let dropdownlist1: dropdownelement1[] = [];
+    let filter = list;
+    if (_filter)
+      filter = this.cs.filterArray(list, _filter);
+    if (addblank)
+      dropdownlist.push({ key: '', value: '' });
+    for (const l of filter) {
+      let filter2 = this.cs.filterArray(dropdownlist, { key: l[val.key] })
+      if (filter2.length == 0)
+      dropdownlist1.push({ value: l[val.key], label: l[val.value] });
+    }
+    return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
+  }
+
   
   forLanguageFilter(list: any, val: { key: any, value: any, languageId: any, companyId: any }, _filter: any = {}, addblank: boolean = false,) {
     let dropdownlist: dropdownelement2[] = [];
