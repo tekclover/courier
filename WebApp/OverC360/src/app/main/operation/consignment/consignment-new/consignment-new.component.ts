@@ -1068,7 +1068,7 @@ export class ConsignmentNewComponent {
         next: (res) => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Updated',
+            summary: 'Created',
             key: 'br',
             detail: res[0].houseAirwayBill + ' has been created successfully',
           });

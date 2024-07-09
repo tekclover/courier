@@ -110,7 +110,7 @@
             scrollHeight="calc(100vh - 20.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
             sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="ccrId"
             rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>

@@ -584,7 +584,8 @@ export class ConsignmentLabelComponent {
       var filepath = result.houseAirwayBill + '/' + 'label/';
       if (file) {
         this.consginementService.uploadsinglefile(file, filepath).subscribe((resp: any) => {
-          this.fileNameList.push(resp.file);
+          this.fileNameList.push(resp.location + resp.file);
+          console.log(this.fileNameList)
         });
       }
     });
@@ -840,11 +841,12 @@ export class ConsignmentLabelComponent {
     //pdfMake.createPdf(dd).open();
     const pdfDocGenerator = pdfMake.createPdf(dd);
     pdfDocGenerator.getBlob((blob) => {
-      var file = new File([blob], result.houseAirwayBill + '_' + 'labels' + ".pdf");
+      var file = new File([blob], result.pieceId + '_' + 'labels' + ".pdf");
       var filepath = result.houseAirwayBill + '/' + 'label/';
       if (file) {
         this.consginementService.uploadsinglefile(file, filepath).subscribe((resp: any) => {
-          this.fileNameList.push(resp.file);
+          this.fileNameList.push(resp.location + resp.file);
+          console.log(this.fileNameList)
         });
       }
     });
