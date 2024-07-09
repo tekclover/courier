@@ -193,13 +193,14 @@ public class WrapperServiceController {
     }
 
     @ApiOperation(response = Optional.class, value = "Single Document Storage Upload") // label for swagger
-    @PostMapping("/doc-storage/Upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String location) {
+    @PostMapping("/document/Upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String filePath) {
         try {
-            Map<String, String> response = fileStorageService.storeSingleFile(file, location);
+            log.info("Upload Initiated");
+            Map<String, String> response = fileStorageService.storeSingleFile(file, filePath);
             return new ResponseEntity <> (response, HttpStatus.OK) ;
         } catch (Exception e) {
-            return new ResponseEntity <> ("file upload failed!", HttpStatus.EXPECTATION_FAILED) ;
+            return ResponseEntity.status(500).body("Failed to Upload" + e.getMessage());
         }
     }
 
