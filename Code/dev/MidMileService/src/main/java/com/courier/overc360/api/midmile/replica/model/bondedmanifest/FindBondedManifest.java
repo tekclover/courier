@@ -13,5 +13,8 @@ public class FindBondedManifest {
     private List<String> masterAirwayBill;
     private List<String> houseAirwayBill;
     private List<String> bondedId;
+    private List<String> hsCode;
+    private List<String> pieceId;
+    private List<String> pieceItemId;
 
 }

@@ -51,6 +51,18 @@ public class BondedManifestSpecification implements Specification<ReplicaBondedM
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("bondedId");
             predicates.add(group.in(findBondedManifest.getBondedId()));
         }
+        if (findBondedManifest.getPieceId() != null && !findBondedManifest.getPieceId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("pieceId");
+            predicates.add(group.in(findBondedManifest.getPieceId()));
+        }
+        if (findBondedManifest.getPieceItemId() != null && !findBondedManifest.getPieceItemId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("pieceItemId");
+            predicates.add(group.in(findBondedManifest.getPieceItemId()));
+        }
+        if (findBondedManifest.getHsCode() != null && !findBondedManifest.getHsCode().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("hsCode");
+            predicates.add(group.in(findBondedManifest.getHsCode()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }
