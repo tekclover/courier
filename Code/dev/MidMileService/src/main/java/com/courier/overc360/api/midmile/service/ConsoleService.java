@@ -12,6 +12,8 @@ import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPiec
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.ConsoleSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -34,7 +36,7 @@ public class ConsoleService {
     private ConsoleRepository consoleRepository;
 
     @Autowired
-    private CcrRepository ccrRepository;
+    private ReplicaCcrRepository ccrRepository;
 
     @Autowired
     private ReplicaConsoleRepository replicaConsoleRepository;
@@ -46,7 +48,7 @@ public class ConsoleService {
     private ErrorLogService errorLogService;
 
     @Autowired
-    private BondedManifestRepository bondedManifestRepository;
+    private ReplicaBondedManifestRepository replicaBondedManifestRepository;
 
     @Autowired
     private ErrorLogRepository errorLogRepository;
@@ -257,6 +259,8 @@ public class ConsoleService {
         List<AddConsole> consoles = new ArrayList<>();
         for (ReplicaAddConsignment consignment : replicaAddConsignment) {
             AddConsole console = new AddConsole();
+            console.setConsigneeName(consignment.getDestinationDetails().getName());
+            console.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
             BeanUtils.copyProperties(consignment, console, CommonUtils.getNullPropertyNames(consignment));
             for (ReplicaAddPieceDetails replicaAddPieceDetails : consignment.getPieceDetails()) {
                 for (ReplicaAddItemDetails replicaAddItemDetails : replicaAddPieceDetails.getItemDetails()) {
@@ -462,7 +466,7 @@ public class ConsoleService {
                             }
 
                             // Pass ConsignmentCurrency
-                            IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+                            IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
                             IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
                                     console.getLanguageId(), console.getCompanyId());
                             // Get Iatakd
@@ -509,13 +513,14 @@ public class ConsoleService {
                                 newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                             }
 
-                            IKeyValuePair eventStatus = consignmentEntityRepository.getStatusEventText(console.getCompanyId(), "1", "6");
+                            Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(console.getLanguageId(), console.getCompanyId(), "1", "6");
 
-                            if (eventStatus != null) {
+                            if (eventStatus.isPresent()) {
+                                IKeyValuePair ikey = eventStatus.get();
                                 newConsole.setStatusId("1");
                                 newConsole.setEventCode("6");
-                                newConsole.setStatusText(eventStatus.getStatusText());
-                                newConsole.setEventText(eventStatus.getEventText());
+                                newConsole.setStatusText(ikey.getStatusText());
+                                newConsole.setEventText(ikey.getEventText());
                                 newConsole.setEventTimestamp(new Date());
                                 newConsole.setStatusTimestamp(new Date());
                             }
@@ -570,7 +575,7 @@ public class ConsoleService {
                     for (AddConsole console : smallerGroup) {
                         Double consignmentValue = null;
 
-                        IKeyValuePair iKeyValue = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+                        IKeyValuePair iKeyValue = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                         Double toCurrencyValue = 0.0;
                         if (iKeyValue != null && iKeyValue.getCurrencyValue() != null) {
@@ -624,13 +629,13 @@ public class ConsoleService {
                             }
 
                             // Pass ConsignmentCurrency
-                            IKeyValuePair iKeyValuePair = bondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+                            IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
                             Console newConsole = new Console();
                             BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
 
                             IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(console.getLanguageId(), console.getCompanyId());
-                            IKeyValuePair eventStatus = consignmentEntityRepository.getStatusEventText(console.getCompanyId(), "1", "6");
+                            Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(console.getLanguageId(), console.getCompanyId(), "1", "6");
 
                             if (lAndCDesc != null) {
                                 newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
@@ -673,11 +678,12 @@ public class ConsoleService {
                                 newConsole.setIataKd(iataData.getIataKd());
                             }
 
-                            if (eventStatus != null) {
+                            if (eventStatus.isPresent()) {
+                                IKeyValuePair ikey = eventStatus.get();
                                 newConsole.setStatusId("1");
                                 newConsole.setEventCode("6");
-                                newConsole.setStatusText(eventStatus.getStatusText());
-                                newConsole.setEventText(eventStatus.getEventText());
+                                newConsole.setStatusText(ikey.getStatusText());
+                                newConsole.setEventText(ikey.getEventText());
                                 newConsole.setEventTimestamp(new Date());
                                 newConsole.setStatusTimestamp(new Date());
                             }
@@ -1073,14 +1079,15 @@ public class ConsoleService {
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
                 if(dbConsole.getStatusId() != null && dbConsole.getEventCode() != null) {
-                    IKeyValuePair iKeyValuePair = consignmentEntityRepository.getStatusEventText(
-                            dbConsole.getCompanyId(), dbConsole.getStatusId(), dbConsole.getEventCode());
+                    Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(
+                            dbConsole.getLanguageId(), dbConsole.getCompanyId(), dbConsole.getStatusId(), dbConsole.getEventCode());
 
                     dbConsole.setStatusId(dbConsole.getStatusId());
                     dbConsole.setEventCode(dbConsole.getEventCode());
-                    if(iKeyValuePair != null) {
-                        dbConsole.setStatusText(iKeyValuePair.getStatusText());
-                        dbConsole.setEventText(iKeyValuePair.getEventText());
+                    if(iKeyValuePair.isPresent()) {
+                        IKeyValuePair ikey = iKeyValuePair.get();
+                        dbConsole.setStatusText(ikey.getStatusText());
+                        dbConsole.setEventText(ikey.getEventText());
                     }
                     dbConsole.setStatusTimestamp(new Date());
                     dbConsole.setEventTimestamp(new Date());

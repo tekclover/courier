@@ -36,7 +36,7 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
 
     @Query(value = "Select \n" +
-            "CONSIGNOR_NAME consignorName, \n" +
+            "top 1 CONSIGNOR_NAME consignorName, \n" +
             "PRODUCT_ID productId, \n" +
             "SUB_PRODUCT_ID subProductId, \n" +
             "PRODUCT_TEXT productName, \n" +
@@ -51,7 +51,7 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                @Param(value = "languageId") String languageId,
                                @Param(value = "companyId") String companyId);
 
-    @Query(value = "select customer_name customerName, \n" +
+    @Query(value = "select top 1 customer_name customerName, \n" +
             " product_id productId, product_text productName, \n " +
             " sub_product_id subProductId, sub_product_name subProductName \n " +
             " from tblcustomer where customer_id in (:customerId) and \n " +

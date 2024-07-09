@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
+import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -47,6 +48,17 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
                                @Param(value = "partnerId") String partnerId,
                                @Param(value = "masterAirwayBill") String masterAirwayBill,
                                @Param(value = "houseAirwayBill") String houseAirwayBill);
+
+    @Query(value = "Select \n" +
+            "TO_CURRENCY_VALUE currencyValue, \n" +
+            "TO_CURRENCY_ID currencyId \n " +
+            "From tblcurrencyexchangerate  \n" +
+            "Where \n" +
+            "C_ID IN (:companyId) and \n" +
+            "FROM_CURRENCY_ID IN (:freightCurrency) and \n" +
+            "is_deleted = 0", nativeQuery = true)
+    IKeyValuePair getToCurrencyValue(@Param(value = "companyId") String companyId,
+                                     @Param(value = "freightCurrency") String freightCurrency);
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);

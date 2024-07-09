@@ -122,13 +122,14 @@ public class CcrService {
                 }
                 newCcr.setCcrId(CCR_ID);
 
-                IKeyValuePair eventStatus =  consignmentEntityRepository.getStatusEventText(addCcr.getCompanyId(), "6", "11");
+                Optional<IKeyValuePair> eventStatus =  consignmentEntityRepository.getStatusEventText(addCcr.getLanguageId(), addCcr.getCompanyId(), "6", "11");
 
-                if(eventStatus != null) {
+                if(eventStatus.isPresent()) {
+                    IKeyValuePair iKeyValuePair = eventStatus.get();
                     newCcr.setStatusId("6");
                     newCcr.setEventCode("11");
-                    newCcr.setStatusText(eventStatus.getStatusText());
-                    newCcr.setEventText(eventStatus.getEventText());
+                    newCcr.setStatusText(iKeyValuePair.getStatusText());
+                    newCcr.setEventText(iKeyValuePair.getEventText());
                     newCcr.setEventTimestamp(new Date());
                     newCcr.setStatusTimestamp(new Date());
                 }
@@ -307,13 +308,15 @@ public class CcrService {
                 dbCcr.setUpdatedOn(new Date());
 
                 if(dbCcr.getStatusId() != null && dbCcr.getEventCode() != null) {
-                    IKeyValuePair iKeyValuePair = consignmentEntityRepository.getStatusEventText(dbCcr.getCompanyId(),
+                    Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText( dbCcr.getLanguageId(), dbCcr.getCompanyId(),
                             dbCcr.getStatusId(), dbCcr.getEventCode());
+
                     dbCcr.setStatusId(dbCcr.getStatusId());
                     dbCcr.setEventCode(dbCcr.getEventCode());
-                    if(iKeyValuePair != null) {
-                        dbCcr.setStatusText(iKeyValuePair.getStatusText());
-                        dbCcr.setEventText(iKeyValuePair.getEventText());
+                    if(iKeyValuePair.isPresent()) {
+                        IKeyValuePair ikey = iKeyValuePair.get();
+                        dbCcr.setStatusText(ikey.getStatusText());
+                        dbCcr.setEventText(ikey.getEventText());
                     }
                     dbCcr.setStatusTimestamp(new Date());
                     dbCcr.setEventTimestamp(new Date());

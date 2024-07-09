@@ -2,11 +2,9 @@ package com.courier.overc360.api.midmile.controller;
 
 
 import com.courier.overc360.api.midmile.primary.model.UploadResponse;
-import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
-import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentDelete;
-import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentEntity;
-import com.courier.overc360.api.midmile.primary.model.consignment.UpdateConsignment;
+import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentInvoice;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
@@ -140,5 +138,13 @@ public class ConsignmentController {
     public ResponseEntity<?> findPreAlertManifest(@RequestBody FindPreAlertManifest findPreAlertManifest) throws Exception {
         List<PreAlertManifestConsignment> consignmentEntityList = consignmentService.findPreAlertManifest(findPreAlertManifest);
         return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
+    }
+
+    // Consignment Invoice
+    @ApiOperation(response = ConsignmentInvoice.class, value = "Find ConsignmentInvoice")
+    @PostMapping("/findConsignmentInvoice")
+    public ResponseEntity<?> findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice) throws Exception {
+        List<ConsignmentInvoice> consignmentInvoiceList = consignmentService.findConsignmentInvoice(findConsignmentInvoice);
+        return new ResponseEntity<>(consignmentInvoiceList, HttpStatus.OK);
     }
 }

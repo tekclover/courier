@@ -17,6 +17,8 @@ import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestImpl;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.FindItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaItemDetailsSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -58,6 +60,12 @@ public class ItemDetailsService {
 
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    ReplicaBondedManifestRepository replicaBondedManifestRepository;
+
+    @Autowired
+    ReplicaCcrRepository replicaCcrRepository;
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
@@ -299,7 +307,7 @@ public class ItemDetailsService {
             }
         } else {
             // Error Log
-            createItemDetailsLog3(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, "Error in deleting ItemId " );
+            createItemDetailsLog3(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, "Error in deleting ItemId ");
             throw new BadRequestException("Error in deleting PieceId - " + pieceId);
         }
     }
@@ -376,6 +384,7 @@ public class ItemDetailsService {
 
     /**
      * for PreAlertManifest
+     *
      * @param languageId
      * @param companyId
      * @param pieceId
@@ -403,8 +412,8 @@ public class ItemDetailsService {
         log.info("found Cities --> " + results);
         return results;
     }
+
     /**
-     *
      * @param findPreAlertManifest
      * @return
      */
@@ -585,11 +594,11 @@ public class ItemDetailsService {
      * @throws CsvException
      */
     @Transactional
-    public List<AddItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName,
-                                                      String partnerName, String houseAirwayBill, String masterAirwayBill,
-                                                      String pieceId, String partnerId, List<AddItemDetails> addItemDetailsList,
-                                                      Long consignmentId, String partnerHawBill, String hsCode, String partnerMawBill,
-                                                      String width, String height, String weightUnit, String volume, String codAmount, String loginUserID)
+    public List<AddItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName, String partnerName,
+                                                      String houseAirwayBill, String masterAirwayBill, String pieceId, String partnerId,
+                                                      List<AddItemDetails> addItemDetailsList, Long consignmentId, String partnerHawBill, String hsCode,
+                                                      String partnerMawBill, String width, String height, String weightUnit, String volume,
+                                                      String codAmount, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddItemDetails> itemDetailsList = new ArrayList<>();
         try {
@@ -606,8 +615,59 @@ public class ItemDetailsService {
 
                         String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
                         ItemDetails newItemDetails = new ItemDetails();
-//                    String PIECE_ITEM_ID = pieceId + "01";
+
+
+                        // Pass ConsignmentCurrency
+//                        IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.ge(companyId, addItemDetails.getCurrency());
+                        // Get Iatakd
+                        Optional<IKeyValuePair> optionalIKeyValuePair = replicaCcrRepository.getIataCurrencyValue(companyId, languageId, country, addItemDetails.getCurrency());
+
+                        if (optionalIKeyValuePair.isPresent()) {
+                            IKeyValuePair iKeyValuePair = optionalIKeyValuePair.get();
+                            if (iKeyValuePair.getCurrencyValue() != null) {
+                                addItemDetails.setExchangeRate(iKeyValuePair.getCurrencyValue());
+                            }
+                            if (iKeyValuePair.getIataKd() != null) {
+                                addItemDetails.setIATA(iKeyValuePair.getIataKd());
+                            }
+                        }
+
+                        if (addItemDetails.getCustomsInsurance() == null) {
+                            addItemDetails.setCustomsInsurance("1");
+                        }
+                        if (addItemDetails.getDuty() == null) {
+                            addItemDetails.setDuty("5");
+                        }
+
                         BeanUtils.copyProperties(addItemDetails, newItemDetails, CommonUtils.getNullPropertyNames(addItemDetails));
+
+                        Double declaredValue = 0.0;
+                        Double exchangeRate = 0.0;
+                        Double consignmentValue= 0.0;
+                        if (newItemDetails.getDeclaredValue() != null && newItemDetails.getExchangeRate() != null) {
+                            declaredValue = Double.valueOf(newItemDetails.getDeclaredValue());
+                            exchangeRate = Double.valueOf(newItemDetails.getExchangeRate());
+                            consignmentValue =  declaredValue * exchangeRate;
+                        }
+
+                        newItemDetails.setConsignmentValueLocal(String.valueOf(consignmentValue));
+                        if(newItemDetails.getIATA() != null) {
+                            newItemDetails.setAddIATA(consignmentValue + newItemDetails.getIATA());
+                        }
+                        if(newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
+                            Double addIata = Double.valueOf(newItemDetails.getAddIATA());
+                            Double insurance = Double.valueOf(newItemDetails.getCustomsInsurance());
+                            newItemDetails.setAddInsurance(String.valueOf(addIata * insurance));
+                            if(newItemDetails.getAddInsurance() != null) {
+                                Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());
+                                newItemDetails.setCustomsValue(String.valueOf(addIata + addInsurance));
+                                if(newItemDetails.getDuty() != null) {
+                                    Double duty = Double.valueOf(newItemDetails.getDuty());
+                                    Double customsValue = Double.valueOf(newItemDetails.getCustomsValue());
+                                    newItemDetails.setCalculatedTotalDuty(String.valueOf(duty * customsValue));
+                                }
+                            }
+                        }
                         newItemDetails.setPieceItemId(PIECE_ITEM_ID);
                         newItemDetails.setCompanyId(companyId);
                         newItemDetails.setLanguageId(languageId);

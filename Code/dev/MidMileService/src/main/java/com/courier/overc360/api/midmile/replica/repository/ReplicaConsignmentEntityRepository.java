@@ -2,6 +2,7 @@ package com.courier.overc360.api.midmile.replica.repository;
 
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
+import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentInvoice;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.dto.ConsignmentImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -70,5 +71,32 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                        @Param(value = "shipperId") List<String> shipperId,
                                        @Param(value = "partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
                                        @Param(value = "partnerMasterAirwayBill") List<String> partnerMasterAirwayBill);
-    
+
+
+    @Query(value = "Select \n" +
+            "tl.COMPANY_NAME orgName, tl.ADDRESS_LINE_1 orgAddressLine1, tl.ADDRESS_LINE_2 orgAddressLine2, tl.CITY orgCity, tl.COUNTRY orgCountry, tl.PHONE orgPhone, \n" +
+            "td.COMPANY_NAME destName, td.ADDRESS_LINE_1 destAddressLine1, td.ADDRESS_LINE_2 destAddressLine2, td.CITY destCity, td.COUNTRY destCountry, td.PHONE destPhone, \n" +
+            "ti.HS_CODE hsCode, ti.DESCRIPTION goodsDescription, ti.WEIGHT itemWeight, ti.DECLARED_VALUE unitValue, ti.DECLARED_VALUE totalValue, \n" +
+            "tc.NO_OF_PIECE_HAWB quantity, tc.CONSIGNMENT_CURRENCY currency, tc.COUNTRY_OF_ORIGIN countryOfOrigin, tc.INCO_TERMS incoTerms, \n" +
+            "tc.NO_OF_PACKAGE_HAWB pieces, tc.GROSS_WEIGHT weight, tc.CTD_ON createdOn, tc.PARTNER_HOUSE_AB awb, tc.CONSIGNMENT_VALUE totalCiv, \n" +
+            "CASE WHEN tc.PAYMENT_TYPE = 'prepaid' THEN tc.CONSIGNMENT_VALUE ELSE '0' END AS prepaid \n" +
+            "From tblconsignment_entity tc \n" +
+            "Join tblitemdetails ti on tc.CONSIGNMENT_ID = ti.CONSIGNMENT_ID \n" +
+            "Join tbldestdetails td on tc.CONSIGNMENT_ID = td.DEST_DETAIL_ID \n" +
+            "Join tblorigindetails tl on tc.CONSIGNMENT_ID = tl.ORIGIN_ID \n" +
+            "Where \n" +
+            "(COALESCE(:houseAirwayBill, null) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) and \n" +
+            "(COALESCE(:partnerHouseAirwayBill, null) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill)) and \n" +
+            "(COALESCE(:partnerMasterAirwayBill, null) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill)) and \n" +
+            "(COALESCE(:companyId, null) IS NULL OR tc.C_ID IN (:companyId)) and \n" +
+            "tc.is_deleted = 0",
+            nativeQuery = true)
+    List<ConsignmentInvoice> getConsignmentInvoice(@Param("houseAirwayBill") List<String> houseAirwayBill,
+                                                   @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
+                                                   @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
+                                                   @Param("companyId") List<String> companyId);
+
+
+
+    ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);
 }
