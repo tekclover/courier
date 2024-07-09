@@ -96,6 +96,17 @@ export class ConsignmentService {
   return this.http.post<any>(`/overc-midmile-service/consignment/find/v2`, obj);
  }
 
+//  pdfMerge(obj: any) {
+//   return this.http.post<any>(`/pdf/merge`, obj);
+//  }
+
+ pdfMerge(obj:any): Promise<File> {
+  return this.http
+  .post<any>(`/pdf/merge`, obj, {
+    responseType: 'blob' as 'json',
+  })
+  .toPromise();
+ }
 }
 
 

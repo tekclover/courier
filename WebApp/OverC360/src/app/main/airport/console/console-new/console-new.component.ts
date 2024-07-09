@@ -51,6 +51,8 @@ export class ConsoleNewComponent {
       consignmentValue: [],
       countryOfOrigin: [],
       createdBy: [],
+      pieceId: [],
+      pieceItemId: [],
       createdOn: ['', ],
       currency: [],
       customsCurrency: [],

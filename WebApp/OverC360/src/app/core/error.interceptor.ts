@@ -36,6 +36,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                 if(request.url.includes('/pdf/extract')){
                     return throwError(error);
                 }
+                if(request.url.includes('pdf/merge')){
+                    return throwError(error);
+                }
                 
                 return this.handle401Error(request, next, error);
             }

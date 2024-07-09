@@ -341,58 +341,58 @@ export class CcrComponent {
   removeDuplicated: any [] = []
 
   generateLabel(){
+    this.uniquePieceId = [];
     if (this.selectedCcr.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
     }
-
-    this.removeDuplicated = [];
-    
-    this.spin.show();
     let obj: any = {};
     obj.ccrId=[this.selectedCcr[0].ccrId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        this.spin.hide();
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        this.label.getResultLabel(pieceId)
       },
       error: (err) => {
        this.spin.hide();
        this.cs.commonerrorNew(err);
       },
     });
-    this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'pieceId');
-   const pieceIdArray = this.removeDuplicated.map(item => item.pieceId);
-  // this.label.labelGenerate(pieceIdArray)
   }
   houseAirwayBill:any;
   
   generateInvoice(){
-    this.removeDuplicated = [];
+    this.uniqueHouseAirway = [];
+    if (this.selectedCcr.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
     let obj: any = {};
     obj.ccrId=[this.selectedCcr[0].ccrId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.getResultInvoice(houseAirwayBillArray)
       },
       error: (err) => {
-       
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
       },
     });
-    this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBill, 'houseAirwayBill');
-   const houseAirwayBillArray = this.removeDuplicated.map(item => item.houseAirwayBill);
- //  this.label.generateMultipleInvoice(houseAirwayBillArray)
   }
 
 
   uniquePieceId: any[] = []; 
   uniqueHouseAirway: any[] = []; 
-
   generateMerge(){
+    this.uniqueHouseAirway = [];
+    this.uniquePieceId = [];
     if (this.selectedCcr.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
     }
-
-    this.spin.show();
     let obj: any = {};
     obj.ccrId=[this.selectedCcr[0].ccrId];
     this.service.search(obj).subscribe({
@@ -401,10 +401,7 @@ export class CcrComponent {
         this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
         const pieceId = this.uniquePieceId.map(item => item.pieceId);
         const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
-
-
         this.label.generateMutiple(pieceId, houseAirwayBillArray)
-        this.spin.hide();
       },
       error: (err) => {
        this.spin.hide();

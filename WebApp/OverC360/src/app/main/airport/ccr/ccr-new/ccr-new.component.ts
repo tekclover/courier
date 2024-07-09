@@ -90,7 +90,8 @@ export class CcrNewComponent {
     createdBy: [],
     updatedOn: ['',],
     updatedBy: [],
-    
+    pieceId: [],
+    pieceItemId: [],
     airportOriginCode: [],
     actualCurrency: [],
     companyId: [this.auth.companyId],
