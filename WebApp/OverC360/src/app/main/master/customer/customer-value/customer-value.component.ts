@@ -88,7 +88,7 @@ export class CustomerValueComponent {
 
     this.productDropdown();
 
-    this.form.controls.referenceField1.disable();
+    // this.form.controls.referenceField1.disable();
   }
 
   save() {
