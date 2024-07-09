@@ -33,7 +33,7 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.QUANTITY quantity,\n" +
             "it.UNITVALUE unitValue,\n" +
             "it.CURRENCY currency,\n" +
-            "it.IMAGE_REF_ID imageRefId,\n" +
+            "it.IMAGE_REF_ID imageReferenceId,\n" +
             "it.LANG_TEXT languageDescription,\n" +
             "it.C_NAME companyName,\n" +
             "it.PARTNER_TYPE partnerType,\n" +
@@ -75,6 +75,10 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.REF_FIELD_18 referenceField18,\n" +
             "it.REF_FIELD_19 referenceField19,\n" +
             "it.REF_FIELD_20 referenceField20,\n" +
+            "tc.EVENT_CODE eventCode,\n" +
+            "tc.EVENT_TEXT eventText,\n" +
+            "tc.STATUS_ID statusId,\n" +
+            "tc.STATUS_TEXT statusDescription,\n" +
             "tc.PRE_ALERT_VALIDATION_INDIACATOR preAlertValidationIndicator,\n" +
             "tc.CONSOLE_INDICATOR consoleIndicator,\n" +
             "tc.MANIFEST_INDICATOR manifestIndicator,\n" +
@@ -109,7 +113,7 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.QUANTITY quantity,\n" +
             "it.UNITVALUE unitValue,\n" +
             "it.CURRENCY currency,\n" +
-            "it.IMAGE_REF_ID imageRefId,\n" +
+            "it.IMAGE_REF_ID imageReferenceId,\n" +
             "it.LANG_TEXT languageDescription,\n" +
             "it.C_NAME companyName,\n" +
             "it.PARTNER_TYPE partnerType,\n" +
@@ -151,6 +155,10 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.REF_FIELD_18 referenceField18,\n" +
             "it.REF_FIELD_19 referenceField19,\n" +
             "it.REF_FIELD_20 referenceField20,\n" +
+            "tc.EVENT_CODE eventCode,\n" +
+            "tc.EVENT_TEXT eventText,\n" +
+            "tc.STATUS_ID statusId,\n" +
+            "tc.STATUS_TEXT statusDescription,\n" +
             "tc.PRE_ALERT_VALIDATION_INDIACATOR preAlertValidationIndicator,\n" +
             "tc.CONSOLE_INDICATOR consoleIndicator,\n" +
             "tc.MANIFEST_INDICATOR manifestIndicator,\n" +

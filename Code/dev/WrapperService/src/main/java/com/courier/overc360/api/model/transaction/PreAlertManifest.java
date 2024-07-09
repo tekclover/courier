@@ -9,6 +9,7 @@ import java.util.List;
 public class PreAlertManifest {
 
     private String languageId;
+    private Long consignmentId;
 
     private String companyId;
 
@@ -60,8 +61,6 @@ public class PreAlertManifest {
 
     private String volumeUnit;
 
-    private List<ReferenceImageList> referenceImageList;
-
     private String imageReferenceId;
 
     private String description;
@@ -105,6 +104,12 @@ public class PreAlertManifest {
     private String referenceField19;
 
     private String referenceField20;
+
+    private String eventCode;
+    private String eventText;
+    private String statusId;
+    private String statusDescription;
+
     private Long consoleIndicator;
     private Long manifestIndicator;
     private Long preAlertValidationIndicator;

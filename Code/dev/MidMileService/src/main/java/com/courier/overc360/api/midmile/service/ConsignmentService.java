@@ -685,12 +685,6 @@ public class ConsignmentService {
 //        return consignmentList;
 //    }
 
-    // Get - for label create
-    public ReplicaConsignmentEntity getConsignment(Long consignmentId) {
-        ReplicaConsignmentEntity consignmentEntity = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
-        return consignmentEntity;
-    }
-
     /**
      * FindConsignment
      *

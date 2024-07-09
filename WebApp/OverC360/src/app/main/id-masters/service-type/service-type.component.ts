@@ -191,6 +191,11 @@ export class ServiceTypeComponent {
     languageId: [[this.auth.languageId],]
   })
 
+  readonly fieldDisplayNames: Record<string, string> = {
+    serviceTypeId: 'Service Type',
+    statusId: 'Status'
+  };
+
   languageDropdown: any = [];
   companyDropdown: any = [];
   serviceTypeDropdown: any = [];
@@ -230,7 +235,7 @@ export class ServiceTypeComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId').map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -257,8 +262,11 @@ export class ServiceTypeComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
 }

@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.replica.model.dto;
 
+import java.util.Date;
 public interface LabelFormOutput {
 
     Long getConsignmentId();
@@ -35,6 +36,7 @@ public interface LabelFormOutput {
     String getPieceId();
     String getPieceProductCode();
     String getPieceValue();
+    Date getCreatedOn();
 
     //@Column(name = "CONSIGNMENT_ID")
     //    private Long consignmentId;

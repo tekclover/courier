@@ -188,7 +188,7 @@ public class PDFApacheExtractionService {
     private String[] extractDetailsFromLines(String line) {
         // Extract relevant details from the line
         String[] parts = line.split("\\s+");
-        String totalDuty = parts.length > 0 ? parts[0] : "-";
+        String totalDuty = parts.length > 0 ? parts[0] : null;
         String dRate = parts.length > 1 ? parts[1] : "-";
         String cifLocalValue = parts.length > 2 ? parts[2] : "-";
         String rate = parts.length > 3 ? parts[3] : "-";
@@ -196,7 +196,12 @@ public class PDFApacheExtractionService {
         String foreignValue = parts.length > 5 ? parts[5] : "-";
         String goodsDescription = parts.length > 6 ? parts[6] : "-";
         String hsCode = parts.length > 7 ? parts[parts.length - 1] : "-";
-        String[] dataExtracted = new String[]{cifLocalValue, foreignValue, hsCode};
+        String[] dataExtracted = null;
+        if (totalDuty != null && !totalDuty.contains("-")) {
+            dataExtracted = new String[]{cifLocalValue, foreignValue, hsCode, totalDuty};
+        } else {
+            dataExtracted = new String[]{cifLocalValue, foreignValue, hsCode };
+        }
         return dataExtracted;
     }
     /**
@@ -271,6 +276,9 @@ public class PDFApacheExtractionService {
                         updateCCR.setCustomsKd(details[0]);
                         updateCCR.setConsignmentValue(details[1]);
                         updateCCR.setHsCode(details[2]);
+                        if (details.length > 3) {
+                            updateCCR.setTotalDuty(details[3]);
+                        }
                         detailLineList.add("True");
                         if (updateCCR.getCcrId() != null && updateCCR.getCustomsCcrNo() != null && updateCCR.getCustomsKd() != null &&
                                 updateCCR.getHsCode() != null && updateCCR.getPrimaryDo() != null && updateCCR.getConsignmentValue() != null) {
@@ -300,6 +308,9 @@ public class PDFApacheExtractionService {
                             updateCCR.setCustomsKd(details[0]);
                             updateCCR.setConsignmentValue(details[1]);
                             updateCCR.setHsCode(details[2]);
+                            if (details.length > 3) {
+                                updateCCR.setTotalDuty(details[3]);
+                            }
                             if (updateCCR.getCcrId() != null && updateCCR.getCustomsCcrNo() != null && updateCCR.getCustomsKd() != null &&
                                     updateCCR.getHsCode() != null && updateCCR.getPrimaryDo() != null && updateCCR.getConsignmentValue() != null) {
                                 updateCCRList.add(updateCCR);
