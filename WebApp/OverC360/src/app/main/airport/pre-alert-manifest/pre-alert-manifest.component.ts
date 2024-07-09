@@ -73,6 +73,7 @@ export class PreAlertManifestComponent {
       { field: 'description', header: 'Description' },
       { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
       { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
+      { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
@@ -359,6 +360,5 @@ export class PreAlertManifestComponent {
   getSeverity(value: number) {
     return value === 0 ? 'red' : 'green';
   }
-  
-  
+    
 }
