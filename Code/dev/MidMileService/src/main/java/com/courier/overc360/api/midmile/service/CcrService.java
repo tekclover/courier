@@ -327,8 +327,8 @@ public class CcrService {
                 if(updatedCcr != null) {
                     //Consignment Update
                     ccrRepository.updateEventCodeFromConsignment(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(),
-                            updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getStatusId(), updatedCcr.getEventCode(),
-                            updatedCcr.getStatusText(), updatedCcr.getEventText());
+                            updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getEventCode(), updatedCcr.getEventText(),
+                            updatedCcr.getStatusId(), updatedCcr.getStatusText());
 
                     //Console Update
                     consoleRepository.consoleUpdateBasedOnCCRUpdate(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(), updatedCcr.getHouseAirwayBill(),
