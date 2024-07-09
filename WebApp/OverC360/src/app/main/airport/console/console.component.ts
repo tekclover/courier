@@ -56,8 +56,8 @@ export class ConsoleComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'statusId', header: 'Status Id' },
-      { field: 'shipperId', header: 'Shipper Id' },
+      { field: 'statusId', header: 'Status ID' },
+      { field: 'shipperId', header: 'Shipper ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -219,6 +219,14 @@ export class ConsoleComponent {
     languageId: [[this.auth.languageId],]
   })
 
+  readonly fieldDisplayNames: Record<string, string> = {
+    houseAirwayBill: 'Consignment No',
+    masterAirwayBill: 'MAWB',
+    partnerId: 'Partner',
+    consoleId: 'Console ID',
+    statusId: 'Status'
+  };
+
   houseAirwayBillDropdown: any = [];
   masterAirwayBillDropdown: any = [];
   partnerDropdown: any = [];
@@ -263,7 +271,8 @@ export class ConsoleComponent {
     this.fieldsWithValue = null;
     const formValues = this.searchform.value;
     this.fieldsWithValue = Object.keys(formValues)
-      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId');
+      .filter(key => formValues[key as keyof typeof formValues] !== null && formValues[key as keyof typeof formValues] !== undefined && key !== 'companyId' && key !== 'languageId')
+      .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
@@ -294,8 +303,11 @@ export class ConsoleComponent {
   }
 
   chipClear(value: any) {
-    this.searchform.get(value.value)?.reset();
-    this.search();
+    const formControlKey = Object.keys(this.fieldDisplayNames).find(key => this.fieldDisplayNames[key] === value.value);
+    if (formControlKey) {
+      this.searchform.get(formControlKey)?.reset();
+      this.search();
+    }
   }
 
 }
