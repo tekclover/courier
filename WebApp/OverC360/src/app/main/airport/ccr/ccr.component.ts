@@ -323,9 +323,12 @@ export class CcrComponent {
     this.search();
   }
 
+  removeDuplicated: any [] = []
   generateLabel(){
-   const filterResult = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'houseAirwayBill');
-    this.label.generatePdfBarocdeMutiple(filterResult);
+    this.removeDuplicated = [];
+    this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'pieceId');
+   const pieceIdArray = this.removeDuplicated.map(item => item.pieceId);
+    this.label.generatePdfBarocdeMutiple(pieceIdArray);
   }
 
 }
