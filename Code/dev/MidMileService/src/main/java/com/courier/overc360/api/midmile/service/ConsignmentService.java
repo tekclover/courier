@@ -422,7 +422,7 @@ public class ConsignmentService {
             UpdateConsignment addConsignment = new UpdateConsignment();
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
             //StatusText And EventText
-           if(dbConsignment.getStatusId().equalsIgnoreCase("1")) {
+           if(dbConsignment.getStatusId() != null && dbConsignment.getStatusId().equalsIgnoreCase("1")) {
                // Set Event Status
                Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), "2", "2");
                if (statusEventText.isPresent()) {
