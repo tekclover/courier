@@ -1225,7 +1225,7 @@ public class ConsoleService {
         List<Console> consoleList = new ArrayList<>();
         for (TransferConsole transfer : transferConsole) {
             Console newConsole = new Console();
-            Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdPieceIdAndPieceItemIdAndDeletionIndicator(
+            Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
                     transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), transfer.getPieceId(), transfer.getPieceItemId(),  0L);
 
             if (dbConsole == null) {
