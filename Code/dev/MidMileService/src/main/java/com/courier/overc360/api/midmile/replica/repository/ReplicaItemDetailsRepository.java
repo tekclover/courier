@@ -75,6 +75,8 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.REF_FIELD_18 referenceField18,\n" +
             "it.REF_FIELD_19 referenceField19,\n" +
             "it.REF_FIELD_20 referenceField20,\n" +
+            "tc.INCO_TERMS incoTerms,\n" +
+            "tc.PAYMENT_TYPE paymentType,\n" +
             "tc.EVENT_CODE eventCode,\n" +
             "tc.EVENT_TEXT eventText,\n" +
             "tc.STATUS_ID statusId,\n" +
@@ -155,6 +157,8 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.REF_FIELD_18 referenceField18,\n" +
             "it.REF_FIELD_19 referenceField19,\n" +
             "it.REF_FIELD_20 referenceField20,\n" +
+            "tc.INCO_TERMS incoTerms,\n" +
+            "tc.PAYMENT_TYPE paymentType,\n" +
             "tc.EVENT_CODE eventCode,\n" +
             "tc.EVENT_TEXT eventText,\n" +
             "tc.STATUS_ID statusId,\n" +
