@@ -70,6 +70,8 @@ export class ConsoleBulkComponent {
     freightCharges: [],
     freightCurrency: [],
     goodsDescription: [],
+    pieceId: [],
+    pieceItemId: [],
     goodsType: [],
     grossWeight: [],
     houseAirwayBill: [],
