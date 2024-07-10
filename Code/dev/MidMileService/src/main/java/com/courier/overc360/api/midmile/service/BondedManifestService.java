@@ -106,8 +106,12 @@ public class BondedManifestService {
                     bondedManifest.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
                     bondedManifest.setShipperId(consignment.getPartnerId());
                     bondedManifest.setShipperName(consignment.getPartnerName());
+                    bondedManifest.setFinalDestination(consignment.getCountryOfDestination());
                     BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
                     BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
+                    bondedManifest.setManifestedQuantity(itemDetails.getQuantity());
+                    bondedManifest.setLandedQuantity(itemDetails.getQuantity());
+                    bondedManifest.setTotalQuantity(itemDetails.getQuantity());
                     addBondedManifest.add(bondedManifest);
                 }
             }
@@ -167,6 +171,7 @@ public class BondedManifestService {
                 }
 
                 newBondedManifest.setBondedId(BONDED_ID);
+                newBondedManifest.setBillOfLadingFor("Import");
                 newBondedManifest.setDeletionIndicator(0L);
                 newBondedManifest.setCreatedBy(loginUserID);
                 newBondedManifest.setCreatedOn(new Date());
