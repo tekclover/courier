@@ -73,25 +73,34 @@
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th style="width: 5rem;">
+                    <th style="width: 5rem;" pFrozenColumn>
                         <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
-                    </th>
-                    <th style="width: 5rem;">
-                       Label
                     </th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                         {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
+                    <th style="width: 5rem;" pFrozenColumn alignFrozen="right">
+                        Actions
+                    </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr >
-                    <td style="width: 5rem; justify-content: center;">
+                <tr [class.selectedRow]="selectedConsignment[0] === rowData">
+                    <td style="width: 5rem; justify-content: center;" pFrozenColumn>
                         <p-tableCheckbox class="pl-3"   [value]="rowData" />
                     </td>
-                    <td style="width: 5rem; justify-content: center;">
-                        <img type="button" (click)="label.toggle($event)" src="./assets/common/document.png" alt="" srcset=""
-                        style="margin: 0 5px; height: 1.3rem;">      
+                    <td *ngFor="let col of columns" [style]="col.style">
+                        <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
+                            {{ rowData[col.field] }}
+                          </ng-container>
+                          <ng-template #dateTemplate>
+                            {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
+                          </ng-template>
+                    </td>
+                    
+                    <td style="width: 5rem; justify-content: center;" pFrozenColumn alignFrozen="right">
+                        <img type="button" (click)="label.toggle($event)" src="./assets/common/actions.png" alt="" srcset=""
+                        style="height: 1.4rem;">      
                         
                         <p-overlayPanel [style]="{ width: '180' }" #label>
                             <div class="d-flex flex-column">
@@ -101,14 +110,6 @@
                                             src="./assets/common/print.png" style="padding-right: 10px;width: 2rem;" srcset="">Print</button>
                             </div>
                         </p-overlayPanel>
-                    </td>
-                    <td *ngFor="let col of columns" [style]="col.style">
-                        <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
-                            {{ rowData[col.field] }}
-                          </ng-container>
-                          <ng-template #dateTemplate>
-                            {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
-                          </ng-template>
                     </td>
                 </tr>
             </ng-template>
