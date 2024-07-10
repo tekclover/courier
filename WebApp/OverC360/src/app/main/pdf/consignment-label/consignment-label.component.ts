@@ -12,6 +12,7 @@ import { ConsignmentService } from '../../operation/consignment/consignment.serv
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpErrorResponse } from '@angular/common/http/index.js';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MessageService } from 'primeng/api';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 //pdfMake.fonts = fonts;
 pdfMake.fonts = {
@@ -37,6 +38,7 @@ export class ConsignmentLabelComponent {
     public ccrService: CcrService,
     public consginementService: ConsignmentService,
     private sanitizer: DomSanitizer,
+    private messageService: MessageService,
     private spin: NgxSpinnerService,
     private cs: CommonServiceService,) { }
   generateBarcode(text: string) {
@@ -46,6 +48,10 @@ export class ConsignmentLabelComponent {
   }
   
   generatePdfBarocde(line: any, type: any) {
+    if(line.pieceDetails.length <= 0){
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'No data found' });
+      return
+    }
     let createdOn = this.datePipe.transform(line.createdOn, 'dd-MMM-yyyy HH:mm')
     var dd: any;
     dd = {
@@ -325,7 +331,7 @@ export class ConsignmentLabelComponent {
     })
   }
   generateSingleLabel(result: any) {
-    let createdOn = this.datePipe.transform(result.createdOn, 'dd-MMM-yyyy HH:mm')
+  
     var dd: any;
     let headerTable: any[] = [];
 
@@ -354,6 +360,8 @@ export class ConsignmentLabelComponent {
 
 
     result.forEach((resultLabel:any, index:any) => {
+      let createdOn = this.datePipe.transform(resultLabel.createdOn, 'dd-MMM-yyyy HH:mm')
+
       let barcodeAWB: any[] = [];
       if (index != 0) {
         const barcodeImageData1 = this.generateBarcode(resultLabel.houseAirwayBill);

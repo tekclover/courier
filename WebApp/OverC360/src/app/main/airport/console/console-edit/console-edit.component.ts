@@ -131,7 +131,7 @@ export class ConsoleEditComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    selectedConsole:[],
+    selectedConsole: [],
     remarks: [],
     serviceTypeId: [],
     serviceTypeName: [],
@@ -140,6 +140,7 @@ export class ConsoleEditComponent {
     shipperName: [],
     specialApprovalValue: [],
     statusId: [],
+    statusText: [],
     statusTimestamp: [],
     subProductId: [],
     subProductName: [],
@@ -148,7 +149,7 @@ export class ConsoleEditComponent {
     updatedBy: [],
     updatedOn: [],
     volume: [],
-   
+
   });
 
   submitted = false;
@@ -177,10 +178,11 @@ export class ConsoleEditComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-
+    this.callTableHeader();
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
     this.form.controls.consoleId.disable();
+    this.form.controls.statusText.disable();
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -191,9 +193,35 @@ export class ConsoleEditComponent {
       this.form.controls.createdOn.disable();
       this.form.controls.statusId.disable();
     }
-    
+
   }
 
+
+  cols: any[] = [];
+  target: any[] = [];
+  callTableHeader() {
+    this.cols = [
+      { field: 'masterAirwayBill', header: 'MAWB' },
+      { field: 'houseAirwayBill', header: 'HAWB' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'description', header: 'Commodity' },
+      { field: 'quantity', header: 'No of Piece' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'grossWeight', header: 'Weight' },
+      { field: 'airportOriginCode', header: 'Airport Origin Code' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentValue', header: 'Consignment Value' },
+      { field: 'consignmentCurrency', header: 'Consignment Currency' },
+      { field: 'customsValue', header: 'Customs Value' },
+      { field: 'customsKd', header: 'Custom Charges' },
+      { field: 'iataKd', header: 'IATA Charges' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
+    ];
+    this.target = [
+    ];
+  }
 
 
   languageIdList: any[] = [];
@@ -222,7 +250,7 @@ export class ConsoleEditComponent {
 
   subProductArray: any[] = [];
 
- 
+
 
   removeItem(index: number) {
     this.subProductArray.splice(index, 1);
@@ -248,102 +276,103 @@ export class ConsoleEditComponent {
     // this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     // this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }
-lineSentforFill:any;
+  lineSentforFill: any;
   save() {
     this.submitted = true;
     if (this.form.invalid) {
       this.messageService.add({
-       severity: 'error',
-       summary: 'Error',
-       key: 'br',
-         detail: 'Please fill required fields to continue',
-       });
-       return;
-     }
+        severity: 'error',
+        summary: 'Error',
+        key: 'br',
+        detail: 'Please fill required fields to continue',
+      });
+      return;
+    }
 
     if (this.pageToken.pageflow != 'New') {
-      if (this.selectedConsole.length==0) {
+      if (this.selectedConsole.length == 0) {
         this.messageService.add({
-         severity: 'error',
-         summary: 'Error',
-         key: 'br',
-           detail: 'Please fill required fields to continue',
-         });
-         return;
-       }
+          severity: 'error',
+          summary: 'Error',
+          key: 'br',
+          detail: 'Please fill required fields to continue',
+        });
+        return;
+      }
       this.spin.show();
       this.selectedConsole.forEach((x: any) => {
         x.eventCode = 10;
-      });
+      });
       this.service.Update(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({
-           severity: 'success',
+            severity: 'success',
             summary: 'Updated',
             key: 'br',
             detail: res[0].consoleId + ' has been updated successfully',
-       });
-       for(let i = 0;i< this.subProductArray.length;i++){
-        if(this.subProductArray[i].eventCode !='10'){
-          let line:any={};
-          line.consoleId=this.subProductArray[0].consoleId;
-          this.fill(line);
-        }
-        else{
-          this.router.navigate(['/main/airport/console']);
-        }
+          });
+          for (let i = 0; i < this.subProductArray.length; i++) {
+            if (this.subProductArray[i].eventCode != '10') {
+              let line: any = {};
+              line.consoleId = this.subProductArray[0].consoleId;
+              this.fill(line);
+            }
+            else {
+              this.router.navigate(['/main/airport/console']);
+            }
 
-       }
-         // this.router.navigate(['/main/airport/console']);
-          let line:any={};
-          line.consoleId=this.subProductArray[0].consoleId;
+          }
+          // this.router.navigate(['/main/airport/console']);
+          let line: any = {};
+          line.consoleId = this.subProductArray[0].consoleId;
           this.fill(line);
           this.spin.hide();
         },
         error: (err) => {
           this.spin.hide();
-         this.cs.commonerrorNew(err);
+          this.cs.commonerrorNew(err);
         },
       });
-   } 
+    }
   }
 
-  editItem(data: any,item: any): void {
+  editItem(data: any, item: any): void {
     const dialogRef = this.dialog.open(ConsoleEditpopupComponent, {
       disableClose: true,
       width: '70%',
       //height: '50%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: {pageflow: data,code:item},
+      data: { pageflow: data, code: item },
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.subProductArray.splice(item,0);
+      if (result) {
+        this.subProductArray.splice(item, 0);
         this.subProductArray.splice(item, 1, result);
-      this.subProductArray = [...this.subProductArray]
-  
-  }});
+        this.subProductArray = [...this.subProductArray]
+
+      }
+    });
   }
- 
-  transfer(){
+
+  transfer() {
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     }
-     const dialogRef = this.dialog.open(ConsoleTransferComponent, {
-       disableClose: true,
+    const dialogRef = this.dialog.open(ConsoleTransferComponent, {
+      disableClose: true,
       width: '70%',
       height: '40%',
       maxWidth: '82%',
-     position: { top: '6.5%', left: '30%' },
-       data: this.selectedConsole,
-     });
+      position: { top: '6.5%', left: '30%' },
+      data: this.selectedConsole,
+    });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.fill(this.pageToken.line)
-       }
-     });
+      }
+    });
   }
 }
