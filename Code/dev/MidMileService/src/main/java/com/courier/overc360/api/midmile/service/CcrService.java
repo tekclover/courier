@@ -129,8 +129,8 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), 0L);
+                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), addCcr.getPieceId(), addCcr.getPieceItemId(), 0L);
                 if (duplicateConsole.isPresent()) {
                     throw new BadRequestException("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getMasterAirwayBill() +

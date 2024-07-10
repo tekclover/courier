@@ -57,10 +57,28 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
             "AND is_deleted = 0",
             nativeQuery = true)
     public void updatePieceValue(@Param("companyId") String companyId,
-                                               @Param("languageId") String languageId,
-                                               @Param("partnerId") String partnerId,
-                                               @Param("houseAirwayBill") String houseAirwayBill,
-                                               @Param("masterAirwayBill") String masterAirwayBill,
-                                               @Param("pieceValue") String pieceValue);
+                                 @Param("languageId") String languageId,
+                                 @Param("partnerId") String partnerId,
+                                 @Param("houseAirwayBill") String houseAirwayBill,
+                                 @Param("masterAirwayBill") String masterAirwayBill,
+                                 @Param("pieceId") String pieceId,
+                                 @Param("pieceValue") String pieceValue);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsignment_entity " +
+            "SET CONSIGNMENT_VALUE = :consignmentValue " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void updateConsignment(@Param("companyId") String companyId,
+                                  @Param("languageId") String languageId,
+                                  @Param("partnerId") String partnerId,
+                                  @Param("houseAirwayBill") String houseAirwayBill,
+                                  @Param("masterAirwayBill") String masterAirwayBill,
+                                  @Param("consignmentValue") String consignmentValue);
 }
