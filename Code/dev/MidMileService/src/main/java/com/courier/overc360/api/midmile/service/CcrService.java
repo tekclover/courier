@@ -686,16 +686,30 @@ public class CcrService {
                         boolean pass = false;
                         if (updateCcr.getConsignmentValue() != null) {
                             if (updateCcr.getConsignmentValue().contains(".")) {
+                                String ccv = updateCcr.getConsignmentValue();
+                                String ccv1 = null;
+                                if ((ccv.substring(ccv.indexOf("."), ccv.length()).length() > 4)) {
+                                    ccv1 = ccv.substring(0, ccv.indexOf(".") + 4);
+                                } else {
+                                    ccv1 = ccv;
+                                }
                                 DecimalFormat decimalFormat = new DecimalFormat("0.#####");
-                                customsConsignmentValue = decimalFormat.format(Double.valueOf(updateCcr.getConsignmentValue()));
+                                customsConsignmentValue = decimalFormat.format(Double.valueOf(ccv1));
                             } else {
                                 customsConsignmentValue = updateCcr.getConsignmentValue();
                             }
                         }
                         if (dbCcr.getConsignmentValue() != null) {
                             if (dbCcr.getConsignmentValue().contains(".")) {
+                                String dbcv = dbCcr.getConsignmentValue();
+                                String dbcv1 = null;
+                                if ((dbcv.substring(dbcv.indexOf("."), dbcv.length()).length() > 4)) {
+                                    dbcv1 = dbcv.substring(0, dbcv.indexOf(".") + 4);
+                                } else {
+                                    dbcv1 = dbcv;
+                                }
                                 DecimalFormat decimalFormat = new DecimalFormat("0.#####");
-                                dbConsignmentValue = decimalFormat.format(Double.valueOf(dbCcr.getConsignmentValue()));
+                                dbConsignmentValue = decimalFormat.format(Double.valueOf(dbcv1));
                             } else {
                                 dbConsignmentValue = dbCcr.getConsignmentValue();
                             }
