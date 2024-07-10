@@ -2,6 +2,7 @@ package com.courier.overc360.api.midmile.replica.repository;
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
+import lombok.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -90,5 +91,16 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
             @Param("hsCode") List<String> hsCode,
             @Param("pieceId") List<String> pieceId,
             @Param("pieceItemId") List<String> pieceItemId);
+
+
+    @Query(value = "select " +
+            "(select load_type_text from tblloadtype where c_id = :companyId and lang_id = :languageId and load_type_id = :loadTypeId and is_deleted = 0) as loadTypeText, " +
+            "(select service_type_text from tblservicetype where c_id = :companyId and lang_id = :languageId and service_type_id = :serviceTypeId and is_deleted = 0) as serviceTypeText",
+            nativeQuery = true)
+    IKeyValuePair getStatusServiceType(@Param("languageId") String languageId,
+                                       @Param("companyId") String companyId,
+                                       @Param("loadTypeId") String loadTypeId,
+                                       @Param("serviceTypeId") String serviceTypeId);
+
 
 }

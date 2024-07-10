@@ -86,6 +86,9 @@ public class ConsignmentService {
     @Autowired
     ReplicaImageReferenceRepository replicaImageReferenceRepository;
 
+    @Autowired
+    ReplicaBondedManifestRepository replicaBondedManifestRepository;
+
     /*================================================PRIMARY====================================================================*/
 
     /**
@@ -177,6 +180,17 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
+            if(consignmentEntity.getServiceTypeId() != null) {
+                IKeyValuePair iKey = replicaBondedManifestRepository.getStatusServiceType(
+                        languageId, companyId, consignmentEntity.getLoadTypeId(), consignmentEntity.getServiceTypeId());
+                if(iKey != null && iKey.getLoadType() != null) {
+                    consignmentEntity.setLoadType(iKey.getLoadType());
+                }
+                if(iKey != null && iKey.getServiceTypeText() != null) {
+                    consignmentEntity.setServiceTypeText(iKey.getServiceTypeText());
+                }
+            }
+
             //PieceDetails Count
             List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
             int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
@@ -202,6 +216,8 @@ public class ConsignmentService {
                     consignmentEntity.setNoOfPieceHawb(String.valueOf(totalItemCount));
                 }
             }
+
+            //ServiceType Text and LoadTypeId Test
             BeanUtils.copyProperties(consignmentEntity, newConsignment, CommonUtils.getNullPropertyNames(consignmentEntity));
 
             if (iKeyValuePair != null) {
@@ -405,9 +421,34 @@ public class ConsignmentService {
 
             UpdateConsignment addConsignment = new UpdateConsignment();
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
-            dbConsignmentEntity.setStatusId("2");
+            //StatusText And EventText
+           if(dbConsignment.getStatusId().equalsIgnoreCase("1")) {
+               // Set Event Status
+               Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), "2", "2");
+               if (statusEventText.isPresent()) {
+                   IKeyValuePair keyValuePair = statusEventText.get();
+                   dbConsignmentEntity.setStatusId("2");
+                   dbConsignmentEntity.setEventCode("2");
+                   dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
+                   dbConsignmentEntity.setEventText(keyValuePair.getEventText());
+                   dbConsignmentEntity.setStatusTimestamp(new Date());
+                   dbConsignmentEntity.setEventTimestamp(new Date());
+               }
+           } else {
+               // Set Event Status
+               Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(
+                       dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getStatusId(), dbConsignment.getEventCode());
+               if (statusEventText.isPresent()) {
+                   IKeyValuePair keyValuePair = statusEventText.get();
+                   dbConsignmentEntity.setStatusId("2");
+                   dbConsignmentEntity.setEventCode("2");
+                   dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
+                   dbConsignmentEntity.setEventText(keyValuePair.getEventText());
+                   dbConsignmentEntity.setStatusTimestamp(new Date());
+                   dbConsignmentEntity.setEventTimestamp(new Date());
+               }
+           }
             dbConsignmentEntity.setDeletionIndicator(0L);
-            dbConsignmentEntity.setStatusDescription("Consignment Updated");
             dbConsignmentEntity.setUpdatedBy(loginUserID);
             dbConsignmentEntity.setUpdatedOn(new Date());
 

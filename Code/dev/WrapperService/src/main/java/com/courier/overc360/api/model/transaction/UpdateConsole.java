@@ -67,6 +67,24 @@ public class UpdateConsole {
 
     private String manifestedGrossWeight;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String calculatedTotalDuty;
+
     private String grossWeight;
 
     private String tareWeight;
@@ -130,10 +148,6 @@ public class UpdateConsole {
     private String bondedId;
 
     private Long shipmentBagId;
-
-    private String consignmentCurrency;
-
-    private String consignmentValue;
 
     private String actualCurrency;
 

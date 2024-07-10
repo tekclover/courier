@@ -618,12 +618,11 @@ public class ItemDetailsService {
 
                         // Get Iatakd
                         Optional<IKeyValuePair> optionalIKeyValuePair =
-                                replicaCcrRepository.getIataCurrencyValue(companyId, languageId, country, addItemDetails.getCurrency());
+                                replicaCcrRepository.getIataCurrencyValue(companyId, languageId, addItemDetails.getCurrency(), country);
 
                         //DeclaredValue calculation
                         Double totalValue = null;
-                        if(addItemDetails.getUnitValue() != null && addItemDetails.getQuantity() != null)
-                        {
+                        if(addItemDetails.getUnitValue() != null && addItemDetails.getQuantity() != null) {
                             Double unitValue = Double.valueOf(addItemDetails.getUnitValue());
                             Double quantity = Double.valueOf(addItemDetails.getQuantity());
                             totalValue = unitValue * quantity;
@@ -673,6 +672,7 @@ public class ItemDetailsService {
                             if(newItemDetails.getAddInsurance() != null) {
                                 Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());
                                 newItemDetails.setCustomsValue(String.valueOf(addIata + addInsurance));
+
                                 if(newItemDetails.getDuty() != null) {
                                     Double duty = Double.valueOf(newItemDetails.getDuty());
                                     Double customsValue = Double.valueOf(newItemDetails.getCustomsValue());
@@ -680,6 +680,7 @@ public class ItemDetailsService {
                                 }
                             }
                         }
+                        newItemDetails.setConsignmentValue(String.valueOf(consignmentValue));
                         newItemDetails.setPieceItemId(PIECE_ITEM_ID);
                         newItemDetails.setCompanyId(companyId);
                         newItemDetails.setLanguageId(languageId);

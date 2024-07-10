@@ -13,6 +13,30 @@ public class UpdateItemDetails {
 
     private String unitValue;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
+    private String length;
+
     private String currency;
 
     private String partnerType;
@@ -30,8 +54,6 @@ public class UpdateItemDetails {
     private String declaredValue;
 
     private String codAmount;
-
-    private String length;
 
     private String dimensionUnit;
 

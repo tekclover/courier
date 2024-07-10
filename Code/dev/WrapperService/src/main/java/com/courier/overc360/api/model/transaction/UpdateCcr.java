@@ -35,6 +35,28 @@ public class UpdateCcr {
 
     private String partnerType;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String partnerName;
 
     private String statusId;
@@ -120,10 +142,6 @@ public class UpdateCcr {
     private String noOfPieceHawb;
 
     private String airportOriginCode;
-
-    private String consignmentCurrency;
-
-    private String consignmentValue;
 
     private String actualCurrency;
 

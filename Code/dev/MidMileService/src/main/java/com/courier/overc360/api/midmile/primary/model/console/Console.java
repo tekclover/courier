@@ -60,6 +60,39 @@ public class Console {
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 
+    @Column(name = "CONSIGNMENT_CURRENCY", columnDefinition = "nvarchar(50)")
+    private String consignmentCurrency;
+
+    @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
+    private String consignmentValue;
+
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
+
+    @Column(name = "IATA", columnDefinition = "nvarchar(50)")
+    private String IATA;
+
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
+    @Column(name = "DUTY", columnDefinition = "nvarchar(50)")
+    private String duty;
+
+    @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
+
+    @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
+    private String addIATA;
+
+    @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String addInsurance;
+
+    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+    private String customsValue;
+
+    @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String calculatedTotalDuty;
+
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
@@ -99,14 +132,8 @@ public class Console {
     @Column(name = "EXPECTED_DUTY", columnDefinition = "nvarchar(50)")
     private String expectedDuty;
 
-    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
-    private String customsValue;
-
     @Column(name = "CUSTOMS_CURRENCY", columnDefinition = "nvarchar(50)")
     private String customsCurrency;
-
-    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
-    private String exchangeRate;
 
     @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
     private String description;
@@ -194,12 +221,6 @@ public class Console {
 
     @Column(name = "COUNTRY_OF_ORIGIN", columnDefinition = "nvarchar(50)")
     private String countryOfOrigin;
-
-    @Column(name = "CONSIGNMENT_CURRENCY", columnDefinition = "nvarchar(50)")
-    private String consignmentCurrency;
-
-    @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
-    private String consignmentValue;
 
     @Column(name = "ACTUAL_CURRENCY", columnDefinition = "nvarchar(50)")
     private String actualCurrency;

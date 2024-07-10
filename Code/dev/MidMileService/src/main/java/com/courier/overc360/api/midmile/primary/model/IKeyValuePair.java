@@ -38,5 +38,9 @@ public interface IKeyValuePair {
 
     String getEventText();
 
+    String getLoadType();
+
+    String getServiceTypeText();
+
 
 }

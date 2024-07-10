@@ -45,6 +45,24 @@ public class Console {
 
     private String dduCharge;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String calculatedTotalDuty;
+
     private String specialApprovalCharge;
 
     private String netWeight;
@@ -122,10 +140,6 @@ public class Console {
     private String bondedId;
 
     private Long shipmentBagId;
-
-    private String consignmentCurrency;
-
-    private String consignmentValue;
 
     private String actualCurrency;
 

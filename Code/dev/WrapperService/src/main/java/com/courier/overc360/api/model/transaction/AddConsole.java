@@ -28,9 +28,29 @@ public class AddConsole {
 
     private String partnerType;
 
-    private String expectedDuty;
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
 
     private String customsValue;
+
+    private String calculatedTotalDuty;
+
+    private String expectedDuty;
 
     private String customsCurrency;
 
@@ -41,8 +61,6 @@ public class AddConsole {
     private String partnerHouseAirwayBill;
 
     private String description;
-
-    private String exchangeRate;
 
     private String dutyPercentage;
 
@@ -127,10 +145,6 @@ public class AddConsole {
     private String bondedId;
 
     private Long shipmentBagId;
-
-    private String consignmentCurrency;
-
-    private String consignmentValue;
 
     private String actualCurrency;
 
