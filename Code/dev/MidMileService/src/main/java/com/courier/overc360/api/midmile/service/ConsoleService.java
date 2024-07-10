@@ -1208,7 +1208,6 @@ public class ConsoleService {
                         dbConsole.setUpdatedBy(loginUserID);
                         dbConsole.setUpdatedOn(new Date());
 
-
                         consoleRepository.save(dbConsole);
                     }
                 }

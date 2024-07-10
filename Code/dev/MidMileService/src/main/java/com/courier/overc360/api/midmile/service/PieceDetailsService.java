@@ -263,24 +263,29 @@ public class PieceDetailsService {
                             }
                         }
 
-                        //Save PieceDetails
-                        PieceDetails savePieceDetails = pieceDetailsRepository.save(newPieceDetails);
 
                         //ItemDetails Create
                         List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId, companyName, languageName,
                                 partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
-                                partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, country, loginUserID);
+                                partnerHawBill, hsCode, partnerMawBill, width, height, weightUnit, volume, codAmount, country, loginUserID);
 
                         // Calculate the total declared value
                         Double pieceValue = 0.0;
                         for (AddItemDetails item : itemDetails) {
-                            Double declaredValue = Double.valueOf(item.getDeclaredValue());
-                            pieceValue += declaredValue;
+                            if(item.getDeclaredValue() != null) {
+                                Double declaredValue = Double.valueOf(item.getDeclaredValue());
+                                pieceValue += declaredValue;
+                            }
                         }
 
+                        newPieceDetails.setPieceValue(String.valueOf(pieceValue));
+                        //Save PieceDetails
+                        PieceDetails savePieceDetails = pieceDetailsRepository.save(newPieceDetails);
+
                         // Update PieceTable TotalDeclared value
-                        consignmentEntityRepository.updatePieceValue(savePieceDetails.getCompanyId(), savePieceDetails.getLanguageId(),
-                                savePieceDetails.getPartnerId(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getMasterAirwayBill(), String.valueOf(pieceValue));
+//                        consignmentEntityRepository.updatePieceValue(savePieceDetails.getCompanyId(), savePieceDetails.getLanguageId(),
+//                                savePieceDetails.getPartnerId(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getMasterAirwayBill(),
+//                                savePieceDetails.getPieceCurrency(), String.valueOf(pieceValue));
 
                         // Save ConsignmentStatus
                         consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
