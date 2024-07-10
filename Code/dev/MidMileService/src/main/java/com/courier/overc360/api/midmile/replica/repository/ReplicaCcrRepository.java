@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,11 +43,11 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
             "Else 0 \n" +
             "End", nativeQuery = true)
     Long duplicateExists(@Param(value = "languageId") String languageId,
-                               @Param(value = "companyId") String companyId,
-                               @Param(value = "partnerId") String partnerId,
-                               @Param(value = "masterAirwayBill") String masterAirwayBill,
-                               @Param(value = "houseAirwayBill") String houseAirwayBill,
-                                @Param(value = "consoleId") String consoleId);
+                         @Param(value = "companyId") String companyId,
+                         @Param(value = "partnerId") String partnerId,
+                         @Param(value = "masterAirwayBill") String masterAirwayBill,
+                         @Param(value = "houseAirwayBill") String houseAirwayBill,
+                         @Param(value = "consoleId") String consoleId);
 
     //Get IataKd
     @Query(value = "Select \n" +
@@ -71,6 +72,26 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
                                                  @Param("languageId") String languageId,
                                                  @Param("currencyId") String currencyId,
                                                  @Param("originCode") String originCode);
+
+
+    // Find CCRs with given Params Only
+    @Query(value = "SELECT * FROM tblccr tc \n" +
+            "WHERE tc.IS_DELETED = 0 \n" +
+            "AND (:#{#languageId == null ? 1 : 0} = 1 OR tc.LANG_ID IN (:languageId)) \n" +
+            "AND (:#{#companyId == null ? 1 : 0} = 1 OR tc.C_ID IN (:companyId)) \n" +
+            "AND (:#{#partnerId == null ? 1 : 0} = 1 OR tc.PARTNER_ID IN (:partnerId)) \n" +
+            "AND (:#{#masterAirwayBill == null ? 1 : 0} = 1 OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
+            "AND (:#{#houseAirwayBill == null ? 1 : 0} = 1 OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
+            "AND (:#{#ccrId == null ? 1 : 0} = 1 OR tc.CCR_ID IN (:ccrId)) \n" +
+            "AND (:#{#consoleId == null ? 1 : 0} = 1 OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
+    List<ReplicaCcr> findCCRsWithQry(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("partnerId") List<String> partnerId,
+            @Param("masterAirwayBill") List<String> masterAirwayBill,
+            @Param("houseAirwayBill") List<String> houseAirwayBill,
+            @Param("ccrId") List<String> ccrId,
+            @Param("consoleId") List<String> consoleId);
 
 
 }

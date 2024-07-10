@@ -2,10 +2,15 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
-import com.courier.overc360.api.midmile.primary.model.console.*;
+import com.courier.overc360.api.midmile.primary.model.console.AddConsole;
+import com.courier.overc360.api.midmile.primary.model.console.Console;
+import com.courier.overc360.api.midmile.primary.model.console.ConsoleDeleteInput;
+import com.courier.overc360.api.midmile.primary.model.console.TransferConsole;
+import com.courier.overc360.api.midmile.primary.model.console.UpdateConsole;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
-import com.courier.overc360.api.midmile.primary.repository.*;
+import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
+import com.courier.overc360.api.midmile.primary.repository.ConsoleRepository;
+import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
@@ -15,7 +20,6 @@ import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItem
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
-import com.courier.overc360.api.midmile.replica.repository.specification.ConsoleSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -536,14 +545,14 @@ public class ConsoleService {
                             Console createdConsole = consoleRepository.save(newConsole);
 
                             if (createdConsole != null) {
-                            // Save ConsignmentStatus
-                            consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
-                                    createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
-                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getStatusText(), createdConsole.getStatusId(),
-                                    createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
-                                    createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID );
+                                // Save ConsignmentStatus
+                                consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
+                                        createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
+                                        createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getStatusText(), createdConsole.getStatusId(),
+                                        createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
+                                        createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID);
 
-                            // Update ConsignmentEntity
+                                // Update ConsignmentEntity
                                 consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
                                         createdConsole.getLanguageId(), createdConsole.getPartnerId(),
                                         createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
@@ -695,14 +704,14 @@ public class ConsoleService {
                             Console createdConsole = consoleRepository.save(newConsole);
 
                             if (createdConsole != null) {
-                            // Save ConsignmentStatus
-                            consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
-                                    createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
-                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getStatusText(), createdConsole.getStatusId(),
-                                    createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
-                                    createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID );
+                                // Save ConsignmentStatus
+                                consignmentStatusService.createConsignmentStatusParams(createdConsole.getCompanyId(), createdConsole.getCompanyName(),
+                                        createdConsole.getLanguageId(), createdConsole.getLanguageDescription(), createdConsole.getPieceId(), createdConsole.getStatusId(),
+                                        createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getStatusText(), createdConsole.getStatusId(),
+                                        createdConsole.getStatusText(), createdConsole.getEventCode(), createdConsole.getEventText(), createdConsole.getEventCode(),
+                                        createdConsole.getEventText(), createdConsole.getEventTimestamp(), createdConsole.getEventTimestamp(), createdConsole.getStatusTimestamp(), loginUserID);
 
-                            // Save ConsignmentEntity
+                                // Save ConsignmentEntity
                                 consoleRepository.updateEventCodeFromConsignment(createdConsole.getCompanyId(),
                                         createdConsole.getLanguageId(), createdConsole.getPartnerId(),
                                         createdConsole.getHouseAirwayBill(), createdConsole.getMasterAirwayBill());
@@ -1114,24 +1123,24 @@ public class ConsoleService {
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
-                if(dbConsole.getStatusId() != null && dbConsole.getEventCode() != null) {
+                if (dbConsole.getStatusId() != null && dbConsole.getEventCode() != null) {
                     Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(
                             dbConsole.getLanguageId(), dbConsole.getCompanyId(), dbConsole.getStatusId(), dbConsole.getEventCode());
 
                     dbConsole.setStatusId(dbConsole.getStatusId());
                     dbConsole.setEventCode(dbConsole.getEventCode());
-                    if(iKeyValuePair.isPresent()) {
+                    if (iKeyValuePair.isPresent()) {
                         IKeyValuePair ikey = iKeyValuePair.get();
                         dbConsole.setStatusText(ikey.getStatusText());
                         dbConsole.setEventText(ikey.getEventText());
                     }
                     dbConsole.setStatusTimestamp(new Date());
                     dbConsole.setEventTimestamp(new Date());
-                     }
+                }
 
                 Console updatedConsole = consoleRepository.save(dbConsole);
 
-                if(updatedConsole != null) {
+                if (updatedConsole != null) {
                     //Consignment Update
                     consoleRepository.conUpdateBasedOnConsoleUpdate(updatedConsole.getCompanyId(), updatedConsole.getLanguageId(), updatedConsole.getPartnerId(),
                             updatedConsole.getHouseAirwayBill(), updatedConsole.getMasterAirwayBill(), updatedConsole.getStatusId(), updatedConsole.getEventCode(),
@@ -1142,7 +1151,7 @@ public class ConsoleService {
                             updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(), updatedConsole.getPieceId(), updatedConsole.getPieceId(),
                             updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getStatusText(), updatedConsole.getStatusId(),
                             updatedConsole.getStatusText(), updatedConsole.getEventCode(), updatedConsole.getEventText(), updatedConsole.getEventCode(),
-                            updatedConsole.getEventText(), updatedConsole.getEventTimestamp(), updatedConsole.getEventTimestamp(), updatedConsole.getStatusTimestamp(), loginUserID );
+                            updatedConsole.getEventText(), updatedConsole.getEventTimestamp(), updatedConsole.getEventTimestamp(), updatedConsole.getStatusTimestamp(), loginUserID);
                 }
 
                 if (updateConsole.getEventCode() != null) {
@@ -1225,7 +1234,7 @@ public class ConsoleService {
         for (TransferConsole transfer : transferConsole) {
             Console newConsole = new Console();
             Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                    transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), transfer.getPieceId(), transfer.getPieceItemId(),  0L);
+                    transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), transfer.getPieceId(), transfer.getPieceItemId(), 0L);
 
             if (dbConsole == null) {
                 throw new BadRequestException("FromConsole ID Not found " + transfer.getFromConsoleId() + "HouseAirwayBill" + transfer.getHouseAirwayBill());
@@ -1294,12 +1303,21 @@ public class ConsoleService {
      * @return
      * @throws Exception
      */
+//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
+//
+//        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+//        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
+//        log.info("found Consoles --> {}", results);
+//        return results;
+//    }
     public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
 
-        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
-        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
-        log.info("found Console --> " + results);
-        return results;
+        log.info("given Params for find -- > {}", findConsole);
+        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
+                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
+                findConsole.getMasterAirwayBill(), findConsole.getHouseAirwayBill(), findConsole.getConsoleId());
+//        log.info("found Consoles --> {}", consoleList);
+        return consoleList;
     }
 
     //==========================================Console_ErrorLog================================================

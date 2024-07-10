@@ -215,8 +215,7 @@ export class ConsoleEditComponent {
       { field: 'consignmentValue', header: 'Consignment Value' },
       { field: 'consignmentCurrency', header: 'Consignment Currency' },
       { field: 'customsValue', header: 'Customs Value' },
-      { field: 'customsKd', header: 'Custom Charges' },
-      { field: 'iataKd', header: 'IATA Charges' },
+      { field: 'iata', header: 'IATA Charges' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
@@ -295,7 +294,7 @@ export class ConsoleEditComponent {
           severity: 'error',
           summary: 'Error',
           key: 'br',
-          detail: 'Please fill required fields to continue',
+          detail: 'Kindly select any row',
         });
         return;
       }
@@ -303,6 +302,9 @@ export class ConsoleEditComponent {
       this.selectedConsole.forEach((x: any) => {
         x.eventCode = 10;
       });
+      const a = this.subProductArray.filter(x => x.eventCode == 10);
+     console.log(a)
+     console.log(this.subProductArray.length)
       this.service.Update(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -311,22 +313,13 @@ export class ConsoleEditComponent {
             key: 'br',
             detail: res[0].consoleId + ' has been updated successfully',
           });
-          for (let i = 0; i < this.subProductArray.length; i++) {
-            if (this.subProductArray[i].eventCode != '10') {
-              let line: any = {};
-              line.consoleId = this.subProductArray[0].consoleId;
-              this.fill(line);
-            }
-            else {
-              this.router.navigate(['/main/airport/console']);
-            }
-
+          if (this.subProductArray.length == a.length) {
+            this.router.navigate(['/main/airport/console']);
+          } else {
+            setTimeout(() => {
+            this.fill(this.pageToken.line);
+          }, 2000);
           }
-          // this.router.navigate(['/main/airport/console']);
-          let line: any = {};
-          line.consoleId = this.subProductArray[0].consoleId;
-          this.fill(line);
-          this.spin.hide();
         },
         error: (err) => {
           this.spin.hide();

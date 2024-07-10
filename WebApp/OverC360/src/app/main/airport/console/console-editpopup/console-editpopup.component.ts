@@ -72,7 +72,7 @@ export class ConsoleEditpopupComponent {
     grossWeight: [],
     houseAirwayBill: [],
     hsCode: [],
-    iataKd: [],
+    iata: [],
     incoTerms: [],
     invoiceDate: [],
     invoiceNumber: [],

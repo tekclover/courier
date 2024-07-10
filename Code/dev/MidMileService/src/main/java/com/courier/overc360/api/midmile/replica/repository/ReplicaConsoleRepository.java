@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, String>,
@@ -42,5 +43,23 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "c_id in (:companyId) and hs_code in (:hsCode) and is_deleted = 0", nativeQuery = true)
     public String getSpecialApproval(@Param(value = "companyId") String companyId,
                                      @Param(value = "hsCode") String hsCode);
+
+
+    // Find Consoles with given Params Only
+    @Query(value = "SELECT * FROM tblconsole tc \n" +
+            "WHERE tc.IS_DELETED = 0 \n" +
+            "AND (:#{#languageId == null ? 1 : 0} = 1 OR tc.LANG_ID IN (:languageId)) \n" +
+            "AND (:#{#companyId == null ? 1 : 0} = 1 OR tc.C_ID IN (:companyId)) \n" +
+            "AND (:#{#partnerId == null ? 1 : 0} = 1 OR tc.PARTNER_ID IN (:partnerId)) \n" +
+            "AND (:#{#masterAirwayBill == null ? 1 : 0} = 1 OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
+            "AND (:#{#houseAirwayBill == null ? 1 : 0} = 1 OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
+            "AND (:#{#consoleId == null ? 1 : 0} = 1 OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
+    List<ReplicaConsole> findConsolesWithQry(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("partnerId") List<String> partnerId,
+            @Param("masterAirwayBill") List<String> masterAirwayBill,
+            @Param("houseAirwayBill") List<String> houseAirwayBill,
+            @Param("consoleId") List<String> consoleId);
 
 }
