@@ -36,7 +36,7 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.IMAGE_REF_ID imageReferenceId,\n" +
             "it.LANG_TEXT languageDescription,\n" +
             "it.C_NAME companyName,\n" +
-            "it.PARTNER_TYPE partnerType,\n" +
+            "tc.PARTNER_TYPE partnerType,\n" +
             "it.PARTNER_NAME partnerName,\n" +
             "it.PARTNER_MASTER_AIRWAY_BILL partnerMasterAirwayBill,\n" +
             "it.PARTNER_HOUSE_AIRWAY_BILL partnerHouseAirwayBill,\n" +
@@ -118,7 +118,7 @@ public interface ReplicaItemDetailsRepository extends JpaRepository<ReplicaItemD
             "it.IMAGE_REF_ID imageReferenceId,\n" +
             "it.LANG_TEXT languageDescription,\n" +
             "it.C_NAME companyName,\n" +
-            "it.PARTNER_TYPE partnerType,\n" +
+            "tc.PARTNER_TYPE partnerType,\n" +
             "it.PARTNER_NAME partnerName,\n" +
             "it.PARTNER_MASTER_AIRWAY_BILL partnerMasterAirwayBill,\n" +
             "it.PARTNER_HOUSE_AIRWAY_BILL partnerHouseAirwayBill,\n" +
