@@ -31,6 +31,10 @@ public class ReplicaAddPieceDetails {
 
     private String pieceId;
 
+    private String pieceCurrency;
+
+    private String pieceValue;
+
     private String partnerType;
 
     private String partnerName;

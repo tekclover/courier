@@ -41,7 +41,7 @@ public class UpdateCcr {
 
     private String exchangeRate;
 
-    private String IATA;
+    private String iata;
 
     private String customsInsurance;
 
@@ -150,8 +150,6 @@ public class UpdateCcr {
     private String specialApprovalValue;
 
     private String customsKd;
-
-    private String iataKd;
 
     private String consigneeName;
 

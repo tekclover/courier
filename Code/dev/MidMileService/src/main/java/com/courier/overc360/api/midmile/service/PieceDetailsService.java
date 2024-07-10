@@ -185,6 +185,7 @@ public class PieceDetailsService {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
             Long pieceCounter = 1L;
+            Double totalWeight = 0.0;
             if (addPieceDetailsList != null && !addPieceDetailsList.isEmpty()) {
                 for (AddPieceDetails addPieceDetails : addPieceDetailsList) {
 
@@ -207,6 +208,11 @@ public class PieceDetailsService {
                         // i want to how many itemdetails record save in piece table tag how give me code
                         BeanUtils.copyProperties(addPieceDetails, newPieceDetails, CommonUtils.getNullPropertyNames(addPieceDetails));
 
+                        //Add all piece's weight
+                        Double pieceWeight = Double.valueOf(addPieceDetails.getWeight());
+                        if (pieceWeight != null) {
+                            totalWeight = totalWeight + pieceWeight;
+                        }
                         newPieceDetails.setPieceId(PIECE_ID);
                         newPieceDetails.setCompanyId(companyId);
                         newPieceDetails.setLanguageId(languageId);
@@ -343,6 +349,9 @@ public class PieceDetailsService {
                 pieceDetails.setItemDetails(itemDetails);
                 pieceDetailsList.add(pieceDetails);
             }
+            pieceDetailsRepository.updateConsignment(companyId,languageId,consignmentId,houseAirwayBill,masterAirwayBill,String.valueOf(totalWeight));
+            pieceDetailsRepository.updateConsignmentInfo(consignmentId,String.valueOf(totalWeight));
+
         } catch (Exception e) {
             for (AddPieceDetails addPieceDetails : addPieceDetailsList) {
                 // Error Log

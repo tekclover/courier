@@ -60,7 +60,7 @@ public class ReplicaAddItemDetails {
 
     private String exchangeRate;
 
-    private String IATA;
+    private String iata;
 
     private String customsInsurance;
 

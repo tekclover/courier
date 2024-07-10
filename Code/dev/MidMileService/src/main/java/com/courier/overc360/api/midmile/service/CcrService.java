@@ -289,7 +289,7 @@ public class CcrService {
                     newCcr.setLanguageDescription(lAndCDesc.getLangDesc());
                     newCcr.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                newCcr.setIataKd(iataData.getIataKd());
+                newCcr.setIata(iataData.getIataKd());
                 //   newCcr.setTotalDuty(String.valueOf(totalDuty));
                 newCcr.setStatusId(STATUS_ID);
                 newCcr.setDeletionIndicator(0L);

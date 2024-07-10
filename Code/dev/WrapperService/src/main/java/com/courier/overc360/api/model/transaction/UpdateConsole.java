@@ -71,7 +71,7 @@ public class UpdateConsole {
 
     private String consignmentValue;
 
-    private String IATA;
+    private String iata;
 
     private String customsInsurance;
 
@@ -154,8 +154,6 @@ public class UpdateConsole {
     private String actualValue;
 
     private String specialApprovalValue;
-
-    private String iataKd;
 
     private String productId;
 
