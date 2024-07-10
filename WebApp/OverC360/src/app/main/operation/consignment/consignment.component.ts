@@ -354,4 +354,5 @@ export class ConsignmentComponent {
       this.search();
     }
   }
+  
 }
