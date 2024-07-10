@@ -224,7 +224,7 @@ public class BondedManifestService {
                         updateBondedManifest.getHouseAirwayBill(), updateBondedManifest.getBondedId(),
                         updateBondedManifest.getPieceId(), updateBondedManifest.getPieceItemId());
 
-                BeanUtils.copyProperties(updatedBondedManifestList, dbBondedManifest, CommonUtils.getNullPropertyNames(updatedBondedManifestList));
+                BeanUtils.copyProperties(updateBondedManifest, dbBondedManifest, CommonUtils.getNullPropertyNames(updateBondedManifest));
 
                 Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(dbBondedManifest.getLanguageId(),
                         dbBondedManifest.getCompanyId(), "2", dbBondedManifest.getEventCode());

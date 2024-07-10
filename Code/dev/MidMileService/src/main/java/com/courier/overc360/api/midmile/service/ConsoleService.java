@@ -594,8 +594,8 @@ public class ConsoleService {
 
 //                        IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
                         Double iataKd = 0.0;
-                        if (console.getIataKd() != null) {
-                            iataKd = Double.valueOf(console.getIataKd());
+                        if (console.getIata() != null) {
+                            iataKd = Double.valueOf(console.getIata());
                         }
                         Double recordValue = iataKd + totalDuty;
 

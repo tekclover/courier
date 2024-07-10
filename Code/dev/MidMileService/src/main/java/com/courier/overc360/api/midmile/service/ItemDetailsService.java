@@ -603,6 +603,10 @@ public class ItemDetailsService {
         List<AddItemDetails> itemDetailsList = new ArrayList<>();
         try {
             Long itemDetails = 1L;
+            Double totalLength = 0.0;
+            Double totalWeight = 0.0;
+            Double totalHeight = 0.0;
+            Double totalVolume = 0.0;
             if (addItemDetailsList != null && !addItemDetailsList.isEmpty()) {
                 for (AddItemDetails addItemDetails : addItemDetailsList) {
                     Optional<ItemDetails> duplicateItemDetails =
@@ -615,6 +619,30 @@ public class ItemDetailsService {
 
                         String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
                         ItemDetails newItemDetails = new ItemDetails();
+
+                        //Add all item's length
+                        Double itemLength = Double.valueOf(addItemDetails.getLength());
+                        if (itemLength != null) {
+                            totalLength = totalLength + itemLength;
+                        }
+
+                        //Add all item's weight
+                        Double itemWeight = Double.valueOf(addItemDetails.getWeight());
+                        if (itemWeight != null) {
+                            totalWeight = totalWeight + itemWeight;
+                        }
+
+                        //Add all item's height
+                        Double itemHeight = Double.valueOf(addItemDetails.getHeight());
+                        if (itemHeight != null) {
+                            totalHeight = totalHeight + itemHeight;
+                        }
+
+                        //Add all item's volume
+                        Double itemVolume = Double.valueOf(addItemDetails.getVolume());
+                        if (itemVolume != null) {
+                            totalVolume = totalVolume + itemVolume;
+                        }
 
                         // Get Iatakd
                         Optional<IKeyValuePair> optionalIKeyValuePair =
@@ -635,7 +663,7 @@ public class ItemDetailsService {
                                 addItemDetails.setExchangeRate(iKeyValuePair.getCurrencyValue());
                             }
                             if (iKeyValuePair.getIataKd() != null) {
-                                addItemDetails.setIATA(iKeyValuePair.getIataKd());
+                                addItemDetails.setIata(iKeyValuePair.getIataKd());
                             }
                         }
 
@@ -662,8 +690,8 @@ public class ItemDetailsService {
                         }
 
                         newItemDetails.setConsignmentValueLocal(String.valueOf(consignmentValue));
-                        if(newItemDetails.getIATA() != null) {
-                            newItemDetails.setAddIATA(consignmentValue + newItemDetails.getIATA());
+                        if(newItemDetails.getIata() != null) {
+                            newItemDetails.setAddIATA(newItemDetails.getIata() + consignmentValue);
                         }
                         if(newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
                             Double addIata = Double.valueOf(newItemDetails.getAddIATA());
@@ -765,6 +793,7 @@ public class ItemDetailsService {
                 BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
                 itemDetailsList.add(newAddItemDetails);
             }
+            itemDetailsRepository.updatePiece(companyId,languageId,pieceId,houseAirwayBill,masterAirwayBill,String.valueOf(totalLength),String.valueOf(totalHeight),String.valueOf(totalWeight),String.valueOf(totalVolume));
         } catch (Exception e) {
             // Error Log
             for (AddItemDetails itemDetails : addItemDetailsList) {
