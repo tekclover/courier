@@ -5,6 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -42,5 +43,24 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
                                                @Param("companyId") String companyId,
                                                @Param("statusId") String statusId,
                                                @Param("eventCode") String eventCode);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblpiecedetails " +
+            "SET PIECE_VALUE = :pieceValue " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND PIECE_ID = :pieceId " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void updatePieceValue(@Param("companyId") String companyId,
+                                               @Param("languageId") String languageId,
+                                               @Param("partnerId") String partnerId,
+                                               @Param("houseAirwayBill") String houseAirwayBill,
+                                               @Param("masterAirwayBill") String masterAirwayBill,
+                                               @Param("pieceValue") String pieceValue);
 
 }

@@ -1,31 +1,37 @@
 package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
-import com.courier.overc360.api.midmile.primary.model.ccr.*;
-import com.courier.overc360.api.midmile.primary.model.console.AddConsole;
+import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
+import com.courier.overc360.api.midmile.primary.model.ccr.AddCcr;
+import com.courier.overc360.api.midmile.primary.model.ccr.Ccr;
+import com.courier.overc360.api.midmile.primary.model.ccr.CcrDeleteInput;
+import com.courier.overc360.api.midmile.primary.model.ccr.UpdateCcr;
 import com.courier.overc360.api.midmile.primary.model.console.Console;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.midmile.primary.repository.*;
+import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
+import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
+import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
+import com.courier.overc360.api.midmile.primary.repository.ConsoleRepository;
+import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
-import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.ccr.FindCcr;
 import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcr;
 import com.courier.overc360.api.midmile.replica.model.ccr.UpdateCCR;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
-import com.courier.overc360.api.midmile.replica.repository.specification.CcrSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
-import org.springframework.beans.BeanUtils;
-
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -497,12 +503,21 @@ public class CcrService {
      * @return
      * @throws Exception
      */
+//    public List<ReplicaCcr> findCcr(FindCcr findCcr) throws Exception {
+//
+//        CcrSpecification spec = new CcrSpecification(findCcr);
+//        List<ReplicaCcr> results = replicaCcrRepository.findAll(spec);
+//        log.info("found Ccr  --> {}", results);
+//        return results;
+//    }
     public List<ReplicaCcr> findCcr(FindCcr findCcr) throws Exception {
 
-        CcrSpecification spec = new CcrSpecification(findCcr);
-        List<ReplicaCcr> results = replicaCcrRepository.findAll(spec);
-        log.info("found Ccr  --> " + results);
-        return results;
+        log.info("given Params for find -- > {}", findCcr);
+        List<ReplicaCcr> ccrList = replicaCcrRepository.findCCRsWithQry(
+                findCcr.getLanguageId(), findCcr.getCompanyId(), findCcr.getPartnerId(), findCcr.getMasterAirwayBill(),
+                findCcr.getHouseAirwayBill(), findCcr.getCcrId(), findCcr.getConsoleId());
+//        log.info("found CCRs  --> {}", ccrList);
+        return ccrList;
     }
 
 

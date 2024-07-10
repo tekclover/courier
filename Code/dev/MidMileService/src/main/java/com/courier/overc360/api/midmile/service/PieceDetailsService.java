@@ -271,6 +271,17 @@ public class PieceDetailsService {
                                 partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
                                 partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount, country, loginUserID);
 
+                        // Calculate the total declared value
+                        Double pieceValue = 0.0;
+                        for (AddItemDetails item : itemDetails) {
+                            Double declaredValue = Double.valueOf(item.getDeclaredValue());
+                            pieceValue += declaredValue;
+                        }
+
+                        // Update PieceTable TotalDeclared value
+                        consignmentEntityRepository.updatePieceValue(savePieceDetails.getCompanyId(), savePieceDetails.getLanguageId(),
+                                savePieceDetails.getPartnerId(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getMasterAirwayBill(), String.valueOf(pieceValue));
+
                         // Save ConsignmentStatus
                         consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
                                 savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(), savePieceDetails.getPieceId(), savePieceDetails.getPieceStatusId(),
