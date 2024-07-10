@@ -109,6 +109,8 @@ public class PreAlertManifest {
     private String eventText;
     private String statusId;
     private String statusDescription;
+    private String incoTerms;
+    private String paymentType;
 
     private Long consoleIndicator;
     private Long manifestIndicator;

@@ -102,13 +102,28 @@
                                     <p class="w-100 pl-2 ml-2">{{ item.referenceField1 }}
                                     </p>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <div class="d-flex img-icon px-3">
                                         <img type="button" src="./assets/common/edit.png" (click)="editItem('Edit',i)"
                                             alt="" width="24px" height="24px">
                                         <img type="button" (click)="removeItem(i)" src="./assets/common/deletetool.png"
                                             alt="" srcset="" width="24px" height="24px">
                                     </div>
+                                </td> -->
+                                <td style="padding-left: 1.5rem !important;" pFrozenColumn alignFrozen="right">
+                                    <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
+                                        alt="" srcset="" style="height: 1.4rem;">
+                                    <p-overlayPanel [style]="{ width: '180' }" #op>
+                                        <div class="d-flex flex-column">
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="editItem('Edit',i); op.hide()"><img
+                                                    src="./assets/common/edit.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Edit</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="removeItem(i)"><img src="./assets/common/deletetool.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
+                                        </div>
+                                    </p-overlayPanel>
                                 </td>
                             </tr>
                         </ng-template>

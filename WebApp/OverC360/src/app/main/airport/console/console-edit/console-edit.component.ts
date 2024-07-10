@@ -82,6 +82,8 @@ export class ConsoleEditComponent {
     houseAirwayBill: [],
     hsCode: [],
     iataKd: [],
+    pieceId: [],
+    pieceItemId: [],
     incoTerms: [],
     invoiceDate: [],
     invoiceNumber: [],

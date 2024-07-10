@@ -68,5 +68,7 @@ public interface PreAlertManifestImpl {
     String getEventText();
     String getStatusId();
     String getStatusDescription();
+    String getIncoTerms();
+    String getPaymentType();
 
 }
