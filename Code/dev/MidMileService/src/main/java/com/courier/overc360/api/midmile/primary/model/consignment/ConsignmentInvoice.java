@@ -58,5 +58,10 @@ public interface ConsignmentInvoice {
 
      Date getCreatedOn();
 
+     Long getConsignmentId();
+
+     String getHouseAirwayBill();
+     String getOriginAddress();
+     String getDestinationAddress();
 
 }

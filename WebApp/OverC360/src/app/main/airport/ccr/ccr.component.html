@@ -29,6 +29,10 @@
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateInvoice()" ><img
                        src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice  </button>
                  </div>
+                 <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateMerge()" ><img
+                       src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice & Label  </button>
+                 </div>
             </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
                     class="bi bi-plus-square pr-2"></i> Add New</button>
@@ -106,7 +110,7 @@
             scrollHeight="calc(100vh - 20.8rem)" [paginator]="true" [rows]="100" [showCurrentPageReport]="true"
             sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="partnerHouseAirwayBill"
+            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="ccrId"
             rowExpandMode="single">
             <ng-template pTemplate="header" let-columns>
                 <tr>

@@ -2,6 +2,7 @@ package com.courier.overc360.api.midmile.primary.model.console;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -28,9 +29,29 @@ public class UpdateConsole {
 
     private String partnerType;
 
-    private String expectedDuty;
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
 
     private String customsValue;
+
+    private String calculatedTotalDuty;
+
+    private String expectedDuty;
 
     private String customsCurrency;
 
@@ -41,8 +62,6 @@ public class UpdateConsole {
     private String partnerHouseAirwayBill;
 
     private String description;
-
-    private String exchangeRate;
 
     private String dutyPercentage;
 
@@ -127,10 +146,6 @@ public class UpdateConsole {
     private String bondedId;
 
     private Long shipmentBagId;
-
-    private String consignmentCurrency;
-
-    private String consignmentValue;
 
     private String actualCurrency;
 

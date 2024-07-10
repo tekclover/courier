@@ -96,6 +96,35 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                                    @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
                                                    @Param("companyId") List<String> companyId);
 
+    @Query(value = "Select \n" +
+            "tl.COMPANY_NAME orgName, concat(tl.address_line_1,',',tl.address_line_2) originAddress, tl.CITY orgCity, tl.COUNTRY orgCountry, tl.PHONE orgPhone, \n" +
+            "td.COMPANY_NAME destName, concat(td.address_line_1,',',td.address_line_2) destinationAddress, td.CITY destCity, td.COUNTRY destCountry, td.PHONE destPhone, \n" +
+            "tc.CONSIGNMENT_ID consignmentId, tc.HOUSE_AIRWAY_BILL houseAirwayBill, \n" +
+            "tc.NO_OF_PIECE_HAWB quantity, tc.CONSIGNMENT_CURRENCY currency, tc.COUNTRY_OF_ORIGIN countryOfOrigin, tc.INCO_TERMS incoTerms, \n" +
+            "tc.NO_OF_PACKAGE_HAWB pieces, tc.GROSS_WEIGHT weight, tc.CTD_ON createdOn, tc.PARTNER_HOUSE_AB awb, tc.CONSIGNMENT_VALUE totalCiv, \n" +
+            "CASE WHEN tc.PAYMENT_TYPE = 'prepaid' THEN tc.CONSIGNMENT_VALUE ELSE '0' END AS prepaid \n" +
+            "From tblconsignment_entity tc \n" +
+            "Join tbldestdetails td on tc.CONSIGNMENT_ID = td.DEST_DETAIL_ID \n" +
+            "Join tblorigindetails tl on tc.CONSIGNMENT_ID = tl.ORIGIN_ID \n" +
+            "Where \n" +
+            "(COALESCE(:houseAirwayBill, null) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) and \n" +
+            "(COALESCE(:partnerHouseAirwayBill, null) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill)) and \n" +
+            "(COALESCE(:partnerMasterAirwayBill, null) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill)) and \n" +
+            "(COALESCE(:companyId, null) IS NULL OR tc.C_ID IN (:companyId)) and \n" +
+            "tc.is_deleted = 0", nativeQuery = true)
+    List<ConsignmentInvoice> getConsignmentInvoiceHeader(@Param("houseAirwayBill") List<String> houseAirwayBill,
+                                                         @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
+                                                         @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
+                                                         @Param("companyId") List<String> companyId);
+    @Query(value = "Select \n" +
+            "ti.HS_CODE hsCode, ti.DESCRIPTION goodsDescription, ti.WEIGHT itemWeight, ti.DECLARED_VALUE unitValue, ti.DECLARED_VALUE totalValue \n" +
+            "From tblitemdetails ti \n" +
+            "Where \n" +
+            "ti.CONSIGNMENT_ID IN (:consignmentId) and \n" +
+            "ti.is_deleted = 0", nativeQuery = true)
+    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("consignmentId") Long consignmentId);
+
+
 
 
     ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);

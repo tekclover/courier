@@ -79,14 +79,26 @@ public class CcrController {
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 
+//    // Get a Ccr
+//    @ApiOperation(response = ReplicaCcr.class, value = "Get a Ccr")
+//    @GetMapping("/{ccrId}")
+//    public ResponseEntity<?> getCcrReplica(@PathVariable String ccrId, @RequestParam String languageId,
+//                                           @RequestParam String companyId, @RequestParam String partnerId,
+//                                           @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill, @RequestParam String consoleId) {
+//        ReplicaCcr ccr = ccrService.getCcrReplica(languageId, companyId, partnerId,
+//                masterAirwayBill, houseAirwayBill, consoleId, ccrId);
+//        return new ResponseEntity<>(ccr, HttpStatus.OK);
+//    }
+
     // Get a Ccr
     @ApiOperation(response = ReplicaCcr.class, value = "Get a Ccr")
     @GetMapping("/{ccrId}")
-    public ResponseEntity<?> getCcrReplica(@PathVariable String ccrId, @RequestParam String languageId,
+    public ResponseEntity<?> getCCRReplica(@PathVariable String ccrId, @RequestParam String languageId,
                                            @RequestParam String companyId, @RequestParam String partnerId,
-                                           @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill, @RequestParam String consoleId) {
+                                           @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                           @RequestParam String consoleId, @RequestParam String pieceId, @RequestParam String pieceItemId) {
         ReplicaCcr ccr = ccrService.getCcrReplica(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId);
+                masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 

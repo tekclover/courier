@@ -74,6 +74,7 @@ export class ConsoleBulkComponent {
     grossWeight: [],
     houseAirwayBill: [],
     hsCode: [],
+    hubCode:[],
     iataKd: [],
     incoTerms: [],
     invoiceDate: [],
@@ -157,6 +158,7 @@ export class ConsoleBulkComponent {
   consignorIdList: any[] = [];
   eventList: any[] = [];
 Consigment: any[] = [];
+hubList:any[]=[];
   dropdownlist(){
     this.spin.show();
     this.cas.getalldropdownlist([ 
@@ -166,6 +168,7 @@ Consigment: any[] = [];
       this.cas.dropdownlist.setup.event.url,
       this.cas.dropdownlist.setup.consignor.url,
       this.cas.dropdownlist.setup.customer.url,
+      this.cas.dropdownlist.setup.hub.url,
     ]).subscribe({next: (results: any) => {
      
       this.statusList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.opStatus.key);
@@ -177,7 +180,9 @@ Consigment: any[] = [];
       customer.forEach(x => this.consignorIdList.push(x));
       consitnor.forEach(x => this.consignorIdList.push(x));
       this.consignorIdList = this.cs.removeDuplicatesFromArrayList(this.consignorIdList, 'value')
+      this.hubList= this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.hub.key);
       this.statusList=this.cs.removeDuplicatesFromArrayList(this.statusList,'value')
+      this.eventList=this.cs.removeDuplicatesFromArrayList(this.eventList,'value')
       this.spin.hide();
     },
     error: (err: any) => {
@@ -192,7 +197,13 @@ Consigment: any[] = [];
   this.Consigment=this.data.code;
 
   }
-
+  showHub=false;
+  eventChange(){
+    if((this.form.controls.eventCode.value == '15') && (this.data.title != 'Console')){
+      this.showHub=true;
+      console.log()
+    }
+  }
 save() {
   if(this.form.controls.partnerMasterAirwayBill !=  null){
   this.Consigment.forEach((x: any) => {
@@ -237,6 +248,11 @@ if(this.form.controls.secondaryDo != null){
 if(this.form.controls.customsCcrNo != null){
   this.Consigment.forEach((x: any) => {
     x.customsCcrNo = this.form.controls.customsCcrNo.value;
+    });
+}
+if(this.form.controls.hubCode != null){
+  this.Consigment.forEach((x: any) => {
+    x.hubCode = this.form.controls.hubCode.value;
     });
 }
 if(this.data.title=='Console'){

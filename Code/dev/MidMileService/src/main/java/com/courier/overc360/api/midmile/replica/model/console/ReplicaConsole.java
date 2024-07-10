@@ -19,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_console",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CONSOLE_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CONSOLE_ID", "PIECE_ID", "PIECE_ITEM_ID"}
                 )
         }
 )
@@ -53,9 +53,11 @@ public class ReplicaConsole {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
+    @Id
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
+    @Id
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 
@@ -64,6 +66,39 @@ public class ReplicaConsole {
 
     @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
     private String partnerType;
+
+    @Column(name = "CONSIGNMENT_CURRENCY", columnDefinition = "nvarchar(50)")
+    private String consignmentCurrency;
+
+    @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
+    private String consignmentValue;
+
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
+
+    @Column(name = "IATA", columnDefinition = "nvarchar(50)")
+    private String IATA;
+
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
+    @Column(name = "DUTY", columnDefinition = "nvarchar(50)")
+    private String duty;
+
+    @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
+
+    @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
+    private String addIATA;
+
+    @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String addInsurance;
+
+    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+    private String customsValue;
+
+    @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String calculatedTotalDuty;
 
     @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(100)")
     private String partnerName;
@@ -98,14 +133,8 @@ public class ReplicaConsole {
     @Column(name = "EXPECTED_DUTY", columnDefinition = "nvarchar(50)")
     private String expectedDuty;
 
-    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
-    private String customsValue;
-
     @Column(name = "CUSTOMS_CURRENCY", columnDefinition = "nvarchar(50)")
     private String customsCurrency;
-
-    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
-    private String exchangeRate;
 
     @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
     private String description;
@@ -193,12 +222,6 @@ public class ReplicaConsole {
 
     @Column(name = "COUNTRY_OF_ORIGIN", columnDefinition = "nvarchar(50)")
     private String countryOfOrigin;
-
-    @Column(name = "CONSIGNMENT_CURRENCY", columnDefinition = "nvarchar(50)")
-    private String consignmentCurrency;
-
-    @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
-    private String consignmentValue;
 
     @Column(name = "ACTUAL_CURRENCY", columnDefinition = "nvarchar(50)")
     private String actualCurrency;

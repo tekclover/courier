@@ -24,4 +24,10 @@ public class ConsoleDeleteInput {
     @NotBlank(message = "House Airway Bill is mandatory")
     private String houseAirwayBill;
 
+    @NotBlank(message = "PieceId is mandatory")
+    private String pieceId;
+
+    @NotBlank(message = "PieceItemId is mandatory")
+    private String pieceItemId;
+
 }

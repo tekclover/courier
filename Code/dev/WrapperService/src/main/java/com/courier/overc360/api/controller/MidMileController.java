@@ -366,9 +366,10 @@ public class MidMileController {
     public ResponseEntity<?> getCcr(@PathVariable String ccrId, @RequestParam String languageId,
                                     @RequestParam String companyId, @RequestParam String partnerId,
                                     @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                    @RequestParam String pieceId, @RequestParam String pieceItemId,
                                     @RequestParam String consoleId, @RequestParam String authToken) {
         Ccr ccr = midMileService.getCcr(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId, authToken);
+                masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, authToken);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 
@@ -551,10 +552,17 @@ public class MidMileController {
         return new ResponseEntity<>(pdfLabelFormOutput, HttpStatus.OK);
     }
 
+//    // Find ConsignmentInvoice
+//    @ApiOperation(response = ConsignmentInvoice[].class, value = "Find ConsignmentInvoice") //label for swagger
+//    @PostMapping("/consignment/findConsignmentInvoice")
+//    public ConsignmentInvoice[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+//        return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
+//    }
+
     // Find ConsignmentInvoice
-    @ApiOperation(response = ConsignmentInvoice[].class, value = "Find ConsignmentInvoice") //label for swagger
+    @ApiOperation(response = InvoiceForm[].class, value = "Find ConsignmentInvoice") //label for swagger
     @PostMapping("/consignment/findConsignmentInvoice")
-    public ConsignmentInvoice[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
     }
 }

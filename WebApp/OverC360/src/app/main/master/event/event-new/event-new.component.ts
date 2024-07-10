@@ -16,7 +16,7 @@ import { NumberrangeService } from '../../numberrange/numberrange.service';
   styleUrl: './event-new.component.scss'
 })
 export class EventNewComponent {
-    active: number | undefined = 0;
+  active: number | undefined = 0;
   status: any[] = []
 
   constructor(
@@ -95,7 +95,7 @@ export class EventNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.statusCode.disable();
+      // this.form.controls.statusCode.disable();
       this.form.controls.eventCode.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();

@@ -616,12 +616,19 @@ public class ItemDetailsService {
                         String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
                         ItemDetails newItemDetails = new ItemDetails();
 
-
-                        // Pass ConsignmentCurrency
-//                        IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.ge(companyId, addItemDetails.getCurrency());
                         // Get Iatakd
-                        Optional<IKeyValuePair> optionalIKeyValuePair = replicaCcrRepository.getIataCurrencyValue(companyId, languageId, country, addItemDetails.getCurrency());
+                        Optional<IKeyValuePair> optionalIKeyValuePair =
+                                replicaCcrRepository.getIataCurrencyValue(companyId, languageId, addItemDetails.getCurrency(), country);
 
+                        //DeclaredValue calculation
+                        Double totalValue = null;
+                        if(addItemDetails.getUnitValue() != null && addItemDetails.getQuantity() != null) {
+                            Double unitValue = Double.valueOf(addItemDetails.getUnitValue());
+                            Double quantity = Double.valueOf(addItemDetails.getQuantity());
+                            totalValue = unitValue * quantity;
+                        }
+
+                        //ExchangeCurrencyRate
                         if (optionalIKeyValuePair.isPresent()) {
                             IKeyValuePair iKeyValuePair = optionalIKeyValuePair.get();
                             if (iKeyValuePair.getCurrencyValue() != null) {
@@ -632,9 +639,11 @@ public class ItemDetailsService {
                             }
                         }
 
+                        //Hardcode CustomsCurrency
                         if (addItemDetails.getCustomsInsurance() == null) {
                             addItemDetails.setCustomsInsurance("1");
                         }
+                        //HardCode Duty
                         if (addItemDetails.getDuty() == null) {
                             addItemDetails.setDuty("5");
                         }
@@ -644,8 +653,10 @@ public class ItemDetailsService {
                         Double declaredValue = 0.0;
                         Double exchangeRate = 0.0;
                         Double consignmentValue= 0.0;
-                        if (newItemDetails.getDeclaredValue() != null && newItemDetails.getExchangeRate() != null) {
-                            declaredValue = Double.valueOf(newItemDetails.getDeclaredValue());
+
+                        //Consignment Value
+                        if (totalValue != null && newItemDetails.getExchangeRate() != null) {
+                            declaredValue = totalValue;
                             exchangeRate = Double.valueOf(newItemDetails.getExchangeRate());
                             consignmentValue =  declaredValue * exchangeRate;
                         }
@@ -661,6 +672,7 @@ public class ItemDetailsService {
                             if(newItemDetails.getAddInsurance() != null) {
                                 Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());
                                 newItemDetails.setCustomsValue(String.valueOf(addIata + addInsurance));
+
                                 if(newItemDetails.getDuty() != null) {
                                     Double duty = Double.valueOf(newItemDetails.getDuty());
                                     Double customsValue = Double.valueOf(newItemDetails.getCustomsValue());
@@ -668,6 +680,7 @@ public class ItemDetailsService {
                                 }
                             }
                         }
+                        newItemDetails.setConsignmentValue(String.valueOf(consignmentValue));
                         newItemDetails.setPieceItemId(PIECE_ITEM_ID);
                         newItemDetails.setCompanyId(companyId);
                         newItemDetails.setLanguageId(languageId);

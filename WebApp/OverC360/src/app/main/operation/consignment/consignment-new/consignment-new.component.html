@@ -1,6 +1,9 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">Consignment - {{this.pageToken.pageflow}}</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" class="invisible buttom1 bgBlack text-white ml-2">Transfer</button>
+        </div>
     </div>
     <div class="mt-4 mx-auto">
 
@@ -954,19 +957,17 @@
             </p-tabPanel>
             <p-tabPanel header="Billing" [disabled]="disabledBilling">
                 <form [formGroup]="billing">
-                    <div class="row ">
-                        <form [formGroup]="consignment">
-                        <div class="col-3 marginFieldNew borderRadius12">
+                    <div class="row scrollNew22">
+                        <div class="col-3 marginFieldNew borderRadius12" [formGroup]="consignment">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Currency</p>
                             <input maxlength="500" [value]="this.consignment.controls.consignmentCurrency.value" [disabled]="true"
                                 class=" w-100" pInputText placeholder="Enter" />
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12">
+                        <div class="col-3 marginFieldNew borderRadius12"  [formGroup]="consignment">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Value</p>
                             <input maxlength="500" [value]="this.consignment.controls.consignmentValue.value"  [disabled]="true"
                             class=" w-100" pInputText placeholder="Enter" />
                         </div>
-                        </form>
                         <div class="col-3 marginFieldNew borderRadius12" id="exchangeRate">
                             <p class="formControlLabel f600 textBlack mb-0">Exchange Rate</p>
                             <input maxlength="50" formControlName="exchangeRate"

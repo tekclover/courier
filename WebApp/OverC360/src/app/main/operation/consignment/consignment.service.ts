@@ -65,6 +65,19 @@ export class ConsignmentService {
     return this.http.post<any>('/doc-storage/multiUpload'+'?location='+ location , formData);
   }
 
+  
+  public uploadsinglefile(file: File, location:any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post('/document/Upload' + '?filePath=' + location, formData);
+  }
+
+  uploadBayan(file: File, filePath:any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
+  }
+
   uploadConsignment(file: File) {
     const formData = new FormData();
     formData.append('file', file);
@@ -83,6 +96,17 @@ export class ConsignmentService {
   return this.http.post<any>(`/overc-midmile-service/consignment/find/v2`, obj);
  }
 
+//  pdfMerge(obj: any) {
+//   return this.http.post<any>(`/pdf/merge`, obj);
+//  }
+
+ pdfMerge(obj:any): Promise<File> {
+  return this.http
+  .post<any>(`/pdf/merge`, obj, {
+    responseType: 'blob' as 'json',
+  })
+  .toPromise();
+ }
 }
 
 

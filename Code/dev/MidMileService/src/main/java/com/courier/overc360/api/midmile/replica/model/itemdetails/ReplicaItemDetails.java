@@ -53,6 +53,9 @@ public class ReplicaItemDetails {
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 
+    @Column(name = "IMAGE_REF_ID", columnDefinition = "nvarchar(50)")
+    private String imageRefId;
+
     @Column(name = "QUANTITY" , columnDefinition = "nvarchar(50)")
     private String quantity;
 
@@ -61,9 +64,6 @@ public class ReplicaItemDetails {
 
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
-
-    @Column(name = "IMAGE_REF_ID", columnDefinition = "nvarchar(50)")
-    private String imageRefId;
 
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
@@ -133,6 +133,9 @@ public class ReplicaItemDetails {
 
     @Column(name = "COD_AMOUNT", columnDefinition = "nvarchar(50)")
     private String codAmount;
+
+    @Column(name = "LENGTH", columnDefinition = "nvarchar(50)")
+    private String length;
 
     @Column(name = "DIMENSION_UNIT", columnDefinition = "nvarchar(50)")
     private String dimensionUnit;

@@ -19,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_bondedmanifest",
-                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL"}
+                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "PIECE_ID", "PIECE_ITEM_ID"}
                 )
         }
 )
@@ -50,9 +50,11 @@ public class ReplicaBondedManifest {
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
+    @Id
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
+    @Id
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 

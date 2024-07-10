@@ -34,6 +34,30 @@ public class ItemDetails {
 
     private String partnerType;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
+    private String length;
+
     private String partnerName;
 
     private String itemCode;
@@ -43,8 +67,6 @@ public class ItemDetails {
     private String declaredValue;
 
     private String codAmount;
-
-    private String length;
 
     private String dimensionUnit;
 

@@ -48,9 +48,10 @@ export class CcrComponent {
     this.cols = [
       { field: 'companyId', header: 'Company' },
       { field: 'ccrId', header: 'CCR ID' },
+      { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'statusDescription', header: 'Status' },
+      { field: 'statusText', header: 'Status' },
       { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -338,42 +339,76 @@ export class CcrComponent {
   }
 
   removeDuplicated: any [] = []
+
   generateLabel(){
-    this.removeDuplicated = [];
+    this.uniquePieceId = [];
+    if (this.selectedCcr.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
     let obj: any = {};
     obj.ccrId=[this.selectedCcr[0].ccrId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        this.actualResult = res;
-     
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        this.label.getResultLabel(pieceId)
       },
       error: (err) => {
-       
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
       },
     });
-    this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.actualResult, 'pieceId');
-   const pieceIdArray = this.removeDuplicated.map(item => item.pieceId);
-   this.label.labelGenerate(pieceIdArray)
-   // this.label.generatePdfBarocdeMutipleCCR(pieceIdArray);
   }
   houseAirwayBill:any;
+  
   generateInvoice(){
-    this.removeDuplicated = [];
+    this.uniqueHouseAirway = [];
+    if (this.selectedCcr.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
     let obj: any = {};
     obj.ccrId=[this.selectedCcr[0].ccrId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        this.houseAirwayBill = res;
-     
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.getResultInvoice(houseAirwayBillArray)
       },
       error: (err) => {
-       
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
       },
     });
-    this.removeDuplicated = this.cs.removeDuplicatesFromArrayList(this.houseAirwayBill, 'houseAirwayBill');
-   const houseAirwayBillArray = this.removeDuplicated.map(item => item.houseAirwayBill);
-   this.label.genearteInvoice(houseAirwayBillArray)
-   // this.label.generatePdfBarocdeMutipleCCR(pieceIdArray);
+  }
+
+
+  uniquePieceId: any[] = []; 
+  uniqueHouseAirway: any[] = []; 
+  generateMerge(){
+    this.uniqueHouseAirway = [];
+    this.uniquePieceId = [];
+    if (this.selectedCcr.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.ccrId=[this.selectedCcr[0].ccrId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.generateMutiple(pieceId, houseAirwayBillArray)
+      },
+      error: (err) => {
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
+      },
+    });
+
   }
 
 }

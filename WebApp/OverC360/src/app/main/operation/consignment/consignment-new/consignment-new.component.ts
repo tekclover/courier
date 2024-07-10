@@ -917,17 +917,18 @@ export class ConsignmentNewComponent {
   savePiece() {
 
     const control = (this.piece.controls.pieceDetails as FormArray)
-    this.consignment.controls.length.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.length), 0));
-    this.consignment.controls.width.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.width), 0));
-    this.consignment.controls.height.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.height), 0));
-    this.consignment.controls.volume.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.volume), 0));
-    this.consignment.controls.weight.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.weight), 0));
-    this.consignment.controls.consignmentValue.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.pieceValue), 0));
-    this.consignment.controls.volumeUnit.patchValue(control.value[0].volumeUnit);
-    this.consignment.controls.dimensionUnit.patchValue(control.value[0].dimensionUnit);
-    this.consignment.controls.weightUnit.patchValue(control.value[0].weightUnit);
-    this.consignment.controls.consignmentCurrency.patchValue(control.value[0].pieceCurrency);
-
+   if(control.value.length > 0){
+  this.consignment.controls.length.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.length), 0));
+  this.consignment.controls.width.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.width), 0));
+  this.consignment.controls.height.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.height), 0));
+  this.consignment.controls.volume.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.volume), 0));
+  this.consignment.controls.weight.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.weight), 0));
+  this.consignment.controls.consignmentValue.patchValue(control.value.reduce((acc:any, item:any) => parseInt(acc) + parseInt(item.pieceValue), 0));
+  this.consignment.controls.volumeUnit.patchValue(control.value[0].volumeUnit);
+  this.consignment.controls.dimensionUnit.patchValue(control.value[0].dimensionUnit);
+  this.consignment.controls.weightUnit.patchValue(control.value[0].weightUnit);
+  this.consignment.controls.consignmentCurrency.patchValue(control.value[0].pieceCurrency);
+}
     this.activeIndex = 2;
     this.submitted = false;
     this.disabledConsignment = false;
@@ -1067,9 +1068,9 @@ export class ConsignmentNewComponent {
         next: (res) => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Updated',
+            summary: 'Created',
             key: 'br',
-            detail: res.houseAirwayBill + ' has been created successfully',
+            detail: res[0].houseAirwayBill + ' has been created successfully',
           });
           this.spin.hide();
           this.router.navigate(['/main/operation/consignment']);

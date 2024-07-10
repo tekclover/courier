@@ -1,6 +1,9 @@
 <div class="bgWhite text-black w-93 h-100 m-4 mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">{{this.data.title }} - Bulk Update</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" class="invisible buttom1 bgBlack text-white ml-2">Transfer</button>
+        </div>
     </div>
     <div class="mt-4">
         <form [formGroup]="form">
@@ -23,9 +26,14 @@
                         <p-dropdown [options]="statusList" placeholder="Select" filter="true" formControlName="statusId" appendTo="body"
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
-                    <div class="col-6 marginFieldNew borderRadius12" >
+                    <div  class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 ">Event</p>
-                        <p-dropdown [options]="eventList" placeholder="Select" filter="true" formControlName="eventCode" appendTo="body" 
+                        <p-dropdown [options]="eventList" placeholder="Select" filter="true" formControlName="eventCode" appendTo="body"  (onChange)="eventChange()"
+                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                    </div>
+                    <div *ngIf="this.showHub == true" class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0 ">HUB</p>
+                        <p-dropdown [options]="hubList" placeholder="Select" filter="true" formControlName="hubCode" appendTo="body" 
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">

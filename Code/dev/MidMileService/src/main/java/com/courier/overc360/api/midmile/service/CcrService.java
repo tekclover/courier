@@ -86,6 +86,34 @@ public class CcrService {
         }
         return dbCcr.get();
     }
+    /**
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param consoleId
+     * @param ccrId
+     * @param pieceId
+     * @param pieceItemId
+     * @return
+     */
+    public Ccr getCcr(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                      String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId) {
+        Optional<Ccr> dbCcr =
+                ccrRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, 0L);
+        if (dbCcr.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+                    + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill + ", houseAirwayBill - "
+                    + houseAirwayBill + " , consoleId - " + consoleId + ", and ccrId - " + ccrId + ", and pieceId - " + pieceId + ", and pieceItemId - " + pieceItemId + " doesn't exists";
+            // Error Log
+            createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbCcr.get();
+    }
 
 
     //Create ConsoleCcr
@@ -118,6 +146,9 @@ public class CcrService {
 
                 if(customsValue != null && customsValue < 100){
                     newCcr.setIsExempted("yes");
+                    newCcr.setExemptionFor("Regulation 94-2020");
+                    newCcr.setExemptionBeneficiary("others");
+                    newCcr.setExemptionReference("99");
                 }else {
                     newCcr.setIsExempted("No");
                 }
@@ -301,7 +332,8 @@ public class CcrService {
                 Ccr dbCcr = getCcr(
                         updateCcr.getLanguageId(), updateCcr.getCompanyId(),
                         updateCcr.getPartnerId(), updateCcr.getMasterAirwayBill(),
-                        updateCcr.getHouseAirwayBill(), updateCcr.getConsoleId(), updateCcr.getCcrId());
+                        updateCcr.getHouseAirwayBill(), updateCcr.getConsoleId(),
+                        updateCcr.getCcrId(), updateCcr.getPieceId(), updateCcr.getPieceItemId());
 
 
                 BeanUtils.copyProperties(updateCcr, dbCcr, CommonUtils.getNullPropertyNames(updateCcr));
@@ -370,7 +402,8 @@ public class CcrService {
                 for (CcrDeleteInput deleteInput : deleteInputList) {
 
                     Ccr dbCcr = getCcr(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(), deleteInput.getConsoleId(), deleteInput.getCcrId());
+                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(),
+                            deleteInput.getConsoleId(), deleteInput.getCcrId(), deleteInput.getPieceId(), deleteInput.getPieceItemId());
 
                     if (dbCcr != null) {
                         dbCcr.setDeletionIndicator(1L);
@@ -429,6 +462,35 @@ public class CcrService {
         }
         return dbCcr.get();
     }
+    /**
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param consoleId
+     * @param ccrId
+     * @param pieceId
+     * @param pieceItemId
+     * @return
+     */
+    public ReplicaCcr getCcrReplica(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                    String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId) {
+        Optional<ReplicaCcr> dbCcr =
+                replicaCcrRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, 0L);
+        if (dbCcr.isEmpty()) {
+            String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
+                    + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
+                    + ", houseAirwayBill - " + houseAirwayBill + " ,consoleId - " + consoleId +
+                    " , and ccrId - " + ccrId +" , and pieceId - " + pieceId +" , and pieceItemId - " + pieceItemId +  " doesn't exists";
+            // Error Log
+            createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, errMsg);
+            throw new BadRequestException(errMsg);
+        }
+        return dbCcr.get();
+    }
 
     /**
      * Find Ccr
@@ -460,6 +522,26 @@ public class CcrService {
         errorLog.setReferenceField2(partnerId);
         errorLog.setReferenceField3(ccrId);
         errorLog.setReferenceField4(consoleId);
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createCcrLog1(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                              String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(masterAirwayBill);
+        errorLog.setMethod("Exception thrown in getCcr");
+        errorLog.setReferenceField1(houseAirwayBill);
+        errorLog.setReferenceField2(partnerId);
+        errorLog.setReferenceField3(ccrId);
+        errorLog.setReferenceField4(consoleId);
+        errorLog.setReferenceField5(pieceId);
+        errorLog.setReferenceField6(pieceItemId);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);

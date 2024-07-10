@@ -137,6 +137,8 @@ export class BondedManifestNewComponent {
     quantity: [],
     remarks: [],
     sealNo: [],
+    pieceId: [],
+    pieceItemId: [],
     serviceTypeId: [],
     serviceTypeName: [],
     shipperId: [],

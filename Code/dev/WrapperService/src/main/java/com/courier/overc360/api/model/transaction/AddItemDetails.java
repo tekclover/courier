@@ -33,21 +33,27 @@ public class AddItemDetails {
 
     private String partnerName;
 
-//    private String partnerMasterAirwayBill;
-//
-//    private String partnerHouseAirwayBill;
+    private String consignmentCurrency;
 
-    private List<ReferenceImageList> referenceImageList;
+    private String consignmentValue;
 
-    private String itemCode;
+    private String exchangeRate;
 
-    private String hsCode;
+    private String IATA;
 
-    private String description;
+    private String customsInsurance;
 
-    private String declaredValue;
+    private String duty;
 
-    private String codAmount;
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
 
     private String length;
 
@@ -64,6 +70,22 @@ public class AddItemDetails {
     private String volume;
 
     private String volumeUnit;
+
+//    private String partnerMasterAirwayBill;
+//
+//    private String partnerHouseAirwayBill;
+
+    private List<ReferenceImageList> referenceImageList;
+
+    private String itemCode;
+
+    private String hsCode;
+
+    private String description;
+
+    private String declaredValue;
+
+    private String codAmount;
 
     private String referenceField1;
 

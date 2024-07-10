@@ -53,11 +53,31 @@ public class AddConsole {
 
     private Long shipmentBagId;
 
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private Long deletionIndicator = 0L;
 
     private String netWeight;
-
-    private String exchangeRate;
 
     private String customsCurrency;
 
@@ -125,13 +145,7 @@ public class AddConsole {
 
     private String customsKd;
 
-    private String consignmentCurrency;
-
-    private String consignmentValue;
-
     private String expectedDuty;
-
-    private String customsValue;
 
     private String actualCurrency;
 

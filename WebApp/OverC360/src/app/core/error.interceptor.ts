@@ -30,10 +30,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                 if(request.url.includes('/doc-storage/multiUpload')){
                     return throwError(error);
                 }
-                if(request.url.includes('/consignment/Upload')){
+                if(request.url.includes('/consignment/upload/v2')){
                     return throwError(error);
                 }
                 if(request.url.includes('/pdf/extract')){
+                    return throwError(error);
+                }
+                if(request.url.includes('pdf/merge')){
                     return throwError(error);
                 }
                 

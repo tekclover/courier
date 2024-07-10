@@ -27,6 +27,12 @@ public class UpdateConsole {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    @NotBlank(message = "PieceId is mandatory")
+    private String pieceId;
+
+    @NotBlank(message = "PieceItemId is mandatory")
+    private String pieceItemId;
+
     private String partnerType;
 
     private String expectedDuty;
@@ -60,6 +66,24 @@ public class UpdateConsole {
     private String secondaryDo;
 
     private String manifestedGrossWeight;
+
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String IATA;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIATA;
+
+    private String addInsurance;
+
+    private String calculatedTotalDuty;
 
     private String grossWeight;
 
@@ -115,10 +139,6 @@ public class UpdateConsole {
 
     private String companyName;
 
-    private String pieceId;
-
-    private String pieceItemId;
-
     private String languageDescription;
 
     private String statusId;
@@ -128,10 +148,6 @@ public class UpdateConsole {
     private String bondedId;
 
     private Long shipmentBagId;
-
-    private String consignmentCurrency;
-
-    private String consignmentValue;
 
     private String actualCurrency;
 
