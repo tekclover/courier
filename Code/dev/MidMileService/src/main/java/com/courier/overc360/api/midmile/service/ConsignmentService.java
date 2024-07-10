@@ -7,6 +7,7 @@ import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.*;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
@@ -88,6 +89,9 @@ public class ConsignmentService {
 
     @Autowired
     ReplicaBondedManifestRepository replicaBondedManifestRepository;
+
+    @Autowired
+    PieceDetailsRepository pieceDetailsRepository;
 
     /*================================================PRIMARY====================================================================*/
 
@@ -180,13 +184,13 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
-            if(consignmentEntity.getServiceTypeId() != null) {
+            if (consignmentEntity.getServiceTypeId() != null) {
                 IKeyValuePair iKey = replicaBondedManifestRepository.getStatusServiceType(
                         languageId, companyId, consignmentEntity.getLoadTypeId(), consignmentEntity.getServiceTypeId());
-                if(iKey != null && iKey.getLoadType() != null) {
+                if (iKey != null && iKey.getLoadType() != null) {
                     consignmentEntity.setLoadType(iKey.getLoadType());
                 }
-                if(iKey != null && iKey.getServiceTypeText() != null) {
+                if (iKey != null && iKey.getServiceTypeText() != null) {
                     consignmentEntity.setServiceTypeText(iKey.getServiceTypeText());
                 }
             }
@@ -376,6 +380,18 @@ public class ConsignmentService {
                 BeanUtils.copyProperties(pd, addPieceDetails);
                 addPieceDetailsList.add(addPieceDetails);
             }
+            Double pieceValue = 0.0;
+            for (AddPieceDetails item : pieceDetails) {
+                if (item.getDeclaredValue() != null) {
+                    Double declaredValue = Double.valueOf(item.getPieceValue());
+                    pieceValue += declaredValue;
+                }
+            }
+
+            //Consignment_entity Set
+            consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
+                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(), String.valueOf(pieceValue));
+
 
             AddConsignment newAddConsignment = new AddConsignment();
             newAddConsignment.setPieceDetails(addPieceDetailsList);
@@ -422,32 +438,32 @@ public class ConsignmentService {
             UpdateConsignment addConsignment = new UpdateConsignment();
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
             //StatusText And EventText
-           if(dbConsignment.getStatusId() != null && dbConsignment.getStatusId().equalsIgnoreCase("1")) {
-               // Set Event Status
-               Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), "2", "2");
-               if (statusEventText.isPresent()) {
-                   IKeyValuePair keyValuePair = statusEventText.get();
-                   dbConsignmentEntity.setStatusId("2");
-                   dbConsignmentEntity.setEventCode("2");
-                   dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
-                   dbConsignmentEntity.setEventText(keyValuePair.getEventText());
-                   dbConsignmentEntity.setStatusTimestamp(new Date());
-                   dbConsignmentEntity.setEventTimestamp(new Date());
-               }
-           } else {
-               // Set Event Status
-               Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(
-                       dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getStatusId(), dbConsignment.getEventCode());
-               if (statusEventText.isPresent()) {
-                   IKeyValuePair keyValuePair = statusEventText.get();
-                   dbConsignmentEntity.setStatusId("2");
-                   dbConsignmentEntity.setEventCode("2");
-                   dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
-                   dbConsignmentEntity.setEventText(keyValuePair.getEventText());
-                   dbConsignmentEntity.setStatusTimestamp(new Date());
-                   dbConsignmentEntity.setEventTimestamp(new Date());
-               }
-           }
+            if (dbConsignment.getStatusId() != null && dbConsignment.getStatusId().equalsIgnoreCase("1")) {
+                // Set Event Status
+                Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), "2", "2");
+                if (statusEventText.isPresent()) {
+                    IKeyValuePair keyValuePair = statusEventText.get();
+                    dbConsignmentEntity.setStatusId("2");
+                    dbConsignmentEntity.setEventCode("2");
+                    dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
+                    dbConsignmentEntity.setEventText(keyValuePair.getEventText());
+                    dbConsignmentEntity.setStatusTimestamp(new Date());
+                    dbConsignmentEntity.setEventTimestamp(new Date());
+                }
+            } else {
+                // Set Event Status
+                Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(
+                        dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getStatusId(), dbConsignment.getEventCode());
+                if (statusEventText.isPresent()) {
+                    IKeyValuePair keyValuePair = statusEventText.get();
+                    dbConsignmentEntity.setStatusId("2");
+                    dbConsignmentEntity.setEventCode("2");
+                    dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
+                    dbConsignmentEntity.setEventText(keyValuePair.getEventText());
+                    dbConsignmentEntity.setStatusTimestamp(new Date());
+                    dbConsignmentEntity.setEventTimestamp(new Date());
+                }
+            }
             dbConsignmentEntity.setDeletionIndicator(0L);
             dbConsignmentEntity.setUpdatedBy(loginUserID);
             dbConsignmentEntity.setUpdatedOn(new Date());
@@ -1138,12 +1154,12 @@ public class ConsignmentService {
         List<ConsignmentInvoice> results = replicaConsignmentEntityRepository.getConsignmentInvoiceHeader(findConsignmentInvoice.getHouseAirwayBill(),
                 findConsignmentInvoice.getPartnerHouseAirwayBill(), findConsignmentInvoice.getPartnerMasterAirwayBill(), findConsignmentInvoice.getCompanyId());
         List<InvoiceForm> invoiceFormList = new ArrayList<>();
-        if(results != null && !results.isEmpty()) {
-            results.forEach(n->{
+        if (results != null && !results.isEmpty()) {
+            results.forEach(n -> {
                 InvoiceForm dbInvoiceHeader = new InvoiceForm();
-                BeanUtils.copyProperties(n,dbInvoiceHeader,CommonUtils.getNullPropertyNames(n));
+                BeanUtils.copyProperties(n, dbInvoiceHeader, CommonUtils.getNullPropertyNames(n));
                 List<ConsignmentInvoice> lineResults = replicaConsignmentEntityRepository.getConsignmentInvoiceLine(n.getConsignmentId());
-                if(lineResults != null && !lineResults.isEmpty()) {
+                if (lineResults != null && !lineResults.isEmpty()) {
                     dbInvoiceHeader.setInvoiceFormLines(lineResults);
                 }
                 invoiceFormList.add(dbInvoiceHeader);

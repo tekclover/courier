@@ -48,125 +48,125 @@ export class CcrEditComponent {
   // form builder initialize
   form = this.fb.group({
     actualCurrency: [],
-  airportOriginCode: [],
-  bondedId: [],
-  ccrId: [],
-  companyId: [],
-  companyName: [],
-  consigneeCivilId: [],
-  consigneeName: [],
-  consignmentCurrency: [],
-  consignmentValue: [],
-  consoleId: [],
-  countryOfOrigin: [],
-  createdBy: [],
-  createdOn: [],
-  currency: [],
-  customsCcrNo: [],
-  customsKd: [],
-  declaredValue: [],
-  deletionIndicator: [],
-  description: [],
-  eventCode: [],
-  eventText: [],
-  eventTimestamp: [],
-  exemptionBeneficiary: [],
-  exemptionFor: [],
-  exemptionReference: [],
-  finalDestination: [],
-  flightArrivalTime: [],
-  flightNo: [],
-  freightCharges: [],
-  freightCurrency: [],
-  goodsDescription: [],
-  goodsType: [],
-  grossWeight: [],
-  houseAirwayBill: [],
-  hsCode: [],
-  iataKd: [],
-  incoTerms: [],
-  invoiceDate: [],
-  invoiceNumber: [],
-  invoiceSupplierName: [],
-  invoiceType: [],
-  isConsolidatedShipment: [],
-  isExempted: [],
-  isPendingShipment: [],
-  isSplitBillOfLading: [],
-  landedQuantity: [],
-  languageDescription: [],
-  languageId: [],
-  manifestedGrossWeight: [],
-  manifestedQuantity: [],
-  manufacturer: [],
-  masterAirwayBill: [],
-  netWeight: [],
-  noOfPackageMawb: [],
-  noOfPieceHawb: [],
-  notifyParty: [],
-  packageType: [],
-  partnerHouseAirwayBill: [],
-  partnerId: [],
-  partnerMasterAirwayBill: [],
-  partnerName: [],
-  partnerType: [],
-  paymentType: [],
-  pieceId: [],
-  pieceItemId: [],
-  primaryDo: [],
-  productId: [],
-  productName: [],
-  quantity: [],
-  referenceField1: [],
-  referenceField10: [],
-  referenceField11: [],
-  referenceField12: [],
-  referenceField13: [],
-  referenceField14: [],
-  referenceField15: [],
-  referenceField16: [],
-  referenceField17: [],
-  referenceField18: [],
-  referenceField19: [],
-  referenceField2: [],
-  referenceField20: [],
-  referenceField3: [],
-  referenceField4: [],
-  referenceField5: [],
-  referenceField6: [],
-  referenceField7: [],
-  referenceField8: [],
-  referenceField9: [],
-  remarks: [],
-  secondaryDo: [],
-  serviceTypeId: [],
-  serviceTypeName: [],
-  shipperId: [],
-  shipperName: [],
-  specialApprovalValue: [],
-  statusId: [],
-  statusText: [],
-  statusTimestamp: [],
-  subProductId: [],
-  subProductName: [],
-  tareWeight: [],
-  totalDuty: [],
-  totalQuantity: [],
-  updatedBy: [],
-  updatedOn: [],
-  volume: [],
-  iata: [],
-  dduCharge: [],
-  customsValue: [],
-  specialApprovalCharge: [],
-  exchangeRate: [],
-  consignmentValueLocal: [],
-  duty: ['5%',],
-  addInsurance: [],
-  customsInsurance: [],
-  addIATA: [],
-  actualDuty: [],
-  calculatedTotalDuty: [],
+    airportOriginCode: [],
+    bondedId: [],
+    ccrId: [],
+    companyId: [],
+    companyName: [],
+    consigneeCivilId: [],
+    consigneeName: [],
+    consignmentCurrency: [],
+    consignmentValue: [],
+    consoleId: [],
+    countryOfOrigin: [],
+    createdBy: [],
+    createdOn: [],
+    currency: [],
+    customsCcrNo: [],
+    customsKd: [],
+    declaredValue: [],
+    deletionIndicator: [],
+    description: [],
+    eventCode: [],
+    eventText: [],
+    eventTimestamp: [],
+    exemptionBeneficiary: [],
+    exemptionFor: [],
+    exemptionReference: [],
+    finalDestination: [],
+    flightArrivalTime: [],
+    flightNo: [],
+    freightCharges: [],
+    freightCurrency: [],
+    goodsDescription: [],
+    goodsType: [],
+    grossWeight: [],
+    houseAirwayBill: [],
+    hsCode: [],
+    iataKd: [],
+    incoTerms: [],
+    invoiceDate: [],
+    invoiceNumber: [],
+    invoiceSupplierName: [],
+    invoiceType: [],
+    isConsolidatedShipment: [],
+    isExempted: [],
+    isPendingShipment: [],
+    isSplitBillOfLading: [],
+    landedQuantity: [],
+    languageDescription: [],
+    languageId: [],
+    manifestedGrossWeight: [],
+    manifestedQuantity: [],
+    manufacturer: [],
+    masterAirwayBill: [],
+    netWeight: [],
+    noOfPackageMawb: [],
+    noOfPieceHawb: [],
+    notifyParty: [],
+    packageType: [],
+    partnerHouseAirwayBill: [],
+    partnerId: [],
+    partnerMasterAirwayBill: [],
+    partnerName: [],
+    partnerType: [],
+    paymentType: [],
+    pieceId: [],
+    pieceItemId: [],
+    primaryDo: [],
+    productId: [],
+    productName: [],
+    quantity: [],
+    referenceField1: [],
+    referenceField10: [],
+    referenceField11: [],
+    referenceField12: [],
+    referenceField13: [],
+    referenceField14: [],
+    referenceField15: [],
+    referenceField16: [],
+    referenceField17: [],
+    referenceField18: [],
+    referenceField19: [],
+    referenceField2: [],
+    referenceField20: [],
+    referenceField3: [],
+    referenceField4: [],
+    referenceField5: [],
+    referenceField6: [],
+    referenceField7: [],
+    referenceField8: [],
+    referenceField9: [],
+    remarks: [],
+    secondaryDo: [],
+    serviceTypeId: [],
+    serviceTypeName: [],
+    shipperId: [],
+    shipperName: [],
+    specialApprovalValue: [],
+    statusId: [],
+    statusText: [],
+    statusTimestamp: [],
+    subProductId: [],
+    subProductName: [],
+    tareWeight: [],
+    totalDuty: [],
+    totalQuantity: [],
+    updatedBy: [],
+    updatedOn: [],
+    volume: [],
+    iata: [],
+    dduCharge: [],
+    customsValue: [],
+    specialApprovalCharge: [],
+    exchangeRate: [],
+    consignmentValueLocal: [],
+    duty: ['5%',],
+    addInsurance: [],
+    customsInsurance: [],
+    addIATA: [],
+    actualDuty: [],
+    calculatedTotalDuty: [],
   });
 
   submitted = false;
@@ -198,17 +198,17 @@ export class CcrEditComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-this.callTableHeader()
+    this.callTableHeader()
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
-    
+
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.ccrId.disable();
       this.form.controls.statusId.disable();
     }
-    
+
   }
 
 
@@ -225,18 +225,18 @@ this.callTableHeader()
       { field: 'consigneeName', header: 'Consignee Name' },
       { field: 'consignmentValue', header: 'Consignment Value' },
       { field: 'consignmentCurrency', header: 'Consignment Currency' },
+      { field: 'exchangeRate', header: 'Exchange Rate' },
+      { field: 'iata', header: 'IATA' },
+      { field: 'customsInsurance', header: 'Customs Insurance' },
+      { field: 'duty', header: 'Duty' },
+      { field: 'consignmentValueLocal', header: 'Consignment Value Local' },
+      { field: 'addIATA', header: 'Add IATA' },
+      { field: 'addInsurance', header: 'Add Insurance' },
+      { field: 'customsValue', header: 'Custom' },
+      { field: 'calculatedTotalDuty', header: 'Calculated Total duty' },
       { field: 'dduCharge', header: 'DDU Charge' },
       { field: 'specialApprovalCharge', header: 'Spl Approval Charge' },
-      { field: 'exchangeRate', header: 'Exchange Rate' },
-      { field: 'consignmentValueLocal', header: 'Consignment Value Local' },
-      { field: 'duty', header: 'Duty' },
-      { field: 'addInsurance', header: 'Add Insurance' },
-      { field: 'customsInsurance', header: 'Customs Insurance' },
-      { field: 'addIATA', header: 'Add IATA' },
       { field: 'actualDuty', header: 'Actual Duty' },
-      { field: 'calculatedTotalDuty', header: 'Calculated Total duty' },
-      { field: 'customsValue', header: 'Custom' },
-      { field: 'iata', header: 'IATA' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
@@ -248,7 +248,7 @@ this.callTableHeader()
   companyIdList: any[] = [];
 
   dropdownlist() {
-   // this.spin.show();
+    // this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
@@ -256,7 +256,7 @@ this.callTableHeader()
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-       // this.spin.hide();
+        // this.spin.hide();
       },
       error: (err: any) => {
         this.spin.hide();
@@ -270,7 +270,7 @@ this.callTableHeader()
 
   subProductArray: any[] = [];
 
- 
+
 
   removeItem(index: number) {
     this.subProductArray.splice(index, 1);
@@ -296,72 +296,77 @@ this.callTableHeader()
     // this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     // this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }
-  lineSentforFill:any;
+  lineSentforFill: any;
   save() {
     this.submitted = true;
     if (this.form.invalid) {
       this.messageService.add({
-       severity: 'error',
-       summary: 'Error',
-       key: 'br',
-         detail: 'Please fill required fields to continue',
-       });
-       return;
-     }
+        severity: 'error',
+        summary: 'Error',
+        key: 'br',
+        detail: 'Please fill required fields to continue',
+      });
+      return;
+    }
 
 
     if (this.pageToken.pageflow != 'New') {
-      if (this.selectedCcr.length==0) {
+      if (this.selectedCcr.length == 0) {
         this.messageService.add({
-         severity: 'error',
-         summary: 'Error',
-         key: 'br',
-           detail: 'Please fill required fields to continue',
-         });
-         return;
-       }
+          severity: 'error',
+          summary: 'Error',
+          key: 'br',
+          detail: 'Kindly select any row',
+        });
+        return;
+      }
       this.spin.show();
+      const a = this.subProductArray.filter(x => x.eventCode == 10);
+
       this.service.UpdateList(this.selectedCcr).subscribe({
         next: (res) => {
           this.messageService.add({
-           severity: 'success',
+            severity: 'success',
             summary: 'Updated',
             key: 'br',
             detail: res[0].consoleId + ' has been updated successfully',
-       });
-          //this.router.navigate(['/main/airport/console']);
-          let line:any={};
-          line.ccrId=this.subProductArray[0].ccrId;
-          this.fill(line);
-          this.spin.hide();
+          });
+          if (this.subProductArray.length == a.length) {
+            this.router.navigate(['/main/airport/ccr']);
+          } else {
+            setTimeout(() => {
+            this.fill(this.pageToken.line);
+          }, 2000);
+          }
         },
         error: (err) => {
           this.spin.hide();
-         this.cs.commonerrorNew(err);
+          this.cs.commonerrorNew(err);
         },
       });
-   } 
+    }
   }
 
-  editItem(data: any,item: any): void {
+  editItem(data: any, item: any): void {
     const dialogRef = this.dialog.open(CcrEditpopupComponent, {
       disableClose: true,
       width: '70%',
       //height: '50%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: {pageflow: data,code:item},
+      data: { pageflow: data, code: item },
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.subProductArray.splice(item,0);
+      if (result) {
+        this.subProductArray.splice(item, 0);
         this.subProductArray.splice(item, 1, result);
-      this.subProductArray = [...this.subProductArray]
-  
-  }});
+        this.subProductArray = [...this.subProductArray]
+
+      }
+    });
   }
-  transfer(){
+  transfer() {
     if (this.selectedCcr.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     }
