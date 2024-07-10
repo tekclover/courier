@@ -43,7 +43,7 @@ export class PreAlertNewComponent {
       { value: 'consignor', label: 'Consignor' },
     ];
   }
-  
+
   OriginDetails = this.fb.group({
     name: [],
     companyName: [],
@@ -77,7 +77,7 @@ export class PreAlertNewComponent {
     consignmentCurrency: [],
     airportDestinationCode: [],
     hsCode: [],
-    partnerType: ['', ],
+    partnerType: ['',],
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
@@ -87,10 +87,10 @@ export class PreAlertNewComponent {
     noOfCrt: [],
     totalShipmentWeight: [],
     totalValue: [],
-    createdOn: ['', ],
+    createdOn: ['',],
     createdBy: [],
     updatedBy: [],
-    updatedOn: ['', ],
+    updatedOn: ['',],
     partnerId: ['', Validators.required]
   })
 
@@ -116,7 +116,7 @@ export class PreAlertNewComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-  
+
     this.form.controls.companyId.disable();
 
     if (this.pageToken.pageflow != 'New') {
@@ -130,11 +130,11 @@ export class PreAlertNewComponent {
   }
 
   companyIdList: any[] = [];
-  countryIdList: any[] =[];
+  countryIdList: any[] = [];
   customerIdList: any[] = [];
   hsCodeList: any[] = [];
 
-  dropdownlist(){
+  dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
@@ -144,32 +144,42 @@ export class PreAlertNewComponent {
       this.cas.dropdownlist.setup.customer.url,
 
 
-    ]).subscribe({next: (results: any) => {
-      this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
-      this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
-      this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[2], this.cas.dropdownlist.setup.hsCode.key);
-      const consitnor = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
-      const customer = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.customer.key);
-      customer.forEach(x => this.customerIdList.push(x));
-      consitnor.forEach(x => this.customerIdList.push(x));
-      this.customerIdList = this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
+    ]).subscribe({
+      next: (results: any) => {
+        this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
+        this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
+        this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[2], this.cas.dropdownlist.setup.hsCode.key);
+        const consitnor = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
+        const customer = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.customer.key);
+        customer.forEach(x => this.customerIdList.push(x));
+        consitnor.forEach(x => this.customerIdList.push(x));
+        this.customerIdList = this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
 
-      this.spin.hide();
-    },
-    error: (err: any) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+        this.spin.hide();
+      },
+      error: (err: any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
 
   }
   fill(line: any) {
-    this.form.patchValue(line);
-    this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
-    this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
-    if(this.form.controls.estimatedDepartureTime.value){
-      this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
-    }
+    this.service.search({ houseAirwayBill: [line.houseAirwayBill] }).subscribe({
+      next: res => {
+        if (res) {
+          this.form.patchValue(res[0]);
+          this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
+          this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+          if (this.form.controls.estimatedDepartureTime.value) {
+            this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
+          }
+        }
+      }, error: err => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
   save() {
@@ -191,7 +201,7 @@ export class PreAlertNewComponent {
       return;
     }
     const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
-this.form.controls.estimatedDepartureTime.patchValue(date)
+    this.form.controls.estimatedDepartureTime.patchValue(date)
     if (this.pageToken.pageflow != 'New') {
       this.spin.show()
       this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
@@ -208,11 +218,11 @@ this.form.controls.estimatedDepartureTime.patchValue(date)
       this.spin.show()
       this.service.Create([this.form.getRawValue()]).subscribe({
         next: (res) => {
-        if(res){
-          this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail:' has been created successfully' });
-          this.router.navigate(['/main/airport/preAlertManifest']);
-          this.spin.hide();
-        }
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: ' has been created successfully' });
+            this.router.navigate(['/main/airport/preAlertManifest']);
+            this.spin.hide();
+          }
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
@@ -220,39 +230,43 @@ this.form.controls.estimatedDepartureTime.patchValue(date)
       })
     }
   }
-shipperType:any;
-  partnerTypeChanged(){
-    if(this.form.controls.partnerType.value=="customer"){
+  shipperType: any;
+  partnerTypeChanged() {
+    if (this.form.controls.partnerType.value == "customer") {
       let obj: any = {};
       obj.companyId = [this.auth.companyId];
-      
+
       this.customerIdList = [];
       this.spin.show();
-      this.customerService.search(obj).subscribe({next: (result) => {
-      this.customerIdList = this.cas.foreachlist(result, {key: 'customerId', value: 'customerName'});
-      this.shipperType="Customer";
-      this.form.controls.shipperName.patchValue(this.shipperType)
-      this.spin.hide();
-      }, error: (err) =>{
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }})
-    } else{
+      this.customerService.search(obj).subscribe({
+        next: (result) => {
+          this.customerIdList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' });
+          this.shipperType = "Customer";
+          this.form.controls.shipperName.patchValue(this.shipperType)
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    } else {
       let obj: any = {};
       obj.companyId = [this.auth.companyId];
-  
+
       this.customerIdList = [];
       this.spin.show();
-      this.consignorService.search(obj).subscribe({next: (result) => {
-      this.customerIdList = this.cas.foreachlist(result, {key: 'consignorId', value: 'consignorName'});
-      this.shipperType="Consignor";
-      this.form.controls.shipperName.patchValue(this.shipperType)
-      this.spin.hide();
-      }, error: (err) =>{
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }})
-  
+      this.consignorService.search(obj).subscribe({
+        next: (result) => {
+          this.customerIdList = this.cas.foreachlist(result, { key: 'consignorId', value: 'consignorName' });
+          this.shipperType = "Consignor";
+          this.form.controls.shipperName.patchValue(this.shipperType)
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+
     }
-}
+  }
 }
