@@ -94,6 +94,7 @@ export class ConsignmentComponent {
   }
 
   initialCall() {
+    setTimeout(() => {
     this.spin.show();
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -109,6 +110,7 @@ export class ConsignmentComponent {
         this.cs.commonerrorNew(err);
       },
     });
+  }, 2000);
   }
 
   onChange() {
@@ -142,7 +144,7 @@ export class ConsignmentComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-   this.initialCall();
+      this.initialCall();
     });
 }
   openCrud(type: any = 'New', linedata: any = null): void {

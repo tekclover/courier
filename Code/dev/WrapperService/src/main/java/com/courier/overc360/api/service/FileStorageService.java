@@ -385,7 +385,7 @@ public class FileStorageService {
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Uploaded", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Upload", authToken.getAccess_token());
 
             if(dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();

@@ -659,7 +659,9 @@ public class ItemDetailsService {
                             Double quantity = Double.valueOf(addItemDetails.getQuantity());
                             totalValue = unitValue * quantity;
                         }
-
+                        if(totalValue != null) {
+                            addItemDetails.setDeclaredValue(String.valueOf(totalValue));
+                        }
                         //ExchangeCurrencyRate
                         if (optionalIKeyValuePair.isPresent()) {
                             IKeyValuePair iKeyValuePair = optionalIKeyValuePair.get();
@@ -713,6 +715,7 @@ public class ItemDetailsService {
                                 }
                             }
                         }
+
                         newItemDetails.setConsignmentValue(String.valueOf(consignmentValue));
                         newItemDetails.setPieceItemId(PIECE_ITEM_ID);
                         newItemDetails.setCompanyId(companyId);

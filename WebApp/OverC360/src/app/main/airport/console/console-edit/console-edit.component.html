@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
-                        <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusId"
+                        <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusText"
                         class="w-100" pInputText placeholder="Enter" />
                     </div>
                 </div>
@@ -39,113 +39,58 @@
                     <button (click)="add()" type="button" class="btn ml-2 addNewbuttom bgBlack text-white"><i
                             class="bi bi-plus-square pr-2"></i>Add Values</button>
                 </div> -->
-                <div class="d-flex-row">
-                    <p-table [scrollable]="true" scrollHeight="calc(100vh - 23rem)" [tableStyle]="{'width': '125rem'}" [value]="subProductArray" [(selection)]="selectedConsole"    selectionMode="multiple">
-                        <ng-template pTemplate="header">
+                <div class="tableProperties">
+                    <p-table #ccrTag [columns]="cols" [value]="subProductArray" class="custom-table" [scrollable]="true"
+                        selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="subProductArray"
+                        scrollHeight="calc(100vh - 23rem)" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '190rem'}"
+                        styleClass="p-datatable-sm">
+                        <ng-template pTemplate="header" let-columns>
                             <tr>
-                                <th style="width: 5rem;">
-                                    <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
+                                <th style="width: 5rem;" pFrozenColumn>
+                                    <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
                                 </th>
-                                <th>MAWB </th>
-                                <th>HAWB </th>
-                                <th>Partner MAWB</th>
-                                <th>Partner HAWB</th>
-                                <th>Commodity</th>
-                                <th>No of Piece</th>
-                                <th>Origin</th>
-                                <th>Weight</th>
-                                <th>Airport Origin Code</th>
-                                <th>HS Code</th>
-                                <th>Consignee Name</th>
-                                <th>Consignment Value</th>
-                                <th>Consignment Currency </th>
-                                <th>Customs Value </th>
-                                <th>Custom Charges </th>
-                                <th>IATA Charges</th>
-                                <th>Created  On</th>
-                                <th>Actions</th>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{ col.header }} <p-sortIcon [field]="col.field" />
+                                </th>
+                                <th style="width: 5rem;" pFrozenColumn alignFrozen="right">
+                                    Actions
+                                </th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-item>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                             <tr>
-                              <td style=" text-align: center;">
-                                <p-tableCheckbox [value]="item"></p-tableCheckbox>
-                              </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.masterAirwayBill }}
-                                    </p>
+                                <td style="width: 5rem; justify-content: center;" pFrozenColumn>
+                                    <p-tableCheckbox class="pl-3" [value]="rowData" />
                                 </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.houseAirwayBill }}
-                                    </p>
+                                <td *ngFor="let col of columns">
+                                    <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
+                                        {{ rowData[col.field] }}
+                                    </ng-container>
+                                    <ng-template #dateTemplate>
+                                        {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
+                                    </ng-template>
                                 </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.partnerMasterAirwayBill }}
-                                    </p>
+                                <td style="padding-left: 1.5rem !important;" pFrozenColumn alignFrozen="right">
+                                    <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
+                                        alt="" srcset="" style="height: 1.4rem;">
+                                    <p-overlayPanel [style]="{ width: '180' }" #op>
+                                        <div class="d-flex flex-column">
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="editItem('Edit',rowData); op.hide()"><img
+                                                    src="./assets/common/edit.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Edit</button>
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                                (click)="removeItem(rowData)"><img src="./assets/common/deletetool.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Delete</button>
+                                        </div>
+                                    </p-overlayPanel>
                                 </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.partnerHouseAirwayBill }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.description }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.quantity }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.countryOfOrigin }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.grossWeight }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.airportOriginCode }}
-                                    </p>
-                                </td>
-                              
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.hsCode }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.consigneeName }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.consignmentValue }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.consignmentCurrency }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.customsValue }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.customsKd }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.iataKd }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="w-100 pl-2 ml-2">{{ item.createdOn| date : 'dd-MM-yyyy HH:mm' }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <div class="d-flex img-icon px-3">
-                                        <img type="button" src="./assets/common/edit.png" (click)="editItem('Edit',item)" alt="" width="24px" height="24px">
-                                        <img type="button" (click)="removeItem(item)" src="./assets/common/deletetool.png"
-                                            alt="" srcset="" width="24px" height="24px">
-                                    </div>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td [attr.colspan]="4">
+                                    <p class="my-2 w-100 pl-3">No records found</p>
                                 </td>
                             </tr>
                         </ng-template>
