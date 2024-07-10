@@ -41,13 +41,13 @@
                 </div> -->
                 <div class="tableProperties">
                     <p-table #ccrTag [columns]="cols" [value]="subProductArray" class="custom-table" [scrollable]="true"
-                        selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="subProductArray"
+                        selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedConsole"
                         scrollHeight="calc(100vh - 23rem)" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '190rem'}"
                         styleClass="p-datatable-sm">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th style="width: 5rem;" pFrozenColumn>
-                                    <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                                    <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
                                 </th>
                                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                                     {{ col.header }} <p-sortIcon [field]="col.field" />
@@ -58,7 +58,7 @@
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                            <tr>
+                            <tr  [class.selectedRow]="selectedConsole[0] === rowData">
                                 <td style="width: 5rem; justify-content: center;" pFrozenColumn>
                                     <p-tableCheckbox class="pl-3" [value]="rowData" />
                                 </td>

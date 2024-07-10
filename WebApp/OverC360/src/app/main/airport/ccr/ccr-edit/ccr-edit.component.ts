@@ -21,7 +21,7 @@ import { CcrEditpopupComponent } from '../ccr-editpopup/ccr-editpopup.component'
 export class CcrEditComponent {
   active: number | undefined = 0;
   status: any[] = [];
-  selectedConsole: any[] = [];
+  selectedCcr: any[] = [];
   constructor(
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
@@ -182,9 +182,9 @@ export class CcrEditComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
   onChange() {
-    const choosen = this.selectedConsole[this.selectedConsole.length - 1];
-    this.selectedConsole.length = 0;
-    this.selectedConsole.push(choosen);
+    const choosen = this.selectedCcr[this.selectedCcr.length - 1];
+    this.selectedCcr.length = 0;
+    this.selectedCcr.push(choosen);
   }
   nextNumber: any;
   cols: any[] = [];
@@ -248,7 +248,7 @@ this.callTableHeader()
   companyIdList: any[] = [];
 
   dropdownlist() {
-    this.spin.show();
+   // this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
@@ -256,7 +256,7 @@ this.callTableHeader()
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.spin.hide();
+       // this.spin.hide();
       },
       error: (err: any) => {
         this.spin.hide();
@@ -277,8 +277,8 @@ this.callTableHeader()
   }
 
   fill(line: any) {
-    this.form.patchValue(this.pageToken.line);
     this.spin.show();
+    this.form.patchValue(this.pageToken.line);
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
@@ -296,7 +296,7 @@ this.callTableHeader()
     // this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     // this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }
-lineSentforFill:any;
+  lineSentforFill:any;
   save() {
     this.submitted = true;
     if (this.form.invalid) {
@@ -309,8 +309,9 @@ lineSentforFill:any;
        return;
      }
 
+
     if (this.pageToken.pageflow != 'New') {
-      if (this.selectedConsole.length==0) {
+      if (this.selectedCcr.length==0) {
         this.messageService.add({
          severity: 'error',
          summary: 'Error',
@@ -320,7 +321,7 @@ lineSentforFill:any;
          return;
        }
       this.spin.show();
-      this.service.UpdateList(this.selectedConsole).subscribe({
+      this.service.UpdateList(this.selectedCcr).subscribe({
         next: (res) => {
           this.messageService.add({
            severity: 'success',
@@ -361,7 +362,7 @@ lineSentforFill:any;
   }});
   }
   transfer(){
-    if (this.selectedConsole.length === 0) {
+    if (this.selectedCcr.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     }
 
@@ -371,7 +372,7 @@ lineSentforFill:any;
       height: '40%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: this.selectedConsole,
+      data: this.selectedCcr,
     });
 
     dialogRef.afterClosed().subscribe(result => {
