@@ -140,6 +140,7 @@ export class CustomerValueComponent {
         this.subProductIdList = this.cas.foreachlistWithoutKey(result, { key: 'subProductId', value: 'subProductName' });
         this.subProductIdList = this.cs.removeDuplicatesFromArrayList(this.subProductIdList, 'value')
         this.subProductValueList = this.cas.foreachlistWithoutKey(result, { key: 'subProductValue', value: 'subProductValue' });
+        this.subProductValueList = this.cs.removeDuplicatesFromArrayList(this.subProductValueList, 'value')
         this.form.patchValue(result[0]);
         this.spin.hide();
       }, error: (err) => {
@@ -154,6 +155,7 @@ export class CustomerValueComponent {
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.subProductId = [this.form.controls.subProductId.value];
+    // obj.subProductValue = [this.form.controls.subProductValue.value];
     
     this.subProductValueList = [];
     this.spin.show();

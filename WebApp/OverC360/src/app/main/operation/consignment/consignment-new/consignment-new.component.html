@@ -976,12 +976,12 @@
                             <mat-error *ngIf="errorHandlingBilling('exchangeRate')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>    
-                        <div class="col-3 marginFieldNew borderRadius12" id="iataCharge">
+                        <div class="col-3 marginFieldNew borderRadius12" id="iata">
                             <p class="formControlLabel f600 textBlack mb-0">IATA</p>
-                            <input maxlength="50" formControlName="iataCharge"
-                                [ngClass]="billing.get('iataCharge')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            <input maxlength="50" formControlName="iata"
+                                [ngClass]="billing.get('iata')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('iataCharge')"
+                            <mat-error *ngIf="errorHandlingBilling('iata')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="customsInsurance">
@@ -992,12 +992,12 @@
                             <mat-error *ngIf="errorHandlingBilling('customsInsurance')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="dutyPercentage">
+                        <div class="col-3 marginFieldNew borderRadius12" id="duty">
                             <p class="formControlLabel f600 textBlack mb-0">Duty Percentage</p>
-                            <input maxlength="50" formControlName="dutyPercentage"
-                                [ngClass]="billing.get('dutyPercentage')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            <input maxlength="50" formControlName="duty"
+                                [ngClass]="billing.get('duty')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('dutyPercentage')"
+                            <mat-error *ngIf="errorHandlingBilling('duty')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="consignmentValueLocal">
@@ -1008,20 +1008,20 @@
                             <mat-error *ngIf="errorHandlingBilling('consignmentValueLocal')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentValuwithIATA">
+                        <div class="col-3 marginFieldNew borderRadius12" id="addIATA">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Value with IATA</p>
-                            <input maxlength="50" formControlName="consignmentValuwithIATA"
-                                [ngClass]="billing.get('consignmentValuwithIATA')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            <input maxlength="50" formControlName="addIATA"
+                                [ngClass]="billing.get('addIATA')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('consignmentValuwithIATA')"
+                            <mat-error *ngIf="errorHandlingBilling('addIATA')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="consignmentInsurance">
+                        <div class="col-3 marginFieldNew borderRadius12" id="addInsurance">
                             <p class="formControlLabel f600 textBlack mb-0">Consignment Insurance</p>
-                            <input maxlength="50" formControlName="consignmentInsurance"
-                                [ngClass]="billing.get('consignmentInsurance')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            <input maxlength="50" formControlName="addInsurance"
+                                [ngClass]="billing.get('addInsurance')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('consignmentInsurance')"
+                            <mat-error *ngIf="errorHandlingBilling('addInsurance')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <div class="col-3 marginFieldNew borderRadius12" id="customsValue">

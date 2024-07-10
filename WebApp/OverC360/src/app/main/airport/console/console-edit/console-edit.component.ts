@@ -326,6 +326,9 @@ lineSentforFill:any;
   }
  
   transfer(){
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    }
      const dialogRef = this.dialog.open(ConsoleTransferComponent, {
        disableClose: true,
       width: '70%',

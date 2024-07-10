@@ -174,6 +174,9 @@ export class CcrEditComponent {
     this.selectedConsole.push(choosen);
   }
   nextNumber: any;
+  cols: any[] = [];
+  target: any[] = [];
+
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -182,7 +185,7 @@ export class CcrEditComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-
+this.callTableHeader()
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
     
@@ -195,6 +198,27 @@ export class CcrEditComponent {
     
   }
 
+
+  callTableHeader() {
+    this.cols = [
+      { field: 'masterAirwayBill', header: 'MAWB' },
+      { field: 'houseAirwayBill', header: 'HAWB' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'customsCcrNo', header: 'Customs CCR No' },
+      { field: 'airportOriginCode', header: 'Airport Origin Code' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentValue', header: 'Consignment Value' },
+      { field: 'consignmentCurrency', header: 'Consignment Currency' },
+      { field: 'customsKd', header: 'Custom KD' },
+      { field: 'iataKd', header: 'IATA KD' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
+    ];
+    this.target = [
+    ];
+  }
 
 
   languageIdList: any[] = [];
@@ -314,6 +338,10 @@ lineSentforFill:any;
   }});
   }
   transfer(){
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    }
+
     const dialogRef = this.dialog.open(ConsoleTransferComponent, {
       disableClose: true,
       width: '70%',
