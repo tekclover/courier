@@ -145,7 +145,7 @@
                         <ng-container *ngIf="col.format !== 'date' && col.format !== 'boolean'; else dateTemplate">
                             {{ rowData[col.field] }}
                         </ng-container>
-                        <ng-template #dateTemplate>
+                        <!-- <ng-template #dateTemplate>
                             <span *ngIf="col.field === 'consoleIndicator'" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
                                 'Yes'}}</span>
                             <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'red' : 'green'">{{rowData[col.field] == 0 ? 'No' :
@@ -153,7 +153,20 @@
                             <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator(rowData)" [ngStyle]="{ 'cursor': rowData[col.field] == 0 ? 'pointer' : 'pointer' }" class="badge px-2 py-0" [ngClass]="rowData[col.field] == 0 ? 'green' : 'red'">{{rowData[col.field] == 0 ? 'Yes' :
                                 'No'}}</span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field]| date: 'dd-MM-yyyy HH:mm'  }}</span>
+                        </ng-template> -->
+                        <ng-template #dateTemplate>
+                            <span *ngIf="col.field === 'consoleIndicator'" class="badge px-2 py-0" >
+                                <img [src]="rowData[col.field] == 0 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'No' : 'Yes'}}" width="16" height="16">
+                            </span>
+                            <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-0" >
+                                <img [src]="rowData[col.field] == 0 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'No' : 'Yes'}}" width="16" height="16">
+                            </span>
+                            <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator(rowData)" [ngStyle]="{ 'cursor': 'pointer' }" class="badge px-2 py-0" >
+                                <img [src]="rowData[col.field] == 0 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'Yes' : 'No'}}" width="16" height="16">
+                            </span>
+                            <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy HH:mm'}}</span>
                         </ng-template>
+                        
                     </td>
                 </tr>
             </ng-template>
