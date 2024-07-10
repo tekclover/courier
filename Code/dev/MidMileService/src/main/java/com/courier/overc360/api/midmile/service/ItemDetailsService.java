@@ -691,7 +691,7 @@ public class ItemDetailsService {
 
                         newItemDetails.setConsignmentValueLocal(String.valueOf(consignmentValue));
                         if(newItemDetails.getIata() != null) {
-                            newItemDetails.setAddIATA(consignmentValue + newItemDetails.getIata());
+                            newItemDetails.setAddIATA(newItemDetails.getIata() + consignmentValue);
                         }
                         if(newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
                             Double addIata = Double.valueOf(newItemDetails.getAddIATA());
