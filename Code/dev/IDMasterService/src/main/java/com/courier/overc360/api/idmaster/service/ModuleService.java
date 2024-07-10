@@ -17,7 +17,6 @@ import com.courier.overc360.api.idmaster.replica.model.module.ReplicaModule;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaModuleRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
-import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaModuleSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -356,11 +355,19 @@ public class ModuleService {
      * @return
      * @throws ParseException
      */
+//    public List<ReplicaModule> findModules(FindModule findModule) throws ParseException {
+//
+//        ReplicaModuleSpecification spec = new ReplicaModuleSpecification(findModule);
+//        List<ReplicaModule> results = replicaModuleRepository.findAll(spec);
+//        log.info("found Modules --> {}", results);
+//        return results;
+//    }
     public List<ReplicaModule> findModules(FindModule findModule) throws ParseException {
 
-        ReplicaModuleSpecification spec = new ReplicaModuleSpecification(findModule);
-        List<ReplicaModule> results = replicaModuleRepository.findAll(spec);
-        log.info("found Modules --> {}", results);
+        log.info("given params for find -- > {}", findModule);
+        List<ReplicaModule> results = replicaModuleRepository.findModulesWithQry(findModule.getLanguageId(), findModule.getCompanyId(),
+                findModule.getMenuId(), findModule.getSubMenuId(), findModule.getStatusId(), findModule.getModuleId());
+//        log.info("found Modules --> {}", results);
         return results;
 
     }

@@ -48,4 +48,22 @@ public interface ReplicaModuleRepository extends JpaRepository<ReplicaModule, Lo
                                  @Param(value = "subMenuId") Long subMenuId);
 
 
+    // Find Modules with given Params Only
+    @Query(value = "SELECT * FROM tblmodule tm \n" +
+            "WHERE tm.IS_DELETED = 0 \n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tm.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tm.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:menuId, NULL) IS NULL OR tm.MENU_ID IN (:menuId)) \n" +
+            "AND (COALESCE(:subMenuId, NULL) IS NULL OR tm.SUB_MENU_ID IN (:subMenuId)) \n" +
+            "AND (COALESCE(:statusId, NULL) IS NULL OR tm.STATUS_ID IN (:statusId)) \n" +
+            "AND (COALESCE(:moduleId, NULL) IS NULL OR tm.MOD_ID IN (:moduleId))", nativeQuery = true)
+    List<ReplicaModule> findModulesWithQry(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("menuId") List<Long> menuId,
+            @Param("subMenuId") List<Long> subMenuId,
+            @Param("statusId") List<String> statusId,
+            @Param("moduleId") List<String> moduleId);
+
+
 }

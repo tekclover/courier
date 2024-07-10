@@ -30,5 +30,23 @@ public interface ReplicaRoleAccessRepository extends JpaRepository<ReplicaRoleAc
             "tl.IS_DELETED=0 ", nativeQuery = true)
     IKeyValuePair getRoleDesc(@Param(value = "userRoleId") Long userRoleId);
 
+
+    // Find RoleAccesses with given Params Only
+    @Query(value = "SELECT * FROM tblroleaccess tr \n" +
+            "WHERE tr.IS_DELETED = 0 \n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tr.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tr.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:menuId, NULL) IS NULL OR tr.MENU_ID IN (:menuId)) \n" +
+            "AND (COALESCE(:subMenuId, NULL) IS NULL OR tr.SUB_MENU_ID IN (:subMenuId)) \n" +
+            "AND (COALESCE(:statusId, NULL) IS NULL OR tr.STATUS_ID IN (:statusId)) \n" +
+            "AND (COALESCE(:roleId, NULL) IS NULL OR tr.ROLE_ID IN (:roleId))", nativeQuery = true)
+    List<ReplicaRoleAccess> findRoleAccessesWithQry(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("menuId") List<Long> menuId,
+            @Param("subMenuId") List<Long> subMenuId,
+            @Param("statusId") List<String> statusId,
+            @Param("roleId") List<Long> roleId);
+
 }
 

@@ -35,16 +35,18 @@ public interface ReplicaMenuRepository extends JpaRepository<ReplicaMenu, Long>,
     // Find Menus with given Params Only
     @Query(value = "SELECT * FROM tblmenu tm \n" +
             "WHERE tm.IS_DELETED = 0 \n" +
-            "AND (:#{#languageId == null ? 1 : 0} = 1 OR tm.LANG_ID IN (:languageId)) \n" +
-            "AND (:#{#companyId == null ? 1 : 0} = 1 OR tm.C_ID IN (:companyId)) \n" +
-            "AND (:#{#menuId == null ? 1 : 0} = 1 OR tm.MENU_ID IN (:menuId)) \n" +
-            "AND (:#{#subMenuId == null ? 1 : 0} = 1 OR tm.SUB_MENU_ID IN (:subMenuId)) \n" +
-            "AND (:#{#authorizationObjectId == null ? 1 : 0} = 1 OR tm.AUT_OBJ_ID IN (:authorizationObjectId))", nativeQuery = true)
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tm.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tm.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:menuId, NULL) IS NULL OR tm.MENU_ID IN (:menuId)) \n" +
+            "AND (COALESCE(:subMenuId, NULL) IS NULL OR tm.SUB_MENU_ID IN (:subMenuId)) \n" +
+            "AND (COALESCE(:statusId, NULL) IS NULL OR tm.STATUS_ID IN (:statusId)) \n" +
+            "AND (COALESCE(:authorizationObjectId, NULL) IS NULL OR tm.AUT_OBJ_ID IN (:authorizationObjectId))", nativeQuery = true)
     List<ReplicaMenu> findMenusWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
             @Param("menuId") List<Long> menuId,
             @Param("subMenuId") List<Long> subMenuId,
+            @Param("statusId") List<String> statusId,
             @Param("authorizationObjectId") List<Long> authorizationObjectId);
 
 

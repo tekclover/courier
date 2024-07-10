@@ -283,10 +283,12 @@ public class MenuService {
 //    }
     public List<ReplicaMenu> findMenus(FindMenu findMenu) throws ParseException {
 
-        List<ReplicaMenu> results = replicaMenuRepository.findMenusWithQry(findMenu.getLanguageId(), findMenu.getCompanyId(),
-                findMenu.getMenuId(), findMenu.getSubMenuId(), findMenu.getAuthorizationObjectId());
-//        log.info("found Menus --> {}", results);
-        return results;
+        log.info("given params for find -- > {}", findMenu);
+        List<ReplicaMenu> menuList = replicaMenuRepository.findMenusWithQry(
+                findMenu.getLanguageId(), findMenu.getCompanyId(), findMenu.getMenuId(),
+                findMenu.getSubMenuId(), findMenu.getStatusId(), findMenu.getAuthorizationObjectId());
+//        log.info("found Menus --> {}", menuList);
+        return menuList;
     }
 
     //==============================================Menu_ErrorLog======================================================

@@ -2,7 +2,6 @@ package com.courier.overc360.api.midmile.replica.repository;
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
-import lombok.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -72,15 +71,15 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
     // Find BondedManifests with given Params Only
     @Query(value = "SELECT * FROM tblbondedmanifest tm \n" +
             "WHERE tm.IS_DELETED = 0 \n" +
-            "AND (:#{#languageId == null ? 1 : 0} = 1 OR tm.LANG_ID IN (:languageId)) \n" +
-            "AND (:#{#companyId == null ? 1 : 0} = 1 OR tm.C_ID IN (:companyId)) \n" +
-            "AND (:#{#partnerId == null ? 1 : 0} = 1 OR tm.PARTNER_ID IN (:partnerId)) \n" +
-            "AND (:#{#masterAirwayBill == null ? 1 : 0} = 1 OR tm.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
-            "AND (:#{#houseAirwayBill == null ? 1 : 0} = 1 OR tm.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
-            "AND (:#{#hsCode == null ? 1 : 0} = 1 OR tm.HS_CODE IN (:hsCode)) \n" +
-            "AND (:#{#pieceId == null ? 1 : 0} = 1 OR tm.PIECE_ID IN (:pieceId)) \n" +
-            "AND (:#{#pieceItemId == null ? 1 : 0} = 1 OR tm.PIECE_ITEM_ID IN (:pieceItemId)) \n" +
-            "AND (:#{#bondedId == null ? 1 : 0} = 1 OR tm.BONDED_ID IN (:bondedId))", nativeQuery = true)
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tm.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tm.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tm.PARTNER_ID IN (:partnerId)) \n" +
+            "AND (COALESCE(:masterAirwayBill, NULL) IS NULL OR tm.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
+            "AND (COALESCE(:houseAirwayBill, NULL) IS NULL OR tm.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
+            "AND (COALESCE(:hsCode, NULL) IS NULL OR tm.HS_CODE IN (:hsCode)) \n" +
+            "AND (COALESCE(:pieceId, NULL) IS NULL OR tm.PIECE_ID IN (:pieceId)) \n" +
+            "AND (COALESCE(:pieceItemId, NULL) IS NULL OR tm.PIECE_ITEM_ID IN (:pieceItemId)) \n" +
+            "AND (COALESCE(:bondedId, NULL) IS NULL OR tm.BONDED_ID IN (:bondedId))", nativeQuery = true)
     List<ReplicaBondedManifest> findBondedManifestsWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,

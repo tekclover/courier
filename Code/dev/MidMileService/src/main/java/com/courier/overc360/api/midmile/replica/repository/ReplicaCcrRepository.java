@@ -77,13 +77,13 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
     // Find CCRs with given Params Only
     @Query(value = "SELECT * FROM tblccr tc \n" +
             "WHERE tc.IS_DELETED = 0 \n" +
-            "AND (:#{#languageId == null ? 1 : 0} = 1 OR tc.LANG_ID IN (:languageId)) \n" +
-            "AND (:#{#companyId == null ? 1 : 0} = 1 OR tc.C_ID IN (:companyId)) \n" +
-            "AND (:#{#partnerId == null ? 1 : 0} = 1 OR tc.PARTNER_ID IN (:partnerId)) \n" +
-            "AND (:#{#masterAirwayBill == null ? 1 : 0} = 1 OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
-            "AND (:#{#houseAirwayBill == null ? 1 : 0} = 1 OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
-            "AND (:#{#ccrId == null ? 1 : 0} = 1 OR tc.CCR_ID IN (:ccrId)) \n" +
-            "AND (:#{#consoleId == null ? 1 : 0} = 1 OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId)) \n" +
+            "AND (COALESCE(:masterAirwayBill, NULL) IS NULL OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
+            "AND (COALESCE(:houseAirwayBill, NULL) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
+            "AND (COALESCE(:ccrId, NULL) IS NULL OR tc.CCR_ID IN (:ccrId)) \n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
     List<ReplicaCcr> findCCRsWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
