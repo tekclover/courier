@@ -188,11 +188,11 @@ export class UserRoleNewComponent {
           });
           this.menuList.push({
             mainMenu: "Airport",
-            Menu: combined.filter((x: any) => x.moduleId == 4000)
+            Menu: combined.filter((x: any) => x.moduleId == 5000)
           });
           this.menuList.push({
             mainMenu: "Customer Service",
-            Menu: combined.filter((x: any) => x.moduleId == 5000)
+            Menu: combined.filter((x: any) => x.moduleId == 4000)
           });
           this.menuList.push({
             mainMenu: "Operations",
@@ -276,11 +276,11 @@ export class UserRoleNewComponent {
       });
       this.menuList.push({
         mainMenu: "Airport",
-        Menu: res.filter((x: any) => x.moduleId == 4000)
+        Menu: res.filter((x: any) => x.moduleId == 5000)
       });
       this.menuList.push({
         mainMenu: "Customer Service",
-        Menu: res.filter((x: any) => x.moduleId == 5000)
+        Menu: res.filter((x: any) => x.moduleId == 4000)
       });
       this.menuList.push({
         mainMenu: "Operations",
@@ -316,11 +316,11 @@ export class UserRoleNewComponent {
       });
       this.menuList.push({
         mainMenu: "Airport",
-        Menu: res.filter((x: any) => x.moduleId == 4000)
+        Menu: res.filter((x: any) => x.moduleId == 5000)
       });
       this.menuList.push({
         mainMenu: "Customer Service",
-        Menu: res.filter((x: any) => x.moduleId == 5000)
+        Menu: res.filter((x: any) => x.moduleId == 4000)
       });
       this.menuList.push({
         mainMenu: "Operations",
@@ -403,7 +403,7 @@ export class UserRoleNewComponent {
       this.menuList = [];
       this.menuList.push({
         mainMenu: "Setup",
-        Menu: this.moduleResult.filter((x: any) => x.moduleId == 2)
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 2000)
       });
       this.menuList.push({
         mainMenu: "Masters",
@@ -411,11 +411,11 @@ export class UserRoleNewComponent {
       });
       this.menuList.push({
         mainMenu: "Airport",
-        Menu: this.moduleResult.filter((x: any) => x.moduleId == 4000)
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 5000)
       });
       this.menuList.push({
         mainMenu: "Customer Service",
-        Menu: this.moduleResult.filter((x: any) => x.moduleId == 5000)
+        Menu: this.moduleResult.filter((x: any) => x.moduleId == 4000)
       });
       this.menuList.push({
         mainMenu: "Operations",
@@ -451,11 +451,11 @@ export class UserRoleNewComponent {
       });
       this.menuList.push({
         mainMenu: "Airport",
-        Menu: res.filter((x: any) => x.moduleId == 4000)
+        Menu: res.filter((x: any) => x.moduleId == 5000)
       });
       this.menuList.push({
         mainMenu: "Customer Service",
-        Menu: res.filter((x: any) => x.moduleId == 5000)
+        Menu: res.filter((x: any) => x.moduleId == 4000)
       });
       this.menuList.push({
         mainMenu: "Operations",
