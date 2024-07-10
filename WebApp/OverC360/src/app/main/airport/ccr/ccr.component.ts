@@ -214,6 +214,7 @@ export class CcrComponent {
     const filePath = '/' + this.selectedCcr[0].ccrId + '/';
     const file: File = event.target.files[0];
     this.selectedFiles = file;
+    this.spin.show();
     this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
       next: (result) => {
         this.messageService.add({
@@ -222,6 +223,7 @@ export class CcrComponent {
           key: 'br',
           detail: 'File uploaded successfully',
         });
+        this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
         this.cs.commonerrorNew(err);

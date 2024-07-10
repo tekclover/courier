@@ -609,7 +609,7 @@ export class ConsignmentLabelComponent {
     })
   }
   generateSingleInvoice(result: any) {
-    let createdOn = this.datePipe.transform(result.createdOn, 'dd-MMM-yyyy HH:mm')
+   
     var dd: any;
     let headerTable: any[] = [];
 
@@ -639,6 +639,8 @@ export class ConsignmentLabelComponent {
     };
 
     result.forEach((resultInvoice:any, index: any)  => {
+      let createdOn = this.datePipe.transform(resultInvoice.createdOn, 'dd-MMM-yyyy HH:mm')
+
     let barcodeAWB: any[] = [];
     if (index != 0) {
       barcodeAWB.push([
@@ -812,7 +814,7 @@ export class ConsignmentLabelComponent {
     { text: 'Weight', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
     { text: (resultInvoice.weight), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
     { text: 'AWB', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-    { text: (resultInvoice.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+    { text: (resultInvoice.awb), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
   ]);
   bodyArray3.push([
     { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
@@ -1082,7 +1084,7 @@ export class ConsignmentLabelComponent {
       { text: 'Weight', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: (result.weight), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'AWB', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.partnerHouseAirwayBill), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+      { text: (result.awb), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     bodyArray3.push([
       { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
