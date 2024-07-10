@@ -86,8 +86,8 @@ public class CcrService {
         }
         return dbCcr.get();
     }
+
     /**
-     *
      * @param languageId
      * @param companyId
      * @param partnerId
@@ -129,34 +129,34 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Optional<Ccr> duplicateConsole =  ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                         addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), 0L);
-                if(duplicateConsole.isPresent()) {
+                if (duplicateConsole.isPresent()) {
                     throw new BadRequestException("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getMasterAirwayBill() +
                             " HouseAirwayBill " + addCcr.getHouseAirwayBill());
                 }
 
                 Double customsValue = null;
-                if(addCcr.getCustomsValue() != null) {
-                     customsValue = Double.valueOf(addCcr.getCustomsValue());
+                if (addCcr.getCustomsValue() != null) {
+                    customsValue = Double.valueOf(addCcr.getCustomsValue());
                 }
                 Ccr newCcr = new Ccr();
                 BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
 
-                if(customsValue != null && customsValue < 100){
+                if (customsValue != null && customsValue < 100) {
                     newCcr.setIsExempted("yes");
                     newCcr.setExemptionFor("Regulation 94-2020");
                     newCcr.setExemptionBeneficiary("others");
                     newCcr.setExemptionReference("99");
-                }else {
+                } else {
                     newCcr.setIsExempted("No");
                 }
                 newCcr.setCcrId(CCR_ID);
 
-                Optional<IKeyValuePair> eventStatus =  consignmentEntityRepository.getStatusEventText(addCcr.getLanguageId(), addCcr.getCompanyId(), "6", "11");
+                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(addCcr.getLanguageId(), addCcr.getCompanyId(), "6", "11");
 
-                if(eventStatus.isPresent()) {
+                if (eventStatus.isPresent()) {
                     IKeyValuePair iKeyValuePair = eventStatus.get();
                     newCcr.setStatusId("6");
                     newCcr.setEventCode("11");
@@ -191,7 +191,7 @@ public class CcrService {
                             createdCcr.getLanguageId(), createdCcr.getLanguageDescription(), createdCcr.getPieceId(), createdCcr.getStatusId(),
                             createdCcr.getMasterAirwayBill(), createdCcr.getHouseAirwayBill(), createdCcr.getStatusText(), createdCcr.getStatusId(),
                             createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
-                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID );
+                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID);
                 }
                 createdCcrList.add(createdCcr);
             }
@@ -203,7 +203,6 @@ public class CcrService {
             throw new RuntimeException(e);
         }
     }
-
 
 
     /**
@@ -340,13 +339,13 @@ public class CcrService {
                 dbCcr.setUpdatedBy(loginUserID);
                 dbCcr.setUpdatedOn(new Date());
 
-                if(dbCcr.getStatusId() != null && dbCcr.getEventCode() != null) {
-                    Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText( dbCcr.getLanguageId(), dbCcr.getCompanyId(),
+                if (dbCcr.getStatusId() != null && dbCcr.getEventCode() != null) {
+                    Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(dbCcr.getLanguageId(), dbCcr.getCompanyId(),
                             dbCcr.getStatusId(), dbCcr.getEventCode());
 
                     dbCcr.setStatusId(dbCcr.getStatusId());
                     dbCcr.setEventCode(dbCcr.getEventCode());
-                    if(iKeyValuePair.isPresent()) {
+                    if (iKeyValuePair.isPresent()) {
                         IKeyValuePair ikey = iKeyValuePair.get();
                         dbCcr.setStatusText(ikey.getStatusText());
                         dbCcr.setEventText(ikey.getEventText());
@@ -357,7 +356,7 @@ public class CcrService {
                 }
 
                 Ccr updatedCcr = ccrRepository.save(dbCcr);
-                if(updatedCcr != null) {
+                if (updatedCcr != null) {
                     //Consignment Update
                     ccrRepository.updateEventCodeFromConsignment(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(),
                             updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getEventCode(), updatedCcr.getEventText(),
@@ -368,12 +367,11 @@ public class CcrService {
                             updatedCcr.getMasterAirwayBill(), updatedCcr.getStatusId(), updatedCcr.getEventCode(), updatedCcr.getStatusText(), updatedCcr.getEventText(), updatedCcr.getConsoleId());
 
                     // ConsignmentStatus Table Create
-                    // Save ConsignmentStatus
                     consignmentStatusService.createConsignmentStatusParams(updatedCcr.getCompanyId(), updatedCcr.getCompanyName(),
                             updatedCcr.getLanguageId(), updatedCcr.getLanguageDescription(), updatedCcr.getPieceId(), updatedCcr.getStatusId(),
                             updatedCcr.getMasterAirwayBill(), updatedCcr.getHouseAirwayBill(), updatedCcr.getStatusText(), updatedCcr.getStatusId(),
                             updatedCcr.getStatusText(), updatedCcr.getEventCode(), updatedCcr.getEventText(), updatedCcr.getEventCode(),
-                            updatedCcr.getEventText(), updatedCcr.getEventTimestamp(), updatedCcr.getEventTimestamp(), updatedCcr.getStatusTimestamp(), loginUserID );
+                            updatedCcr.getEventText(), updatedCcr.getEventTimestamp(), updatedCcr.getEventTimestamp(), updatedCcr.getStatusTimestamp(), loginUserID);
 
                 }
                 updatedCcrList.add(updatedCcr);
@@ -455,15 +453,15 @@ public class CcrService {
         if (dbCcr.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
-                    + ", houseAirwayBill - " + houseAirwayBill + " ,consoleId - " + consoleId + " , and ccrId - " + ccrId +  " doesn't exists";
+                    + ", houseAirwayBill - " + houseAirwayBill + " ,consoleId - " + consoleId + " , and ccrId - " + ccrId + " doesn't exists";
             // Error Log
             createCcrLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCcr.get();
     }
+
     /**
-     *
      * @param languageId
      * @param companyId
      * @param partnerId
@@ -484,7 +482,7 @@ public class CcrService {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
                     + ", houseAirwayBill - " + houseAirwayBill + " ,consoleId - " + consoleId +
-                    " , and ccrId - " + ccrId +" , and pieceId - " + pieceId +" , and pieceItemId - " + pieceItemId +  " doesn't exists";
+                    " , and ccrId - " + ccrId + " , and pieceId - " + pieceId + " , and pieceItemId - " + pieceItemId + " doesn't exists";
             // Error Log
             createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, errMsg);
             throw new BadRequestException(errMsg);
@@ -528,7 +526,7 @@ public class CcrService {
     }
 
     private void createCcrLog1(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                              String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String error) {
+                               String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
@@ -569,7 +567,6 @@ public class CcrService {
         }
         errorLogService.writeLog(errorLogList);
     }
-
 
 
     private void createCcrLog3(List<UpdateCcr> updateCcrList, String error) throws IOException, CsvException {
@@ -645,6 +642,7 @@ public class CcrService {
 
     /**
      * Get Ccr - Replica
+     *
      * @param ccrId
      * @return
      */
@@ -652,8 +650,8 @@ public class CcrService {
         List<Ccr> dbCcrList = ccrRepository.findAllByCcrIdAndDeletionIndicator(ccrId, 0L);
         return dbCcrList;
     }
+
     /**
-     *
      * @param updateCcrList
      * @return
      * @throws IOException
@@ -687,7 +685,7 @@ public class CcrService {
                                 dbConsignmentValue = dbCcr.getConsignmentValue();
                             }
                         }
-                        if(customsConsignmentValue != null && dbConsignmentValue != null) {
+                        if (customsConsignmentValue != null && dbConsignmentValue != null) {
                             pass = customsConsignmentValue.equalsIgnoreCase(dbConsignmentValue);
                         }
                         if (dbCcr.getCcrId().equalsIgnoreCase(updateCcr.getCcrId()) &&
@@ -700,22 +698,59 @@ public class CcrService {
                             dbCcr.setTotalDuty(updateCcr.getTotalDuty());
                             dbCcr.setUpdatedBy("Bayan");
                             dbCcr.setUpdatedOn(new Date());
+
+                            Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(
+                                    dbCcr.getLanguageId(), dbCcr.getCompanyId(), "8", "14");
+
+                            dbCcr.setStatusId("8");
+                            dbCcr.setEventCode("14");
+                            if (iKeyValuePair.isPresent()) {
+                                IKeyValuePair ikey = iKeyValuePair.get();
+                                dbCcr.setStatusText(ikey.getStatusText());
+                                dbCcr.setEventText(ikey.getEventText());
+                            }
+                            dbCcr.setStatusTimestamp(new Date());
+                            dbCcr.setEventTimestamp(new Date());
                             Ccr updatedCcr = ccrRepository.save(dbCcr);
+
+                            if (updatedCcr != null) {
+                                //Consignment Update
+                                ccrRepository.updateEventCodeFromConsignment(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(),
+                                        updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getEventCode(), updatedCcr.getEventText(),
+                                        updatedCcr.getStatusId(), updatedCcr.getStatusText());
+                                log.info("Bayan Update in Consignment Table");
+
+                                //Console Update
+                                consoleRepository.consoleUpdateBasedOnCCRUpdate(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(), updatedCcr.getHouseAirwayBill(),
+                                        updatedCcr.getMasterAirwayBill(), updatedCcr.getStatusId(), updatedCcr.getEventCode(), updatedCcr.getStatusText(), updatedCcr.getEventText(), updatedCcr.getConsoleId());
+                                log.info("Bayan Update in Console Table");
+
+                                // Save ConsignmentStatus
+                                consignmentStatusService.createConsignmentStatusParams(updatedCcr.getCompanyId(), updatedCcr.getCompanyName(),
+                                        updatedCcr.getLanguageId(), updatedCcr.getLanguageDescription(), updatedCcr.getPieceId(), updatedCcr.getStatusId(),
+                                        updatedCcr.getMasterAirwayBill(), updatedCcr.getHouseAirwayBill(), updatedCcr.getStatusText(), updatedCcr.getStatusId(),
+                                        updatedCcr.getStatusText(), updatedCcr.getEventCode(), updatedCcr.getEventText(), updatedCcr.getEventCode(),
+                                        updatedCcr.getEventText(), updatedCcr.getEventTimestamp(), updatedCcr.getEventTimestamp(), updatedCcr.getStatusTimestamp(), "Bayan");
+
+                            }
+
                             updatedCcrList.add(updatedCcr);
                         }
                     }
                 }
             }
             return "Update Success";
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             // Error Log
             createCcrLog(updateCcrList, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
     }
+
     /**
-     *
      * @param updateCcrList
      * @param error
      * @throws IOException

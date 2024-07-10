@@ -83,8 +83,6 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             "AND partner_id = :partnerId " +
             "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
             "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
-            "AND PIECE_ID = :pieceId " +
-            "AND PIECE_ITEM_ID = :pieceItemId " +
             "AND is_deleted = 0",
             nativeQuery = true)
     public void conUpdateBasedOnConsoleUpdate(@Param("companyId") String companyId,
@@ -92,8 +90,6 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                               @Param("partnerId") String partnerId,
                                               @Param("houseAirwayBill") String houseAirwayBill,
                                               @Param("masterAirwayBill") String masterAirwayBill,
-                                              @Param("pieceId") String pieceId,
-                                              @Param("pieceItemId") String pieceItemId,
                                               @Param("statusCode") String statusCode,
                                               @Param("eventCode") String eventCode,
                                               @Param("statusText") String statusText,
