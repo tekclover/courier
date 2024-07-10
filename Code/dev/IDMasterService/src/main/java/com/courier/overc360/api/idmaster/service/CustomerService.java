@@ -133,7 +133,12 @@ public class CustomerService {
                 newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
                 newCustomer.setProductName(iKeyValuePair.getProductDesc());
                 newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
-                newCustomer.setProductText(iKeyValuePair.getProductText());
+
+                //Retrieve the product text
+                String productText = iKeyValuePair.getProductText();
+                //Convert UpperCase Remove All Space
+                String modifiedProductDesc = productText.toUpperCase().replaceAll("\\s+", "");
+                newCustomer.setProductText(modifiedProductDesc);
             }
             String statusDesc = replicaStatusRepository.getStatusDescription(addCustomer.getStatusId());
             if (statusDesc != null) {
@@ -216,7 +221,12 @@ public class CustomerService {
                     newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
                     newCustomer.setProductName(iKeyValuePair.getProductDesc());
                     newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
-                    newCustomer.setProductText(iKeyValuePair.getProductText());
+
+                    //Retrieve the product text
+                    String productText = iKeyValuePair.getProductText();
+                    //Convert UpperCase Remove All Space
+                    String modifiedProductDesc = productText.toUpperCase().replaceAll("\\s+", "");
+                    newCustomer.setProductText(modifiedProductDesc);
                 }
                 String statusDesc = replicaStatusRepository.getStatusDescription(addCustomer.getStatusId());
                 if (statusDesc != null) {
@@ -359,7 +369,12 @@ public class CustomerService {
                     newCustomer.setSubProductName(iKeyValuePair.getSubProductDesc());
                     newCustomer.setProductName(iKeyValuePair.getProductDesc());
                     newCustomer.setReferenceField1(iKeyValuePair.getSubProductValue());
-                    newCustomer.setProductText(iKeyValuePair.getProductText());
+
+                    //Retrieve the product text
+                    String productText = iKeyValuePair.getProductText();
+                    //Convert UpperCase Remove All Space
+                    String modifiedProductDesc = productText.toUpperCase().replaceAll("\\s+", "");
+                    newCustomer.setProductText(modifiedProductDesc);
                 }
                 if (updateCustomer.getStatusId() != null && !updateCustomer.getStatusId().isEmpty()) {
                     String statusDesc = replicaStatusRepository.getStatusDescription(updateCustomer.getStatusId());
