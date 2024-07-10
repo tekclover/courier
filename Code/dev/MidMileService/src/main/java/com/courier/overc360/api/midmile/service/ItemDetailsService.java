@@ -703,7 +703,7 @@ public class ItemDetailsService {
                         if (newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
                             Double addIata = Double.valueOf(newItemDetails.getAddIATA());
                             Double insurance = Double.valueOf(newItemDetails.getCustomsInsurance());
-                            newItemDetails.setAddInsurance(String.valueOf(addIata * insurance));
+                            newItemDetails.setAddInsurance(String.valueOf(addIata * 0.01));
                             if (newItemDetails.getAddInsurance() != null) {
                                 Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());
                                 newItemDetails.setCustomsValue(String.valueOf(addIata + addInsurance));
