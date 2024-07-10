@@ -34,7 +34,7 @@ public class AddConsole {
 
     private String exchangeRate;
 
-    private String IATA;
+    private String iata;
 
     private String customsInsurance;
 

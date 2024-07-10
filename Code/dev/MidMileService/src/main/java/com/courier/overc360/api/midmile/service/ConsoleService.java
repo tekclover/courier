@@ -594,8 +594,8 @@ public class ConsoleService {
 
 //                        IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
                         Double iataKd = 0.0;
-                        if (console.getIataKd() != null) {
-                            iataKd = Double.valueOf(console.getIataKd());
+                        if (console.getIata() != null) {
+                            iataKd = Double.valueOf(console.getIata());
                         }
                         Double recordValue = iataKd + totalDuty;
 
@@ -1134,8 +1134,8 @@ public class ConsoleService {
                 if(updatedConsole != null) {
                     //Consignment Update
                     consoleRepository.conUpdateBasedOnConsoleUpdate(updatedConsole.getCompanyId(), updatedConsole.getLanguageId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getHouseAirwayBill(), updatedConsole.getMasterAirwayBill(),updatedConsole.getPieceId(), updatedConsole.getPieceItemId(),
-                            updatedConsole.getStatusId(), updatedConsole.getEventCode(), updatedConsole.getStatusText(), updatedConsole.getEventText());
+                            updatedConsole.getHouseAirwayBill(), updatedConsole.getMasterAirwayBill(), updatedConsole.getStatusId(), updatedConsole.getEventCode(),
+                            updatedConsole.getStatusText(), updatedConsole.getEventText());
 
                     // Save ConsignmentStatus
                     consignmentStatusService.createConsignmentStatusParams(updatedConsole.getCompanyId(), updatedConsole.getCompanyName(),
@@ -1225,8 +1225,8 @@ public class ConsoleService {
         List<Console> consoleList = new ArrayList<>();
         for (TransferConsole transfer : transferConsole) {
             Console newConsole = new Console();
-            Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdAndDeletionIndicator(
-                    transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), 0L);
+            Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                    transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), transfer.getPieceId(), transfer.getPieceItemId(),  0L);
 
             if (dbConsole == null) {
                 throw new BadRequestException("FromConsole ID Not found " + transfer.getFromConsoleId() + "HouseAirwayBill" + transfer.getHouseAirwayBill());

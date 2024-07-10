@@ -70,7 +70,7 @@ public class Console {
     private String exchangeRate;
 
     @Column(name = "IATA", columnDefinition = "nvarchar(50)")
-    private String IATA;
+    private String iata;
 
     @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
     private String customsInsurance;
@@ -236,9 +236,6 @@ public class Console {
 
     @Column(name = "CUSTOMS_KD", columnDefinition = "nvarchar(50)")
     private String customsKd;
-
-    @Column(name = "IATA_KD", columnDefinition = "nvarchar(50)")
-    private String iataKd;
 
     @Column(name = "PRODUCT_ID", columnDefinition = "nvarchar(50)")
     private String productId;

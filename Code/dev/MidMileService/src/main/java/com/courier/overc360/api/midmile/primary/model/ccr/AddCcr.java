@@ -36,7 +36,7 @@ public class AddCcr {
 
     private String exchangeRate;
 
-    private String IATA;
+    private String iata;
 
     private String customsInsurance;
 
@@ -157,8 +157,6 @@ public class AddCcr {
     private String specialApprovalValue;
 
     private String customsKd;
-
-    private String iataKd;
 
     private String consigneeName;
 

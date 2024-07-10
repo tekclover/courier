@@ -59,7 +59,7 @@ public class AddConsole {
 
     private String exchangeRate;
 
-    private String IATA;
+    private String iata;
 
     private String customsInsurance;
 
@@ -152,8 +152,6 @@ public class AddConsole {
     private String actualValue;
 
     private String specialApprovalValue;
-
-    private String iataKd;
 
     private String productId;
 

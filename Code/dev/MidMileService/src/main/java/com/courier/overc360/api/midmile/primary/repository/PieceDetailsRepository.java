@@ -5,6 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,36 @@ public interface PieceDetailsRepository extends JpaRepository<PieceDetails,Strin
 
     List<PieceDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsignment_entity " +
+            "SET NET_WEIGHT = COALESCE(:totalWeight, NET_WEIGHT), " +
+            "GROSS_WEIGHT = COALESCE(:totalWeight, GROSS_WEIGHT) " +
+            "WHERE C_ID = :companyId " +
+            "AND LANG_ID = :languageId " +
+            "AND CONSIGNMENT_ID = :consignmentId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND is_deleted = 0 ",
+            nativeQuery = true)
+    public void updateConsignment(@Param("companyId") String companyId,
+                                  @Param("languageId") String languageId,
+                                  @Param("consignmentId") Long consignmentId,
+                                  @Param("houseAirwayBill") String houseAirwayBill,
+                                  @Param("masterAirwayBill") String masterAirwayBill,
+                                  @Param("totalWeight") String totalWeight);
+
+
+    @Transactional
+    @Modifying
+    @Query(value =
+            "UPDATE tblconsignment_info " +
+                    "SET WEIGHT = COALESCE(:totalWeight, WEIGHT) " +
+                    "WHERE CON_INFO_ID = :consignmentId ",
+            nativeQuery = true)
+    public void updateConsignmentInfo(@Param("consignmentId") Long consignmentId,
+                                      @Param("totalWeight") String totalWeight);
 
     List<PieceDetails> findByHouseAirwayBill(String houseAirwayBill);
 }

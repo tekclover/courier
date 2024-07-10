@@ -99,7 +99,7 @@ public class ItemDetails {
     private String exchangeRate;
 
     @Column(name = "IATA", columnDefinition = "nvarchar(50)")
-    private String IATA;
+    private String iata;
 
     @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
     private String customsInsurance;
