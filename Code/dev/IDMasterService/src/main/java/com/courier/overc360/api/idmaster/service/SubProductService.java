@@ -418,7 +418,7 @@ public class SubProductService {
 
                 List<SubProduct> dbSubProductList = getSubProductListForDelete(deleteInput.getLanguageId(),
                         deleteInput.getCompanyId(), deleteInput.getSubProductId(), deleteInput.getSubProductValue());
-                log.info("SubProduct List for Delete --> {}", dbSubProductList);
+                log.info("Deleting SubProductId --> {}", deleteInput.getSubProductId());
 
                 for (SubProduct dbSubProduct : dbSubProductList) {
                     dbSubProduct.setDeletionIndicator(1L);

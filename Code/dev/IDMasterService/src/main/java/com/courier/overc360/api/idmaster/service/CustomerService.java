@@ -466,7 +466,7 @@ public class CustomerService {
                 List<Customer> dbCustomerList = getCustomerListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
                         deleteInput.getSubProductId(), deleteInput.getSubProductValue(),
                         deleteInput.getProductId(), deleteInput.getCustomerId());
-                log.info("Customer List for Delete --> {}", dbCustomerList);
+                log.info("Deleting CustomerId --> {}", deleteInput.getCustomerId());
 
                 for (Customer dbCustomer : dbCustomerList) {
                     dbCustomer.setDeletionIndicator(1L);

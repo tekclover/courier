@@ -429,7 +429,7 @@ public class ProductService {
 
                 List<Product> dbProductList = getProductListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
                         deleteInput.getSubProductId(), deleteInput.getSubProductValue(), deleteInput.getProductId());
-                log.info("Product List for Delete --> {}", dbProductList);
+                log.info("Deleting ProductId --> {}", deleteInput.getProductId());
 
                 for (Product dbProduct : dbProductList) {
                     dbProduct.setDeletionIndicator(1L);

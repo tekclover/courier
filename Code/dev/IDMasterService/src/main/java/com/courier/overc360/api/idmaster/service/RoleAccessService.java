@@ -17,7 +17,6 @@ import com.courier.overc360.api.idmaster.replica.model.roleaccess.ReplicaRoleAcc
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaModuleRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaRoleAccessRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
-import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaRoleAccessSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -268,14 +267,23 @@ public class RoleAccessService {
      * @return
      * @throws ParseException
      */
-
+//    public List<ReplicaRoleAccess> findRoleAccess(FindRoleAccess findRoleAccess) throws ParseException {
+//
+//        ReplicaRoleAccessSpecification spec = new ReplicaRoleAccessSpecification(findRoleAccess);
+//        List<ReplicaRoleAccess> results = replicaRoleAccessRepository.findAll(spec);
+//        log.info("results --> {}", results);
+//        return results;
+//    }
     public List<ReplicaRoleAccess> findRoleAccess(FindRoleAccess findRoleAccess) throws ParseException {
 
-        ReplicaRoleAccessSpecification spec = new ReplicaRoleAccessSpecification(findRoleAccess);
-        List<ReplicaRoleAccess> results = replicaRoleAccessRepository.findAll(spec);
-        log.info("results --> {}", results);
-        return results;
+        log.info("given params for find -- > {}", findRoleAccess);
+        List<ReplicaRoleAccess> roleAccessList = replicaRoleAccessRepository.findRoleAccessesWithQry(
+                findRoleAccess.getLanguageId(), findRoleAccess.getCompanyId(), findRoleAccess.getMenuId(),
+                findRoleAccess.getSubMenuId(), findRoleAccess.getStatusId(), findRoleAccess.getRoleId());
+//        log.info("found roleAccessList --> {}", roleAccessList);
+        return roleAccessList;
     }
+
 }
 
 

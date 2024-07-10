@@ -63,12 +63,12 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
     // Get Customers With Query
     @Query(value = "Select * From tblcustomer tc \n" +
             "Where tc.IS_DELETED = 0 \n" +
-            "AND COALESCE(:languageId, tc.LANG_ID) = tc.LANG_ID \n" +
-            "AND COALESCE(:companyId, tc.C_ID) = tc.C_ID \n" +
-            "AND COALESCE(:subProductId, tc.SUB_PRODUCT_ID) = tc.SUB_PRODUCT_ID \n" +
-            "AND COALESCE(:subProductValue, tc.SUB_PRODUCT_VALUE) = tc.SUB_PRODUCT_VALUE \n" +
-            "AND COALESCE(:productId, tc.PRODUCT_ID) = tc.PRODUCT_ID \n" +
-            "AND COALESCE(:customerId, tc.CUSTOMER_ID) = tc.CUSTOMER_ID", nativeQuery = true)
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:subProductId, NULL) IS NULL OR tc.SUB_PRODUCT_ID IN (:subProductId)) \n" +
+            "AND (COALESCE(:subProductValue, NULL) IS NULL OR tc.SUB_PRODUCT_VALUE IN (:subProductValue)) \n" +
+            "AND (COALESCE(:productId, NULL) IS NULL OR tc.PRODUCT_ID IN (:productId)) \n" +
+            "AND (COALESCE(:customerId, NULL) IS NULL OR tc.CUSTOMER_ID IN (:customerId))", nativeQuery = true)
     List<Customer> getCustomersWithQry(
             @Param("languageId") String languageId,
             @Param("companyId") String companyId,
@@ -78,7 +78,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
             @Param("customerId") String customerId);
 
 
-    // Ory with both null and empty Str checks
+    // Ory with both null and empty String checks
 //    @Query(value = "Select * From tblcustomer tc \n" +
 //            "Where tc.IS_DELETED = 0 \n" +
 //            "AND (COALESCE(:languageId, '') = '' OR tc.LANG_ID = :languageId) \n" +

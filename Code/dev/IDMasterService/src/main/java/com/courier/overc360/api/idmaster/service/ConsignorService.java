@@ -445,6 +445,7 @@ public class ConsignorService {
                 List<Consignor> dbConsignorList = getConsignorListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
                         deleteInput.getSubProductId(), deleteInput.getSubProductValue(), deleteInput.getProductId(),
                         deleteInput.getCustomerId(), deleteInput.getConsignorId());
+                log.info("Deleting ConsignorId --> {}", deleteInput.getConsignorId());
 
                 for (Consignor dbConsignor : dbConsignorList) {
                     dbConsignor.setDeletionIndicator(1L);

@@ -37,10 +37,10 @@ public interface SubProductRepository extends JpaRepository<SubProduct, String>,
     // Get SubProducts With Query
     @Query(value = "Select * From tblsubproduct tsp \n" +
             "Where tsp.IS_DELETED = 0 \n" +
-            "AND COALESCE(:languageId, tsp.LANG_ID) = tsp.LANG_ID \n" +
-            "AND COALESCE(:companyId, tsp.C_ID) = tsp.C_ID \n" +
-            "AND COALESCE(:subProductId, tsp.SUB_PRODUCT_ID) = tsp.SUB_PRODUCT_ID \n" +
-            "AND COALESCE(:subProductValue, tsp.SUB_PRODUCT_VALUE) = tsp.SUB_PRODUCT_VALUE ", nativeQuery = true)
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tsp.LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tsp.C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:subProductId, NULL) IS NULL OR tsp.SUB_PRODUCT_ID IN (:subProductId)) \n" +
+            "AND (COALESCE(:subProductValue, NULL) IS NULL OR tsp.SUB_PRODUCT_VALUE IN (:subProductValue))", nativeQuery = true)
     List<SubProduct> getSubProductsWithQry(
             @Param("languageId") String languageId,
             @Param("companyId") String companyId,
