@@ -1225,8 +1225,8 @@ public class ConsoleService {
         List<Console> consoleList = new ArrayList<>();
         for (TransferConsole transfer : transferConsole) {
             Console newConsole = new Console();
-            Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdAndDeletionIndicator(
-                    transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), 0L);
+            Console dbConsole = consoleRepository.findByHouseAirwayBillAndConsoleIdPieceIdAndPieceItemIdAndDeletionIndicator(
+                    transfer.getHouseAirwayBill(), transfer.getFromConsoleId(), transfer.getPieceId(), transfer.getPieceItemId(),  0L);
 
             if (dbConsole == null) {
                 throw new BadRequestException("FromConsole ID Not found " + transfer.getFromConsoleId() + "HouseAirwayBill" + transfer.getHouseAirwayBill());
