@@ -621,26 +621,30 @@ public class ItemDetailsService {
                         ItemDetails newItemDetails = new ItemDetails();
 
                         //Add all item's length
-                        Double itemLength = Double.valueOf(addItemDetails.getLength());
-                        if (itemLength != null) {
+                        Double itemLength = 0.0;
+                        if (addItemDetails.getLength() != null && !addItemDetails.getLength().isEmpty()) {
+                            itemLength = Double.valueOf(addItemDetails.getLength());
                             totalLength = totalLength + itemLength;
                         }
 
                         //Add all item's weight
-                        Double itemWeight = Double.valueOf(addItemDetails.getWeight());
-                        if (itemWeight != null) {
+                        Double itemWeight = 0.0;
+                        if (addItemDetails.getWeight() != null && !addItemDetails.getWeight().isEmpty()) {
+                            itemWeight = Double.valueOf(addItemDetails.getWeight());
                             totalWeight = totalWeight + itemWeight;
                         }
 
                         //Add all item's height
-                        Double itemHeight = Double.valueOf(addItemDetails.getHeight());
-                        if (itemHeight != null) {
+                        Double itemHeight = 0.0;
+                        if (addItemDetails.getHeight() != null && !addItemDetails.getHeight().isEmpty()) {
+                            itemHeight = Double.valueOf(addItemDetails.getHeight());
                             totalHeight = totalHeight + itemHeight;
                         }
 
                         //Add all item's volume
-                        Double itemVolume = Double.valueOf(addItemDetails.getVolume());
-                        if (itemVolume != null) {
+                        Double itemVolume = 0.0;
+                        if (addItemDetails.getVolume() != null && !addItemDetails.getVolume().isEmpty()) {
+                            itemVolume = Double.valueOf(addItemDetails.getVolume());
                             totalVolume = totalVolume + itemVolume;
                         }
 
@@ -650,7 +654,7 @@ public class ItemDetailsService {
 
                         //DeclaredValue calculation
                         Double totalValue = null;
-                        if(addItemDetails.getUnitValue() != null && addItemDetails.getQuantity() != null) {
+                        if (addItemDetails.getUnitValue() != null && addItemDetails.getQuantity() != null) {
                             Double unitValue = Double.valueOf(addItemDetails.getUnitValue());
                             Double quantity = Double.valueOf(addItemDetails.getQuantity());
                             totalValue = unitValue * quantity;
@@ -680,29 +684,29 @@ public class ItemDetailsService {
 
                         Double declaredValue = 0.0;
                         Double exchangeRate = 0.0;
-                        Double consignmentValue= 0.0;
+                        Double consignmentValue = 0.0;
 
                         //Consignment Value
                         if (totalValue != null && newItemDetails.getExchangeRate() != null) {
                             declaredValue = totalValue;
                             exchangeRate = Double.valueOf(newItemDetails.getExchangeRate());
-                            consignmentValue =  declaredValue * exchangeRate;
+                            consignmentValue = declaredValue * exchangeRate;
                         }
 
                         newItemDetails.setConsignmentValueLocal(String.valueOf(consignmentValue));
-                        if(newItemDetails.getIata() != null) {
+                        if (newItemDetails.getIata() != null) {
                             Double iata = Double.valueOf(newItemDetails.getIata());
                             newItemDetails.setAddIATA(String.valueOf(iata + consignmentValue));
                         }
-                        if(newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
+                        if (newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
                             Double addIata = Double.valueOf(newItemDetails.getAddIATA());
                             Double insurance = Double.valueOf(newItemDetails.getCustomsInsurance());
                             newItemDetails.setAddInsurance(String.valueOf(addIata * insurance));
-                            if(newItemDetails.getAddInsurance() != null) {
+                            if (newItemDetails.getAddInsurance() != null) {
                                 Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());
                                 newItemDetails.setCustomsValue(String.valueOf(addIata + addInsurance));
 
-                                if(newItemDetails.getDuty() != null) {
+                                if (newItemDetails.getDuty() != null) {
                                     Double duty = Double.valueOf(newItemDetails.getDuty());
                                     Double customsValue = Double.valueOf(newItemDetails.getCustomsValue());
                                     newItemDetails.setCalculatedTotalDuty(String.valueOf(duty * customsValue));
@@ -794,7 +798,7 @@ public class ItemDetailsService {
                 BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
                 itemDetailsList.add(newAddItemDetails);
             }
-            itemDetailsRepository.updatePiece(companyId,languageId,pieceId,houseAirwayBill,masterAirwayBill,String.valueOf(totalLength),String.valueOf(totalHeight),String.valueOf(totalWeight),String.valueOf(totalVolume));
+            itemDetailsRepository.updatePiece(companyId, languageId, pieceId, houseAirwayBill, masterAirwayBill, String.valueOf(totalLength), String.valueOf(totalHeight), String.valueOf(totalWeight), String.valueOf(totalVolume));
         } catch (Exception e) {
             // Error Log
             for (AddItemDetails itemDetails : addItemDetailsList) {
