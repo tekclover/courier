@@ -64,7 +64,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0 required">Password</p>
                                 <input formControlName="password" 
                                     [ngClass]="form.get('password')?.invalid && form.get('password')?.dirty ? 'invalid' : ''"
-                                    class="w-100"  pInputText pKeyFilter="alphanum" placeholder="Enter" />
+                                    class="w-100"  pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('password')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>

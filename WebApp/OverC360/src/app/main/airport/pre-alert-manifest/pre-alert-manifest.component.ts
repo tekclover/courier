@@ -378,22 +378,31 @@ export class PreAlertManifestComponent {
     return value === 0 ? 'red' : 'green';
   }
 
-  preAlertIndicator(line: any[]) {
-    console.log(line)
-    const dialogRef = this.dialog.open(PreAlertManifestIndicatorComponent, {
-      disableClose: true,
-      width: '70%',
-      height: '70%',
-      maxWidth: '82%',
-      position: { top: '6.5%', left: '30%' },
-      data: { line: line, },
-    });
+  // preAlertIndicator(line: any[]) {
+  //   console.log(line)
+  //   const dialogRef = this.dialog.open(PreAlertManifestIndicatorComponent, {
+  //     disableClose: true,
+  //     width: '70%',
+  //     height: '70%',
+  //     maxWidth: '82%',
+  //     position: { top: '6.5%', left: '30%' },
+  //     data: { line: line, },
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
-      //   this.deleterecord(this.selectedPreAlertManifest[0]);
-      // }
-    });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // if (result) {
+  //     //   this.deleterecord(this.selectedPreAlertManifest[0]);
+  //     // }
+  //   });
+  // }
+
+  preAlertIndicator(type: any = 'Indicator', linedata: any[]) {
+    console.log(linedata);
+
+    if (this.selectedPreAlertManifest.length === 0 && type == 'Indicator') {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/airport/preAlertManifest-indicator/' + paramdata]);
+    }
   }
-    
+
 }

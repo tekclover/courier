@@ -10,10 +10,13 @@ import { CcrNewComponent } from './ccr/ccr-new/ccr-new.component';
 import { ConsoleNewComponent } from './console/console-new/console-new.component';
 import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
 import { CcrEditComponent } from './ccr/ccr-edit/ccr-edit.component';
+import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest/pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
 
 const routes: Routes = [
   {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest' } },
   {path:'preAlertManifest-new/:code',component: PreAlertNewComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest New' } },
+  {path:'preAlertManifest-indicator/:code',component: PreAlertManifestIndicatorComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest Indicator' } },
+
   
   
   {path:'console',component: ConsoleComponent, data: { title: 'Mid-Mile', module: 'Console' } },

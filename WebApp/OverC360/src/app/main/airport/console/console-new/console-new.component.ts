@@ -70,7 +70,7 @@ export class ConsoleNewComponent {
       grossWeight: [],
       houseAirwayBill: [, Validators.required],
       hsCode: [],
-      iataKd: [],
+      iata: [],
       incoTerms: [],
       invoiceDate: [],
       invoiceNumber: [],
