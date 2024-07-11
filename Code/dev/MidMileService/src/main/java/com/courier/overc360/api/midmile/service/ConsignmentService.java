@@ -184,14 +184,19 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
-            if (consignmentEntity.getServiceTypeId() != null) {
-                IKeyValuePair iKey = replicaBondedManifestRepository.getStatusServiceType(
-                        languageId, companyId, consignmentEntity.getLoadTypeId(), consignmentEntity.getServiceTypeId());
-                if (iKey != null && iKey.getLoadType() != null) {
-                    consignmentEntity.setLoadType(iKey.getLoadType());
+            if (consignmentEntity.getLoadTypeId() != null) {
+                String getLoadType = replicaBondedManifestRepository.getLoadTypeText(
+                        languageId, companyId, consignmentEntity.getLoadTypeId());
+                if (getLoadType != null) {
+                    consignmentEntity.setLoadType(getLoadType);
                 }
-                if (iKey != null && iKey.getServiceTypeText() != null) {
-                    consignmentEntity.setServiceTypeText(iKey.getServiceTypeText());
+            }
+
+            if (consignmentEntity.getServiceTypeId() != null) {
+                String getServiceType = replicaBondedManifestRepository.getServiceTypeText(
+                        languageId, companyId, consignmentEntity.getServiceTypeId());
+                if (getServiceType != null) {
+                    consignmentEntity.setServiceTypeText(getServiceType);
                 }
             }
 
@@ -388,17 +393,20 @@ public class ConsignmentService {
             Double addInsurance = 0.0;
             Double customsValue = 0.0;
             Double calculatedTotalDuty = 0.0;
+
+
             for (AddPieceDetails item : pieceDetails) {
-                if(item.getDeclaredValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
+                if (item.getPieceValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
                         item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
-                    Double declaredValue = Double.valueOf(item.getDeclaredValue());
+
+                    Double pieceValue = Double.valueOf(item.getPieceValue());
                     Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
                     Double iataAdd = Double.valueOf(item.getAddIata());
                     Double insuranceAdd = Double.valueOf(item.getAddInsurance());
                     Double costomValue = Double.valueOf(item.getCustomsValue());
                     Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
 
-                    consignmentValue += declaredValue;
+                    consignmentValue += pieceValue;
                     consignmentLocalValue += conLocalValue;
                     addIata += iataAdd;
                     addInsurance += insuranceAdd;
@@ -473,7 +481,7 @@ public class ConsignmentService {
                 }
             } else {
                 // Set Event Status
-                if (dbConsignment.getStatusId() != null ) {
+                if (dbConsignment.getStatusId() != null) {
                     Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getStatusId());
 
                     if (getStatus.isPresent()) {
@@ -484,7 +492,7 @@ public class ConsignmentService {
                     }
                 }
 
-                if (dbConsignment.getEventCode() != null ) {
+                if (dbConsignment.getEventCode() != null) {
                     Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), dbConsignmentEntity.getEventCode());
 
                     if (getEvent.isPresent()) {

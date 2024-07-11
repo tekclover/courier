@@ -101,5 +101,17 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
                                        @Param("loadTypeId") String loadTypeId,
                                        @Param("serviceTypeId") String serviceTypeId);
 
+    @Query(value = "select load_type_text as loadTypeText from tblloadtype where c_id = :companyId and lang_id = :languageId " +
+            "and load_type_id = :loadTypeId and is_deleted = 0", nativeQuery = true)
+    String getLoadTypeText(@Param("languageId") String languageId,
+                                     @Param("companyId") String companyId,
+                                     @Param("loadTypeId") String loadTypeId);
+
+    @Query(value = "select service_type_text as serviceTypeText from tblservicetype where c_id = :companyId and lang_id = :languageId " +
+            "and service_type_id = :serviceTypeId and is_deleted = 0", nativeQuery = true)
+    String getServiceTypeText(@Param("languageId") String languageId,
+                              @Param("companyId") String companyId,
+                              @Param("serviceTypeId") String serviceTypeId);
+
 
 }
