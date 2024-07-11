@@ -178,7 +178,7 @@ public class PieceDetailsService {
     @Transactional
     public List<AddPieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
                                                         String companyName, String languageName, String partnerName, Long consignmentId, String partnerHawBill,
-                                                        String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String width, String height,
+                                                        String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
                                                         String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
                                                         String eventText, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
@@ -267,7 +267,10 @@ public class PieceDetailsService {
                         //ItemDetails Create
                         List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId, companyName, languageName,
                                 partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
-                                partnerHawBill, hsCode, partnerMawBill, width, height, weightUnit, volume, codAmount, country, loginUserID);
+                                partnerHawBill, hsCode, partnerMawBill, length, width, height, weightUnit, volume, codAmount, country, loginUserID);
+
+                        Double totalItemVolume = itemDetails.stream().map(AddItemDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
+                        newPieceDetails.setVolume(String.valueOf(totalItemVolume));
 
                         // Calculate the total declared value
                         Double pieceValue = 0.0;
@@ -348,10 +351,19 @@ public class PieceDetailsService {
                 if(hsCode != null) {
                     newPieceDetails.setHsCode(hsCode);
                 }
+                newPieceDetails.setLength(length);
                 newPieceDetails.setWidth(width);
                 newPieceDetails.setWeight_unit(weightUnit);
                 newPieceDetails.setHeight(height);
+                if(volume != null && !volume.isBlank()) {
                 newPieceDetails.setVolume(volume);
+                } else {
+                    //volume calculation
+                    if((length != null && !length.isBlank()) && (width != null && !width.isBlank()) && (height != null && !height.isBlank())) {
+                        Double itemVolumeCalculation = Double.valueOf(length) * Double.valueOf(width) * Double.valueOf(height);
+                        newPieceDetails.setVolume(String.valueOf(itemVolumeCalculation));
+                    }
+                }
                 newPieceDetails.setCodAmount(codAmount);
                 newPieceDetails.setPieceStatusId(statusId);
                 newPieceDetails.setPieceEventCode(eventCode);
@@ -376,7 +388,7 @@ public class PieceDetailsService {
                 List<AddItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
                         companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,
                         PIECE_ID, partnerId, null, consignmentId,
-                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, width, height, weightUnit, volume, codAmount,country, loginUserID);
+                        partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, length, width, height, weightUnit, volume, codAmount,country, loginUserID);
 
                 // Save ConsignmentStatus
                 consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),

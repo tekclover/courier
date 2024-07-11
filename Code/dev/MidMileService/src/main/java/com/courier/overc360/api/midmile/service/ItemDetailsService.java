@@ -597,7 +597,7 @@ public class ItemDetailsService {
     public List<AddItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName, String partnerName,
                                                       String houseAirwayBill, String masterAirwayBill, String pieceId, String partnerId,
                                                       List<AddItemDetails> addItemDetailsList, Long consignmentId, String partnerHawBill, String hsCode,
-                                                      String partnerMawBill, String width, String height, String weightUnit, String volume,
+                                                      String partnerMawBill, String length, String width, String height, String weightUnit, String volume,
                                                       String codAmount, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddItemDetails> itemDetailsList = new ArrayList<>();
@@ -715,6 +715,13 @@ public class ItemDetailsService {
                                 }
                             }
                         }
+                        //volume calculation
+                        if((newItemDetails.getLength() != null && !newItemDetails.getLength().isBlank()) &&
+                                (newItemDetails.getWidth() != null && !newItemDetails.getWidth().isBlank()) &&
+                                (newItemDetails.getHeight() != null && !newItemDetails.getHeight().isBlank())) {
+                            Double itemVolumeCalculation = Double.valueOf(newItemDetails.getLength()) * Double.valueOf(newItemDetails.getWidth()) * Double.valueOf(newItemDetails.getHeight());
+                            newItemDetails.setVolume(String.valueOf(itemVolumeCalculation));
+                        }
 
                         newItemDetails.setConsignmentValue(String.valueOf(consignmentValue));
                         newItemDetails.setPieceItemId(PIECE_ITEM_ID);
@@ -785,9 +792,18 @@ public class ItemDetailsService {
                 newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
                 newItemDetails.setConsignmentId(consignmentId);
                 newItemDetails.setHsCode(hsCode);
+                newItemDetails.setLength(length);
                 newItemDetails.setHeight(height);
                 newItemDetails.setWidth(width);
+                if(volume != null && !volume.isBlank()) {
                 newItemDetails.setVolume(volume);
+                } else {
+                    //volume calculation
+                    if((length != null && !length.isBlank()) && (width != null && !width.isBlank()) && (height != null && !height.isBlank())) {
+                        Double itemVolumeCalculation = Double.valueOf(length) * Double.valueOf(width) * Double.valueOf(height);
+                        newItemDetails.setVolume(String.valueOf(itemVolumeCalculation));
+                    }
+                }
                 newItemDetails.setCodAmount(codAmount);
                 newItemDetails.setWeightUnit(weightUnit);
                 newItemDetails.setDeletionIndicator(0L);

@@ -56,9 +56,12 @@
                           [value]="rowData"></p-checkbox>
                       </td>
                       <td *ngFor="let col of columns">
-                        <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
-                          {{ getNestedValue(rowData, col.field) }}
+                        <ng-container *ngIf="col.format !== 'date' ; else dateTemplate">
+                          {{ rowData[col.field] }}
                         </ng-container>
+                        <ng-container *ngIf="col.subChild === true">
+                            {{ getNestedValue(rowData, col.field) }}
+                          </ng-container>
                         <ng-template #dateTemplate>
                           {{ rowData[col.field] | date: 'dd-MM-yyyy HH:mm' }}
                         </ng-template>
