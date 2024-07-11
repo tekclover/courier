@@ -116,6 +116,7 @@ export class PreAlertManifestIndicatorComponent {
       this.consignmentService.findConsignmentPreAlertIndicator(obj).subscribe({
         next: (res: any) => { 
           this.preAlertManifestIndicatorTable = res;
+          // this.preAlertManifestIndicatorTable = res.map((item: any) => this.reorderFields(item));
           // this.reorderedIndicator = this.indicator.map(item => this.reorderFields(item));
         }, error: (err) => {
           this.spin.hide();
