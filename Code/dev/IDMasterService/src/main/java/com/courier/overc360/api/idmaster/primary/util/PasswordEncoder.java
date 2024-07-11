@@ -24,7 +24,7 @@ public class PasswordEncoder {
 	}
 	
 	public static void main(String[] args) {
-		String password = "wms";
+		String password = "overc";
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String hashedPassword = passwordEncoder.encode(password);
 		
