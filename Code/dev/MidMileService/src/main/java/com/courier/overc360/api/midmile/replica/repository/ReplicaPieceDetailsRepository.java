@@ -104,6 +104,10 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "(COALESCE(:companyId, null) IS NULL OR (C_ID IN (:companyId)))\n" +
             "group by CONSIGNMENT_ID \n" +
 
+            "UPDATE TH SET TH.GOODS_TYPE = X.NAME FROM #LFO TH INNER JOIN \n" +
+            "(select PIECE_ID,STRING_AGG(DESCRIPTION,',') Name from tblitemdetails where is_deleted = 0 group by PIECE_ID) x  \n" +
+            "ON th.PIECE_ID = x.PIECE_ID \n" +
+
             "UPDATE TH SET TH.DST_NAME = X.NAME, th.DST_PHONE = x.PHONE, th.DST_ALTERNATE_PHONE = x.ALTERNATE_PHONE, th.DST_ADDRESS = x.address, \n" +
             "th.DST_CITY = x.CITY, th.DST_STATE = x.state, th.DST_COUNTRY = x.COUNTRY FROM #LFO TH INNER JOIN \n" +
             "(SELECT NAME, PHONE, ALTERNATE_PHONE, concat(address_line_1,',',address_line_2) address, city, state, country, DEST_DETAIL_ID  \n" +
