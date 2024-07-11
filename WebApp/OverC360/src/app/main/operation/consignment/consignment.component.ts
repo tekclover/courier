@@ -37,6 +37,7 @@ export class ConsignmentComponent {
     private spin: NgxSpinnerService,
     private pdf: ConsignmentLabelComponent,
     private fb: FormBuilder,
+    private label: ConsignmentLabelComponent,
   ) { }
 
   fullDate: any;
@@ -210,12 +211,12 @@ export class ConsignmentComponent {
       const exportItem: any = {};
       this.cols.forEach((col) => {
         if (col.format == 'date') {
-          exportItem[col.field] = this.datePipe.transform(
+          exportItem[col.header] = this.datePipe.transform(
             item[col.field],
             'dd-MM-yyyy'
           );
         } else {
-          exportItem[col.field] = item[col.field];
+          exportItem[col.header] = item[col.field];
         }
       });
       return exportItem;
@@ -232,7 +233,9 @@ export class ConsignmentComponent {
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
+    console.log(event.target.files)
     this.selectedFiles = file;
+    console.log( this.selectedFiles)
     this.spin.show();
     this.service.uploadConsignment(this.selectedFiles).subscribe({
       next: (result) => {
@@ -242,15 +245,22 @@ export class ConsignmentComponent {
           key: 'br',
           detail: 'File uploaded successfully',
         });
+        this.selectedFiles = null;
+        this.clearFileInput(event.target); 
         this.initialCall();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
+        this.selectedFiles = null;
+        this.clearFileInput(event.target); 
         this.cs.commonerrorNew(err);
       }
     });
   }
-
+  
+  clearFileInput(input: HTMLInputElement): void {
+    input.value = ''; // Reset the value of the file input field
+  }
   ///  Filter Code
 
   searchform = this.fb.group({
@@ -354,5 +364,30 @@ export class ConsignmentComponent {
       this.search();
     }
   }
-  
+  isSelected(item: any): boolean {
+    return this.selectedConsignment.includes(item);
+  }
+
+  uniqueHouseAirway:any[] = [];
+  generateInvoice(){
+    this.uniqueHouseAirway = [];
+    if (this.selectedConsignment.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    this.uniqueHouseAirway = this.selectedConsignment.map(item => item.houseAirwayBill);
+    this.label.getResultInvoice(this.uniqueHouseAirway)
+  }
+
+
+  uniquePieceId:any[] = [];
+  generateLabel(){
+    this.uniquePieceId = [];
+    if (this.selectedConsignment.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    this.uniqueHouseAirway = this.selectedConsignment.map(item => item.houseAirwayBill);
+    this.label.getResultLabelFromConsignment(this.uniqueHouseAirway)
+  }
 }

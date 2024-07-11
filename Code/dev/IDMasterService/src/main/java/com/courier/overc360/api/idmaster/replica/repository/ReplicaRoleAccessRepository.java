@@ -19,6 +19,9 @@ public interface ReplicaRoleAccessRepository extends JpaRepository<ReplicaRoleAc
     Optional<ReplicaRoleAccess> findByLanguageIdAndCompanyIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
             String languageId, String companyId, Long roleId, Long menuId, Long subMenuId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+            String languageId, String companyId, Long roleId, Long menuId, Long subMenuId, Long deletionIndicator);
+
     List<ReplicaRoleAccess> findByLanguageIdAndCompanyIdAndRoleIdAndDeletionIndicator(
             String languageId, String companyId, Long roleId, Long deletionIndicator);
 
@@ -26,9 +29,13 @@ public interface ReplicaRoleAccessRepository extends JpaRepository<ReplicaRoleAc
             "CONCAT (tl.USR_ROLE_ID, ' - ', tl.USR_ROLE_NM) As userRoleDesc \n" +
             "From tblroleaccess tl \n" +
             "WHERE \n" +
+            "tl.LANG_ID IN (:languageId) and \n" +
+            "tl.C_ID IN (:companyId) and \n" +
             "tl.USR_ROLE_ID IN (:userRoleId) and \n" +
             "tl.IS_DELETED=0 ", nativeQuery = true)
-    IKeyValuePair getRoleDesc(@Param(value = "userRoleId") Long userRoleId);
+    IKeyValuePair getRoleDesc(@Param(value = "languageId") String languageId,
+                              @Param(value = "companyId") String companyId,
+                              @Param(value = "userRoleId") Long userRoleId);
 
 
     // Find RoleAccesses with given Params Only

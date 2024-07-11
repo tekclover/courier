@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +55,16 @@ public class UpdatePieceDetails {
         private String pieceValue;
 
         private String pieceCurrency;
+
+        private String consignmentLocalValue;
+
+        private String addIata;
+
+        private String addInsurance;
+
+        private String customsValue;
+
+        private String calculatedTotalDuty;
 
         private String packReferenceNumber;
 

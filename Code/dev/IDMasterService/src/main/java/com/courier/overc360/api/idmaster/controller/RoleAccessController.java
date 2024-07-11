@@ -6,6 +6,7 @@ import com.courier.overc360.api.idmaster.primary.model.roleaccess.UpdateRoleAcce
 import com.courier.overc360.api.idmaster.replica.model.roleaccess.FindRoleAccess;
 import com.courier.overc360.api.idmaster.replica.model.roleaccess.ReplicaRoleAccess;
 import com.courier.overc360.api.idmaster.service.RoleAccessService;
+import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
@@ -18,8 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -39,7 +40,7 @@ public class RoleAccessController {
     @ApiOperation(response = RoleAccess.class, value = "Create RoleAccess") // label for swagger
     @PostMapping("")
     public ResponseEntity<?> postRoleAccess(@Valid @RequestBody List<AddRoleAccess> newRoleAccess, @RequestParam String loginUserID)
-            throws IllegalAccessException, InvocationTargetException, ParseException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
 
         List<RoleAccess> createdRoleAccess = roleAccessService.createRoleAccess(newRoleAccess, loginUserID);
         return new ResponseEntity<>(createdRoleAccess, HttpStatus.OK);
@@ -51,7 +52,7 @@ public class RoleAccessController {
     public ResponseEntity<?> patchRoleAccess(@PathVariable Long roleId, @RequestParam Long menuId, @RequestParam String companyId,
                                              @RequestParam String languageId, @RequestParam Long subMenuId,
                                              @Valid @RequestBody UpdateRoleAccess updateRoleAccess, @RequestParam String loginUserID)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         RoleAccess updatedRoleAccess = roleAccessService.updateRoleAccess(companyId, languageId, roleId, menuId,
                 subMenuId, loginUserID, updateRoleAccess);
         return new ResponseEntity<>(updatedRoleAccess, HttpStatus.OK);

@@ -184,14 +184,19 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
-            if (consignmentEntity.getServiceTypeId() != null) {
-                IKeyValuePair iKey = replicaBondedManifestRepository.getStatusServiceType(
-                        languageId, companyId, consignmentEntity.getLoadTypeId(), consignmentEntity.getServiceTypeId());
-                if (iKey != null && iKey.getLoadType() != null) {
-                    consignmentEntity.setLoadType(iKey.getLoadType());
+            if (consignmentEntity.getLoadTypeId() != null) {
+                String getLoadType = replicaBondedManifestRepository.getLoadTypeText(
+                        languageId, companyId, consignmentEntity.getLoadTypeId());
+                if (getLoadType != null) {
+                    consignmentEntity.setLoadType(getLoadType);
                 }
-                if (iKey != null && iKey.getServiceTypeText() != null) {
-                    consignmentEntity.setServiceTypeText(iKey.getServiceTypeText());
+            }
+
+            if (consignmentEntity.getServiceTypeId() != null) {
+                String getServiceType = replicaBondedManifestRepository.getServiceTypeText(
+                        languageId, companyId, consignmentEntity.getServiceTypeId());
+                if (getServiceType != null) {
+                    consignmentEntity.setServiceTypeText(getServiceType);
                 }
             }
 
@@ -380,17 +385,41 @@ public class ConsignmentService {
                 BeanUtils.copyProperties(pd, addPieceDetails);
                 addPieceDetailsList.add(addPieceDetails);
             }
-            Double pieceValue = 0.0;
+
+            //Calculate Value
+            Double consignmentValue = 0.0;
+            Double consignmentLocalValue = 0.0;
+            Double addIata = 0.0;
+            Double addInsurance = 0.0;
+            Double customsValue = 0.0;
+            Double calculatedTotalDuty = 0.0;
+
+
             for (AddPieceDetails item : pieceDetails) {
-                if (item.getDeclaredValue() != null) {
-                    Double declaredValue = Double.valueOf(item.getPieceValue());
-                    pieceValue += declaredValue;
+                if (item.getPieceValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
+                        item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
+
+                    Double pieceValue = Double.valueOf(item.getPieceValue());
+                    Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
+                    Double iataAdd = Double.valueOf(item.getAddIata());
+                    Double insuranceAdd = Double.valueOf(item.getAddInsurance());
+                    Double costomValue = Double.valueOf(item.getCustomsValue());
+                    Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
+
+                    consignmentValue += pieceValue;
+                    consignmentLocalValue += conLocalValue;
+                    addIata += iataAdd;
+                    addInsurance += insuranceAdd;
+                    customsValue += costomValue;
+                    calculatedTotalDuty += totalDuty;
                 }
             }
 
             //Consignment_entity Set
             consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
-                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(), String.valueOf(pieceValue));
+                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
+                    String.valueOf(consignmentValue), String.valueOf(consignmentLocalValue), String.valueOf(addIata),
+                    String.valueOf(addInsurance), String.valueOf(customsValue), String.valueOf(calculatedTotalDuty));
 
 
             AddConsignment newAddConsignment = new AddConsignment();
@@ -452,16 +481,26 @@ public class ConsignmentService {
                 }
             } else {
                 // Set Event Status
-                Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(
-                        dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getStatusId(), dbConsignment.getEventCode());
-                if (statusEventText.isPresent()) {
-                    IKeyValuePair keyValuePair = statusEventText.get();
-                    dbConsignmentEntity.setStatusId("2");
-                    dbConsignmentEntity.setEventCode("2");
-                    dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
-                    dbConsignmentEntity.setEventText(keyValuePair.getEventText());
-                    dbConsignmentEntity.setStatusTimestamp(new Date());
-                    dbConsignmentEntity.setEventTimestamp(new Date());
+                if (dbConsignment.getStatusId() != null) {
+                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getStatusId());
+
+                    if (getStatus.isPresent()) {
+                        IKeyValuePair ikey = getStatus.get();
+                        dbConsignmentEntity.setStatusId(dbConsignmentEntity.getStatusId());
+                        dbConsignmentEntity.setStatusDescription(ikey.getStatusText());
+                        dbConsignmentEntity.setStatusTimestamp(new Date());
+                    }
+                }
+
+                if (dbConsignment.getEventCode() != null) {
+                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), dbConsignmentEntity.getEventCode());
+
+                    if (getEvent.isPresent()) {
+                        IKeyValuePair ikey = getEvent.get();
+                        dbConsignmentEntity.setEventCode(dbConsignmentEntity.getEventCode());
+                        dbConsignmentEntity.setEventText(ikey.getEventText());
+                        dbConsignmentEntity.setEventTimestamp(new Date());
+                    }
                 }
             }
             dbConsignmentEntity.setDeletionIndicator(0L);

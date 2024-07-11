@@ -214,30 +214,33 @@ export class CcrEditComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'masterAirwayBill', header: 'MAWB' },
-      { field: 'houseAirwayBill', header: 'HAWB' },
-      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'customsCcrNo', header: 'Customs CCR No' },
-      { field: 'countryOfOrigin', header: 'Origin' },
-      { field: 'airportOriginCode', header: 'Airport Origin Code' },
-      { field: 'hsCode', header: 'HS Code' },
-      { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'consignmentValue', header: 'Consignment Value' },
-      { field: 'consignmentCurrency', header: 'Consignment Currency' },
-      { field: 'exchangeRate', header: 'Exchange Rate' },
-      { field: 'iata', header: 'IATA' },
-      { field: 'customsInsurance', header: 'Customs Insurance' },
-      { field: 'duty', header: 'Duty' },
-      { field: 'consignmentValueLocal', header: 'Consignment Value Local' },
-      { field: 'addIATA', header: 'Add IATA' },
-      { field: 'addInsurance', header: 'Add Insurance' },
-      { field: 'customsValue', header: 'Custom' },
-      { field: 'calculatedTotalDuty', header: 'Calculated Total duty' },
-      { field: 'dduCharge', header: 'DDU Charge' },
-      { field: 'specialApprovalCharge', header: 'Spl Approval Charge' },
-      { field: 'actualDuty', header: 'Actual Duty' },
-      { field: 'createdOn', header: 'Created On', format: 'date' },
+      { field: 'masterAirwayBill', header: 'MAWB', showFooter: false },
+      { field: 'houseAirwayBill', header: 'Consignment No', showFooter: false },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB', showFooter: false },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB', showFooter: false },
+      { field: 'customsCcrNo', header: 'Customs CCR No', showFooter: false },
+      { field: 'countryOfOrigin', header: 'Origin', showFooter: false },
+      { field: 'airportOriginCode', header: 'Airport Origin Code', showFooter: false },
+      { field: 'hsCode', header: 'HS Code', showFooter: false },
+      { field: 'invoiceNumber', header: 'Invoice No' , showFooter: false},
+      { field: 'invoiceTpe', header: 'Invoice Type', showFooter: false },
+      { field: 'invoiceDate', header: 'Invoice Date', showFooter: false },
+      { field: 'consigneeName', header: 'Consignee Name', showFooter: false },
+      { field: 'consignmentValue', header: 'Consignment Value', showFooter: false },
+      { field: 'consignmentCurrency', header: 'Consignment Currency', showFooter: false},
+      { field: 'exchangeRate', header: 'Exchange Rate', showFooter: false },
+      { field: 'iata', header: 'IATA', showFooter: false },
+      { field: 'customsInsurance', header: 'Customs Insurance', showFooter: false },
+      { field: 'duty', header: 'Duty', showFooter: true },
+      { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: false },
+      { field: 'addIATA', header: 'Add IATA', showFooter: false },
+      { field: 'addInsurance', header: 'Add Insurance', showFooter: false },
+      { field: 'customsValue', header: 'Custom', showFooter: false },
+      { field: 'calculatedTotalDuty', header: 'Calculated Total duty', showFooter: false },
+      { field: 'dduCharge', header: 'DDU Charge', showFooter: false },
+      { field: 'specialApprovalCharge', header: 'Spl Approval Charge', showFooter: false },
+      { field: 'totalDuty', header: 'Duty From Bayan', showFooter: false },
+      { field: 'createdOn', header: 'Created On', format: 'date', showFooter: false },
     ];
     this.target = [
     ];
@@ -385,6 +388,14 @@ export class CcrEditComponent {
         this.subProductArray.push(result);
       }
     });
+  }
+
+  calculateFooterTotal(field: string): number {
+    let total = 0;
+    this.subProductArray.forEach(item => {
+      total += parseInt(item[field]);
+    });
+    return total;
   }
 }
 

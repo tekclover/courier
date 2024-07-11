@@ -271,14 +271,40 @@ public class PieceDetailsService {
 
                         // Calculate the total declared value
                         Double pieceValue = 0.0;
+                        Double consignmentLocalValue = 0.0;
+                        Double addIata = 0.0;
+                        Double addInsurance = 0.0;
+                        Double customsValue = 0.0;
+                        Double calculatedTotalDuty = 0.0;
+                        String currency = null;
                         for (AddItemDetails item : itemDetails) {
-                            if(item.getDeclaredValue() != null) {
+                            if(item.getDeclaredValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
+                               item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
                                 Double declaredValue = Double.valueOf(item.getDeclaredValue());
+                                Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
+                                Double iataAdd = Double.valueOf(item.getAddIata());
+                                Double insuranceAdd = Double.valueOf(item.getAddInsurance());
+                                Double costomValue = Double.valueOf(item.getCustomsValue());
+                                Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
+
                                 pieceValue += declaredValue;
+                                consignmentLocalValue += conLocalValue;
+                                addIata += iataAdd;
+                                addInsurance += insuranceAdd;
+                                customsValue += costomValue;
+                                calculatedTotalDuty += totalDuty;
+                                currency = item.getCurrency();
                             }
+
                         }
 
+                        newPieceDetails.setPieceCurrency(currency);
                         newPieceDetails.setPieceValue(String.valueOf(pieceValue));
+                        newPieceDetails.setConsignmentValueLocal(String.valueOf(consignmentLocalValue));
+                        newPieceDetails.setAddIata(String.valueOf(addIata));
+                        newPieceDetails.setAddInsurance(String.valueOf(addInsurance));
+                        newPieceDetails.setCustomsValue(String.valueOf(customsValue));
+                        newPieceDetails.setCalculatedTotalDuty(String.valueOf(calculatedTotalDuty));
                         //Save PieceDetails
                         PieceDetails savePieceDetails = pieceDetailsRepository.save(newPieceDetails);
 

@@ -133,13 +133,15 @@ public class UserManagementService {
                     userManagement.setCompanyIdAndDescription(iKeyValuePair.getCompanyDesc());
                 }
                 if (addUserManagement.getUserRoleId() != null) {
-                    IKeyValuePair iKeyValuePair1 = replicaRoleAccessRepository.getRoleDesc(addUserManagement.getUserRoleId());
+                    IKeyValuePair iKeyValuePair1 = replicaRoleAccessRepository.getRoleDesc(
+                            addUserManagement.getLanguageId(), addUserManagement.getCompanyId(), addUserManagement.getUserRoleId());
                     if (iKeyValuePair1 != null) {
                         userManagement.setUserRoleIdAndDescription(iKeyValuePair1.getUserRoleDesc());
                     }
                 }
                 if (addUserManagement.getUserTypeId() != null) {
-                    IKeyValuePair iKeyValuePair2 = replicaUserTypeRepository.getUserTypeDesc((addUserManagement.getUserTypeId()));
+                    IKeyValuePair iKeyValuePair2 = replicaUserTypeRepository.getUserTypeDesc(
+                            addUserManagement.getLanguageId(), addUserManagement.getCompanyId(), addUserManagement.getUserTypeId());
                     if (iKeyValuePair2 != null) {
                         userManagement.setUserTypeIdAndDescription(iKeyValuePair2.getUserTypeDesc());
                     }
@@ -180,13 +182,13 @@ public class UserManagementService {
             UserManagement dbUserManagement = getUserManagement(languageId, companyId, userId);
 
             if (updateUserManagement.getUserRoleId() != null) {
-                IKeyValuePair iKeyValuePair = replicaRoleAccessRepository.getRoleDesc(updateUserManagement.getUserRoleId());
+                IKeyValuePair iKeyValuePair = replicaRoleAccessRepository.getRoleDesc(languageId, companyId, updateUserManagement.getUserRoleId());
                 if (iKeyValuePair != null) {
                     dbUserManagement.setUserRoleIdAndDescription(iKeyValuePair.getUserRoleDesc());
                 }
             }
             if (updateUserManagement.getUserTypeId() != null) {
-                IKeyValuePair iKeyValuePair1 = replicaUserTypeRepository.getUserTypeDesc((updateUserManagement.getUserTypeId()));
+                IKeyValuePair iKeyValuePair1 = replicaUserTypeRepository.getUserTypeDesc(languageId, companyId, updateUserManagement.getUserTypeId());
                 if (iKeyValuePair1 != null) {
                     dbUserManagement.setUserTypeIdAndDescription(iKeyValuePair1.getUserTypeDesc());
                 }

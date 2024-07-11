@@ -97,6 +97,24 @@
                                 </td>
                             </tr>
                         </ng-template>
+
+                        <ng-template pTemplate="footer" let-columns>
+                            <tr>
+                                <td></td>
+                              <ng-container *ngFor="let col of columns">
+                                <ng-container *ngIf="col.showFooter">
+                                  <td>
+                                    {{ calculateFooterTotal(col.field) }}
+                                  </td>
+                                </ng-container>
+                                <ng-container *ngIf="!col.showFooter">
+                                  <td></td>
+                                </ng-container>
+                              </ng-container>
+                              <td></td>
+                            </tr>
+                          </ng-template>
+
                         <ng-template pTemplate="emptymessage">
                             <tr>
                                 <td [attr.colspan]="4">

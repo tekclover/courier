@@ -98,6 +98,16 @@ public class ReplicaAddConsignment {
 
     private String invoiceAmount;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String invoiceNumber;
 
     private String invoiceDate;
@@ -264,8 +274,6 @@ public class ReplicaAddConsignment {
     private String ewayBill;
 
     private String productCode;
-
-    private String customsValue;
 
     private String amount;
 

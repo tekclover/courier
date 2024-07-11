@@ -414,6 +414,18 @@ public class CustomerService {
                                String productId, String customerId, String loginUserID) {
 
         Customer dbCustomer = getCustomer(languageId, companyId, customerId, productId, subProductId, subProductValue);
+
+        Long customerCount = replicaCustomerRepository.getCustomerCount(languageId, companyId, subProductId, productId, customerId);
+        if (customerCount != null) {
+            if (customerCount > 0) {
+                log.info("customerCount --> {}", customerCount);
+                String errMsg = "Records present in associated tables with customerId - " + customerId;
+                // Error Log
+                createCustomerLog1(languageId, companyId, subProductId, productId, customerId, subProductValue, errMsg);
+                throw new BadRequestException(errMsg);
+            }
+        }
+
         if (dbCustomer != null) {
             dbCustomer.setDeletionIndicator(1L);
             dbCustomer.setUpdatedBy(loginUserID);
@@ -462,6 +474,20 @@ public class CustomerService {
 
         if (customerDeleteInputList != null && !customerDeleteInputList.isEmpty()) {
             for (CustomerDeleteInput deleteInput : customerDeleteInputList) {
+
+                Long customerCount = replicaCustomerRepository.getCustomerCount(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                        deleteInput.getSubProductId(), deleteInput.getProductId(), deleteInput.getCustomerId());
+                if (customerCount != null) {
+                    if (customerCount > 0) {
+                        log.info("customerCount --> {}", customerCount);
+                        String errMsg = "Records present in associated tables with customerId - " + deleteInput.getCustomerId();
+                        // Error Log
+                        createCustomerLog1(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                                deleteInput.getSubProductId(), deleteInput.getProductId(),
+                                deleteInput.getCustomerId(), deleteInput.getSubProductValue(), errMsg);
+                        throw new BadRequestException(errMsg);
+                    }
+                }
 
                 List<Customer> dbCustomerList = getCustomerListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
                         deleteInput.getSubProductId(), deleteInput.getSubProductValue(),

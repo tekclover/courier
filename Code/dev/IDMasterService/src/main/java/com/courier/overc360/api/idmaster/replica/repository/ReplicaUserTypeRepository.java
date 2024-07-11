@@ -20,10 +20,14 @@ public interface ReplicaUserTypeRepository extends JpaRepository<ReplicaUserType
 
     @Query(value = "Select \n" +
             "CONCAT (tl.USR_TYP_ID, ' - ', tl.USR_TYP_TEXT) As userTypeDesc \n" +
-            " from tblusertype tl \n" +
-            " WHERE \n" +
+            "From tblusertype tl \n" +
+            "WHERE \n" +
+            "tl.LANG_ID IN (:languageId) and \n" +
+            "tl.C_ID IN (:companyId) and \n" +
             "tl.USR_TYP_ID IN (:userTypeId) and \n" +
             "tl.IS_DELETED=0 ", nativeQuery = true)
-    IKeyValuePair getUserTypeDesc(@Param(value = "userTypeId") Long userTypeId);
+    IKeyValuePair getUserTypeDesc(@Param(value = "languageId") String languageId,
+                                  @Param(value = "companyId") String companyId,
+                                  @Param(value = "userTypeId") Long userTypeId);
 
 }

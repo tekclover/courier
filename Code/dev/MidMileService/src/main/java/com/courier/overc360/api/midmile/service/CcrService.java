@@ -345,21 +345,28 @@ public class CcrService {
                 dbCcr.setUpdatedBy(loginUserID);
                 dbCcr.setUpdatedOn(new Date());
 
-                if (dbCcr.getStatusId() != null && dbCcr.getEventCode() != null) {
-                    Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(dbCcr.getLanguageId(), dbCcr.getCompanyId(),
-                            dbCcr.getStatusId(), dbCcr.getEventCode());
+                if (dbCcr.getStatusId() != null ) {
+                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbCcr.getLanguageId(), dbCcr.getStatusId());
 
-                    dbCcr.setStatusId(dbCcr.getStatusId());
-                    dbCcr.setEventCode(dbCcr.getEventCode());
-                    if (iKeyValuePair.isPresent()) {
-                        IKeyValuePair ikey = iKeyValuePair.get();
+                    if (getStatus.isPresent()) {
+                        IKeyValuePair ikey = getStatus.get();
+                        dbCcr.setStatusId(dbCcr.getStatusId());
                         dbCcr.setStatusText(ikey.getStatusText());
-                        dbCcr.setEventText(ikey.getEventText());
+                        dbCcr.setStatusTimestamp(new Date());
                     }
-                    dbCcr.setStatusTimestamp(new Date());
-                    dbCcr.setEventTimestamp(new Date());
-
                 }
+
+                if (dbCcr.getEventCode() != null ) {
+                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(dbCcr.getLanguageId(), dbCcr.getCompanyId(), dbCcr.getEventCode());
+
+                    if (getEvent.isPresent()) {
+                        IKeyValuePair ikey = getEvent.get();
+                        dbCcr.setEventCode(dbCcr.getEventCode());
+                        dbCcr.setEventText(ikey.getEventText());
+                        dbCcr.setEventTimestamp(new Date());
+                    }
+                }
+
 
                 Ccr updatedCcr = ccrRepository.save(dbCcr);
                 if (updatedCcr != null) {

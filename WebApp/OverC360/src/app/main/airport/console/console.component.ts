@@ -56,13 +56,18 @@ export class ConsoleComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'statusId', header: 'Status ID' },
-      { field: 'shipperId', header: 'Shipper ID' },
-      { field: 'referenceField1', header: 'Reference Field 1' },
-      { field: 'referenceField2', header: 'Reference Field 2' },
-      { field: 'referenceField3', header: 'Reference Field 3' },
-      { field: 'referenceField4', header: 'Reference Field 4' },
-      { field: 'referenceField5', header: 'Reference Field 5' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'description', header: 'Commodity' },
+      { field: 'quantity', header: 'No of Piece' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'grossWeight', header: 'Weight' },
+      { field: 'airportOriginCode', header: 'Airport Origin Code' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentValue', header: 'Consignment Value' },
+      { field: 'consignmentCurrency', header: 'Consignment Currency' },
+      { field: 'customsValue', header: 'Customs Value' },
+      { field: 'iata', header: 'IATA Charges' },
     ];
   }
   updateBulk(){
@@ -184,11 +189,17 @@ export class ConsoleComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
-          exportItem[col.field] = item[col.field];
+          exportItem[col.header] = item[col.field];
         }
-
+      });
+      this.target.forEach(col => {
+        if (col.format && col.format === 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
       });
       return exportItem;
     });

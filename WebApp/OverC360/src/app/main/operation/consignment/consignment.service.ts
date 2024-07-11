@@ -53,6 +53,11 @@ export class ConsignmentService {
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
   }
+
+  searchPiece(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/piecedetails/find}', obj);
+  }
+
   searchPrealert(obj: any) {
     return this.http.post<any>('/overc-midmile-service/itemDetails/findPreAlertManifest', obj);
   }

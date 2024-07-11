@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="col-6 marginFieldNew borderRadius12" id="houseAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 required">HAWB</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Consignment No</p>
                                 <p-dropdown [options]="hawbList" placeholder="Select" filter="true" formControlName="houseAirwayBill" appendTo="body"
                                 [ngClass]="form.get('houseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="hawbChanged()"/>

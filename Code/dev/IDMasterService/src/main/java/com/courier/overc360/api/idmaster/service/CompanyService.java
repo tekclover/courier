@@ -275,6 +275,7 @@ public class CompanyService {
         Long companyCount = replicaCompanyRepository.getCompanyCount(languageId, companyId);
         if (companyCount != null) {
             if (companyCount > 0) {
+                log.info("companyCount --> {}", companyCount);
                 String errMsg = "Records present in associated tables with companyId - " + companyId;
                 createCompanyLog1(languageId, companyId, errMsg);
                 throw new BadRequestException(errMsg);
