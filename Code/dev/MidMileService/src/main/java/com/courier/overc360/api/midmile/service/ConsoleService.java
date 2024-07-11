@@ -1123,19 +1123,28 @@ public class ConsoleService {
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
-                if (dbConsole.getStatusId() != null && dbConsole.getEventCode() != null) {
-                    Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(
-                            dbConsole.getLanguageId(), dbConsole.getCompanyId(), dbConsole.getStatusId(), dbConsole.getEventCode());
+                // Set Event Status
+                if (updateConsole.getStatusId() != null ) {
+                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getStatusId());
 
-                    dbConsole.setStatusId(dbConsole.getStatusId());
-                    dbConsole.setEventCode(dbConsole.getEventCode());
-                    if (iKeyValuePair.isPresent()) {
-                        IKeyValuePair ikey = iKeyValuePair.get();
+                    if (getStatus.isPresent()) {
+                        IKeyValuePair ikey = getStatus.get();
+                        dbConsole.setStatusId(dbConsole.getStatusId());
                         dbConsole.setStatusText(ikey.getStatusText());
-                        dbConsole.setEventText(ikey.getEventText());
+                        dbConsole.setStatusTimestamp(new Date());
                     }
-                    dbConsole.setStatusTimestamp(new Date());
-                    dbConsole.setEventTimestamp(new Date());
+                }
+
+                if (updateConsole.getEventCode() != null ) {
+                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(updateConsole.getLanguageId(),
+                            updateConsole.getCompanyId(), updateConsole.getEventCode());
+
+                    if (getEvent.isPresent()) {
+                        IKeyValuePair ikey = getEvent.get();
+                        dbConsole.setEventCode(dbConsole.getEventCode());
+                        dbConsole.setEventText(ikey.getEventText());
+                        dbConsole.setEventTimestamp(new Date());
+                    }
                 }
 
                 Console updatedConsole = consoleRepository.save(dbConsole);
