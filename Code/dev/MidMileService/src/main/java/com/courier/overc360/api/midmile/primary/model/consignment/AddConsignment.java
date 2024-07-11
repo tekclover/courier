@@ -153,6 +153,16 @@ public class AddConsignment {
 
     private String quantity;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
 //    @NotBlank(message = "NetWeight is mandatory")
     private String netWeight;
 
@@ -330,9 +340,6 @@ public class AddConsignment {
 
 //    @NotBlank(message = "Product Code is mandatory")
     private String productCode;
-
-//    @NotBlank(message = "Customs Value is mandatory")
-    private String customsValue;
 
 //    @NotBlank(message = "Amount is mandatory")
     private String amount;

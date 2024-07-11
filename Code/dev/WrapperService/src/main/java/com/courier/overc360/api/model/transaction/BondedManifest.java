@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -91,6 +92,8 @@ public class BondedManifest {
     private String isConsolidatedShipment;
 
     private String isSplitBillOfLading;
+
+    private String airportOriginCode;
 
     private String isPendingShipment;
 

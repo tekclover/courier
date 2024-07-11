@@ -153,6 +153,16 @@ public class AddConsignment {
 
     private String loadTypeId;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String loadType;
 
     private String description;
@@ -244,8 +254,6 @@ public class AddConsignment {
     private String productCode;
 
     private String incoTerms;
-
-    private String customsValue;
 
     private String amount;
 

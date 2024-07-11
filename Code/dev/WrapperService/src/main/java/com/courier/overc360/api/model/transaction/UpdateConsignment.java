@@ -168,6 +168,16 @@ public class UpdateConsignment {
 
     private String notes;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String codAmount;
 
     private String codFavorOf;
@@ -265,8 +275,6 @@ public class UpdateConsignment {
     private String ewayBill;
 
     private String productCode;
-
-    private String customsValue;
 
     private String amount;
 

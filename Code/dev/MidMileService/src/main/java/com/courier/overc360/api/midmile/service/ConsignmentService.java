@@ -380,17 +380,38 @@ public class ConsignmentService {
                 BeanUtils.copyProperties(pd, addPieceDetails);
                 addPieceDetailsList.add(addPieceDetails);
             }
-            Double pieceValue = 0.0;
+
+            //Calculate Value
+            Double consignmentValue = 0.0;
+            Double consignmentLocalValue = 0.0;
+            Double addIata = 0.0;
+            Double addInsurance = 0.0;
+            Double customsValue = 0.0;
+            Double calculatedTotalDuty = 0.0;
             for (AddPieceDetails item : pieceDetails) {
-                if (item.getDeclaredValue() != null) {
-                    Double declaredValue = Double.valueOf(item.getPieceValue());
-                    pieceValue += declaredValue;
+                if(item.getDeclaredValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
+                        item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
+                    Double declaredValue = Double.valueOf(item.getDeclaredValue());
+                    Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
+                    Double iataAdd = Double.valueOf(item.getAddIata());
+                    Double insuranceAdd = Double.valueOf(item.getAddInsurance());
+                    Double costomValue = Double.valueOf(item.getCustomsValue());
+                    Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
+
+                    consignmentValue += declaredValue;
+                    consignmentLocalValue += conLocalValue;
+                    addIata += iataAdd;
+                    addInsurance += insuranceAdd;
+                    customsValue += costomValue;
+                    calculatedTotalDuty += totalDuty;
                 }
             }
 
             //Consignment_entity Set
             consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
-                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(), String.valueOf(pieceValue));
+                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
+                    String.valueOf(consignmentValue), String.valueOf(consignmentLocalValue), String.valueOf(addIata),
+                    String.valueOf(addInsurance), String.valueOf(customsValue), String.valueOf(calculatedTotalDuty));
 
 
             AddConsignment newAddConsignment = new AddConsignment();

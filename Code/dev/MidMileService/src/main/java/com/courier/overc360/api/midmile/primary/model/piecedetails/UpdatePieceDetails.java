@@ -5,6 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails
 import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,16 @@ public class UpdatePieceDetails { ;
         private String declaredValue;
 
         private String codAmount;
+
+        private String consignmentValueLocal;
+
+        private String addIata;
+
+        private String addInsurance;
+
+        private String customsValue;
+
+        private String calculatedTotalDuty;
 
         private String length;
 

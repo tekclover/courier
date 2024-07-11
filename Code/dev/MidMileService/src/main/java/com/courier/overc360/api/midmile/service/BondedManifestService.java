@@ -112,6 +112,9 @@ public class BondedManifestService {
                     bondedManifest.setManifestedQuantity(itemDetails.getQuantity());
                     bondedManifest.setLandedQuantity(itemDetails.getQuantity());
                     bondedManifest.setTotalQuantity(itemDetails.getQuantity());
+                    bondedManifest.setGrossWeight(itemDetails.getWeight());
+                    bondedManifest.setNetWeight(itemDetails.getWeight());
+                    bondedManifest.setManifestedGrossWeight(itemDetails.getWeight());
                     addBondedManifest.add(bondedManifest);
                 }
             }
