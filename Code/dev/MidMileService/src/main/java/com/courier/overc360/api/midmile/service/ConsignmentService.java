@@ -473,16 +473,26 @@ public class ConsignmentService {
                 }
             } else {
                 // Set Event Status
-                Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(
-                        dbConsignment.getLanguageId(), dbConsignment.getCompanyId(), dbConsignment.getStatusId(), dbConsignment.getEventCode());
-                if (statusEventText.isPresent()) {
-                    IKeyValuePair keyValuePair = statusEventText.get();
-                    dbConsignmentEntity.setStatusId("2");
-                    dbConsignmentEntity.setEventCode("2");
-                    dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
-                    dbConsignmentEntity.setEventText(keyValuePair.getEventText());
-                    dbConsignmentEntity.setStatusTimestamp(new Date());
-                    dbConsignmentEntity.setEventTimestamp(new Date());
+                if (dbConsignment.getStatusId() != null ) {
+                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getStatusId());
+
+                    if (getStatus.isPresent()) {
+                        IKeyValuePair ikey = getStatus.get();
+                        dbConsignmentEntity.setStatusId(dbConsignmentEntity.getStatusId());
+                        dbConsignmentEntity.setStatusDescription(ikey.getStatusText());
+                        dbConsignmentEntity.setStatusTimestamp(new Date());
+                    }
+                }
+
+                if (dbConsignment.getEventCode() != null ) {
+                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), dbConsignmentEntity.getEventCode());
+
+                    if (getEvent.isPresent()) {
+                        IKeyValuePair ikey = getEvent.get();
+                        dbConsignmentEntity.setEventCode(dbConsignmentEntity.getEventCode());
+                        dbConsignmentEntity.setEventText(ikey.getEventText());
+                        dbConsignmentEntity.setEventTimestamp(new Date());
+                    }
                 }
             }
             dbConsignmentEntity.setDeletionIndicator(0L);
