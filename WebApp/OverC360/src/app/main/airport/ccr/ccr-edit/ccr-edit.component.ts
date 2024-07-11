@@ -207,6 +207,7 @@ export class CcrEditComponent {
       this.fill(this.pageToken.line);
       this.form.controls.ccrId.disable();
       this.form.controls.statusId.disable();
+      this.form.controls.statusText.disable();
     }
 
   }
@@ -222,9 +223,9 @@ export class CcrEditComponent {
       { field: 'countryOfOrigin', header: 'Origin', showFooter: false },
       { field: 'airportOriginCode', header: 'Airport Origin Code', showFooter: false },
       { field: 'hsCode', header: 'HS Code', showFooter: false },
-      { field: 'goodsDescription', header: 'Commodity', showFooter: false },  
-      { field: 'invoiceNumber', header: 'Invoice No' , showFooter: false},
-      { field: 'invoiceTpe', header: 'Invoice Type', showFooter: false },
+      { field: 'goodsDescription', header: 'Commodity', showFooter: false },
+      { field: 'invoiceNumber', header: 'Invoice No', showFooter: false },
+      { field: 'invoiceType', header: 'Invoice Type', showFooter: false },
       { field: 'invoiceDate', header: 'Invoice Date', showFooter: false },
       { field: 'invoiceSupplierName', header: 'Invoice Supplier Name', showFooter: false },
       { field: 'isExempted', header: 'Is Exempted', showFooter: false },
@@ -233,7 +234,7 @@ export class CcrEditComponent {
       { field: 'exemptionReference', header: 'Exempted Reference', showFooter: false },
       { field: 'consigneeName', header: 'Consignee Name', showFooter: false },
       { field: 'consignmentValue', header: 'Consignment Value', showFooter: false },
-      { field: 'consignmentCurrency', header: 'Consignment Currency', showFooter: false},
+      { field: 'consignmentCurrency', header: 'Consignment Currency', showFooter: false },
       { field: 'exchangeRate', header: 'Exchange Rate', showFooter: false },
       { field: 'iata', header: 'IATA', showFooter: false },
       { field: 'customsInsurance', header: 'Customs Insurance', showFooter: false },
@@ -344,8 +345,8 @@ export class CcrEditComponent {
             this.router.navigate(['/main/airport/ccr']);
           } else {
             setTimeout(() => {
-            this.fill(this.pageToken.line);
-          }, 2000);
+              this.fill(this.pageToken.line);
+            }, 2000);
           }
         },
         error: (err) => {
