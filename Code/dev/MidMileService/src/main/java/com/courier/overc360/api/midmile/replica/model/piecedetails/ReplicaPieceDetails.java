@@ -69,6 +69,21 @@ public class ReplicaPieceDetails {
     @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(50)")
     private String partnerName;
 
+    @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
+
+    @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
+    private String addIata;
+
+    @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String addInsurance;
+
+    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+    private String customsValue;
+
+    @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String calculatedTotalDuty;
+
     @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
     private String hsCode;
 

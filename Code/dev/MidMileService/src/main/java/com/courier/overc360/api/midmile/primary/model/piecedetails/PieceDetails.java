@@ -110,6 +110,21 @@ public class PieceDetails {
     @Column(name = "REFERENCE_IMAGE_LIST")
     private String referenceImageList;
 
+    @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
+
+    @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
+    private String addIata;
+
+    @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String addInsurance;
+
+    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+    private String customsValue;
+
+    @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String calculatedTotalDuty;
+
     @Column(name = "PACK_REFERENCE_NUMBER", columnDefinition = "nvarchar(50)")
     private String packReferenceNumber;
 

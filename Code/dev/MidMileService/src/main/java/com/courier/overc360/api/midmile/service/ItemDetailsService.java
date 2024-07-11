@@ -653,15 +653,15 @@ public class ItemDetailsService {
                                 replicaCcrRepository.getIataCurrencyValue(companyId, languageId, addItemDetails.getCurrency(), country);
 
                         //DeclaredValue calculation
-                        Double totalValue = null;
+                        Double totalValue = 0.0;
                         if (addItemDetails.getUnitValue() != null && addItemDetails.getQuantity() != null) {
                             Double unitValue = Double.valueOf(addItemDetails.getUnitValue());
                             Double quantity = Double.valueOf(addItemDetails.getQuantity());
                             totalValue = unitValue * quantity;
                         }
-                        if(totalValue != null) {
-                            addItemDetails.setDeclaredValue(String.valueOf(totalValue));
-                        }
+
+                        addItemDetails.setDeclaredValue(String.valueOf(totalValue));
+
                         //ExchangeCurrencyRate
                         if (optionalIKeyValuePair.isPresent()) {
                             IKeyValuePair iKeyValuePair = optionalIKeyValuePair.get();
@@ -689,7 +689,7 @@ public class ItemDetailsService {
                         Double consignmentValue = 0.0;
 
                         //Consignment Value
-                        if (totalValue != null && newItemDetails.getExchangeRate() != null) {
+                        if (newItemDetails.getExchangeRate() != null) {
                             declaredValue = totalValue;
                             exchangeRate = Double.valueOf(newItemDetails.getExchangeRate());
                             consignmentValue = declaredValue * exchangeRate;
@@ -698,11 +698,11 @@ public class ItemDetailsService {
                         newItemDetails.setConsignmentValueLocal(String.valueOf(consignmentValue));
                         if (newItemDetails.getIata() != null) {
                             Double iata = Double.valueOf(newItemDetails.getIata());
-                            newItemDetails.setAddIATA(String.valueOf(iata + consignmentValue));
+                            newItemDetails.setAddIata(String.valueOf(iata + consignmentValue));
                         }
-                        if (newItemDetails.getAddIATA() != null && newItemDetails.getCustomsInsurance() != null) {
-                            Double addIata = Double.valueOf(newItemDetails.getAddIATA());
-                            Double insurance = Double.valueOf(newItemDetails.getCustomsInsurance());
+                        if (newItemDetails.getAddIata() != null && newItemDetails.getCustomsInsurance() != null) {
+                            Double addIata = Double.valueOf(newItemDetails.getAddIata());
+//                            Double insurance = Double.valueOf(newItemDetails.getCustomsInsurance());
                             newItemDetails.setAddInsurance(String.valueOf(addIata * 0.01));
                             if (newItemDetails.getAddInsurance() != null) {
                                 Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());

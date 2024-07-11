@@ -112,6 +112,9 @@ public class BondedManifestService {
                     bondedManifest.setManifestedQuantity(itemDetails.getQuantity());
                     bondedManifest.setLandedQuantity(itemDetails.getQuantity());
                     bondedManifest.setTotalQuantity(itemDetails.getQuantity());
+                    bondedManifest.setGrossWeight(itemDetails.getWeight());
+                    bondedManifest.setNetWeight(itemDetails.getWeight());
+                    bondedManifest.setManifestedGrossWeight(itemDetails.getWeight());
                     addBondedManifest.add(bondedManifest);
                 }
             }
@@ -231,19 +234,41 @@ public class BondedManifestService {
 
                 BeanUtils.copyProperties(updateBondedManifest, dbBondedManifest, CommonUtils.getNullPropertyNames(updateBondedManifest));
 
-                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(dbBondedManifest.getLanguageId(),
-                        dbBondedManifest.getCompanyId(), "2", dbBondedManifest.getEventCode());
+//                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(dbBondedManifest.getLanguageId(),
+//                        dbBondedManifest.getCompanyId(), "2", dbBondedManifest.getEventCode());
+//
+//                if (eventStatus.isPresent()) {
+//                    IKeyValuePair iKeyValuePair = eventStatus.get();
+//                    dbBondedManifest.setStatusId("2");
+//                    if (dbBondedManifest.getEventCode() != null) {
+//                        dbBondedManifest.setEventCode(dbBondedManifest.getEventCode());
+//                    }
+//                    dbBondedManifest.setStatusText(iKeyValuePair.getStatusText());
+//                    dbBondedManifest.setEventText(iKeyValuePair.getEventText());
+//                    dbBondedManifest.setEventTimestamp(new Date());
+//                    dbBondedManifest.setStatusTimestamp(new Date());
+//                }
 
-                if (eventStatus.isPresent()) {
-                    IKeyValuePair iKeyValuePair = eventStatus.get();
-                    dbBondedManifest.setStatusId("2");
-                    if (dbBondedManifest.getEventCode() != null) {
-                        dbBondedManifest.setEventCode(dbBondedManifest.getEventCode());
+                // Set Event Status
+                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbBondedManifest.getLanguageId(), "2");
+
+                    if (getStatus.isPresent()) {
+                        IKeyValuePair ikey = getStatus.get();
+                        dbBondedManifest.setStatusId("2");
+                        dbBondedManifest.setStatusText(ikey.getStatusText());
+                        dbBondedManifest.setStatusTimestamp(new Date());
                     }
-                    dbBondedManifest.setStatusText(iKeyValuePair.getStatusText());
-                    dbBondedManifest.setEventText(iKeyValuePair.getEventText());
-                    dbBondedManifest.setEventTimestamp(new Date());
-                    dbBondedManifest.setStatusTimestamp(new Date());
+
+                if (updateBondedManifest.getEventCode() != null ) {
+                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(updateBondedManifest.getLanguageId(),
+                            updateBondedManifest.getCompanyId(), updateBondedManifest.getEventCode());
+
+                    if (getEvent.isPresent()) {
+                        IKeyValuePair ikey = getEvent.get();
+                        dbBondedManifest.setEventCode(dbBondedManifest.getEventCode());
+                        dbBondedManifest.setEventText(ikey.getEventText());
+                        dbBondedManifest.setEventTimestamp(new Date());
+                    }
                 }
 
                 dbBondedManifest.setUpdatedBy(loginUserID);

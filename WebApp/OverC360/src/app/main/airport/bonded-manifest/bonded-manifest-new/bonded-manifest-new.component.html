@@ -191,13 +191,13 @@
                                   : ''
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="num" />
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="portOfShipping">
+                            <div class="col-6 marginFieldNew borderRadius12" id="airportOriginCode">
                                 <p class="formControlLabel f600 textBlack mb-0">
                                     Port Of Shipping
                                 </p>
-                                <input formControlName="portOfShipping" [ngClass]="
-                                form.get('portOfShipping')?.invalid &&
-                                form.get('portOfShipping')?.dirty
+                                <input formControlName="airportOriginCode" [ngClass]="
+                                form.get('airportOriginCode')?.invalid &&
+                                form.get('airportOriginCode')?.dirty
                                   ? 'invalid'
                                   : ''
                               " class="w-100" pInputText placeholder="Enter" pInputText pKeyFilter="alphanum" />
@@ -291,7 +291,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="bwhInvestor">
                                 <p class="formControlLabel f600 textBlack mb-0">
-                                    BWHInvestor
+                                    BWH Investor
                                 </p>
                                 <input formControlName="bwhInvestor" [ngClass]="
                                 form.get('bwhInvestor')?.invalid &&

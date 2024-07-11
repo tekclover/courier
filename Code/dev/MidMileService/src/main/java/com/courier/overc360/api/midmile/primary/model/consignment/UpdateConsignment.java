@@ -59,6 +59,15 @@ public class UpdateConsignment {
 
     private String airportDestinationCode;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
 
     private String flightArrivalTime;
 
@@ -248,8 +257,6 @@ public class UpdateConsignment {
     private String ewayBill;
 
     private String productCode;
-
-    private String customsValue;
 
     private String amount;
 

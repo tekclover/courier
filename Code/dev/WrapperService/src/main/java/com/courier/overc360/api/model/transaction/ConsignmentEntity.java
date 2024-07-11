@@ -242,6 +242,16 @@ public class ConsignmentEntity {
 
     private String tags;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String serviceTime;
 
     private String pickupServiceTime;
@@ -273,8 +283,6 @@ public class ConsignmentEntity {
     private String productCode;
 
     private String incoTerms;
-
-    private String customsValue;
 
     private String amount;
 

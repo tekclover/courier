@@ -66,11 +66,31 @@ export class BondedManifestComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'referenceField1', header: 'Reference Field 1' },
-      { field: 'referenceField2', header: 'Reference Field 2' },
-      { field: 'referenceField3', header: 'Reference Field 3' },
-      { field: 'referenceField4', header: 'Reference Field 4' },
-      { field: 'referenceField5', header: 'Reference Field 5' },
+      { field: 'bondedId', header: 'Manifest Number' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'description', header: 'Description' },
+      { field: 'billOfLadingFor', header: 'Bill Of Lading For' },
+      { field: 'netWeight', header: 'Net Weight (Kgs)' },
+      { field: 'manifestedGrossWeight', header: ' Manifested Gross Weight (Kgs)' },
+      { field: 'grossWeight', header: 'Gross Weight (Kgs)' },
+      { field: 'tareWeight', header: 'Tare Weight (Kgs)' },
+      { field: 'manifestedQuantity', header: 'Manifested Quantity' },
+      { field: 'landedQuantity', header: 'Landed Quantity' },
+      { field: 'totalQuantity', header: 'Total Quantity' },
+      { field: 'volume', header: 'Volume' },
+      { field: 'airportOriginCode', header: 'Port Of Shipping' },
+      { field: 'finalDestination', header: 'Final Destination' },
+      { field: 'notifyParty', header: 'Notify Party' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'remark', header: 'Remark' },
+      { field: 'manifestedQuantity', header: 'ManifestedQuantity' },
+      { field: 'isConsolidatedShipment', header: 'Is Consolidated Shipment' },
+      { field: 'v', header: 'Is Split Bill of Lading' },
+      { field: 'consolidatedBillNo', header: 'Consolidated Bill Number' },
+      { field: 'isPendingShipment', header: 'Is Pending Shipment' },
+      { field: 'bwhInvestor', header: 'BWH Investor' }
     ];
   }
 
@@ -176,11 +196,18 @@ export class BondedManifestComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
-          exportItem[col.field] = item[col.field];
+          exportItem[col.header] = item[col.field];
         }
 
+      });
+      this.target.forEach(col => {
+        if (col.format && col.format === 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
       });
       return exportItem;
     });

@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.List;
 
 @Data
@@ -47,7 +48,7 @@ public class AddItemDetails {
 
     private String consignmentValueLocal;
 
-    private String addIATA;
+    private String addIata;
 
     private String addInsurance;
 

@@ -126,7 +126,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
-                <tr>
+                <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;">
                         <p-tableCheckbox class="pl-3"   [value]="rowData" />
                     </td>

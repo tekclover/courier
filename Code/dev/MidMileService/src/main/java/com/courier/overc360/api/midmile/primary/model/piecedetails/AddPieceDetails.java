@@ -73,6 +73,16 @@ public class AddPieceDetails {
 
     private String tags;
 
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String referenceField1;
 
     private String referenceField2;

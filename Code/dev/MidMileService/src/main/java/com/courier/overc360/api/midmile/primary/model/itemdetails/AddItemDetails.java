@@ -73,6 +73,8 @@ public class AddItemDetails {
 
     private String consignmentValue;
 
+    private String consignmentValueLocal;
+
     private String exchangeRate;
 
     private String iata;
@@ -81,9 +83,7 @@ public class AddItemDetails {
 
     private String duty;
 
-    private String consignmentValueLocal;
-
-    private String addIATA;
+    private String addIata;
 
     private String addInsurance;
 
