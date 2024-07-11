@@ -607,6 +607,7 @@ public class PieceDetailsService {
                 labelFormInput.getLanguageId(),
                 labelFormInput.getCompanyId(),
                 labelFormInput.getPieceId(),
+                labelFormInput.getHouseAirwayBill(),
                 new Date());
         log.info("labelForm output: " + labelFormOutputList.size());
         return labelFormOutputList;
