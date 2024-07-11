@@ -67,7 +67,12 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
     @Transactional
     @Modifying
     @Query(value = "UPDATE tblconsignment_entity " +
-            "SET CONSIGNMENT_VALUE = :consignmentValue " +
+            "SET CONSIGNMENT_VALUE = :consignmentValue, " +
+            "CONSIGNMENT_VALUE_LOCAL = :consignmentValueLocal, " +
+            "ADD_IATA = :addIata, " +
+            "ADD_INSURANCE = :addInsurance, " +
+            "CUSTOMS_VALUE = :customsValue, " +
+            "CALCULATED_TOTAL_DUTY = :calculatedDuty " +
             "WHERE c_id = :companyId " +
             "AND lang_id = :languageId " +
             "AND partner_id = :partnerId " +
@@ -80,5 +85,10 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
                                   @Param("partnerId") String partnerId,
                                   @Param("houseAirwayBill") String houseAirwayBill,
                                   @Param("masterAirwayBill") String masterAirwayBill,
-                                  @Param("consignmentValue") String consignmentValue);
+                                  @Param("consignmentValue") String consignmentValue,
+                                  @Param("consignmentValueLocal") String consignmentValueLocal,
+                                  @Param("addIata") String addIata,
+                                  @Param("addInsurance") String addInsurance,
+                                  @Param("customsValue") String customsValue,
+                                  @Param("calculatedDuty") String calculatedDuty);
 }

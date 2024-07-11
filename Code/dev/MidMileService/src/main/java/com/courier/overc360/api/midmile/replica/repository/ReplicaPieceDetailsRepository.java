@@ -91,11 +91,13 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "INSERT INTO #LFO(CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, DATE) \n" +
             "SELECT CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, :date FROM tblpiecedetails where is_deleted = 0 and \n" +
             "(COALESCE(:piecesId, null) IS NULL OR (PIECE_ID IN (:piecesId))) and \n" +
+            "(COALESCE(:houseAirwayBill, null) IS NULL OR (HOUSE_AIRWAY_BILL IN (:houseAirwayBill))) and \n" +
             "(COALESCE(:languageId, null) IS NULL OR (LANG_ID IN (:languageId))) and \n" +
             "(COALESCE(:companyId, null) IS NULL OR (C_ID IN (:companyId)))\n" +
 
             "select CONSIGNMENT_ID into #cgmt FROM tblpiecedetails where is_deleted = 0 and \n" +
             "(COALESCE(:piecesId, null) IS NULL OR (PIECE_ID IN (:piecesId))) and \n" +
+            "(COALESCE(:houseAirwayBill, null) IS NULL OR (HOUSE_AIRWAY_BILL IN (:houseAirwayBill))) and \n" +
             "(COALESCE(:languageId, null) IS NULL OR (LANG_ID IN (:languageId))) and \n" +
             "(COALESCE(:companyId, null) IS NULL OR (C_ID IN (:companyId)))\n" +
             "group by CONSIGNMENT_ID \n" +
@@ -162,6 +164,7 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
     List<LabelFormOutput> getLabelPdfOutput(@Param(value = "languageId") List<String> languageId,
                                             @Param(value = "companyId") List<String> companyId,
                                             @Param(value = "piecesId") List<String> piecesId,
+                                            @Param(value = "houseAirwayBill") List<String> houseAirwayBill,
                                             @Param(value = "date") Date date);
 }
 

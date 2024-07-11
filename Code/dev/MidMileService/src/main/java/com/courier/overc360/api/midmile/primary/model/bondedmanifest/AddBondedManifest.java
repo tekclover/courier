@@ -99,6 +99,8 @@ public class AddBondedManifest {
 
     private String isSplitBillOfLading;
 
+    private String airportOriginCode;
+
     private String isPendingShipment;
 
     private String bwhInvestor;
