@@ -215,7 +215,7 @@ export class CcrEditComponent {
   callTableHeader() {
     this.cols = [
       { field: 'masterAirwayBill', header: 'MAWB' },
-      { field: 'houseAirwayBill', header: 'HAWB' },
+      { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'customsCcrNo', header: 'Customs CCR No' },
@@ -236,7 +236,7 @@ export class CcrEditComponent {
       { field: 'calculatedTotalDuty', header: 'Calculated Total duty' },
       { field: 'dduCharge', header: 'DDU Charge' },
       { field: 'specialApprovalCharge', header: 'Spl Approval Charge' },
-      { field: 'actualDuty', header: 'Actual Duty' },
+      { field: 'totalDuty', header: 'Duty From Bayan' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [

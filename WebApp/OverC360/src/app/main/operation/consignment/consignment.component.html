@@ -13,6 +13,10 @@
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload</button>
                             <button style="width: 8rem;" mat-menu-item class="w-100" (click)="op.hide(); updateBulk()"><img
                                 src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
+                                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel()"><img
+                                    src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice</button>
+                                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateInvoice()"><img
+                                    src="./assets/common2x/invoice.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice</button>>
                 </div>
             </p-overlayPanel>
             <button (click)="openCrud('New')" type="button" class="btn ml-2 addNewbuttom bgBlack text-white"><i
@@ -85,7 +89,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [class.selectedRow]="selectedConsignment[0] === rowData">
+                <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;" pFrozenColumn>
                         <p-tableCheckbox class="pl-3"   [value]="rowData" />
                     </td>

@@ -99,8 +99,8 @@ export class ConsignmentLabelComponent {
       } else {
         const barcodeImageData1 = this.generateBarcode(line.houseAirwayBill);
         barcodeAWB.push([
-          { image: iwExpressLogo.headerLogo, margin: [0, -10, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-          { image: barcodeImageData1, margin: [0, -10, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+          { image: iwExpressLogo.headerLogo, margin: [0, -5, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+          { image: barcodeImageData1, margin: [0, -5, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
           //{ image: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
         ]);
       }
@@ -277,7 +277,7 @@ export class ConsignmentLabelComponent {
       let bodyArray5: any[] = [];
       bodyArray5.push([
         { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.destinationDetails.addressLine1 != null ? line.destinationDetails.addressLine1 : '') + '' + (line.destinationDetails.addressLine1 != null ? line.destinationDetails.addressLine1 : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (line.destinationDetails.addressLine1 != null ? line.destinationDetails.addressLine1 : '') + ' ' + (line.destinationDetails.addressLine2 != null ? line.destinationDetails.addressLine2 : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -330,6 +330,17 @@ export class ConsignmentLabelComponent {
       }
     })
   }
+
+  getResultLabelFromConsignment(labelResult:any){
+    this.ccrService.genearateLabel({ houseAirwayBill: labelResult }).subscribe({
+      next: (res: any) => {
+        this.generateSingleLabel(res);
+      }, error: (err: any) => {
+        this.cs.commonerrorNew(err);
+      }
+    })
+  }
+
   generateSingleLabel(result: any) {
   
     var dd: any;
@@ -504,7 +515,7 @@ export class ConsignmentLabelComponent {
       let bodyArray3: any[] = [];
       bodyArray3.push([
         { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (resultLabel.countryOfOrigin != null ? resultLabel.countryOfOrigin : '') + ' ' + '' + (resultLabel.countryOfOrigin != null ? resultLabel.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (resultLabel.originAddress), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -600,6 +611,7 @@ export class ConsignmentLabelComponent {
   }
 
   getResultInvoice(invoiceResult:any){
+    this.spin.show()
     this.ccrService.genearateInvoice({ houseAirwayBill: invoiceResult }).subscribe({
       next: (res: any) => {
         this.generateSingleInvoice(res);
@@ -860,6 +872,7 @@ export class ConsignmentLabelComponent {
 
 });
    // pdfMake.createPdf(dd).open();
+   this.spin.hide();
     pdfMake.createPdf(dd).download('_Invoice_' + result[0].houseAirwayBill)
   }
 
@@ -1303,7 +1316,7 @@ export class ConsignmentLabelComponent {
     let bodyArray3: any[] = [];
     bodyArray3.push([
       { text: 'Addresss', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (result.countryOfOrigin != null ? result.countryOfOrigin : '') + ' ' + '' + (result.countryOfOrigin != null ? result.countryOfOrigin : ''), bold: false, fontSize: 6, border: [false, false, false, false] }
+      { text:  (result.originAddress), bold: false, fontSize: 6, border: [false, false, false, false] }
     ]);
     dd.content.push(
       {
