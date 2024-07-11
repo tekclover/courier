@@ -165,9 +165,9 @@ export class CurrencyComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          exportItem[col.field] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
-          exportItem[col.field] = item[col.field];
+          exportItem[col.header] = item[col.field];
         }
 
       });

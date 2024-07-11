@@ -68,6 +68,7 @@ export class BondedManifestNewComponent {
     landedQuantity: [],
     totalQuantity: [],
     volume: [],
+    airportOriginCode: [],
     portOfShipping: [],
     finalDestination: [],
     consigneeCivilId: [,],
