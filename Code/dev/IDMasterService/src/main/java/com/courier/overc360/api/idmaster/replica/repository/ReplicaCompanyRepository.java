@@ -35,7 +35,7 @@ public interface ReplicaCompanyRepository extends JpaRepository<ReplicaCompany, 
     IKeyValuePair getDescription(@Param(value = "languageId") String languageId,
                                  @Param(value = "companyId") String companyId);
 
-    // Delete Validation Query for Company Table
+    // Delete Validation Query for Company delete
     @Query(value = "Select COUNT (*) From ( \n" +
             "Select 1 As col From tblsubproduct Where LANG_ID IN (:languageId) and C_ID IN (:companyId) and IS_DELETED = 0 \n" +
             "Union All \n" +
@@ -58,6 +58,10 @@ public interface ReplicaCompanyRepository extends JpaRepository<ReplicaCompany, 
             "Select 1 As col From tblspecialapproval Where LANG_ID IN (:languageId) and C_ID IN (:companyId) and IS_DELETED = 0 \n" +
             "Union All \n" +
             "Select 1 As col From tblhscode Where LANG_ID IN (:languageId) and C_ID IN (:companyId) and IS_DELETED = 0 \n" +
+            "Union All \n" +
+            "Select 1 As col From tblairportcode Where LANG_ID IN (:languageId) and C_ID IN (:companyId) and IS_DELETED = 0 \n" +
+            "Union All \n" +
+            "Select 1 As col From tblevent Where LANG_ID IN (:languageId) and C_ID IN (:companyId) and IS_DELETED = 0 \n" +
             "Union All \n" +
             "Select 1 As col From tblcurrencyexchangerate Where LANG_ID IN (:languageId) and C_ID IN (:companyId) and IS_DELETED = 0 \n" +
             ") AS temp", nativeQuery = true)

@@ -16,10 +16,10 @@ import java.util.Optional;
 public interface ReplicaMenuRepository extends JpaRepository<ReplicaMenu, Long>, JpaSpecificationExecutor<ReplicaMenu> {
 
     Optional<ReplicaMenu> findByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndAuthorizationObjectIdAndDeletionIndicator(
-            String languageId, String companyCode, Long menuId, Long subMenuId, Long authorizationObjectId, Long deletionIndicator);
+            String languageId, String companyId, Long menuId, Long subMenuId, Long authorizationObjectId, Long deletionIndicator);
 
     boolean existsByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
-            String languageId, String companyCode, Long menuId, Long subMenuId, Long deletionIndicator);
+            String languageId, String companyId, Long menuId, Long subMenuId, Long deletionIndicator);
 
     List<ReplicaMenu> findByMenuId(Long menuId);
 

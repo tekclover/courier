@@ -404,6 +404,18 @@ public class ProductService {
                               String productId, String subProductValue, String loginUserID) {
 
         Product dbProduct = getProduct(languageId, companyId, subProductId, productId, subProductValue);
+
+        Long productCount = replicaProductRepository.getProductCount(languageId, companyId, subProductId, productId);
+        if (productCount != null) {
+            if (productCount > 0) {
+                log.info("productCount --> {}", productCount);
+                String errMsg = "Records present in associated tables with productId - " + productId;
+                // Error Log
+                createProductLog1(languageId, companyId, subProductId, subProductValue, productId, errMsg);
+                throw new BadRequestException(errMsg);
+            }
+        }
+
         if (dbProduct != null) {
             dbProduct.setDeletionIndicator(1L);
             dbProduct.setUpdatedBy(loginUserID);
@@ -426,6 +438,19 @@ public class ProductService {
 
         if (productDeleteInputList != null && !productDeleteInputList.isEmpty()) {
             for (ProductDeleteInput deleteInput : productDeleteInputList) {
+
+                Long productCount = replicaProductRepository.getProductCount(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                        deleteInput.getSubProductId(), deleteInput.getProductId());
+                if (productCount != null) {
+                    if (productCount > 0) {
+                        log.info("productCount --> {}", productCount);
+                        String errMsg = "Records present in associated tables with productId - " + deleteInput.getProductId();
+                        // Error Log
+                        createProductLog1(deleteInput.getLanguageId(), deleteInput.getCompanyId(), deleteInput.getSubProductId(),
+                                deleteInput.getSubProductValue(), deleteInput.getProductId(), errMsg);
+                        throw new BadRequestException(errMsg);
+                    }
+                }
 
                 List<Product> dbProductList = getProductListForDelete(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
                         deleteInput.getSubProductId(), deleteInput.getSubProductValue(), deleteInput.getProductId());
