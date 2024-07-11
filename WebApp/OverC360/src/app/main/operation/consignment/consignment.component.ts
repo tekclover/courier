@@ -233,7 +233,9 @@ export class ConsignmentComponent {
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
+    console.log(event.target.files)
     this.selectedFiles = file;
+    console.log( this.selectedFiles)
     this.spin.show();
     this.service.uploadConsignment(this.selectedFiles).subscribe({
       next: (result) => {
@@ -243,15 +245,22 @@ export class ConsignmentComponent {
           key: 'br',
           detail: 'File uploaded successfully',
         });
+        this.selectedFiles = null;
+        this.clearFileInput(event.target); 
         this.initialCall();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
+        this.selectedFiles = null;
+        this.clearFileInput(event.target); 
         this.cs.commonerrorNew(err);
       }
     });
   }
-
+  
+  clearFileInput(input: HTMLInputElement): void {
+    input.value = ''; // Reset the value of the file input field
+  }
   ///  Filter Code
 
   searchform = this.fb.group({
