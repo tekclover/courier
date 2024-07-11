@@ -49,4 +49,22 @@ public interface ReplicaProductRepository extends JpaRepository<ReplicaProduct, 
                                  @Param(value = "subProductValue") String subProductValue,
                                  @Param(value = "productId") String productId);
 
+
+    // Delete Validation Query for Product delete
+    @Query(value = "Select COUNT (*) From (\n" +
+            "Select 1 As col From tblcustomer Where IS_DELETED=0 AND PRODUCT_ID IN (:productId)\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:subProductId, NULL) IS NULL OR SUB_PRODUCT_ID IN (:subProductId)) \n" +
+            "Union All\n" +
+            "Select 1 As col From tblconsignor Where IS_DELETED=0 AND PRODUCT_ID IN (:productId)\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR LANG_ID IN (:languageId)) \n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR C_ID IN (:companyId)) \n" +
+            "AND (COALESCE(:subProductId, NULL) IS NULL OR SUB_PRODUCT_ID IN (:subProductId)) \n" +
+            ") AS temp\n", nativeQuery = true)
+    Long getProductCount(@Param(value = "languageId") String languageId,
+                         @Param(value = "companyId") String companyId,
+                         @Param(value = "subProductId") String subProductId,
+                         @Param(value = "productId") String productId);
+
 }

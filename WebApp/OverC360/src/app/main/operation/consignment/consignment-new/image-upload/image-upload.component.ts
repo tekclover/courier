@@ -10,6 +10,7 @@ import { AuthService } from '../../../../../core/core';
 import { ConsignmentService } from '../../consignment.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AnimationStyleMetadata } from '@angular/animations';
 
 @Component({
   selector: 'app-image-upload',
@@ -55,12 +56,12 @@ export class ImageUploadComponent {
   selectedFiles: FileList | null = null;
   selectFiles(event: any): void {
     this.selectedFiles = event.target.files;
-    this.uploadFile();
+    this.uploadFile(event);
   }
 
   imageDetailsTable: any[] = [];
   fileLocation:any;
-  uploadFile() {
+  uploadFile(event:any) {
     if (!this.selectedFiles || this.selectedFiles.length === 0) {
       console.log('No files selected for upload.');
       return;
@@ -84,12 +85,18 @@ export class ImageUploadComponent {
           x['referenceImageUrl'] = x.filePath;
           x['imageRefId'] = x.fileName;
         })
-        this.patchForm(result)
+        this.patchForm(result);
+        this.selectedFiles = null;
+        this.clearFileInput(event.target); 
       }, error: (err) => {
         this.spin.hide();
         this.cs.commonerrorNew(err);
       }
     });
+  }
+  
+  clearFileInput(input: HTMLInputElement): void {
+    input.value = ''; // Reset the value of the file input field
   }
   
   save() {

@@ -1,12 +1,12 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
-import com.courier.overc360.api.idmaster.primary.model.menu.Menu;
+import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.roleaccess.AddRoleAccess;
 import com.courier.overc360.api.idmaster.primary.model.roleaccess.RoleAccess;
 import com.courier.overc360.api.idmaster.primary.model.roleaccess.UpdateRoleAccess;
 import com.courier.overc360.api.idmaster.primary.repository.CompanyRepository;
+import com.courier.overc360.api.idmaster.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.idmaster.primary.repository.MenuRepository;
 import com.courier.overc360.api.idmaster.primary.repository.ModuleRepository;
 import com.courier.overc360.api.idmaster.primary.repository.RoleAccessRepository;
@@ -14,9 +14,12 @@ import com.courier.overc360.api.idmaster.primary.util.CommonUtils;
 import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.roleaccess.FindRoleAccess;
 import com.courier.overc360.api.idmaster.replica.model.roleaccess.ReplicaRoleAccess;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaMenuRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaModuleRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaRoleAccessRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
+import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -35,6 +39,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class RoleAccessService {
+
+    @Autowired
+    private ReplicaMenuRepository replicaMenuRepository;
+
+    @Autowired
+    private ReplicaCompanyRepository replicaCompanyRepository;
 
     @Autowired
     private ReplicaStatusRepository replicaStatusRepository;
@@ -57,6 +67,12 @@ public class RoleAccessService {
     @Autowired
     private MenuRepository menuRepository;
 
+    @Autowired
+    private ErrorLogRepository errorLogRepository;
+
+    @Autowired
+    private ErrorLogService errorLogService;
+
 
     /*--------------------------------------------------------PRIMARY------------------------------------------------*/
 
@@ -69,8 +85,10 @@ public class RoleAccessService {
         Optional<RoleAccess> dbRoleAccess = roleAccessRepository.findByCompanyIdAndAndLanguageIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator
                 (companyId, languageId, roleId, menuId, subMenuId, 0L);
         if (dbRoleAccess.isEmpty()) {
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " roleId - " + roleId + " menuId - " + menuId + " submenuId - " + subMenuId + " doesn't exists");
+            String errMsg = "The given values : companyId - " + companyId + " languageId - " + languageId +
+                    " roleId - " + roleId + " menuId - " + menuId + " submenuId - " + subMenuId + " doesn't exists";
+            createRoleAccessLog1(languageId, companyId, roleId, menuId, subMenuId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbRoleAccess.get();
     }
@@ -87,37 +105,38 @@ public class RoleAccessService {
      */
     @Transactional
     public List<RoleAccess> createRoleAccess(List<AddRoleAccess> addRoleAccessList, String loginUserID)
-            throws IllegalAccessException, InvocationTargetException, ParseException {
-        Long roleId = roleAccessRepository.getRoleId();
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        try {
+            Long roleId = roleAccessRepository.getRoleId();
 
-        if (roleId == null) {
-            roleId = 1L;
-        }
-        List<RoleAccess> newRoleAccessList = new ArrayList<>();
+            if (roleId == null) {
+                roleId = 1L;
+            }
+            List<RoleAccess> newRoleAccessList = new ArrayList<>();
 
-        for (AddRoleAccess addRoleAccess : addRoleAccessList) {
+            for (AddRoleAccess addRoleAccess : addRoleAccessList) {
 
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator
-                    (addRoleAccess.getCompanyId(), addRoleAccess.getLanguageId(), 0l);
+                boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
+                        addRoleAccess.getCompanyId(), addRoleAccess.getLanguageId(), 0L);
+                if (!dbCompanyPresent) {
+                    throw new BadRequestException("CompanyId - " + addRoleAccess.getCompanyId()
+                            + " and LanguageId - " + addRoleAccess.getLanguageId() + " doesn't exists");
+                }
 
-            Optional<RoleAccess> duplicateRoleAccess = roleAccessRepository.findByCompanyIdAndAndLanguageIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
-                    addRoleAccess.getCompanyId(), addRoleAccess.getLanguageId(), addRoleAccess.getRoleId(),
-                    addRoleAccess.getMenuId(), addRoleAccess.getMenuId(), 0L);
-
-            if (dbCompany.isEmpty()) {
-                throw new BadRequestException("CompanyId - " + addRoleAccess.getCompanyId() + " and LanguageId - " + addRoleAccess.getLanguageId() + " doesn't exists");
-            } else if (duplicateRoleAccess.isPresent()) {
-                throw new EntityNotFoundException("Record is Getting Duplicated with roleId - " + addRoleAccess.getRoleId());
-            } else {
-                Optional<Menu> duplicateMenu = menuRepository.findByCompanyIdAndAndLanguageIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
-                        addRoleAccess.getCompanyId(), addRoleAccess.getLanguageId(), addRoleAccess.getMenuId(),
+                boolean duplicateRoleAccess = replicaRoleAccessRepository.existsByLanguageIdAndCompanyIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+                        addRoleAccess.getLanguageId(), addRoleAccess.getCompanyId(), addRoleAccess.getRoleId(),
+                        addRoleAccess.getMenuId(), addRoleAccess.getSubMenuId(), 0L);
+                if (duplicateRoleAccess) {
+                    throw new EntityNotFoundException("Record is Getting Duplicated with roleId - " + addRoleAccess.getRoleId());
+                }
+                boolean dbMenu = replicaMenuRepository.existsByLanguageIdAndCompanyIdAndMenuIdAndSubMenuIdAndDeletionIndicator(
+                        addRoleAccess.getLanguageId(), addRoleAccess.getCompanyId(), addRoleAccess.getMenuId(),
                         addRoleAccess.getSubMenuId(), 0L);
 
-                if (duplicateMenu.isEmpty()) {
+                if (!dbMenu) {
                     throw new IllegalAccessException("MenuId: " + addRoleAccess.getMenuId() + " and SubMenuId: "
                             + addRoleAccess.getSubMenuId() + " doesn't exists");
                 } else {
-//                    log.info("new RoleAccess --> {}", addRoleAccess);
                     RoleAccess roleAccess = new RoleAccess();
                     IKeyValuePair iKeyValuePair = replicaModuleRepository.getDescription(addRoleAccess.getLanguageId(),
                             addRoleAccess.getCompanyId(), addRoleAccess.getMenuId(), addRoleAccess.getSubMenuId());
@@ -136,8 +155,8 @@ public class RoleAccessService {
                     roleAccess.setRoleId(roleId);
                     roleAccess.setDeletionIndicator(0L);
                     roleAccess.setCreatedBy(loginUserID);
-                    roleAccess.setUpdatedBy(loginUserID);
                     roleAccess.setCreatedOn(new Date());
+                    roleAccess.setUpdatedBy(loginUserID);
                     roleAccess.setUpdatedOn(new Date());
 
                     // Insert Record
@@ -145,10 +164,15 @@ public class RoleAccessService {
                     log.info("new RoleAccess created --> {}", createdRoleAccess);
                     newRoleAccessList.add(createdRoleAccess);
                 }
-            }
-        }
-        return newRoleAccessList;
 
+            }
+            return newRoleAccessList;
+        } catch (Exception e) {
+            // Error Log
+            createRoleAccessLog3(addRoleAccessList, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -168,7 +192,7 @@ public class RoleAccessService {
     @Transactional
     public RoleAccess updateRoleAccess(String companyId, String languageId, Long roleId, Long menuId,
                                        Long subMenuId, String loginUserID, UpdateRoleAccess updateRoleAccess)
-            throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             RoleAccess dbRoleAccess = getRoleAccess(companyId, languageId, roleId, menuId, subMenuId);
             BeanUtils.copyProperties(updateRoleAccess, dbRoleAccess, CommonUtils.getNullPropertyNames(updateRoleAccess));
@@ -182,6 +206,8 @@ public class RoleAccessService {
             dbRoleAccess.setUpdatedOn(new Date());
             return roleAccessRepository.save(dbRoleAccess);
         } catch (Exception e) {
+            // Error Log
+            createRoleAccessLog(languageId, companyId, roleId, menuId, subMenuId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -206,7 +232,10 @@ public class RoleAccessService {
                     roleAccess.setUpdatedOn(new Date());
                     roleAccessRepository.save(roleAccess);
                 } else {
-                    throw new BadRequestException("Error in deleting roleId: " + roleId);
+                    String errMsg = "Error in deleting roleId: " + roleId;
+                    // Error Log
+                    createRoleAccessLog2(languageId, companyId, roleId, errMsg);
+                    throw new BadRequestException(errMsg);
                 }
             }
         }
@@ -238,8 +267,10 @@ public class RoleAccessService {
         Optional<ReplicaRoleAccess> dbRoleAccess = replicaRoleAccessRepository.findByLanguageIdAndCompanyIdAndRoleIdAndMenuIdAndSubMenuIdAndDeletionIndicator
                 (languageId, companyId, roleId, menuId, subMenuId, 0L);
         if (dbRoleAccess.isEmpty()) {
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " roleId - " + roleId + " menuId - " + menuId + " submenuId - " + subMenuId + " doesn't exist.");
+            String errMsg = "The given values : companyId - " + companyId + " languageId - " + languageId +
+                    " roleId - " + roleId + " menuId - " + menuId + " submenuId - " + subMenuId + " doesn't exists";
+            createRoleAccessLog1(languageId, companyId, roleId, menuId, subMenuId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbRoleAccess.get();
     }
@@ -254,8 +285,11 @@ public class RoleAccessService {
         List<ReplicaRoleAccess> dbRoleAccessList = replicaRoleAccessRepository.findByLanguageIdAndCompanyIdAndRoleIdAndDeletionIndicator(
                 languageId, companyId, roleId, 0L);
         if (dbRoleAccessList.isEmpty()) {
-            throw new BadRequestException("The given values : companyId - " + companyId + " languageId - " + languageId +
-                    " roleId - " + roleId + " doesn't exists");
+            String errMsg = "The given values : companyId - " + companyId + " languageId - " + languageId +
+                    " and roleId - " + roleId + " doesn't exists";
+            // Error Log
+            createRoleAccessLog2(languageId, companyId, roleId, errMsg);
+            throw new BadRequestException(errMsg);
         }
         return dbRoleAccessList;
     }
@@ -282,6 +316,75 @@ public class RoleAccessService {
                 findRoleAccess.getSubMenuId(), findRoleAccess.getStatusId(), findRoleAccess.getRoleId());
 //        log.info("found roleAccessList --> {}", roleAccessList);
         return roleAccessList;
+    }
+
+    //==========================================RoleAccess_ErrorLog====================================================
+    private void createRoleAccessLog(String languageId, String companyId, Long roleId, Long menuId, Long subMenuId,
+                                     String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(String.valueOf(roleId));
+        errorLog.setMethod("Exception thrown in updateRoleAccess");
+        errorLog.setReferenceField1(String.valueOf(menuId));
+        errorLog.setReferenceField2(String.valueOf(subMenuId));
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+        errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createRoleAccessLog1(String languageId, String companyId, Long roleId, Long menuId, Long subMenuId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(String.valueOf(roleId));
+        errorLog.setMethod("Exception thrown in getRoleAccess");
+        errorLog.setReferenceField1(String.valueOf(menuId));
+        errorLog.setReferenceField2(String.valueOf(subMenuId));
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createRoleAccessLog2(String languageId, String companyId, Long roleId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(String.valueOf(roleId));
+        errorLog.setMethod("Exception thrown in getRoleAccessList");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createRoleAccessLog3(List<AddRoleAccess> addRoleAccessList, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        for (AddRoleAccess addRoleAccess : addRoleAccessList) {
+
+            ErrorLog errorLog = new ErrorLog();
+            errorLog.setLogDate(new Date());
+            errorLog.setLanguageId(addRoleAccess.getLanguageId());
+            errorLog.setCompanyId(addRoleAccess.getCompanyId());
+            errorLog.setRefDocNumber(String.valueOf(addRoleAccess.getRoleId()));
+            errorLog.setMethod("Exception thrown in updateRoleAccess");
+            errorLog.setReferenceField1(String.valueOf(addRoleAccess.getMenuId()));
+            errorLog.setReferenceField2(String.valueOf(addRoleAccess.getSubMenuId()));
+            errorLog.setErrorMessage(error);
+            errorLog.setCreatedBy("Admin");
+            errorLogRepository.save(errorLog);
+            errorLogList.add(errorLog);
+        }
+        errorLogService.writeLog(errorLogList);
     }
 
 }

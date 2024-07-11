@@ -654,26 +654,36 @@ export class ConsignmentLabelComponent {
       let createdOn = this.datePipe.transform(resultInvoice.createdOn, 'dd-MMM-yyyy HH:mm')
 
     let barcodeAWB: any[] = [];
+    // if (index != 0) {
+    //   barcodeAWB.push([
+    //     { image: iwExpressLogo.headerLogo, margin: [0, 4, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //     { text: '', margin: [0, 4, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //     { text: '', margin: [0, 4, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //   ]);
+    // } else {
+    //   barcodeAWB.push([
+    //     { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //     { text: '', margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //     { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //   ]);
+    // }
+    
+
     if (index != 0) {
       barcodeAWB.push([
-        { image: iwExpressLogo.headerLogo, margin: [0, 4, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-        { text: '', margin: [0, 4, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+        { text: '', margin: [0, 4, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+        { text: 'Invoice', margin: [0, 4, 15, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 13, border: [false, false, false, false] },
         { text: '', margin: [0, 4, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
       ]);
     } else {
       barcodeAWB.push([
-        { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-        { text: '', margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+        { text: '', margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+        { text: 'Invoice', margin: [0, -10, 15, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 13, border: [false, false, false, false] },
         { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
       ]);
     }
-    
 
-    barcodeAWB.push([
-      { text: '', margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-      { text: 'Invoice', margin: [0, -10, 15, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 13, border: [false, false, false, false] },
-      { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
-    ]);
+ 
 
     dd.content.push(
       {
@@ -936,16 +946,25 @@ export class ConsignmentLabelComponent {
 
     let barcodeAWB: any[] = [];
     const barcodeImageData1 = this.generateBarcode(result.houseAirwayBill);
-    barcodeAWB.push([
-      { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-      { text: '', margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
-      { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
-    ]);
-    barcodeAWB.push([
-      { text: '', margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
-      { text: 'Invoice', margin: [0, -10, 15, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 13, border: [false, false, false, false] },
-      { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
-    ]);
+    // barcodeAWB.push([
+    //   { image: iwExpressLogo.headerLogo, margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //   { text: '', margin: [0, -15, 0, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    //   { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+    // ]);
+
+    if (index != 0) {
+      barcodeAWB.push([
+        { text: '', margin: [0, 4, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+        { text: 'Invoice', margin: [0, 4, 15, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 13, border: [false, false, false, false] },
+        { text: '', margin: [0, 4, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+      ]);
+    } else {
+      barcodeAWB.push([
+        { text: '', margin: [0, -15, 0, 0], fit: [80, 80], alignment: 'left', bold: false, fontSize: 12, border: [false, false, false, false] },
+        { text: 'Invoice', margin: [0, -10, 15, 0], fit: [100, 100], alignment: 'center', bold: false, fontSize: 13, border: [false, false, false, false] },
+        { text: '', margin: [0, -10, 0, 0], fit: [50, 50], alignment: 'center', bold: false, fontSize: 12, border: [false, false, false, false] },
+      ]);
+    }
 
     dd.content.push(
       {

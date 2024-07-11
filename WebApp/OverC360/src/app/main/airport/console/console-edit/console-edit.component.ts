@@ -202,7 +202,7 @@ export class ConsoleEditComponent {
   callTableHeader() {
     this.cols = [
       { field: 'masterAirwayBill', header: 'MAWB' },
-      { field: 'houseAirwayBill', header: 'HAWB' },
+      { field: 'houseAirwayBill', header: 'Consginment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },

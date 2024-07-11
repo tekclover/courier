@@ -148,6 +148,7 @@ public class LanguageService {
         Long languageCount = languageRepository.getLanguageCount(languageId);
         if (languageCount != null) {
             if (languageCount > 0) {
+                log.info("languageCount --> {}", languageCount);
                 throw new BadRequestException("Records present in associated tables with languageId - " + languageId);
             }
         }

@@ -209,7 +209,6 @@ export class BondedManifestComponent {
           exportItem[col.header] = item[col.field];
         }
       });
-
       return exportItem;
     });
 
