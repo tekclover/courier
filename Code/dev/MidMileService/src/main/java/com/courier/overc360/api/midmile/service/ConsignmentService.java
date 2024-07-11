@@ -140,6 +140,7 @@ public class ConsignmentService {
             String partnerMawBill = consignmentEntity.getPartnerMasterAirwayBill();
             String productId = consignmentEntity.getProductId();
             String subProductId = consignmentEntity.getSubProductId();
+            String length = consignmentEntity.getLength();
             String width = consignmentEntity.getWidth();
             String height = consignmentEntity.getHeight();
             String weightUnit = consignmentEntity.getWeightUnit();
@@ -376,15 +377,8 @@ public class ConsignmentService {
             // PieceDetails Save
             List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), width, height, volume, weightUnit, codAmount,
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
                     saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserId);
-
-            List<AddPieceDetails> addPieceDetailsList = new ArrayList<>();
-            for (AddPieceDetails pd : pieceDetails) {
-                AddPieceDetails addPieceDetails = new AddPieceDetails();
-                BeanUtils.copyProperties(pd, addPieceDetails);
-                addPieceDetailsList.add(addPieceDetails);
-            }
 
             //Calculate Value
             Double consignmentValue = 0.0;
@@ -393,7 +387,6 @@ public class ConsignmentService {
             Double addInsurance = 0.0;
             Double customsValue = 0.0;
             Double calculatedTotalDuty = 0.0;
-
 
             for (AddPieceDetails item : pieceDetails) {
                 if (item.getPieceValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
@@ -415,15 +408,18 @@ public class ConsignmentService {
                 }
             }
 
+            //Volume
+            Double totalPieceVolume = pieceDetails.stream().map(AddPieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
+
             //Consignment_entity Set
             consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
                     saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
                     String.valueOf(consignmentValue), String.valueOf(consignmentLocalValue), String.valueOf(addIata),
-                    String.valueOf(addInsurance), String.valueOf(customsValue), String.valueOf(calculatedTotalDuty));
+                    String.valueOf(addInsurance), String.valueOf(customsValue), String.valueOf(calculatedTotalDuty), String.valueOf(totalPieceVolume));
 
 
             AddConsignment newAddConsignment = new AddConsignment();
-            newAddConsignment.setPieceDetails(addPieceDetailsList);
+            newAddConsignment.setPieceDetails(pieceDetails);
             newAddConsignment.setReferenceImageList(referenceImageList);
             BeanUtils.copyProperties(saveConsignment, newAddConsignment);
             BeanUtils.copyProperties(saveConsignment.getConsignmentInfo() != null, newAddConsignment);

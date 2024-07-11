@@ -159,6 +159,8 @@ public class AddBondedManifest {
 
     private String noOfPieceHawb;
 
+    private String loadType;
+
     private String consigneeCivilId;
 
     private String incoTerms;

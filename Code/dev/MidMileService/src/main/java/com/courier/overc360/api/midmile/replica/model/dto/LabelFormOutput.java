@@ -36,6 +36,8 @@ public interface LabelFormOutput {
     String getPieceId();
     String getPieceProductCode();
     String getPieceValue();
+    String getTags();
+    String getGoodsType();
     Date getCreatedOn();
 
     //@Column(name = "CONSIGNMENT_ID")

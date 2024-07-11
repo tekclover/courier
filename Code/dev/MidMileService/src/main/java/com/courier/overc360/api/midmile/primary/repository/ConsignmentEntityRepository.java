@@ -82,6 +82,7 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
             "ADD_IATA = :addIata, " +
             "ADD_INSURANCE = :addInsurance, " +
             "CUSTOMS_VALUE = :customsValue, " +
+            "VOLUME = :volume, " +
             "CALCULATED_TOTAL_DUTY = :calculatedDuty " +
             "WHERE c_id = :companyId " +
             "AND lang_id = :languageId " +
@@ -100,5 +101,6 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("addIata") String addIata,
                                   @Param("addInsurance") String addInsurance,
                                   @Param("customsValue") String customsValue,
-                                  @Param("calculatedDuty") String calculatedDuty);
+                                  @Param("calculatedDuty") String calculatedDuty,
+                                  @Param("volume") String volume);
 }
