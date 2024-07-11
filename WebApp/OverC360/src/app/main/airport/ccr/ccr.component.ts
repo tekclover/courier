@@ -57,11 +57,35 @@ export class CcrComponent {
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
-      { field: 'referenceField1', header: 'Reference Field 1' },
-      { field: 'referenceField2', header: 'Reference Field 2' },
-      { field: 'referenceField3', header: 'Reference Field 3' },
-      { field: 'referenceField4', header: 'Reference Field 4' },
-      { field: 'referenceField5', header: 'Reference Field 5' },
+
+      { field: 'customsCcrNo', header: 'Customs CCR No', showFooter: false },
+      { field: 'countryOfOrigin', header: 'Origin', showFooter: false },
+      { field: 'airportOriginCode', header: 'Airport Origin Code', showFooter: false },
+      { field: 'hsCode', header: 'HS Code', showFooter: false },
+      { field: 'goodsDescription', header: 'Commodity', showFooter: false },
+      { field: 'invoiceNumber', header: 'Invoice No' , showFooter: false},
+      { field: 'invoiceTpe', header: 'Invoice Type', showFooter: false },
+      { field: 'invoiceDate', header: 'Invoice Date', format: 'date', showFooter: false },
+      { field: 'invoiceSupplierName', header: 'Invoice Supplier Name', showFooter: false },
+      { field: 'isExempted', header: 'Is Exempted', showFooter: false },
+      { field: 'exemptionFor', header: 'Exempted For', showFooter: false },
+      { field: 'exemptionBeneficiary', header: 'Exempted Beneficiary', showFooter: false },
+      { field: 'exemptionReference', header: 'Exempted Reference', showFooter: false },
+      { field: 'consigneeName', header: 'Consignee Name', showFooter: false },
+      { field: 'consignmentValue', header: 'Consignment Value', showFooter: false },
+      { field: 'consignmentCurrency', header: 'Consignment Currency', showFooter: false},
+      { field: 'exchangeRate', header: 'Exchange Rate', showFooter: false },
+      { field: 'iata', header: 'IATA', showFooter: false },
+      { field: 'customsInsurance', header: 'Customs Insurance', showFooter: false },
+      { field: 'duty', header: 'Duty', showFooter: true },
+      { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: false },
+      { field: 'addIATA', header: 'Add IATA', showFooter: false },
+      { field: 'addInsurance', header: 'Add Insurance', showFooter: false },
+      { field: 'customsValue', header: 'Custom', showFooter: false },
+      { field: 'calculatedTotalDuty', header: 'Calculated Total duty', showFooter: true },
+      { field: 'dduCharge', header: 'DDU Charge', showFooter: false },
+      { field: 'specialApprovalCharge', header: 'Spl Approval Charge', showFooter: false },
+      { field: 'totalDuty', header: 'Duty From Bayan', showFooter: true },
     ];
   }
   updateBulk(){
@@ -179,13 +203,19 @@ export class CcrComponent {
         } else {
           exportItem[col.header] = item[col.field];
         }
-
+      });
+      this.target.forEach(col => {
+        if (col.format && col.format === 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Bonded Manifest');
+    this.cs.exportAsExcel(exportData, 'CCR Manifest');
   }
 
   onRowExpand(event: TableRowExpandEvent) {

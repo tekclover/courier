@@ -74,7 +74,7 @@ export class CcrEditpopupComponent {
   grossWeight: [],
   houseAirwayBill: [],
   hsCode: [],
-  iataKd: [],
+  iata: [],
   incoTerms: [],
   invoiceDate: [],
   invoiceNumber: [],

@@ -54,6 +54,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight { background: var(--black); border-radius: 8px !important; color: var(--white); padding: 0.9rem !important;}
 .p-datatable.p-datatable-sm .p-datatable-thead > tr > th {padding: 0.5rem 0rem;}
 .p-checkbox .p-checkbox-box.p-highlight{background-color: var(--overcOrange); border-color: var(--black);}
+.p-datatable.p-datatable-sm .p-datatable-tfoot > tr > td{padding: 0.5rem 0rem;}
 .p-inputtext{font-size: var(--line14) !important;}
 .p-inputtext{width: 100% !important;}
 .p-password{width: 100% !important;}

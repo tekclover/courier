@@ -182,7 +182,7 @@ export class ConsignmentLabelComponent {
       ]);
       bodyArray.push([
         { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (line.noOfItemPiece), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (x.tags), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (line.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
@@ -466,7 +466,7 @@ export class ConsignmentLabelComponent {
       ]);
       bodyArray.push([
         { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (resultLabel.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
+        { text: (resultLabel.tags), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: (resultLabel.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
@@ -842,7 +842,7 @@ export class ConsignmentLabelComponent {
     { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
     { text: (resultInvoice.totalCiv), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
     { text: 'Prepaid', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-    { text: (resultInvoice.getPrepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+    { text: (resultInvoice.prepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
   ]);
   dd.content.push(
     {
@@ -1122,7 +1122,7 @@ export class ConsignmentLabelComponent {
       { text: 'Total Commerical Invoice Value', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: (result.totalCiv), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
       { text: 'Prepaid', bold: true, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] },
-      { text: (result.getPrepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
+      { text: (result.prepaid), bold: false, fontSize: 6, border: [true, true, true, true], borderColor: ['#808080', '#808080', '#808080', '#808080'] }
     ]);
     dd.content.push(
       {
@@ -1286,7 +1286,7 @@ export class ConsignmentLabelComponent {
     ]);
     bodyArray.push([
       { text: 'No.of items in Piece', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (result.noOfPieceHawb), bold: false, fontSize: 6, border: [false, false, false, false] },
+      { text: (result.tags), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: (result.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }

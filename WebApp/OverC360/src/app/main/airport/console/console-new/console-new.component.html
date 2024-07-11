@@ -115,11 +115,11 @@
                                 <input maxlength="50" pInputText formControlName="customsKd" [ngClass]="form.get('customsKd')?.invalid && form.get('customsKd')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('customsKd')" class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="iataKd">
+                            <div class="col-6 marginFieldNew borderRadius12" id="iata">
                                 <p class="formControlLabel f600 textBlack mb-0 required">IATA</p>
-                                <p-dropdown [options]="iataList" placeholder="Select" filter="true" formControlName="iataKd" appendTo="body"
+                                <p-dropdown [options]="iataList" placeholder="Select" filter="true" formControlName="iata" appendTo="body"
                                   [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('iataKd')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('iata')" class="text-danger"><small>{{
                                     getErrorMessage()}}</small></mat-error>
                             </div>
                            
