@@ -92,14 +92,14 @@ export class PreAlertManifestIndicatorComponent {
       { field: 'destinationDetails.addressLine2', header: 'Destination Address Line 2'},
       { field: 'destinationDetails.city', header: 'Destination City'},
       { field: 'destinationDetails.country', header: 'Destination Country'},
-      { field: 'pieceDetails.partnerHouseAirwayBill', header: 'Partner HAWB'},
-      { field: 'pieceDetails.description', header: 'Description'},
-      { field: 'pieceDetails.declaredValue', header: 'Declared Value'},
-      { field: 'pieceDetails.weight', header: 'Weight'},
-      { field: 'pieceDetails.hsCode', header: 'HS Code'},
-      { field: 'pieceDetails.consignmentId', header: 'Consignment ID'},
+      { field: 'pieceDetails[0].partnerHouseAirwayBill', header: 'Partner HAWB'},
+      { field: 'pieceDetails[0].description', header: 'Description'},
+      { field: 'pieceDetails[0].declaredValue', header: 'Declared Value'},
+      { field: 'pieceDetails[0].weight', header: 'Weight'},
+      { field: 'pieceDetails[0].hsCode', header: 'HS Code'},
+      { field: 'pieceDetails[0].consignmentId', header: 'Consignment ID'},
     ];
-  }
+  }   
 
   preAlertManifestIndicatorTable: any[] = [];
   selectedPreAlertManifestIndicator: any[] = [];
@@ -122,6 +122,10 @@ export class PreAlertManifestIndicatorComponent {
           this.cs.commonerrorNew(err);
         }
       })
+  }
+
+  getNestedValue(obj: any, path: string): any {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
   }
 
   reorderFields(obj: any): any {
