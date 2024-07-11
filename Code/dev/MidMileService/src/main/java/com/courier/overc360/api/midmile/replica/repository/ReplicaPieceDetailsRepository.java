@@ -72,6 +72,8 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "PIECE_ID nvarchar(50), \n" +
             "PIECE_PRODUCT_CODE nvarchar(50), \n" +
             "PIECE_VALUE nvarchar(50), \n" +
+            "TAGS nvarchar(50), \n" +
+            "GOODS_TYPE nvarchar(1000), \n" +
             "ORG_NAME nvarchar(50), \n" +
             "ORG_PHONE nvarchar(50), \n" +
             "ORG_ALTERNATE_PHONE nvarchar(50), \n" +
@@ -88,8 +90,8 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "DST_COUNTRY nvarchar(50),\n" +
             "DATE dateTime); \n" +
 
-            "INSERT INTO #LFO(CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, DATE) \n" +
-            "SELECT CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, :date FROM tblpiecedetails where is_deleted = 0 and \n" +
+            "INSERT INTO #LFO(CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, TAGS, DATE) \n" +
+            "SELECT CONSIGNMENT_ID, PIECE_ID, PIECE_PRODUCT_CODE, PIECE_VALUE, TAGS, :date FROM tblpiecedetails where is_deleted = 0 and \n" +
             "(COALESCE(:piecesId, null) IS NULL OR (PIECE_ID IN (:piecesId))) and \n" +
             "(COALESCE(:houseAirwayBill, null) IS NULL OR (HOUSE_AIRWAY_BILL IN (:houseAirwayBill))) and \n" +
             "(COALESCE(:languageId, null) IS NULL OR (LANG_ID IN (:languageId))) and \n" +
@@ -141,6 +143,8 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "MODE_OF_TRANSPORT modeOfTransport, \n" +
             "INSURANCE insurance, \n" +
             "COD cod, \n" +
+            "TAGS tags, \n" +
+            "GOODS_TYPE goodsType, \n" +
             "LOAD_TYPE loadType, \n" +
             "PIECE_ID pieceId, \n" +
             "PIECE_PRODUCT_CODE pieceProductCode, \n" +

@@ -40,5 +40,7 @@ public class PdfLabelFormOutput {
     private String pieceId;
     private String pieceProductCode;
     private String pieceValue;
+    private String tags;
+    private String goodsType;
     private Date createdOn;
 }
