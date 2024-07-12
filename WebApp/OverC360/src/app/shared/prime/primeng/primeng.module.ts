@@ -23,6 +23,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TagModule } from 'primeng/tag';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 @NgModule({
   declarations: [],
   imports: [
@@ -49,7 +51,9 @@ import { TagModule } from 'primeng/tag';
     OverlayPanelModule,
     FileUploadModule ,
     MultiSelectModule,
-    TagModule
+    TagModule,
+    InputGroupAddonModule,
+    InputGroupModule
   ], 
   exports: [
     CommonModule,
@@ -75,7 +79,9 @@ import { TagModule } from 'primeng/tag';
     OverlayPanelModule,
     FileUploadModule ,
     MultiSelectModule,
-    TagModule
+    TagModule,
+    InputGroupAddonModule,
+    InputGroupModule
   ]
 })
 export class PrimengModule { }

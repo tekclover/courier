@@ -240,7 +240,7 @@ export class CcrEditComponent {
       { field: 'customsInsurance', header: 'Customs Insurance', showFooter: false },
       { field: 'duty', header: 'Duty', showFooter: true },
       { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: false },
-      { field: 'addIATA', header: 'Add IATA', showFooter: false },
+      { field: 'addIata', header: 'Add IATA', showFooter: false },
       { field: 'addInsurance', header: 'Add Insurance', showFooter: false },
       { field: 'customsValue', header: 'Custom', showFooter: false },
       { field: 'calculatedTotalDuty', header: 'Calculated Total duty', showFooter: true },
@@ -400,9 +400,10 @@ export class CcrEditComponent {
   calculateFooterTotal(field: string): number {
     let total = 0;
     this.subProductArray.forEach(item => {
-      total += parseInt(item[field]);
+      total += Number.parseFloat(item[field]) || 0;
     });
-    return total;
+    return parseFloat(total.toFixed(3));
   }
+  
 }
 

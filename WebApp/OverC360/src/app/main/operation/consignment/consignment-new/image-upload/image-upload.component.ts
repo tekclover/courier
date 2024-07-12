@@ -11,6 +11,7 @@ import { ConsignmentService } from '../../consignment.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AnimationStyleMetadata } from '@angular/animations';
+import { ConsignmentLabelComponent } from '../../../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-image-upload',
@@ -31,6 +32,7 @@ export class ImageUploadComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
+    private download1: ConsignmentLabelComponent,
   ) { }
 
   imageForm = this.fb.group({
@@ -66,12 +68,6 @@ export class ImageUploadComponent {
       console.log('No files selected for upload.');
       return;
     }
-  //  if(this.data.type == 'piece'){
-  //   this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.pieceId + '/'
-  //  }
-  //  if(this.data.type == 'item'){
-  //   this.fileLocation = '/' + this.data.lineDetails.value.masterAirwayBill + '/' + this.data.lineDetails.value.houseAirwayBill + '/' + this.data.lineDetails.value.itemCode + '/'
-  //  }
   this.fileLocation = '/' +  (new Date().getDate()) +'-'+ (new Date().getMonth() + 1) + '-' + new Date().getFullYear()  + '_' +this.cs.timeFormat(new Date()) + '/';
     this.service.uploadFiles(this.selectedFiles, this.fileLocation).subscribe({
       next: (result) => {
@@ -120,29 +116,9 @@ export class ImageUploadComponent {
     });
   }
 
-  fileUrldownload: any;
-  docurl: any;
-  async download(element:any) {
-    this.spin.show()
-    const blob = await this.service.download(element.value)
-      .catch((err: HttpErrorResponse) => {
-        this.cs.commonerrorNew(err);
-      });
-    this.spin.hide();
-    if (blob) {
-      const blobOb = new Blob([blob], {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-      this.fileUrldownload = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blobOb));
-      this.docurl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a')
-      a.href = this.docurl
-      a.download = element.value.imageRefId;
-      a.click();
-      URL.revokeObjectURL(this.docurl);
 
-    }
-    this.spin.hide();
+  download(element:any) {
+   this.download1.downloadDocument(element);
   }
 }
 

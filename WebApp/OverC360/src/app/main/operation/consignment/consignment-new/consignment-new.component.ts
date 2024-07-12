@@ -16,6 +16,7 @@ import { ProductService } from '../../../id-masters/product/product.service';
 import { HubPartnerAssignmentService } from '../../../master/hub-partner-assignment/hub-partner-assignment.service';
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignorService } from '../../../master/consignor/consignor.service';
+import { ConsignmentLabelComponent } from '../../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-consignment-new',
@@ -57,6 +58,7 @@ export class ConsignmentNewComponent {
     public productService: ProductService,
     public customerService: CustomerService,
     public consignorService: ConsignorService,
+    public download: ConsignmentLabelComponent,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -218,7 +220,7 @@ export class ConsignmentNewComponent {
     duty: ['5%',],
     addInsurance: [],
     customsInsurance: [],
-    addIATA: [],
+    addIata: [],
     actualDuty: [],
     calculatedTotalDuty: [],
   })
@@ -682,6 +684,52 @@ export class ConsignmentNewComponent {
 
     this.shipmentInfo.controls.masterAirwayBill.disable();
     this.shipmentInfo.controls.houseAirwayBill.disable();
+
+    this.callItemLevel(line);
+    this.callTableHeader();
+  }
+
+  billingTable:any[] = [];
+  selectedConsignment:any[] = [];
+
+  cols:any[] = [];
+
+
+  callTableHeader() {
+    this.cols = [
+      { field: 'pieceId', header: 'Piece ID', showFooter: false  },
+      { field: 'consignmentValue', header: 'Consignment Value', showFooter: true  },
+      { field: 'currency', header: 'Consignment Currency', showFooter: false  },
+      { field: 'exchangeRate', header: 'Exchange Rate', showFooter: false  },
+      { field: 'iata', header: 'IATA', showFooter: false  },
+      { field: 'customsInsurance', header: 'Customs Insurance', showFooter: true  },
+      { field: 'duty', header: 'Duty', showFooter: true, },
+      { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: true  },
+      { field: 'addIata', header: 'Add IATA', showFooter: true  },
+      { field: 'addInsurance', header: 'Add Insurance', showFooter: true  },
+      { field: 'customsValue', header: 'Custom', showFooter: true  },
+      { field: 'calculatedTotalDuty', header: 'Calculated Total duty', showFooter: true },
+      { field: 'dduCharge', header: 'DDU Charge', showFooter: true},
+      { field: 'specialApprovalCharge', header: 'Spl Approval Charge', showFooter: false },
+      { field: 'totalDuty', header: 'Duty From Bayan', showFooter: false },
+    ];
+  }
+
+  callItemLevel(line:any){
+    this.service.searchItem({houseAirwayBill: [line.houseAirwayBill]}).subscribe({next: res=> {
+      this.billingTable =  res;
+    },error: err => {
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
+
+  calculateFooterTotal(field: string): number {
+    let total = 0;
+    this.billingTable.forEach(item => {
+      total += Number.parseFloat(item[field]) || 0;
+    });
+    return parseFloat(total.toFixed(2));
   }
 
   opendialog(type: any = 'New', index: any) {
@@ -1121,6 +1169,48 @@ export class ConsignmentNewComponent {
   }
 
 
+
+  selectedFiles: FileList | null = null;
+  selectFiles(event: any): void {
+    this.selectedFiles = event.target.files;
+    this.uploadFile(event);
+  }
+
+  imageDetailsTable: any[] = [];
+  fileLocation:any;
+  uploadFile(event:any) {
+    if (!this.selectedFiles || this.selectedFiles.length === 0) {
+      console.log('No files selected for upload.');
+      return;
+    }
+  this.fileLocation = '/Invoice/';
+    this.service.uploadFiles(this.selectedFiles, this.fileLocation).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+        this.shipmentInfo.controls.invoiceUrl.patchValue(result[0].fileName)
+        this.selectedFiles = null;
+        this.clearFileInput(event.target); 
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+  }
+  
+  clearFileInput(input: HTMLInputElement): void {
+    input.value = '';
+  }
+
+  downloadInvoice(value:any){
+    let obj: any = {};
+    obj.value = {imageRefId: value, referenceImageUrl: '/Invoice/'}
+    this.download.downloadDocument(obj);
+  }
 
 }
 

@@ -54,6 +54,11 @@ export class ConsignmentService {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
   }
 
+  searchItem(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/itemDetails/find', obj);
+  }
+
+
   searchPiece(obj: any) {
     return this.http.post<any>('/overc-midmile-service/piecedetails/find}', obj);
   }
@@ -90,6 +95,7 @@ export class ConsignmentService {
   }
 
   download(obj:any): Promise<File> {
+    console.log(obj)
   return this.http
   .get<any>(`/doc-storage/download?fileName=${obj.imageRefId}&location=${obj.referenceImageUrl}`, {
     responseType: 'blob' as 'json',

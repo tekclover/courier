@@ -469,7 +469,7 @@ export class ConsignmentLabelComponent {
         { text: (resultLabel.tags), bold: false, fontSize: 6, border: [false, false, false, false] },
         { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
         { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
-        { text: (resultLabel.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
+        { text: (resultLabel.goodsType), bold: false, fontSize: 6, border: [false, false, false, false] }
       ]);
       dd.content.push(
         {
@@ -1289,7 +1289,7 @@ export class ConsignmentLabelComponent {
       { text: (result.tags), bold: false, fontSize: 6, border: [false, false, false, false] },
       { text: '', bold: true, fontSize: 6, border: [false, false, false, false] },
       { text: 'Item Description', bold: true, fontSize: 6, border: [false, false, false, false] },
-      { text: (result.pieceProductCode), bold: false, fontSize: 6, border: [false, false, false, false] }
+      { text: (result.goodsType), bold: false, fontSize: 6, border: [false, false, false, false] }
     ]);
     dd.content.push(
       {
@@ -1465,6 +1465,34 @@ export class ConsignmentLabelComponent {
       const a = document.createElement('a')
       a.href = this.docurl
       a.download = Path;
+      a.click();
+      URL.revokeObjectURL(this.docurl);
+
+    }
+    this.spin.hide();
+  }
+
+
+
+  fileUrldownload1: any;
+  docurl1: any;
+  async downloadDocument(element:any) {
+    console.log(element)
+    this.spin.show()
+    const blob = await this.consginementService.download(element.value)
+      .catch((err: HttpErrorResponse) => {
+        this.cs.commonerrorNew(err);
+      });
+    this.spin.hide();
+    if (blob) {
+      const blobOb = new Blob([blob], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      this.fileUrldownload = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blobOb));
+      this.docurl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a')
+      a.href = this.docurl
+      a.download = element.value.imageRefId;
       a.click();
       URL.revokeObjectURL(this.docurl);
 
