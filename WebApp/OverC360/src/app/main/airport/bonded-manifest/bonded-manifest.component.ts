@@ -85,7 +85,6 @@ export class BondedManifestComponent {
       { field: 'consigneeName', header: 'Consignee Name' },
       { field: 'shipperName', header: 'Shipper' },
       { field: 'remark', header: 'Remark' },
-      { field: 'manifestedQuantity', header: 'ManifestedQuantity' },
       { field: 'isConsolidatedShipment', header: 'Is Consolidated Shipment' },
       { field: 'v', header: 'Is Split Bill of Lading' },
       { field: 'consolidatedBillNo', header: 'Consolidated Bill Number' },
