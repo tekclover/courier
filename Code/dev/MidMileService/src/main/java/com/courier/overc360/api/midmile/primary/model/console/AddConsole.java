@@ -67,7 +67,7 @@ public class AddConsole {
 
     private String consignmentValueLocal;
 
-    private String addIATA;
+    private String addIata;
 
     private String addInsurance;
 
