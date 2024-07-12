@@ -49,7 +49,7 @@ public class UpdateCcr {
 
     private String consignmentValueLocal;
 
-    private String addIATA;
+    private String addIata;
 
     private String addInsurance;
 

@@ -82,7 +82,7 @@ public class Console {
     private String consignmentValueLocal;
 
     @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
-    private String addIATA;
+    private String addIata;
 
     @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
     private String addInsurance;

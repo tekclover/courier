@@ -1265,7 +1265,7 @@ public class FileStorageService {
         for (List<String> listUploadedData : allRowsList) {
 
             // Consignment Key
-            String consignmentKey = String.join("_", listUploadedData.subList(66, 81));
+            String consignmentKey = String.join("_", listUploadedData.subList(68, 83));
             String pieceKey = listUploadedData.size() > 85 ? listUploadedData.get(85) : "";
 
             AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
