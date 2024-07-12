@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,8 @@ public class ItemDetailsService {
     @Autowired
     ReplicaCcrRepository replicaCcrRepository;
 
+    //Decimal Format
+    DecimalFormat decimalFormat = new DecimalFormat("#.###");
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
 
     /**
@@ -711,7 +714,11 @@ public class ItemDetailsService {
                                 if (newItemDetails.getDuty() != null) {
                                     Double duty = Double.valueOf(newItemDetails.getDuty());
                                     Double customsValue = Double.valueOf(newItemDetails.getCustomsValue());
-                                    newItemDetails.setCalculatedTotalDuty(String.valueOf(duty * customsValue));
+
+                                    Double totalDuty = customsValue + (customsValue * 0.05);
+                                    //Decimal Format
+                                    String formatTotalDuty = decimalFormat.format(totalDuty);
+                                    newItemDetails.setCalculatedTotalDuty(formatTotalDuty);
                                 }
                             }
                         }

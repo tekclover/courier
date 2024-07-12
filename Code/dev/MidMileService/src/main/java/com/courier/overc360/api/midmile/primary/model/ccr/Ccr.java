@@ -101,6 +101,9 @@ public class Ccr {
     @Column(name = "C_NAME" , columnDefinition = "nvarchar(100)")
     private String companyName;
 
+    @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
+    private String dduCharge;
+
     @Column(name = "LANG_TEXT" , columnDefinition = "nvarchar(100)")
     private String languageDescription;
 

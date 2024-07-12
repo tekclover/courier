@@ -54,6 +54,8 @@ public class AddCcr {
 
     private String statusText;
 
+    private String dduCharge;
+
     private String customsCcrNo;
 
     private String pieceId;
