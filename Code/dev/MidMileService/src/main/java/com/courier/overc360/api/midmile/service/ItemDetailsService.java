@@ -698,15 +698,20 @@ public class ItemDetailsService {
                             consignmentValue = declaredValue * exchangeRate;
                         }
 
-                        newItemDetails.setConsignmentValueLocal(String.valueOf(consignmentValue));
+                        String formatConsignmentValue = decimalFormat.format(consignmentValue);
+                        newItemDetails.setConsignmentValueLocal(formatConsignmentValue);
                         if (newItemDetails.getIata() != null) {
                             Double iata = Double.valueOf(newItemDetails.getIata());
                             newItemDetails.setAddIata(String.valueOf(iata + consignmentValue));
                         }
                         if (newItemDetails.getAddIata() != null && newItemDetails.getCustomsInsurance() != null) {
                             Double addIata = Double.valueOf(newItemDetails.getAddIata());
-//                            Double insurance = Double.valueOf(newItemDetails.getCustomsInsurance());
-                            newItemDetails.setAddInsurance(String.valueOf(addIata * 0.01));
+
+                            Double addInsure = addIata * 0.01;
+                            //Decimal Format
+                            String formatInsurance = decimalFormat.format(addInsure);
+                            newItemDetails.setAddInsurance(formatInsurance);
+
                             if (newItemDetails.getAddInsurance() != null) {
                                 Double addInsurance = Double.valueOf(newItemDetails.getAddInsurance());
                                 newItemDetails.setCustomsValue(String.valueOf(addIata + addInsurance));
