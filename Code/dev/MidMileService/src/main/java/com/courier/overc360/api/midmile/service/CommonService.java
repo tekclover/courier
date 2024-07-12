@@ -1,7 +1,9 @@
 package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.config.PropertiesConfig;
+import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.auth.AuthToken;
+import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -10,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -54,6 +57,30 @@ public class CommonService {
 		} catch (Exception e) {
 //			e.printStackTrace();
 			return null;
+		}
+	}
+
+	//POST
+	public String createConsignment(List<AddConsignment> addConsignment, String loginUserId, String masterAirwayBill) {
+		try{
+		HttpHeaders headers = new HttpHeaders();
+			AuthToken authTokenForCommonService = authTokenService.getCommonServiceAuthToken();
+			String authToken = authTokenForCommonService.getAccess_token();
+			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.add("User-Agent", "ClassicWMS RestTemplate");
+			headers.add("Authorization", "Bearer " + authToken);
+			UriComponentsBuilder builder =
+					UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "consignment")
+							.queryParam("loginUserId", loginUserId)
+							.queryParam("masterAirwayBill", masterAirwayBill);
+			HttpEntity<?> entity = new HttpEntity<>(addConsignment, headers);
+			ResponseEntity<String> result =
+					getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+			log.info("result : " + result.getStatusCode());
+			return result.getBody();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BadRequestException("Exception : " + e);
 		}
 	}
 

@@ -56,7 +56,7 @@ public class SwaggerConfig {
 	      .securityContexts(Arrays.asList(securityContext()))
 	      .securitySchemes(Arrays.asList(apiKey()))
 	      .select()
-	      .apis(RequestHandlerSelectors.basePackage("com.tekclover.wms.api.idmaster.controller"))
+	      .apis(RequestHandlerSelectors.basePackage("com.courier.overc360.api.common.controller"))
 	      .paths(PathSelectors.any())
 	      .build();
 	    
@@ -68,11 +68,11 @@ public class SwaggerConfig {
 	 */
 	private ApiInfo apiInfo() {
 	    return new ApiInfo(
-	      "Classic WMS - Enterprise Setup Services",
-	      "EnterpriseSetup Service Specifications",
+	      "OverC360 - Common Services",
+	      "Common Service Specifications",
 	      "1.0",
 	      "Terms of service",
-	      new Contact("Classic WMS Team", "www.tekclover.com", "classicwms@tekclover.com"),
+	      new Contact("Tekclover Team", "www.tekclover.com", "classicwms@tekclover.com"),
 	      "License of API",
 	      "API license URL",
 	      Collections.emptyList());
