@@ -21,8 +21,8 @@ import { CustomerService } from '../../../master/customer/customer.service';
 export class PreAlertManifestIndicatorComponent {
 
   constructor(
-    // public dialogRef: MatDialogRef<PreAlertManifestIndicatorComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<PreAlertManifestIndicatorComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private cs: CommonServiceService,
     private spin: NgxSpinnerService,
     private route: ActivatedRoute,
@@ -53,16 +53,16 @@ export class PreAlertManifestIndicatorComponent {
     country: [],
   }); 
 
-  pageToken: any;
+ // pageToken: any;
 
   ngOnInit(): void {
-    let code = this.route.snapshot.params['code'];
-    this.pageToken = this.cs.decrypt(code);
+    // let code = this.route.snapshot.params['code'];
+    // this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
-    this.path.setData(dataToSend);
+    // const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
+    // this.path.setData(dataToSend);
 
-    this.callTableHeader();
+  //  this.callTableHeader();
     this.preAlertValidation();
 
   }
@@ -111,13 +111,13 @@ export class PreAlertManifestIndicatorComponent {
     let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
-       obj.houseAirwayBill = [this.pageToken.line.houseAirwayBill];
+       obj.houseAirwayBill = [this.data.line.houseAirwayBill];
 
       this.consignmentService.findConsignmentPreAlertIndicator(obj).subscribe({
         next: (res: any) => { 
           this.preAlertManifestIndicatorTable = res;
-          // this.preAlertManifestIndicatorTable = res.map((item: any) => this.reorderFields(item));
-          // this.reorderedIndicator = this.indicator.map(item => this.reorderFields(item));
+         this.preAlertManifestIndicatorTable = res.map((item: any) => this.reorderFields(item));
+          this.reorderedIndicator = this.indicator.map(item => this.reorderFields(item));
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
