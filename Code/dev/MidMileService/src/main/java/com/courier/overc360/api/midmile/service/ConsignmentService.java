@@ -466,6 +466,16 @@ public class ConsignmentService {
 
             UpdateConsignment addConsignment = new UpdateConsignment();
             BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity, CommonUtils.getNullPropertyNames(dbConsignment));
+
+
+            if (dbConsignment.getServiceTypeId() != null) {
+                String getServiceType = replicaBondedManifestRepository.getServiceTypeText(
+                        dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), dbConsignmentEntity.getServiceTypeId());
+                if (getServiceType != null) {
+                    dbConsignmentEntity.setServiceTypeText(getServiceType);
+                }
+            }
+
             //StatusText And EventText
             if (dbConsignment.getStatusId() != null && dbConsignment.getStatusId().equalsIgnoreCase("1")) {
                 // Set Event Status
@@ -509,6 +519,14 @@ public class ConsignmentService {
 
             if (dbConsignmentEntity.getConsignmentInfo() != null) {
                 BeanUtils.copyProperties(dbConsignment, dbConsignmentEntity.getConsignmentInfo(), CommonUtils.getNullPropertyNames(dbConsignment));
+
+                if (dbConsignment.getLoadTypeId() != null) {
+                    String getLoadType = replicaBondedManifestRepository.getLoadTypeText(
+                            dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), dbConsignmentEntity.getConsignmentInfo().getLoadTypeId());
+                    if (getLoadType != null) {
+                        dbConsignmentEntity.getConsignmentInfo().setLoadType(getLoadType);
+                    }
+                }
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedOn(new Date());
                 dbConsignmentEntity.getConsignmentInfo().setUpdatedBy(loginUserID);
             }

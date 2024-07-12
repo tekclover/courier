@@ -311,6 +311,9 @@ public class ReplicaCcr {
     @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
     private String dduCharge;
 
+    @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
+    private String specialApprovalCharge;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

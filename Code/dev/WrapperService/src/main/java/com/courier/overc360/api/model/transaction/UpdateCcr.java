@@ -193,6 +193,8 @@ public class UpdateCcr {
 
     private String dduCharge;
 
+    private String specialApprovalCharge;
+
     private Long deletionIndicator = 0L;
 
     private String referenceField1;

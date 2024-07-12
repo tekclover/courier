@@ -58,6 +58,8 @@ public class AddCcr {
 
     private String customsCcrNo;
 
+    private String specialApprovalCharge;
+
     private String pieceId;
 
     private String pieceItemId;
