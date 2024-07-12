@@ -442,16 +442,16 @@ public class ConsoleService {
 
         // Separate records where hsCode is null
         List<AddConsole> nullHsCodeList = addConsoleList.stream()
-                .filter(console -> console.getHsCode() == null || console.getHsCode().isEmpty())
+                .filter(console -> console.getHsCode().isEmpty())
                 .collect(Collectors.toList());
 
         // Create a map to group consignments by hsCode
         Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
-                .filter(console -> console.getHsCode() != null && !console.getHsCode().isEmpty())
+                .filter(console -> !console.getHsCode().isEmpty())
                 .collect(Collectors.groupingBy(AddConsole::getHsCode));
 
         if(!nullHsCodeList.isEmpty()){
-           List<Console> addConsole = createConsoleNormal(addConsoleList, loginUserID);
+           List<Console> addConsole = createConsoleNormal(nullHsCodeList, loginUserID);
            for(Console console : addConsole) {
                createdConsoleList.add(console);
            }
