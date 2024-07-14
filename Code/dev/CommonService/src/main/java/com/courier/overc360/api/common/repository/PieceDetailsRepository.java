@@ -7,5 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public interface PieceDetailsRepository extends CassandraRepository<PieceDetails, Long> {
+public interface PieceDetailsRepository extends CassandraRepository<PieceDetails, Long>, DynamicNativeQuery {
 }

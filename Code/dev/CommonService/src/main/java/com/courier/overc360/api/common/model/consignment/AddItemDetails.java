@@ -50,7 +50,7 @@ public class AddItemDetails {
     private String weightUnit;
     private String volume;
     private String volumeUnit;
-    private Long deletionIndicator = 0L;
+    private Long deletionIndicator;
     private String referenceField1;
     private String referenceField2;
     private String referenceField3;

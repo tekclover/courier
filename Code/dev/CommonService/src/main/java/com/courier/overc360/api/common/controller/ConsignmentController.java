@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -34,6 +35,13 @@ public class ConsignmentController {
     public ResponseEntity<?> postConsignment(@Valid @RequestBody List<AddConsignment> addConsignment, @RequestParam String loginUserId, @RequestParam String masterAirwayBill) {
         consignmentService.createConsignment(addConsignment, loginUserId, masterAirwayBill);
         return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
+
+    @ApiOperation(response = AddConsignment.class, value = "Find Consignment") // label for swagger
+    @PostMapping("/find")
+    public ResponseEntity<?> findConsignment(@Valid @RequestBody FindConsignment findConsignment) throws ParseException {
+        List<AddConsignment> consignmentList = consignmentService.findConsignment(findConsignment);
+        return new ResponseEntity<>(consignmentList, HttpStatus.OK);
     }
 
 }

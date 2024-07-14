@@ -206,7 +206,7 @@ public class AddConsignment {
     private String subProductName;
     private Long consignmentBagId;
     private String createdBy;
-    private Date createdOn = new Date();
+    private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private String consignmentValueLocal;

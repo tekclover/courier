@@ -213,7 +213,7 @@ public class Consignment {
     private String insurance;
     private Long preAlertValidationIndicator;
     private String loadTypeId;
-    private Long deletionIndicator = 0L;
+    private Long deletionIndicator;
 
     private String languageDescription;
     private String companyName;
@@ -221,7 +221,7 @@ public class Consignment {
     private String subProductName;
     private Long consignmentBagId;
     private String createdBy;
-    private Date createdOn = new Date();
+    private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private String consignmentValueLocal;
