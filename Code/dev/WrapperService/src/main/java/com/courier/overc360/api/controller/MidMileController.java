@@ -1,6 +1,7 @@
 package com.courier.overc360.api.controller;
 
 import com.courier.overc360.api.model.transaction.*;
+import com.courier.overc360.api.service.CommonService;
 import com.courier.overc360.api.service.MidMileService;
 import com.google.api.Http;
 import io.swagger.annotations.Api;
@@ -28,6 +29,9 @@ public class MidMileController {
 
     @Autowired
     MidMileService midMileService;
+
+    @Autowired
+    CommonService commonService;
 
 
     //GetAllConsignment
@@ -71,6 +75,13 @@ public class MidMileController {
     @PostMapping("/consignment/find/v2")
     public IConsignment[] findIConsignment(@Valid @RequestBody FindIConsignment findConsignment, @RequestParam String authToken) throws Exception {
         return midMileService.findIConsignmentEntity(findConsignment, authToken);
+    }
+
+    // Find ConsignmentEntity - cassandra
+    @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignment cassandra") //label for swagger
+    @PostMapping("/consignment/find/v3")
+    public ConsignmentEntity[] findConsignmentV3(@Valid @RequestBody FindCassandraConsignment findConsignment) throws Exception {
+        return commonService.findConsignment(findConsignment);
     }
 
     // Find PreAlert Manifest - based on consignment details

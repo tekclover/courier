@@ -38,7 +38,7 @@ public class ReferenceImageList {
     private String partnerMasterAirwayBill;
     private String partnerHouseAirwayBill;
     private String referenceImageUrl;
-    private Long deletionIndicator = 0L;
+    private Long deletionIndicator;
     private String referenceField1;
     private String referenceField2;
     private String referenceField3;
@@ -60,7 +60,7 @@ public class ReferenceImageList {
     private String referenceField19;
     private String referenceField20;
     private String createdBy;
-    private Date createdOn = new Date();
+    private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
 }

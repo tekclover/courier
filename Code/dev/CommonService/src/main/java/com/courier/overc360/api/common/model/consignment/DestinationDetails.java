@@ -39,7 +39,7 @@ public class DestinationDetails {
     private String latitude;
     private String longitude;
     private String createdBy;
-    private Date createdOn = new Date();
+    private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
 }

@@ -1,4 +1,4 @@
-package com.courier.overc360.api.common.primary.util;
+package com.courier.overc360.api.common.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

@@ -1,22 +1,26 @@
 package com.courier.overc360.api.common.service;
 
+import com.courier.overc360.api.common.controller.exception.BadRequestException;
 import com.courier.overc360.api.common.model.consignment.*;
-import com.courier.overc360.api.common.primary.util.CommonUtils;
 import com.courier.overc360.api.common.repository.*;
+import com.courier.overc360.api.common.util.CommonUtils;
+import com.courier.overc360.api.common.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class ConsignmentService {
-
     @Autowired
-    ConsignmentRepository consignmentRepository;
+    private ConsignmentRepository consignmentRepository;
 
     @Autowired
     DestinationRepository destinationDetailsRepository;
@@ -160,5 +164,97 @@ public class ConsignmentService {
             }
         }
         log.info("data saved in cassandra dB successfully ");
+    }
+    /**
+     *
+     * @param findConsignment
+     * @return
+     */
+    public List<AddConsignment> findConsignment(FindConsignment findConsignment) throws ParseException {
+
+        if((findConsignment.getConsignmentId() == null || findConsignment.getConsignmentId().isEmpty()) &&
+                (findConsignment.getMasterAirwayBill() == null || findConsignment.getMasterAirwayBill().isEmpty()) &&
+                (findConsignment.getStartDate() == null && findConsignment.getEndDate() == null)) {
+            throw new BadRequestException("Input parameter should be specified..!");
+        }
+
+        if(findConsignment.getStartDate() != null && findConsignment.getEndDate() != null) {
+            Date[] dates = DateUtils.addTimeToDatesForSearch(findConsignment.getStartDate(), findConsignment.getEndDate());
+            findConsignment.setStartDate(dates[0]);
+            findConsignment.setEndDate(dates[1]);
+        }
+        log.info("find cassandra Inout: " + findConsignment);
+
+        List<AddConsignment> dbAddConsignmentList = new ArrayList<>();
+        List<Consignment> consignmentList = null;
+
+        if(findConsignment.getStartDate() == null && findConsignment.getEndDate() == null) {
+            consignmentList = consignmentRepository.findConsignment(findConsignment.getConsignmentId(), findConsignment.getMasterAirwayBill(), findConsignment.getStartDate(), findConsignment.getEndDate());
+        }
+
+        if(findConsignment.getStartDate() != null && findConsignment.getEndDate() != null) {
+            if((findConsignment.getMasterAirwayBill() == null || findConsignment.getMasterAirwayBill().isEmpty()) &&
+                    (findConsignment.getConsignmentId() == null || findConsignment.getConsignmentId().isEmpty())) {
+                consignmentList = consignmentRepository.findByCreatedOnBetween(findConsignment.getStartDate(), findConsignment.getEndDate());
+            }
+            if((findConsignment.getMasterAirwayBill() == null || findConsignment.getMasterAirwayBill().isEmpty()) &&
+                    (findConsignment.getConsignmentId() != null && !findConsignment.getConsignmentId().isEmpty())) {
+                consignmentList = consignmentRepository.findByConsignmentIdInAndCreatedOnBetween(findConsignment.getConsignmentId(), findConsignment.getStartDate(), findConsignment.getEndDate());
+            }
+            if((findConsignment.getMasterAirwayBill() != null && !findConsignment.getMasterAirwayBill().isEmpty()) &&
+                    (findConsignment.getConsignmentId() == null || findConsignment.getConsignmentId().isEmpty())) {
+                consignmentList = consignmentRepository.findByMasterAirwayBillInAndCreatedOnBetween(findConsignment.getMasterAirwayBill(), findConsignment.getStartDate(), findConsignment.getEndDate());
+            }
+            if(findConsignment.getMasterAirwayBill() != null && !findConsignment.getMasterAirwayBill().isEmpty() &&
+                    findConsignment.getConsignmentId() != null && !findConsignment.getConsignmentId().isEmpty()) {
+                consignmentList = consignmentRepository.findByConsignmentIdInAndMasterAirwayBillInAndCreatedOnBetween(
+                        findConsignment.getConsignmentId(), findConsignment.getMasterAirwayBill(),
+                        findConsignment.getStartDate(), findConsignment.getEndDate());
+            }
+        }
+        log.info("Consignment List : " + consignmentList.size());
+        if(consignmentList != null && !consignmentList.isEmpty()) {
+            for(Consignment consignment : consignmentList) {
+                AddConsignment dbAddConsignment = new AddConsignment();
+                BeanUtils.copyProperties(consignment, dbAddConsignment, CommonUtils.getNullPropertyNames(consignment));
+                Optional<ReturnDetails> returnDetails = returnDetailsRepository.findReturnDetails(consignment.getConsignmentId());
+                Optional<OriginDetails> originDetails = originDetailsRepository.findOriginDetails(consignment.getConsignmentId());
+                Optional<DestinationDetails> destinationDetails = destinationDetailsRepository.findDestinationDetails(consignment.getConsignmentId());
+                List<ReferenceImageList> consignmentReferenceImageLists = referenceImageRepository.findReferenceImageList(consignment.getConsignmentId(), "consignment");
+                List<PieceDetails> pieceDetails = pieceDetailsRepository.findPiecesDetails(consignment.getConsignmentId());
+                List<AddPieceDetails> addPieceDetails = new ArrayList<>();
+                if (pieceDetails != null && !pieceDetails.isEmpty()) {
+                    for (PieceDetails piece : pieceDetails) {
+                        AddPieceDetails addPieceDetail = new AddPieceDetails();
+                        BeanUtils.copyProperties(piece, addPieceDetail, CommonUtils.getNullPropertyNames(piece));
+                        List<ReferenceImageList> pieceReferenceImageLists = referenceImageRepository.findReferenceImageList(consignment.getConsignmentId(), "pieces");
+                        addPieceDetail.setReferenceImageList(pieceReferenceImageLists);
+                        List<ItemDetails> itemDetails = itemDetailsRepository.findItemDetails(String.valueOf(piece.getKey().getPieceId()));
+                        List<AddItemDetails> addItemDetails = new ArrayList<>();
+                        if (itemDetails != null && !itemDetails.isEmpty()) {
+                            for (ItemDetails itemDetail : itemDetails) {
+                                AddItemDetails addItemDetail = new AddItemDetails();
+                                BeanUtils.copyProperties(itemDetail, addItemDetail, CommonUtils.getNullPropertyNames(itemDetail));
+                                List<ReferenceImageList> itemReferenceImageLists = referenceImageRepository.findReferenceImageList(consignment.getConsignmentId(), "item");
+                                addItemDetail.setReferenceImageList(itemReferenceImageLists);
+                                addItemDetails.add(addItemDetail);
+                            }
+                        }
+                        addPieceDetail.setItemDetails(addItemDetails);
+                        addPieceDetails.add(addPieceDetail);
+                    }
+                }
+                dbAddConsignment.setOriginDetails(originDetails.isPresent() ? originDetails.get() : null);
+                dbAddConsignment.setDestinationDetails(destinationDetails.isPresent() ? destinationDetails.get() : null);
+                dbAddConsignment.setReturnDetails(returnDetails.isPresent() ? returnDetails.get() : null);
+                dbAddConsignment.setPieceDetails(addPieceDetails);
+                dbAddConsignment.setReferenceImageList(consignmentReferenceImageLists);
+                dbAddConsignmentList.add(dbAddConsignment);
+            }
+        }
+
+        return dbAddConsignmentList;
+
+
     }
 }

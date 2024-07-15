@@ -4,6 +4,9 @@ import com.courier.overc360.api.config.PropertiesConfig;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.dto.PDFMerger;
 import com.courier.overc360.api.model.dto.UpdateCCR;
+import com.courier.overc360.api.model.transaction.ConsignmentEntity;
+import com.courier.overc360.api.model.transaction.FindCassandraConsignment;
+import com.courier.overc360.api.model.transaction.FindIConsignment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -86,6 +89,19 @@ public class CommonService {
 				.queryParam("documentName", documentName);
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+		return result.getBody();
+	}
+
+	public ConsignmentEntity[] findConsignment(FindCassandraConsignment findConsignment) {
+		HttpHeaders headers = new HttpHeaders();
+		AuthToken authTokenForCommonService = authTokenService.getCommonServiceAuthToken();
+		String authToken = authTokenForCommonService.getAccess_token();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("User-Agent", "RestTemplate");
+		headers.add("Authorization", "Bearer " + authToken);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "consignment/find");
+		HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
+		ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
 		return result.getBody();
 	}
 
