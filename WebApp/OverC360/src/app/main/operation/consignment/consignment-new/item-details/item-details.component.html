@@ -4,7 +4,7 @@
       <button (click)="addItem()" type="button" class="btn ml-2 addNewbuttom bgBlack text-white"><i
           class="bi bi-plus-square pr-2"></i> Add New</button>
   </div>
-  <div class="mt-4">
+  <div class="mt-4 pt-2">
     <form [formGroup]="itemForm" class="mt-1 mx-3">
       <p-table [scrollable]="true" class="paddingZero" scrollHeight="calc(100vh - 24.8rem)"
         [value]="itemDetails.controls" >
