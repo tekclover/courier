@@ -308,6 +308,12 @@ public class ReplicaCcr {
     @Column(name = "FLIGHT_ARRIVAL_TIME" , columnDefinition = "nvarchar(50)")
     private String flightArrivalTime;
 
+    @Column(name = "DDU_CHARGE", columnDefinition = "nvarchar(50)")
+    private String dduCharge;
+
+    @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
+    private String specialApprovalCharge;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

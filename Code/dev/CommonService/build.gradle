@@ -70,7 +70,7 @@ dependencies {
 	
 	implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '8.1.0.jre8-preview'
 	implementation 'org.apache.pdfbox:pdfbox:2.0.24'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -81,5 +81,5 @@ test {
 }
 
 bootJar {
-   archiveName = 'IDMasterService.jar'
+   archiveName = 'CommonService.jar'
 }

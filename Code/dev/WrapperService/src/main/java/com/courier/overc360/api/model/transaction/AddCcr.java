@@ -197,6 +197,10 @@ public class AddCcr {
 
     private String flightArrivalTime;
 
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
     private Long deletionIndicator = 0L;
 
     private String referenceField1;

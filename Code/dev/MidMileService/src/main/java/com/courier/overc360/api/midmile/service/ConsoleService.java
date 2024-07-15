@@ -442,16 +442,16 @@ public class ConsoleService {
 
         // Separate records where hsCode is null
         List<AddConsole> nullHsCodeList = addConsoleList.stream()
-                .filter(console -> console.getHsCode() == null || console.getHsCode().isEmpty())
+                .filter(console -> console.getHsCode().isEmpty())
                 .collect(Collectors.toList());
 
         // Create a map to group consignments by hsCode
         Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
-                .filter(console -> console.getHsCode() != null && !console.getHsCode().isEmpty())
+                .filter(console -> !console.getHsCode().isEmpty())
                 .collect(Collectors.groupingBy(AddConsole::getHsCode));
 
         if(!nullHsCodeList.isEmpty()){
-           List<Console> addConsole = createConsoleNormal(addConsoleList, loginUserID);
+           List<Console> addConsole = createConsoleNormal(nullHsCodeList, loginUserID);
            for(Console console : addConsole) {
                createdConsoleList.add(console);
            }
@@ -1052,6 +1052,9 @@ public class ConsoleService {
         try {
             List<Console> createdConsoleList = new ArrayList<>();
 
+            String NUM_RAN_OBJ = "CONSOLEID";
+            String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+            log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : addConsoleList) {
 
                 boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
@@ -1077,9 +1080,7 @@ public class ConsoleService {
                     newConsole.setStatusTimestamp(new Date());
                 }
 
-                String NUM_RAN_OBJ = "CONSOLEID";
-                String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
+
                 newConsole.setConsoleId(CONSOLE_ID);
 
                 IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(

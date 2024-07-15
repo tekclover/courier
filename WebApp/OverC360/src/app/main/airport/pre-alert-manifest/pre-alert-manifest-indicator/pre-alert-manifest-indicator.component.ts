@@ -53,7 +53,7 @@ export class PreAlertManifestIndicatorComponent {
     country: [],
   });
 
-  pageToken: any;
+ pageToken: any;
 
   ngOnInit(): void {
     let code = this.route.snapshot.params['code'];
@@ -62,7 +62,7 @@ export class PreAlertManifestIndicatorComponent {
     const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
-    this.callTableHeader();
+   this.callTableHeader();
     this.preAlertValidation();
 
   }

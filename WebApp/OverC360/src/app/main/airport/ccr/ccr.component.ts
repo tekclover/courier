@@ -79,7 +79,7 @@ export class CcrComponent {
       { field: 'customsInsurance', header: 'Customs Insurance', showFooter: false },
       { field: 'duty', header: 'Duty', showFooter: true },
       { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: false },
-      { field: 'addIATA', header: 'Add IATA', showFooter: false },
+      { field: 'addIata', header: 'Add IATA', showFooter: false },
       { field: 'addInsurance', header: 'Add Insurance', showFooter: false },
       { field: 'customsValue', header: 'Custom', showFooter: false },
       { field: 'calculatedTotalDuty', header: 'Calculated Total duty', showFooter: true },

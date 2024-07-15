@@ -379,7 +379,6 @@ export class PreAlertManifestComponent {
   }
 
   // preAlertIndicator(line: any[]) {
-  //   console.log(line)
   //   const dialogRef = this.dialog.open(PreAlertManifestIndicatorComponent, {
   //     disableClose: true,
   //     width: '70%',
