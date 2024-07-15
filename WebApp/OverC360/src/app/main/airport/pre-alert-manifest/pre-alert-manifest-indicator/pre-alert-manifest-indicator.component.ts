@@ -51,7 +51,7 @@ export class PreAlertManifestIndicatorComponent {
     name: [],
     companyName: [],
     country: [],
-  }); 
+  });
 
   pageToken: any;
 
@@ -81,14 +81,14 @@ export class PreAlertManifestIndicatorComponent {
       { field: 'paymentType', header: 'Payment Type' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
       { field: 'originDetails.name', header: 'Origin Name', subChild: true },
-      { field: 'originDetails.phone', header: 'Origin Phone No', subChild: true  },
-      { field: 'originDetails.addressLine1', header: 'Origin Address Line 1', subChild: true  },
-      { field: 'originDetails.addressLine2', header: 'Origin Address Line 2', subChild: true  },
+      { field: 'originDetails.phone', header: 'Origin Phone No', subChild: true },
+      { field: 'originDetails.addressLine1', header: 'Origin Address Line 1', subChild: true },
+      { field: 'originDetails.addressLine2', header: 'Origin Address Line 2', subChild: true },
       { field: 'originDetails.city', header: 'Origin City', subChild: true },
       { field: 'originDetails.country', header: 'Origin Country', subChild: true },
       { field: 'destinationDetails.name', header: 'Destination Name', subChild: true },
       { field: 'destinationDetails.phone', header: 'Destination Phone No', subChild: true },
-      { field: 'destinationDetails.addressLine1', header: 'Destination Address Line 1', subChild: true  },
+      { field: 'destinationDetails.addressLine1', header: 'Destination Address Line 1', subChild: true },
       { field: 'destinationDetails.addressLine2', header: 'Destination Address Line 2', subChild: true },
       { field: 'destinationDetails.city', header: 'Destination City', subChild: true },
       { field: 'destinationDetails.country', header: 'Destination Country', subChild: true },
@@ -99,7 +99,7 @@ export class PreAlertManifestIndicatorComponent {
       { field: 'pieceDetails[0].hsCode', header: 'HS Code', subChild: true },
       { field: 'pieceDetails[0].consignmentId', header: 'Consignment ID', subChild: true },
     ];
-  }   
+  }
 
   preAlertManifestIndicatorTable: any[] = [];
   selectedPreAlertManifestIndicator: any[] = [];
@@ -109,20 +109,20 @@ export class PreAlertManifestIndicatorComponent {
 
   preAlertValidation() {
     let obj: any = {};
-      obj.languageId = [this.auth.languageId];
-      obj.companyId = [this.auth.companyId];
-       obj.houseAirwayBill = [this.pageToken.line.houseAirwayBill];
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.houseAirwayBill = [this.pageToken.line.houseAirwayBill];
 
-      this.consignmentService.findConsignmentPreAlertIndicator(obj).subscribe({
-        next: (res: any) => { 
-          this.preAlertManifestIndicatorTable = res;
-          // this.preAlertManifestIndicatorTable = res.map((item: any) => this.reorderFields(item));
-          // this.reorderedIndicator = this.indicator.map(item => this.reorderFields(item));
-        }, error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        }
-      })
+    this.consignmentService.findConsignmentPreAlertIndicator(obj).subscribe({
+      next: (res: any) => {
+        this.preAlertManifestIndicatorTable = res;
+        // this.preAlertManifestIndicatorTable = res.map((item: any) => this.reorderFields(item));
+        // this.reorderedIndicator = this.indicator.map(item => this.reorderFields(item));
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
   getNestedValue(obj: any, path: string): any {

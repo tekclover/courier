@@ -21,7 +21,7 @@
     ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{border-radius: 12px !important;}
 
     .deleteDialog{padding: 2rem 1rem;}
-  .scrollNew{height: calc(100vh - 25rem); overflow-y: scroll;}
+  .scrollNew{height: calc(100vh - 20rem); overflow-y: scroll;}
 
 
   .circle {
@@ -104,5 +104,16 @@
   .pointer-cursor {
     cursor: pointer;
   }
+
+  .componentTableHeader {
+    font-size: 18px; font-weight: 600;
+    padding-bottom: 20px;
+  }
+
+  .null-value {
+    color: #fb4 !important;
+    font-weight: bolder !important;
+  }
+  
   
   
