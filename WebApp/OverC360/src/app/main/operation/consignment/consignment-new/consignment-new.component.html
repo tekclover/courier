@@ -1246,7 +1246,7 @@
                     <button class="buttom1 bgBlack text-white mx-1" (click)="saveBilling()">Save</button>
                 </div>
             </p-tabPanel>
-            <p-tabPanel header="Duty Charges" [disabled]="disabledBilling">
+            <p-tabPanel header="Duty Charges" *ngIf="this.pageToken.pageflow != 'New'">
                 <p-table #consignmentTag [columns]="cols" [value]="billingTable" class="custom-table"
                     [scrollable]="true" selectionMode="multiple" [(selection)]="selectedConsignment"
                     scrollHeight="calc(100vh - 22.8rem)" sortField="consignmentId" [sortOrder]="-1"
