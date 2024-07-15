@@ -161,7 +161,7 @@
                             <span *ngIf="col.field === 'manifestIndicator'" class="badge px-2 py-0" >
                                 <img [src]="rowData[col.field] == 1 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'No' : 'Yes'}}" style="height: 1.1rem;width: 1.1rem;">
                             </span>
-                            <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator(rowData)"  [ngStyle]="{ 'cursor': 'pointer' }" class="badge px-2 py-0" >
+                            <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator('Indicator',rowData)"  [ngStyle]="{ 'cursor': 'pointer' }" class="badge px-2 py-0" >
                                 <img [src]="rowData[col.field] == 0 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'Yes' : 'No'}}" style="height: 1.1rem;width: 1.1rem;">
                             </span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy HH:mm'}}</span>
