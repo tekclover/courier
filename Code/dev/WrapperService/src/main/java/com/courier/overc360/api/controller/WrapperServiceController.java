@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,10 +34,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -254,4 +252,15 @@ public class WrapperServiceController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    @ApiOperation(response = UploadApiResponse.class, value = "PreAlert Upload")
+    @PostMapping("/preAlert/upload")
+    public ResponseEntity<?> preAlertUpload(@RequestParam("file") MultipartFile multipartFile, @RequestParam String companyId,
+                                            @RequestParam String partnerId, @RequestParam String partnerType, @RequestParam String partnerMasterAirwayBill,
+                                            @RequestParam String flightNo, @RequestParam String flightName, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfDeparture,
+                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfArrival) {
+        Map<String, String> response = fileStorageService.processPreAlertUpload(multipartFile, companyId, partnerId, partnerType, partnerMasterAirwayBill, flightNo,
+                flightName, estimatedTimeOfDeparture, estimatedTimeOfArrival);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

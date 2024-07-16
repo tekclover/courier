@@ -30,71 +30,70 @@ import java.util.*;
 @Service
 public class FileStorageService {
 
-	@Autowired
-	PropertiesConfig propertiesConfig;
+    @Autowired
+    PropertiesConfig propertiesConfig;
 
-	private Path fileStorageLocation = null;
+    private Path fileStorageLocation = null;
 
-	@Autowired
-	private AuthTokenService authTokenService;
+    @Autowired
+    private AuthTokenService authTokenService;
 
-	@Autowired
-	private MidMileService midMileService;
+    @Autowired
+    private MidMileService midMileService;
 
 
-	private RestTemplate getRestTemplate() {
-		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate;
-	}
+    private RestTemplate getRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate;
+    }
 
-	/**
-	 *
-	 * @param file
-	 * @return
-	 * @throws Exception
-	 */
-	public String storeFile(MultipartFile file, String filePath) throws Exception {
-
-		if(!filePath.startsWith("/")){
-			filePath = "/" + filePath;
-		}
-
-		this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
-		if (!Files.exists(fileStorageLocation)) {
-			try {
-				Files.createDirectories(this.fileStorageLocation);
-			} catch (Exception ex) {
-				throw new BadRequestException(
-						"Could not create the directory where the uploaded files will be stored.");
-			}
-		}
-
-		log.info("location : " + fileStorageLocation);
-
-		// Normalize file name
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		log.info("filename before: " + fileName);
-		fileName = fileName.replace(" ", "_");
-		log.info("filename after: " + fileName);
-		try {
-			// Check if the file's name contains invalid characters
-			if (fileName.contains("..")) {
-				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
-			}
-
-			// Copy file to the target location (Replacing existing file with the same name)
-			Path targetLocation = this.fileStorageLocation.resolve(fileName);
-			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-			log.info("Copied : " + targetLocation);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
-		}
-//		return Collections.singletonMap("message", "File uploaded successfully!");
-		return fileName;
-	}
     /**
-     *
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    public String storeFile(MultipartFile file, String filePath) throws Exception {
+
+        if (!filePath.startsWith("/")) {
+            filePath = "/" + filePath;
+        }
+
+        this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException(
+                        "Could not create the directory where the uploaded files will be stored.");
+            }
+        }
+
+        log.info("location : " + fileStorageLocation);
+
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        log.info("filename before: " + fileName);
+        fileName = fileName.replace(" ", "_");
+        log.info("filename after: " + fileName);
+        try {
+            // Check if the file's name contains invalid characters
+            if (fileName.contains("..")) {
+                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Copied : " + targetLocation);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+        }
+//		return Collections.singletonMap("message", "File uploaded successfully!");
+        return fileName;
+    }
+
+    /**
      * @param file
      * @param filePath
      * @return
@@ -102,213 +101,212 @@ public class FileStorageService {
      */
     public Map<String, String> storeSingleFile(MultipartFile file, String filePath) throws Exception {
 
-		if(!filePath.startsWith("/")){
-			filePath = "/" + filePath;
-		}
+        if (!filePath.startsWith("/")) {
+            filePath = "/" + filePath;
+        }
 
-		this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
-		if (!Files.exists(fileStorageLocation)) {
-			try {
-				Files.createDirectories(this.fileStorageLocation);
-			} catch (Exception ex) {
-				throw new BadRequestException(
-						"Could not create the directory where the uploaded files will be stored.");
-			}
-		}
+        this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException(
+                        "Could not create the directory where the uploaded files will be stored.");
+            }
+        }
 
-		log.info("location : " + fileStorageLocation);
+        log.info("location : " + fileStorageLocation);
 
-		// Normalize file name
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		log.info("filename before: " + fileName);
-		fileName = fileName.replace(" ", "_");
-		log.info("filename after: " + fileName);
-		try {
-			// Check if the file's name contains invalid characters
-			if (fileName.contains("..")) {
-				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
-			}
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        log.info("filename before: " + fileName);
+        fileName = fileName.replace(" ", "_");
+        log.info("filename after: " + fileName);
+        try {
+            // Check if the file's name contains invalid characters
+            if (fileName.contains("..")) {
+                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
-			// Copy file to the target location (Replacing existing file with the same name)
-			Path targetLocation = this.fileStorageLocation.resolve(fileName);
-			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-			log.info("Copied : " + targetLocation);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
-		}
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Copied : " + targetLocation);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+        }
 
         Map<String, String> mapFileProps = new HashMap<>();
         mapFileProps.put("file", fileName);
         mapFileProps.put("location", filePath);
         mapFileProps.put("status", "UPLOADED");
-		return mapFileProps;
-	}
+        return mapFileProps;
+    }
+
     /**
-     *
      * @param file
      * @param filePath
      * @return
      * @throws Exception
      */
-	public String[] storeFileWithReturnLocation(MultipartFile file, String filePath) throws Exception {
+    public String[] storeFileWithReturnLocation(MultipartFile file, String filePath) throws Exception {
 
-		if(!filePath.startsWith("/")){
-			filePath = "/" + filePath;
-		}
+        if (!filePath.startsWith("/")) {
+            filePath = "/" + filePath;
+        }
 
-		this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
-		if (!Files.exists(fileStorageLocation)) {
-			try {
-				Files.createDirectories(this.fileStorageLocation);
-			} catch (Exception ex) {
-				throw new BadRequestException(
-						"Could not create the directory where the uploaded files will be stored.");
-			}
-		}
+        this.fileStorageLocation = Paths.get(propertiesConfig.getDocStorageBasePath() + filePath).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException(
+                        "Could not create the directory where the uploaded files will be stored.");
+            }
+        }
 
-		log.info("location : " + fileStorageLocation);
+        log.info("location : " + fileStorageLocation);
 
-		// Normalize file name
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		log.info("filename before: " + fileName);
-		fileName = fileName.replace(" ", "_");
-		log.info("filename after: " + fileName);
-		try {
-			// Check if the file's name contains invalid characters
-			if (fileName.contains("..")) {
-				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
-			}
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        log.info("filename before: " + fileName);
+        fileName = fileName.replace(" ", "_");
+        log.info("filename after: " + fileName);
+        try {
+            // Check if the file's name contains invalid characters
+            if (fileName.contains("..")) {
+                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
-			// Copy file to the target location (Replacing existing file with the same name)
-			Path targetLocation = this.fileStorageLocation.resolve(fileName);
-			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-			log.info("Copied : " + targetLocation);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
-		}
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Copied : " + targetLocation);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+        }
 //		return Collections.singletonMap("message", "File uploaded successfully!");
-		String[] fileNameWithLocation = new String[]{fileName,filePath};
-		return fileNameWithLocation;
-	}
+        String[] fileNameWithLocation = new String[]{fileName, filePath};
+        return fileNameWithLocation;
+    }
 
-	/**
-	 *
-	 * @param location
-	 * @param file
-	 * @return
-	 * @throws Exception
-	 */
-	public String getQualifiedFilePath (String location, String file) throws Exception {
-		String filePath = propertiesConfig.getDocStorageBasePath();
+    /**
+     * @param location
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    public String getQualifiedFilePath(String location, String file) throws Exception {
+        String filePath = propertiesConfig.getDocStorageBasePath();
 
-		log.info("getQualifiedFilePath---location------>: " + location);
-		log.info("getQualifiedFilePath---file------>: " + file);
+        log.info("getQualifiedFilePath---location------>: " + location);
+        log.info("getQualifiedFilePath---file------>: " + file);
 
-		if(location.startsWith("/")){
-			filePath = filePath + location;
-		} else {
-			filePath = filePath + "/" + location;
-		}
+        if (location.startsWith("/")) {
+            filePath = filePath + location;
+        } else {
+            filePath = filePath + "/" + location;
+        }
 
-		if(location.endsWith("/")){
-			filePath = filePath + file;
-		} else {
-			filePath = filePath + "/" + file;
-		}
-		log.info("filePath: " + filePath);
-		return filePath;
-	}
+        if (location.endsWith("/")) {
+            filePath = filePath + file;
+        } else {
+            filePath = filePath + "/" + file;
+        }
+        log.info("filePath: " + filePath);
+        return filePath;
+    }
 
     // ProcessConsignmentOrder - V1
-	public Map<String, String> processConsignmentOrders(MultipartFile file) {
-		this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
-		if (!Files.exists(fileStorageLocation)) {
-			try {
-				Files.createDirectories(this.fileStorageLocation);
-			} catch (Exception ex) {
-				throw new BadRequestException(
-						"Could not create the directory where the uploaded files will be stored.");
-			}
-		}
+    public Map<String, String> processConsignmentOrders(MultipartFile file) {
+        this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException(
+                        "Could not create the directory where the uploaded files will be stored.");
+            }
+        }
 
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		log.info("filename before: " + fileName);
-		fileName = fileName.replace("", "_");
-		log.info("filename after: " + fileName);
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        log.info("filename before: " + fileName);
+        fileName = fileName.replace("", "_");
+        log.info("filename after: " + fileName);
 
-		try {
-			if (fileName.contains("..")) {
-				throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
-			}
+        try {
+            if (fileName.contains("..")) {
+                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
-			Path targetLocation = this.fileStorageLocation.resolve(fileName);
-			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-			log.info("Copied : " + targetLocation);
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Copied : " + targetLocation);
 
-			List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
-			List<AddConsignment> consignmentOrders = prepConsignmentData (allRowsList);
-			log.info("consignmentOrders : " + consignmentOrders);
+            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
+            List<AddConsignment> consignmentOrders = prepConsignmentData(allRowsList);
+            log.info("consignmentOrders : " + consignmentOrders);
 
-			// Uploading Orders
-			UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
-			AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-			dbUploadApiResponse = midMileService.postConsignmentUpload (consignmentOrders, "Uploaded", authToken.getAccess_token());
+            // Uploading Orders
+            UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
+            AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Uploaded", authToken.getAccess_token());
 
-			if(dbUploadApiResponse != null) {
-				Map<String, String> mapFileProps = new HashMap<>();
-				mapFileProps.put("file", fileName);
-				mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
-				return mapFileProps;
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
-		}
-		return null;
+            if (dbUploadApiResponse != null) {
+                Map<String, String> mapFileProps = new HashMap<>();
+                mapFileProps.put("file", fileName);
+                mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
+                return mapFileProps;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+        }
+        return null;
 
-	}
+    }
 
 
     //Read Excel Data
-	private List<List<String>> readExcelData(File file) {
-		try {
-			Workbook workbook = new XSSFWorkbook(file);
-			workbook.setMissingCellPolicy(Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
-			org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+    private List<List<String>> readExcelData(File file) {
+        try {
+            Workbook workbook = new XSSFWorkbook(file);
+            workbook.setMissingCellPolicy(Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
 
-			List<List<String>> allRowsList = new ArrayList<>();
-			DataFormatter fmt = new DataFormatter();
-			for (int rn=sheet.getFirstRowNum(); rn<=sheet.getLastRowNum(); rn++) {
-				List<String> listUploadData = new ArrayList<String>();
-				Row row = sheet.getRow(rn);
-				log.info("Row:  "+ row.getRowNum());
-				if (row == null) {
-					// There is no data in this row, handle as needed
-				} else if (row.getRowNum() != 0) {
-					for (int cn = 0; cn <= row.getLastCellNum(); cn ++) {
-						Cell cell = row.getCell(cn);
-						if (cell == null) {
-							log.info("cell empty: " + cell);
-							listUploadData.add("");
-						} else {
-							String cellStr = fmt.formatCellValue(cell);
-							log.info("cellStr: " + cellStr);
-							listUploadData.add(cellStr);
-						}
-					}
-					allRowsList.add(listUploadData);
-				}
-			}
+            List<List<String>> allRowsList = new ArrayList<>();
+            DataFormatter fmt = new DataFormatter();
+            for (int rn = sheet.getFirstRowNum(); rn <= sheet.getLastRowNum(); rn++) {
+                List<String> listUploadData = new ArrayList<String>();
+                Row row = sheet.getRow(rn);
+                log.info("Row:  " + row.getRowNum());
+                if (row == null) {
+                    // There is no data in this row, handle as needed
+                } else if (row.getRowNum() != 0) {
+                    for (int cn = 0; cn <= row.getLastCellNum(); cn++) {
+                        Cell cell = row.getCell(cn);
+                        if (cell == null) {
+                            log.info("cell empty: " + cell);
+                            listUploadData.add("");
+                        } else {
+                            String cellStr = fmt.formatCellValue(cell);
+                            log.info("cellStr: " + cellStr);
+                            listUploadData.add(cellStr);
+                        }
+                    }
+                    allRowsList.add(listUploadData);
+                }
+            }
 
-			log.info("list data: " + allRowsList);
-			return allRowsList;
-		} catch (Exception ioe) {
-			ioe.printStackTrace();
-		}
-		return null;
-	}
+            log.info("list data: " + allRowsList);
+            return allRowsList;
+        } catch (Exception ioe) {
+            ioe.printStackTrace();
+        }
+        return null;
+    }
 
     private List<List<String>> readExcelConsignmentData(File file) {
         try {
@@ -384,14 +382,14 @@ public class FileStorageService {
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
 
-            if(fileName.equalsIgnoreCase("consignmentTemplate1")) {
-                 consignmentOrders = prepConsignmentData(allRowsList);
+            if (fileName.equalsIgnoreCase("consignmentTemplate1")) {
+                consignmentOrders = prepConsignmentData(allRowsList);
                 log.info("consignmentOrders : " + consignmentOrders);
-            } else if(fileName.equalsIgnoreCase("consignmentTemplate2")) {
+            } else if (fileName.equalsIgnoreCase("consignmentTemplate2")) {
                 consignmentOrders = prepConsignmentDataV2(allRowsList);
-            } else if(fileName.equalsIgnoreCase("consignmentINTIB.xlsx") || fileName.equalsIgnoreCase("consignmentINTOB.xlsx")) {
+            } else if (fileName.equalsIgnoreCase("consignmentINTIB.xlsx") || fileName.equalsIgnoreCase("consignmentINTOB.xlsx")) {
                 consignmentOrders = prepConsignmentDataV3(allRowsList, companyId);
-            } else if(fileName.equalsIgnoreCase("consignmentDomestic.xlsx")) {
+            } else if (fileName.equalsIgnoreCase("consignmentDomestic.xlsx")) {
                 consignmentOrders = prepConsignmentDataV4(allRowsList, companyId);
             } else {
                 throw new BadRequestException("File Name InCorrect");
@@ -402,7 +400,7 @@ public class FileStorageService {
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
             dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Upload", authToken.getAccess_token());
 
-            if(dbUploadApiResponse != null) {
+            if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
                 mapFileProps.put("file", fileName);
                 mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
@@ -416,26 +414,81 @@ public class FileStorageService {
 
     }
 
+    //ProcessConsignmentOrders-V2
+    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType,
+                                                     String partnerId, String partnerMasterAirwayBill, String flightNo, String flightName,
+                                                     Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel) {
+        this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException(
+                        "Could not create the directory where the uploaded files will be stored.");
+            }
+        }
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        log.info("filename before: " + fileName);
+        fileName = fileName.replace(" ", "_");
+        log.info("filename after: " + fileName);
+
+        try {
+            if (fileName.contains("..")) {
+                throw new BadRequestException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Copied : " + targetLocation);
+
+            List<List<String>> allRowsList = readExcelConsignmentData(targetLocation.toFile());
+
+            fileName = fileName.trim(); // Remove any leading or trailing whitespace
+            log.info("filename after trim: " + fileName);
+
+            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId, partnerMasterAirwayBill, flightNo, flightName,
+                    estimatedTimeOfDeparture, estimatedTimeOfTravel);
+
+            // Uploading Orders
+            UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
+            AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
+            dbUploadApiResponse = midMileService.createPreAlert(consignmentOrders, "Upload", authToken.getAccess_token());
+
+            if (dbUploadApiResponse != null) {
+                Map<String, String> mapFileProps = new HashMap<>();
+                mapFileProps.put("file", fileName);
+                mapFileProps.put("status", "UPLOADED SUCCESSFULLY");
+                return mapFileProps;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
+        }
+        return null;
+
+    }
+
+
     /**
-     *
      * @param allRowsList
      * @return
      */
-	public List<AddConsignment> prepConsignmentData(List<List<String>> allRowsList) {
-		Map<String, AddConsignment> consignmentMap = new HashMap<>();
-		Map<String, Map<String, AddPieceDetails>> pieceMap = new HashMap<>();
+    public List<AddConsignment> prepConsignmentData(List<List<String>> allRowsList) {
+        Map<String, AddConsignment> consignmentMap = new HashMap<>();
+        Map<String, Map<String, AddPieceDetails>> pieceMap = new HashMap<>();
 
-		// DateFormat
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // DateFormat
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		for (List<String> listUploadedData : allRowsList) {
-			// Create consignment key based on consignment fields
-			String consignmentKey = String.join("_", listUploadedData.subList(0, 156));
-			// Create piece key based on piece-specific fields
-			String pieceKey = String.join("_", listUploadedData.subList(157, 170));
+        for (List<String> listUploadedData : allRowsList) {
+            // Create consignment key based on consignment fields
+            String consignmentKey = String.join("_", listUploadedData.subList(0, 156));
+            // Create piece key based on piece-specific fields
+            String pieceKey = String.join("_", listUploadedData.subList(157, 170));
 
-			AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
-			Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
+            AddConsignment addConsignment = consignmentMap.getOrDefault(consignmentKey, new AddConsignment());
+            Map<String, AddPieceDetails> pieceDetailsMap = pieceMap.getOrDefault(consignmentKey, new HashMap<>());
 
             if (!consignmentMap.containsKey(consignmentKey)) {
                 // Set Consignment Details
@@ -646,7 +699,7 @@ public class FileStorageService {
             String pieceImageRef = listUploadedData.get(171);
             String[] pieceImageUrls = pieceImageRef.split(",");
             List<ReferenceImageList> imageReference = new ArrayList<>();
-            for(String imageUrl : pieceImageUrls) {
+            for (String imageUrl : pieceImageUrls) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReference.add(referenceImageList);
@@ -672,7 +725,7 @@ public class FileStorageService {
 
             String itemImageRef = listUploadedData.get(185);
             String[] itemImageUrl = itemImageRef.split(",");
-            for(String imageUrl : itemImageUrl) {
+            for (String imageUrl : itemImageUrl) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
@@ -960,7 +1013,6 @@ public class FileStorageService {
 //	}
 
 
-
 //	this is upload program i pass 50 records in excel difference different consignment but same piece and same item ok, 50 consignment, 50 piece, 50 item create but now create 50 consginment, 50 piece, each pieace 50 item created this is wrong , i send 50 records only but save item is 2500 records
 //	public List<AddConsignment> prepConsignmentData(List<List<String>> allRowsList) {
 //		Map<String, AddConsignment> consignmentMap = new HashMap<>();
@@ -1060,7 +1112,6 @@ public class FileStorageService {
 //	}
 
     /**
-     *
      * @param allRowsList
      * @return
      */
@@ -1269,7 +1320,6 @@ public class FileStorageService {
 //
 //        return new ArrayList<>(consignmentMap.values());
 //    }
-
     public List<AddConsignment> prepConsignmentDataV2(List<List<String>> allRowsList) {
         Map<String, AddConsignment> consignmentMap = new HashMap<>();
         Map<String, Map<String, AddPieceDetails>> pieceMap = new HashMap<>();
@@ -1428,33 +1478,33 @@ public class FileStorageService {
 
             // Set Item Details
             AddItemDetails itemDetails = new AddItemDetails();
-            itemDetails.setPartnerType(getValue(listUploadedData,100));
-            itemDetails.setItemCode(getValue(listUploadedData,101));
-            itemDetails.setHsCode(getValue(listUploadedData,102));
-            itemDetails.setDeclaredValue(getValue(listUploadedData,103));
-            itemDetails.setCodAmount(getValue(listUploadedData,104));
-            itemDetails.setLength(getValue(listUploadedData,105));
-            itemDetails.setDimensionUnit(getValue(listUploadedData,106));
-            itemDetails.setWidth(getValue(listUploadedData,107));
-            itemDetails.setHeight(getValue(listUploadedData,108));
-            itemDetails.setWeight(getValue(listUploadedData,109));
-            itemDetails.setWeightUnit(getValue(listUploadedData,110));
-            itemDetails.setVolume(getValue(listUploadedData,111));
+            itemDetails.setPartnerType(getValue(listUploadedData, 100));
+            itemDetails.setItemCode(getValue(listUploadedData, 101));
+            itemDetails.setHsCode(getValue(listUploadedData, 102));
+            itemDetails.setDeclaredValue(getValue(listUploadedData, 103));
+            itemDetails.setCodAmount(getValue(listUploadedData, 104));
+            itemDetails.setLength(getValue(listUploadedData, 105));
+            itemDetails.setDimensionUnit(getValue(listUploadedData, 106));
+            itemDetails.setWidth(getValue(listUploadedData, 107));
+            itemDetails.setHeight(getValue(listUploadedData, 108));
+            itemDetails.setWeight(getValue(listUploadedData, 109));
+            itemDetails.setWeightUnit(getValue(listUploadedData, 110));
+            itemDetails.setVolume(getValue(listUploadedData, 111));
             itemDetails.setVolumeUnit(getValue(listUploadedData, 112));
-            itemDetails.setQuantity(getValue(listUploadedData,113));
-            itemDetails.setUnitValue(getValue(listUploadedData,114));
-            itemDetails.setCurrency(getValue(listUploadedData,115));
+            itemDetails.setQuantity(getValue(listUploadedData, 113));
+            itemDetails.setUnitValue(getValue(listUploadedData, 114));
+            itemDetails.setCurrency(getValue(listUploadedData, 115));
             List<ReferenceImageList> imageReferenceList = new ArrayList<>();
 
-            String itemImageRef = getValue(listUploadedData,116);
+            String itemImageRef = getValue(listUploadedData, 116);
             String[] itemImageUrl = itemImageRef.split(",");
-            for(String imageUrl : itemImageUrl) {
+            for (String imageUrl : itemImageUrl) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
-            if (getValue(listUploadedData,117).trim().length() > 0) {
-                itemDetails.setDescription(getValue(listUploadedData,117));
+            if (getValue(listUploadedData, 117).trim().length() > 0) {
+                itemDetails.setDescription(getValue(listUploadedData, 117));
             }
             itemDetails.setReferenceImageList(imageReferenceList);
 
@@ -1513,7 +1563,7 @@ public class FileStorageService {
 
                 String serviceType = getValue(listUploadedData, 5);
                 String[] serviceTypeDetails = serviceType.split("-");
-                if(serviceTypeDetails.length == 2) {
+                if (serviceTypeDetails.length == 2) {
                     String serviceTypeId = serviceTypeDetails[0];
                     String serviceTypeText = serviceTypeDetails[1];
 
@@ -1524,7 +1574,7 @@ public class FileStorageService {
                 String loadType = getValue(listUploadedData, 6);
 
                 String[] loadTypeDetails = loadType.split("-");
-                if(loadTypeDetails.length == 2) {
+                if (loadTypeDetails.length == 2) {
                     String loadTypeId = loadTypeDetails[0];
                     String loadTypeText = loadTypeDetails[1];
 
@@ -1645,28 +1695,28 @@ public class FileStorageService {
 
             // Set Item Details
             AddItemDetails itemDetails = new AddItemDetails();
-            itemDetails.setHsCode(getValue(listUploadedData,85));
-            itemDetails.setDeclaredValue(getValue(listUploadedData,86));
-            itemDetails.setLength(getValue(listUploadedData,87));
-            itemDetails.setDimensionUnit(getValue(listUploadedData,88));
-            itemDetails.setWidth(getValue(listUploadedData,89));
-            itemDetails.setHeight(getValue(listUploadedData,90));
-            itemDetails.setWeight(getValue(listUploadedData,91));
-            itemDetails.setWeightUnit(getValue(listUploadedData,92));
-            itemDetails.setQuantity(getValue(listUploadedData,93));
-            itemDetails.setUnitValue(getValue(listUploadedData,94));
-            itemDetails.setCurrency(getValue(listUploadedData,95));
+            itemDetails.setHsCode(getValue(listUploadedData, 85));
+            itemDetails.setDeclaredValue(getValue(listUploadedData, 86));
+            itemDetails.setLength(getValue(listUploadedData, 87));
+            itemDetails.setDimensionUnit(getValue(listUploadedData, 88));
+            itemDetails.setWidth(getValue(listUploadedData, 89));
+            itemDetails.setHeight(getValue(listUploadedData, 90));
+            itemDetails.setWeight(getValue(listUploadedData, 91));
+            itemDetails.setWeightUnit(getValue(listUploadedData, 92));
+            itemDetails.setQuantity(getValue(listUploadedData, 93));
+            itemDetails.setUnitValue(getValue(listUploadedData, 94));
+            itemDetails.setCurrency(getValue(listUploadedData, 95));
             List<ReferenceImageList> imageReferenceList = new ArrayList<>();
 
-            String itemImageRef = getValue(listUploadedData,96);
+            String itemImageRef = getValue(listUploadedData, 96);
             String[] itemImageUrl = itemImageRef.split(",");
-            for(String imageUrl : itemImageUrl) {
+            for (String imageUrl : itemImageUrl) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
-            if (getValue(listUploadedData,97).trim().length() > 0) {
-                itemDetails.setDescription(getValue(listUploadedData,97));
+            if (getValue(listUploadedData, 97).trim().length() > 0) {
+                itemDetails.setDescription(getValue(listUploadedData, 97));
             }
             itemDetails.setReferenceImageList(imageReferenceList);
 
@@ -1688,7 +1738,6 @@ public class FileStorageService {
 
         return new ArrayList<>(consignmentMap.values());
     }
-
 
     // Consignment Upload --16/07/2024
     public List<AddConsignment> prepConsignmentDataV4(List<List<String>> allRowsList, String companyId) {
@@ -1725,7 +1774,7 @@ public class FileStorageService {
 
                 String serviceType = getValue(listUploadedData, 4);
                 String[] serviceTypeDetails = serviceType.split("-");
-                if(serviceTypeDetails.length == 2) {
+                if (serviceTypeDetails.length == 2) {
                     String serviceTypeId = serviceTypeDetails[0];
                     String serviceTypeText = serviceTypeDetails[1];
 
@@ -1736,7 +1785,7 @@ public class FileStorageService {
                 String loadType = getValue(listUploadedData, 5);
 
                 String[] loadTypeDetails = loadType.split("-");
-                if(loadTypeDetails.length == 2) {
+                if (loadTypeDetails.length == 2) {
                     String loadTypeId = loadTypeDetails[0];
                     String loadTypeText = loadTypeDetails[1];
 
@@ -1859,26 +1908,26 @@ public class FileStorageService {
             AddItemDetails itemDetails = new AddItemDetails();
 //            itemDetails.setHsCode(getValue(listUploadedData,85));
 //            itemDetails.setDeclaredValue(getValue(listUploadedData,86));
-            itemDetails.setLength(getValue(listUploadedData,71));
-            itemDetails.setDimensionUnit(getValue(listUploadedData,72));
-            itemDetails.setWidth(getValue(listUploadedData,73));
-            itemDetails.setHeight(getValue(listUploadedData,74));
-            itemDetails.setWeight(getValue(listUploadedData,75));
-            itemDetails.setWeightUnit(getValue(listUploadedData,76));
-            itemDetails.setQuantity(getValue(listUploadedData,77));
+            itemDetails.setLength(getValue(listUploadedData, 71));
+            itemDetails.setDimensionUnit(getValue(listUploadedData, 72));
+            itemDetails.setWidth(getValue(listUploadedData, 73));
+            itemDetails.setHeight(getValue(listUploadedData, 74));
+            itemDetails.setWeight(getValue(listUploadedData, 75));
+            itemDetails.setWeightUnit(getValue(listUploadedData, 76));
+            itemDetails.setQuantity(getValue(listUploadedData, 77));
 //            itemDetails.setUnitValue(getValue(listUploadedData,94));
 //            itemDetails.setCurrency(getValue(listUploadedData,95));
             List<ReferenceImageList> imageReferenceList = new ArrayList<>();
 
-            String itemImageRef = getValue(listUploadedData,78);
+            String itemImageRef = getValue(listUploadedData, 78);
             String[] itemImageUrl = itemImageRef.split(",");
-            for(String imageUrl : itemImageUrl) {
+            for (String imageUrl : itemImageUrl) {
                 ReferenceImageList referenceImageList = new ReferenceImageList();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
-            if (getValue(listUploadedData,79).trim().length() > 0) {
-                itemDetails.setDescription(getValue(listUploadedData,79));
+            if (getValue(listUploadedData, 79).trim().length() > 0) {
+                itemDetails.setDescription(getValue(listUploadedData, 79));
             }
             itemDetails.setReferenceImageList(imageReferenceList);
 
@@ -1898,6 +1947,58 @@ public class FileStorageService {
             consignmentMap.get(consignmentKey).setPieceDetails(new ArrayList<>(pieceDetailsMap.values()));
         }
         return new ArrayList<>(consignmentMap.values());
+    }
+
+
+    /**
+     *
+     * @param allRowList
+     * @param companyId
+     * @param partnerType
+     * @param partnerId
+     * @param partnerMasterAirwayBill
+     * @param flightNo
+     * @param flightName
+     * @param estimatedTimeOfDeparture
+     * @param estimatedTimeTravel
+     * @return
+     */
+    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerMasterAirwayBill,
+                                       String flightNo, String flightName, Date estimatedTimeOfDeparture, Date estimatedTimeTravel) {
+
+        List<PreAlert> preAlertMap = new ArrayList<>();
+
+        for (List<String> listUploadData : allRowList) {
+            PreAlert addPreAlert = new PreAlert();
+
+            addPreAlert.setCompanyId(companyId);
+            addPreAlert.setPartnerId(partnerId);
+            addPreAlert.setPartnerType(partnerType);
+            addPreAlert.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
+            addPreAlert.setFlightNo(flightNo);
+            addPreAlert.setFlightName(flightName);
+            addPreAlert.setEstimatedTimeOfDeparture(estimatedTimeOfDeparture);
+            addPreAlert.setEstimatedTimeTravel(estimatedTimeTravel);
+            addPreAlert.setPartnerHouseAirwayBill(getValue(listUploadData, 0));
+            addPreAlert.setTotalWeight(getValue(listUploadData, 1));
+            addPreAlert.setNoOfPieces(getValue(listUploadData, 2));
+            addPreAlert.setConsignmentValue(getValue(listUploadData, 3));
+            addPreAlert.setBayanHv(getValue(listUploadData, 4));
+            addPreAlert.setCurrency(getValue(listUploadData, 5));
+            addPreAlert.setDescription(getValue(listUploadData, 6));
+            addPreAlert.setConsigneeName(getValue(listUploadData, 7));
+            addPreAlert.setShipper(getValue(listUploadData, 8));
+            addPreAlert.setOrigin(getValue(listUploadData, 9));
+            addPreAlert.setOriginCode(getValue(listUploadData, 10));
+            addPreAlert.setConsignmentValueKd(getValue(listUploadData, 11));
+            addPreAlert.setIata(getValue(listUploadData, 12));
+            addPreAlert.setHsCode(getValue(listUploadData, 13));
+            if (getValue(listUploadData, 14).trim().length() > 0) {
+                addPreAlert.setIncoTerm(getValue(listUploadData, 14));
+            }
+            preAlertMap.add(addPreAlert);
+        }
+        return preAlertMap;
     }
 
     private String getValue(List<String> list, int index) {
