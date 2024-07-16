@@ -257,9 +257,10 @@ public class WrapperServiceController {
     @PostMapping("/preAlert/upload")
     public ResponseEntity<?> preAlertUpload(@RequestParam("file") MultipartFile multipartFile, @RequestParam String companyId,
                                             @RequestParam String partnerId, @RequestParam String partnerType, @RequestParam String partnerMasterAirwayBill,
-                                            @RequestParam String flightNo, @RequestParam String flightName, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfDeparture,
+                                            @RequestParam String flightNo, @RequestParam String flightName,
+                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfDeparture,
                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfArrival) {
-        Map<String, String> response = fileStorageService.processPreAlertUpload(multipartFile, companyId, partnerId, partnerType, partnerMasterAirwayBill, flightNo,
+        Map<String, String> response = fileStorageService.processPreAlertUpload(multipartFile, companyId, partnerType, partnerId, partnerMasterAirwayBill, flightNo,
                 flightName, estimatedTimeOfDeparture, estimatedTimeOfArrival);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

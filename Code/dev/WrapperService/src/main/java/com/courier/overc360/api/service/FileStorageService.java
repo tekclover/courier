@@ -1964,7 +1964,7 @@ public class FileStorageService {
      * @return
      */
     public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerMasterAirwayBill,
-                                       String flightNo, String flightName, Date estimatedTimeOfDeparture, Date estimatedTimeTravel) {
+                                       String flightNo, String flightName, Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel) {
 
         List<PreAlert> preAlertMap = new ArrayList<>();
 
@@ -1978,7 +1978,7 @@ public class FileStorageService {
             addPreAlert.setFlightNo(flightNo);
             addPreAlert.setFlightName(flightName);
             addPreAlert.setEstimatedTimeOfDeparture(estimatedTimeOfDeparture);
-            addPreAlert.setEstimatedTimeTravel(estimatedTimeTravel);
+            addPreAlert.setEstimatedTimeOfArrival(estimatedTimeOfTravel);
             addPreAlert.setPartnerHouseAirwayBill(getValue(listUploadData, 0));
             addPreAlert.setTotalWeight(getValue(listUploadData, 1));
             addPreAlert.setNoOfPieces(getValue(listUploadData, 2));

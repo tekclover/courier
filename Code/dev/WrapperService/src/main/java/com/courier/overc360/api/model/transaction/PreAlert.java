@@ -30,7 +30,7 @@ public class PreAlert {
 
     private Date estimatedTimeOfDeparture;
 
-    private Date estimatedTimeTravel;
+    private Date estimatedTimeOfArrival;
 
     private String totalWeight;
 

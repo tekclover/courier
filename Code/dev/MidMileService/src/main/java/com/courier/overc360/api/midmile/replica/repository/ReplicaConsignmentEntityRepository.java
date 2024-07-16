@@ -125,9 +125,9 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
     List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("consignmentId") Long consignmentId);
 
 
-    @Query(value = "select MASTER_AIRWAY_BILL from tblconsignment_entity " +
-            " where LANG_ID = :languageId and C_ID = :companyId and PARTNER_HOUSE_AB = :partnerHouseAB" +
-            " and partner_id = :partnerId and is_deleted = 0 ", nativeQuery = true)
+    @Query(value = "select MASTER_AIRWAY_BILL as masterAirwayBill from tblconsignment_entity " +
+            " where LANG_ID in (:languageId) and C_ID in (:companyId) and PARTNER_HOUSE_AB in (:partnerHouseAB)" +
+            " and partner_id in (:partnerId) and is_deleted = 0 ", nativeQuery = true)
     public String getMasterAirwayBill(@Param("languageId") String languageId,
                                       @Param("companyId") String  companyId,
                                       @Param("partnerId") String partnerId,

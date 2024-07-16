@@ -47,6 +47,9 @@ public class PreAlertService {
             String getMasterAirwayBill = replicaConsignmentEntityRepository.getMasterAirwayBill(iKeyValuePair.getLangId(),
                     dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
 
+            log.info(iKeyValuePair.getLangId() + " Company " + dbPreAlert.getCompanyId() + " PartnerId " + dbPreAlert.getPartnerId()
+                    + "PartnerHouseAirwayBill" + dbPreAlert.getPartnerHouseAirwayBill());
+
             if (!preAlertOptional.isPresent()) {
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
