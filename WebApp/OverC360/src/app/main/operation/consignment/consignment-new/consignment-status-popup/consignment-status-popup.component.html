@@ -1,0 +1,38 @@
+<div class="bgWhite text-black w-93 h-100 m-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="componentHeader f600 mb-0">Piece Details</p>
+    </div>
+
+    <div class="d-flex scrollNew table-responsive mt-4">
+        <table class="table" style="width: 150rem;">
+            <thead class="sticky-top  table-style ">
+                <tr>
+                    <th scope="col">S.No</th>
+                    <th scope="col">Piece ID</th>
+                    <th scope="col">Piece Status ID</th>
+                    <th scope="col">Piece Status</th>
+                    <th scope="col">Piece Event Code</th>
+                    <th scope="col">Piece Event Text</th>
+                    <th scope="col">Piece Event Time</th>
+
+                </tr>
+            </thead>
+            <tbody class="table-style-body" >
+                <tr *ngFor="let item of cnTable; let i = index">
+                    <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
+                    <td>{{item.pieceId}}</td>
+                    <td>{{item.pieceStatusId}}</td>
+                    <td>{{item.pieceStatusText}}</td>
+                    <td>{{item.pieceEventCode}}</td>
+                    <td>{{item.pieceEventText}}</td>
+                    <td>{{item.pieceEventTimestamp | date: 'dd-MM-yyyy HH:mm' }}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex float-right py-2" style="position: absolute; right: 3.5%; bottom: 5%;">
+        <button mat-dialog-close class="buttom1 textBlack mx-1">Cancel</button>
+    </div>
+</div>

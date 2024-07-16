@@ -8,6 +8,7 @@ import { ItemDetailsComponent } from './consignment/consignment-new/item-details
 import { DimensionComponent } from './consignment/consignment-new/dimension/dimension.component';
 import { ImageUploadComponent } from './consignment/consignment-new/image-upload/image-upload.component';
 import { ConsignmentUpdatebulkComponent } from './consignment/consignment-updatebulk/consignment-updatebulk.component';
+import { ConsignmentStatusPopupComponent } from './consignment/consignment-new/consignment-status-popup/consignment-status-popup.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ConsignmentUpdatebulkComponent } from './consignment/consignment-update
     ItemDetailsComponent,
     DimensionComponent,
     ImageUploadComponent,
-    ConsignmentUpdatebulkComponent
+    ConsignmentUpdatebulkComponent,
+    ConsignmentStatusPopupComponent
   ],
   imports: [
     CommonModule,
