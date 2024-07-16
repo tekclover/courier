@@ -16,6 +16,7 @@ export interface dropdownelement1 {
   value: any;
   label: any;
   referenceField?: any;
+  value2?: any;
 }
 export interface dropdownelement2 {
   key: any;
@@ -78,7 +79,7 @@ export class CommonAPIService {
     return forkJoin(observableBatch);
   }
 
-  foreachlist(list: any, val: { key: any, value: any }, _filter: any = {}, addblank: boolean = false,) {
+  foreachlist(list: any, val: { key: any, value: any, value2?: any}, _filter: any = {}, addblank: boolean = false,) {
     let dropdownlist: dropdownelement[] = [];
     let dropdownlist1: dropdownelement1[] = [];
     let filter = list;
@@ -89,7 +90,7 @@ export class CommonAPIService {
     for (const l of filter) {
       let filter2 = this.cs.filterArray(dropdownlist, { key: l[val.key] })
       if (filter2.length == 0)
-      dropdownlist1.push({ value: l[val.key], label: l[val.key] + ' - ' + l[val.value] });
+      dropdownlist1.push({ value: l[val.key], label: l[val.key] + ' - ' + l[val.value], value2: l[val.value2] });
     }
     return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }

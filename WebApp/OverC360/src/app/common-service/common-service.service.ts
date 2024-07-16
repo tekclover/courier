@@ -111,6 +111,29 @@ pCalendar(date: any): Date{
     return list;
   }
 
+ removeDuplicatesFromArrayListMultiple(list: any[] = [], fieldNames: string[] = []) {
+    let dataObj: Record<string, any> = {}; // Explicitly define dataObj type
+  
+    // Generate a unique key for each item based on fieldNames
+    for (let i = 0; i < list.length; i++) {
+      let key = '';
+      for (let j = 0; j < fieldNames.length; j++) {
+        key += list[i][fieldNames[j]] + '|'; // Concatenate field values with a delimiter
+      }
+      dataObj[key] = list[i];
+    }
+  
+    // Convert dataObj back to array
+    let uniqueList = [];
+    for (let key in dataObj) {
+      uniqueList.push(dataObj[key]);
+    }
+  
+    return uniqueList;
+  }
+  
+  
+
   removeDuplicateObj(array1: any, array2: any) {
     const array1IDs = new Set(array1.map(({ subMenuId }: any) => subMenuId));
     const combined = [
