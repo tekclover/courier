@@ -14,6 +14,7 @@ import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignme
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsignmentUpdatebulkComponent } from './consignment-updatebulk/consignment-updatebulk.component';
+import { DownloadTemplateComponent } from './download-template/download-template.component';
 
 @Component({
   selector: 'app-consignment',
@@ -389,5 +390,26 @@ export class ConsignmentComponent {
     }
     this.uniqueHouseAirway = this.selectedConsignment.map(item => item.houseAirwayBill);
     this.label.getResultLabelFromConsignment(this.uniqueHouseAirway)
+  }
+
+  downloadTemplate(){
+    const dialogRef = this.dialog.open(DownloadTemplateComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result){
+        if(result.creationType == 'Single'){
+          this.openCrud('New')
+        }else{
+          let obj: any = {};
+          obj.value = {imageRefId: result.fileName, referenceImageUrl: '/consignment/templates/'}
+          this.label.downloadDocument(obj);
+        }
+      }
+    });
   }
 }

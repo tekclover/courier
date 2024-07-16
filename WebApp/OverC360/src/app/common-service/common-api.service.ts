@@ -16,6 +16,7 @@ export interface dropdownelement1 {
   value: any;
   label: any;
   referenceField?: any;
+  value2?: any;
 }
 export interface dropdownelement2 {
   key: any;
@@ -71,14 +72,13 @@ export class CommonAPIService {
   }
  
 
-
   getalldropdownlist(url: string[]) {
     let observableBatch: any[] = [];
     url.forEach((url: string) => { observableBatch.push(this.http.get<any>(url).pipe(catchError(err => of(err)))) });
     return forkJoin(observableBatch);
   }
 
-  foreachlist(list: any, val: { key: any, value: any }, _filter: any = {}, addblank: boolean = false,) {
+  foreachlist(list: any, val: { key: any, value: any, value2?: any}, _filter: any = {}, addblank: boolean = false,) {
     let dropdownlist: dropdownelement[] = [];
     let dropdownlist1: dropdownelement1[] = [];
     let filter = list;
@@ -89,8 +89,9 @@ export class CommonAPIService {
     for (const l of filter) {
       let filter2 = this.cs.filterArray(dropdownlist, { key: l[val.key] })
       if (filter2.length == 0)
-      dropdownlist1.push({ value: l[val.key], label: l[val.key] + ' - ' + l[val.value] });
+      dropdownlist1.push({ value: l[val.key], label: l[val.key] + ' - ' + l[val.value], value2: l[val.value2] });
     }
+    dropdownlist1 = this.cs.removeDuplicatesFromArrayList(dropdownlist1, 'value');
     return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
 
@@ -107,6 +108,7 @@ export class CommonAPIService {
       if (filter2.length == 0)
       dropdownlist1.push({ value: l[val.key], label: l[val.value] });
     }
+    dropdownlist1 = this.cs.removeDuplicatesFromArrayList(dropdownlist1, 'value');
     return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
 
@@ -153,7 +155,7 @@ export class CommonAPIService {
         dropdownlist2.push(x)
       }
     })
+    dropdownlist2 = this.cs.removeDuplicatesFromArrayList(dropdownlist2, 'value');
     return dropdownlist2.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
-
 }
