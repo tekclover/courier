@@ -54,6 +54,10 @@ export class ConsignmentService {
     return this.http.post<any>('/overc-midmile-service/consignment/find', obj);
   }
 
+  searchStatus(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/consignmentStatus/find', obj);
+  }
+
   searchItem(obj: any) {
     return this.http.post<any>('/overc-midmile-service/itemDetails/find', obj);
   }
@@ -91,7 +95,7 @@ export class ConsignmentService {
   uploadConsignment(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>('/consignment/upload/v2 ', formData);
+    return this.http.post<any>(`/consignment/upload/v2?companyId=${this.auth.companyId}`, formData);
   }
 
   download(obj:any): Promise<File> {

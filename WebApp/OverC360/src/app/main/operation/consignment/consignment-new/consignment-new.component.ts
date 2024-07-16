@@ -17,11 +17,22 @@ import { HubPartnerAssignmentService } from '../../../master/hub-partner-assignm
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignorService } from '../../../master/consignor/consignor.service';
 import { ConsignmentLabelComponent } from '../../../pdf/consignment-label/consignment-label.component';
+import { format } from 'util';
+import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ConsignmentStatusPopupComponent } from './consignment-status-popup/consignment-status-popup.component';
 
 @Component({
   selector: 'app-consignment-new',
   templateUrl: './consignment-new.component.html',
-  styleUrl: './consignment-new.component.scss'
+  styleUrl: './consignment-new.component.scss',
+  animations: [
+    trigger('fadeLater', [
+      state('fade-in', style({ opacity: 1, transform: 'translateY(0)' })),
+      state('fade-out', style({ opacity: 0, transform: 'translateY(0)' })),
+      transition('fade-in <=> fade-out', animate('0.6s ease-in-out'))
+    ]),
+  ]
 })
 export class ConsignmentNewComponent {
 
@@ -558,6 +569,8 @@ export class ConsignmentNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+
+    this.callCNTable();
   }
 
   companyIdList: any[] = [];
@@ -685,6 +698,7 @@ export class ConsignmentNewComponent {
     this.shipmentInfo.controls.masterAirwayBill.disable();
     this.shipmentInfo.controls.houseAirwayBill.disable();
 
+    this.callCNTableHeader();
     this.callItemLevel(line);
     this.callTableHeader();
   }
@@ -693,6 +707,85 @@ export class ConsignmentNewComponent {
   selectedConsignment:any[] = [];
 
   cols:any[] = [];
+
+  cnTable: any[] = [];
+  selectedCNTable: any[] = [];
+
+  cnCols : any[] = [];
+
+
+  // CN Tracking Code
+  callCNTableHeader() {
+    this.cnCols = [
+      { fiedl: 'type', header: 'Type' },
+      { field: 'bagId', header: 'Bag ID' },
+      { field: 'description', header: 'Description' },
+      { field: 'time', header: 'Time' },
+      { field: 'createdBy', header: 'User' },
+      // { field: 'pieceDetails', header: 'Piece Details' },
+      // { field: 'companyName', header: 'Company' },
+      // { field: 'statusId', header: 'Status ID' },
+      // { field: 'statusText', header: 'Status' },
+      // { field: 'statusTimestamp', header: 'Status Time', format: 'date' },
+      // { field: 'pieceId', header: 'Piece ID' },
+      // { field: 'pieceStatusId', header: 'Piece Status ID' },
+      // { field: 'pieceStatusText', header: 'Piece Status'},
+      // { field: 'pieceEventCode', header: 'Piece Event Code'},
+      // { field: 'pieceEventText', header: 'Piece Event'},
+      // { field: 'pieceEventTimestamp', header: 'Piece Event Time', format: 'date' },
+      // { field: 'eventCode', header: 'Event Code' },
+      // { field: 'eventText', header: 'Event Text' },
+      // { field: 'eventTimestamp', header: 'Event Time', format: 'date' }, 
+      // { field: 'masterAirwayBill', header: 'Mawb' },
+      // { field: 'houseAirwayBill', header: 'Hawb' },
+      // { field: 'languageDescription', header: 'Language' },
+    ];
+  }
+
+  onRowExpand(event: TableRowExpandEvent) {
+  }
+  onRowCollapse(event: TableRowCollapseEvent) {
+  }
+
+  getColspan(): number {
+    return this.cols.length + 2; // +1 for the expanded content column
+  }
+
+  callCNTable(){
+    let obj: any = {};
+    obj.companyId = [this.auth.companyId];
+    obj.languageId = [this.auth.languageId];
+
+    this.service.searchStatus(obj).subscribe({next: res=> {
+      console.log(res);
+      res = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+      this.cnTable =  res;
+    },error: err => {
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    }})
+  }
+
+  editItem(data: any,line: any): void {
+    const dialogRef = this.dialog.open(ConsignmentStatusPopupComponent, {
+      disableClose: true,
+      width: '100%',
+      height: '50%',
+      maxWidth: '95%',
+      position: { top: '6.5%', left: '10%' },
+      data: {pageflow: data, code: line},
+    });
+  
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if(result){
+  //       this.subProductArray.splice(i,0);
+  //       this.subProductArray.splice(i, 1, result);
+  //       console.log(result);
+  //     //this.form.patchValue(result);
+  //     this.subProductArray = [...this.subProductArray]
+  
+  // }});
+  }
 
 
   callTableHeader() {
@@ -1046,6 +1139,7 @@ export class ConsignmentNewComponent {
 
     }
   }
+
   saveBilling() {
     this.submitted = true;
     if (this.billing.invalid) {

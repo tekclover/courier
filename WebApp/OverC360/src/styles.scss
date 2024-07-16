@@ -129,3 +129,13 @@ dl, ol, ul{margin-bottom: 0rem !important;}
 ::-webkit-scrollbar-thumb {background: #a8a8a8;border-radius: 8px;}
 ::-webkit-scrollbar {height: 8px !important; overflow-x: scroll; background: #f1f1f1; border-radius: 10px;}
 ::-webkit-scrollbar-thumb {background: #a8a8a8; border-radius: 8px;}
+
+
+// CN Tracking
+.table-style th {
+    background-color: var(--tableGrey); font-size: var(--line12); font-weight: 500 !important; padding-top: 1rem !important; padding-bottom: 1rem !important;
+  }
+
+  .table-style-body td {
+    color: var(--black) !important;font-size: var(--line12); font-weight: 500 !important;padding: 0.8rem 0px !important
+  }

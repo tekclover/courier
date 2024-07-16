@@ -8,6 +8,7 @@ import { ItemDetailsComponent } from './consignment/consignment-new/item-details
 import { DimensionComponent } from './consignment/consignment-new/dimension/dimension.component';
 import { ImageUploadComponent } from './consignment/consignment-new/image-upload/image-upload.component';
 import { ConsignmentUpdatebulkComponent } from './consignment/consignment-updatebulk/consignment-updatebulk.component';
+import { ConsignmentStatusPopupComponent } from './consignment/consignment-new/consignment-status-popup/consignment-status-popup.component';
 import { DownloadTemplateComponent } from './consignment/download-template/download-template.component';
 
 
@@ -19,6 +20,7 @@ import { DownloadTemplateComponent } from './consignment/download-template/downl
     DimensionComponent,
     ImageUploadComponent,
     ConsignmentUpdatebulkComponent,
+    ConsignmentStatusPopupComponent,
     DownloadTemplateComponent
   ],
   imports: [

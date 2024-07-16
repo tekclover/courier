@@ -72,7 +72,6 @@ export class CommonAPIService {
   }
  
 
-
   getalldropdownlist(url: string[]) {
     let observableBatch: any[] = [];
     url.forEach((url: string) => { observableBatch.push(this.http.get<any>(url).pipe(catchError(err => of(err)))) });
@@ -92,6 +91,7 @@ export class CommonAPIService {
       if (filter2.length == 0)
       dropdownlist1.push({ value: l[val.key], label: l[val.key] + ' - ' + l[val.value], value2: l[val.value2] });
     }
+    dropdownlist1 = this.cs.removeDuplicatesFromArrayList(dropdownlist1, 'value');
     return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
 
@@ -108,6 +108,7 @@ export class CommonAPIService {
       if (filter2.length == 0)
       dropdownlist1.push({ value: l[val.key], label: l[val.value] });
     }
+    dropdownlist1 = this.cs.removeDuplicatesFromArrayList(dropdownlist1, 'value');
     return dropdownlist1.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
 
@@ -154,7 +155,7 @@ export class CommonAPIService {
         dropdownlist2.push(x)
       }
     })
+    dropdownlist2 = this.cs.removeDuplicatesFromArrayList(dropdownlist2, 'value');
     return dropdownlist2.sort((a, b) => (a.value > b.value) ? 1 : -1);
   }
-
 }

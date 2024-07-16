@@ -71,6 +71,8 @@ export class PreAlertNewComponent {
     shipperName: [],
     description: [],
     weight: [,],
+    flightNo: [],
+    flightName: [],
     consignmentValue: [],
     masterAirwayBill: [],
     houseAirwayBill: [],
@@ -149,11 +151,6 @@ export class PreAlertNewComponent {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
         this.countryIdList = this.cas.forLanguageFilter(results[1], this.cas.dropdownlist.setup.country.key);
         this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[2], this.cas.dropdownlist.setup.hsCode.key);
-        const consitnor = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.consignor.key);
-        const customer = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.customer.key);
-        customer.forEach(x => this.customerIdList.push(x));
-        consitnor.forEach(x => this.customerIdList.push(x));
-        this.customerIdList = this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
 
         this.spin.hide();
       },
@@ -174,6 +171,7 @@ export class PreAlertNewComponent {
           if (this.form.controls.estimatedDepartureTime.value) {
             this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
           }
+          this.partnerTypeChanged();
         }
       }, error: err => {
         this.spin.hide();
@@ -230,43 +228,42 @@ export class PreAlertNewComponent {
       })
     }
   }
-  shipperType: any;
+  
+
   partnerTypeChanged() {
-    if (this.form.controls.partnerType.value == "customer") {
+    if (this.form.controls.partnerType.value == 'customer') {
       let obj: any = {};
       obj.companyId = [this.auth.companyId];
-
       this.customerIdList = [];
       this.spin.show();
       this.customerService.search(obj).subscribe({
         next: (result) => {
           this.customerIdList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' });
-          this.shipperType = "Customer";
-          this.form.controls.shipperName.patchValue(this.shipperType)
+          this.customerIdList =  this.cs.removeDuplicatesFromArrayList( this.customerIdList, 'value');
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
         }
       })
-    } else {
+    }
+
+    if (this.form.controls.partnerType.value == 'consignor') {
       let obj: any = {};
       obj.companyId = [this.auth.companyId];
-
       this.customerIdList = [];
       this.spin.show();
       this.consignorService.search(obj).subscribe({
         next: (result) => {
           this.customerIdList = this.cas.foreachlist(result, { key: 'consignorId', value: 'consignorName' });
-          this.shipperType = "Consignor";
-          this.form.controls.shipperName.patchValue(this.shipperType)
+          this.customerIdList =  this.cs.removeDuplicatesFromArrayList( this.customerIdList, 'value');
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
         }
       })
-
     }
   }
+
 }
