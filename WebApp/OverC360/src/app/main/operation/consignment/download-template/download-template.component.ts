@@ -11,6 +11,7 @@ import { AuthService } from '../../../../core/core';
 import { ConsignorService } from '../../../master/consignor/consignor.service';
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignmentService } from '../consignment.service';
+import { ProductService } from '../../../id-masters/product/product.service';
 
 @Component({
   selector: 'app-download-template',
@@ -36,6 +37,7 @@ export class DownloadTemplateComponent {
     private auth: AuthService,
     public customerService: CustomerService,
     public consignorService: ConsignorService,
+    public productService: ProductService,
   ) {
     this.partnerType = [
       { value: 'customer', label: 'Customer' },
@@ -51,6 +53,9 @@ export class DownloadTemplateComponent {
     partnerType: ['', ],
     partnerId: ['', ],
     creationType: ['Single', Validators.required],
+    consignorId: [],
+    customerId: [],
+    productId: [''],
     productName: [''],
     fileName: [''],
   });
@@ -63,13 +68,17 @@ export class DownloadTemplateComponent {
 
 
   partnerNameList: any[] = [];
+  productNameList: any[] = [];
 
   partnerTypeChanged() {
     if (this.form.controls.partnerType.value == 'customer') {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
+
       this.partnerNameList = [];
+      this.productNameList = [];
+
       this.spin.show();
       this.customerService.search(obj).subscribe({
         next: (result) => {
@@ -87,7 +96,10 @@ export class DownloadTemplateComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
+
       this.partnerNameList = [];
+      this.productNameList = [];
+
       this.spin.show();
       this.consignorService.search(obj).subscribe({
         next: (result) => {
@@ -101,6 +113,51 @@ export class DownloadTemplateComponent {
       })
     }
   }
+
+  partnerChanged() {
+    if (this.form.controls.partnerType.value == 'customer') {
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+
+      this.productNameList = [];
+      
+      this.spin.show();
+      this.customerService.search(obj).subscribe({
+        next: (result) => {
+          this.productNameList = this.cas.foreachlistWithoutKey(result, {key: 'productId', value: 'productName'});
+          this.form.patchValue(result[0]);
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
+
+    // console.log(this.form.controls.partnerType.value)
+
+    if (this.form.controls.partnerType.value == 'consignor') {
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+
+      this.productNameList = [];
+
+      this.spin.show();
+      this.consignorService.search(obj).subscribe({
+        next: (result) => {
+          this.productNameList = this.cas.foreachlistWithoutKey(result, {key: 'productId', value: 'productName'});
+          this.form.patchValue(result[0]);
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
+  }
+
   submitted = false
 
   save(){
@@ -119,20 +176,6 @@ export class DownloadTemplateComponent {
     this.dialogRef.close(this.form.getRawValue());
   }
 
-  productChanged(){
-    const selectedPartner = this.partnerNameList.find(value => value.value === this.form.controls.partnerId.value);
-    this.form.controls.productName.patchValue(selectedPartner.value2);
-
-    if(selectedPartner.value2 == '1 - INTERNATIONALINBOUND'){
-      this.form.controls.fileName.patchValue('1_-_INTERNATIONALINBOUND.xlsx');
-    }
-    if(selectedPartner.value2 == '2 - INTERNATIONALOUTBOUND'){
-      this.form.controls.fileName.patchValue('2_-_INTERNATIONALOUTBOUND.xlsx');
-    }
-    if(selectedPartner.value2 == '3 - DOMESTIC'){
-      this.form.controls.fileName.patchValue('3_-_DOMESTIC.xlsx');
-    }
-  }
 }
 
 
