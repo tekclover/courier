@@ -1,25 +1,29 @@
 package com.courier.overc360.api.midmile.replica.model.bondedmanifest;
 
-import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcrCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/**
+/*
  * `LANG_ID`, `C_ID`, BONDED_ID`, `MASTER_AIRWAY_BILL`, `HOUSE_AIRWAY_BILL`
  */
 @Table(name = "tblbondedmanifest",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_bondedmanifest",
-                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "PIECE_ID", "PIECE_ITEM_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL"}
                 )
         }
 )
@@ -28,7 +32,7 @@ public class ReplicaBondedManifest {
 
     @Id
     @Column(name = "BONDED_ID", columnDefinition = "nvarchar(50)")
-    private String  bondedId;
+    private String bondedId;
 
     @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
@@ -50,11 +54,9 @@ public class ReplicaBondedManifest {
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-    @Id
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
-    @Id
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 

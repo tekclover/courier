@@ -335,6 +335,15 @@ public class MidMileController {
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
+    // Create new BondedManifests based on PreAlert Input
+    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifests based On PreAlert Input")
+    @PostMapping("/bondedManifest/create/preAlert")
+    public ResponseEntity<?> postBondedManifestsFromPreAlert(@Valid @RequestBody List<PreAlert> preAlertList,
+                                                             @RequestParam String loginUserID, @RequestParam String authToken) {
+        BondedManifest[] bondedManifests = midMileService.createBondedManifestListsOnPreAlertInput(preAlertList, loginUserID, authToken);
+        return new ResponseEntity<>(bondedManifests, HttpStatus.OK);
+    }
+
     // Update BondedManifest
     @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for swagger
     @PatchMapping("/bondedManifest/update/list")

@@ -5,6 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManif
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestDeleteInput;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.UpdateBondedManifest;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
+import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import com.courier.overc360.api.midmile.service.BondedManifestService;
@@ -43,7 +44,7 @@ public class BondedManifestController {
     @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest") // label for swagger
     @PostMapping("/create/list")
     public ResponseEntity<?> postBondedManifest(@Valid @RequestBody List<AddBondedManifest> addBondedManifestList,
-                                                       @RequestParam String loginUserID)
+                                                @RequestParam String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<BondedManifest> bondedManifest = bondedManifestService.createBondedManifest(addBondedManifestList, loginUserID);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
@@ -58,11 +59,20 @@ public class BondedManifestController {
         return new ResponseEntity<>(createBonded, HttpStatus.OK);
     }
 
+    // Create new BondedManifests based on PreAlert Input
+    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifests based On PreAlert Input")
+    @PostMapping("/create/preAlert")
+    public ResponseEntity<?> postBondedManifestsFromPreAlert(@Valid @RequestBody List<PreAlert> preAlertList, @RequestParam String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<BondedManifest> bondedManifests = bondedManifestService.createBondedManifestListsOnPreAlertInput(preAlertList, loginUserID);
+        return new ResponseEntity<>(bondedManifests, HttpStatus.OK);
+    }
+
     // Update BondedManifest
     @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for Swagger
     @PatchMapping("/update/list")
     public ResponseEntity<?> patchBondedManifest(@Valid @RequestBody List<UpdateBondedManifest> updateBondedManifestList,
-                                                        @RequestParam String loginUserID)
+                                                 @RequestParam String loginUserID)
             throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
         List<BondedManifest> bondedManifest = bondedManifestService.updateBondedManifest(updateBondedManifestList, loginUserID);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
@@ -72,7 +82,7 @@ public class BondedManifestController {
     @ApiOperation(response = BondedManifest.class, value = "Delete BondedManifest") // label for Swagger
     @PostMapping("/delete/list")
     public ResponseEntity<?> deleteBondedManifest(@Valid @RequestBody List<BondedManifestDeleteInput> bondedManifestDeleteInputs,
-                                                         @RequestParam String loginUserID) throws IOException, CsvException {
+                                                  @RequestParam String loginUserID) throws IOException, CsvException {
         bondedManifestService.deleteBondedManifest(bondedManifestDeleteInputs, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -100,8 +110,8 @@ public class BondedManifestController {
     @ApiOperation(response = ReplicaBondedManifest.class, value = "Get a BondedManifest")
     @GetMapping("/{bondedId}")
     public ResponseEntity<?> getBondedManifest(@PathVariable String bondedId, @RequestParam String languageId,
-                                                     @RequestParam String companyId, @RequestParam String partnerId,
-                                                     @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill) {
+                                               @RequestParam String companyId, @RequestParam String partnerId,
+                                               @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill) {
         ReplicaBondedManifest bondedManifest = bondedManifestService.getBondedManifestReplica(
                 languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
