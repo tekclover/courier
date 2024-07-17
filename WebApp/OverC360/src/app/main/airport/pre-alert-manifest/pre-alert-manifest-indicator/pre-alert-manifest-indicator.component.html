@@ -53,36 +53,36 @@
               </div> -->
       <p class="componentTableHeader f400 mb-0">Consignment Details</p>
       <table class="table">
-        <thead>
+        <thead class="table-style">
           <tr>
             <th scope="col">S.No</th>
             <th scope="col">Fields</th>
             <th scope="col">Value</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="table-style-body">
           <tr>
-            <th scope="row">1</th>
+            <th style="font-weight: normal;" scope="row">1</th>
             <td>Consignment Currency</td>
             <td>{{preAlertManifestIndicatorTable[0].consignmentCurrency}}</td>
           </tr>
           <tr>
-            <th scope="row">2</th>
+            <th style="font-weight: normal;" scope="row">2</th>
             <td>Consignment ID</td>
             <td>{{preAlertManifestIndicatorTable[0].consignmentId}}</td>
           </tr>
           <tr>
-            <th scope="row">3</th>
+            <th style="font-weight: normal;" scope="row">3</th>
             <td>Country Of Origin</td>
             <td>{{preAlertManifestIndicatorTable[0].countryOfOrigin}}</td>
           </tr>
           <tr>
-            <th scope="row">4</th>
+            <th style="font-weight: normal;" scope="row">4</th>
             <td>Created On</td>
-            <td>{{preAlertManifestIndicatorTable[0].createdOn}}</td>
+            <td>{{preAlertManifestIndicatorTable[0].createdOn | date: 'dd-MM-yyyy HH:mm' }}</td>
           </tr>
           <tr>
-            <th scope="row">5</th>
+            <th style="font-weight: normal;" scope="row">5</th>
             <td>Declared Value</td>
             <td>
               <ng-container
@@ -95,32 +95,32 @@
             </td>
           </tr>
           <tr>
-            <th scope="row">6</th>
+            <th style="font-weight: normal;" scope="row">6</th>
             <td>Gross Weight</td>
             <td>{{preAlertManifestIndicatorTable[0].grossWeight}}</td>
           </tr>
           <tr>
-            <th scope="row">7</th>
+            <th style="font-weight: normal;" scope="row">7</th>
             <td>Inco Terms</td>
             <td>{{preAlertManifestIndicatorTable[0].incoTerms}}</td>
           </tr>
           <tr>
-            <th scope="row">8</th>
+            <th style="font-weight: normal;" scope="row">8</th>
             <td>No Of Package Hawb</td>
             <td>{{preAlertManifestIndicatorTable[0].noOfPackageHawb}}</td>
           </tr>
           <tr>
-            <th scope="row">9</th>
+            <th style="font-weight: normal;" scope="row">9</th>
             <td>No Of Piece Hawb</td>
             <td>{{preAlertManifestIndicatorTable[0].noOfPieceHawb}}</td>
           </tr>
           <tr>
-            <th scope="row">10</th>
+            <th style="font-weight: normal;" scope="row">10</th>
             <td>Partner Hawb</td>
             <td>{{preAlertManifestIndicatorTable[0].partnerHouseAirwayBill}}</td>
           </tr>
           <tr>
-            <th scope="row">11</th>
+            <th style="font-weight: normal;" scope="row">11</th>
             <td>Payment Type</td>
             <td>{{preAlertManifestIndicatorTable[0].paymentType}}</td>
           </tr>
@@ -129,41 +129,41 @@
 
       <p class="componentTableHeader f400 mb-0">Origin Details</p>
       <table class="table">
-        <thead>
+        <thead class="table-style">
           <tr>
             <th scope="col">S.No</th>
             <th scope="col">Fields</th>
             <th scope="col">Value</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="table-style-body">
           <tr>
-            <th scope="row">1</th>
+            <th style="font-weight: normal;" scope="row">1</th>
             <td>Name</td>
             <td>{{preAlertManifestIndicatorTable[0].originDetails.name}}</td>
           </tr>
           <tr>
-            <th scope="row">2</th>
+            <th style="font-weight: normal;" scope="row">2</th>
             <td>Phone</td>
             <td>{{preAlertManifestIndicatorTable[0].originDetails.phone}}</td>
           </tr>
           <tr>
-            <th scope="row">3</th>
+            <th style="font-weight: normal;" scope="row">3</th>
             <td>Address Line 1</td>
             <td>{{preAlertManifestIndicatorTable[0].originDetails.addressLine1}}</td>
           </tr>
           <tr>
-            <th scope="row">4</th>
+            <th style="font-weight: normal;" scope="row">4</th>
             <td>Address Line 2</td>
             <td>{{preAlertManifestIndicatorTable[0].originDetails.addressLine2}}</td>
           </tr>
           <tr>
-            <th scope="row">5</th>
+            <th style="font-weight: normal;" scope="row">5</th>
             <td>City</td>
             <td>{{preAlertManifestIndicatorTable[0].originDetails.city}}</td>
           </tr>
           <tr>
-            <th scope="row">6</th>
+            <th style="font-weight: normal;" scope="row">6</th>
             <td>Country</td>
             <td>{{preAlertManifestIndicatorTable[0].originDetails.country}}</td>
           </tr>
@@ -172,41 +172,41 @@
 
       <p class="componentTableHeader f400 mb-0">Destination Details</p>
       <table class="table">
-        <thead>
+        <thead class="table-style">
           <tr>
             <th scope="col">S.No</th>
             <th scope="col">Fields</th>
             <th scope="col">Value</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="table-style-body">
           <tr>
-            <th scope="row">1</th>
+            <th style="font-weight: normal;" scope="row">1</th>
             <td>Name</td>
             <td>{{preAlertManifestIndicatorTable[0].destinationDetails.name}}</td>
           </tr>
           <tr>
-            <th scope="row">2</th>
+            <th style="font-weight: normal;" scope="row">2</th>
             <td>Phone</td>
             <td>{{preAlertManifestIndicatorTable[0].destinationDetails.phone}}</td>
           </tr>
           <tr>
-            <th scope="row">3</th>
+            <th style="font-weight: normal;" scope="row">3</th>
             <td>Address Line 1</td>
             <td>{{preAlertManifestIndicatorTable[0].destinationDetails.addressLine1}}</td>
           </tr>
           <tr>
-            <th scope="row">4</th>
+            <th style="font-weight: normal;" scope="row">4</th>
             <td>Address Line 2</td>
             <td>{{preAlertManifestIndicatorTable[0].destinationDetails.addressLine2}}</td>
           </tr>
           <tr>
-            <th scope="row">5</th>
+            <th style="font-weight: normal;" scope="row">5</th>
             <td>City</td>
             <td>{{preAlertManifestIndicatorTable[0].destinationDetails.city}}</td>
           </tr>
           <tr>
-            <th scope="row">6</th>
+            <th style="font-weight: normal;" scope="row">6</th>
             <td>Country</td>
             <td>{{preAlertManifestIndicatorTable[0].destinationDetails.country}}</td>
           </tr>
@@ -215,16 +215,16 @@
 
       <p class="componentTableHeader f400 mb-0">Piece Details</p>
       <table class="table">
-        <thead>
+        <thead class="table-style">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Fields</th>
             <th scope="col">Value</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="table-style-body">
           <tr *ngFor="let piece of preAlertManifestIndicatorTable[0].pieceDetails; let i = index">
-            <th scope="row">{{i + 1}}</th>
+            <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
             <td>Partner Hawb</td>
             <td>
               <ng-container
@@ -237,7 +237,7 @@
             </td>
           </tr>
           <tr *ngFor="let piece of preAlertManifestIndicatorTable[0].pieceDetails; let i = index">
-            <th scope="row">{{i + 1}}</th>
+            <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
             <td>Description</td>
             <td>
               <ng-container *ngIf="piece.description !== null && piece.description !== undefined; else nullOrUndefined">
@@ -249,7 +249,7 @@
             </td>
           </tr>
           <tr *ngFor="let piece of preAlertManifestIndicatorTable[0].pieceDetails; let i = index">
-            <th scope="row">{{i + 1}}</th>
+            <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
             <td>Declared Value</td>
             <td>
               <ng-container
@@ -262,7 +262,7 @@
             </td>
           </tr>
           <tr *ngFor="let piece of preAlertManifestIndicatorTable[0].pieceDetails; let i = index">
-            <th scope="row">{{i + 1}}</th>
+            <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
             <td>Weight</td>
             <td>
               <ng-container *ngIf="piece.weight !== null && piece.weight !== undefined; else nullOrUndefined">
@@ -274,7 +274,7 @@
             </td>
           </tr>
           <tr *ngFor="let piece of preAlertManifestIndicatorTable[0].pieceDetails; let i = index">
-            <th scope="row">{{i + 1}}</th>
+            <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
             <td>HS Code</td>
             <td>
               <ng-container *ngIf="piece.hsCode !== null && piece.hsCode !== undefined; else nullOrUndefined">

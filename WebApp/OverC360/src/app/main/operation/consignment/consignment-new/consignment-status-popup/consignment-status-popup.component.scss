@@ -24,4 +24,8 @@
   .scrollNew{height: calc(100vh - 33rem); overflow-y: scroll;}
   .marginFieldNew{margin-bottom: 1.2rem;}
 
-  
+  .sticky-top {
+    position: sticky;
+    top: -1px;
+    z-index: 1020;
+    }
