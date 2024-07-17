@@ -1,8 +1,7 @@
 package com.courier.overc360.api.midmile.controller;
 
-import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
 import com.courier.overc360.api.midmile.primary.model.console.*;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
+import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import com.courier.overc360.api.midmile.service.ConsoleService;

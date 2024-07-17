@@ -20,6 +20,9 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
     Optional<ConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String mawb, String hawb, Long deletionIndicator);
 
+    Optional<ConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String mawb, String hawb, Long deletionIndicator);
+
     ConsignmentEntity findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String companyId, String languageId, String partnerId, String mawb, String hawb, Long deletionIndicator);
 

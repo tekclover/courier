@@ -62,8 +62,6 @@ public class AddCcr {
 
     private String pieceId;
 
-    private String pieceItemId;
-
     private String companyName;
 
     private String languageDescription;

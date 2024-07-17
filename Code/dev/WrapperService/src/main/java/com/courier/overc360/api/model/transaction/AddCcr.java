@@ -33,7 +33,7 @@ public class AddCcr {
 
     private String pieceId;
 
-    private String pieceItemId;
+//    private String pieceItemId;
 
     private String companyName;
 

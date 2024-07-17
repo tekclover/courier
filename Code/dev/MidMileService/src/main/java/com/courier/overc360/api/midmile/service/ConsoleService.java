@@ -2,22 +2,15 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
-import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
-import com.courier.overc360.api.midmile.primary.model.console.AddConsole;
-import com.courier.overc360.api.midmile.primary.model.console.Console;
-import com.courier.overc360.api.midmile.primary.model.console.ConsoleDeleteInput;
-import com.courier.overc360.api.midmile.primary.model.console.TransferConsole;
-import com.courier.overc360.api.midmile.primary.model.console.UpdateConsole;
+import com.courier.overc360.api.midmile.primary.model.console.*;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
 import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.primary.repository.ConsoleRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
-import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
@@ -31,12 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -388,11 +376,12 @@ public class ConsoleService {
                         String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
                         for (AddConsole console : consoleEntryList) {
 
-                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
                                     console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), console.getPieceId(), 0L);
 
                             if (duplicateConsole) {
-                                throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
+                                System.out.println("Duplicate found for HouseAirwayBillNo: " + console.getHouseAirwayBill());
+                                continue;
                             }
 
                             // Pass ConsignmentCurrency
@@ -474,6 +463,12 @@ public class ConsoleService {
                                     }
                                     createdConsoleList.add(createdConsole);
                                 }
+                            } else {
+                                log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+                                        " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+                                        " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
+                                continue;
+
                             }
 
                         }
@@ -547,11 +542,13 @@ public class ConsoleService {
 
                         for (AddConsole console : subGroup) {
                             // Duplicate Check
-                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
                                     console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getMasterAirwayBill(), console.getHouseAirwayBill(), console.getPieceId(), 0L);
 
                             if (duplicateConsole) {
-                                throw new BadRequestException("Given Values Getting Duplicated  HouseAirwayBillNo " + console.getHouseAirwayBill());
+                                // Log the duplicate and skip the record
+                                System.out.println("Duplicate found for HouseAirwayBillNo: " + console.getHouseAirwayBill());
+                                continue;
                             }
 
                             // Pass ConsignmentCurrency
@@ -643,7 +640,13 @@ public class ConsoleService {
                                     }
                                     createdConsoleList.add(createdConsole);
                                 }
+                            } else {
+                                log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+                                        " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+                                        " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
+                            continue;
                             }
+
                         }
                     }
                 }
@@ -981,7 +984,7 @@ public class ConsoleService {
             log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : addConsoleList) {
 
-                boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
                         addConsole.getLanguageId(), addConsole.getCompanyId(), addConsole.getPartnerId(),
                         addConsole.getMasterAirwayBill(), addConsole.getHouseAirwayBill(),
                         addConsole.getPieceId(), 0L);

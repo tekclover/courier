@@ -33,7 +33,4 @@ public class CcrDeleteInput {
     @NotBlank(message = "pieceId is mandatory")
     private String pieceId;
 
-    @NotBlank(message = "pieceItemId is mandatory")
-    private String pieceItemId;
-
 }

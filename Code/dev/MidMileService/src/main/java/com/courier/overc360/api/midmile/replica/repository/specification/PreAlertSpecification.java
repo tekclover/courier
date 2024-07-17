@@ -1,10 +1,8 @@
 package com.courier.overc360.api.midmile.replica.repository.specification;
 
 
-import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
-import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
-import com.courier.overc360.api.midmile.replica.model.consignment.FindPreAlert;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaPreAlert;
+import com.courier.overc360.api.midmile.replica.model.prealert.FindPreAlert;
+import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -38,14 +36,14 @@ public class PreAlertSpecification implements Specification<ReplicaPreAlert> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findPreAlert.getPartnerId()));
         }
-        if (findPreAlert.getMasterAirwayBill() != null && !findPreAlert.getMasterAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("masterAirwayBill");
-            predicates.add(group.in(findPreAlert.getMasterAirwayBill()));
+        if (findPreAlert.getPartnerMasterAirwayBill() != null && !findPreAlert.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findPreAlert.getPartnerHouseAirwayBill()));
         }
-//        if (findPreAlert.getHouseAirwayBill() != null && !findPreAlert.getHouseAirwayBill().isEmpty()) {
-//            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("houseAirwayBill");
-//            predicates.add(group.in(findPreAlert.getHouseAirwayBill()));
-//        }
+        if (findPreAlert.getPartnerHouseAirwayBill() != null && !findPreAlert.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findPreAlert.getPartnerHouseAirwayBill()));
+        }
         if (findPreAlert.getHsCode() != null && !findPreAlert.getHsCode().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("hsCode");
             predicates.add(group.in(findPreAlert.getHsCode()));

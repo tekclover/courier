@@ -10,7 +10,7 @@ public class FindPreAlert {
 
     private List<String> companyId;
     private List<String> languageId;
-    private List<String> masterAirwayBill;
+    private List<String> partnerMasterAirwayBill;
     private List<String> partnerHouseAirwayBill;
     private List<String> partnerId;
     private List<String> hsCode;

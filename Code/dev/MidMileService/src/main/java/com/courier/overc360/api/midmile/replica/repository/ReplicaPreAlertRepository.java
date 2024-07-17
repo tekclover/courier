@@ -1,8 +1,7 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
 
-import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaPreAlert;
+import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -15,6 +14,6 @@ import java.util.Optional;
 public interface ReplicaPreAlertRepository extends JpaRepository<ReplicaPreAlert, String>, JpaSpecificationExecutor<ReplicaPreAlert> {
 
 
-    Optional<ReplicaPreAlert> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
-            String companyId, String languageId, String partnerId, String masterAirwayBill, String partnerHouseAirwayBill, Long deletionIndicator);
+    Optional<ReplicaPreAlert> findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String companyId, String languageId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, Long deletionIndicator);
 }

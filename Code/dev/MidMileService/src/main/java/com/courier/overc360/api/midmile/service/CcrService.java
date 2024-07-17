@@ -102,20 +102,19 @@ public class CcrService {
      * @param consoleId
      * @param ccrId
      * @param pieceId
-     * @param pieceItemId
      * @return
      */
     public Ccr getCcr(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                      String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId) {
+                      String houseAirwayBill, String consoleId, String ccrId, String pieceId) {
         Optional<Ccr> dbCcr =
-                ccrRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, 0L);
+                ccrRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndDeletionIndicator(
+                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, 0L);
         if (dbCcr.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill + ", houseAirwayBill - "
-                    + houseAirwayBill + " , consoleId - " + consoleId + ", and ccrId - " + ccrId + ", and pieceId - " + pieceId + ", and pieceItemId - " + pieceItemId + " doesn't exists";
+                    + houseAirwayBill + " , consoleId - " + consoleId + ", and ccrId - " + ccrId + ", and pieceId - " + pieceId + " doesn't exists";
             // Error Log
-            createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, errMsg);
+            createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId,  errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCcr.get();
@@ -135,8 +134,8 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), addCcr.getPieceId(), addCcr.getPieceItemId(), 0L);
+                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getMasterAirwayBill(), addCcr.getHouseAirwayBill(), addCcr.getPieceId(), 0L);
                 if (duplicateConsole.isPresent()) {
                     throw new BadRequestException("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getMasterAirwayBill() +
@@ -338,7 +337,7 @@ public class CcrService {
                         updateCcr.getLanguageId(), updateCcr.getCompanyId(),
                         updateCcr.getPartnerId(), updateCcr.getMasterAirwayBill(),
                         updateCcr.getHouseAirwayBill(), updateCcr.getConsoleId(),
-                        updateCcr.getCcrId(), updateCcr.getPieceId(), updateCcr.getPieceItemId());
+                        updateCcr.getCcrId(), updateCcr.getPieceId());
 
 
                 BeanUtils.copyProperties(updateCcr, dbCcr, CommonUtils.getNullPropertyNames(updateCcr));
@@ -414,7 +413,7 @@ public class CcrService {
 
                     Ccr dbCcr = getCcr(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
                             deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(),
-                            deleteInput.getConsoleId(), deleteInput.getCcrId(), deleteInput.getPieceId(), deleteInput.getPieceItemId());
+                            deleteInput.getConsoleId(), deleteInput.getCcrId(), deleteInput.getPieceId());
 
                     if (dbCcr != null) {
                         dbCcr.setDeletionIndicator(1L);
@@ -483,21 +482,20 @@ public class CcrService {
      * @param consoleId
      * @param ccrId
      * @param pieceId
-     * @param pieceItemId
      * @return
      */
     public ReplicaCcr getCcrReplica(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                    String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId) {
+                                    String houseAirwayBill, String consoleId, String ccrId, String pieceId) {
         Optional<ReplicaCcr> dbCcr =
-                replicaCcrRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, 0L);
+                replicaCcrRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndDeletionIndicator(
+                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, 0L);
         if (dbCcr.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
                     + ", houseAirwayBill - " + houseAirwayBill + " ,consoleId - " + consoleId +
-                    " , and ccrId - " + ccrId + " , and pieceId - " + pieceId + " , and pieceItemId - " + pieceItemId + " doesn't exists";
+                    " , and ccrId - " + ccrId + " , and pieceId - " + pieceId + " doesn't exists";
             // Error Log
-            createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, errMsg);
+            createCcrLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCcr.get();
@@ -548,7 +546,7 @@ public class CcrService {
     }
 
     private void createCcrLog1(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                               String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String error) {
+                               String houseAirwayBill, String consoleId, String ccrId, String pieceId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
@@ -561,7 +559,6 @@ public class CcrService {
         errorLog.setReferenceField3(ccrId);
         errorLog.setReferenceField4(consoleId);
         errorLog.setReferenceField5(pieceId);
-        errorLog.setReferenceField6(pieceItemId);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);

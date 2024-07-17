@@ -1,4 +1,4 @@
-package com.courier.overc360.api.midmile.replica.model.consignment;
+package com.courier.overc360.api.midmile.primary.model.prealert;
 
 
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class ReplicaPreAlertCompositeKey implements Serializable {
+public class PreAlertCompositeKey implements Serializable {
 
     private static final long serialVersionUID = -7617672247680004647L;
 
@@ -16,6 +16,8 @@ public class ReplicaPreAlertCompositeKey implements Serializable {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerHouseAirwayBill;
+
+    private String partnerMasterAirwayBill;
 
 }

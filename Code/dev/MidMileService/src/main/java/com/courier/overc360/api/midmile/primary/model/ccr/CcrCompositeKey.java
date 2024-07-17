@@ -22,6 +22,5 @@ public class CcrCompositeKey implements Serializable {
     private String houseAirwayBill;
     private String ccrId;
     private String pieceId;
-    private String pieceItemId;
 
 }
