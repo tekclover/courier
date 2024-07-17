@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
+import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.primary.repository.PreAlertRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindPreAlert;
@@ -33,6 +34,9 @@ public class PreAlertService {
     @Autowired
     ReplicaConsignmentEntityRepository replicaConsignmentEntityRepository;
 
+    @Autowired
+    ConsignmentEntityRepository consignmentEntityRepository;
+
     /**
      *
      * @param preAlert
@@ -51,14 +55,16 @@ public class PreAlertService {
                     preAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndDeletionIndicator(
                             dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(), dbPreAlert.getMasterAirwayBill(), 0L);
 
-            String getMasterAirwayBill = replicaConsignmentEntityRepository.getMasterAirwayBill(iKeyValuePair.getLangId(),
-                    dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
+//            String getMasterAirwayBill = replicaConsignmentEntityRepository.getMasterAirwayBill(iKeyValuePair.getLangId(),
+//                    dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
+            consignmentEntityRepository.updateConsignment(dbPreAlert.getCompanyId(), dbPreAlert.getLanguageId(),
+                    dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill(), dbPreAlert.getPartnerMasterAirwayBill());
+            log.info("consignment MasterAirwayBill");
 
             if (!preAlertOptional.isPresent()) {
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
-                newPreAlert.setMasterAirwayBill(getMasterAirwayBill);
                 newPreAlert.setCreatedBy(loginUserID);
                 newPreAlert.setUpdatedBy(null);
                 newPreAlert.setCreatedOn(new Date());

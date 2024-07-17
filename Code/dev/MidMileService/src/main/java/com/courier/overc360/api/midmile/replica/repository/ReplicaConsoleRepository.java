@@ -16,7 +16,7 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, Long deletionIndicator);
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId, Long deletionIndicator);
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
 
     // Duplicate Header Check
     @Query(value = "Select \n" +

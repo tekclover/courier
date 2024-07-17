@@ -11,5 +11,5 @@ public class TransferConsole {
     private String fromConsoleId;
     private String toConsoleId;
     private String pieceId;
-    private String pieceItemId;
+//    private String pieceItemId;
 }

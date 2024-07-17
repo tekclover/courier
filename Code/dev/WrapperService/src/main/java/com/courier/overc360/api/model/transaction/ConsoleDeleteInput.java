@@ -19,6 +19,6 @@ public class ConsoleDeleteInput {
 
     private String pieceId;
 
-    private String pieceItemId;
+//    private String pieceItemId;
 
 }

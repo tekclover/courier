@@ -21,6 +21,6 @@ public class ReplicaConsoleCompositeKey implements Serializable {
     private String houseAirwayBill;
     private String consoleId;
     private String pieceId;
-    private String pieceItemId;
+//    private String pieceItemId;
 
 }

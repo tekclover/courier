@@ -134,7 +134,7 @@ public class AddConsole {
 
     private String pieceId;
 
-    private String pieceItemId;
+//    private String pieceItemId;
 
     private String languageDescription;
 

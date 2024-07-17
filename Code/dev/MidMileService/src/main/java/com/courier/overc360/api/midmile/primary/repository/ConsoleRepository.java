@@ -123,9 +123,9 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                               @Param("eventText") String eventText,
                                               @Param("consoleId") String consoleId);
 
-    Optional<Console> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String pieceId, String pieceItemId, Long deletionIndicator);
+    Optional<Console> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String pieceId, Long deletionIndicator);
 
-    Console findByHouseAirwayBillAndConsoleIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
-            String houseAirwayBill, String fromConsoleId, String pieceId, String pieceItemId, Long deletionIndicator);
+    Console findByHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
+            String houseAirwayBill, String fromConsoleId, String pieceId, Long deletionIndicator);
 }

@@ -87,8 +87,8 @@ public class PreAlert {
     @Column(name = "ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String originCode;
 
-    @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
-    private String consignmentValueKd;
+    @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
 
     @Column(name = "IATA", columnDefinition = "nvarchar(50)")
     private String iata;

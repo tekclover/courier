@@ -42,5 +42,7 @@ public interface IKeyValuePair {
 
     String getServiceTypeText();
 
+    String getPieceId();
+
 
 }
