@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.controller;
 
 import com.courier.overc360.api.midmile.primary.model.UploadResponse;
 import com.courier.overc360.api.midmile.primary.model.consignment.*;
+import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
 import com.courier.overc360.api.midmile.replica.model.consignment.*;
 import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
@@ -10,6 +11,8 @@ import com.courier.overc360.api.midmile.replica.model.dto.IConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestConsignment;
 import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
+import com.courier.overc360.api.midmile.replica.model.prealert.FindPreAlert;
+import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.service.CommonService;
 import com.courier.overc360.api.midmile.service.ConsignmentService;
 import com.courier.overc360.api.midmile.service.PreAlertService;
@@ -167,11 +170,11 @@ public class ConsignmentController {
         return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
     }
 
-    // Find PreAlert
-    @ApiOperation(response = PreAlert.class, value = "Find PreAlert")
-    @PostMapping("/find/prealert")
-    public ResponseEntity<?> postPreAlert(@Valid @RequestBody FindPreAlert findPreAlert) {
-        List<ReplicaPreAlert> dbPreAlert = preAlertService.findPreAlert(findPreAlert);
-        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
-    }
+//    // Find PreAlert
+//    @ApiOperation(response = PreAlert.class, value = "Find PreAlert")
+//    @PostMapping("/find/prealert")
+//    public ResponseEntity<?> postPreAlert(@Valid @RequestBody FindPreAlert findPreAlert) {
+//        List<ReplicaPreAlert> dbPreAlert = preAlertService.findPreAlert(findPreAlert);
+//        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
+//    }
 }

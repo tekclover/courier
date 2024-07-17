@@ -7,10 +7,10 @@ import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManif
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestDeleteInput;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.UpdateBondedManifest;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
-import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
+import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
 import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
 import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
@@ -18,7 +18,7 @@ import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaPreAlert;
+import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPreAlertRepository;
 import com.opencsv.exceptions.CsvException;
@@ -118,7 +118,7 @@ public class BondedManifestService {
                     BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
                     BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
 
-                    Optional<ReplicaPreAlert> replicaPreAlert = replicaPreAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+                    Optional<ReplicaPreAlert> replicaPreAlert = replicaPreAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
                             bondedManifest.getCompanyId(), bondedManifest.getLanguageId(), bondedManifest.getPartnerId(),
                             bondedManifest.getMasterAirwayBill(), bondedManifest.getPartnerHouseAirwayBill(), 0L);
 

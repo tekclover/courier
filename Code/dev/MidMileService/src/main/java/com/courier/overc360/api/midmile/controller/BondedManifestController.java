@@ -5,7 +5,7 @@ import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManif
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestDeleteInput;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.UpdateBondedManifest;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
-import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
+import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
 import com.courier.overc360.api.midmile.service.BondedManifestService;

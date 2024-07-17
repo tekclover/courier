@@ -1,4 +1,4 @@
-package com.courier.overc360.api.midmile.replica.model.consignment;
+package com.courier.overc360.api.midmile.replica.model.prealert;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,11 +11,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tblalert",
+@Table(name = "tblprealert",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_alert",
-                        columnNames = {"C_ID", "LANG_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL"}
+                        columnNames = {"C_ID", "LANG_ID", "PARTNER_ID", "PARTNER_HOUSE_AIRWAY_BILL", "PARTNER_MASTER_AIRWAY_BILL"}
                 )
         }
 )
@@ -34,18 +34,29 @@ public class ReplicaPreAlert {
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
-    @Id
+    // @Id
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
+    @Id
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
+    @Id
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
     @Column(name = "TOTAL_WEIGHT", columnDefinition = "nvarchar(50)")
     private String totalWeight;
+
+    @Column(name = "CONSOLE_INDICATOR")
+    private Long consoleIndicator;
+
+    @Column(name = "MANIFEST_INDICATOR")
+    private Long manifestIndicator;
+
+    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
+    private String partnerType;
 
     @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
     private String flightNo;
@@ -86,8 +97,8 @@ public class ReplicaPreAlert {
     @Column(name = "ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String originCode;
 
-    @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
-    private String consignmentValueKd;
+    @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
 
     @Column(name = "IATA", columnDefinition = "nvarchar(50)")
     private String iata;

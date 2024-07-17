@@ -1,26 +1,33 @@
-package com.courier.overc360.api.model.transaction;
+package com.courier.overc360.api.midmile.primary.model.prealert;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
+public class UpdatePreAlert {
 
-public class PreAlert {
-
+    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
+    @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
 
+    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
-
-    private String partnerType;
 
     private String masterAirwayBill;
 
+    @NotBlank(message = "Partner House Airway Bill is mandatory")
     private String partnerHouseAirwayBill;
 
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
+
+    private String totalWeight;
 
     private String flightNo;
 
@@ -30,15 +37,19 @@ public class PreAlert {
 
     private Date estimatedTimeOfArrival;
 
-    private String totalWeight;
-
     private String noOfPieces;
 
     private String consignmentValue;
 
     private String bayanHv;
 
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
+
     private String currency;
+
+    private String consignmentValueLocal;
 
     private String description;
 
@@ -48,13 +59,7 @@ public class PreAlert {
 
     private String origin;
 
-    private Long consoleIndicator;
-
-    private Long manifestIndicator;
-
-    private String  originCode;
-
-    private String consignmentValueLocal;
+    private String originCode;
 
     private String iata;
 
@@ -62,7 +67,7 @@ public class PreAlert {
 
     private String incoTerm;
 
-    private Long deletionIndicator = 0L;
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -83,12 +88,5 @@ public class PreAlert {
     private String referenceField9;
 
     private String referenceField10;
-
-    private String createdBy;
-
-    private Date createdOn = new Date();
-
-    private String updatedBy;
-
-    private Date updatedOn = new Date();
 }
+

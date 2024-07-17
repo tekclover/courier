@@ -1990,7 +1990,7 @@ public class FileStorageService {
             addPreAlert.setShipper(getValue(listUploadData, 8));
             addPreAlert.setOrigin(getValue(listUploadData, 9));
             addPreAlert.setOriginCode(getValue(listUploadData, 10));
-            addPreAlert.setConsignmentValueKd(getValue(listUploadData, 11));
+            addPreAlert.setConsignmentValueLocal(getValue(listUploadData, 11));
             addPreAlert.setIata(getValue(listUploadData, 12));
             addPreAlert.setHsCode(getValue(listUploadData, 13));
             if (getValue(listUploadData, 14).trim().length() > 0) {

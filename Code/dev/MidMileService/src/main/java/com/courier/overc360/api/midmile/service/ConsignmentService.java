@@ -182,8 +182,8 @@ public class ConsignmentService {
 
             // Duplicate Check Consignment
             Optional<ConsignmentEntity> duplicateConsignment =
-                    consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                            languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
+                    consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+                            languageId, companyId, partnerId, partnerMawBill, partnerHawBill, 0L);
 
             if (duplicateConsignment.isPresent()) {
                 throw new BadRequestException("Given value Getting Duplicate");

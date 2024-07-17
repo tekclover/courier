@@ -1,6 +1,5 @@
-package com.courier.overc360.api.midmile.primary.model.consignment;
+package com.courier.overc360.api.midmile.primary.model.prealert;
 
-import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetailsCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +11,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tblalert",
+@Table(name = "tblprealert",
         uniqueConstraints = {
         @UniqueConstraint(
                 name = "unique_key_alert",
-                columnNames = {"C_ID", "LANG_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL"}
+                columnNames = {"C_ID", "LANG_ID", "PARTNER_ID", "PARTNER_HOUSE_AIRWAY_BILL","PARTNER_MASTER_AIRWAY_BILL"}
         )
         }
 )
@@ -35,13 +34,15 @@ public class PreAlert {
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
-    @Id
+//    @Id
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
+    @Id
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
+    @Id
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
@@ -50,6 +51,15 @@ public class PreAlert {
 
     @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
     private String flightNo;
+
+    @Column(name = "CONSOLE_INDICATOR")
+    private Long consoleIndicator;
+
+    @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
+
+    @Column(name = "MANIFEST_INDICATOR")
+    private Long manifestIndicator;
 
     @Column(name = "FLIGHT_NAME", columnDefinition = "nvarchar(50)")
     private String flightName;
@@ -87,14 +97,17 @@ public class PreAlert {
     @Column(name = "ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String originCode;
 
-    @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
-    private String consignmentValueLocal;
+    @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
+    private String consignmentValueKd;
 
     @Column(name = "IATA", columnDefinition = "nvarchar(50)")
     private String iata;
 
     @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
     private String hsCode;
+
+    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
+    private String partnerType;
 
     @Column(name = "INCO_TERM", columnDefinition = "nvarchar(50)")
     private String incoTerm;
