@@ -7,6 +7,7 @@ import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManif
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.BondedManifestDeleteInput;
 import com.courier.overc360.api.midmile.primary.model.bondedmanifest.UpdateBondedManifest;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
+import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
@@ -16,7 +17,9 @@ import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.FindBondedManifest;
 import com.courier.overc360.api.midmile.replica.model.bondedmanifest.ReplicaBondedManifest;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaPreAlertRepository;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -55,6 +58,10 @@ public class BondedManifestService {
 
     @Autowired
     ConsignmentStatusService consignmentStatusService;
+
+    @Autowired
+    ReplicaPreAlertRepository replicaPreAlertRepository;
+
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -102,19 +109,37 @@ public class BondedManifestService {
             for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
                 for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
                     AddBondedManifest bondedManifest = new AddBondedManifest();
-                    bondedManifest.setConsigneeName(consignment.getDestinationDetails().getName());
-                    bondedManifest.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
-                    bondedManifest.setShipperId(consignment.getPartnerId());
-                    bondedManifest.setShipperName(consignment.getPartnerName());
-                    bondedManifest.setFinalDestination(consignment.getCountryOfDestination());
+//                    bondedManifest.setConsigneeName(consignment.getDestinationDetails().getName());
+//                    bondedManifest.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
+//                    bondedManifest.setShipperId(consignment.getPartnerId());
+//                    bondedManifest.setShipperName(consignment.getPartnerName());
+//                    bondedManifest.setFinalDestination(consignment.getCountryOfDestination());
                     BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
                     BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
-                    bondedManifest.setManifestedQuantity(itemDetails.getQuantity());
-                    bondedManifest.setLandedQuantity(itemDetails.getQuantity());
-                    bondedManifest.setTotalQuantity(itemDetails.getQuantity());
-                    bondedManifest.setGrossWeight(itemDetails.getWeight());
-                    bondedManifest.setNetWeight(itemDetails.getWeight());
-                    bondedManifest.setManifestedGrossWeight(itemDetails.getWeight());
+
+                    Optional<ReplicaPreAlert> replicaPreAlert = replicaPreAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+                            bondedManifest.getCompanyId(), bondedManifest.getLanguageId(), bondedManifest.getPartnerId(),
+                            bondedManifest.getMasterAirwayBill(), bondedManifest.getPartnerHouseAirwayBill(), 0L);
+
+                    if(replicaPreAlert.isPresent()) {
+                        ReplicaPreAlert dbReplica = replicaPreAlert.get();
+                        bondedManifest.setGrossWeight(dbReplica.getTotalWeight());
+                        bondedManifest.setNetWeight(dbReplica.getTotalWeight());
+                        bondedManifest.setManifestedGrossWeight(dbReplica.getTotalWeight());
+                        bondedManifest.setTareWeight(dbReplica.getTotalWeight());
+
+                        bondedManifest.setManifestedQuantity(dbReplica.getNoOfPieces());
+                        bondedManifest.setLandedQuantity(dbReplica.getNoOfPieces());
+                        bondedManifest.setTotalQuantity(dbReplica.getNoOfPieces());
+
+                        bondedManifest.setConsignmentValue(dbReplica.getConsignmentValue());
+                        bondedManifest.setBayanHV(dbReplica.getBayanHv());
+                        bondedManifest.setCurrency(dbReplica.getCurrency());
+                        bondedManifest.setGoodsDescription(dbReplica.getDescription());
+                        bondedManifest.setConsigneeName(dbReplica.getConsigneeName());
+                        bondedManifest.setShipperName(dbReplica.getShipper());
+
+                    }
                     addBondedManifest.add(bondedManifest);
                 }
             }

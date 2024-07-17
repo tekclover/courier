@@ -576,4 +576,12 @@ public class MidMileController {
     public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
     }
+
+    //Find PreAlert
+    @ApiOperation(response = PreAlert.class, value = "Find PreAlert")
+    @PostMapping("find/prealert")
+    public ResponseEntity<?> findPreAlert(@Valid @RequestBody FindPreAlert findPreAlert, @RequestParam String authToken) {
+        PreAlert[] dbPreAlert = midMileService.findPreAlert(findPreAlert, authToken);
+        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
+    }
 }

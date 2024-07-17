@@ -1239,6 +1239,13 @@ public class MidMileService {
     }
 
     // Create New PreAlert
+    /**
+     *
+     * @param preAlerts
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
     public UploadApiResponse[] createPreAlert(List<PreAlert> preAlerts, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -1251,4 +1258,25 @@ public class MidMileService {
         return result.getBody();
     }
 
+    /**
+     *
+     * @param findPreAlert
+     * @param authToken
+     * @return
+     */
+    public PreAlert[] findPreAlert(FindPreAlert findPreAlert, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/prealert");
+            HttpEntity<?> entity = new HttpEntity<>(findPreAlert, headers);
+            ResponseEntity<PreAlert[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PreAlert[].class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }
