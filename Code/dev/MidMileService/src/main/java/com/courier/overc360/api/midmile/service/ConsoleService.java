@@ -1191,21 +1191,21 @@ public class ConsoleService {
                 }
 
                 if (updateConsole.getEventCode() != null) {
-                    if ((updatedConsole.getEventCode()).equalsIgnoreCase("10")) {
+//                    if ((updatedConsole.getEventCode()).equalsIgnoreCase("10")) {
                         //Fetch the console records based on houseAirwayBill
                         List<Console> consoleData = consoleRepository.getConsoleData(updatedConsole.getConsoleId());
 
                         if (consoleData != null && !consoleData.isEmpty()) {
                             //Check whether all the consoleData's eventcode is equal to 10
-                            boolean allEventCodes = consoleData.stream()
-                                    .allMatch(console -> "10".equalsIgnoreCase(console.getEventCode()));
+//                            boolean allEventCodes = consoleData.stream()
+//                                    .allMatch(console -> "10".equalsIgnoreCase(console.getEventCode()));
 
-                            if (allEventCodes) {
+//                            if (allEventCodes) {
                                 ccrService.createConsoleCcr(consoleData, loginUserID);
                                 log.info("Console to CCR Created");
-                            }
+//                            }
                         }
-                    }
+//                    }
                 }
 
 
@@ -1221,6 +1221,60 @@ public class ConsoleService {
             throw new RuntimeException(e);
         }
     }
+
+
+    /**
+     * UpdateConsole
+     *
+     * @param updateConsoleList
+     * @param loginUserID
+     * @return
+     */
+    public List<Console> updateConsoleList(List<UpdateConsole> updateConsoleList, String loginUserID) {
+
+        List<Console> consoleList = new ArrayList<>();
+
+        for(UpdateConsole updateConsole : updateConsoleList) {
+            Console dbConsole = getConsole(
+                    updateConsole.getLanguageId(), updateConsole.getCompanyId(),
+                    updateConsole.getPartnerId(), updateConsole.getMasterAirwayBill(),
+                    updateConsole.getHouseAirwayBill(), updateConsole.getConsoleId(),
+                    updateConsole.getPieceId(), updateConsole.getPieceItemId());
+
+            BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
+            dbConsole.setUpdatedBy(loginUserID);
+            dbConsole.setUpdatedOn(new Date());
+
+            // Set Event Status
+            if (updateConsole.getStatusId() != null ) {
+                Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getStatusId());
+
+                if (getStatus.isPresent()) {
+                    IKeyValuePair ikey = getStatus.get();
+                    dbConsole.setStatusId(dbConsole.getStatusId());
+                    dbConsole.setStatusText(ikey.getStatusText());
+                    dbConsole.setStatusTimestamp(new Date());
+                }
+            }
+
+            if (updateConsole.getEventCode() != null ) {
+                Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(updateConsole.getLanguageId(),
+                        updateConsole.getCompanyId(), updateConsole.getEventCode());
+
+                if (getEvent.isPresent()) {
+                    IKeyValuePair ikey = getEvent.get();
+                    dbConsole.setEventCode(dbConsole.getEventCode());
+                    dbConsole.setEventText(ikey.getEventText());
+                    dbConsole.setEventTimestamp(new Date());
+                }
+            }
+
+            Console savedConsole = consoleRepository.save(dbConsole);
+            consoleList.add(savedConsole);
+        }
+        return consoleList;
+    }
+
 
     /**
      * Delete Console

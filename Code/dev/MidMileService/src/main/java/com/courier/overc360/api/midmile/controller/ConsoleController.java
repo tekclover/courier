@@ -57,14 +57,22 @@ public class ConsoleController {
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
-    // Update Console
-    @ApiOperation(response = Console.class, value = "Update Console") // label for Swagger
+    // Update Console - CCR Create
+    @ApiOperation(response = Console.class, value = "Update Console CCR Create") // label for Swagger
     @PatchMapping("/update/list")
-    public ResponseEntity<?> patchConsole(@RequestBody List<UpdateConsole> updateConsoleList,
+    public ResponseEntity<?> patchConsole(@Valid @RequestBody List<UpdateConsole> updateConsoleList,
                                           @RequestParam String loginUserID)
             throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
         List<Console> console = consoleService.updateConsole(updateConsoleList, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
+    }
+
+    // Update Console - Normal
+    @ApiOperation(response = Console.class, value = "Update Console")
+    @PatchMapping("/update/list/normal")
+    public ResponseEntity<?> patchConsoleList(@Valid @RequestBody List<UpdateConsole> updateConsoleList, @RequestParam String loginUserID) {
+       List<Console> dbConsole =  consoleService.updateConsoleList(updateConsoleList, loginUserID);
+        return new ResponseEntity<>(dbConsole, HttpStatus.OK);
     }
 
     // Delete Console
