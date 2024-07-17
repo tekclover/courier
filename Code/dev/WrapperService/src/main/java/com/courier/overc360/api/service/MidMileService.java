@@ -954,6 +954,36 @@ public class MidMileService {
         }
     }
 
+    /**
+     *
+     * @param updateConsoleList
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public Console[] updateConsoleNormal(List<UpdateConsole> updateConsoleList, String loginUserID, String authToken) {
+        try{
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Classic WMS's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateConsoleList, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/update/list/normal")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Console[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+
     // Delete Console
     public boolean deleteConsole(List<ConsoleDeleteInput> deleteInputList, String loginUserID, String authToken) {
         try {
@@ -991,6 +1021,25 @@ public class MidMileService {
         }
     }
 
+//    /**
+//     *
+//     * @param addConsignments
+//     * @param loginUserID
+//     * @param authToken
+//     * @return
+//     */
+//    public Console[] createConsoleConsignmentInput(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken){
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//        headers.add("User-Agent", "RestTemplate");
+//        headers.add("Authorization", " Bearer " + authToken);
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/create/list/con")
+//                .queryParam("loginUserID", loginUserID);
+//        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+//        ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+//        return result.getBody();
+//    }
+
     /**
      *
      * @param addConsignments
@@ -998,7 +1047,7 @@ public class MidMileService {
      * @param authToken
      * @return
      */
-    public Console[] createConsoleConsignmentInput(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken){
+    public Console[] createConsoleBasedOnPreAlertResponse(List<PreAlert> addConsignments, String loginUserID, String authToken){
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
@@ -1239,6 +1288,13 @@ public class MidMileService {
     }
 
     // Create New PreAlert
+    /**
+     *
+     * @param preAlerts
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
     public UploadApiResponse[] createPreAlert(List<PreAlert> preAlerts, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -1251,4 +1307,25 @@ public class MidMileService {
         return result.getBody();
     }
 
+    /**
+     *
+     * @param findPreAlert
+     * @param authToken
+     * @return
+     */
+    public PreAlert[] findPreAlert(FindPreAlert findPreAlert, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/prealert");
+            HttpEntity<?> entity = new HttpEntity<>(findPreAlert, headers);
+            ResponseEntity<PreAlert[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PreAlert[].class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }

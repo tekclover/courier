@@ -316,6 +316,9 @@ public class BondedManifest {
     @Column(name = "AIRPORT_ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String airportOriginCode;
 
+    @Column(name = "BAYAN_HV", columnDefinition = "nvarchar(50)")
+    private String bayanHV;
+
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
 

@@ -460,6 +460,15 @@ public class MidMileController {
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
+    // Update Console Normal
+    @ApiOperation(response = Console.class, value = "Update Console Normal")
+    @PatchMapping("/console/update/list/normal")
+    public ResponseEntity<?> patchConsoleNormal(@Valid @RequestBody List<UpdateConsole> updateConsoleList, @RequestParam String loginUserID,
+                                                @RequestParam String authToken) {
+        Console[] dbConsole = midMileService.updateConsoleNormal(updateConsoleList, loginUserID, authToken);
+        return new ResponseEntity<>(dbConsole, HttpStatus.OK);
+    }
+
     // Delete Console
     @ApiOperation(response = Console.class, value = "Delete Console") // label for Swagger
     @PostMapping("/console/delete/list")
@@ -481,9 +490,9 @@ public class MidMileController {
     // Console Create consignmentResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on Consignment Input")
     @PostMapping("/console/consignment")
-    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<ConsignmentEntity> addConsignment, @RequestParam String loginUserID,
+    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<PreAlert> preAlerts, @RequestParam String loginUserID,
                                                           @RequestParam String authToken) {
-        Console[] createConsole = midMileService.createConsoleConsignmentInput(addConsignment, loginUserID, authToken);
+        Console[] createConsole = midMileService.createConsoleBasedOnPreAlertResponse(preAlerts, loginUserID, authToken);
         return new ResponseEntity<>(createConsole, HttpStatus.OK);
     }
 
@@ -575,5 +584,13 @@ public class MidMileController {
     @PostMapping("/consignment/findConsignmentInvoice")
     public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
+    }
+
+    //Find PreAlert
+    @ApiOperation(response = PreAlert.class, value = "Find PreAlert")
+    @PostMapping("find/prealert")
+    public ResponseEntity<?> findPreAlert(@Valid @RequestBody FindPreAlert findPreAlert, @RequestParam String authToken) {
+        PreAlert[] dbPreAlert = midMileService.findPreAlert(findPreAlert, authToken);
+        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
     }
 }

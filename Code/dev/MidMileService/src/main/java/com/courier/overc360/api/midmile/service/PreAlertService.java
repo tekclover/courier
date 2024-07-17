@@ -5,7 +5,11 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
 import com.courier.overc360.api.midmile.primary.repository.PreAlertRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindPreAlert;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsignmentEntityRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaPreAlertRepository;
+import com.courier.overc360.api.midmile.replica.repository.specification.PreAlertSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,9 @@ public class PreAlertService {
 
     @Autowired
     PreAlertRepository preAlertRepository;
+
+    @Autowired
+    ReplicaPreAlertRepository replicaPreAlertRepository;
 
     @Autowired
     ReplicaConsignmentEntityRepository replicaConsignmentEntityRepository;
@@ -47,9 +54,6 @@ public class PreAlertService {
             String getMasterAirwayBill = replicaConsignmentEntityRepository.getMasterAirwayBill(iKeyValuePair.getLangId(),
                     dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
 
-            log.info(iKeyValuePair.getLangId() + " Company " + dbPreAlert.getCompanyId() + " PartnerId " + dbPreAlert.getPartnerId()
-                    + "PartnerHouseAirwayBill" + dbPreAlert.getPartnerHouseAirwayBill());
-
             if (!preAlertOptional.isPresent()) {
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
@@ -69,6 +73,18 @@ public class PreAlertService {
             }
         }
         return preAlertList;
+    }
+
+
+    /**
+     *
+     * @param findPreAlert
+     * @return
+     */
+    public List<ReplicaPreAlert> findPreAlert(FindPreAlert findPreAlert) {
+        PreAlertSpecification spec = new PreAlertSpecification(findPreAlert);
+        List<ReplicaPreAlert> results = replicaPreAlertRepository.findAll(spec);
+        return results;
     }
 
 }
