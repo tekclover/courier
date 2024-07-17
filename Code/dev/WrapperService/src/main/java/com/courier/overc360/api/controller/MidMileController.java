@@ -490,9 +490,9 @@ public class MidMileController {
     // Console Create consignmentResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on Consignment Input")
     @PostMapping("/console/consignment")
-    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<ConsignmentEntity> addConsignment, @RequestParam String loginUserID,
+    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<PreAlert> preAlerts, @RequestParam String loginUserID,
                                                           @RequestParam String authToken) {
-        Console[] createConsole = midMileService.createConsoleConsignmentInput(addConsignment, loginUserID, authToken);
+        Console[] createConsole = midMileService.createConsoleBasedOnPreAlertResponse(preAlerts, loginUserID, authToken);
         return new ResponseEntity<>(createConsole, HttpStatus.OK);
     }
 

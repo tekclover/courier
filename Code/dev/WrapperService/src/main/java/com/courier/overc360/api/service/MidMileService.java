@@ -1021,6 +1021,25 @@ public class MidMileService {
         }
     }
 
+//    /**
+//     *
+//     * @param addConsignments
+//     * @param loginUserID
+//     * @param authToken
+//     * @return
+//     */
+//    public Console[] createConsoleConsignmentInput(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken){
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//        headers.add("User-Agent", "RestTemplate");
+//        headers.add("Authorization", " Bearer " + authToken);
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/create/list/con")
+//                .queryParam("loginUserID", loginUserID);
+//        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+//        ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+//        return result.getBody();
+//    }
+
     /**
      *
      * @param addConsignments
@@ -1028,7 +1047,7 @@ public class MidMileService {
      * @param authToken
      * @return
      */
-    public Console[] createConsoleConsignmentInput(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken){
+    public Console[] createConsoleBasedOnPreAlertResponse(List<PreAlert> addConsignments, String loginUserID, String authToken){
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");

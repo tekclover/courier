@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.controller;
 
+import com.courier.overc360.api.midmile.primary.model.consignment.PreAlert;
 import com.courier.overc360.api.midmile.primary.model.console.*;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
@@ -47,13 +48,23 @@ public class ConsoleController {
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
+//    // Create new Console
+//    @ApiOperation(response = Console.class, value = "Create new Console") // label for swagger
+//    @PostMapping("/create/list/con")
+//    public ResponseEntity<?> postConsoleCon(@Valid @RequestBody List<ReplicaAddConsignment> addConsoleList,
+//                                         @RequestParam String loginUserID)
+//            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+//        List<Console> console = consoleService.createConsoleInConsign(addConsoleList, loginUserID);
+//        return new ResponseEntity<>(console, HttpStatus.OK);
+//    }
+
     // Create new Console
     @ApiOperation(response = Console.class, value = "Create new Console") // label for swagger
     @PostMapping("/create/list/con")
-    public ResponseEntity<?> postConsoleCon(@Valid @RequestBody List<ReplicaAddConsignment> addConsoleList,
-                                         @RequestParam String loginUserID)
+    public ResponseEntity<?> postConsoleCon(@Valid @RequestBody List<PreAlert> preAlerts,
+                                            @RequestParam String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        List<Console> console = consoleService.createConsoleInConsign(addConsoleList, loginUserID);
+        List<Console> console = consoleService.createConsoleBasedOnPreAlertResponse(preAlerts, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
