@@ -15,6 +15,7 @@ import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageRe
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.service.CommonService;
 import com.courier.overc360.api.midmile.service.ConsignmentService;
+import com.courier.overc360.api.midmile.service.PreAlertService;
 import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +48,11 @@ public class ConsignmentController {
 
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    PreAlertService preAlertService;
+
+    /*=====================================================================================================================*/
 
     //GetAll
     @ApiOperation(response = ConsignmentEntity.class, value = "Get ALl Consignment") // label for swagger
@@ -154,5 +160,13 @@ public class ConsignmentController {
     public ResponseEntity<?> findConsignmentInvoiceGenerate(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice) throws Exception {
         List<InvoiceForm> consignmentInvoiceList = consignmentService.ConsignmentInvoicePdfGenerate(findConsignmentInvoice);
         return new ResponseEntity<>(consignmentInvoiceList, HttpStatus.OK);
+    }
+
+    // PreAlert Create
+    @ApiOperation(response = PreAlert.class, value = "PreAlertCreate")
+    @PostMapping("/post/prealert")
+    public ResponseEntity<?> createPreAlert(@Valid @RequestBody List<PreAlert> preAlert, @RequestParam String loginUserID) {
+        List<PreAlert> dbPreAlert = preAlertService.createPreAlertService(preAlert, loginUserID);
+        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
     }
 }
