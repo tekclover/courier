@@ -31,9 +31,8 @@ public class AddConsignment {
 
     private String houseAirwayBill;
 
-    private String statusId;
-
-    private String statusDescription;
+//    private String statusId;
+//    private String statusDescription;
 
     private String partnerMasterAirwayBill;
 
@@ -45,13 +44,13 @@ public class AddConsignment {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String subProductId;
 

@@ -253,18 +253,7 @@ public class ConsignmentService {
                 newConsignment.setSubProductName(getProductIdFromCustomer.getSubProductName());
             }
 
-            // Set Event Status
-            Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(languageId, companyId, "1", "1");
-            if (statusEventText.isPresent()) {
-                IKeyValuePair keyValuePair = statusEventText.get();
-                newConsignment.setStatusId("1");
-                newConsignment.setEventCode("1");
-                newConsignment.setStatusDescription(keyValuePair.getStatusText());
-                newConsignment.setEventText(keyValuePair.getEventText());
-                newConsignment.setStatusTimestamp(new Date());
-                newConsignment.setEventTimestamp(new Date());
-            }
-
+            // Set PieceCount
             if (pieceCount == 0) {
                 newConsignment.setNoOfPackageHawb("1");
             } else {
@@ -353,6 +342,15 @@ public class ConsignmentService {
                 newReturnDetails.setUpdatedOn(null);
                 newConsignment.setReturnDetails(newReturnDetails);
             }
+            //HAWB_TYPE
+            newConsignment.setHawbType("STATUS");
+            newConsignment.setHawbTypeId("1");
+            Optional<IKeyValuePair> statusText = consignmentEntityRepository.getStatusText(newConsignment.getLanguageId(), "1");
+            if(statusText.isPresent()) {
+                IKeyValuePair ikey = statusText.get();
+                newConsignment.setHawbTypeDescription(ikey.getStatusText());
+                newConsignment.setHawbTimeStamp(new Date());
+            }
 
             ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
 
@@ -382,35 +380,7 @@ public class ConsignmentService {
             List<AddPieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), saveConsignment.getConsignmentId(),
                     partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserId);
-
-            //Calculate Value
-//            Double consignmentValue = 0.0;
-//            Double consignmentLocalValue = 0.0;
-//            Double addIata = 0.0;
-//            Double addInsurance = 0.0;
-//            Double customsValue = 0.0;
-//            Double calculatedTotalDuty = 0.0;
-//
-//            for (AddPieceDetails item : pieceDetails) {
-//                if (item.getPieceValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
-//                        item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
-//
-//                    Double pieceValue = Double.valueOf(item.getPieceValue());
-//                    Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
-//                    Double iataAdd = Double.valueOf(item.getAddIata());
-//                    Double insuranceAdd = Double.valueOf(item.getAddInsurance());
-//                    Double costomValue = Double.valueOf(item.getCustomsValue());
-//                    Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
-//
-//                    consignmentValue += pieceValue;
-//                    consignmentLocalValue += conLocalValue;
-//                    addIata += iataAdd;
-//                    addInsurance += insuranceAdd;
-//                    customsValue += costomValue;
-//                    calculatedTotalDuty += totalDuty;
-//                }
-//            }
+                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbTypeDescription(), country, loginUserId);
 
             //Volume
             Double totalPieceVolume = pieceDetails.stream().map(AddPieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
@@ -419,7 +389,6 @@ public class ConsignmentService {
             consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
                     saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
                     String.valueOf(totalPieceVolume));
-
 
             AddConsignment newAddConsignment = new AddConsignment();
             newAddConsignment.setPieceDetails(pieceDetails);
@@ -475,43 +444,6 @@ public class ConsignmentService {
                 }
             }
 
-            //StatusText And EventText
-            if (dbConsignment.getStatusId() != null && dbConsignment.getStatusId().equalsIgnoreCase("1")) {
-                // Set Event Status
-                Optional<IKeyValuePair> statusEventText = consignmentEntityRepository.getStatusEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), "2", "2");
-                if (statusEventText.isPresent()) {
-                    IKeyValuePair keyValuePair = statusEventText.get();
-                    dbConsignmentEntity.setStatusId("2");
-                    dbConsignmentEntity.setEventCode("2");
-                    dbConsignmentEntity.setStatusDescription(keyValuePair.getStatusText());
-                    dbConsignmentEntity.setEventText(keyValuePair.getEventText());
-                    dbConsignmentEntity.setStatusTimestamp(new Date());
-                    dbConsignmentEntity.setEventTimestamp(new Date());
-                }
-            } else {
-                // Set Event Status
-                if (dbConsignment.getStatusId() != null) {
-                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getStatusId());
-
-                    if (getStatus.isPresent()) {
-                        IKeyValuePair ikey = getStatus.get();
-                        dbConsignmentEntity.setStatusId(dbConsignmentEntity.getStatusId());
-                        dbConsignmentEntity.setStatusDescription(ikey.getStatusText());
-                        dbConsignmentEntity.setStatusTimestamp(new Date());
-                    }
-                }
-
-                if (dbConsignment.getEventCode() != null) {
-                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(dbConsignmentEntity.getLanguageId(), dbConsignmentEntity.getCompanyId(), dbConsignmentEntity.getEventCode());
-
-                    if (getEvent.isPresent()) {
-                        IKeyValuePair ikey = getEvent.get();
-                        dbConsignmentEntity.setEventCode(dbConsignmentEntity.getEventCode());
-                        dbConsignmentEntity.setEventText(ikey.getEventText());
-                        dbConsignmentEntity.setEventTimestamp(new Date());
-                    }
-                }
-            }
             dbConsignmentEntity.setDeletionIndicator(0L);
             dbConsignmentEntity.setUpdatedBy(loginUserID);
             dbConsignmentEntity.setUpdatedOn(new Date());

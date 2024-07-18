@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -71,13 +72,25 @@ public class PreAlert {
 
     private String originCode;
 
-    private String consignmentValueKd;
+//    private String consignmentValueKd;
 
     private String hsCode;
 
     private String partnerType;
 
     private String incoTerm;
+
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private String companyName;
+
+    private String languageDescription;
+
+    private Date hawbTimeStamp = new Date();
 
     private String referenceField1;
 

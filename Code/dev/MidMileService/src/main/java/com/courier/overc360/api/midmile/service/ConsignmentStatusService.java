@@ -72,6 +72,47 @@ public class ConsignmentStatusService {
         return dbConsignmentStatus.get();
     }
 
+    @Transactional
+    public void insertConsignmentStatusRecord(String languageId, String languageDesc, String companyId, String companyName,
+                                              String pieceId, String masterAirwayBill, String houseAirwayBill,
+                                              String hawbType, String hawbTypeId, String hawbTypeDescription, Date hawbTimeStamp,
+                                              String pieceType, String pieceTypeId, String pieceTypeDescription, Date pieceTimeStamp, String loginUserID) {
+        try {
+            if (languageId != null && companyId != null && pieceId != null && houseAirwayBill != null) {
+                ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
+
+                newConsignmentStatus.setLanguageId(languageId);
+                newConsignmentStatus.setLanguageDescription(languageDesc);
+                newConsignmentStatus.setCompanyId(companyId);
+                newConsignmentStatus.setCompanyName(companyName);
+
+                newConsignmentStatus.setPieceId(pieceId);
+                newConsignmentStatus.setMasterAirwayBill(masterAirwayBill);
+                newConsignmentStatus.setHouseAirwayBill(houseAirwayBill);
+
+                newConsignmentStatus.setHawbType(hawbType);
+                newConsignmentStatus.setHawbTypeId(hawbTypeId);
+                newConsignmentStatus.setHawbTypeDescription(hawbTypeDescription);
+                newConsignmentStatus.setHawbTimeStamp(hawbTimeStamp);
+
+                newConsignmentStatus.setPieceType(pieceType);
+                newConsignmentStatus.setPieceTypeId(pieceTypeId);
+                newConsignmentStatus.setPieceTypeDescription(pieceTypeDescription);
+                newConsignmentStatus.setPieceTimeStamp(pieceTimeStamp);
+
+                newConsignmentStatus.setDeletionIndicator(0L);
+                newConsignmentStatus.setCreatedBy(loginUserID);
+                newConsignmentStatus.setCreatedOn(new Date());
+                newConsignmentStatus.setUpdatedBy(loginUserID);
+                newConsignmentStatus.setUpdatedOn(new Date());
+                consignmentStatusRepository.save(newConsignmentStatus);
+                log.info("Consignment Status Table save {}", houseAirwayBill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Create ConsignmentStatus using params
      *

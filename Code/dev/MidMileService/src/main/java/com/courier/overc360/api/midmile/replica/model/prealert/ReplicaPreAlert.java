@@ -55,6 +55,12 @@ public class ReplicaPreAlert {
     @Column(name = "CONSOLE_INDICATOR")
     private Long consoleIndicator;
 
+    @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
+    private String companyName;
+
+    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(50)")
+    private String languageDescription;
+
     @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
     private String consignmentValueLocal;
 
@@ -121,8 +127,8 @@ public class ReplicaPreAlert {
     @Column(name = "ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String originCode;
 
-    @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
-    private String consignmentValueKd;
+//    @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
+//    private String consignmentValueKd;
 
     @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
     private String hsCode;
@@ -132,6 +138,18 @@ public class ReplicaPreAlert {
 
     @Column(name = "INCO_TERM", columnDefinition = "nvarchar(50)")
     private String incoTerm;
+
+    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
+    private String hawbType;
+
+    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String hawbTypeId;
+
+    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String hawbTypeDescription;
+
+    @Column(name = "HAWB_TIMESTAMP")
+    private Date hawbTimeStamp = new Date();
 
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;

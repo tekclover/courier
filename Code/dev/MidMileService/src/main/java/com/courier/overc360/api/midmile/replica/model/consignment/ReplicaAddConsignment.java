@@ -27,9 +27,9 @@ public class ReplicaAddConsignment {
 
     private String houseAirwayBill;
 
-    private String statusId;
+//    private String statusId;
 
-    private String statusDescription;
+//    private String statusDescription;
 
     private String shipperId;
 
@@ -299,9 +299,9 @@ public class ReplicaAddConsignment {
     private String totalWeightHawb;
     private Date estimatedDepartureTime;
     private String reverseReason;
-    private String eventCode;
-    private String eventText;
-    private Date eventTimestamp;
+//    private String eventCode;
+//    private String eventText;
+//    private Date eventTimestamp;
 
     private String referenceField1;
     private String referenceField2;

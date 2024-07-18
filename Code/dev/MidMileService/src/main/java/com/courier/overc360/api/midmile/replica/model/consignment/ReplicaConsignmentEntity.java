@@ -31,11 +31,11 @@ public class ReplicaConsignmentEntity {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 
-    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String statusId;
+//    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String statusId;
 
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
-    private String statusDescription;
+//    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+//    private String statusDescription;
 
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
@@ -259,17 +259,17 @@ public class ReplicaConsignmentEntity {
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
-    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String eventCode;
+//    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+//    private String eventCode;
 
-    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String eventText;
+//    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+//    private String eventText;
 
-    @Column(name = "EVENT_TIMESTAMP")
-    private Date eventTimestamp;
+//    @Column(name = "EVENT_TIMESTAMP")
+//    private Date eventTimestamp;
 
-    @Column(name = "STATUS_TIMESTAMP")
-    private Date statusTimestamp;
+//    @Column(name = "STATUS_TIMESTAMP")
+//    private Date statusTimestamp;
 
     @Column(name = "CONSOLE_INDICATOR")
     private Long consoleIndicator;
@@ -319,6 +319,18 @@ public class ReplicaConsignmentEntity {
     @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
     private String specialApprovalCharge;
 
+    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
+    private String hawbType;
+
+    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String hawbTypeId;
+
+    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String hawbTypeDescription;
+
+    @Column(name = "HAWB_TIMESTAMP")
+    private Date hawbTimeStamp = new Date();
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -359,19 +371,4 @@ public class ReplicaConsignmentEntity {
     @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
     private Long preAlertValidationIndicator;
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "CON_REF_ID")
-//    private ConsignmentRef consignmentRefs;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "DEST_DETAIL_ID")
-//    private DestinationDetails destinationDetails;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "ORIGIN_ID")
-//    private OriginDetails originDetails;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "RETURN_ID")
-//    private ReturnDetails returnDetails;
 }

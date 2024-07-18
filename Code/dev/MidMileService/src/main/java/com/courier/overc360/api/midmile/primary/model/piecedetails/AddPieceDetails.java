@@ -31,6 +31,14 @@ public class AddPieceDetails {
 
     private String hsCode;
 
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
     private String pieceValue;
 
     private String pieceCurrency;
@@ -63,8 +71,8 @@ public class AddPieceDetails {
 
     private String volumeUnit;
 
-    private String pieceStatusId;
-    private Date pieceStatusTimestamp;
+//    private String pieceStatusId;
+//    private Date pieceStatusTimestamp;
 
     private List<ReferenceImageList> referenceImageList;
     private String imageReferenceId;

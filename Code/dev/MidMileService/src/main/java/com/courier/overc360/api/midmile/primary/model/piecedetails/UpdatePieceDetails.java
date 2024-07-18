@@ -62,9 +62,9 @@ public class UpdatePieceDetails { ;
 
         private String volumeUnit;
 
-        private String pieceStatusId;
+//        private String pieceStatusId;
 
-        private Date pieceStatusTimestamp;
+//        private Date pieceStatusTimestamp;
 
         private String hsCode;
 
@@ -73,6 +73,14 @@ public class UpdatePieceDetails { ;
         private String packReferenceNumber;
 
         private String tags;
+
+        private String pieceType;
+
+        private String pieceTypeId;
+
+        private String pieceTypeDescription;
+
+        private Date pieceTimeStamp = new Date();
 
         private Long deletionIndicator;
 

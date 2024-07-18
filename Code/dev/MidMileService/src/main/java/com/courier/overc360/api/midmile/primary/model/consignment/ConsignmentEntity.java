@@ -30,11 +30,11 @@ public class ConsignmentEntity {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 
-    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String statusId;
+//    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String statusId;
 
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
-    private String statusDescription;
+//    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+//    private String statusDescription;
 
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
@@ -265,23 +265,35 @@ public class ConsignmentEntity {
     @Column(name = "FORWARD_REFERENCE_NUMBER", columnDefinition = "nvarchar(50)")
     private String forwardReferenceNumber;
 
+    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
+    private String hawbType;
+
+    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String hawbTypeId;
+
+    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String hawbTypeDescription;
+
+    @Column(name = "HAWB_TIMESTAMP")
+    private Date hawbTimeStamp = new Date();
+
     @Column(name = "WORKER_CODE", columnDefinition = "nvarchar(50)")
     private String workerCode;
 
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
-    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String eventCode;
+//    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+//    private String eventCode;
 
-    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String eventText;
+//    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+//    private String eventText;
 
-    @Column(name = "EVENT_TIMESTAMP")
-    private Date eventTimestamp;
+//    @Column(name = "EVENT_TIMESTAMP")
+//    private Date eventTimestamp;
 
-    @Column(name = "STATUS_TIMESTAMP")
-    private Date statusTimestamp;
+//    @Column(name = "STATUS_TIMESTAMP")
+//    private Date statusTimestamp;
 
     @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
     private String primaryDo;
@@ -352,26 +364,9 @@ public class ConsignmentEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
-    //    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "COND")
     private ReturnDetails returnDetails;
 
     //Nullvalidation column
     @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
     private Long preAlertValidationIndicator;
-
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "CON_REF_ID")
-//    private ConsignmentRef consignmentRefs;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "DEST_DETAIL_ID")
-//    private DestinationDetails destinationDetails;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "ORIGIN_ID")
-//    private OriginDetails originDetails;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "RETURN_ID")
-//    private ReturnDetails returnDetails;
 }

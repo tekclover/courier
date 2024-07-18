@@ -105,8 +105,8 @@ public class ReplicaPieceDetails {
     @Column(name = "DIMENSION_UNIT", columnDefinition = "nvarchar(50)")
     private String dimensionUnit;
 
-    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String pieceStatusId;
+//    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String pieceStatusId;
 
     @Column(name = "PIECE_VALUE", columnDefinition = "nvarchar(50)")
     private String pieceValue;
@@ -114,15 +114,26 @@ public class ReplicaPieceDetails {
     @Column(name = "PIECE_CURRENCY", columnDefinition = "nvarchar(50)")
     private String pieceCurrency;
 
-    @Column(name = "PIECE_STATUS_TIMESTAMP")
-    private Date pieceStatusTimestamp;
+//    @Column(name = "PIECE_STATUS_TIMESTAMP")
+//    private Date pieceStatusTimestamp;
+
+    @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
+    private String pieceType;
+
+    @Column(name = "PIECE_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String pieceTypeId;
+
+    @Column(name = "PIECE_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String pieceTypeDescription;
+
+    @Column(name = "PIECE_TIMESTAMP")
+    private Date pieceTimeStamp = new Date();
 
     @Column(name = "WIDTH", columnDefinition = "nvarchar(50)")
     private String width;
 
     @Column(name = "HEIGHT", columnDefinition = "nvarchar(50)")
     private String height;
-    
 
     @Column(name = "WEIGHT", columnDefinition = "nvarchar(50)")
     private String weight;

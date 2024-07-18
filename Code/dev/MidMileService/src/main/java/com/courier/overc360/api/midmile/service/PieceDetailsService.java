@@ -179,8 +179,8 @@ public class PieceDetailsService {
     public List<AddPieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
                                                         String companyName, String languageName, String partnerName, Long consignmentId, String partnerHawBill,
                                                         String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
-                                                        String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
-                                                        String eventText, String country, String loginUserID)
+                                                        String volume, String weightUnit, String codAmount, String hawbTypeId, String hawbType, String hawbDescription,
+                                                         String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<AddPieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -202,10 +202,6 @@ public class PieceDetailsService {
 
                         String PIECE_ID = houseAirwayBill + String.format("%03d", pieceCounter++);
                         PieceDetails newPieceDetails = new PieceDetails();
-
-//                        List<ItemDetails> itemDetails = addPieceDetails.getItemDetails();
-
-                        // i want to how many itemdetails record save in piece table tag how give me code
                         BeanUtils.copyProperties(addPieceDetails, newPieceDetails, CommonUtils.getNullPropertyNames(addPieceDetails));
 
                         //Add all piece's weight
@@ -225,12 +221,11 @@ public class PieceDetailsService {
                         newPieceDetails.setLanguageDescription(languageName);
                         newPieceDetails.setPartnerName(partnerName);
                         newPieceDetails.setConsignmentId(consignmentId);
-                        newPieceDetails.setPieceStatusId(statusId);
-                        newPieceDetails.setPieceEventCode(eventCode);
-                        newPieceDetails.setPieceStatusText(statusText);
-                        newPieceDetails.setPieceEventText(eventText);
-                        newPieceDetails.setPieceStatusTimestamp(new Date());
-                        newPieceDetails.setPieceEventTimestamp(new Date());
+                        //HawbPieceStatus
+                        newPieceDetails.setPieceTypeId(hawbTypeId);
+                        newPieceDetails.setPieceType(hawbType);
+                        newPieceDetails.setPieceTypeDescription(hawbDescription);
+                        newPieceDetails.setPieceTimeStamp(new Date());
                         newPieceDetails.setTags(String.valueOf(itemCount));
                         if(hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
@@ -269,7 +264,9 @@ public class PieceDetailsService {
                                 partnerName, houseAirwayBill, masterAirwayBill, PIECE_ID, partnerId, addPieceDetails.getItemDetails(), consignmentId,
                                 partnerHawBill, hsCode, partnerMawBill, length, width, height, weightUnit, volume, codAmount, country, loginUserID);
 
-                        Double totalItemVolume = itemDetails.stream().map(AddItemDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
+                        Double totalItemVolume = itemDetails.stream().map(AddItemDetails::getVolume)
+                                .filter(n -> n != null && !n.isBlank())
+                                .mapToDouble(a -> Double.valueOf(a)).sum();
                         newPieceDetails.setVolume(String.valueOf(totalItemVolume));
 
                         // Calculate the total declared value
@@ -317,11 +314,11 @@ public class PieceDetailsService {
 //                                savePieceDetails.getPieceCurrency(), String.valueOf(pieceValue));
 
                         // Save ConsignmentStatus
-                        consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
-                                savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(), savePieceDetails.getPieceId(), savePieceDetails.getPieceStatusId(),
-                                savePieceDetails.getMasterAirwayBill(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceStatusId(),
-                                savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceEventCode(), savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventCode(),
-                                savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceStatusTimestamp(), loginUserID );
+                        consignmentStatusService.insertConsignmentStatusRecord(savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(),
+                                savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
+                                savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                                savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                                savePieceDetails.getPieceTimeStamp(),loginUserID );
 
                         AddPieceDetails pieceDetails = new AddPieceDetails();
                         BeanUtils.copyProperties(savePieceDetails, pieceDetails);
@@ -365,12 +362,11 @@ public class PieceDetailsService {
                     }
                 }
                 newPieceDetails.setCodAmount(codAmount);
-                newPieceDetails.setPieceStatusId(statusId);
-                newPieceDetails.setPieceEventCode(eventCode);
-                newPieceDetails.setPieceStatusText(statusText);
-                newPieceDetails.setPieceEventText(eventText);
-                newPieceDetails.setPieceStatusTimestamp(new Date());
-                newPieceDetails.setPieceEventTimestamp(new Date());
+
+                newPieceDetails.setPieceTypeId(hawbTypeId);
+                newPieceDetails.setPieceType(hawbType);
+                newPieceDetails.setPieceTypeDescription(hawbDescription);
+                newPieceDetails.setPieceTimeStamp(new Date());
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
@@ -391,11 +387,11 @@ public class PieceDetailsService {
                         partnerHawBill, savePieceDetails.getHsCode(), partnerMawBill, length, width, height, weightUnit, volume, codAmount,country, loginUserID);
 
                 // Save ConsignmentStatus
-                consignmentStatusService.createConsignmentStatusParams(savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(),
-                        savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(), savePieceDetails.getPieceId(), savePieceDetails.getPieceStatusId(),
-                        savePieceDetails.getMasterAirwayBill(), savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceStatusId(),
-                        savePieceDetails.getPieceStatusText(), savePieceDetails.getPieceEventCode(), savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventCode(),
-                        savePieceDetails.getPieceEventText(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceEventTimestamp(), savePieceDetails.getPieceStatusTimestamp(), loginUserID );
+                consignmentStatusService.insertConsignmentStatusRecord(savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(),
+                        savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
+                        savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                        savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                        savePieceDetails.getPieceTimeStamp(),loginUserID );
 
                 AddPieceDetails pieceDetails = new AddPieceDetails();
                 BeanUtils.copyProperties(savePieceDetails, pieceDetails);
@@ -415,7 +411,6 @@ public class PieceDetailsService {
             }
         }
         return pieceDetailsList;
-
     }
 
     /**

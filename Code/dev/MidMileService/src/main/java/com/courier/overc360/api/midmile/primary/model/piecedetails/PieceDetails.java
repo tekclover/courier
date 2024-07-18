@@ -134,23 +134,35 @@ public class PieceDetails {
     @Column(name = "CONSIGNMENT_ID")
     private Long consignmentId;
 
-    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String pieceStatusId;
+    @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
+    private String pieceType;
 
-    @Column(name = "PIECE_STATUS_TIMESTAMP")
-    private Date pieceStatusTimestamp;
+    @Column(name = "PIECE_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String pieceTypeId;
 
-    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
-    private String pieceStatusText;
+    @Column(name = "PIECE_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String pieceTypeDescription;
 
-    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String pieceEventCode;
+    @Column(name = "PIECE_TIMESTAMP")
+    private Date pieceTimeStamp = new Date();
+//    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String pieceStatusId;
 
-    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String pieceEventText;
+//    @Column(name = "PIECE_STATUS_TIMESTAMP")
+//    private Date pieceStatusTimestamp;
 
-    @Column(name = "PIECE_EVENT_TIMESTAMP")
-    private Date pieceEventTimestamp;
+//    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
+//    private String pieceStatusText;
+
+//    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
+//    private String pieceEventCode;
+
+//    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
+//    private String pieceEventText;
+
+//    @Column(name = "PIECE_EVENT_TIMESTAMP")
+//    private Date pieceEventTimestamp;
+
 
     @Column(name = "PIECE_VALUE", columnDefinition = "nvarchar(50)")
     private String pieceValue;
