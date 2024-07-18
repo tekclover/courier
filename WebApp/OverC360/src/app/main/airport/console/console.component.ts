@@ -46,8 +46,6 @@ export class ConsoleComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyId', header: 'Company' },
-      { field: 'consoleId', header: 'Console ID' },
-      {  field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'statusText', header: 'Status' },
@@ -57,6 +55,7 @@ export class ConsoleComponent {
     ];
     this.target = [
       { field: 'shipperName', header: 'Shipper' },
+      { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'description', header: 'Commodity' },
       { field: 'quantity', header: 'No of Piece' },
       { field: 'countryOfOrigin', header: 'Origin' },
@@ -91,7 +90,7 @@ export class ConsoleComponent {
     obj.companyId = [this.auth.companyId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        res = this.cs.removeDuplicatesFromArrayList(res, 'consoleId')
+        res = this.cs.removeDuplicatesFromArrayList(res, 'partnerMasterAirwayBill')
         this.consoleTable = res;
         this.getSearchDropdown();
         this.spin.hide();

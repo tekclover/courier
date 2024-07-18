@@ -13,6 +13,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 import { ConsoleService } from '../console.service';
 import { ConsoleEditpopupComponent } from '../console-editpopup/console-editpopup.component';
 import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-console-edit',
@@ -36,6 +37,7 @@ export class ConsoleEditComponent {
     private cas: CommonAPIService,
     private auth: AuthService,
     public dialog: MatDialog,
+    private datePipe: DatePipe,
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -181,7 +183,7 @@ export class ConsoleEditComponent {
     this.callTableHeader();
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
-    this.form.controls.consoleId.disable();
+    this.form.controls.partnerMasterAirwayBill.disable();
     this.form.controls.statusText.disable();
 
     if (this.pageToken.pageflow != 'New') {
@@ -201,6 +203,7 @@ export class ConsoleEditComponent {
   target: any[] = [];
   callTableHeader() {
     this.cols = [
+      { field:'consoleId', header:'Console No'},
       { field: 'masterAirwayBill', header: 'MAWB' },
       { field: 'houseAirwayBill', header: 'Consginment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
@@ -261,7 +264,7 @@ export class ConsoleEditComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.consoleId = [line.consoleId];
+    obj.partnerMasterAirwayBill = [line.partnerMasterAirwayBill];
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.subProductArray = res;
@@ -367,5 +370,51 @@ export class ConsoleEditComponent {
         this.fill(this.pageToken.line)
       }
     });
+  }
+
+  downloadExcel() {
+    let exportData = [];
+  
+    if (this.selectedConsole && this.selectedConsole.length > 0) {
+      exportData = this.selectedConsole.map(item => {
+        const exportItem: any = {};
+        this.cols.forEach(col => {
+          if (col.format == 'date') {
+            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          } else {
+            exportItem[col.header] = item[col.field];
+          }
+        });
+        this.target.forEach(col => {
+          if (col.format && col.format === 'date') {
+            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          } else {
+            exportItem[col.header] = item[col.field];
+          }
+        });
+        return exportItem;
+      });
+    } else {
+      exportData = this.subProductArray.map(item => {
+        const exportItem: any = {};
+        this.cols.forEach(col => {
+          if (col.format == 'date') {
+            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          } else {
+            exportItem[col.header] = item[col.field];
+          }
+        });
+        this.target.forEach(col => {
+          if (col.format && col.format === 'date') {
+            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          } else {
+            exportItem[col.header] = item[col.field];
+          }
+        });
+        return exportItem;
+      });
+    }
+  
+    this.cs.downloadExcel(exportData, 'Console', 'Console ID');
   }
 }
