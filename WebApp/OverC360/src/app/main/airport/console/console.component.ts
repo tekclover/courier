@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/core';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -389,5 +389,35 @@ export class ConsoleComponent {
       },
     });
 
+  }
+
+  @ViewChild('fileInput1') fileInput1!: ElementRef;
+  uploadBayan(){
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    this.fileInput1.nativeElement.click();
+  }
+  selectedFiles: File | null = null;
+  onFileSelectedBayan(event: any): void {
+    const filePath = '/' + this.selectedConsole[0].consoleId + '/';
+    const file: File = event.target.files[0];
+    this.selectedFiles = file;
+    this.spin.show();
+    this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uploaded',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
   }
 }

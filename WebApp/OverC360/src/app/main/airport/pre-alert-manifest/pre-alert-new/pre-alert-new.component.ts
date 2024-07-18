@@ -82,7 +82,8 @@ export class PreAlertNewComponent {
     partnerType: ['',],
     countryOfOrigin: [],
     countryOfDestination: [],
-    flightArrivalTime: [],
+    flightArrivalTime: ['',],
+    flightArrivalTimeFE: [],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
@@ -271,10 +272,15 @@ export class PreAlertNewComponent {
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    // console.log(event.target.files)
     this.selectedFiles = file;
-    // console.log( this.selectedFiles)
     this.spin.show();
+
+    const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
+    this.form.controls.estimatedDepartureTime.patchValue(date);
+
+    const date2 = this.cs.jsonDate(this.form.controls.flightArrivalTimeFE.value)
+    this.form.controls.flightArrivalTime.patchValue(date2);
+
     this.service.uploadPreAlertFiles(this.selectedFiles, this.form.getRawValue()).subscribe({
       next: (result) => {
         this.messageService.add({
@@ -284,7 +290,8 @@ export class PreAlertNewComponent {
           detail: 'File uploaded successfully',
         });
         this.selectedFiles = null;
-        this.clearFileInput(event.target); 
+        this.clearFileInput(event.target);
+        this.router.navigate(['/main/airport/preAlertManifest']); 
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
