@@ -153,8 +153,7 @@ public class PreAlertService {
             Double consignmentValue = 0.0;
 
             //Consignment Value
-            if (dbPreAlert.getExchangeRate() != null && dbPreAlert.getConsignmentValueLocal() == null &&
-                    dbPreAlert.getConsignmentValueLocal().isEmpty()) {
+            if (dbPreAlert.getExchangeRate() != null && dbPreAlert.getConsignmentValueLocal().isEmpty()) {
                 declaredValue = Double.valueOf(dbPreAlert.getConsignmentValue());
                 exchangeRate = Double.valueOf(dbPreAlert.getExchangeRate());
                 consignmentValue = declaredValue * exchangeRate;
@@ -162,7 +161,7 @@ public class PreAlertService {
                 String formatConsignmentValue = decimalFormat.format(consignmentValue);
                 dbPreAlert.setConsignmentValueLocal(formatConsignmentValue);
             }
-            if (dbPreAlert.getIata() != null) {
+            if (!dbPreAlert.getIata().isEmpty() && dbPreAlert.getIata() != null ) {
                 Double iata = Double.valueOf(dbPreAlert.getIata());
                 dbPreAlert.setAddIata(String.valueOf(iata + consignmentValue));
             }

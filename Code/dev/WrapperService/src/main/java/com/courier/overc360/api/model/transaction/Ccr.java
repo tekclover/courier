@@ -24,7 +24,7 @@ public class Ccr {
     private String ccrId;
 
     private String customsCcrNo;
-    private String statusText;
+//    private String statusText;
 
     private String pieceId;
 
@@ -60,7 +60,7 @@ public class Ccr {
 
     private String partnerName;
 
-    private String statusId;
+//    private String statusId;
 
     private String primaryDo;
 
@@ -68,13 +68,13 @@ public class Ccr {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String partnerHouseAirwayBill;
 

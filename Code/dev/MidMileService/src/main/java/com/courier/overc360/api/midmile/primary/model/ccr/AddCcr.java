@@ -52,7 +52,7 @@ public class AddCcr {
 
     private String calculatedTotalDuty;
 
-    private String statusText;
+//    private String statusText;
 
     private String dduCharge;
 
@@ -70,7 +70,7 @@ public class AddCcr {
 
     private String partnerName;
 
-    private String statusId;
+//    private String statusId;
 
     private String primaryDo;
 
@@ -78,13 +78,13 @@ public class AddCcr {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String partnerHouseAirwayBill;
 

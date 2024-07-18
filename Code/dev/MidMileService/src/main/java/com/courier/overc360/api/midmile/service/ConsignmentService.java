@@ -109,7 +109,7 @@ public class ConsignmentService {
         String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
 
         //Cassandra save
-        commonService.createConsignment(consignmentEntityList, loginUserId, masterAirwayBill);
+//        commonService.createConsignment(consignmentEntityList, loginUserId, masterAirwayBill);
 
         for (AddConsignment consignmentEntity : consignmentEntityList) {
 

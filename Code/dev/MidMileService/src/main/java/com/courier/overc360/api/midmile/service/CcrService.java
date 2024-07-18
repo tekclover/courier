@@ -159,17 +159,6 @@ public class CcrService {
                 }
                 newCcr.setCcrId(CCR_ID);
 
-                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(addCcr.getLanguageId(), addCcr.getCompanyId(), "6", "11");
-
-                if (eventStatus.isPresent()) {
-                    IKeyValuePair iKeyValuePair = eventStatus.get();
-                    newCcr.setStatusId("6");
-                    newCcr.setEventCode("11");
-                    newCcr.setStatusText(iKeyValuePair.getStatusText());
-                    newCcr.setEventText(iKeyValuePair.getEventText());
-                    newCcr.setEventTimestamp(new Date());
-                    newCcr.setStatusTimestamp(new Date());
-                }
 
                 newCcr.setDeletionIndicator(0L);
                 newCcr.setCreatedBy(loginUserID);
@@ -179,25 +168,25 @@ public class CcrService {
 
                 Ccr createdCcr = ccrRepository.save(newCcr);
 
-                if (createdCcr != null) {
-                    ccrRepository.updateEventCodeFromConsignment(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
-                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getEventCode(), createdCcr.getEventText(),
-                            createdCcr.getStatusId(), createdCcr.getStatusText());
-                    log.info("CCR Created <-----------------------> Consignment Event Updated");
-
-                    //Console Update
-                    consoleRepository.consoleUpdateBasedOnCCRUpdate(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
-                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getStatusId(), createdCcr.getEventCode(),
-                            createdCcr.getStatusText(), createdCcr.getEventText(), createdCcr.getConsoleId());
-                    log.info("CCR Created <---------------------------> Console Event Updated");
-
-                    // Save ConsignmentStatus
-                    consignmentStatusService.createConsignmentStatusParams(createdCcr.getCompanyId(), createdCcr.getCompanyName(),
-                            createdCcr.getLanguageId(), createdCcr.getLanguageDescription(), createdCcr.getPieceId(), createdCcr.getStatusId(),
-                            createdCcr.getMasterAirwayBill(), createdCcr.getHouseAirwayBill(), createdCcr.getStatusText(), createdCcr.getStatusId(),
-                            createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
-                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID);
-                }
+//                if (createdCcr != null) {
+//                    ccrRepository.updateEventCodeFromConsignment(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
+//                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getEventCode(), createdCcr.getEventText(),
+//                            createdCcr.getStatusId(), createdCcr.getStatusText());
+//                    log.info("CCR Created <-----------------------> Consignment Event Updated");
+//
+//                    //Console Update
+//                    consoleRepository.consoleUpdateBasedOnCCRUpdate(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
+//                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getStatusId(), createdCcr.getEventCode(),
+//                            createdCcr.getStatusText(), createdCcr.getEventText(), createdCcr.getConsoleId());
+//                    log.info("CCR Created <---------------------------> Console Event Updated");
+//
+//                    // Save ConsignmentStatus
+//                    consignmentStatusService.createConsignmentStatusParams(createdCcr.getCompanyId(), createdCcr.getCompanyName(),
+//                            createdCcr.getLanguageId(), createdCcr.getLanguageDescription(), createdCcr.getPieceId(), createdCcr.getStatusId(),
+//                            createdCcr.getMasterAirwayBill(), createdCcr.getHouseAirwayBill(), createdCcr.getStatusText(), createdCcr.getStatusId(),
+//                            createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
+//                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID);
+//                }
                 createdCcrList.add(createdCcr);
             }
             return createdCcrList;
@@ -295,7 +284,7 @@ public class CcrService {
                 }
                 newCcr.setIata(iataData.getIataKd());
                 //   newCcr.setTotalDuty(String.valueOf(totalDuty));
-                newCcr.setStatusId(STATUS_ID);
+//                newCcr.setStatusId(STATUS_ID);
                 newCcr.setDeletionIndicator(0L);
                 newCcr.setCreatedBy(loginUserID);
                 newCcr.setCreatedOn(new Date());
@@ -344,48 +333,9 @@ public class CcrService {
                 dbCcr.setUpdatedBy(loginUserID);
                 dbCcr.setUpdatedOn(new Date());
 
-                if (dbCcr.getStatusId() != null ) {
-                    Optional<IKeyValuePair> getStatus = consignmentEntityRepository.getStatusText(dbCcr.getLanguageId(), dbCcr.getStatusId());
-
-                    if (getStatus.isPresent()) {
-                        IKeyValuePair ikey = getStatus.get();
-                        dbCcr.setStatusId(dbCcr.getStatusId());
-                        dbCcr.setStatusText(ikey.getStatusText());
-                        dbCcr.setStatusTimestamp(new Date());
-                    }
-                }
-
-                if (dbCcr.getEventCode() != null ) {
-                    Optional<IKeyValuePair> getEvent = consignmentEntityRepository.getEventText(dbCcr.getLanguageId(), dbCcr.getCompanyId(), dbCcr.getEventCode());
-
-                    if (getEvent.isPresent()) {
-                        IKeyValuePair ikey = getEvent.get();
-                        dbCcr.setEventCode(dbCcr.getEventCode());
-                        dbCcr.setEventText(ikey.getEventText());
-                        dbCcr.setEventTimestamp(new Date());
-                    }
-                }
 
 
                 Ccr updatedCcr = ccrRepository.save(dbCcr);
-                if (updatedCcr != null) {
-                    //Consignment Update
-                    ccrRepository.updateEventCodeFromConsignment(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(),
-                            updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getEventCode(), updatedCcr.getEventText(),
-                            updatedCcr.getStatusId(), updatedCcr.getStatusText());
-
-                    //Console Update
-                    consoleRepository.consoleUpdateBasedOnCCRUpdate(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(), updatedCcr.getHouseAirwayBill(),
-                            updatedCcr.getMasterAirwayBill(), updatedCcr.getStatusId(), updatedCcr.getEventCode(), updatedCcr.getStatusText(), updatedCcr.getEventText(), updatedCcr.getConsoleId());
-
-                    // ConsignmentStatus Table Create
-                    consignmentStatusService.createConsignmentStatusParams(updatedCcr.getCompanyId(), updatedCcr.getCompanyName(),
-                            updatedCcr.getLanguageId(), updatedCcr.getLanguageDescription(), updatedCcr.getPieceId(), updatedCcr.getStatusId(),
-                            updatedCcr.getMasterAirwayBill(), updatedCcr.getHouseAirwayBill(), updatedCcr.getStatusText(), updatedCcr.getStatusId(),
-                            updatedCcr.getStatusText(), updatedCcr.getEventCode(), updatedCcr.getEventText(), updatedCcr.getEventCode(),
-                            updatedCcr.getEventText(), updatedCcr.getEventTimestamp(), updatedCcr.getEventTimestamp(), updatedCcr.getStatusTimestamp(), loginUserID);
-
-                }
                 updatedCcrList.add(updatedCcr);
             }
             return updatedCcrList;
@@ -732,41 +682,7 @@ public class CcrService {
                             dbCcr.setUpdatedBy("Bayan");
                             dbCcr.setUpdatedOn(new Date());
 
-                            Optional<IKeyValuePair> iKeyValuePair = consignmentEntityRepository.getStatusEventText(
-                                    dbCcr.getLanguageId(), dbCcr.getCompanyId(), "8", "14");
-
-                            dbCcr.setStatusId("8");
-                            dbCcr.setEventCode("14");
-                            if (iKeyValuePair.isPresent()) {
-                                IKeyValuePair ikey = iKeyValuePair.get();
-                                dbCcr.setStatusText(ikey.getStatusText());
-                                dbCcr.setEventText(ikey.getEventText());
-                            }
-                            dbCcr.setStatusTimestamp(new Date());
-                            dbCcr.setEventTimestamp(new Date());
                             Ccr updatedCcr = ccrRepository.save(dbCcr);
-
-                            if (updatedCcr != null) {
-                                //Consignment Update
-                                ccrRepository.updateEventCodeFromConsignment(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(),
-                                        updatedCcr.getHouseAirwayBill(), updatedCcr.getMasterAirwayBill(), updatedCcr.getEventCode(), updatedCcr.getEventText(),
-                                        updatedCcr.getStatusId(), updatedCcr.getStatusText());
-                                log.info("Bayan Update in Consignment Table");
-
-                                //Console Update
-                                consoleRepository.consoleUpdateBasedOnCCRUpdate(updatedCcr.getCompanyId(), updatedCcr.getLanguageId(), updatedCcr.getPartnerId(), updatedCcr.getHouseAirwayBill(),
-                                        updatedCcr.getMasterAirwayBill(), updatedCcr.getStatusId(), updatedCcr.getEventCode(), updatedCcr.getStatusText(), updatedCcr.getEventText(), updatedCcr.getConsoleId());
-                                log.info("Bayan Update in Console Table");
-
-                                // Save ConsignmentStatus
-                                consignmentStatusService.createConsignmentStatusParams(updatedCcr.getCompanyId(), updatedCcr.getCompanyName(),
-                                        updatedCcr.getLanguageId(), updatedCcr.getLanguageDescription(), updatedCcr.getPieceId(), updatedCcr.getStatusId(),
-                                        updatedCcr.getMasterAirwayBill(), updatedCcr.getHouseAirwayBill(), updatedCcr.getStatusText(), updatedCcr.getStatusId(),
-                                        updatedCcr.getStatusText(), updatedCcr.getEventCode(), updatedCcr.getEventText(), updatedCcr.getEventCode(),
-                                        updatedCcr.getEventText(), updatedCcr.getEventTimestamp(), updatedCcr.getEventTimestamp(), updatedCcr.getStatusTimestamp(), "Bayan");
-
-                            }
-
                             updatedCcrList.add(updatedCcr);
                         }
                     }
