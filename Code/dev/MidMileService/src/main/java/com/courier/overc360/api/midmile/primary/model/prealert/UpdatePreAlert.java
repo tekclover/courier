@@ -31,6 +31,12 @@ public class UpdatePreAlert {
 
     private String flightNo;
 
+    private Long consoleIndicator;
+
+    private String consignmentValueLocal;
+
+    private Long manifestIndicator;
+
     private String flightName;
 
     private Date estimatedTimeOfDeparture;
@@ -41,15 +47,25 @@ public class UpdatePreAlert {
 
     private String consignmentValue;
 
+    private String exchangeRate;
+
+    private String iata;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
+
     private String bayanHv;
 
-    private Long consoleIndicator;
-
-    private Long manifestIndicator;
-
     private String currency;
-
-    private String consignmentValueLocal;
 
     private String description;
 
@@ -61,13 +77,13 @@ public class UpdatePreAlert {
 
     private String originCode;
 
-    private String iata;
+    private String consignmentValueKd;
 
     private String hsCode;
 
-    private String incoTerm;
+    private String partnerType;
 
-    private Long deletionIndicator;
+    private String incoTerm;
 
     private String referenceField1;
 
@@ -88,5 +104,6 @@ public class UpdatePreAlert {
     private String referenceField9;
 
     private String referenceField10;
+
 }
 

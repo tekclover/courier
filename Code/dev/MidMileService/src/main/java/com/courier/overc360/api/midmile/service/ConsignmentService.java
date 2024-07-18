@@ -385,32 +385,32 @@ public class ConsignmentService {
                     saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserId);
 
             //Calculate Value
-            Double consignmentValue = 0.0;
-            Double consignmentLocalValue = 0.0;
-            Double addIata = 0.0;
-            Double addInsurance = 0.0;
-            Double customsValue = 0.0;
-            Double calculatedTotalDuty = 0.0;
-
-            for (AddPieceDetails item : pieceDetails) {
-                if (item.getPieceValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
-                        item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
-
-                    Double pieceValue = Double.valueOf(item.getPieceValue());
-                    Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
-                    Double iataAdd = Double.valueOf(item.getAddIata());
-                    Double insuranceAdd = Double.valueOf(item.getAddInsurance());
-                    Double costomValue = Double.valueOf(item.getCustomsValue());
-                    Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
-
-                    consignmentValue += pieceValue;
-                    consignmentLocalValue += conLocalValue;
-                    addIata += iataAdd;
-                    addInsurance += insuranceAdd;
-                    customsValue += costomValue;
-                    calculatedTotalDuty += totalDuty;
-                }
-            }
+//            Double consignmentValue = 0.0;
+//            Double consignmentLocalValue = 0.0;
+//            Double addIata = 0.0;
+//            Double addInsurance = 0.0;
+//            Double customsValue = 0.0;
+//            Double calculatedTotalDuty = 0.0;
+//
+//            for (AddPieceDetails item : pieceDetails) {
+//                if (item.getPieceValue() != null && item.getConsignmentValueLocal() != null && item.getAddIata() != null &&
+//                        item.getAddInsurance() != null && item.getCustomsValue() != null && item.getCalculatedTotalDuty() != null) {
+//
+//                    Double pieceValue = Double.valueOf(item.getPieceValue());
+//                    Double conLocalValue = Double.valueOf(item.getConsignmentValueLocal());
+//                    Double iataAdd = Double.valueOf(item.getAddIata());
+//                    Double insuranceAdd = Double.valueOf(item.getAddInsurance());
+//                    Double costomValue = Double.valueOf(item.getCustomsValue());
+//                    Double totalDuty = Double.valueOf(item.getCalculatedTotalDuty());
+//
+//                    consignmentValue += pieceValue;
+//                    consignmentLocalValue += conLocalValue;
+//                    addIata += iataAdd;
+//                    addInsurance += insuranceAdd;
+//                    customsValue += costomValue;
+//                    calculatedTotalDuty += totalDuty;
+//                }
+//            }
 
             //Volume
             Double totalPieceVolume = pieceDetails.stream().map(AddPieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
@@ -418,8 +418,7 @@ public class ConsignmentService {
             //Consignment_entity Set
             consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
                     saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
-                    String.valueOf(consignmentValue), String.valueOf(consignmentLocalValue), String.valueOf(addIata),
-                    String.valueOf(addInsurance), String.valueOf(customsValue), String.valueOf(calculatedTotalDuty), String.valueOf(totalPieceVolume));
+                    String.valueOf(totalPieceVolume));
 
 
             AddConsignment newAddConsignment = new AddConsignment();

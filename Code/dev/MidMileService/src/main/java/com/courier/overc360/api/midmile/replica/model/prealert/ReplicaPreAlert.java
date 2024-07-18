@@ -34,7 +34,7 @@ public class ReplicaPreAlert {
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
-    // @Id
+    //    @Id
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
@@ -49,17 +49,17 @@ public class ReplicaPreAlert {
     @Column(name = "TOTAL_WEIGHT", columnDefinition = "nvarchar(50)")
     private String totalWeight;
 
+    @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
+    private String flightNo;
+
     @Column(name = "CONSOLE_INDICATOR")
     private Long consoleIndicator;
 
+    @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
+    private String consignmentValueLocal;
+
     @Column(name = "MANIFEST_INDICATOR")
     private Long manifestIndicator;
-
-    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
-    private String partnerType;
-
-    @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
-    private String flightNo;
 
     @Column(name = "FLIGHT_NAME", columnDefinition = "nvarchar(50)")
     private String flightName;
@@ -75,6 +75,30 @@ public class ReplicaPreAlert {
 
     @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
     private String consignmentValue;
+
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
+
+    @Column(name = "IATA", columnDefinition = "nvarchar(50)")
+    private String iata;
+
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
+    @Column(name = "DUTY", columnDefinition = "nvarchar(50)")
+    private String duty;
+
+    @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
+    private String addIata;
+
+    @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String addInsurance;
+
+    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+    private String customsValue;
+
+    @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String calculatedTotalDuty;
 
     @Column(name = "BAYAN_HV", columnDefinition = "nvarchar(50)")
     private String bayanHv;
@@ -97,14 +121,14 @@ public class ReplicaPreAlert {
     @Column(name = "ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String originCode;
 
-    @Column(name = "CON_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
-    private String consignmentValueLocal;
-
-    @Column(name = "IATA", columnDefinition = "nvarchar(50)")
-    private String iata;
+    @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
+    private String consignmentValueKd;
 
     @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
     private String hsCode;
+
+    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
+    private String partnerType;
 
     @Column(name = "INCO_TERM", columnDefinition = "nvarchar(50)")
     private String incoTerm;

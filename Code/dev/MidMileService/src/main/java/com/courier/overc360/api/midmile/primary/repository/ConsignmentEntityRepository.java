@@ -107,10 +107,36 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("calculatedDuty") String calculatedDuty,
                                   @Param("volume") String volume);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tblconsignment_entity " +
+            "SET VOLUME = :volume " +
+            "WHERE c_id = :companyId " +
+            "AND lang_id = :languageId " +
+            "AND partner_id = :partnerId " +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND is_deleted = 0",
+            nativeQuery = true)
+    public void updateConsignment(@Param("companyId") String companyId,
+                                  @Param("languageId") String languageId,
+                                  @Param("partnerId") String partnerId,
+                                  @Param("houseAirwayBill") String houseAirwayBill,
+                                  @Param("masterAirwayBill") String masterAirwayBill,
+                                  @Param("volume") String volume);
+
 
     @Modifying
     @Query(value = "update tblconsignment_entity " +
-            "set PARTNER_MASTER_AB = :partnerMasterAB where " +
+            "set PARTNER_MASTER_AB = :partnerMasterAB," +
+            "CONSIGNMENT_VALUE = :consignmentValue, " +
+            "EXCHANGE_RATE = :exchangeRate," +
+            "IATA_CHARGE = :iata," +
+            "CONSIGNMENT_VALUE_LOCAL = :consignmentLocalValue," +
+            "ADD_IATA = :addIata," +
+            "ADD_INSURANCE = :addInsurance," +
+            "CUSTOMS_VALUE = :customsValue," +
+            "CALCULATED_TOTAL_DUTY = :calculatedTotalDuty where " +
             "c_id in (:companyId) and lang_id in (:languageId) and " +
             "partner_id in (:partnerId) and partner_house_ab in (:partnerHouseAB) and " +
             "is_deleted = 0 ", nativeQuery = true)
@@ -118,6 +144,16 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("languageId") String languageId,
                                   @Param("partnerId") String partnerId,
                                   @Param("partnerHouseAB") String partnerHouseAB,
-                                  @Param("partnerMasterAB") String partnerMasterAB);
+                                  @Param("partnerMasterAB") String partnerMasterAB,
+                                  @Param("consignmentValue") String consignmentValue,
+                                  @Param("exchangeRate") String exchangeRate,
+                                  @Param("iata") String iata,
+                                  @Param("consignmentLocalValue") String consignmentLocalValue,
+                                  @Param("addIata") String addIata,
+                                  @Param("addInsurance") String addInsurance,
+                                  @Param("customsValue") String customsValue,
+                                  @Param("calculatedTotalDuty") String calculatedTotalDuty);
 
+    Boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String companyId, String langId, String partnerId, String partnerMasterAirwayBill, Long deletionIndicator);
 }

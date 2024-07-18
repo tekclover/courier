@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -14,15 +15,21 @@ public class PreAlert {
 
     private String partnerId;
 
-    private String partnerType;
-
     private String masterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
     private String partnerMasterAirwayBill;
 
+    private String totalWeight;
+
     private String flightNo;
+
+    private Long consoleIndicator;
+
+    private String consignmentValueLocal;
+
+    private Long manifestIndicator;
 
     private String flightName;
 
@@ -30,11 +37,25 @@ public class PreAlert {
 
     private Date estimatedTimeOfArrival;
 
-    private String totalWeight;
-
     private String noOfPieces;
 
     private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String iata;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
 
     private String bayanHv;
 
@@ -48,21 +69,15 @@ public class PreAlert {
 
     private String origin;
 
-    private Long consoleIndicator;
+    private String originCode;
 
-    private Long manifestIndicator;
-
-    private String  originCode;
-
-    private String consignmentValueLocal;
-
-    private String iata;
+    private String consignmentValueKd;
 
     private String hsCode;
 
-    private String incoTerm;
+    private String partnerType;
 
-    private Long deletionIndicator = 0L;
+    private String incoTerm;
 
     private String referenceField1;
 
@@ -84,11 +99,4 @@ public class PreAlert {
 
     private String referenceField10;
 
-    private String createdBy;
-
-    private Date createdOn = new Date();
-
-    private String updatedBy;
-
-    private Date updatedOn = new Date();
 }

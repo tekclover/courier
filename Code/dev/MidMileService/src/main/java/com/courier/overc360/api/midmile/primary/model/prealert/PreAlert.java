@@ -76,6 +76,30 @@ public class PreAlert {
     @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
     private String consignmentValue;
 
+    @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
+    private String exchangeRate;
+
+    @Column(name = "IATA", columnDefinition = "nvarchar(50)")
+    private String iata;
+
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
+    @Column(name = "DUTY", columnDefinition = "nvarchar(50)")
+    private String duty;
+
+    @Column(name = "ADD_IATA", columnDefinition = "nvarchar(50)")
+    private String addIata;
+
+    @Column(name = "ADD_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String addInsurance;
+
+    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+    private String customsValue;
+
+    @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String calculatedTotalDuty;
+
     @Column(name = "BAYAN_HV", columnDefinition = "nvarchar(50)")
     private String bayanHv;
 
@@ -99,9 +123,6 @@ public class PreAlert {
 
     @Column(name = "CON_VALUE_KD", columnDefinition = "nvarchar(50)")
     private String consignmentValueKd;
-
-    @Column(name = "IATA", columnDefinition = "nvarchar(50)")
-    private String iata;
 
     @Column(name = "HS_CODE", columnDefinition = "nvarchar(50)")
     private String hsCode;

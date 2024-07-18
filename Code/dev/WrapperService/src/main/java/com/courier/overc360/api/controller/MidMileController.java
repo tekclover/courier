@@ -461,8 +461,8 @@ public class MidMileController {
     }
 
     // Update Console
-    @ApiOperation(response = Console.class, value = "Update Console") // label for swagger
-    @PatchMapping("/console/update/list")
+    @ApiOperation(response = Console.class, value = "Update Console For CCR Create") // label for swagger
+    @PatchMapping("/console/update/ccr/create")
     public ResponseEntity<?> patchConsole(@RequestBody List<UpdateConsole> updateConsole,
                                           @RequestParam String loginUserID, @RequestParam String authToken) {
         Console[] console = midMileService.updateConsole(updateConsole, loginUserID, authToken);
@@ -471,7 +471,7 @@ public class MidMileController {
 
     // Update Console Normal
     @ApiOperation(response = Console.class, value = "Update Console Normal")
-    @PatchMapping("/console/update/list/normal")
+    @PatchMapping("/console/update")
     public ResponseEntity<?> patchConsoleNormal(@Valid @RequestBody List<UpdateConsole> updateConsoleList, @RequestParam String loginUserID,
                                                 @RequestParam String authToken) {
         Console[] dbConsole = midMileService.updateConsoleNormal(updateConsoleList, loginUserID, authToken);

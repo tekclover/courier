@@ -2,87 +2,103 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
 public class UpdatePreAlert {
 
-        private String companyId;
+    private String companyId;
 
-        private String languageId;
+    private String languageId;
 
-        private String partnerId;
+    private String partnerId;
 
-        private String partnerType;
+    private String masterAirwayBill;
 
-        private String masterAirwayBill;
+    private String partnerHouseAirwayBill;
 
-        private String partnerHouseAirwayBill;
+    private String partnerMasterAirwayBill;
 
-        private String partnerMasterAirwayBill;
+    private String totalWeight;
 
-        private String totalWeight;
+    private String flightNo;
 
-        private String flightNo;
+    private Long consoleIndicator;
 
-        private String flightName;
+    private String consignmentValueLocal;
 
-        private Date estimatedTimeOfDeparture;
+    private Long manifestIndicator;
 
-        private Date estimatedTimeOfArrival;
+    private String flightName;
 
-        private String noOfPieces;
+    private Date estimatedTimeOfDeparture;
 
-        private String consignmentValue;
+    private Date estimatedTimeOfArrival;
 
-        private String bayanHv;
+    private String noOfPieces;
 
-        private Long consoleIndicator;
+    private String consignmentValue;
 
-        private Long manifestIndicator;
+    private String exchangeRate;
 
-        private String currency;
+    private String iata;
 
-        private String description;
+    private String customsInsurance;
 
-        private String consigneeName;
+    private String duty;
 
-        private String shipper;
+    private String addIata;
 
-        private String origin;
+    private String addInsurance;
 
-        private String originCode;
+    private String customsValue;
 
-        private String consignmentValueLocal;
+    private String calculatedTotalDuty;
 
-        private String iata;
+    private String bayanHv;
 
-        private String hsCode;
+    private String currency;
 
-        private String incoTerm;
+    private String description;
 
-        private Long deletionIndicator;
+    private String consigneeName;
 
-        private String referenceField1;
+    private String shipper;
 
-        private String referenceField2;
+    private String origin;
 
-        private String referenceField3;
+    private String originCode;
 
-        private String referenceField4;
+    private String consignmentValueKd;
 
-        private String referenceField5;
+    private String hsCode;
 
-        private String referenceField6;
+    private String partnerType;
 
-        private String referenceField7;
+    private String incoTerm;
 
-        private String referenceField8;
+    private String referenceField1;
 
-        private String referenceField9;
+    private String referenceField2;
 
-        private String referenceField10;
-    }
+    private String referenceField3;
+
+    private String referenceField4;
+
+    private String referenceField5;
+
+    private String referenceField6;
+
+    private String referenceField7;
+
+    private String referenceField8;
+
+    private String referenceField9;
+
+    private String referenceField10;
+
+}
 
 
 
