@@ -11,11 +11,13 @@ import { ConsoleNewComponent } from './console/console-new/console-new.component
 import { ConsoleEditComponent } from './console/console-edit/console-edit.component';
 import { CcrEditComponent } from './ccr/ccr-edit/ccr-edit.component';
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest/pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
+import { PreAlertUpdateComponent } from './pre-alert-manifest/pre-alert-update/pre-alert-update.component';
 
 const routes: Routes = [
   {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest' } },
   {path:'preAlertManifest-new/:code',component: PreAlertNewComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest New' } },
   {path:'preAlertManifest-indicator/:code',component: PreAlertManifestIndicatorComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest Indicator' } },
+  {path:'preAlertManifest-update/:code',component: PreAlertUpdateComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest Update' } },
 
   
   
@@ -29,6 +31,7 @@ const routes: Routes = [
   {path:'ccr',component: CcrComponent, data: { title: 'Mid-Mile', module: 'CCR' } },
   {path:'ccr-new/:code',component: CcrNewComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
   {path:'ccr-edit/:code',component: CcrEditComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
+
 
 ];
 

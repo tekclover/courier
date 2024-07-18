@@ -18,6 +18,7 @@ import { ConsoleBulkComponent } from './console/console-bulk/console-bulk.compon
 import { CcrEditComponent } from './ccr/ccr-edit/ccr-edit.component';
 import { CcrEditpopupComponent } from './ccr/ccr-editpopup/ccr-editpopup.component';
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest/pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
+import { PreAlertUpdateComponent } from './pre-alert-manifest/pre-alert-update/pre-alert-update.component';
 
 
 @NgModule({
@@ -29,7 +30,7 @@ import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest/pre-ale
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent
 
 
   ],
