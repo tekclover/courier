@@ -14,8 +14,20 @@
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
-                        Update</button>
+                        Update</button>     
                 </div>
+                <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel()" ><img
+                       src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Label  </button>
+                 </div>
+                 <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateInvoice()" ><img
+                       src="./assets/common2x/invoice.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice  </button>
+                 </div>
+                 <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateMerge()" ><img
+                       src="./assets/common2x/merge.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice & Label  </button>
+                 </div>
                 
             </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i

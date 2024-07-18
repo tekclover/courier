@@ -87,6 +87,7 @@ export class PreAlertNewComponent {
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
     noOfCrt: [],
+    upload:[],
     totalShipmentWeight: [],
     totalValue: [],
     createdOn: ['',],

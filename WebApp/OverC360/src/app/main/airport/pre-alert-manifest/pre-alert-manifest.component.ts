@@ -158,6 +158,16 @@ export class PreAlertManifestComponent {
     }
   }
 
+  
+  openEdit(type: any = 'New', linedata: any = null): void {
+    if (this.selectedPreAlertManifest.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+    } else {
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedPreAlertManifest[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/airport/preAlertManifest-update/' + paramdata]);
+    }
+  }
+
   deleteDialog() {
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });

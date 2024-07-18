@@ -14,6 +14,7 @@ import { ConsoleService } from './console.service';
 import { ConsoleBulkComponent } from './console-bulk/console-bulk.component';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { FormBuilder } from '@angular/forms';
+import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-console',
@@ -29,7 +30,7 @@ export class ConsoleComponent {
   target: any[] = [];
 
   constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, 
-    public dialog: MatDialog, private datePipe: DatePipe, private fb: FormBuilder, private auth: AuthService, private spin: NgxSpinnerService,  private service: ConsoleService
+    public dialog: MatDialog, private datePipe: DatePipe, private fb: FormBuilder, private auth: AuthService, private spin: NgxSpinnerService,  private service: ConsoleService,private label: ConsignmentLabelComponent
   ) { }
 
   fullDate: any;
@@ -319,5 +320,74 @@ export class ConsoleComponent {
       this.search();
     }
   }
+  generateLabel(){
+    this.uniquePieceId = [];
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.consoleId=[this.selectedConsole[0].consoleId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        this.label.getResultLabel(pieceId)
+      },
+      error: (err) => {
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  houseAirwayBill:any;
+  
+  generateInvoice(){
+    this.uniqueHouseAirway = [];
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.consoleId=[this.selectedConsole[0].consoleId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.getResultInvoice(houseAirwayBillArray)
+      },
+      error: (err) => {
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
+      },
+    });
+  }
 
+
+  uniquePieceId: any[] = []; 
+  uniqueHouseAirway: any[] = []; 
+  generateMerge(){
+    this.uniqueHouseAirway = [];
+    this.uniquePieceId = [];
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.consoleId=[this.selectedConsole[0].consoleId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.generateMutiple(pieceId, houseAirwayBillArray)
+      },
+      error: (err) => {
+       this.spin.hide();
+       this.cs.commonerrorNew(err);
+      },
+    });
+
+  }
 }
