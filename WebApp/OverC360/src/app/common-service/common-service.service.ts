@@ -39,6 +39,43 @@ export class CommonServiceService {
     );
   }
 
+  downloadExcel(data: any[], filename: string = "Downloaded_Excel", groupByField:any) {
+    const workbook = XLSX.utils.book_new();
+
+    const groupedData = this.groupByField(data, groupByField);
+
+    Object.keys(groupedData).forEach(items => {
+      const sheetName = `${items}`; //ConsoleID_
+      const sheetData = groupedData[items];
+
+      const worksheet = XLSX.utils.json_to_sheet(sheetData);
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+    });
+
+     XLSX.writeFile(
+      workbook,
+      filename + `_${new Date().getDate() +
+      '-' +
+      (new Date().getMonth() + 1) +
+      '-' +
+      new Date().getFullYear()
+      }.xlsx`
+    );
+  }
+
+  private groupByField(data: any[], groupByField:any): { [key: string]: any[] } {
+    const groupedData: { [key: string]: any[] } = {};
+    data.forEach(item => {
+      const consoleId = item[groupByField];
+      if (!groupedData[consoleId]) {
+        groupedData[consoleId] = [];
+      }
+      groupedData[consoleId].push(item);
+    });
+
+    return groupedData;
+  }
 
   public commonerrorNew(msg: any) {
     if (msg.status != 0) {
