@@ -17,9 +17,9 @@ public class ConsignmentStatus {
 
     private String houseAirwayBill;
 
-    private String statusId;
-
-    private String eventCode;
+//    private String statusId;
+//
+//    private String eventCode;
 
     private String masterAirwayBill;
 
@@ -27,23 +27,39 @@ public class ConsignmentStatus {
 
     private String companyName;
 
-    private String statusText;
+//    private String statusText;
+//
+//    private String pieceStatusId;
+//
+//    private String pieceStatusText;
+//
+//    private String eventText;
+//
+//    private String pieceEventCode;
+//
+//    private String pieceEventText;
+//
+//    private Date pieceEventTimestamp = new Date();
+//
+//    private Date eventTimestamp = new Date();
+//
+//    private Date statusTimestamp = new Date();
 
-    private String pieceStatusId;
+    private String hawbType;
 
-    private String pieceStatusText;
+    private String hawbTypeId;
 
-    private String eventText;
+    private String hawbTypeDescription;
 
-    private String pieceEventCode;
+    private Date hawbTimeStamp = new Date();
 
-    private String pieceEventText;
+    private String pieceType;
 
-    private Date pieceEventTimestamp = new Date();
+    private String pieceTypeId;
 
-    private Date eventTimestamp = new Date();
+    private String pieceTypeDescription;
 
-    private Date statusTimestamp = new Date();
+    private Date pieceTimeStamp = new Date();
 
     private Long deletionIndicator = 0L;
 

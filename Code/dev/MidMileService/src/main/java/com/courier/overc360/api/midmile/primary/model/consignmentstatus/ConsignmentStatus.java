@@ -4,22 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
-
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * `LANG_ID`, `C_ID`,`HOUSE_AIRWAY_BILL`, `PIECE_ID`, `STATUS_ID`, `EVENT_CODE`
+/*
+ * `LANG_ID`, `C_ID`,`HOUSE_AIRWAY_BILL`, `PIECE_ID`
  */
 @Table(name = "tblconsignmentstatus",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_consignmentstatus",
-                        columnNames = {"LANG_ID", "C_ID", "HOUSE_AIRWAY_BILL", "PIECE_ID", "STATUS_ID", "EVENT_CODE"}
+                        columnNames = {"LANG_ID", "C_ID", "HOUSE_AIRWAY_BILL", "PIECE_ID"}
                 )
         }
 )
@@ -42,13 +46,13 @@ public class ConsignmentStatus {
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-    @Id
-    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String statusId;
-
-    @Id
-    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String eventCode;
+//    @Id
+//    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String statusId;
+//
+//    @Id
+//    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+//    private String eventCode;
 
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
@@ -59,35 +63,59 @@ public class ConsignmentStatus {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
-    private String statusText;
+//    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+//    private String statusText;
 
-    @Column(name =  "BAG_ID", columnDefinition = "nvarchar(50)")
+    @Column(name = "BAG_ID", columnDefinition = "nvarchar(50)")
     private String bagId;
 
-    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String pieceStatusId;
+//    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String pieceStatusId;
+//
+//    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
+//    private String pieceStatusText;
 
-    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
-    private String pieceStatusText;
+//    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+//    private String eventText;
+//
+//    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
+//    private String pieceEventCode;
+//
+//    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
+//    private String pieceEventText;
 
-    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String eventText;
+//    @Column(name = "PIECE_EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+//    private Date pieceEventTimestamp = new Date();
+//
+//    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
+//    private Date eventTimestamp = new Date();
+//
+//    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
+//    private Date statusTimestamp = new Date();
 
-    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String pieceEventCode;
+    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
+    private String hawbType;
 
-    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String pieceEventText;
+    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String hawbTypeId;
 
-    @Column(name = "PIECE_EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
-    private Date pieceEventTimestamp = new Date();
+    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String hawbTypeDescription;
 
-    @Column(name = "EVENT_TIMESTAMP", columnDefinition = "nvarchar(50)")
-    private Date eventTimestamp = new Date();
+    @Column(name = "HAWB_TIMESTAMP")
+    private Date hawbTimeStamp = new Date();
 
-    @Column(name = "STATUS_TIMESTAMP", columnDefinition = "nvarchar(50)")
-    private Date statusTimestamp = new Date();
+    @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
+    private String pieceType;
+
+    @Column(name = "PIECE_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String pieceTypeId;
+
+    @Column(name = "PIECE_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String pieceTypeDescription;
+
+    @Column(name = "PIECE_TIMESTAMP")
+    private Date pieceTimeStamp = new Date();
 
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
@@ -133,5 +161,5 @@ public class ConsignmentStatus {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
-}
 
+}

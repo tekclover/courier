@@ -16,8 +16,6 @@ public class ReplicaConsignmentStatusCompositeKey implements Serializable {
     private String languageId;
     private String companyId;
     private String houseAirwayBill;
-    private String eventCode;
     private String pieceId;
-    private String statusId;
 
 }
