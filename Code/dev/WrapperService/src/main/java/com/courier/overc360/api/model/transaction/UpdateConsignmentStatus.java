@@ -15,31 +15,47 @@ public class UpdateConsignmentStatus {
 
     private String houseAirwayBill;
 
-    private String statusId;
+//    private String statusId;
 
     private String bagId;
 
-    private String eventCode;
+//    private String eventCode;
 
     private String masterAirwayBill;
 
-    private String statusText;
+//    private String statusText;
+//
+//    private String pieceStatusId;
+//
+//    private String pieceStatusText;
+//
+//    private String eventText;
+//
+//    private String pieceEventCode;
+//
+//    private String pieceEventText;
+//
+//    private Date pieceEventTimestamp;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
-    private String pieceStatusId;
+    private String hawbType;
 
-    private String pieceStatusText;
+    private String hawbTypeId;
 
-    private String eventText;
+    private String hawbTypeDescription;
 
-    private String pieceEventCode;
+    private Date hawbTimeStamp;
 
-    private String pieceEventText;
+    private String pieceType;
 
-    private Date pieceEventTimestamp;
+    private String pieceTypeId;
 
-    private Date eventTimestamp;
+    private String pieceTypeDescription;
 
-    private Date statusTimestamp;
+    private Date pieceTimeStamp;
 
     private String referenceField1;
 
@@ -60,4 +76,5 @@ public class UpdateConsignmentStatus {
     private String referenceField9;
 
     private String referenceField10;
+
 }

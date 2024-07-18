@@ -20,33 +20,49 @@ public class AddConsignmentStatus {
     @NotBlank(message = "HouseAirwayBill is mandatory")
     private String houseAirwayBill;
 
-    @NotBlank(message = "StatusId is mandatory")
-    private String statusId;
-
-    @NotBlank(message = "EventCode is mandatory")
-    private String eventCode;
+//    @NotBlank(message = "StatusId is mandatory")
+//    private String statusId;
+//
+//    @NotBlank(message = "EventCode is mandatory")
+//    private String eventCode;
 
     private String masterAirwayBill;
 
-    private String statusText;
+//    private String statusText;
 
     private String bagId;
 
-    private String pieceStatusId;
+//    private String pieceStatusId;
+//
+//    private String pieceStatusText;
+//
+//    private String eventText;
+//
+//    private String pieceEventCode;
+//
+//    private String pieceEventText;
+//
+//    private Date pieceEventTimestamp;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
-    private String pieceStatusText;
+    private String hawbType;
 
-    private String eventText;
+    private String hawbTypeId;
 
-    private String pieceEventCode;
+    private String hawbTypeDescription;
 
-    private String pieceEventText;
+    private Date hawbTimeStamp;
 
-    private Date pieceEventTimestamp;
+    private String pieceType;
 
-    private Date eventTimestamp;
+    private String pieceTypeId;
 
-    private Date statusTimestamp;
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp;
 
     private String referenceField1;
 

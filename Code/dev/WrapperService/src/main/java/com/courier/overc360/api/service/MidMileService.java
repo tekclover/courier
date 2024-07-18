@@ -1,7 +1,6 @@
 package com.courier.overc360.api.service;
 
 import com.courier.overc360.api.config.PropertiesConfig;
-import com.courier.overc360.api.model.idmaster.CustomerDeleteInput;
 import com.courier.overc360.api.model.transaction.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
@@ -14,12 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -74,7 +71,7 @@ public class MidMileService {
     }
 
     // Update Consignment
-    public ConsignmentEntity[] updateConsignment( List<UpdateConsignment> updateConsignment, String loginUserID, String authToken) {
+    public ConsignmentEntity[] updateConsignment(List<UpdateConsignment> updateConsignment, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -132,7 +129,7 @@ public class MidMileService {
     }
 
     // Find PreAlertManifest - based on consignment details
-    public ConsignmentEntity[]  findPreAlertManifest(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
+    public ConsignmentEntity[] findPreAlertManifest(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -150,7 +147,7 @@ public class MidMileService {
     }
 
     // Find PreAlertManifest - based on Item details
-    public PreAlertManifest[]  findPreAlertManifestV2(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
+    public PreAlertManifest[] findPreAlertManifestV2(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -209,7 +206,6 @@ public class MidMileService {
     }
 
     /**
-     *
      * @param consignmentDeletes
      * @param loginUserID
      * @param authToken
@@ -649,7 +645,7 @@ public class MidMileService {
 
     // Get BondedManifest
     public BondedManifest getBondedManifest(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                                  String houseAirwayBill, String bondedId, String authToken) {
+                                            String houseAirwayBill, String bondedId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -773,7 +769,6 @@ public class MidMileService {
             throw e;
         }
     }
-
 
 
     //===============================================Ccr====================================================
@@ -975,14 +970,13 @@ public class MidMileService {
     }
 
     /**
-     *
      * @param updateConsoleList
      * @param loginUserID
      * @param authToken
      * @return
      */
     public Console[] updateConsoleNormal(List<UpdateConsole> updateConsoleList, String loginUserID, String authToken) {
-        try{
+        try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "Classic WMS's RestTemplate");
@@ -1061,13 +1055,12 @@ public class MidMileService {
 //    }
 
     /**
-     *
      * @param addConsignments
      * @param loginUserID
      * @param authToken
      * @return
      */
-    public Console[] createConsoleBasedOnPreAlertResponse(List<PreAlert> addConsignments, String loginUserID, String authToken){
+    public Console[] createConsoleBasedOnPreAlertResponse(List<PreAlert> addConsignments, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
@@ -1080,7 +1073,6 @@ public class MidMileService {
     }
 
     /**
-     *
      * @param transferConsole
      * @param loginUserID
      * @param authToken
@@ -1104,10 +1096,8 @@ public class MidMileService {
         }
     }
 
-    //==================================================ConsignmentStatus====================================================
-
-    //Get All ConsignmentStatus
-
+    //==================================================ConsignmentStatus==============================================
+    // Get All ConsignmentStatus Details
     public ConsignmentStatus[] getAllConsignmentStatus(String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -1127,17 +1117,16 @@ public class MidMileService {
 
     // Get ConsignmentStatus
     public ConsignmentStatus getConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                                  String pieceId, String statusId, String eventCode, String authToken) {
+                                                  String pieceId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/get")
                     .queryParam("companyId", companyId)
                     .queryParam("languageId", languageId)
                     .queryParam("pieceId", pieceId)
-                    .queryParam("eventCode", eventCode)
                     .queryParam("houseAirwayBill", houseAirwayBill);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ConsignmentStatus.class);
@@ -1149,24 +1138,27 @@ public class MidMileService {
         }
     }
 
-
-
     // Create ConsignmentStatus
     public ConsignmentStatus createConsignmentStatus(AddConsignmentStatus addConsignmentStatus, String loginUserID, String authToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("User-Agent", "RestTemplate");
-        headers.add("Authorization", "Bearer " + authToken);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus")
-                .queryParam("loginUserID", loginUserID);
-        HttpEntity<?> entity = new HttpEntity<>(addConsignmentStatus, headers);
-        ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentStatus.class);
-        return result.getBody();
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addConsignmentStatus, headers);
+            ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentStatus.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     // Update ConsignmentStatus
-    public ConsignmentStatus updateConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                                     String pieceId, String statusId, String eventCode, UpdateConsignmentStatus updateConsignmentStatus, String loginUserID, String authToken) {
+    public ConsignmentStatus updateConsignmentStatus(String languageId, String companyId, String houseAirwayBill, String pieceId,
+                                                     UpdateConsignmentStatus updateConsignmentStatus, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -1176,12 +1168,11 @@ public class MidMileService {
             HttpClient client = HttpClients.createDefault();
             RestTemplate restTemplate = getRestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/update")
                     .queryParam("companyId", companyId)
                     .queryParam("languageId", languageId)
                     .queryParam("houseAirwayBill", houseAirwayBill)
                     .queryParam("pieceId", pieceId)
-                    .queryParam("eventCode", eventCode)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<ConsignmentStatus> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ConsignmentStatus.class);
             log.info("result : " + result.getStatusCode());
@@ -1194,19 +1185,18 @@ public class MidMileService {
 
     // Delete ConsignmentStatus
     public boolean deleteConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                           String pieceId, String statusId, String eventCode, String loginUserID, String authToken) {
+                                           String pieceId, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "MNRClara's RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
             HttpEntity<?> entity = new HttpEntity<>(headers);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/delete")
                     .queryParam("companyId", companyId)
                     .queryParam("languageId", languageId)
                     .queryParam("houseAirwayBill", houseAirwayBill)
                     .queryParam("pieceId", pieceId)
-                    .queryParam("eventCode", eventCode)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
             log.info("result : " + result);
@@ -1308,8 +1298,8 @@ public class MidMileService {
     }
 
     // Create New PreAlert
+
     /**
-     *
      * @param preAlerts
      * @param loginUserID
      * @param authToken
@@ -1368,6 +1358,7 @@ public class MidMileService {
             throw e;
         }
     }
+
     //Get PreAlert
     public PreAlert getPreAlert(String languageId, String companyId, String partnerId, String partnerHouseAirwayBill,
                                 String partnerMasterAirwayBill, String authToken) {
@@ -1392,18 +1383,17 @@ public class MidMileService {
     }
 
     //Create PreAlert
-    public PreAlert[] createPreAlerts(List<PreAlert> addPreAlert, String loginUserID, String authToken){
+    public PreAlert[] createPreAlerts(List<PreAlert> addPreAlert, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
         headers.add("Authorization", " Bearer " + authToken);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() +  "prealert/post/list")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "prealert/post/list")
                 .queryParam("loginUserID", loginUserID);
         HttpEntity<?> entity = new HttpEntity<>(addPreAlert, headers);
         ResponseEntity<PreAlert[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PreAlert[].class);
         return result.getBody();
     }
-
 
     // Update PreAlert
     public PreAlert[] updatePreAlert(List<UpdatePreAlert> updatePreAlert, String loginUserID, String authToken) {
@@ -1416,7 +1406,7 @@ public class MidMileService {
             HttpClient client = HttpClients.createDefault();
             RestTemplate restTemplate = getRestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() +  "prealert/update/list")
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "prealert/update/list")
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<PreAlert[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, PreAlert[].class);
             log.info("result : " + result.getStatusCode());

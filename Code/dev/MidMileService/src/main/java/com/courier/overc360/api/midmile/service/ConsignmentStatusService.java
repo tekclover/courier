@@ -5,7 +5,6 @@ import com.courier.overc360.api.midmile.primary.model.consignmentstatus.AddConsi
 import com.courier.overc360.api.midmile.primary.model.consignmentstatus.ConsignmentStatus;
 import com.courier.overc360.api.midmile.primary.model.consignmentstatus.UpdateConsignmentStatus;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
-import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.repository.ConsignmentStatusRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
@@ -57,20 +56,17 @@ public class ConsignmentStatusService {
      * @param companyId
      * @param houseAirwayBill
      * @param pieceId
-     * @param statusId
-     * @param eventCode
      * @return
      */
-    public ConsignmentStatus getConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                                  String pieceId, String statusId, String eventCode) {
+    public ConsignmentStatus getConsignmentStatus(String languageId, String companyId, String houseAirwayBill, String pieceId) {
 
-        Optional<ConsignmentStatus> dbConsignmentStatus = consignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndStatusIdAndEventCodeAndDeletionIndicator(
-                languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, 0L);
+        Optional<ConsignmentStatus> dbConsignmentStatus = consignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                languageId, companyId, houseAirwayBill, pieceId, 0L);
         if (dbConsignmentStatus.isEmpty()) {
-            String errMsg = "The given values - LanguageId: " + languageId + " ,CompanyId: " + companyId + " ,HouseAirwayBill:  " + houseAirwayBill +
-                    " ,PieceId: " + pieceId + " ,StatusId: " + statusId + " and EventCode:  " + eventCode + "doesn't exist";
+            String errMsg = "The given values - languageId: " + languageId + ", companyId: " + companyId + ", houseAirwayBill: " + houseAirwayBill +
+                    ", pieceId: " + pieceId + " doesn't exists";
             // Error Log
-            getConsignmentStatusLog(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, errMsg);
+            getConsignmentStatusLog(languageId, companyId, houseAirwayBill, pieceId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbConsignmentStatus.get();
@@ -78,6 +74,7 @@ public class ConsignmentStatusService {
 
     /**
      * Create ConsignmentStatus using params
+     *
      * @param companyId
      * @param languageId
      * @param pieceId
@@ -108,33 +105,34 @@ public class ConsignmentStatusService {
                                               String eventText, String pieceEventCode, String pieceEventText, Date pieceEventTimestamp,
                                               Date eventTimestamp, Date statusTimestamp, String loginUserID) {
         try {
-            if(companyId != null && pieceId != null && languageId != null && houseAirwayBill != null && statusId != null && eventCode != null ) {
+            if (companyId != null && pieceId != null && languageId != null && houseAirwayBill != null && statusId != null && eventCode != null) {
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
                 newConsignmentStatus.setCompanyId(companyId);
                 newConsignmentStatus.setCompanyName(companyName);
                 newConsignmentStatus.setLanguageId(languageId);
                 newConsignmentStatus.setLanguageDescription(languageDesc);
                 newConsignmentStatus.setPieceId(pieceId);
-                newConsignmentStatus.setStatusId(statusId);
+//                newConsignmentStatus.setStatusId(statusId);
                 newConsignmentStatus.setMasterAirwayBill(masterAirwayBill);
                 newConsignmentStatus.setHouseAirwayBill(houseAirwayBill);
-                newConsignmentStatus.setStatusText(statusText);
-                newConsignmentStatus.setEventCode(eventCode);
-                newConsignmentStatus.setPieceStatusId(pieceStatusId);
-                newConsignmentStatus.setPieceStatusText(pieceStatusText);
-                newConsignmentStatus.setEventText(eventText);
-                newConsignmentStatus.setPieceEventCode(pieceEventCode);
-                newConsignmentStatus.setPieceEventText(pieceEventText);
-                newConsignmentStatus.setPieceEventTimestamp(pieceEventTimestamp);
-                newConsignmentStatus.setEventTimestamp(eventTimestamp);
-                newConsignmentStatus.setStatusTimestamp(statusTimestamp);
+//                newConsignmentStatus.setStatusText(statusText);
+//                newConsignmentStatus.setEventCode(eventCode);
+//                newConsignmentStatus.setPieceStatusId(pieceStatusId);
+//                newConsignmentStatus.setPieceStatusText(pieceStatusText);
+//                newConsignmentStatus.setEventText(eventText);
+//                newConsignmentStatus.setPieceEventCode(pieceEventCode);
+//                newConsignmentStatus.setPieceEventText(pieceEventText);
+//                newConsignmentStatus.setPieceEventTimestamp(pieceEventTimestamp);
+//                newConsignmentStatus.setEventTimestamp(eventTimestamp);
+//                newConsignmentStatus.setStatusTimestamp(statusTimestamp);
+
                 newConsignmentStatus.setDeletionIndicator(0L);
                 newConsignmentStatus.setCreatedBy(loginUserID);
                 newConsignmentStatus.setCreatedOn(new Date());
                 newConsignmentStatus.setUpdatedBy(loginUserID);
                 newConsignmentStatus.setUpdatedOn(new Date());
                 consignmentStatusRepository.save(newConsignmentStatus);
-                log.info("Consignment Status Table save " + houseAirwayBill);
+                log.info("Consignment Status Table save {}", houseAirwayBill);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,29 +154,27 @@ public class ConsignmentStatusService {
     public ConsignmentStatus createConsignmentStatus(AddConsignmentStatus addConsignmentStatus, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<ConsignmentStatus> dbConsignmentStatus = consignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndStatusIdAndEventCodeAndDeletionIndicator(
-                    addConsignmentStatus.getLanguageId(), addConsignmentStatus.getCompanyId(), addConsignmentStatus.getHouseAirwayBill(), addConsignmentStatus.getPieceId(),
-                    addConsignmentStatus.getStatusId(), addConsignmentStatus.getEventCode(), 0L);
+            Optional<ConsignmentStatus> dbConsignmentStatus = consignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                    addConsignmentStatus.getLanguageId(), addConsignmentStatus.getCompanyId(), addConsignmentStatus.getHouseAirwayBill(),
+                    addConsignmentStatus.getPieceId(), 0L);
 
-            //Check if duplicate record exists
+            // Check if duplicate record exists
             if (dbConsignmentStatus.isPresent()) {
-                throw new BadRequestException("Record is getting duplicated with the given value , statusId - " + addConsignmentStatus.getStatusId());
-            } else {
-                log.info("new Consignment status --> " + addConsignmentStatus);
-
-                ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
-                BeanUtils.copyProperties(addConsignmentStatus, newConsignmentStatus, CommonUtils.getNullPropertyNames(addConsignmentStatus));
-
-
-                newConsignmentStatus.setDeletionIndicator(0L);
-                newConsignmentStatus.setCreatedBy(loginUserID);
-                newConsignmentStatus.setCreatedOn(new Date());
-                newConsignmentStatus.setUpdatedBy(loginUserID);
-                newConsignmentStatus.setUpdatedOn(new Date());
-                return consignmentStatusRepository.save(newConsignmentStatus);
+                throw new BadRequestException("Record is getting duplicated with the given values : houseAirwayBill - " + addConsignmentStatus.getHouseAirwayBill());
             }
+            log.info("new Consignment status --> {}", addConsignmentStatus);
 
+            ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
+            BeanUtils.copyProperties(addConsignmentStatus, newConsignmentStatus, CommonUtils.getNullPropertyNames(addConsignmentStatus));
+
+            newConsignmentStatus.setDeletionIndicator(0L);
+            newConsignmentStatus.setCreatedBy(loginUserID);
+            newConsignmentStatus.setCreatedOn(new Date());
+            newConsignmentStatus.setUpdatedBy(loginUserID);
+            newConsignmentStatus.setUpdatedOn(new Date());
+            return consignmentStatusRepository.save(newConsignmentStatus);
         } catch (Exception e) {
+            // Error Log
             createConsignmentStatusLog(addConsignmentStatus, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -193,25 +189,22 @@ public class ConsignmentStatusService {
      * @param companyId
      * @param houseAirwayBill
      * @param pieceId
-     * @param statusId
-     * @param eventCode
      * @return
      */
-
     @Transactional
     public ConsignmentStatus updateConsignmentStatus(String languageId, String companyId, String houseAirwayBill, String pieceId,
-                                                     String statusId, String eventCode, UpdateConsignmentStatus updateConsignmentStatus, String loginUserID)
+                                                     UpdateConsignmentStatus updateConsignmentStatus, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
 
         try {
-            ConsignmentStatus dbConsignmentStatus = getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode);
+            ConsignmentStatus dbConsignmentStatus = getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId);
             BeanUtils.copyProperties(updateConsignmentStatus, dbConsignmentStatus, CommonUtils.getNullPropertyNames(updateConsignmentStatus));
             dbConsignmentStatus.setUpdatedBy(loginUserID);
             dbConsignmentStatus.setUpdatedOn(new Date());
             return consignmentStatusRepository.save(dbConsignmentStatus);
         } catch (Exception e) {
             // Error Log
-            updateConsignmentStatusLog(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, e.toString());
+            updateConsignmentStatusLog(languageId, companyId, houseAirwayBill, pieceId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -225,24 +218,20 @@ public class ConsignmentStatusService {
      * @param companyId
      * @param houseAirwayBill
      * @param pieceId
-     * @param statusId
-     * @param eventCode
      * @param loginUserID
      */
-    public void deleteConsignmentDetails(String languageId, String companyId, String houseAirwayBill, String pieceId, String statusId,
-                                         String eventCode, String loginUserID) {
+    public void deleteConsignmentDetails(String languageId, String companyId, String houseAirwayBill, String pieceId, String loginUserID) {
 
-        ConsignmentStatus dbConsignmentStatus = getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode);
+        ConsignmentStatus dbConsignmentStatus = getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId);
         if (dbConsignmentStatus != null) {
             dbConsignmentStatus.setDeletionIndicator(1L);
             dbConsignmentStatus.setUpdatedBy(loginUserID);
             dbConsignmentStatus.setUpdatedOn(new Date());
-
             consignmentStatusRepository.save(dbConsignmentStatus);
-
         } else {
-            deleteConsignmentLog(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, "Error in deleting statusId - " + statusId);
-            throw new BadRequestException("Error in deleting statusId - " + statusId);
+            // Error Log
+            deleteConsignmentLog(languageId, companyId, houseAirwayBill, pieceId, "Error in deleting houseAirwayBill type - " + houseAirwayBill);
+            throw new BadRequestException("Error in deleting houseAirwayBill type - " + houseAirwayBill);
         }
     }
     /*=================================================REPLICA=============================================================*/
@@ -265,21 +254,18 @@ public class ConsignmentStatusService {
      * @param companyId
      * @param houseAirwayBill
      * @param pieceId
-     * @param statusId
-     * @param eventCode
      * @return
      */
-    public ReplicaConsignmentStatus getReplicaConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                                                String pieceId, String statusId, String eventCode) {
+    public ReplicaConsignmentStatus getReplicaConsignmentStatus(String languageId, String companyId, String houseAirwayBill, String pieceId) {
 
         Optional<ReplicaConsignmentStatus> dbConsignmentStatus =
-                replicaConsignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndStatusIdAndEventCodeAndDeletionIndicator(
-                languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, 0L);
+                replicaConsignmentStatusRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                        languageId, companyId, houseAirwayBill, pieceId, 0L);
         if (dbConsignmentStatus.isEmpty()) {
-            String errMsg = "The given values - LanguageId: " + languageId + " ,CompanyId: " + companyId + " ,HouseAirwayBill:  " + houseAirwayBill +
-                    " ,PieceId: " + pieceId + " ,StatusId: " + statusId + " and EventCode:  " + eventCode + "doesn't exist";
+            String errMsg = "The given values - languageId: " + languageId + ", companyId: " + companyId + ", houseAirwayBill: " + houseAirwayBill +
+                    ", pieceId: " + pieceId + " doesn't exists";
             // Error Log
-            getConsignmentStatusLog(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, errMsg);
+            getConsignmentStatusLog(languageId, companyId, houseAirwayBill, pieceId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbConsignmentStatus.get();
@@ -292,16 +278,18 @@ public class ConsignmentStatusService {
      * @return
      */
     public List<ReplicaConsignmentStatus> findConsignmentStatus(FindConsignmentStatus findConsignmentStatus) throws ParseException {
+
+        log.info("given params for find --> {}", findConsignmentStatus);
         ReplicaConsignmentStatusSpecification spec = new ReplicaConsignmentStatusSpecification(findConsignmentStatus);
         List<ReplicaConsignmentStatus> results = replicaConsignmentStatusRepository.findAll(spec);
-        log.info("found ConsignmentStatus--> " + results);
+        log.info("found ConsignmentStatus --> {}", results);
         return results;
     }
 
     //==========================================ConsignmentStatus_ErrorLog================================================
-    //getConsignmentStatus errorLog
+    // getConsignmentStatus errorLog
     private void getConsignmentStatusLog(String languageId, String companyId, String houseAirwayBill,
-                                         String pieceId, String statusId, String eventCode, String error) {
+                                         String pieceId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
@@ -310,8 +298,6 @@ public class ConsignmentStatusService {
         errorLog.setRefDocNumber(houseAirwayBill);
         errorLog.setMethod("Exception thrown in getConsignmentStatus");
         errorLog.setReferenceField1(pieceId);
-        errorLog.setReferenceField2(statusId);
-        errorLog.setReferenceField3(eventCode);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
@@ -327,9 +313,7 @@ public class ConsignmentStatusService {
         errorLog.setCompanyId(addConsignmentStatus.getCompanyId());
         errorLog.setRefDocNumber(addConsignmentStatus.getHouseAirwayBill());
         errorLog.setMethod("Exception thrown in createConsignmentStatus");
-        errorLog.setReferenceField1(addConsignmentStatus.getStatusId());
-        errorLog.setReferenceField2(addConsignmentStatus.getPieceId());
-        errorLog.setReferenceField4(addConsignmentStatus.getEventCode());
+        errorLog.setReferenceField1(addConsignmentStatus.getPieceId());
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
@@ -338,7 +322,8 @@ public class ConsignmentStatusService {
     }
 
     //updateConsignmentStatus errorLog
-    private void updateConsignmentStatusLog(String languageId, String companyId, String houseAirwayBill, String statusId, String pieceId, String eventCode, String error) throws IOException, CsvException {
+    private void updateConsignmentStatusLog(String languageId, String companyId, String houseAirwayBill,
+                                            String pieceId, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();
@@ -347,9 +332,7 @@ public class ConsignmentStatusService {
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(houseAirwayBill);
         errorLog.setMethod("Exception thrown in updateConsignmentStatus");
-        errorLog.setReferenceField1(statusId);
-        errorLog.setReferenceField2(pieceId);
-        errorLog.setReferenceField3(eventCode);
+        errorLog.setReferenceField1(pieceId);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);
@@ -358,7 +341,7 @@ public class ConsignmentStatusService {
     }
 
     //deleteConsignment errorLog
-    private void deleteConsignmentLog(String languageId, String companyId, String houseAirwayBill, String pieceId, String statusId, String eventCode, String error) {
+    private void deleteConsignmentLog(String languageId, String companyId, String houseAirwayBill, String pieceId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());
@@ -366,9 +349,7 @@ public class ConsignmentStatusService {
         errorLog.setCompanyId(companyId);
         errorLog.setRefDocNumber(houseAirwayBill);
         errorLog.setMethod("Exception thrown in deleteConsignmentStatus");
-        errorLog.setReferenceField1(statusId);
-        errorLog.setReferenceField2(pieceId);
-        errorLog.setReferenceField3(eventCode);
+        errorLog.setReferenceField1(pieceId);
         errorLog.setErrorMessage(error);
         errorLog.setCreatedBy("Admin");
         errorLogRepository.save(errorLog);

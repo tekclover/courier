@@ -16,9 +16,8 @@ import java.util.Optional;
 public interface ConsignmentStatusRepository extends JpaRepository<ConsignmentStatus, String>,
         JpaSpecificationExecutor<ConsignmentStatus> {
 
-    Optional<ConsignmentStatus> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndStatusIdAndEventCodeAndDeletionIndicator(
-            String languageId, String companyId, String houseAirwayBill, String pieceId, String statusId, String eventCode, Long DeletionIndicator
-    );
+    Optional<ConsignmentStatus> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+            String languageId, String companyId, String houseAirwayBill, String pieceId, Long deletionIndicator);
 
     @Query(value = "Select \n" +
             "tl.lang_text langDesc, \n" +
@@ -32,4 +31,5 @@ public interface ConsignmentStatusRepository extends JpaRepository<ConsignmentSt
             "tc.is_deleted = 0", nativeQuery = true)
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
+
 }

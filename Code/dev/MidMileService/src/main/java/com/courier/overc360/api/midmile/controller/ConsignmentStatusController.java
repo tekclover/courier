@@ -48,23 +48,22 @@ public class ConsignmentStatusController {
 
     //Update Consignment Status
     @ApiOperation(response = ConsignmentStatus.class, value = "Update ConsignmentStatus")
-    @PatchMapping("/{statusId}")
-    public ResponseEntity<?> patchConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
-                                                    @RequestParam String pieceId, @RequestParam String houseAirwayBill, @RequestParam String eventCode,
+    @PatchMapping("/update")
+    public ResponseEntity<?> patchConsignmentStatus(@RequestParam String languageId, @RequestParam String companyId,
+                                                    @RequestParam String pieceId, @RequestParam String houseAirwayBill,
                                                     @RequestBody UpdateConsignmentStatus updateConsignmentStatus, @RequestParam String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         ConsignmentStatus updatedConsignmentStatus = consignmentStatusService.updateConsignmentStatus(languageId, companyId,
-                houseAirwayBill, pieceId, statusId, eventCode, updateConsignmentStatus, loginUserID);
+                houseAirwayBill, pieceId, updateConsignmentStatus, loginUserID);
         return new ResponseEntity<>(updatedConsignmentStatus, HttpStatus.OK);
     }
 
     // Delete ConsignmentStatus
     @ApiOperation(response = ConsignmentStatus.class, value = "Delete ConsignmentStatus") // label for swagger
-    @DeleteMapping("/{statusId}")
-    public ResponseEntity<?> deleteConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId,
-                                                     @RequestParam String companyId, @RequestParam String houseAirwayBill,
-                                                     @RequestParam String pieceId, @RequestParam String eventCode, @RequestParam String loginUserID) {
-        consignmentStatusService.deleteConsignmentDetails(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, loginUserID);
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteConsignmentStatus(@RequestParam String languageId, @RequestParam String companyId, @RequestParam String houseAirwayBill,
+                                                     @RequestParam String pieceId, @RequestParam String loginUserID) {
+        consignmentStatusService.deleteConsignmentDetails(languageId, companyId, houseAirwayBill, pieceId, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -80,11 +79,10 @@ public class ConsignmentStatusController {
 
     //Get ConsignmentStatus
     @ApiOperation(response = ReplicaConsignmentStatus.class, value = "Get ConsignmentStatus")
-    @GetMapping("/{statusId}")
-    public ResponseEntity<?> getConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
-                                                  @RequestParam String pieceId, @RequestParam String houseAirwayBill, @RequestParam String eventCode) {
-        ReplicaConsignmentStatus dbConsignmentStatus =
-                consignmentStatusService.getReplicaConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode);
+    @GetMapping("/get")
+    public ResponseEntity<?> getConsignmentStatus(@RequestParam String languageId, @RequestParam String companyId,
+                                                  @RequestParam String pieceId, @RequestParam String houseAirwayBill) {
+        ReplicaConsignmentStatus dbConsignmentStatus = consignmentStatusService.getReplicaConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId);
         return new ResponseEntity<>(dbConsignmentStatus, HttpStatus.OK);
     }
 

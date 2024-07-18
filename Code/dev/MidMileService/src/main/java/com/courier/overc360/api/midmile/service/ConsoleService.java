@@ -64,6 +64,9 @@ public class ConsoleService {
     @Autowired
     ReplicaPieceDetailsRepository replicaPieceDetailsRepository;
 
+    @Autowired
+    ReplicaCcrRepository replicaCcrRepository;
+
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -312,7 +315,6 @@ public class ConsoleService {
             newConsole.setAirportOriginCode(preAlert.getOrigin());
             newConsole.setCountryOfOrigin(preAlert.getOriginCode());
 
-            BeanUtils.copyProperties(preAlert, newConsole, CommonUtils.getNullPropertyNames(preAlert));
             consoleList.add(newConsole);
 
         }

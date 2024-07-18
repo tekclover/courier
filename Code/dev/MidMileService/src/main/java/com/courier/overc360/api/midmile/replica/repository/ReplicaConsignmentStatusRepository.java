@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ReplicaConsignmentStatusRepository extends JpaRepository<ReplicaConsignmentStatus, String>, JpaSpecificationExecutor<ReplicaConsignmentStatus> {
 
-    Optional<ReplicaConsignmentStatus> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndStatusIdAndEventCodeAndDeletionIndicator(
-            String languageId, String companyId, String houseAirwayBill, String pieceId, String statusId, String eventCode, Long deletionIndicator);
+    Optional<ReplicaConsignmentStatus> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+            String languageId, String companyId, String houseAirwayBill, String pieceId, Long deletionIndicator);
 }
