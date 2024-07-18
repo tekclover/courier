@@ -183,7 +183,7 @@ export class ConsoleEditComponent {
     this.callTableHeader();
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
-    this.form.controls.consoleId.disable();
+    this.form.controls.partnerMasterAirwayBill.disable();
     this.form.controls.statusText.disable();
 
     if (this.pageToken.pageflow != 'New') {
@@ -203,6 +203,7 @@ export class ConsoleEditComponent {
   target: any[] = [];
   callTableHeader() {
     this.cols = [
+      { field:'consoleId', header:'Console No'},
       { field: 'masterAirwayBill', header: 'MAWB' },
       { field: 'houseAirwayBill', header: 'Consginment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
@@ -263,7 +264,7 @@ export class ConsoleEditComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.consoleId = [line.consoleId];
+    obj.partnerMasterAirwayBill = [line.partnerMasterAirwayBill];
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.subProductArray = res;

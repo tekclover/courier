@@ -129,7 +129,7 @@ public class Console {
 
     private String pieceId;
 
-    private String pieceItemId;
+//    private String pieceItemId;
 
     private String languageDescription;
 

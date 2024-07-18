@@ -34,8 +34,6 @@ public class UpdateCcr {
 
     private String pieceId;
 
-    private String pieceItemId;
-
     private String companyName;
 
     private String consignmentCurrency;

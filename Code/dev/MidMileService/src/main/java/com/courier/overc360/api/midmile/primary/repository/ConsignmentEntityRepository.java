@@ -20,6 +20,9 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
     Optional<ConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String mawb, String hawb, Long deletionIndicator);
 
+    Optional<ConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String mawb, String hawb, Long deletionIndicator);
+
     ConsignmentEntity findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
             String companyId, String languageId, String partnerId, String mawb, String hawb, Long deletionIndicator);
 
@@ -103,4 +106,18 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("customsValue") String customsValue,
                                   @Param("calculatedDuty") String calculatedDuty,
                                   @Param("volume") String volume);
+
+
+    @Modifying
+    @Query(value = "update tblconsignment_entity " +
+            "set PARTNER_MASTER_AB = :partnerMasterAB where " +
+            "c_id in (:companyId) and lang_id in (:languageId) and " +
+            "partner_id in (:partnerId) and partner_house_ab in (:partnerHouseAB) and " +
+            "is_deleted = 0 ", nativeQuery = true)
+    public void updateConsignment(@Param(value = "companyId") String companyId,
+                                  @Param("languageId") String languageId,
+                                  @Param("partnerId") String partnerId,
+                                  @Param("partnerHouseAB") String partnerHouseAB,
+                                  @Param("partnerMasterAB") String partnerMasterAB);
+
 }

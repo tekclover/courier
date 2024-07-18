@@ -335,6 +335,15 @@ public class MidMileController {
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
+    // Create new BondedManifests based on PreAlert Input
+    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifests based On PreAlert Input")
+    @PostMapping("/bondedManifest/create/preAlert")
+    public ResponseEntity<?> postBondedManifestsFromPreAlert(@Valid @RequestBody List<PreAlert> preAlertList,
+                                                             @RequestParam String loginUserID, @RequestParam String authToken) {
+        BondedManifest[] bondedManifests = midMileService.createBondedManifestListsOnPreAlertInput(preAlertList, loginUserID, authToken);
+        return new ResponseEntity<>(bondedManifests, HttpStatus.OK);
+    }
+
     // Update BondedManifest
     @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for swagger
     @PatchMapping("/bondedManifest/update/list")
@@ -460,6 +469,15 @@ public class MidMileController {
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
+    // Update Console Normal
+    @ApiOperation(response = Console.class, value = "Update Console Normal")
+    @PatchMapping("/console/update/list/normal")
+    public ResponseEntity<?> patchConsoleNormal(@Valid @RequestBody List<UpdateConsole> updateConsoleList, @RequestParam String loginUserID,
+                                                @RequestParam String authToken) {
+        Console[] dbConsole = midMileService.updateConsoleNormal(updateConsoleList, loginUserID, authToken);
+        return new ResponseEntity<>(dbConsole, HttpStatus.OK);
+    }
+
     // Delete Console
     @ApiOperation(response = Console.class, value = "Delete Console") // label for Swagger
     @PostMapping("/console/delete/list")
@@ -481,9 +499,9 @@ public class MidMileController {
     // Console Create consignmentResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on Consignment Input")
     @PostMapping("/console/consignment")
-    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<ConsignmentEntity> addConsignment, @RequestParam String loginUserID,
+    public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<PreAlert> preAlerts, @RequestParam String loginUserID,
                                                           @RequestParam String authToken) {
-        Console[] createConsole = midMileService.createConsoleConsignmentInput(addConsignment, loginUserID, authToken);
+        Console[] createConsole = midMileService.createConsoleBasedOnPreAlertResponse(preAlerts, loginUserID, authToken);
         return new ResponseEntity<>(createConsole, HttpStatus.OK);
     }
 
@@ -575,5 +593,59 @@ public class MidMileController {
     @PostMapping("/consignment/findConsignmentInvoice")
     public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
+    }
+
+    // Get All PreAlert Details
+    @ApiOperation(response = PreAlert[].class, value = "Get all PreAlert Details")
+    @GetMapping("/prealert")
+    public ResponseEntity<?> getAllPreAlertDetails(@RequestParam String authToken) {
+        PreAlert[] preAlert = midMileService.getAllPreAlert(authToken);
+        return new ResponseEntity<>(preAlert, HttpStatus.OK);
+    }
+    // Get PreAlert
+    @ApiOperation(response = PreAlert.class, value = "Get PreAlert") // label for swagger
+    @GetMapping("/prealert/{partnerId}")
+    public ResponseEntity<?> getPreAlert(@PathVariable String partnerId, @RequestParam String languageId,
+                                         @RequestParam String companyId, @RequestParam String partnerMasterAirwayBill,
+                                         @RequestParam String partnerHouseAirwayBill,
+                                         @RequestParam String authToken) {
+        PreAlert preAlert = midMileService.getPreAlert(languageId,companyId,partnerId,
+                partnerHouseAirwayBill,partnerMasterAirwayBill,authToken);
+        return new ResponseEntity<>(preAlert, HttpStatus.OK);
+    }
+
+    // Create new PreAlert
+    @ApiOperation(response = PreAlert.class, value = "Create new PreAlert") // label for swagger
+    @PostMapping("/prealert/post/list")
+    public ResponseEntity<?> postPreAlert(@RequestBody List<PreAlert> addPreAlert,
+                                          @RequestParam String loginUserID, @RequestParam String authToken) {
+        PreAlert[] preAlert = midMileService.createPreAlerts(addPreAlert, loginUserID, authToken);
+        return new ResponseEntity<>(preAlert, HttpStatus.OK);
+    }
+    // Update PreAlert
+    @ApiOperation(response = PreAlert.class, value = "Update PreAlert") // label for swagger
+    @PatchMapping("/prealert/update/list")
+    public ResponseEntity<?> patchPreAlert(@RequestBody List<UpdatePreAlert> updatePreAlert,
+                                           @RequestParam String loginUserID, @RequestParam String authToken) {
+        PreAlert[] preAlerts = midMileService.updatePreAlert(updatePreAlert, loginUserID, authToken);
+        return new ResponseEntity<>(preAlerts, HttpStatus.OK);
+    }
+
+    // Delete PreAlert
+    @ApiOperation(response = PreAlert.class, value = "Delete PreAlert") // label for Swagger
+    @PostMapping("/prealert/delete/list")
+    public ResponseEntity<?> deletePreAlert(@RequestBody List<PreAlertDeleteInput> deleteInputList,
+                                            @RequestParam String loginUserID, @RequestParam String authToken) {
+        midMileService.deletePreAlert(deleteInputList, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find PreAlert
+    @ApiOperation(response = PreAlert[].class, value = "Find PreAlert") // label for swagger
+    @PostMapping("/prealert/findPrealert")
+    public ResponseEntity<?> findPreAlerts(@RequestBody FindPreAlert findPreAlerts,
+                                           @RequestParam String authToken) throws Exception {
+        PreAlert[] preAlert = midMileService.findPreAlerts(findPreAlerts, authToken);
+        return new ResponseEntity<>(preAlert, HttpStatus.OK);
     }
 }

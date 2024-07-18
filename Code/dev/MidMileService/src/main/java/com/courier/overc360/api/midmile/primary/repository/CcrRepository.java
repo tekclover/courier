@@ -35,8 +35,8 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
     Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, Long deletionIndicator);
 
-    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndPieceItemIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, Long deletionIndicator);
+    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, String pieceId, Long deletionIndicator);
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndCustomsCcrNoAndDeletionIndicator(
             String languageId, String companYId, String partnerId, String masterAirwayBill, String houseAirwayBill, String customsCcrNo, Long deletionIndicator
@@ -87,7 +87,7 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
                                                @Param("statusId") String statusId,
                                                @Param("statusText") String statusText);
 
-    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-            String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId, Long deletionIndicator);
+    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+            String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
 }
 

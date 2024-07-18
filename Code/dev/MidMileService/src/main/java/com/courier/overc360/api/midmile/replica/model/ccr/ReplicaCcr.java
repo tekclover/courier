@@ -19,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_ccr",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID", "PIECE_ID", "PIECE_ITEM_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID", "PIECE_ID"}
                 )
         }
 )
@@ -76,7 +76,6 @@ public class ReplicaCcr {
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
-    @Id
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 

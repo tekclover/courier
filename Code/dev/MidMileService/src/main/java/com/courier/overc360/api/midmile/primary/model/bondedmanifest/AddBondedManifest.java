@@ -205,6 +205,8 @@ public class AddBondedManifest {
 
     private String billOfLadingFor;
 
+    private String bayanHV;
+
     private String referenceField1;
 
     private String referenceField2;

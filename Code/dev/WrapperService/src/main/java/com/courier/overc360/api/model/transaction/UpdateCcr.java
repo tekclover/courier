@@ -27,7 +27,7 @@ public class UpdateCcr {
 
     private String pieceId;
 
-    private String pieceItemId;
+//    private String pieceItemId;
 
     private String companyName;
 

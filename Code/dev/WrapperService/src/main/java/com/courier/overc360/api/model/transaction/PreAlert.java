@@ -18,8 +18,6 @@ public class PreAlert {
 
     private String masterAirwayBill;
 
-    private String houseAirwayBill;
-
     private String partnerHouseAirwayBill;
 
     private String partnerMasterAirwayBill;
@@ -50,9 +48,13 @@ public class PreAlert {
 
     private String origin;
 
+    private Long consoleIndicator;
+
+    private Long manifestIndicator;
+
     private String  originCode;
 
-    private String consignmentValueKd;
+    private String consignmentValueLocal;
 
     private String iata;
 

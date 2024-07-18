@@ -766,7 +766,7 @@ export class ConsignmentNewComponent {
     }})
   }
 
-  editItem(data: any,line: any): void {
+  cnTablePopup(data: any,line: any): void {
     const dialogRef = this.dialog.open(ConsignmentStatusPopupComponent, {
       disableClose: true,
       width: '100%',
@@ -776,15 +776,6 @@ export class ConsignmentNewComponent {
       data: {pageflow: data, code: line},
     });
   
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if(result){
-  //       this.subProductArray.splice(i,0);
-  //       this.subProductArray.splice(i, 1, result);
-  //       console.log(result);
-  //     //this.form.patchValue(result);
-  //     this.subProductArray = [...this.subProductArray]
-  
-  // }});
   }
 
 

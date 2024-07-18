@@ -30,8 +30,8 @@ public class UpdateConsole {
     @NotBlank(message = "PieceId is mandatory")
     private String pieceId;
 
-    @NotBlank(message = "PieceItemId is mandatory")
-    private String pieceItemId;
+//    @NotBlank(message = "PieceItemId is mandatory")
+//    private String pieceItemId;
 
     private String partnerType;
 

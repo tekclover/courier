@@ -122,6 +122,13 @@ export class ConsignmentService {
   })
   .toPromise();
  }
+
+ // Upload Pre-Alert Manifest
+ uploadPreAlertFiles(file: File, obj: any) {
+  const formData = new FormData();
+    formData.append('file', file);
+  return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.estimatedTimeOfArrival}&estimatedTimeOfDeparture=${obj.estimatedTimeOfDeparture}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}`, formData);
+}
 }
 
 

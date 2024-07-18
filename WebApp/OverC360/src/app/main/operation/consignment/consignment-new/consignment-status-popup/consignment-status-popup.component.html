@@ -7,8 +7,9 @@
         <table class="table" style="width: 150rem;">
             <thead class="sticky-top  table-style ">
                 <tr>
-                    <th scope="col">S.No</th>
                     <th scope="col">Piece ID</th>
+                    <th scope="col">Bag ID</th>
+                    <th scope="col">Piece Status Type</th>
                     <th scope="col">Piece Status ID</th>
                     <th scope="col">Piece Status</th>
                     <th scope="col">Piece Event Code</th>
@@ -19,8 +20,9 @@
             </thead>
             <tbody class="table-style-body" >
                 <tr *ngFor="let item of cnTable; let i = index">
-                    <th style="font-weight: normal;" scope="row">{{i + 1}}</th>
                     <td>{{item.pieceId}}</td>
+                    <td>{{item.bagId}}</td>
+                    <td>{{item.pieceStatusType}}</td>
                     <td>{{item.pieceStatusId}}</td>
                     <td>{{item.pieceStatusText}}</td>
                     <td>{{item.pieceEventCode}}</td>

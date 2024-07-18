@@ -25,10 +25,10 @@ public class BondedManifestDeleteInput {
     @NotBlank(message = "House Airway Bill is mandatory")
     private String houseAirwayBill;
 
-    @NotBlank(message = "Piece Id is mandatory")
-    private String pieceId;
-
-    @NotBlank(message = "PieceItem Id is mandatory")
-    private String pieceItemId;
+//    @NotBlank(message = "Piece Id is mandatory")
+//    private String pieceId;
+//
+//    @NotBlank(message = "PieceItem Id is mandatory")
+//    private String pieceItemId;
 
 }
