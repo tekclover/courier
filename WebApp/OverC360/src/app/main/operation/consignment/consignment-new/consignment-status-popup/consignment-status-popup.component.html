@@ -12,17 +12,17 @@
                     <!-- <th scope="col">Bag ID</th> -->
                     <th scope="col">Description</th>
                     <th scope="col">Time</th>
-
+                    <th scope="col">User</th>
                 </tr>
             </thead>
             <tbody class="table-style-body" >
                 <tr style="height: 20px !important;" *ngFor="let item of cnTable; let i = index">
-                    <td>{{item.pieceId}}</td>
-                    <td>{{item.pieceType}}</td>
+                    <td scope="row">{{item.pieceId}}</td>
+                    <td scope="row">{{item.pieceType}}</td>
                     <!-- <td>{{item.bagId}}</td> -->
-                    <td>{{item.pieceTypeDescription}}</td>
-                    <td>{{item.pieceTimeStamp | date: 'dd-MM-yyyy HH:mm' }}</td>
-
+                    <td scope="row">{{item.pieceTypeDescription}}</td>
+                    <td scope="row">{{item.pieceTimeStamp | date: 'dd-MM-yyyy HH:mm' }}</td>
+                    <td scope="row">{{item.updatedBy}}</td>
                 </tr>
             </tbody>
         </table>

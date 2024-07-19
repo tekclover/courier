@@ -722,7 +722,7 @@ export class ConsignmentNewComponent {
       // { field: 'bagId', header: 'Bag ID' },
       { field: 'hawbTypeDescription', header: 'Description' },
       { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
-      { field: 'createdBy', header: 'User' },
+      { field: 'updatedBy', header: 'User' },
     ];
   }
 
