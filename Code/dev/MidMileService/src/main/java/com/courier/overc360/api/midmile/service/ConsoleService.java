@@ -817,7 +817,6 @@ public class ConsoleService {
         }
     }
 
-
     /**
      * Update Console
      *
@@ -866,45 +865,6 @@ public class ConsoleService {
                         ccrService.createConsoleCcr(consoleData, loginUserID);
                         log.info("Console to CCR Created");
                     }
-
-                    Optional<IKeyValuePair> statusID4DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "4");
-                    if (statusID4DescOpt.isPresent()) {
-                        IKeyValuePair ikey = statusID4DescOpt.get();
-
-                        // Create Consignment Status Table record with StatusID - 4
-                        consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
-                                updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
-                                updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
-                                updatetedConsole.getHawbTypeId(), ikey.getStatusText(), updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(),
-                                updatetedConsole.getPieceTypeId(), ikey.getStatusText(), updatetedConsole.getPieceTimeStamp(), loginUserID);
-                    }
-
-                    // Create Consignment Status Table record with StatusID - 5
-                    consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
-                            updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
-                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
-                            updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbTypeDescription(),
-                            updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(), updatetedConsole.getPieceTypeId(),
-                            updatetedConsole.getPieceTypeDescription(), updatetedConsole.getPieceTimeStamp(), loginUserID);
-
-                    // Update ConsignmentEntity Table
-                    consoleRepository.updateConsignmentOnConsoleCreate(
-                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
-
-                    // Update PreAlert Table
-                    consoleRepository.updatePreAlertOnConsoleCreate(
-                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
-
-                    // Update PieceDetails Table
-                    consoleRepository.updatePieceDetailsOnConsoleCreate(
-                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
-
                     updatedConsoleList.add(updatetedConsole);
                 }
             }
@@ -916,6 +876,106 @@ public class ConsoleService {
             throw new RuntimeException(e);
         }
     }
+
+
+//    /**
+//     * Update Console
+//     *
+//     * @param updateConsoleList
+//     * @param loginUserID
+//     * @return
+//     * @throws IllegalAccessException
+//     * @throws InvocationTargetException
+//     */
+//    @Transactional
+//    public List<Console> updateConsole(List<UpdateConsole> updateConsoleList, String loginUserID)
+//            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+//        try {
+//            List<Console> updatedConsoleList = new ArrayList<>();
+//
+//            for (UpdateConsole updateConsole : updateConsoleList) {
+//
+//                Console dbConsole = getConsole(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(),
+//                        updateConsole.getPartnerMasterAirwayBill(), updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId());
+//
+//                BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
+//
+//                Optional<IKeyValuePair> statusID5DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "5");
+//                if (statusID5DescOpt.isPresent()) {
+//                    IKeyValuePair ikey = statusID5DescOpt.get();
+//
+//                    dbConsole.setHawbType("STATUS");
+//                    dbConsole.setHawbTypeId("5");
+//                    dbConsole.setHawbTypeDescription(ikey.getStatusText());
+//                    dbConsole.setHawbTimeStamp(new Date());
+//
+//                    dbConsole.setPieceType("STATUS");
+//                    dbConsole.setPieceTypeId("5");
+//                    dbConsole.setPieceTypeDescription(ikey.getStatusText());
+//                    dbConsole.setPieceTimeStamp(new Date());
+//                }
+//
+//                dbConsole.setUpdatedBy(loginUserID);
+//                dbConsole.setUpdatedOn(new Date());
+//                Console updatetedConsole = consoleRepository.save(dbConsole);
+//
+//                if (updatetedConsole != null) {
+//                    List<Console> consoleData = consoleRepository.getConsoleData(updatetedConsole.getConsoleId());
+//
+//                    if (consoleData != null && !consoleData.isEmpty()) {
+//                        ccrService.createConsoleCcr(consoleData, loginUserID);
+//                        log.info("Console to CCR Created");
+//                    }
+//
+//                    Optional<IKeyValuePair> statusID4DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "4");
+//                    if (statusID4DescOpt.isPresent()) {
+//                        IKeyValuePair ikey = statusID4DescOpt.get();
+//
+//                        // Create Consignment Status Table record with StatusID - 4
+//                        consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
+//                                updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
+//                                updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
+//                                updatetedConsole.getHawbTypeId(), ikey.getStatusText(), updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(),
+//                                updatetedConsole.getPieceTypeId(), ikey.getStatusText(), updatetedConsole.getPieceTimeStamp(), loginUserID);
+//                    }
+//
+//                    // Create Consignment Status Table record with StatusID - 5
+//                    consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
+//                            updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
+//                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
+//                            updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbTypeDescription(),
+//                            updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(), updatetedConsole.getPieceTypeId(),
+//                            updatetedConsole.getPieceTypeDescription(), updatetedConsole.getPieceTimeStamp(), loginUserID);
+//
+//                    // Update ConsignmentEntity Table
+//                    consoleRepository.updateConsignmentOnConsoleCreate(
+//                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
+//                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
+//                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
+//
+//                    // Update PreAlert Table
+//                    consoleRepository.updatePreAlertOnConsoleCreate(
+//                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
+//                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
+//                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
+//
+//                    // Update PieceDetails Table
+//                    consoleRepository.updatePieceDetailsOnConsoleCreate(
+//                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
+//                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
+//                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
+//
+//                    updatedConsoleList.add(updatetedConsole);
+//                }
+//            }
+//            return updatedConsoleList;
+//        } catch (Exception e) {
+//            // Error Log
+//            createConsoleLog3(updateConsoleList, e.toString());
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     /**
