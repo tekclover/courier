@@ -225,6 +225,7 @@ public class PreAlertService {
                             savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(),
                             savedPreAlert.getPartnerMasterAirwayBill());
                     log.info("Piece updated");
+
                     List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getLanguageId(), savedPreAlert.getCompanyId(),
                             savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
                     if (piece != null) {
