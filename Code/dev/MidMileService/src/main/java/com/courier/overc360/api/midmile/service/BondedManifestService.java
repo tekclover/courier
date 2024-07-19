@@ -175,6 +175,9 @@ public class BondedManifestService {
             addBondedManifest.setManifestedQuantity(preAlertInput.getNoOfPieces());
             addBondedManifest.setLandedQuantity(preAlertInput.getNoOfPieces());
             addBondedManifest.setTotalQuantity(preAlertInput.getNoOfPieces());
+            addBondedManifest.setNotifyParty(preAlertInput.getConsigneeName());
+            addBondedManifest.setEstimatedTimeOfArrival(preAlertInput.getEstimatedTimeOfArrival());
+            addBondedManifest.setConsigneeFreeText(preAlertInput.getConsigneeName());
 
 //            addBondedManifest.setConsignmentValue(preAlertInput.getConsignmentValue());
             addBondedManifest.setBayanHV(preAlertInput.getBayanHv());
@@ -242,39 +245,39 @@ public class BondedManifestService {
                     newBondedManifest.setStatusTimestamp(new Date());
                 }
 
-                Optional<ReplicaConsignmentEntity> consignmentValuesOpt = replicaBondedManifestRepository.getConsignmentValues(
-                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(),
-                        addBondedManifest.getPartnerMasterAirwayBill(), addBondedManifest.getPartnerHouseAirwayBill());
-                if (consignmentValuesOpt.isPresent()) {
-                    ReplicaConsignmentEntity consignmentEntity = consignmentValuesOpt.get();
-
-                    newBondedManifest.setNoOfPackageMawb(consignmentEntity.getNoOfPackageMawb());
-                    newBondedManifest.setNoOfPieceHawb(consignmentEntity.getNoOfPieceHawb());
-                    newBondedManifest.setPrimaryDo(consignmentEntity.getPrimaryDo());
-                    newBondedManifest.setSecondaryDo(consignmentEntity.getSecondaryDo());
-
-                    newBondedManifest.setNotifyParty(consignmentEntity.getNotifyParty());
-                    newBondedManifest.setPaymentType(consignmentEntity.getPaymentType());
-                    newBondedManifest.setLineNo(consignmentEntity.getLineNo());
-                    newBondedManifest.setIncoTerms(consignmentEntity.getIncoTerms());
-
-                    newBondedManifest.setInvoiceNumber(consignmentEntity.getInvoiceNumber());
-                    newBondedManifest.setInvoiceType(consignmentEntity.getInvoiceType());
-                    newBondedManifest.setInvoiceDate(consignmentEntity.getInvoiceDate());
-                    newBondedManifest.setInvoiceSupplierName(consignmentEntity.getInvoiceSupplierName());
-
-//                    newBondedManifest.setGoodsDescription(consignmentEntity.getGoodsDescription());
-                    newBondedManifest.setQuantity(consignmentEntity.getQuantity());
-                    newBondedManifest.setFreightCurrency(consignmentEntity.getFreightCurrency());
-                    newBondedManifest.setFreightCharges(consignmentEntity.getFreightCharges());
-
-                    newBondedManifest.setConsignmentValue(consignmentEntity.getConsignmentValue());
-                    newBondedManifest.setConsignmentCurrency(consignmentEntity.getConsignmentCurrency());
-                    newBondedManifest.setActualCurrency(consignmentEntity.getActualCurrency());
-                    newBondedManifest.setTotalDuty(consignmentEntity.getTotalDuty());
-                    newBondedManifest.setSpecialApprovalValue(consignmentEntity.getSpecialApprovalValue());
-                    newBondedManifest.setDeclaredValue(consignmentEntity.getDeclaredValue());
-                }
+//                Optional<ReplicaConsignmentEntity> consignmentValuesOpt = replicaBondedManifestRepository.getConsignmentValues(
+//                        newBondedManifest.getLanguageId(), newBondedManifest.getCompanyId(), newBondedManifest.getPartnerId(),
+//                        newBondedManifest.getPartnerMasterAirwayBill(), newBondedManifest.getPartnerHouseAirwayBill());
+//                if (consignmentValuesOpt.isPresent()) {
+//                    ReplicaConsignmentEntity consignmentEntity = consignmentValuesOpt.get();
+//
+//                    newBondedManifest.setNoOfPackageMawb(consignmentEntity.getNoOfPackageMawb());
+//                    newBondedManifest.setNoOfPieceHawb(consignmentEntity.getNoOfPieceHawb());
+//                    newBondedManifest.setPrimaryDo(consignmentEntity.getPrimaryDo());
+//                    newBondedManifest.setSecondaryDo(consignmentEntity.getSecondaryDo());
+//
+//                    newBondedManifest.setNotifyParty(consignmentEntity.getNotifyParty());
+//                    newBondedManifest.setPaymentType(consignmentEntity.getPaymentType());
+//                    newBondedManifest.setLineNo(consignmentEntity.getLineNo());
+//                    newBondedManifest.setIncoTerms(consignmentEntity.getIncoTerms());
+//
+//                    newBondedManifest.setInvoiceNumber(consignmentEntity.getInvoiceNumber());
+//                    newBondedManifest.setInvoiceType(consignmentEntity.getInvoiceType());
+//                    newBondedManifest.setInvoiceDate(consignmentEntity.getInvoiceDate());
+//                    newBondedManifest.setInvoiceSupplierName(consignmentEntity.getInvoiceSupplierName());
+//
+////                    newBondedManifest.setGoodsDescription(consignmentEntity.getGoodsDescription());
+//                    newBondedManifest.setQuantity(consignmentEntity.getQuantity());
+//                    newBondedManifest.setFreightCurrency(consignmentEntity.getFreightCurrency());
+//                    newBondedManifest.setFreightCharges(consignmentEntity.getFreightCharges());
+//
+//                    newBondedManifest.setConsignmentValue(consignmentEntity.getConsignmentValue());
+//                    newBondedManifest.setConsignmentCurrency(consignmentEntity.getConsignmentCurrency());
+//                    newBondedManifest.setActualCurrency(consignmentEntity.getActualCurrency());
+//                    newBondedManifest.setTotalDuty(consignmentEntity.getTotalDuty());
+//                    newBondedManifest.setSpecialApprovalValue(consignmentEntity.getSpecialApprovalValue());
+//                    newBondedManifest.setDeclaredValue(consignmentEntity.getDeclaredValue());
+//                }
 
                 newBondedManifest.setBondedId(BONDED_ID);
                 newBondedManifest.setBillOfLadingFor("Import");

@@ -47,6 +47,8 @@ public class UpdateBondedManifest {
 
     private String secondaryDo;
 
+    private Date estimatedTimeOfArrival;
+
     private String description;
 
     private String netWeight;
@@ -66,6 +68,8 @@ public class UpdateBondedManifest {
     private String volume;
 
     private String finalDestination;
+
+    private String consigneeFreeText;
 
     private String notifyParty;
 

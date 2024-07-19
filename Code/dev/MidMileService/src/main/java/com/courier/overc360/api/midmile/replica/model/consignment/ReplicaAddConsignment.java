@@ -290,6 +290,14 @@ public class ReplicaAddConsignment {
 
     private List<ReferenceImageList> referenceImageList;
 
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
     private String isExchange;
 
     private String airportDestinationCode;

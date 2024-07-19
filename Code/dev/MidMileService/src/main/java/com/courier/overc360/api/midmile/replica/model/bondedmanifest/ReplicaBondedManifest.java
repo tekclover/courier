@@ -71,8 +71,14 @@ public class ReplicaBondedManifest {
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
+    @Column(name = "CONSIGNEE_FREE_TEXT", columnDefinition = "nvarchar(100)")
+    private String consigneeFreeText;
+
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
+
+    @Column(name = "ESTIMATED_TIME_OF_ARRIVAL")
+    private Date estimatedTimeOfArrival;
 
     @Column(name = "PARTNER_TYP", columnDefinition = "nvarchar(50)")
     private String partnerType;

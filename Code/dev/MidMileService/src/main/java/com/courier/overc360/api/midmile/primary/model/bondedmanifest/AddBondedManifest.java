@@ -55,6 +55,10 @@ public class AddBondedManifest {
 
     private String secondaryDo;
 
+    private String consigneeFreeText;
+
+    private Date estimatedTimeOfArrival;
+
     private String description;
 
     private String netWeight;

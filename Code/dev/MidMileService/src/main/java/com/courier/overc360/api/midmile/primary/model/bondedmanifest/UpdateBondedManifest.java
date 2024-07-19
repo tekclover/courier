@@ -35,9 +35,13 @@ public class UpdateBondedManifest {
 
     private String pieceId;
 
+    private Date estimatedTimeOfArrival;
+
     private String pieceItemId;
 
     private String languageDescription;
+
+    private String consigneeFreeText;
 
     private String companyName;
 
