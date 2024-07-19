@@ -130,5 +130,22 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
             @Param(value = "partnerMasterAirwayBill") String partnerMasterAirwayBill,
             @Param(value = "partnerHouseAirwayBill") String partnerHouseAirwayBill);
 
+    @Query(value = "Select \n" +
+            "AIRPORT_DESTINATION_CODE airportDestinationCode \n" +
+            "From tblconsignment_entity  \n" +
+            "Where \n" +
+            "C_ID IN (:companyId) and \n" +
+            "LANG_ID IN (:languageId) and \n"+
+            "PARTNER_ID IN (:partnerId) and \n"+
+            "PARTNER_MASTER_AB IN (:partnerMasterAirwayBill) and \n"+
+            "PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill) and \n"+
+            "is_deleted = 0", nativeQuery = true)
+    String getFinalDestination(
+            @Param(value = "languageId") String languageId,
+            @Param(value = "companyId") String companyId,
+            @Param(value = "partnerId") String partnerId,
+            @Param(value = "partnerMasterAirwayBill") String partnerMasterAirwayBill,
+            @Param(value = "partnerHouseAirwayBill") String partnerHouseAirwayBill);
+
 
 }

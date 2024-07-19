@@ -228,22 +228,15 @@ public class BondedManifestService {
                 BeanUtils.copyProperties(addBondedManifest, newBondedManifest, CommonUtils.getNullPropertyNames(addBondedManifest));
                 IKeyValuePair lAndCDesc = bondedManifestRepository.getLAndCDescription(
                         addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId());
-                Optional<IKeyValuePair> eventStatus = consignmentEntityRepository.getStatusEventText(newBondedManifest.getLanguageId(),
-                        newBondedManifest.getCompanyId(), "1", "4");
 
                 if (lAndCDesc != null) {
                     newBondedManifest.setLanguageDescription(lAndCDesc.getLangDesc());
                     newBondedManifest.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
-                if (eventStatus.isPresent()) {
-                    IKeyValuePair iKeyValuePair = eventStatus.get();
-                    newBondedManifest.setStatusId("1");
-                    newBondedManifest.setEventCode("4");
-                    newBondedManifest.setStatusText(iKeyValuePair.getStatusText());
-                    newBondedManifest.setEventText(iKeyValuePair.getEventText());
-                    newBondedManifest.setEventTimestamp(new Date());
-                    newBondedManifest.setStatusTimestamp(new Date());
-                }
+
+                String finalDestination = replicaBondedManifestRepository.getFinalDestination(addBondedManifest.getLanguageId(),
+                        addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(), addBondedManifest.getPartnerMasterAirwayBill(),
+                        addBondedManifest.getPartnerHouseAirwayBill());
 
 //                Optional<ReplicaConsignmentEntity> consignmentValuesOpt = replicaBondedManifestRepository.getConsignmentValues(
 //                        newBondedManifest.getLanguageId(), newBondedManifest.getCompanyId(), newBondedManifest.getPartnerId(),
@@ -279,6 +272,9 @@ public class BondedManifestService {
 //                    newBondedManifest.setDeclaredValue(consignmentEntity.getDeclaredValue());
 //                }
 
+                if(finalDestination != null) {
+                    newBondedManifest.setFinalDestination(finalDestination);
+                }
                 newBondedManifest.setBondedId(BONDED_ID);
                 newBondedManifest.setBillOfLadingFor("Import");
                 newBondedManifest.setDeletionIndicator(0L);
