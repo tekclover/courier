@@ -118,11 +118,11 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
 
     @Query(value = "Select * From tblconsignment_entity\n" +
             "Where IS_DELETED=0 and\n" +
-            "(COALESCE(:languageId, null) IS NULL OR (LANG_ID IN (:languageId))) and \n" +
-            "(COALESCE(:companyId, null) IS NULL OR (C_ID IN (:companyId))) and \n" +
-            "(COALESCE(:partnerId, null) IS NULL OR (PARTNER_ID IN (:partnerId))) and \n" +
-            "(COALESCE(:partnerHouseAirwayBill, null) IS NULL OR (PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))) and \n" +
-            "(COALESCE(:partnerMasterAirwayBill, null) IS NULL OR (PARTNER_MASTER_AB IN (:partnerMasterAirwayBill)))", nativeQuery = true)
+            "(COALESCE(:languageId, NULL) IS NULL OR LANG_ID = :languageId) and \n" +
+            "(COALESCE(:companyId, NULL) IS NULL OR C_ID = :companyId) and \n" +
+            "(COALESCE(:partnerId, NULL) IS NULL OR PARTNER_ID = :partnerId) and \n" +
+            "(COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR PARTNER_HOUSE_AB = :partnerHouseAirwayBill) and \n" +
+            "(COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR PARTNER_MASTER_AB = :partnerMasterAirwayBill)", nativeQuery = true)
     Optional<ReplicaConsignmentEntity> getConsignmentValues(
             @Param(value = "languageId") String languageId,
             @Param(value = "companyId") String companyId,

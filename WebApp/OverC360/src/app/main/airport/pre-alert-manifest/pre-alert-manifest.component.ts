@@ -19,7 +19,7 @@ import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
-
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-pre-alert-manifest',
   templateUrl: './pre-alert-manifest.component.html',
@@ -73,8 +73,8 @@ export class PreAlertManifestComponent {
       { field: 'partnerId', header: 'Partner ID' },
       { field: 'flightNo', header: 'Flight No' },
       { field: 'flightName', header: 'Flight Name' },
-      { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date'  },
-      { field: 'estimatedTimeOfArrival', header: 'Arrival Time', format: 'date'  },
+      { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date' },
+      { field: 'estimatedTimeOfArrival', header: 'Arrival Time', format: 'date' },
       { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
       { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
       { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
@@ -275,6 +275,7 @@ export class PreAlertManifestComponent {
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
         this.spin.hide();
+        this.downloadExcelByColsAndTarget(res);
         this.initialCall()
       }, error: (err) => {
         this.spin.hide();
@@ -436,4 +437,109 @@ export class PreAlertManifestComponent {
     }
   }
 
+
+
+  // Download Excel function
+  bols: any[] = [];
+  items: any[] = [];
+
+  downloadExcelByColsAndTarget(res: any) {
+
+    this.bols = [
+      { field: 'bondedId', header: 'Temporary Manifest Number' },
+      { field: 'partnerHouseAirwayBill', header: 'Bill of Lading No' },
+      { field: 'estimatedTimeOfArrival', header: 'Bill of Lading Date', format: 'date' },
+      { field: 'description', header: 'Description' },
+      { field: 'billOfLadingFor', header: 'Bill of Lading For' },
+      { field: 'netWeight', header: 'Net Weight (kgs)' },
+      { field: 'manifestedGrossWeight', header: 'Manifested Gross Weight (Kgs)' },
+      { field: 'grossWeight', header: 'Gross Weight (kgs)' },
+      { field: 'tareWeight', header: 'Tare Weight (kgs)' },
+      { field: 'manifestedQuantity', header: 'Manifested Quantity' },
+      { field: 'landedQuantity', header: 'Landed Quantity' },
+      { field: 'totalQuantity', header: 'Total Quantity' },
+      { field: 'volume', header: 'Volume (cbm)' },
+      { field: 'countryOfOrigin', header: 'Port Of Shipping' },
+      { field: 'finalDestination', header: 'Final Destination' },
+      { field: 'consigneeName', header: 'Consignee (Registered)' },
+      { field: 'consigneeName', header: 'Notify' },
+      { field: 'consigneeName', header: 'Consignee (Free text)' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'remarks', header: 'Remarks' },
+      { field: 'isConsolidatedShipment', header: 'Is Consolidated Shipment' },
+      { field: 'isSplitBillOfLading', header: 'Is Split Bill of Lading' },
+      { field: 'consolidatedBillNo', header: 'Consolidate Bill Number' },
+      { field: 'isPendingShipment', header: 'Is Pending shipment' },
+      { field: 'bwhInvestor', header: 'BWHInvestor' },
+    ];
+
+    this.items = [
+      { field: 'partnerHouseAirwayBill', header: 'Bill of Lading No' },
+      { field: 'kind', header: 'Kind' },
+      { field: 'goodsType', header: 'Goods Type' },
+      { field: 'fclLcl', header: 'FCL/LCL' },
+      { field: 'containerNo', header: 'Container No' },
+      { field: 'containerType', header: 'Container Type' },
+      { field: 'containerSize', header: 'Container Size' },
+      { field: 'quantity', header: 'Quantity' },
+      { field: 'description', header: 'Description' },
+      { field: 'grossWeight', header: 'Gross Weight (kgs)' },
+      { field: 'netWeight', header: 'Net Weight (kgs)' },
+      { field: 'tareWeight', header: 'Tare Weight (kgs)' },
+      { field: 'volume', header: 'Volume' },
+      { field: 'markId', header: 'Mark ID' },
+      { field: 'markType', header: 'Mark Type' },
+      { field: 'sealNo', header: 'Seal No' },
+      { field: 'vehicleModel', header: 'Vehicle Model (Year)' },
+      { field: 'vehicleType', header: 'Vehicle Type' },
+      { field: 'chasisNo', header: 'Chasis No' },
+      { field: 'engineNo', header: 'Engine No ' },
+      { field: 'yearOfManufacture', header: 'Year of Manufacture' },
+      { field: 'vehicleBodyColor', header: 'Vehicle Body Color' },
+      { field: 'vehicleBrand', header: 'Vehicle Brand' },
+      { field: 'vehicleNationality', header: 'Vehicle Nationality' },
+      { field: 'load', header: 'Load' },
+      { field: 'passenger', header: 'Passenger' },
+      { field: 'enginePower', header: 'Engine Power' },
+      { field: 'numberOfCylinders', header: 'No Of Cylinders' },
+      { field: 'countryOfOrigin', header: 'Country Of Origin' },
+    ];
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    let sheetNumber = 1;
+    const bolsData = res.map((item: { [x: string]: any; }) => {
+      const exportItem: any = {};
+      this.bols.forEach(col => {
+        if (col.format === 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
+      });
+      return exportItem;
+    });
+
+    const bolsSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(bolsData);
+    XLSX.utils.book_append_sheet(wb, bolsSheet, `BOLs`);
+
+    const itemsData = res.map((item: { [x: string]: any; }) => {
+      const exportItem: any = {};
+      this.items.forEach(col => {
+        if (col.format === 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
+      });
+      return exportItem;
+    });
+    const itemsSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(itemsData);
+    XLSX.utils.book_append_sheet(wb, itemsSheet, `Items_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`);
+    sheetNumber += 2;
+
+    XLSX.writeFile(
+      wb,
+      `Bonded-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
+    );
+  }
 }
