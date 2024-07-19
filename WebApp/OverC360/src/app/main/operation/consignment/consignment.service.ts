@@ -25,7 +25,7 @@ export class ConsignmentService {
   }
 
   UpdatePreAlertManifest(obj: any) {
-    return this.http.patch<any>('/overc-midmile-service/consignment', obj);
+    return this.http.patch<any>('/overc-midmile-service/prealert/update/list', obj);
   }
 
   Delete(obj: any) {

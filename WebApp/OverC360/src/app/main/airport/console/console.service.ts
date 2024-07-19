@@ -19,7 +19,7 @@ export class ConsoleService {
   }
 
   CreateFromConsignment(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/console/consignment', obj);
+    return this.http.post<any>('/overc-midmile-service/console/create/preAlert', obj);
   }
   
   Update(obj: any) {
