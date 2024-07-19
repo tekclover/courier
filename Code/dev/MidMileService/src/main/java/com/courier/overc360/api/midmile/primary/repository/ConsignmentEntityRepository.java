@@ -158,7 +158,7 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
     @Query(value = "update tblpiecedetails " +
             "set PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB where " +
             "c_id in (:companyId) and lang_id in (:languageId) and " +
-            "partner_id in (:partnerId) and partner_house_ab in (:partnerHouseAB) and " +
+            "partner_id in (:partnerId) and PARTNER_HOUSE_AIRWAY_BILL in (:partnerHouseAB) and " +
             "piece_id in (:pieceId) and is_deleted = 0 ", nativeQuery = true)
     public void updatePieceId(@Param("companyId") String companyId,
                                   @Param("languageId") String languageId,
