@@ -137,7 +137,7 @@ public class PreAlertService {
 
                     dbPreAlert.setExchangeRate(optionalIKeyValuePair.getCurrencyValue());
                     dbPreAlert.setConsignmentLocalId(optionalIKeyValuePair.getCurrencyId());
-                    if (ikeyIata != null && ikeyIata.getIataKd() != null) {
+                    if (dbPreAlert.getIata() != null && ikeyIata != null && ikeyIata.getIataKd() != null) {
                         dbPreAlert.setIata(ikeyIata.getIataKd());
                     }
                 }
