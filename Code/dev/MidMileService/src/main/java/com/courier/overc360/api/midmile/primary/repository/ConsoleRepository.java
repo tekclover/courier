@@ -135,8 +135,8 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             "AND LANG_ID = :languageId \n" +
             "And C_ID = :companyId \n" +
             "AND PARTNER_ID = :partnerId \n" +
-            "AND PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAirwayBill\n" +
-            "AND PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAirwayBill", nativeQuery = true)
+            "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
+            "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
     void updateConsignmentOnConsoleCreate(@Param("languageId") String languageId,
                                           @Param("companyId") String companyId,
                                           @Param("partnerId") String partnerId,
