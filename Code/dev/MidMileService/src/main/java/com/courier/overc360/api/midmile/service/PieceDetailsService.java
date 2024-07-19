@@ -315,8 +315,8 @@ public class PieceDetailsService {
 
                         // Save ConsignmentStatus
                         consignmentStatusService.insertConsignmentStatusRecord(savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(),
-                                savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
-                                savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                                savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getPartnerMasterAirwayBill(),
+                                savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(),loginUserID );
 
@@ -388,8 +388,8 @@ public class PieceDetailsService {
 
                 // Save ConsignmentStatus
                 consignmentStatusService.insertConsignmentStatusRecord(savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(),
-                        savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
-                        savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                        savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getPartnerMasterAirwayBill(),
+                        savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                         savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                         savePieceDetails.getPieceTimeStamp(),loginUserID );
 
