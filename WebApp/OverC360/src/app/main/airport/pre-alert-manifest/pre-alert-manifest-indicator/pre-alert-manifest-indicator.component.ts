@@ -111,7 +111,7 @@ export class PreAlertManifestIndicatorComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    obj.houseAirwayBill = [this.pageToken.line.houseAirwayBill];
+    obj.partnerHouseAirwayBill = [this.pageToken.line.partnerHouseAirwayBill];
 
     this.consignmentService.findConsignmentPreAlertIndicator(obj).subscribe({
       next: (res: any) => {

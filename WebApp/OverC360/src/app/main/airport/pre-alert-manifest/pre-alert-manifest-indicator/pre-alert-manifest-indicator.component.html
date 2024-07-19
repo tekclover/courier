@@ -64,22 +64,54 @@
           <tr>
             <th style="font-weight: normal;" scope="row">1</th>
             <td>Consignment Currency</td>
-            <td>{{preAlertManifestIndicatorTable[0].consignmentCurrency}}</td>
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].consignmentCurrency !== null && preAlertManifestIndicatorTable[0].consignmentCurrency !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].consignmentCurrency }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">2</th>
             <td>Consignment ID</td>
-            <td>{{preAlertManifestIndicatorTable[0].consignmentId}}</td>
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].consignmentId !== null && preAlertManifestIndicatorTable[0].consignmentId !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].consignmentId }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">3</th>
             <td>Country Of Origin</td>
-            <td>{{preAlertManifestIndicatorTable[0].countryOfOrigin}}</td>
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].countryOfOrigin !== null && preAlertManifestIndicatorTable[0].countryOfOrigin !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].countryOfOrigin }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">4</th>
             <td>Created On</td>
-            <td>{{preAlertManifestIndicatorTable[0].createdOn | date: 'dd-MM-yyyy HH:mm' }}</td>
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].createdOn !== null && preAlertManifestIndicatorTable[0].createdOn !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].createdOn | date: 'dd-MM-yyyy HH:mm' }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">5</th>
@@ -97,32 +129,85 @@
           <tr>
             <th style="font-weight: normal;" scope="row">6</th>
             <td>Gross Weight</td>
-            <td>{{preAlertManifestIndicatorTable[0].grossWeight}}</td>
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].grossWeight !== null && preAlertManifestIndicatorTable[0].grossWeight !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].grossWeight }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">7</th>
             <td>Inco Terms</td>
-            <td>{{preAlertManifestIndicatorTable[0].incoTerms}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].incoTerms}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].incoTerms !== null && preAlertManifestIndicatorTable[0].incoTerms !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].incoTerms }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">8</th>
             <td>No Of Package Hawb</td>
-            <td>{{preAlertManifestIndicatorTable[0].noOfPackageHawb}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].noOfPackageHawb}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].noOfPackageHawb !== null && preAlertManifestIndicatorTable[0].noOfPackageHawb !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].noOfPackageHawb }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">9</th>
             <td>No Of Piece Hawb</td>
-            <td>{{preAlertManifestIndicatorTable[0].noOfPieceHawb}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].noOfPieceHawb}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].noOfPieceHawb !== null && preAlertManifestIndicatorTable[0].noOfPieceHawb !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].noOfPieceHawb }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">10</th>
             <td>Partner Hawb</td>
-            <td>{{preAlertManifestIndicatorTable[0].partnerHouseAirwayBill}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].partnerHouseAirwayBill}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].partnerHouseAirwayBill !== null && preAlertManifestIndicatorTable[0].partnerHouseAirwayBill !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].partnerHouseAirwayBill }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">11</th>
             <td>Payment Type</td>
-            <td>{{preAlertManifestIndicatorTable[0].paymentType}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].paymentType}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].paymentType !== null && preAlertManifestIndicatorTable[0].paymentType !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].paymentType }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -140,32 +225,86 @@
           <tr>
             <th style="font-weight: normal;" scope="row">1</th>
             <td>Name</td>
-            <td>{{preAlertManifestIndicatorTable[0].originDetails.name}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].originDetails.name}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].originDetails.name !== null && preAlertManifestIndicatorTable[0].originDetails.name !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].originDetails.name }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">2</th>
             <td>Phone</td>
-            <td>{{preAlertManifestIndicatorTable[0].originDetails.phone}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].originDetails.phone}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].originDetails.phone !== null && preAlertManifestIndicatorTable[0].originDetails.phone !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].originDetails.phone }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">3</th>
             <td>Address Line 1</td>
-            <td>{{preAlertManifestIndicatorTable[0].originDetails.addressLine1}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].originDetails.addressLine1}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].originDetails.addressLine1 !== null && preAlertManifestIndicatorTable[0].originDetails.addressLine1 !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].originDetails.addressLine1 }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">4</th>
             <td>Address Line 2</td>
-            <td>{{preAlertManifestIndicatorTable[0].originDetails.addressLine2}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].originDetails.addressLine2}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].originDetails.addressLine2 !== null && preAlertManifestIndicatorTable[0].originDetails.addressLine2 !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].originDetails.addressLine2 }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">5</th>
             <td>City</td>
-            <td>{{preAlertManifestIndicatorTable[0].originDetails.city}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].originDetails.city}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].originDetails.city !== null && preAlertManifestIndicatorTable[0].originDetails.city !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].originDetails.city }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">6</th>
             <td>Country</td>
-            <td>{{preAlertManifestIndicatorTable[0].originDetails.country}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].originDetails.country}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].originDetails.country !== null && preAlertManifestIndicatorTable[0].originDetails.country !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].originDetails.country }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -183,32 +322,86 @@
           <tr>
             <th style="font-weight: normal;" scope="row">1</th>
             <td>Name</td>
-            <td>{{preAlertManifestIndicatorTable[0].destinationDetails.name}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].destinationDetails.name}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].destinationDetails.name !== null && preAlertManifestIndicatorTable[0].destinationDetails.name !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].destinationDetails.name }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">2</th>
             <td>Phone</td>
-            <td>{{preAlertManifestIndicatorTable[0].destinationDetails.phone}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].destinationDetails.phone}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].destinationDetails.phone !== null && preAlertManifestIndicatorTable[0].destinationDetails.phone !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].destinationDetails.phone }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">3</th>
             <td>Address Line 1</td>
-            <td>{{preAlertManifestIndicatorTable[0].destinationDetails.addressLine1}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].destinationDetails.addressLine1}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].destinationDetails.addressLine1 !== null && preAlertManifestIndicatorTable[0].destinationDetails.addressLine1 !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].destinationDetails.addressLine1 }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">4</th>
             <td>Address Line 2</td>
-            <td>{{preAlertManifestIndicatorTable[0].destinationDetails.addressLine2}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].destinationDetails.addressLine2}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].destinationDetails.addressLine2 !== null && preAlertManifestIndicatorTable[0].destinationDetails.addressLine2 !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].destinationDetails.addressLine2 }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">5</th>
             <td>City</td>
-            <td>{{preAlertManifestIndicatorTable[0].destinationDetails.city}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].destinationDetails.city}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].destinationDetails.city !== null && preAlertManifestIndicatorTable[0].destinationDetails.city !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].destinationDetails.city }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
           <tr>
             <th style="font-weight: normal;" scope="row">6</th>
             <td>Country</td>
-            <td>{{preAlertManifestIndicatorTable[0].destinationDetails.country}}</td>
+            <!-- <td>{{preAlertManifestIndicatorTable[0].destinationDetails.country}}</td> -->
+            <td>
+              <ng-container
+                *ngIf="preAlertManifestIndicatorTable[0].destinationDetails.country !== null && preAlertManifestIndicatorTable[0].destinationDetails.country !== undefined; else nullOrUndefined">
+                {{ preAlertManifestIndicatorTable[0].destinationDetails.country }}
+              </ng-container>
+              <ng-template #nullOrUndefined>
+                <p class="null-value">Null</p>
+              </ng-template>
+            </td>
           </tr>
         </tbody>
       </table>
