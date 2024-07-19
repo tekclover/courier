@@ -219,15 +219,17 @@ public class PreAlertService {
                             savedPreAlert.getConsignmentValue(), savedPreAlert.getExchangeRate(), savedPreAlert.getIata(),
                             savedPreAlert.getConsignmentValueLocal(), savedPreAlert.getAddIata(), savedPreAlert.getAddInsurance(),
                             savedPreAlert.getCustomsValue(), savedPreAlert.getCalculatedTotalDuty());
+                    log.info("consignment updated");
+
+                    consignmentEntityRepository.updatePieceId(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
+                            savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(),
+                            savedPreAlert.getPartnerMasterAirwayBill());
+                    log.info("Piece updated");
 
                     List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getLanguageId(), savedPreAlert.getCompanyId(),
                             savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
                     if (piece != null) {
                         for (String pieceId : piece) {
-                            consignmentEntityRepository.updatePieceId(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
-                                    savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(),
-                                    savedPreAlert.getPartnerMasterAirwayBill(), pieceId);
-
                             consignmentStatusService.insertConsignmentStatusRecord(savedPreAlert.getLanguageId(), savedPreAlert.getLanguageDescription(),
                                     savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getPartnerMasterAirwayBill(),
                                     savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
