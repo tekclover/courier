@@ -32,4 +32,8 @@ public interface ConsignmentStatusRepository extends JpaRepository<ConsignmentSt
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
 
+    @Query(value = "Select top 1 CON_STATUS_ID consignmentStatusId from tblconsignmentstatus ORDER BY CON_STATUS_ID DESC", nativeQuery = true)
+    public Long statusId();
+
+    // latest statusId 1 return
 }

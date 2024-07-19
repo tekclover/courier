@@ -24,12 +24,16 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_consignmentstatus",
-                        columnNames = {"LANG_ID", "C_ID", "HOUSE_AIRWAY_BILL", "PIECE_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "HOUSE_AIRWAY_BILL", "PIECE_ID", "CON_STATUS_ID"}
                 )
         }
 )
 @IdClass(ReplicaConsignmentStatusCompositeKey.class)
 public class ReplicaConsignmentStatus {
+
+    @Id
+    @Column(name = "CON_STATUS_ID")
+    private Long consignmentStatusId;
 
     @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")

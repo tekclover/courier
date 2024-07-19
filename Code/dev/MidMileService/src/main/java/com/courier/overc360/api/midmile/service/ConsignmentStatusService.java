@@ -81,6 +81,14 @@ public class ConsignmentStatusService {
             if (languageId != null && companyId != null && pieceId != null && houseAirwayBill != null) {
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
 
+                Long statusId = consignmentStatusRepository.statusId();
+
+                if(statusId == null || statusId == 0) {
+                    statusId = 1L;
+                } else {
+                    statusId ++;
+                }
+                newConsignmentStatus.setConsignmentStatusId(statusId);
                 newConsignmentStatus.setLanguageId(languageId);
                 newConsignmentStatus.setLanguageDescription(languageDesc);
                 newConsignmentStatus.setCompanyId(companyId);
@@ -112,6 +120,7 @@ public class ConsignmentStatusService {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Create ConsignmentStatus using params
