@@ -3,31 +3,25 @@
         <p class="componentHeader f600 mb-0">Piece Details</p>
     </div>
 
-    <div class="d-flex scrollNew table-responsive mt-4">
-        <table class="table" style="width: 150rem;">
+    <div class="d-flex scrollNew mt-4">
+        <table class="table" style="width: 80rem;">
             <thead class="sticky-top  table-style ">
                 <tr>
                     <th scope="col">Piece ID</th>
-                    <th scope="col">Bag ID</th>
-                    <th scope="col">Piece Status Type</th>
-                    <th scope="col">Piece Status ID</th>
-                    <th scope="col">Piece Status</th>
-                    <th scope="col">Piece Event Code</th>
-                    <th scope="col">Piece Event Text</th>
-                    <th scope="col">Piece Event Time</th>
+                    <th scope="col">Type</th>
+                    <!-- <th scope="col">Bag ID</th> -->
+                    <th scope="col">Description</th>
+                    <th scope="col">Time</th>
 
                 </tr>
             </thead>
             <tbody class="table-style-body" >
-                <tr *ngFor="let item of cnTable; let i = index">
+                <tr style="height: 20px !important;" *ngFor="let item of cnTable; let i = index">
                     <td>{{item.pieceId}}</td>
-                    <td>{{item.bagId}}</td>
-                    <td>{{item.pieceStatusType}}</td>
-                    <td>{{item.pieceStatusId}}</td>
-                    <td>{{item.pieceStatusText}}</td>
-                    <td>{{item.pieceEventCode}}</td>
-                    <td>{{item.pieceEventText}}</td>
-                    <td>{{item.pieceEventTimestamp | date: 'dd-MM-yyyy HH:mm' }}</td>
+                    <td>{{item.pieceType}}</td>
+                    <!-- <td>{{item.bagId}}</td> -->
+                    <td>{{item.pieceTypeDescription}}</td>
+                    <td>{{item.pieceTimeStamp | date: 'dd-MM-yyyy HH:mm' }}</td>
 
                 </tr>
             </tbody>
