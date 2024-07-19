@@ -88,8 +88,8 @@ export class PreAlertUpdateComponent {
     originCode: [],
     origin: [],
     countryOfDestination: [],
-    flightArrivalTime: [],
-    flightArrivalTimeFE:  [new Date,],
+    estimatedTimeOfArrival: [],
+    estimatedTimeOfArrivalFE:  [new Date,],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
@@ -188,8 +188,8 @@ export class PreAlertUpdateComponent {
           if (this.form.controls.estimatedDepartureTime.value) {
             this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
           }
-          if (this.form.controls.flightArrivalTime.value) {
-            this.form.controls.flightArrivalTimeFE.patchValue(this.cs.pCalendar(this.form.controls.flightArrivalTime.value));
+          if (this.form.controls.estimatedTimeOfArrival.value) {
+            this.form.controls.estimatedTimeOfArrivalFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedTimeOfArrival.value));
           }
           this.partnerTypeChanged();
   }

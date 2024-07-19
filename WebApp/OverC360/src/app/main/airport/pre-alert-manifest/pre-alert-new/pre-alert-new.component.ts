@@ -82,8 +82,8 @@ export class PreAlertNewComponent {
     partnerType: ['',],
     countryOfOrigin: [],
     countryOfDestination: [],
-    flightArrivalTime: ['',],
-    flightArrivalTimeFE: [],
+    estimatedTimeOfArrival: ['',],
+    estimatedTimeOfArrivalFE: [],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
@@ -278,8 +278,8 @@ export class PreAlertNewComponent {
     const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
     this.form.controls.estimatedDepartureTime.patchValue(date);
 
-    const date2 = this.cs.jsonDate(this.form.controls.flightArrivalTimeFE.value)
-    this.form.controls.flightArrivalTime.patchValue(date2);
+    const date2 = this.cs.jsonDate(this.form.controls.estimatedTimeOfArrivalFE.value)
+    this.form.controls.estimatedTimeOfArrival.patchValue(date2);
 
     this.service.uploadPreAlertFiles(this.selectedFiles, this.form.getRawValue()).subscribe({
       next: (result) => {

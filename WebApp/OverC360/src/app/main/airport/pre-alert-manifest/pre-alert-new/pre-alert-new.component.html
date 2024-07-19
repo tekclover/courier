@@ -109,7 +109,7 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div> -->
 
-                            <div class="col-6 marginFieldNew borderRadius12" id="estimatedDepartureTime">
+                            <div class="col-6 marginFieldNew borderRadius12" id="estimatedDepartureTimeFE">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Estimated Time Of Departure</p>
                                 <p-calendar formControlName="estimatedDepartureTimeFE" appendTo="body"
                                 [ngClass]="form.get('estimatedDepartureTimeFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
@@ -120,14 +120,14 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12" id="flightArrivalTimeFE">
+                            <div class="col-6 marginFieldNew borderRadius12" id="estimatedTimeOfArrivalFE">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Estimated Time Of Arrival</p>
-                                <p-calendar formControlName="flightArrivalTimeFE" appendTo="body"
-                                [ngClass]="form.get('flightArrivalTimeFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                <p-calendar formControlName="estimatedTimeOfArrivalFE" appendTo="body"
+                                [ngClass]="form.get('estimatedTimeOfArrivalFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
 
-                                <mat-error *ngIf="errorHandling('flightArrivalTimeFE')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('estimatedTimeOfArrivalFE')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
