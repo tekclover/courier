@@ -31,7 +31,7 @@
                     <div class="col-6 marginFieldNew borderRadius12" id="productId" *ngIf="this.form.controls.creationType.value == 'Bulk'">
                         <p class="formControlLabel f600 textBlack mb-0 ">Product</p>
                         <p-dropdown [options]="productNameList" placeholder="Select" filter="true" #productChange
-                            formControlName="productName"
+                            formControlName="productId" (onChange)="productChanged()"
                             [ngClass]="form.get('productName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                             appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>

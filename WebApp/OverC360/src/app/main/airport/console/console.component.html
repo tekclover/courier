@@ -11,6 +11,12 @@
             <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
                 style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
             <p-overlayPanel [style]="{ width: '180' }" #op>
+                <input type="file" #fileInput1 style="display:none" (change)="onFileSelectedBayan($event)" />
+                <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="uploadBayan()"><img
+                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload
+                        Bayan</button>
+                </div>
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk

@@ -126,7 +126,6 @@ export class DownloadTemplateComponent {
       this.customerService.search(obj).subscribe({
         next: (result) => {
           this.productNameList = this.cas.foreachlistWithoutKey(result, {key: 'productId', value: 'productName'});
-          this.form.patchValue(result[0]);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -148,7 +147,6 @@ export class DownloadTemplateComponent {
       this.consignorService.search(obj).subscribe({
         next: (result) => {
           this.productNameList = this.cas.foreachlistWithoutKey(result, {key: 'productId', value: 'productName'});
-          this.form.patchValue(result[0]);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -174,6 +172,21 @@ export class DownloadTemplateComponent {
     }
 
     this.dialogRef.close(this.form.getRawValue());
+  }
+
+
+  productChanged(){
+    const selectedPartner = this.partnerNameList.find(value => value.value === this.form.controls.productId.value);
+    this.form.controls.productName.patchValue(selectedPartner.value2);
+    if(selectedPartner.value2 == '1 - INTERNATIONALINBOUND'){
+      this.form.controls.fileName.patchValue('1_-_INTERNATIONALINBOUND.xlsx');
+    }
+    if(selectedPartner.value2 == '2 - INTERNATIONALOUTBOUND'){
+      this.form.controls.fileName.patchValue('2_-_INTERNATIONALOUTBOUND.xlsx');
+    }
+    if(selectedPartner.value2 == '3 - DOMESTIC'){
+      this.form.controls.fileName.patchValue('3_-_DOMESTIC.xlsx');
+    }
   }
 
 }

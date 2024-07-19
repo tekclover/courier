@@ -39,5 +39,11 @@ export class ConsoleService {
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/console/findConsole', obj);
   }
+
+  uploadBayan(file: File, filePath:any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
+  }
 }
 
