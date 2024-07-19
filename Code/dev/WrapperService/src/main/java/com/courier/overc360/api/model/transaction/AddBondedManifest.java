@@ -16,7 +16,7 @@ public class AddBondedManifest {
     private String partnerId;
 
 //    private String masterAirwayBill;
-
+//
 //    private String houseAirwayBill;
 
     private String  bondedId;
@@ -27,7 +27,11 @@ public class AddBondedManifest {
 
     private String languageDescription;
 
+    private String consigneeFreeText;
+
     private String companyName;
+
+    private Date estimatedTimeOfArrival;
 
     private String partnerType;
 

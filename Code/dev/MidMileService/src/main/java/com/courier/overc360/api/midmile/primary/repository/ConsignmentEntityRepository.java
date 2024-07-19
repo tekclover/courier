@@ -154,6 +154,20 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("customsValue") String customsValue,
                                   @Param("calculatedTotalDuty") String calculatedTotalDuty);
 
+    @Modifying
+    @Query(value = "update tblpiecedetails " +
+            "set PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB where " +
+            "c_id in (:companyId) and lang_id in (:languageId) and " +
+            "partner_id in (:partnerId) and PARTNER_HOUSE_AIRWAY_BILL in (:partnerHouseAB) and " +
+            "piece_id in (:pieceId) and is_deleted = 0 ", nativeQuery = true)
+    public void updatePieceId(@Param("companyId") String companyId,
+                                  @Param("languageId") String languageId,
+                                  @Param("partnerId") String partnerId,
+                                  @Param("partnerHouseAB") String partnerHouseAB,
+                                  @Param("partnerMasterAB") String partnerMasterAB,
+                                  @Param("pieceId") String pieceId);
+
+
     ConsignmentEntity findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String partnerHouseAirwayBill, Long deletionIndicator);
 }

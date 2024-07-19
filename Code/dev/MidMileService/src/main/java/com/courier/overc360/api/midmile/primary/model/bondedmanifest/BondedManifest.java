@@ -71,6 +71,9 @@ public class BondedManifest {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
+    @Column(name = "ESTIMATED_TIME_OF_ARRIVAL")
+    private Date estimatedTimeOfArrival;
+
     @Column(name = "PARTNER_TYP", columnDefinition = "nvarchar(50)")
     private String partnerType;
 
@@ -151,6 +154,9 @@ public class BondedManifest {
 
     @Column(name = "SHIPPER_NAME", columnDefinition = "nvarchar(100)")
     private String shipperName;
+
+    @Column(name = "CONSIGNEE_FREE_TEXT", columnDefinition = "nvarchar(100)")
+    private String consigneeFreeText;
 
     @Column(name = "REMARKS", columnDefinition = "nvarchar(100)")
     private String remarks;

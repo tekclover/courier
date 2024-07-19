@@ -362,6 +362,14 @@ public class AddConsignment {
 
     private String insurance;
 
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
     private String referenceField1;
     private String referenceField2;
     private String referenceField3;

@@ -3,7 +3,6 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -264,6 +263,14 @@ public class AddConsignment {
     private String packDetails;
 
     private String storageLocation;
+
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
 
     private List<ReferenceImageList> referenceImageList;
 
