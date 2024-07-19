@@ -39,30 +39,37 @@ export class CommonServiceService {
     );
   }
 
-  downloadExcel(data: any[], filename: string = "Downloaded_Excel", groupByField:any) {
+  downloadExcel(data: any[], filename: string = "Downloaded_Excel", groupByField: any) {
     const workbook = XLSX.utils.book_new();
-
+  
     const groupedData = this.groupByField(data, groupByField);
-
-    Object.keys(groupedData).forEach(items => {
-      const sheetName = `${items}`; //ConsoleID_
-      const sheetData = groupedData[items];
-
-      const worksheet = XLSX.utils.json_to_sheet(sheetData);
-
+  
+    Object.keys(groupedData).forEach(key => {
+      const sheetName = `${key}`;
+      const sheetData = groupedData[key];
+  
+      // Extracting Console ID and Created On from the first item in sheetData
+      const consoleId = sheetData.length > 0 ? sheetData[0]['Console ID'] : '';
+      const createdOn = sheetData.length > 0 ? sheetData[0]['Created On'] : '';
+  
+      // Adding additional row at the beginning with values
+      const additionalRow = [{ [consoleId]: '', [createdOn]: '' }];
+      const fullSheetData = [...additionalRow, ...sheetData];
+  
+      const worksheet = XLSX.utils.json_to_sheet(fullSheetData);
+  
       XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
     });
-
-     XLSX.writeFile(
-      workbook,
-      filename + `_${new Date().getDate() +
-      '-' +
-      (new Date().getMonth() + 1) +
-      '-' +
-      new Date().getFullYear()
-      }.xlsx`
-    );
+  
+    // Constructing filename with date
+    const dateStamp = `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`;
+    const fullFileName = `${filename}_${dateStamp}.xlsx`;
+  
+    // Writing the workbook to file
+    XLSX.writeFile(workbook, fullFileName);
   }
+  
+  
 
   private groupByField(data: any[], groupByField:any): { [key: string]: any[] } {
     const groupedData: { [key: string]: any[] } = {};

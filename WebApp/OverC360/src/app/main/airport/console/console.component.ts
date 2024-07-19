@@ -188,23 +188,6 @@ export class ConsoleComponent {
 
   downloadExcel() {
 
-    const header = [
-      { field: '', header: '', format: 'number' },
-      { field: 'partnerMasterAirwayBill', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-      { field: 'customsValue', header: '' },
-      { field: '', header: '' },
-      { field: '', header: '' },
-    ];
-
     const cols = [
       { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
       { field: 'partnerMasterAirwayBill', header: 'AWB' },
@@ -229,7 +212,8 @@ export class ConsoleComponent {
     const consignmentId = this.selectedConsole.map(item => item.partnerMasterAirwayBill);
     this.service.search({ partnerMasterAirwayBill: consignmentId }).subscribe({
       next: (result) => {
-        const exportData = result.map((item:any, index:any) => {
+    
+        const   exportData = result.map((item:any, index:any) => {
           const exportItem: any = {};
           cols.forEach(col => {
             if (col.format == 'number') {
@@ -241,8 +225,7 @@ export class ConsoleComponent {
           return exportItem;
         });
     
-        // Call ExcelService to export data to Excel
-        this.cs.exportAsExcel(exportData, 'Console');
+        this.cs.downloadExcel(exportData, 'Console', 'Console ID');
       }
     })
 
