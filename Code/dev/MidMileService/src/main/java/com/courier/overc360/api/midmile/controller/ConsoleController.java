@@ -132,6 +132,13 @@ public class ConsoleController {
         return new ResponseEntity<>(consoleList, HttpStatus.OK);
     }
 
+    @ApiOperation(response = MobileApp.class, value = "Find Console For MobileApp")
+    @PostMapping("/find/mobileapp")
+    public ResponseEntity<?> findMobileApp() {
+        List<MobileApp> dbMobileApp = consoleService.getAllMobileApp();
+        return new ResponseEntity<>(dbMobileApp, HttpStatus.OK);
+    }
+
 }
 
 

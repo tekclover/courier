@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
+import com.courier.overc360.api.midmile.primary.model.console.MobileApp;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -61,5 +62,20 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             @Param("masterAirwayBill") List<String> masterAirwayBill,
             @Param("houseAirwayBill") List<String> houseAirwayBill,
             @Param("consoleId") List<String> consoleId);
+
+    @Query(value = "SELECT t.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, " +
+            "t.PARTNER_ID AS partnerId, " +
+            "t.PARTNER_NAME AS partnerName, " +
+            "t.CTD_ON AS createdOn " +
+            "FROM tblconsole t " +
+            "INNER JOIN ( " +
+            "    SELECT PARTNER_MASTER_AIRWAY_BILL, MAX(CTD_ON) AS max_date " +
+            "    FROM tblconsole " +
+            "    WHERE STATUS_ID != 5 AND is_deleted = 0 " +
+            "    GROUP BY PARTNER_MASTER_AIRWAY_BILL " +
+            ") sub ON t.PARTNER_MASTER_AIRWAY_BILL = sub.PARTNER_MASTER_AIRWAY_BILL AND t.CTD_ON = sub.max_date " +
+            "WHERE t.STATUS_ID != 5 AND t.is_deleted = 0",
+            nativeQuery = true)
+    List<MobileApp> getMobileApp();
 
 }

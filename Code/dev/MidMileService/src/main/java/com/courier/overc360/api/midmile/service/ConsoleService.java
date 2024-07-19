@@ -1426,6 +1426,13 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
+
+    //Mobile App
+   public List<MobileApp> getAllMobileApp(){
+        List<MobileApp> consoles = replicaConsoleRepository.getMobileApp();
+        return consoles;
+    }
+
 }
 
 
