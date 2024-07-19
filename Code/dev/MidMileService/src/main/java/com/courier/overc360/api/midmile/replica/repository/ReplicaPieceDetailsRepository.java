@@ -34,6 +34,15 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
                              @Param(value = "partnerHouseAB") String partnerHouseAB,
                              @Param(value = "partnerMasterAB") String partnerMasterAB);
 
+    @Query(value = "Select PIECE_ID as pieceId from tblpiecedetails where " +
+            "lang_id = :languageId and c_id = :companyId and partner_id = :partnerId and " +
+            " PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAB and " +
+            " is_deleted = 0 ", nativeQuery = true)
+    List<String> getPieceId(@Param(value = "languageId") String languageId,
+                            @Param(value = "companyId") String companyId,
+                            @Param(value = "partnerId") String partnerId,
+                            @Param(value = "partnerHouseAB") String partnerHouseAB);
+
     // Get Description
     @Query(value = "Select \n" +
             "tl.lang_text langDesc, \n" +
