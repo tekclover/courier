@@ -82,7 +82,7 @@ public class PreAlertService {
      */
     private PreAlert getPreAlert(String companyId, String languageId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill) {
         Optional<PreAlert> dbPreAlert = preAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator
-                (languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, 0L);
+                (companyId, languageId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, 0L);
         if (dbPreAlert.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", partnerMasterAirwayBill - " + partnerMasterAirwayBill
@@ -112,15 +112,17 @@ public class PreAlertService {
             Optional<PreAlert> preAlertOptional =
                     preAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator
                             (dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(),
-                                    dbPreAlert.getMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
+                                    dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-            Boolean consignment =
-                    consignmentEntityRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
-                            dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerMasterAirwayBill(), 0L);
+            if (!preAlertOptional.isPresent()) {
+            ConsignmentEntity consignment =
+                    consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+                            iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-            if (consignment) {
-                throw new BadRequestException("Consignment Doesn't exist PartnerHouseAirwayBill" + dbPreAlert.getPartnerHouseAirwayBill() + " CompanyId " + dbPreAlert.getCompanyId() +
-                        " LanguageId " + iKeyValuePair.getLangId() + " PartnerId " + dbPreAlert.getPartnerId());
+            log.info("companyId" + dbPreAlert.getCompanyId() + "languageId" + iKeyValuePair.getLangId() +"partner" +dbPreAlert.getPartnerId());
+            if (consignment == null) {
+                throw new BadRequestException("Consignment Doesn't exist PartnerHouseAirwayBill - " + dbPreAlert.getPartnerHouseAirwayBill() + " CompanyId - " + dbPreAlert.getCompanyId() +
+                        " LanguageId - " + iKeyValuePair.getLangId() + " PartnerId - " + dbPreAlert.getPartnerId());
             }
 
 
@@ -191,14 +193,13 @@ public class PreAlertService {
             //HAWB_TYPE
             dbPreAlert.setHawbType("EVENT");
             dbPreAlert.setHawbTypeId("3");
-            Optional<IKeyValuePair> statusText = consignmentEntityRepository.getEventText(dbPreAlert.getLanguageId(), dbPreAlert.getCompanyId(), "3");
+            Optional<IKeyValuePair> statusText = consignmentEntityRepository.getEventText(iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), "3");
             if(statusText.isPresent()) {
                 IKeyValuePair ikey = statusText.get();
-                dbPreAlert.setHawbTypeDescription(ikey.getStatusText());
+                dbPreAlert.setHawbTypeDescription(ikey.getEventText());
                 dbPreAlert.setHawbTimeStamp(new Date());
             }
 
-            if (!preAlertOptional.isPresent()) {
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
@@ -218,7 +219,7 @@ public class PreAlertService {
                             savedPreAlert.getConsignmentValueLocal(), savedPreAlert.getAddIata(), savedPreAlert.getAddInsurance(),
                             savedPreAlert.getCustomsValue(), savedPreAlert.getCalculatedTotalDuty());
 
-                    List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getCompanyId(), savedPreAlert.getCompanyId(),
+                    List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getLanguageId(), savedPreAlert.getCompanyId(),
                             savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
                     if(piece != null) {
                         for (String pieceId : piece) {
@@ -230,7 +231,6 @@ public class PreAlertService {
                         }
                     }
                 }
-
                 preAlertList.add(savedPreAlert);
             } else {
                log.info("PreAlert Record is Duplicated ");
@@ -257,7 +257,7 @@ public class PreAlertService {
             List<PreAlert> updatedPreAlertList = new ArrayList<>();
             for (UpdatePreAlert updatePreAlert : updatePreAlertList) {
                 PreAlert dbPreAlert = getPreAlert(
-                        updatePreAlert.getLanguageId(), updatePreAlert.getCompanyId(),
+                        updatePreAlert.getCompanyId(), updatePreAlert.getLanguageId(),
                         updatePreAlert.getPartnerId(), updatePreAlert.getPartnerMasterAirwayBill(),
                         updatePreAlert.getPartnerHouseAirwayBill());
 
@@ -288,7 +288,7 @@ public class PreAlertService {
         try {
             if (deleteInputList != null || !deleteInputList.isEmpty()) {
                 for (PreAlertDeleteInput deleteInput : deleteInputList) {
-                    PreAlert dbPreAlert = getPreAlert(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
+                    PreAlert dbPreAlert = getPreAlert(deleteInput.getCompanyId(), deleteInput.getLanguageId(),
                             deleteInput.getPartnerId(), deleteInput.getPartnerMasterAirwayBill(), deleteInput.getPartnerHouseAirwayBill());
 
                     if (dbPreAlert != null) {

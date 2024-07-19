@@ -85,6 +85,7 @@ export class PreAlertUpdateComponent {
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
+    flightArrivalTimeFE:  [new Date,],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
@@ -176,21 +177,16 @@ export class PreAlertUpdateComponent {
 
   }
   fill(line: any) {
-    this.service.search({ houseAirwayBill: [line.houseAirwayBill] }).subscribe({
-      next: res => {
-        if (res) {
-          this.form.patchValue(res[0]);
+    this.form.patchValue(line);
           this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
           this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
           if (this.form.controls.estimatedDepartureTime.value) {
             this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
           }
-        }
-      }, error: err => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
+          if (this.form.controls.flightArrivalTime.value) {
+            this.form.controls.flightArrivalTimeFE.patchValue(this.cs.pCalendar(this.form.controls.flightArrivalTime.value));
+          }
+          this.partnerTypeChanged();
   }
 
   save() {

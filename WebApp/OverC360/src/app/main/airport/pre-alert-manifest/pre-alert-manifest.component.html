@@ -114,16 +114,11 @@
             [(selection)]="selectedPreAlertManifest" scrollHeight="calc(100vh - 20.8rem)" [paginator]="true"
             [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             [tableStyle]="{'width': '125rem'}"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm"
-            (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" dataKey="pieceItemId"
-            rowExpandMode="single">
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 5rem;">
                         <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
-                    </th>
-                    <th style="width: 5rem;">
-                        Actions
                     </th>
                     <th *ngFor="let col of columns">
                         {{ col.header }}
@@ -136,10 +131,6 @@
                         <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-3"
                             [value]="rowData"></p-checkbox> -->
                         <p-tableCheckbox class="pl-3" [value]="rowData" />
-                    </td>
-                    <td style="width: 5rem; justify-content: center;">
-                        <i style="font-size: 14px;" [pRowToggler]="rowData"
-                            [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>
                     </td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.format !== 'date' && col.format !== 'boolean'; else dateTemplate">
@@ -170,7 +161,7 @@
                     </td>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="rowexpansion" let-rowData let-expanded="expanded">
+            <!-- <ng-template pTemplate="rowexpansion" let-rowData let-expanded="expanded">
                 <td [attr.colspan]="getColspan()" class="px-4">
                     <div class="d-flex justify-content animate__animated animate__fadeIn">
                         <div class="lineBorder"></div>
@@ -237,7 +228,7 @@
                         </div>
                     </div>
                 </td>
-            </ng-template>
+            </ng-template> -->
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td [attr.colspan]="4">

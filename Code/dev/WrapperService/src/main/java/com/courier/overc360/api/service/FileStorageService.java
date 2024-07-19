@@ -377,7 +377,7 @@ public class FileStorageService {
             log.info("Copied : " + targetLocation);
 
             List<AddConsignment> consignmentOrders = null;
-            List<List<String>> allRowsList = readExcelConsignmentData(targetLocation.toFile());
+            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
 
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
@@ -442,7 +442,7 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             log.info("Copied : " + targetLocation);
 
-            List<List<String>> allRowsList = readExcelConsignmentData(targetLocation.toFile());
+            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
 
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
@@ -466,7 +466,6 @@ public class FileStorageService {
             throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
         }
         return null;
-
     }
 
 
