@@ -51,13 +51,13 @@ public class BondedManifestController {
     }
 
     // CreateBondedManifest based on ConsinmentInput
-    @ApiOperation(response = BondedManifest.class, value = "Create BondedManifest Based on ConsignmentInput")
-    @PostMapping("/bondedmanifest/create")
-    public ResponseEntity<?> createBondedManifest(@Valid @RequestBody List<AddConsignment> addConsignment, @RequestParam String loginUserID)
-            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
-        List<BondedManifest> createBonded = bondedManifestService.createBondedManifestBasedOnConsignmentInput(addConsignment, loginUserID);
-        return new ResponseEntity<>(createBonded, HttpStatus.OK);
-    }
+//    @ApiOperation(response = BondedManifest.class, value = "Create BondedManifest Based on ConsignmentInput")
+//    @PostMapping("/bondedmanifest/create")
+//    public ResponseEntity<?> createBondedManifest(@Valid @RequestBody List<AddConsignment> addConsignment, @RequestParam String loginUserID)
+//            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//        List<BondedManifest> createBonded = bondedManifestService.createBondedManifestBasedOnConsignmentInput(addConsignment, loginUserID);
+//        return new ResponseEntity<>(createBonded, HttpStatus.OK);
+//    }
 
     // Create new BondedManifests based on PreAlert Input
     @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifests based On PreAlert Input")

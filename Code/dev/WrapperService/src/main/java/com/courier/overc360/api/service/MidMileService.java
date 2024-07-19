@@ -680,18 +680,18 @@ public class MidMileService {
         return result.getBody();
     }
 
-    // Create new BondedManifest
-    public BondedManifest[] createBondedManifestBasedOnConsignment(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("User-Agent", "RestTemplate");
-        headers.add("Authorization", "Bearer " + authToken);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/bondedmanifest/create")
-                .queryParam("loginUserID", loginUserID);
-        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
-        ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
-        return result.getBody();
-    }
+//    // Create new BondedManifest
+//    public BondedManifest[] createBondedManifestBasedOnConsignment(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//        headers.add("User-Agent", "RestTemplate");
+//        headers.add("Authorization", "Bearer " + authToken);
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/bondedmanifest/create")
+//                .queryParam("loginUserID", loginUserID);
+//        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+//        ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
+//        return result.getBody();
+//    }
 
     // Create new BondedManifests based on PreAlert Input
     public BondedManifest[] createBondedManifestListsOnPreAlertInput(List<PreAlert> preAlertList, String loginUserID, String authToken) {
@@ -1446,6 +1446,29 @@ public class MidMileService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "prealert/findPrealert");
             HttpEntity<?> entity = new HttpEntity<>(findPreAlert, headers);
             ResponseEntity<PreAlert[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PreAlert[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * Mobile-App
+     *
+     * @param authToken
+     * @return
+     */
+    public MobileApp[] getAllMobileApp(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/find/mobileapp");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<MobileApp[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, MobileApp[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
