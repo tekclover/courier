@@ -77,6 +77,16 @@ public class ConsoleController {
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
+    // Update Console For Mobile App
+    @ApiOperation(response = Console.class, value = "Update Console For Mobile App") // label for Swagger
+    @PatchMapping("/update/list/mobile")
+    public ResponseEntity<?> patchConsoleForMobileApp(@Valid @RequestBody List<UpdateConsole> updateConsoleList,
+                                          @RequestParam String loginUserID)
+            throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
+        List<Console> console = consoleService.updateConsoleForMobileApp(updateConsoleList, loginUserID);
+        return new ResponseEntity<>(console, HttpStatus.OK);
+    }
+
     // Update Console - Normal
     @ApiOperation(response = Console.class, value = "Update Console")
     @PatchMapping("/update/list/normal")
