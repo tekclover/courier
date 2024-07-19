@@ -27,6 +27,10 @@ public class AddConsole {
 
     private String partnerType;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private String partnerName;
 
     private String noOfPackageMawb;

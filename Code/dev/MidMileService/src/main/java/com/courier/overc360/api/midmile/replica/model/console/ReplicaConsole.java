@@ -58,6 +58,12 @@ public class ReplicaConsole {
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
+    @Column(name = "CONSOLE_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleName;
+
+    @Column(name = "CONSOLE_GROUP_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleGroupName;
+
 //    @Id
 //    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
 //    private String houseAirwayBill;
