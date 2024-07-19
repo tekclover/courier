@@ -66,7 +66,7 @@ export class PreAlertUpdateComponent {
     destinationDetails: this.DestinationDetails,
     goodsDescription: [],
     consigneeName: [],
-    incoTerms: [],
+    incoTerm: [],
     shipperName: [],
     description: [],
     weight: [,],
@@ -75,14 +75,18 @@ export class PreAlertUpdateComponent {
     masterAirwayBill: [],
     houseAirwayBill: [],
     consignmentCurrency: [],
+    currency: [],
     airportDestinationCode: [],
     hsCode: [],
+    noOfPieces:[],
     iata: [],
     flightNo: [],
     flightName: [],
     bayanHv: [],
     partnerType: ['',],
     countryOfOrigin: [],
+    originCode: [],
+    origin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
     flightArrivalTimeFE:  [new Date,],
@@ -90,6 +94,7 @@ export class PreAlertUpdateComponent {
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
     noOfCrt: [],
+    totalWeight: [],
     totalShipmentWeight: [],
     totalValue: [],
     createdOn: ['',],
@@ -147,9 +152,9 @@ export class PreAlertUpdateComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.language.url,
-      this.cas.dropdownlist.setup.iata.url,
       this.cas.dropdownlist.setup.country.url,
       this.cas.dropdownlist.setup.hsCode.url,
+      this.cas.dropdownlist.setup.iata.url,
       this.cas.dropdownlist.setup.consignor.url,
       this.cas.dropdownlist.setup.customer.url,
 
@@ -213,7 +218,7 @@ export class PreAlertUpdateComponent {
       this.spin.show()
       this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].consignmentId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].partnerHouseAirwayBill + ' has been updated successfully' });
           this.router.navigate(['/main/airport/preAlertManifest']);
           this.spin.hide();
         }, error: (err) => {
