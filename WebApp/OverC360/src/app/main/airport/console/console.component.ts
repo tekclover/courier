@@ -48,13 +48,15 @@ export class ConsoleComponent {
     this.cols = [
       { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'statusText', header: 'Status' },
-      { field: 'eventText', header: 'Event' }, 
+    //  { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+    //  { field: 'statusText', header: 'Status' },
+      { field: 'hawbTypeDescription', header: 'Event' }, 
+      { field: 'hawbTimeStamp', header: 'Time' }, 
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'shipperName', header: 'Shipper' },
       { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'description', header: 'Commodity' },
@@ -185,27 +187,66 @@ export class ConsoleComponent {
   }
 
   downloadExcel() {
-    const exportData = this.consoleTable.map(item => {
-      const exportItem: any = {};
-      this.cols.forEach(col => {
-        if (col.format == 'date') {
-          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-        } else {
-          exportItem[col.header] = item[col.field];
-        }
-      });
-      this.target.forEach(col => {
-        if (col.format && col.format === 'date') {
-          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-        } else {
-          exportItem[col.header] = item[col.field];
-        }
-      });
-      return exportItem;
-    });
 
-    // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Console');
+    const header = [
+      { field: '', header: '', format: 'number' },
+      { field: 'partnerMasterAirwayBill', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+      { field: 'customsValue', header: '' },
+      { field: '', header: '' },
+      { field: '', header: '' },
+    ];
+
+    const cols = [
+      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
+      { field: 'partnerMasterAirwayBill', header: 'AWB' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'airportOriginCode', header: 'Origin Code' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'grossWeight', header: 'WT KG' },
+      { field: 'noOfPieces', header: 'PCS' },
+      { field: 'description', header: 'Description' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'customsValue', header: 'Customs KD' },
+      { field: 'iata', header: 'IATA KD' },
+      { field: 'hsCode', header: 'HS Code' },
+    ];
+
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    } 
+    const consignmentId = this.selectedConsole.map(item => item.partnerMasterAirwayBill);
+    this.service.search({ partnerMasterAirwayBill: consignmentId }).subscribe({
+      next: (result) => {
+        const exportData = result.map((item:any, index:any) => {
+          const exportItem: any = {};
+          cols.forEach(col => {
+            if (col.format == 'number') {
+              exportItem[col.header] = index + 1;
+            } else {
+              exportItem[col.header] = item[col.field];
+            }
+          });
+          return exportItem;
+        });
+    
+        // Call ExcelService to export data to Excel
+        this.cs.exportAsExcel(exportData, 'Console');
+      }
+    })
+
+
   }
 
   onRowExpand(event: TableRowExpandEvent) {

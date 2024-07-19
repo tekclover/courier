@@ -332,6 +332,34 @@ export class ConsoleEditComponent {
     }
   }
 
+  saveCCR(){
+    if (this.selectedConsole.length == 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        key: 'br',
+        detail: 'Kindly select any row',
+      });
+      return;
+    }
+
+    this.service.createCCR(this.selectedConsole).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: res[0].ccrId + ' has been created successfully',
+        });
+        this.router.navigate(['/main/airport/console']);
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
   editItem(data: any, item: any): void {
     const dialogRef = this.dialog.open(ConsoleEditpopupComponent, {
       disableClose: true,

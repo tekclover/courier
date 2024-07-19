@@ -70,7 +70,6 @@ export class PreAlertManifestComponent {
       { field: 'companyName', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerType', header: 'Partner Type' },
-      { field: 'partnerId', header: 'Partner ID' },
       { field: 'flightNo', header: 'Flight No' },
       { field: 'flightName', header: 'Flight Name' },
       { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date' },
@@ -289,7 +288,8 @@ export class PreAlertManifestComponent {
           next: (res) => {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
             this.spin.hide();
-            this.initialCall()
+            this.initialCall();
+            this.downloadExcelByColsAndTarget(res);
           }, error: (err) => {
             this.spin.hide();
             this.cs.commonerrorNew(err);
