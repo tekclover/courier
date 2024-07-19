@@ -195,6 +195,8 @@ public class UpdateCcr {
 
     private String specialApprovalCharge;
 
+    private String consignmentLocalId;
+
     private Long deletionIndicator = 0L;
 
     private String referenceField1;

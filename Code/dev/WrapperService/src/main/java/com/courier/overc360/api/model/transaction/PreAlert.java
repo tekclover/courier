@@ -92,6 +92,8 @@ public class PreAlert {
 
     private Date hawbTimeStamp = new Date();
 
+    private String consignmentLocalId;
+
     private String referenceField1;
 
     private String referenceField2;
@@ -112,4 +114,11 @@ public class PreAlert {
 
     private String referenceField10;
 
+    private String createdBy;
+
+    private Date createdOn = new Date();
+
+    private String updatedBy;
+
+    private Date updatedOn = new Date();
 }

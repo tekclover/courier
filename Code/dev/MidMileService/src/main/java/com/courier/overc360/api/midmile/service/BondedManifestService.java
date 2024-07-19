@@ -93,61 +93,61 @@ public class BondedManifestService {
     }
 
 
-    /**
-     * @param addConsignments
-     * @param loginUserID
-     * @return
-     * @throws IOException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws CsvException
-     */
-    public List<BondedManifest> createBondedManifestBasedOnConsignmentInput(List<AddConsignment> addConsignments, String loginUserID) throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
-
-        List<AddBondedManifest> addBondedManifest = new ArrayList<>();
-        for (AddConsignment consignment : addConsignments) {
-
-            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
-                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
-                    AddBondedManifest bondedManifest = new AddBondedManifest();
-//                    bondedManifest.setConsigneeName(consignment.getDestinationDetails().getName());
-//                    bondedManifest.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
-//                    bondedManifest.setShipperId(consignment.getPartnerId());
-//                    bondedManifest.setShipperName(consignment.getPartnerName());
-//                    bondedManifest.setFinalDestination(consignment.getCountryOfDestination());
-                    BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
-                    BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
-
-                    Optional<ReplicaPreAlert> replicaPreAlert = replicaPreAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
-                            bondedManifest.getCompanyId(), bondedManifest.getLanguageId(), bondedManifest.getPartnerId(),
-                            bondedManifest.getMasterAirwayBill(), bondedManifest.getPartnerHouseAirwayBill(), 0L);
-
-                    if (replicaPreAlert.isPresent()) {
-                        ReplicaPreAlert dbReplica = replicaPreAlert.get();
-                        bondedManifest.setGrossWeight(dbReplica.getTotalWeight());
-                        bondedManifest.setNetWeight(dbReplica.getTotalWeight());
-                        bondedManifest.setManifestedGrossWeight(dbReplica.getTotalWeight());
-                        bondedManifest.setTareWeight(dbReplica.getTotalWeight());
-
-                        bondedManifest.setManifestedQuantity(dbReplica.getNoOfPieces());
-                        bondedManifest.setLandedQuantity(dbReplica.getNoOfPieces());
-                        bondedManifest.setTotalQuantity(dbReplica.getNoOfPieces());
-
-                        bondedManifest.setConsignmentValue(dbReplica.getConsignmentValue());
-                        bondedManifest.setBayanHV(dbReplica.getBayanHv());
-                        bondedManifest.setCurrency(dbReplica.getCurrency());
-                        bondedManifest.setGoodsDescription(dbReplica.getDescription());
-                        bondedManifest.setConsigneeName(dbReplica.getConsigneeName());
-                        bondedManifest.setShipperName(dbReplica.getShipper());
-
-                    }
-                    addBondedManifest.add(bondedManifest);
-                }
-            }
-        }
-
-        return createBondedManifest(addBondedManifest, loginUserID);
-    }
+//    /**
+//     * @param addConsignments
+//     * @param loginUserID
+//     * @return
+//     * @throws IOException
+//     * @throws InvocationTargetException
+//     * @throws IllegalAccessException
+//     * @throws CsvException
+//     */
+//    public List<BondedManifest> createBondedManifestBasedOnConsignmentInput(List<AddConsignment> addConsignments, String loginUserID) throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+//
+//        List<AddBondedManifest> addBondedManifest = new ArrayList<>();
+//        for (AddConsignment consignment : addConsignments) {
+//
+//            for (AddPieceDetails pieceDetails : consignment.getPieceDetails()) {
+//                for (AddItemDetails itemDetails : pieceDetails.getItemDetails()) {
+//                    AddBondedManifest bondedManifest = new AddBondedManifest();
+////                    bondedManifest.setConsigneeName(consignment.getDestinationDetails().getName());
+////                    bondedManifest.setCountryOfOrigin(consignment.getOriginDetails().getCountry());
+////                    bondedManifest.setShipperId(consignment.getPartnerId());
+////                    bondedManifest.setShipperName(consignment.getPartnerName());
+////                    bondedManifest.setFinalDestination(consignment.getCountryOfDestination());
+//                    BeanUtils.copyProperties(consignment, bondedManifest, CommonUtils.getNullPropertyNames(consignment));
+//                    BeanUtils.copyProperties(itemDetails, bondedManifest, CommonUtils.getNullPropertyNames(itemDetails));
+//
+//                    Optional<ReplicaPreAlert> replicaPreAlert = replicaPreAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+//                            bondedManifest.getCompanyId(), bondedManifest.getLanguageId(), bondedManifest.getPartnerId(),
+//                            bondedManifest.getMasterAirwayBill(), bondedManifest.getPartnerHouseAirwayBill(), 0L);
+//
+//                    if (replicaPreAlert.isPresent()) {
+//                        ReplicaPreAlert dbReplica = replicaPreAlert.get();
+//                        bondedManifest.setGrossWeight(dbReplica.getTotalWeight());
+//                        bondedManifest.setNetWeight(dbReplica.getTotalWeight());
+//                        bondedManifest.setManifestedGrossWeight(dbReplica.getTotalWeight());
+//                        bondedManifest.setTareWeight(dbReplica.getTotalWeight());
+//
+//                        bondedManifest.setManifestedQuantity(dbReplica.getNoOfPieces());
+//                        bondedManifest.setLandedQuantity(dbReplica.getNoOfPieces());
+//                        bondedManifest.setTotalQuantity(dbReplica.getNoOfPieces());
+//
+//                        bondedManifest.setConsignmentValue(dbReplica.getConsignmentValue());
+//                        bondedManifest.setBayanHV(dbReplica.getBayanHv());
+//                        bondedManifest.setCurrency(dbReplica.getCurrency());
+//                        bondedManifest.setGoodsDescription(dbReplica.getDescription());
+//                        bondedManifest.setConsigneeName(dbReplica.getConsigneeName());
+//                        bondedManifest.setShipperName(dbReplica.getShipper());
+//
+//                    }
+//                    addBondedManifest.add(bondedManifest);
+//                }
+//            }
+//        }
+//
+//        return createBondedManifest(addBondedManifest, loginUserID);
+//    }
 
     /**
      * @param preAlertInputList

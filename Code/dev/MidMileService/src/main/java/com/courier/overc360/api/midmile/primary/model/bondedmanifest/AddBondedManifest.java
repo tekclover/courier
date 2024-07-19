@@ -207,6 +207,8 @@ public class AddBondedManifest {
 
     private String bayanHV;
 
+    private String consignmentLocalId;
+
     private String referenceField1;
 
     private String referenceField2;

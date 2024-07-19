@@ -328,15 +328,15 @@ public class MidMileController {
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
-    // Create new BondedManifest Based on ConsignmentInput
-    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest Based On ConsignmentInput")
-    // label for swagger
-    @PostMapping("/bondedManifest/create")
-    public ResponseEntity<?> postBondedManifestPost(@Valid @RequestBody List<ConsignmentEntity> addConsignments,
-                                                    @RequestParam String loginUserID, @RequestParam String authToken) {
-        BondedManifest[] bondedManifest = midMileService.createBondedManifestBasedOnConsignment(addConsignments, loginUserID, authToken);
-        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
-    }
+//    // Create new BondedManifest Based on ConsignmentInput
+//    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest Based On ConsignmentInput")
+//    // label for swagger
+//    @PostMapping("/bondedManifest/create")
+//    public ResponseEntity<?> postBondedManifestPost(@Valid @RequestBody List<ConsignmentEntity> addConsignments,
+//                                                    @RequestParam String loginUserID, @RequestParam String authToken) {
+//        BondedManifest[] bondedManifest = midMileService.createBondedManifestBasedOnConsignment(addConsignments, loginUserID, authToken);
+//        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
+//    }
 
     // Create new BondedManifests based on PreAlert Input
     @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifests based On PreAlert Input")
@@ -653,5 +653,13 @@ public class MidMileController {
                                            @RequestParam String authToken) throws Exception {
         PreAlert[] preAlert = midMileService.findPreAlerts(findPreAlerts, authToken);
         return new ResponseEntity<>(preAlert, HttpStatus.OK);
+    }
+
+    // Find MobileApp
+    @ApiOperation(response = MobileApp[].class, value = "Get Console for Mobile App")
+    @GetMapping("/console/find/mobileapp")
+    public ResponseEntity<?> getAllMobileApp(@RequestParam String authToken) {
+        MobileApp[] consoles = midMileService.getAllMobileApp(authToken);
+        return new ResponseEntity<>(consoles, HttpStatus.OK);
     }
 }

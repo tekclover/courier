@@ -196,6 +196,8 @@ public class Ccr {
 
     private Long deletionIndicator = 0L;
 
+    private String consignmentLocalId;
+
     private String referenceField1;
 
     private String referenceField2;

@@ -717,28 +717,12 @@ export class ConsignmentNewComponent {
   // CN Tracking Code
   callCNTableHeader() {
     this.cnCols = [
-      { fiedl: 'type', header: 'Type' },
-      { field: 'bagId', header: 'Bag ID' },
-      { field: 'description', header: 'Description' },
-      { field: 'time', header: 'Time' },
-      { field: 'createdBy', header: 'User' },
-      // { field: 'pieceDetails', header: 'Piece Details' },
-      // { field: 'companyName', header: 'Company' },
-      // { field: 'statusId', header: 'Status ID' },
-      // { field: 'statusText', header: 'Status' },
-      // { field: 'statusTimestamp', header: 'Status Time', format: 'date' },
-      // { field: 'pieceId', header: 'Piece ID' },
-      // { field: 'pieceStatusId', header: 'Piece Status ID' },
-      // { field: 'pieceStatusText', header: 'Piece Status'},
-      // { field: 'pieceEventCode', header: 'Piece Event Code'},
-      // { field: 'pieceEventText', header: 'Piece Event'},
-      // { field: 'pieceEventTimestamp', header: 'Piece Event Time', format: 'date' },
-      // { field: 'eventCode', header: 'Event Code' },
-      // { field: 'eventText', header: 'Event Text' },
-      // { field: 'eventTimestamp', header: 'Event Time', format: 'date' }, 
-      // { field: 'masterAirwayBill', header: 'Mawb' },
-      // { field: 'houseAirwayBill', header: 'Hawb' },
-      // { field: 'languageDescription', header: 'Language' },
+      { field: 'houseAirwayBill', header: 'Consignment ID'},
+      { field: 'hawbType', header: 'Type' },
+      // { field: 'bagId', header: 'Bag ID' },
+      { field: 'hawbTypeDescription', header: 'Description' },
+      { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
+      { field: 'updatedBy', header: 'User' },
     ];
   }
 
@@ -755,6 +739,7 @@ export class ConsignmentNewComponent {
     let obj: any = {};
     obj.companyId = [this.auth.companyId];
     obj.languageId = [this.auth.languageId];
+    obj.houseAirwayBill = [this.pageToken.line.houseAirwayBill];
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       console.log(res);
@@ -769,10 +754,10 @@ export class ConsignmentNewComponent {
   cnTablePopup(data: any,line: any): void {
     const dialogRef = this.dialog.open(ConsignmentStatusPopupComponent, {
       disableClose: true,
-      width: '100%',
+      width: '80%',
       height: '50%',
       maxWidth: '95%',
-      position: { top: '6.5%', left: '10%' },
+      position: { top: '6.5%', left: '14%' },
       data: {pageflow: data, code: line},
     });
   

@@ -200,6 +200,8 @@ public class AddCcr {
 
     private String flightArrivalTime;
 
+    private String consignmentLocalId;
+
     private Long deletionIndicator = 0L;
 
     private String referenceField1;

@@ -36,9 +36,9 @@ public class PreAlertSpecification implements Specification<ReplicaPreAlert> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findPreAlert.getPartnerId()));
         }
-        if (findPreAlert.getPartnerMasterAirwayBill() != null && !findPreAlert.getPartnerHouseAirwayBill().isEmpty()) {
+        if (findPreAlert.getPartnerMasterAirwayBill() != null && !findPreAlert.getPartnerMasterAirwayBill().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
-            predicates.add(group.in(findPreAlert.getPartnerHouseAirwayBill()));
+            predicates.add(group.in(findPreAlert.getPartnerMasterAirwayBill()));
         }
         if (findPreAlert.getPartnerHouseAirwayBill() != null && !findPreAlert.getPartnerHouseAirwayBill().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
