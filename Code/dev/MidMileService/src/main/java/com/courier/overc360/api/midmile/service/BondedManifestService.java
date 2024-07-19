@@ -66,27 +66,26 @@ public class BondedManifestService {
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
-     * Get BondedManifest
-     *
+     * Get bondedmanifest
      * @param languageId
      * @param companyId
      * @param partnerId
-     * @param masterAirwayBill
-     * @param houseAirwayBill
+     * @param partnerMasterAirwayBill
+     * @param partnerHouseAirwayBill
      * @param bondedId
      * @return
      */
-    private BondedManifest getBondedManifest(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                             String houseAirwayBill, String bondedId) {
+    private BondedManifest getBondedManifest(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill,
+                                             String partnerHouseAirwayBill, String bondedId) {
         Optional<BondedManifest> dbBondedManifest =
-                bondedManifestRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, 0L);
+                bondedManifestRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndBondedIdAndDeletionIndicator
+                        (languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, bondedId, 0L);
         if (dbBondedManifest.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
-                    + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
-                    + ", houseAirwayBill - " + houseAirwayBill + " and bondedId - " + bondedId + " doesn't exists";
+                    + ", partnerId - " + partnerId + ", partnerMasterAirwayBill - " + partnerMasterAirwayBill
+                    + ", partnerHouseAirwayBill - " + partnerHouseAirwayBill + " and bondedId - " + bondedId + " doesn't exists";
             // Error Log
-            createBondedManifestLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, errMsg);
+            createBondedManifestLog(languageId, companyId, partnerId,partnerMasterAirwayBill, partnerHouseAirwayBill, bondedId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbBondedManifest.get();
@@ -214,12 +213,12 @@ public class BondedManifestService {
 
             for (AddBondedManifest addBondedManifest : addBondedManifestList) {
                 // Check Duplicate
-                boolean duplicateRecord = bondedManifestRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(),
-                        addBondedManifest.getMasterAirwayBill(), addBondedManifest.getHouseAirwayBill(), 0L);
+                boolean duplicateRecord = bondedManifestRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator
+                        (addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(),
+                        addBondedManifest.getPartnerMasterAirwayBill(), addBondedManifest.getPartnerHouseAirwayBill(), 0L);
 
                 if (duplicateRecord) {
-                    throw new BadRequestException("Record is getting Duplicated with given values : houseAirwayBill - " + addBondedManifest.getHouseAirwayBill());
+                    throw new BadRequestException("Record is getting Duplicated with given values : partnerHouseAirwayBill - " + addBondedManifest.getPartnerHouseAirwayBill());
                 }
 
                 BondedManifest newBondedManifest = new BondedManifest();
@@ -244,8 +243,8 @@ public class BondedManifestService {
                 }
 
                 Optional<ReplicaConsignmentEntity> consignmentValuesOpt = replicaBondedManifestRepository.getConsignmentValues(
-                        newBondedManifest.getLanguageId(), newBondedManifest.getCompanyId(), newBondedManifest.getPartnerId(),
-                        newBondedManifest.getPartnerMasterAirwayBill(), newBondedManifest.getPartnerHouseAirwayBill());
+                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(),
+                        addBondedManifest.getPartnerMasterAirwayBill(), addBondedManifest.getPartnerHouseAirwayBill());
                 if (consignmentValuesOpt.isPresent()) {
                     ReplicaConsignmentEntity consignmentEntity = consignmentValuesOpt.get();
 
@@ -290,14 +289,14 @@ public class BondedManifestService {
                     // Save ConsignmentStatus
                     consignmentStatusService.createConsignmentStatusParams(createdBondedManifest.getCompanyId(), createdBondedManifest.getCompanyName(),
                             createdBondedManifest.getLanguageId(), createdBondedManifest.getLanguageDescription(), createdBondedManifest.getPieceId(), createdBondedManifest.getStatusId(),
-                            createdBondedManifest.getMasterAirwayBill(), createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getStatusText(), createdBondedManifest.getStatusId(),
+                            createdBondedManifest.getPartnerMasterAirwayBill(), createdBondedManifest.getPartnerHouseAirwayBill(), createdBondedManifest.getStatusText(), createdBondedManifest.getStatusId(),
                             createdBondedManifest.getStatusText(), createdBondedManifest.getEventCode(), createdBondedManifest.getEventText(), createdBondedManifest.getEventCode(),
                             createdBondedManifest.getEventText(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getStatusTimestamp(), loginUserID);
 
                     //Update Event From consignment
                     bondedManifestRepository.updateEventCodeFromConsignment(createdBondedManifest.getCompanyId(),
                             createdBondedManifest.getLanguageId(), createdBondedManifest.getPartnerId(),
-                            createdBondedManifest.getHouseAirwayBill(), createdBondedManifest.getMasterAirwayBill(),
+                            createdBondedManifest.getPartnerHouseAirwayBill(), createdBondedManifest.getPartnerMasterAirwayBill(),
                             createdBondedManifest.getEventText());
                 }
                 createdBondedManifestList.add(createdBondedManifest);
@@ -332,8 +331,8 @@ public class BondedManifestService {
 
                 BondedManifest dbBondedManifest = getBondedManifest(
                         updateBondedManifest.getLanguageId(), updateBondedManifest.getCompanyId(),
-                        updateBondedManifest.getPartnerId(), updateBondedManifest.getMasterAirwayBill(),
-                        updateBondedManifest.getHouseAirwayBill(), updateBondedManifest.getBondedId());
+                        updateBondedManifest.getPartnerId(), updateBondedManifest.getPartnerMasterAirwayBill(),
+                        updateBondedManifest.getPartnerHouseAirwayBill(), updateBondedManifest.getBondedId());
 
                 BeanUtils.copyProperties(updateBondedManifest, dbBondedManifest, CommonUtils.getNullPropertyNames(updateBondedManifest));
 
@@ -382,7 +381,7 @@ public class BondedManifestService {
                 // Save ConsignmentStatus
                 consignmentStatusService.createConsignmentStatusParams(updatedBondedManifest.getCompanyId(), updatedBondedManifest.getCompanyName(),
                         updatedBondedManifest.getLanguageId(), updatedBondedManifest.getLanguageDescription(), updatedBondedManifest.getPieceId(), updatedBondedManifest.getStatusId(),
-                        updatedBondedManifest.getMasterAirwayBill(), updatedBondedManifest.getHouseAirwayBill(), updatedBondedManifest.getStatusText(), updatedBondedManifest.getStatusId(),
+                        updatedBondedManifest.getPartnerMasterAirwayBill(), updatedBondedManifest.getPartnerHouseAirwayBill(), updatedBondedManifest.getStatusText(), updatedBondedManifest.getStatusId(),
                         updatedBondedManifest.getStatusText(), updatedBondedManifest.getEventCode(), updatedBondedManifest.getEventText(), updatedBondedManifest.getEventCode(),
                         updatedBondedManifest.getEventText(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getEventTimestamp(), updatedBondedManifest.getStatusTimestamp(), loginUserID);
 
@@ -390,7 +389,7 @@ public class BondedManifestService {
                     //Update Event From consignment
                     bondedManifestRepository.updateEventCodeFromConsignment(updatedBondedManifest.getCompanyId(),
                             updatedBondedManifest.getLanguageId(), updatedBondedManifest.getPartnerId(),
-                            updatedBondedManifest.getHouseAirwayBill(), updatedBondedManifest.getMasterAirwayBill(),
+                            updatedBondedManifest.getPartnerHouseAirwayBill(), updatedBondedManifest.getPartnerMasterAirwayBill(),
                             updatedBondedManifest.getEventText());
                 }
 
@@ -421,7 +420,7 @@ public class BondedManifestService {
                 for (BondedManifestDeleteInput deleteInput : deleteInputList) {
 
                     BondedManifest dbBondedManifest = getBondedManifest(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
-                            deleteInput.getPartnerId(), deleteInput.getMasterAirwayBill(), deleteInput.getHouseAirwayBill(), deleteInput.getBondedId());
+                            deleteInput.getPartnerId(), deleteInput.getPartnerMasterAirwayBill(), deleteInput.getPartnerHouseAirwayBill(), deleteInput.getBondedId());
 
                     dbBondedManifest.setDeletionIndicator(1L);
                     dbBondedManifest.setUpdatedBy(loginUserID);
@@ -460,21 +459,22 @@ public class BondedManifestService {
      * @param languageId
      * @param companyId
      * @param partnerId
-     * @param masterAirwayBill
+     * @param partnerMasterAirwayBill
+     * @param partnerHouseAirwayBill
      * @param bondedId
      * @return
      */
-    public ReplicaBondedManifest getBondedManifestReplica(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                                          String houseAirwayBill, String bondedId) {
+    public ReplicaBondedManifest getBondedManifestReplica(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill,
+                                                          String partnerHouseAirwayBill, String bondedId) {
         Optional<ReplicaBondedManifest> dbBondedManifest =
-                replicaBondedManifestRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-                        languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, 0L);
+                replicaBondedManifestRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndBondedIdAndDeletionIndicator
+                        (languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, bondedId, 0L);
         if (dbBondedManifest.isEmpty()) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
-                    + ", partnerId - " + partnerId + ", masterAirwayBill - " + masterAirwayBill
-                    + ", houseAirwayBill - " + houseAirwayBill + " and bondedId - " + bondedId + " doesn't exists";
+                    + ", partnerId - " + partnerId + ", partnerMasterAirwayBill - " + partnerMasterAirwayBill
+                    + ", partnerHouseAirwayBill - " + partnerHouseAirwayBill + " and bondedId - " + bondedId + " doesn't exists";
             // Error Log
-            createBondedManifestLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId, errMsg);
+            createBondedManifestLog(languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, bondedId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbBondedManifest.get();
@@ -500,7 +500,7 @@ public class BondedManifestService {
         log.info("given Params for find -- > {}", findBondedManifest);
         List<ReplicaBondedManifest> bondedManifestList = replicaBondedManifestRepository.findBondedManifestsWithQry(
                 findBondedManifest.getLanguageId(), findBondedManifest.getCompanyId(), findBondedManifest.getPartnerId(),
-                findBondedManifest.getMasterAirwayBill(), findBondedManifest.getHouseAirwayBill(), findBondedManifest.getBondedId(),
+                findBondedManifest.getPartnerMasterAirwayBill(), findBondedManifest.getPartnerHouseAirwayBill(), findBondedManifest.getBondedId(),
                 findBondedManifest.getHsCode(), findBondedManifest.getPieceId(), findBondedManifest.getPieceItemId());
 //        log.info("found BondedManifests  --> {}", bondedManifestList);
         return bondedManifestList;
@@ -535,10 +535,10 @@ public class BondedManifestService {
             errorLog.setLogDate(new Date());
             errorLog.setLanguageId(addBondedManifest.getLanguageId());
             errorLog.setCompanyId(addBondedManifest.getCompanyId());
-            errorLog.setRefDocNumber(addBondedManifest.getMasterAirwayBill());
+            errorLog.setRefDocNumber(addBondedManifest.getPartnerMasterAirwayBill());
             errorLog.setMethod("Exception thrown in createBondedManifest");
             errorLog.setReferenceField1(addBondedManifest.getPartnerId());
-            errorLog.setReferenceField2(addBondedManifest.getHouseAirwayBill());
+            errorLog.setReferenceField2(addBondedManifest.getPartnerHouseAirwayBill());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);
@@ -555,10 +555,10 @@ public class BondedManifestService {
             errorLog.setLogDate(new Date());
             errorLog.setLanguageId(updateBondedManifest.getLanguageId());
             errorLog.setCompanyId(updateBondedManifest.getCompanyId());
-            errorLog.setRefDocNumber(updateBondedManifest.getMasterAirwayBill());
+            errorLog.setRefDocNumber(updateBondedManifest.getPartnerMasterAirwayBill());
             errorLog.setMethod("Exception thrown in updateBondedManifest");
             errorLog.setReferenceField1(updateBondedManifest.getPartnerId());
-            errorLog.setReferenceField2(updateBondedManifest.getHouseAirwayBill());
+            errorLog.setReferenceField2(updateBondedManifest.getPartnerHouseAirwayBill());
             errorLog.setReferenceField3(updateBondedManifest.getBondedId());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
@@ -577,10 +577,10 @@ public class BondedManifestService {
             errorLog.setLogDate(new Date());
             errorLog.setLanguageId(deleteInput.getLanguageId());
             errorLog.setCompanyId(deleteInput.getCompanyId());
-            errorLog.setRefDocNumber(deleteInput.getMasterAirwayBill());
+            errorLog.setRefDocNumber(deleteInput.getPartnerMasterAirwayBill());
             errorLog.setMethod("Exception thrown in deleteBondedManifest");
             errorLog.setReferenceField1(deleteInput.getPartnerId());
-            errorLog.setReferenceField2(deleteInput.getHouseAirwayBill());
+            errorLog.setReferenceField2(deleteInput.getPartnerHouseAirwayBill());
             errorLog.setReferenceField3(deleteInput.getBondedId());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");

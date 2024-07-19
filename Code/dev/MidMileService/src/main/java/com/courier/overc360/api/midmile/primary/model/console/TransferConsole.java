@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class TransferConsole {
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
     private String fromConsoleId;
     private String toConsoleId;
     private String pieceId;

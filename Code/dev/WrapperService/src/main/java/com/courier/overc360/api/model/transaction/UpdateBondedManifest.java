@@ -15,9 +15,9 @@ public class UpdateBondedManifest {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerMasterAirwayBill;
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
 
     private String bondedId;
 
@@ -39,9 +39,9 @@ public class UpdateBondedManifest {
 
     private String noOfPackageMawb;
 
-    private String partnerMasterAirwayBill;
+//    private String partnerMasterAirwayBill;
 
-    private String partnerHouseAirwayBill;
+//    private String partnerHouseAirwayBill;
 
     private String primaryDo;
 

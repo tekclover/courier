@@ -18,11 +18,15 @@ public class UpdateCcr {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouseAirway Bill is mandatory")
+    private String partnerHouseAirwayBill;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
+
+//    private String houseAirwayBill;
+
+//    private String masterAirwayBill;
 
     private String customsCcrNo;
 
@@ -81,10 +85,6 @@ public class UpdateCcr {
 //    private Date eventTimestamp;
 
 //    private Date statusTimestamp;
-
-    private String partnerHouseAirwayBill;
-
-    private String partnerMasterAirwayBill;
 
     private String noOfPackageMawb;
 

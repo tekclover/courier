@@ -36,13 +36,13 @@ public class ConsoleSpecification implements Specification<ReplicaConsole> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findConsoleHeader.getPartnerId()));
         }
-        if (findConsoleHeader.getMasterAirwayBill() != null && !findConsoleHeader.getMasterAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("masterAirwayBill");
-            predicates.add(group.in(findConsoleHeader.getMasterAirwayBill()));
+        if (findConsoleHeader.getPartnerMasterAirwayBill() != null && !findConsoleHeader.getPartnerMasterAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findConsoleHeader.getPartnerMasterAirwayBill()));
         }
-        if (findConsoleHeader.getHouseAirwayBill() != null && !findConsoleHeader.getHouseAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("houseAirwayBill");
-            predicates.add(group.in(findConsoleHeader.getHouseAirwayBill()));
+        if (findConsoleHeader.getPartnerHouseAirwayBill() != null && !findConsoleHeader.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findConsoleHeader.getPartnerHouseAirwayBill()));
         }
         if (findConsoleHeader.getConsoleId() != null && !findConsoleHeader.getConsoleId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("consoleId");

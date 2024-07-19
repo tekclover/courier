@@ -16,16 +16,16 @@ public class CcrDeleteInput {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMaster Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
 
     @NotBlank(message = "Ccr Id is mandatory")
     private String ccrId;
 
     private String customsCcrNo;
 
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouse Airway Bill is mandatory")
+    private String partnerHouseAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;

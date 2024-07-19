@@ -11,11 +11,11 @@ public class ConsoleDeleteInput {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerMasterAirwayBill;
 
     private String ConsoleId;
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
 
     private String pieceId;
 

@@ -13,10 +13,10 @@ import java.util.Optional;
 public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, String>,
         JpaSpecificationExecutor<ReplicaConsole> {
 
-    Optional<ReplicaConsole> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, Long deletionIndicator);
+    Optional<ReplicaConsole> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String consoleId, Long deletionIndicator);
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
 
     // Duplicate Header Check
@@ -27,8 +27,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "h.LANG_ID = :languageId and \n" +
             "h.C_ID = :companyId and \n" +
             "h.PARTNER_ID = :partnerId and \n" +
-            "h.Master_Airway_Bill = :masterAirwayBill and \n" +
-            "h.HOUSE_AIRWAY_BILL = :houseAirwayBill and \n" +
+            "h.Partner_Master_Airway_Bill = :partnerMasterAirwayBill and \n" +
+            "h.PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAirwayBill and \n" +
             "h.IS_DELETED =0) \n" +
             "Then 1 \n" +
             "Else 0 \n" +
@@ -36,8 +36,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
     Long duplicateExists(@Param(value = "languageId") String languageId,
                          @Param(value = "companyId") String companyId,
                          @Param(value = "partnerId") String partnerId,
-                         @Param(value = "masterAirwayBill") String masterAirwayBill,
-                         @Param(value = "houseAirwayBill") String houseAirwayBill);
+                         @Param(value = "partnerMasterAirwayBill") String partnerMasterAirwayBill,
+                         @Param(value = "partnerHouseAirwayBill") String partnerHouseAirwayBill);
 
 
     @Query(value = "select special_approval_id from tblhscode where " +
@@ -52,15 +52,15 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId)) \n" +
             "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId)) \n" +
             "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId)) \n" +
-            "AND (COALESCE(:masterAirwayBill, NULL) IS NULL OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) \n" +
-            "AND (COALESCE(:houseAirwayBill, NULL) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) \n" +
+            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill)) \n" +
+            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill)) \n" +
             "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
     List<ReplicaConsole> findConsolesWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
             @Param("partnerId") List<String> partnerId,
-            @Param("masterAirwayBill") List<String> masterAirwayBill,
-            @Param("houseAirwayBill") List<String> houseAirwayBill,
+            @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
+            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
             @Param("consoleId") List<String> consoleId);
 
     @Query(value = "SELECT t.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, " +

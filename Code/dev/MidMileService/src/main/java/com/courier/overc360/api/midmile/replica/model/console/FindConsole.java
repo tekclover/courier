@@ -10,7 +10,7 @@ public class FindConsole {
     private List<String> languageId;
     private List<String> companyId;
     private List<String> partnerId;
-    private List<String> masterAirwayBill;
-    private List<String> houseAirwayBill;
+    private List<String> partnerMasterAirwayBill;
+    private List<String> partnerHouseAirwayBill;
     private List<String> consoleId;
 }

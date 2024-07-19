@@ -19,19 +19,15 @@ public class AddConsole {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "MasterAirwayBill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
+    private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "HouseAirwayBill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
+    private String partnerHouseAirwayBill;
 
     private String partnerType;
 
     private String partnerName;
-
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
 
     private String noOfPackageMawb;
 

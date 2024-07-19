@@ -18,14 +18,20 @@ public class UpdateBondedManifest {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
+//    @NotBlank(message = "Master Airway Bill is mandatory")
+//    private String masterAirwayBill;
 
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+//    @NotBlank(message = "House Airway Bill is mandatory")
+//    private String houseAirwayBill;
 
     @NotBlank(message = "BondedId is mandatory")
     private String bondedId;
+
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
+
+    @NotBlank(message = "Partner House Airway Bill is mandatory")
+    private String partnerHouseAirwayBill;
 
     private String pieceId;
 
@@ -44,10 +50,6 @@ public class UpdateBondedManifest {
     private String statusText;
 
     private String noOfPackageMawb;
-
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
 
     private String primaryDo;
 

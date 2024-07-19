@@ -95,10 +95,10 @@ public class CcrController {
     @GetMapping("/{ccrId}")
     public ResponseEntity<?> getCCRReplica(@PathVariable String ccrId, @RequestParam String languageId,
                                            @RequestParam String companyId, @RequestParam String partnerId,
-                                           @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                           @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill,
                                            @RequestParam String consoleId, @RequestParam String pieceId) {
         ReplicaCcr ccr = ccrService.getCcrReplica(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId);
+                partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 

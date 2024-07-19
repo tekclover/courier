@@ -1,4 +1,4 @@
-<div class="componentBody">
+<!-- <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">Pre Alert Manifest - {{this.pageToken.pageflow}}</p>
         <div class="d-flex justify-content-between align-items-center">
@@ -175,15 +175,6 @@
                                 <mat-error *ngIf="errorHandling('noOfPieces')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <!-- <div class="col-6 marginFieldNew borderRadius12" id="masterAirwayBill">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Master Airway Bill</p>
-                                <p-dropdown [options]="masterAirwayBillList" placeholder="Select" filter="true"
-                                formControlName="masterAirwayBill" appendTo="body"
-                                [ngClass]="form.get('masterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('masterAirwayBill')" class="text-danger"><small>{{
-                                        getErrorMessage()}}</small></mat-error>
-                            </div> -->
                             <div class="col-6 marginFieldNew borderRadius12" id="estimatedDepartureTimeFE">
                                 <p class="formControlLabel f600 textBlack mb-0">Estimated Time Of Departure</p>
                                 <p-calendar formControlName="estimatedDepartureTimeFE" appendTo="body"
@@ -252,7 +243,6 @@
                     </ng-template>
                 </p-stepperPanel>
                 <p-stepperPanel *ngIf="this.pageToken.pageflow != 'New'">
-                    <!--*ngIf="this.pageToken.pageflow != 'New'"-->
                     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                         <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
                             <div class="d-flex justify-content-center align-items-center">
@@ -296,6 +286,107 @@
                     </ng-template>
                 </p-stepperPanel>
             </p-stepper>
+        </form>
+    </div>
+</div>
+ -->
+
+ <div class="componentBody">
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="componentHeader f600 mb-0">Pre Alert Manifest - {{this.pageToken.pageflow}}</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button"   *ngIf="this.pageToken.pageflow=='Edit'"class="invisible buttom1 bgBlack text-white ml-2" >Transfer</button>
+        </div>
+    </div>
+
+    <div class="mx-auto mt-4">
+        <form [formGroup]="form">
+            <div class="d-flex-row">
+                <div class="row scrollNew">
+                    <div class="col-3 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Company</p>
+                        <input maxlength="50" pInputText  formControlName="companyId"
+                        class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-3 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
+                        <input maxlength="50" pInputText  formControlName="partnerMasterAirwayBill"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-3 marginFieldNew borderRadius12"  id="partnerHouseAirwayBill">
+                        <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
+                        <input maxlength="100" pInputText formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
+                        placeholder="Enter"
+                        [ngClass]="form.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+               
+                    </div>
+                    <div class="col-3 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Status</p>
+                        <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusText"
+                        class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                </div>
+                
+                <div class="tableProperties">
+                    <p-table #preAlertEditTag [columns]="cols" [value]="preAlertManifestTableArray"  class="custom-table" [scrollable]="true"
+                        selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedPreAlertManifest"
+                        scrollHeight="calc(100vh - 25rem)" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '250rem'}"
+                        styleClass="p-datatable-sm">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th style="width: 5rem;" pFrozenColumn>
+                                    <p-tableHeaderCheckbox class="pl-3"></p-tableHeaderCheckbox>
+                                </th>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{ col.header }} <p-sortIcon [field]="col.field" />
+                                </th>
+                                <th style="width: 5rem;" pFrozenColumn alignFrozen="right">
+                                    Actions
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
+                            <tr  [class.selectedRow]="selectedPreAlertManifest[0] === rowData">
+                                <td style="width: 5rem; justify-content: center;" pFrozenColumn>
+                                    <p-tableCheckbox class="pl-3" [value]="rowData" />
+                                </td>
+                                <td *ngFor="let col of columns">
+                                    <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
+                                        {{ rowData[col.field] }}
+                                    </ng-container>
+                                    <ng-template #dateTemplate>
+                                        {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
+                                    </ng-template>
+                                </td>
+                                <td style="padding-left: 1.5rem !important;" pFrozenColumn alignFrozen="right">
+                                    <img type="button" src="./assets/common/actions.png" (click)="op.toggle($event)"
+                                        alt="" srcset="" style="height: 1.4rem;">
+                                    <p-overlayPanel [style]="{ width: '180' }" #op>
+                                        <div class="d-flex flex-column">
+                                            <button style="width: 8rem;" mat-menu-item class="w-100"
+                                            (click)="editItem('Edit',rowData); op.hide()"><img
+                                                    src="./assets/common/edit.png"
+                                                    style="padding-right: 10px;width: 2rem;" srcset="">Edit</button>
+                                        </div>
+                                    </p-overlayPanel>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td [attr.colspan]="4">
+                                    <p class="my-2 w-100 pl-3">No records found</p>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+            <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 3.5%; bottom: 7%;">
+                <button class="buttom1 textBlack mx-1" routerLink="/main/airport/console">Cancel</button>
+               <!-- <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
+                    != 'New' ? 'Confirm': 'Save'}}</button>-->
+            </div>
         </form>
     </div>
 </div>
