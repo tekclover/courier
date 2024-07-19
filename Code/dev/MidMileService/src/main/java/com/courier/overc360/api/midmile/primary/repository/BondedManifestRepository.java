@@ -79,23 +79,19 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
     @Transactional
     @Modifying
     @Query(value = "UPDATE tblconsignment_entity " +
-            "SET event_code = 4, " +
-            "MANIFEST_INDICATOR = 1, " +
-            "event_text = :eventText, " +
-            "EVENT_TIMESTAMP = getDate() " +
+            "SET MANIFEST_INDICATOR = 1 " +
             "WHERE c_id = :companyId " +
             "AND lang_id = :languageId " +
             "AND partner_id = :partnerId " +
-            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
-            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill " +
+            "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill " +
             "AND is_deleted = 0",
             nativeQuery = true)
-    public void updateEventCodeFromConsignment(@Param("companyId") String companyId,
+    public void updateManifest(@Param("companyId") String companyId,
                                                @Param("languageId") String languageId,
                                                @Param("partnerId") String partnerId,
-                                               @Param("houseAirwayBill") String houseAirwayBill,
-                                               @Param("masterAirwayBill") String masterAirwayBill,
-                                               @Param("eventText") String eventText);
+                                               @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+                                               @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill);
 
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(

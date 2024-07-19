@@ -127,7 +127,8 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
     @Modifying
     @Query(value = "Update tblconsignment_entity\n" +
             "Set \n" +
-            "HAWB_TYP = :hawbType,\n" +
+            "HAWB_TYP = :hawbType, \n" +
+            "CONSOLE_INDICATOR = 1 , \n" +
             "HAWB_TYP_ID = :hawbTypeId,\n" +
             "HAWB_TYP_TXT = :hawbTypeDescription,\n" +
             "HAWB_TIMESTAMP = GETDATE()\n" +
