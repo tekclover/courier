@@ -41,6 +41,8 @@ public class UpdateConsole {
 
     private String customsCurrency;
 
+    private String noOfPieces;
+
     private String partnerName;
 
 //    private String partnerMasterAirwayBill;

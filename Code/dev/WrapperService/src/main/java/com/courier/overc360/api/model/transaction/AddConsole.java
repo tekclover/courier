@@ -99,6 +99,8 @@ public class AddConsole {
 
     private String shipperId;
 
+    private String noOfPieces;
+
     private String shipperName;
 
     private String remarks;

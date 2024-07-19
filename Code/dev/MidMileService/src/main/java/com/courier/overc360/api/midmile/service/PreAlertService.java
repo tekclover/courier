@@ -227,7 +227,7 @@ public class PreAlertService {
                     log.info("Piece updated");
 
                     List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getLanguageId(), savedPreAlert.getCompanyId(),
-                            savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
+                            savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill());
                     if (piece != null) {
                         for (String pieceId : piece) {
                             consignmentStatusService.insertConsignmentStatusRecord(savedPreAlert.getLanguageId(), savedPreAlert.getLanguageDescription(),

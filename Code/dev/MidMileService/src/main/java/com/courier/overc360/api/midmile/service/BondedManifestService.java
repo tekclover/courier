@@ -288,20 +288,6 @@ public class BondedManifestService {
                 newBondedManifest.setUpdatedOn(new Date());
                 BondedManifest createdBondedManifest = bondedManifestRepository.save(newBondedManifest);
 
-                if (createdBondedManifest != null) {
-                    // Save ConsignmentStatus
-                    consignmentStatusService.createConsignmentStatusParams(createdBondedManifest.getCompanyId(), createdBondedManifest.getCompanyName(),
-                            createdBondedManifest.getLanguageId(), createdBondedManifest.getLanguageDescription(), createdBondedManifest.getPieceId(), createdBondedManifest.getStatusId(),
-                            createdBondedManifest.getPartnerMasterAirwayBill(), createdBondedManifest.getPartnerHouseAirwayBill(), createdBondedManifest.getStatusText(), createdBondedManifest.getStatusId(),
-                            createdBondedManifest.getStatusText(), createdBondedManifest.getEventCode(), createdBondedManifest.getEventText(), createdBondedManifest.getEventCode(),
-                            createdBondedManifest.getEventText(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getEventTimestamp(), createdBondedManifest.getStatusTimestamp(), loginUserID);
-
-                    //Update Event From consignment
-                    bondedManifestRepository.updateEventCodeFromConsignment(createdBondedManifest.getCompanyId(),
-                            createdBondedManifest.getLanguageId(), createdBondedManifest.getPartnerId(),
-                            createdBondedManifest.getPartnerHouseAirwayBill(), createdBondedManifest.getPartnerMasterAirwayBill(),
-                            createdBondedManifest.getEventText());
-                }
                 createdBondedManifestList.add(createdBondedManifest);
             }
             return createdBondedManifestList;

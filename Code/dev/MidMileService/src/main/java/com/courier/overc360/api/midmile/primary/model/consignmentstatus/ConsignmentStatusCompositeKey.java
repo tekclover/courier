@@ -17,5 +17,6 @@ public class ConsignmentStatusCompositeKey implements Serializable {
     private String companyId;
     private String houseAirwayBill;
     private String pieceId;
+    private Long consignmentStatusId;
 
 }

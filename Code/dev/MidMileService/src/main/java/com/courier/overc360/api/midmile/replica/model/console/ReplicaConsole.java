@@ -91,6 +91,9 @@ public class ReplicaConsole {
     @Column(name = "DUTY", columnDefinition = "nvarchar(50)")
     private String duty;
 
+    @Column(name = "NO_OF_PIECES", columnDefinition = "nvarchar(50)")
+    private String noOfPieces;
+
     @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
     private String consignmentValueLocal;
 

@@ -53,6 +53,8 @@ public class Console {
 
     private String customsInsurance;
 
+    private String noOfPieces;
+
     private String duty;
 
     private String consignmentValueLocal;

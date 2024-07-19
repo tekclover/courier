@@ -63,6 +63,8 @@ public class UpdateConsole {
 
     private String iataCharge;
 
+    private String noOfPieces;
+
     private String dduCharge;
 
     private String specialApprovalCharge;
