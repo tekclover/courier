@@ -128,7 +128,7 @@ export class ConsignmentService {
   console.log(obj)
   const formData = new FormData();
     formData.append('file', file);
-  return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.flightArrivalTime}&estimatedTimeOfDeparture=${obj.estimatedDepartureTime}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}`, formData);
+  return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.estimatedTimeOfArrival}&estimatedTimeOfDeparture=${obj.estimatedDepartureTime}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}`, formData);
 }
 }
 
