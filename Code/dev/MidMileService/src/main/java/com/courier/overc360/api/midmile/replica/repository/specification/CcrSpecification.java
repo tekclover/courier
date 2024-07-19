@@ -35,13 +35,13 @@ public class CcrSpecification implements Specification<ReplicaCcr> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findCcrHeader.getPartnerId()));
         }
-        if (findCcrHeader.getMasterAirwayBill() != null && !findCcrHeader.getMasterAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("masterAirwayBill");
-            predicates.add(group.in(findCcrHeader.getMasterAirwayBill()));
+        if (findCcrHeader.getPartnerMasterAirwayBill() != null && !findCcrHeader.getPartnerMasterAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findCcrHeader.getPartnerMasterAirwayBill()));
         }
-        if (findCcrHeader.getHouseAirwayBill() != null && !findCcrHeader.getHouseAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("houseAirwayBill");
-            predicates.add(group.in(findCcrHeader.getHouseAirwayBill()));
+        if (findCcrHeader.getPartnerHouseAirwayBill() != null && !findCcrHeader.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findCcrHeader.getPartnerHouseAirwayBill()));
         }
         if (findCcrHeader.getConsoleId() != null && !findCcrHeader.getConsoleId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("consoleId");

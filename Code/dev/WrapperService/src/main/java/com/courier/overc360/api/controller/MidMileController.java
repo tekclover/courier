@@ -388,11 +388,11 @@ public class MidMileController {
     @GetMapping("/ccr/{ccrId}")
     public ResponseEntity<?> getCcr(@PathVariable String ccrId, @RequestParam String languageId,
                                     @RequestParam String companyId, @RequestParam String partnerId,
-                                    @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                    @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill,
                                     @RequestParam String pieceId, @RequestParam String pieceItemId,
                                     @RequestParam String consoleId, @RequestParam String authToken) {
         Ccr ccr = midMileService.getCcr(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, authToken);
+                partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, authToken);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 
@@ -447,10 +447,10 @@ public class MidMileController {
     @GetMapping("/Console/{consoleId}")
     public ResponseEntity<?> getConsole(@PathVariable String consoleId, @RequestParam String languageId,
                                         @RequestParam String companyId, @RequestParam String partnerId,
-                                        @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                        @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill,
                                         @RequestParam String authToken) {
         Console console = midMileService.getConsole(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, authToken);
+                partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 

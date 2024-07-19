@@ -18,11 +18,11 @@ public class UpdateConsole {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "MasterAirwayBill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
+    private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "HouseAirwayBill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
+    private String partnerHouseAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
@@ -43,9 +43,9 @@ public class UpdateConsole {
 
     private String partnerName;
 
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
+//    private String partnerMasterAirwayBill;
+//
+//    private String partnerHouseAirwayBill;
 
     private String description;
 

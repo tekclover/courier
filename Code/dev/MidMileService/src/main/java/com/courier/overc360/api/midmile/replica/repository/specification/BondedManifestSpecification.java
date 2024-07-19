@@ -39,13 +39,13 @@ public class BondedManifestSpecification implements Specification<ReplicaBondedM
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
             predicates.add(group.in(findBondedManifest.getPartnerId()));
         }
-        if (findBondedManifest.getMasterAirwayBill() != null && !findBondedManifest.getMasterAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("masterAirwayBill");
-            predicates.add(group.in(findBondedManifest.getMasterAirwayBill()));
+        if (findBondedManifest.getPartnerMasterAirwayBill() != null && !findBondedManifest.getPartnerMasterAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
+            predicates.add(group.in(findBondedManifest.getPartnerMasterAirwayBill()));
         }
-        if (findBondedManifest.getHouseAirwayBill() != null && !findBondedManifest.getHouseAirwayBill().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("houseAirwayBill");
-            predicates.add(group.in(findBondedManifest.getHouseAirwayBill()));
+        if (findBondedManifest.getPartnerHouseAirwayBill() != null && !findBondedManifest.getPartnerHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
+            predicates.add(group.in(findBondedManifest.getPartnerHouseAirwayBill()));
         }
         if (findBondedManifest.getBondedId() != null && !findBondedManifest.getBondedId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("bondedId");

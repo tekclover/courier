@@ -23,7 +23,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_bondedmanifest",
-                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL"}
+                        columnNames = {"LANG_ID", "C_ID", "BONDED_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL"}
                 )
         }
 )
@@ -47,12 +47,20 @@ public class ReplicaBondedManifest {
     private String partnerId;
 
     @Id
-    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String masterAirwayBill;
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
 
     @Id
-    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String houseAirwayBill;
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
+
+//    @Id
+//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+//    private String masterAirwayBill;
+//
+//    @Id
+//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+//    private String houseAirwayBill;
 
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
@@ -77,12 +85,6 @@ public class ReplicaBondedManifest {
 
     @Column(name = "NO_OF_PACKAGES_MAWB", columnDefinition = "nvarchar(50)")
     private String noOfPackageMawb;
-
-    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String partnerMasterAirwayBill;
-
-    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String partnerHouseAirwayBill;
 
     @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
     private String description;

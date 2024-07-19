@@ -2,8 +2,6 @@ package com.courier.overc360.api.midmile.replica.model.console;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
@@ -17,8 +15,8 @@ public class ReplicaConsoleCompositeKey implements Serializable {
     private String languageId;
     private String companyId;
     private String partnerId;
-    private String masterAirwayBill;
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
+    private String partnerMasterAirwayBill;
     private String consoleId;
     private String pieceId;
 //    private String pieceItemId;

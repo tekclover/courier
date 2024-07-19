@@ -23,7 +23,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_console",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CONSOLE_ID", "PIECE_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "CONSOLE_ID", "PIECE_ID"}
                 )
         }
 )
@@ -47,19 +47,27 @@ public class ReplicaConsole {
     private String partnerId;
 
     @Id
-    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String houseAirwayBill;
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
+    private String pieceId;
 
     @Id
-    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String masterAirwayBill;
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
+
+    @Id
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
+
+//    @Id
+//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+//    private String houseAirwayBill;
+
+//    @Id
+//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+//    private String masterAirwayBill;
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
-
-    @Id
-    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
-    private String pieceId;
 
 //    @Id
 //    @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
@@ -118,12 +126,6 @@ public class ReplicaConsole {
 
     @Column(name = "SECONDARY_DO", columnDefinition = "nvarchar(50)")
     private String secondaryDo;
-
-    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String partnerHouseAirwayBill;
-
-    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-    private String partnerMasterAirwayBill;
 
     @Column(name = "NO_OF_PACKAGE_MAWB", columnDefinition = "nvarchar(50)")
     private String noOfPackageMawb;

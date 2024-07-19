@@ -792,8 +792,8 @@ public class MidMileService {
 
 
     // Get Ccr
-    public Ccr getCcr(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                      String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String authToken) {
+    public Ccr getCcr(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill,
+                      String partnerHouseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -803,8 +803,8 @@ public class MidMileService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("partnerId", partnerId)
-                    .queryParam("masterAirwayBill", masterAirwayBill)
-                    .queryParam("houseAirwayBill", houseAirwayBill)
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill)
+                    .queryParam("partnerHouseAirwayBill", partnerHouseAirwayBill)
                     .queryParam("pieceId", pieceId)
                     .queryParam("pieceItemId", pieceItemId)
                     .queryParam("consoleId", consoleId);
@@ -911,8 +911,8 @@ public class MidMileService {
     }
 
     // Get Console
-    public Console getConsole(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                              String houseAirwayBill, String consoleId, String authToken) {
+    public Console getConsole(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill,
+                              String partnerHouseAirwayBill, String consoleId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -922,8 +922,8 @@ public class MidMileService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("partnerId", partnerId)
-                    .queryParam("masterAirwayBill", masterAirwayBill)
-                    .queryParam("houseAirwayBill", houseAirwayBill);
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill)
+                    .queryParam("partnerHouseAirwayBill", partnerHouseAirwayBill);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<Console> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Console.class);
             log.info("result : " + result.getStatusCode());

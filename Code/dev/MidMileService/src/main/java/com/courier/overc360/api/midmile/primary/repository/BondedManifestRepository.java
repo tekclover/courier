@@ -32,8 +32,8 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
 
-    Optional<BondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
+    Optional<BondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndBondedIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String bondedId, Long deletionIndicator);
 
     @Query(value = "Select \n" +
             "top 1 CONSIGNOR_NAME consignorName, \n" +
@@ -98,6 +98,6 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                                @Param("eventText") String eventText);
 
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
+    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, Long deletionIndicator);
 }

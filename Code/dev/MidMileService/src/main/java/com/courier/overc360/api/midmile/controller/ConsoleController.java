@@ -117,9 +117,9 @@ public class ConsoleController {
     @GetMapping("/{consoleId}")
     public ResponseEntity<?> getConsoleReplica(@PathVariable String consoleId, @RequestParam String languageId,
                                                @RequestParam String companyId, @RequestParam String partnerId,
-                                               @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill) {
+                                               @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill) {
         ReplicaConsole console = consoleService.getConsoleReplica(
-                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, consoleId);
+                languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 

@@ -15,14 +15,14 @@ public class ConsoleDeleteInput {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMaster Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
 
     @NotBlank(message = "Console Id is mandatory")
     private String consoleId;
 
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouse Airway Bill is mandatory")
+    private String partnerHouseAirwayBill;
 
     @NotBlank(message = "PieceId is mandatory")
     private String pieceId;

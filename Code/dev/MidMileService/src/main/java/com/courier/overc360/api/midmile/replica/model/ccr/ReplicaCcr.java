@@ -19,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_ccr",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID", "PIECE_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID", "PIECE_ID"}
                 )
         }
 )
@@ -43,12 +43,12 @@ public class ReplicaCcr {
     private String partnerId;
 
     @Id
-    @Column(name = "MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String masterAirwayBill;
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
 
     @Id
-    @Column(name = "HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String houseAirwayBill;
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
 
     @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
@@ -111,12 +111,6 @@ public class ReplicaCcr {
 
     @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
     private String calculatedTotalDuty;
-
-    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String partnerHouseAirwayBill;
-
-    @Column(name = "PARTNER_MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String partnerMasterAirwayBill;
 
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
