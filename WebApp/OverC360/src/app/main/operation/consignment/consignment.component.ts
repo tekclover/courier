@@ -57,7 +57,7 @@ export class ConsignmentComponent {
 
       { field: 'houseAirwayBill', header: 'Consignment No', style: 'min-width: 5rem' },
       { field: 'hawbTypeDescription', header: 'Status', style: 'min-width: 5rem' },
-       { field: 'hawbTimeStamp', header: 'Time', style: 'min-width: 5rem' },
+       { field: 'hawbTimeStamp', header: 'Time', format: 'date', style: 'min-width: 5rem' },
       { field: 'partnerName', header: 'Partner', style: 'min-width: 5rem' },
       { field: 'productName', header: 'Product', style: 'min-width: 10rem' },
    //   { field: 'subProductName', header: 'Sub Product', style: 'min-width: 10rem' },
