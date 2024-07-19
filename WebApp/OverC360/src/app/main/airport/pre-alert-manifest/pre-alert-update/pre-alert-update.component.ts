@@ -11,6 +11,7 @@ import { AuthService } from '../../../../core/core';
 import { ConsignorService } from '../../../master/consignor/consignor.service';
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
+import { PreAlertEditpopupComponent } from '../pre-alert-editpopup/pre-alert-editpopup.component';
 
 @Component({
   selector: 'app-pre-alert-update',
@@ -85,7 +86,7 @@ export class PreAlertUpdateComponent {
     countryOfOrigin: [],
     countryOfDestination: [],
     flightArrivalTime: [],
-    flightArrivalTimeFE:  [new Date,],
+    flightArrivalTimeFE: [new Date,],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
@@ -128,11 +129,46 @@ export class PreAlertUpdateComponent {
       this.fill(this.pageToken.line);
       this.form.controls.languageId.disable();
       this.form.controls.companyId.disable();
+      this.form.controls.partnerMasterAirwayBill.disable();
+      this.form.controls.partnerHouseAirwayBill.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
+  }
+
+  cols: any[] = [];
+  target: any[] = [];
+  callTableHeader() {
+    this.cols = [
+      { field: 'companyName', header: 'Company' },
+      // { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'partnerType', header: 'Partner Type' },
+      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'flightNo', header: 'Flight No' },
+      { field: 'flightName', header: 'Flight Name' },
+      { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date' },
+      { field: 'estimatedTimeOfArrival', header: 'Arrival Time', format: 'date' },
+      { field: 'bayanHv', header: 'Bayan HV' },
+      { field: 'shipper', header: 'Shipper Name' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'incoTerm', header: 'Inco Terms' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'countryOfOrigin', header: 'Origin Port' },
+      { field: 'goodsDescription', header: 'Description' },
+      { field: 'iataId', header: 'IATA' },
+      { field: 'numberOfPieces', header: 'Number of pieces' },
+      { field: 'totalShipmentWeight', header: 'Total Shipment Weight' },
+      { field: 'consignmentValue', header: 'Total Value' },
+      { field: 'consignmentValueLocal', header: 'ConsignmentValueLocal' },
+      { field: 'consignmentCurrency', header: 'Currency' },
+
+      { field: 'eventText', header: 'Event' },
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
+    ];
   }
 
   companyIdList: any[] = [];
@@ -176,17 +212,38 @@ export class PreAlertUpdateComponent {
     });
 
   }
+
+  preAlertManifestTableArray: any[] = [];
+  selectedPreAlertManifest: any[] = [];
+
   fill(line: any) {
     this.form.patchValue(line);
-          this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
-          this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
-          if (this.form.controls.estimatedDepartureTime.value) {
-            this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
-          }
-          if (this.form.controls.flightArrivalTime.value) {
-            this.form.controls.flightArrivalTimeFE.patchValue(this.cs.pCalendar(this.form.controls.flightArrivalTime.value));
-          }
-          this.partnerTypeChanged();
+    this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
+    this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+    if (this.form.controls.estimatedDepartureTime.value) {
+      this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
+    }
+    if (this.form.controls.flightArrivalTime.value) {
+      this.form.controls.flightArrivalTimeFE.patchValue(this.cs.pCalendar(this.form.controls.flightArrivalTime.value));
+    }
+    this.partnerTypeChanged();
+    this.callTableHeader();
+
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.partnerMasterAirwayBill = [this.pageToken.line.partnerMasterAirwayBill];
+    // obj.partnerHouseAirwayBill = [this.pageToken.line.partnerHouseAirwayBill];
+
+    this.service.searchPrealert(obj).subscribe({
+      next: (res: any) => {
+        this.preAlertManifestTableArray = res;
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
   save() {
@@ -275,5 +332,48 @@ export class PreAlertUpdateComponent {
       })
 
     }
+  }
+
+  // PreAlert Edit Table Popup 
+
+  editItem(data: any, item: any): void {
+    const dialogRef = this.dialog.open(PreAlertEditpopupComponent, {
+      disableClose: true,
+      width: '70%',
+      //height: '50%',
+      maxWidth: '82%',
+      position: { top: '2.5%', left: '30%' },
+      data: { pageflow: data, code: item },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.preAlertManifestTableArray.splice(item, 0);
+        this.preAlertManifestTableArray.splice(item, 1, result);
+        this.preAlertManifestTableArray = [...this.preAlertManifestTableArray]
+
+        this.submitted = true;
+        if (this.form.invalid) {
+          this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: 'Please fill required fields to continue' });
+          return;
+        }
+        const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
+        this.form.controls.estimatedDepartureTime.patchValue(date)
+        if (this.pageToken.pageflow != 'New') {
+          this.spin.show()
+          this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
+            next: (res: any) => {
+              this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].consignmentId + ' has been updated successfully' });
+              this.router.navigate(['/main/airport/preAlertManifest']);
+              this.spin.hide();
+            }, error: (err) => {
+              this.spin.hide();
+              this.cs.commonerrorNew(err);
+            }
+          })
+        }
+
+      }
+    });
   }
 }
