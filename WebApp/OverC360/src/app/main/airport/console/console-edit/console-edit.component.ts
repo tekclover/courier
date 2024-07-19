@@ -14,6 +14,7 @@ import { ConsoleService } from '../console.service';
 import { ConsoleEditpopupComponent } from '../console-editpopup/console-editpopup.component';
 import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
 import { DatePipe } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-console-edit',
@@ -351,6 +352,7 @@ export class ConsoleEditComponent {
           key: 'br',
           detail: res[0].ccrId + ' has been created successfully',
         });
+        this.downloadExcelWB(res);
         this.router.navigate(['/main/airport/console']);
       },
       error: (err) => {
@@ -400,49 +402,129 @@ export class ConsoleEditComponent {
     });
   }
 
-  downloadExcel() {
-    let exportData = [];
-  
-    if (this.selectedConsole && this.selectedConsole.length > 0) {
-      exportData = this.selectedConsole.map(item => {
-        const exportItem: any = {};
-        this.cols.forEach(col => {
-          if (col.format == 'date') {
-            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-          } else {
-            exportItem[col.header] = item[col.field];
-          }
+  groupBy(array: any[], key: string) {
+    return array.reduce((result: { [x: string]: any[]; }, currentValue: { [x: string]: any; }) => {
+      const groupKey = currentValue[key];
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(currentValue);
+      return result;
+    }, {});
+  }
+
+  // download Excel function
+  consoleManifest: any[] = [];
+  invoices: any[] = [];
+  invoiceItems: any[] = [];
+
+  downloadExcelWB(res:any) {
+    this.consoleManifest = [
+      { field: 'partnerHouseAirwayBill', header: 'AWB' },
+      { field: 'airportOriginCode', header: 'Origin' },
+      { field: 'countryOfOrigin', header: 'Origin Code' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'grossWeight', header: 'WT KG' },
+      { field: 'quantity', header: 'PCS' },
+      { field: 'description', header: 'Description' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'consignmentValueLocal', header: 'Customs KD' },
+      { field: 'iata', header: 'Iata KD' },
+      { field: 'hsCode', header: 'HS Code' },
+    ];
+
+    this.invoices = [
+      { field: 'partnerHouseAirwayBill', header: 'Airway Bill No' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consigneeCivilId', header: 'Consignee Civil ID' },
+      { field: 'invoiceNumber', header: 'Invoice Number' },
+      { field: 'invoiceDate', header: 'Invoice Date' },
+      { field: 'invoiceType', header: 'Invoice Type' },
+      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'invoiceSupplierName', header: 'Invoice Supplier Name' },
+      { field: 'consignmentLocalId', header: 'Freight Currency' },
+      { field: 'freightCharges', header: 'Freight Charges' },
+      { field: 'countryOfOrigin', header: 'Country Of Supply' },
+    ];
+
+    this.invoiceItems = [
+      { field: 'countryOfOrigin', header: 'Country Of Origin' },
+      { field: 'manufacturer', header: 'Manufacturer' },
+      { field: 'noOfPieceHawb', header: 'No Of Packages' },
+      { field: 'consignmentValue', header: 'Item Total Price' },
+      { field: 'packageType', header: 'Package Type' },
+      { field: 'quantity', header: 'Quantity' },
+      { field: 'netWeight', header: 'Net Weight' },
+      { field: 'grossWeight', header: 'Gross Weight' },
+      { field: 'isExempted', header: 'Is Exempted' },
+      { field: 'exemptionFor', header: 'Exemption For' },
+      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'exemptionReference', header: 'Exemption Reference' },
+    ];
+
+    const groupedByConsoleId = this.groupBy(res, 'consoleId');
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+    for (const consoleId in groupedByConsoleId) {
+      if (groupedByConsoleId.hasOwnProperty(consoleId)) {
+        const consoleData = groupedByConsoleId[consoleId];
+        const consoleSheetData = (Object.values(consoleData) as { [x: string]: any }[]).map(item => {
+          const exportItem: any = {};
+          res.forEach((col:any) => {
+            if (col.format == 'date') {
+              exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+            } else {
+              exportItem[col.header] = item[col.field];
+            }
+          });
+          return exportItem;
         });
-        this.target.forEach(col => {
-          if (col.format && col.format === 'date') {
-            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-          } else {
-            exportItem[col.header] = item[col.field];
+
+        const consoleSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(consoleSheetData);
+        XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
+
+        const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
+
+        for (const ccrId in groupedByCcrId) {
+          if (groupedByCcrId.hasOwnProperty(ccrId)) {
+            const ccrData = groupedByCcrId[ccrId];
+
+            const invoicesData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
+              const exportItem: any = {};
+              this.invoices.forEach(col => {
+                if (col.format == 'date') {
+                  exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+                } else {
+                  exportItem[col.header] = item[col.field];
+                }
+              });
+              return exportItem;
+            });
+            const invoiceSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoicesData);
+            XLSX.utils.book_append_sheet(wb, invoiceSheet, `INVOICE-${consoleId}`);
+
+            const invoiceItemsData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
+              const exportItem: any = {};
+              this.invoiceItems.forEach(col => {
+                if (col.format && col.format == 'date') {
+                  exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+                } else {
+                  exportItem[col.header] = item[col.field];
+                }
+              });
+              return exportItem;
+            });
+            const invoiceItemSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoiceItemsData);
+            XLSX.utils.book_append_sheet(wb, invoiceItemSheet, `INVOICEITEM-${consoleId}`);
           }
-        });
-        return exportItem;
-      });
-    } else {
-      exportData = this.subProductArray.map(item => {
-        const exportItem: any = {};
-        this.cols.forEach(col => {
-          if (col.format == 'date') {
-            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-          } else {
-            exportItem[col.header] = item[col.field];
-          }
-        });
-        this.target.forEach(col => {
-          if (col.format && col.format === 'date') {
-            exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-          } else {
-            exportItem[col.header] = item[col.field];
-          }
-        });
-        return exportItem;
-      });
+        }
+      }
     }
-  
-    this.cs.downloadExcel(exportData, 'Console', 'Console ID');
+    XLSX.writeFile(
+      wb,
+      `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
+    );
   }
 }
