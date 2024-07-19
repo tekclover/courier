@@ -243,8 +243,8 @@ public class BondedManifestService {
                 }
 
                 Optional<ReplicaConsignmentEntity> consignmentValuesOpt = replicaBondedManifestRepository.getConsignmentValues(
-                        newBondedManifest.getLanguageId(), newBondedManifest.getCompanyId(), newBondedManifest.getPartnerId(),
-                        newBondedManifest.getPartnerMasterAirwayBill(), newBondedManifest.getPartnerHouseAirwayBill());
+                        addBondedManifest.getLanguageId(), addBondedManifest.getCompanyId(), addBondedManifest.getPartnerId(),
+                        addBondedManifest.getPartnerMasterAirwayBill(), addBondedManifest.getPartnerHouseAirwayBill());
                 if (consignmentValuesOpt.isPresent()) {
                     ReplicaConsignmentEntity consignmentEntity = consignmentValuesOpt.get();
 
