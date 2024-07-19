@@ -196,7 +196,7 @@ public class PreAlertService {
             Optional<IKeyValuePair> statusText = consignmentEntityRepository.getEventText(iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), "3");
             if(statusText.isPresent()) {
                 IKeyValuePair ikey = statusText.get();
-                dbPreAlert.setHawbTypeDescription(ikey.getStatusText());
+                dbPreAlert.setHawbTypeDescription(ikey.getEventText());
                 dbPreAlert.setHawbTimeStamp(new Date());
             }
 
