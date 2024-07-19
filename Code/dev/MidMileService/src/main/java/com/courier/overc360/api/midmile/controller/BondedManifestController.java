@@ -111,9 +111,9 @@ public class BondedManifestController {
     @GetMapping("/{bondedId}")
     public ResponseEntity<?> getBondedManifest(@PathVariable String bondedId, @RequestParam String languageId,
                                                @RequestParam String companyId, @RequestParam String partnerId,
-                                               @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill) {
+                                               @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill) {
         ReplicaBondedManifest bondedManifest = bondedManifestService.getBondedManifestReplica(
-                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, bondedId);
+                languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, bondedId);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 //    @ApiOperation(response = BondedManifestHeader.class, value = "Get a BondedManifestHeader")

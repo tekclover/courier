@@ -19,11 +19,14 @@ public class AddCcr {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
+    private String partnerHouseAirwayBill;
 
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "Partner House Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
+
+//    private String masterAirwayBill;
+//    private String houseAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
@@ -85,10 +88,6 @@ public class AddCcr {
 //    private Date eventTimestamp;
 
 //    private Date statusTimestamp;
-
-    private String partnerHouseAirwayBill;
-
-    private String partnerMasterAirwayBill;
 
     private String noOfPackageMawb;
 
@@ -199,6 +198,8 @@ public class AddCcr {
     private String flightNo;
 
     private String flightArrivalTime;
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator = 0L;
 

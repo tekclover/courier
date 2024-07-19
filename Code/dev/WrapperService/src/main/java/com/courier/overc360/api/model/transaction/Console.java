@@ -15,9 +15,9 @@ public class Console {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+//    private String masterAirwayBill;
 
-    private String houseAirwayBill;
+//    private String houseAirwayBill;
 
     private String consoleId;
 
@@ -99,13 +99,13 @@ public class Console {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -133,9 +133,9 @@ public class Console {
 
     private String languageDescription;
 
-    private String statusId;
+//    private String statusId;
 
-    private String statusText;
+//    private String statusText;
 
     private String bondedId;
 
@@ -185,7 +185,25 @@ public class Console {
 
     private String currency;
 
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
     private Long deletionIndicator;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 

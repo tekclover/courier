@@ -10,14 +10,14 @@ public class BondedManifestCompositeKey implements Serializable {
     private static final long serialVersionUID = -7617672247680004647L;
 
     /**
-     * `LANG_ID`, 'C_ID`, PARTNER_ID`, `BONDED_ID`, `MASTER_AIRWAY_BILL`, `HOUSE_AIRWAY_BILL`
+     * `LANG_ID`, 'C_ID`, PARTNER_ID`, `BONDED_ID`, `PARTNER_MASTER_AIRWAY_BILL`, `PARTNER_HOUSE_AIRWAY_BILL`
      */
 
     private String languageId;
     private String companyId;
     private String partnerId;
     private String bondedId;
-    private String masterAirwayBill;
-    private String houseAirwayBill;
+    private String partnerMasterAirwayBill;
+    private String partnerHouseAirwayBill;
 
 }

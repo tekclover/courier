@@ -19,19 +19,15 @@ public class AddConsole {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "MasterAirwayBill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
+    private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "HouseAirwayBill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
+    private String partnerHouseAirwayBill;
 
     private String partnerType;
 
     private String partnerName;
-
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
 
     private String noOfPackageMawb;
 
@@ -45,9 +41,9 @@ public class AddConsole {
 
     private String languageDescription;
 
-    private String statusId;
-
-    private String statusText;
+//    private String statusId;
+//
+//    private String statusText;
 
     private String bondedId;
 
@@ -121,13 +117,13 @@ public class AddConsole {
 
     private String paymentType;
 
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
+//    private String eventCode;
+//
+//    private String eventText;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -190,6 +186,8 @@ public class AddConsole {
     private String declaredValue;
 
     private String currency;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 

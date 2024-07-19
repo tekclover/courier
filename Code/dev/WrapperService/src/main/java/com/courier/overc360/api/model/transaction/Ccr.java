@@ -15,9 +15,9 @@ public class Ccr {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerMasterAirwayBill;
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
 
     private String consoleId;
 
@@ -76,9 +76,9 @@ public class Ccr {
 
 //    private Date statusTimestamp;
 
-    private String partnerHouseAirwayBill;
+//    private String partnerHouseAirwayBill;
 
-    private String partnerMasterAirwayBill;
+//    private String partnerMasterAirwayBill;
 
     private String noOfPackageMawb;
 
@@ -195,6 +195,8 @@ public class Ccr {
     private String specialApprovalCharge;
 
     private Long deletionIndicator = 0L;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 

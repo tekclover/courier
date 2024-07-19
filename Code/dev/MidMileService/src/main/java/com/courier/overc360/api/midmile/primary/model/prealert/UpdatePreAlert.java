@@ -85,6 +85,8 @@ public class UpdatePreAlert {
 
     private String incoTerm;
 
+    private String consignmentLocalId;
+
     private String referenceField1;
 
     private String referenceField2;

@@ -18,11 +18,11 @@ public class UpdateConsole {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "MasterAirwayBill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
+    private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "HouseAirwayBill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
+    private String partnerHouseAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
@@ -43,9 +43,9 @@ public class UpdateConsole {
 
     private String partnerName;
 
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
+//    private String partnerMasterAirwayBill;
+//
+//    private String partnerHouseAirwayBill;
 
     private String description;
 
@@ -111,13 +111,13 @@ public class UpdateConsole {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -141,9 +141,9 @@ public class UpdateConsole {
 
     private String languageDescription;
 
-    private String statusId;
+//    private String statusId;
 
-    private String statusText;
+//    private String statusText;
 
     private String bondedId;
 
@@ -192,6 +192,24 @@ public class UpdateConsole {
     private String declaredValue;
 
     private String currency;
+
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator;
 

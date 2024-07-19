@@ -19,7 +19,7 @@ import java.util.Date;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "unique_key_ccr",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID", "PIECE_ID"}
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "CCR_ID", "CONSOLE_ID", "PIECE_ID"}
                 )
         }
 )
@@ -43,12 +43,12 @@ public class Ccr {
     private String partnerId;
 
     @Id
-    @Column(name = "MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String masterAirwayBill;
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
 
     @Id
-    @Column(name = "HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String houseAirwayBill;
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
 
     @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
@@ -138,12 +138,6 @@ public class Ccr {
 
 //    @Column(name = "STATUS_TIMESTAMP")
 //    private Date statusTimestamp;
-
-    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String partnerHouseAirwayBill;
-
-    @Column(name = "PARTNER_MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
-    private String partnerMasterAirwayBill;
 
     @Column(name = "NO_OF_PACKAGE_MAWB" , columnDefinition = "nvarchar(50)")
     private String noOfPackageMawb;
@@ -312,6 +306,9 @@ public class Ccr {
 
     @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
     private String specialApprovalCharge;
+
+    @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
+    private String consignmentLocalId;
 
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;

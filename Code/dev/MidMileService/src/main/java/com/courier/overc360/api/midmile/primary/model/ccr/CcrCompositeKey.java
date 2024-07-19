@@ -18,8 +18,8 @@ public class CcrCompositeKey implements Serializable {
     private String languageId;
     private String companyId;
     private String partnerId;
-    private String masterAirwayBill;
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
+    private String partnerMasterAirwayBill;
     private String ccrId;
     private String pieceId;
 

@@ -67,7 +67,7 @@ export class PreAlertUpdateComponent {
     destinationDetails: this.DestinationDetails,
     goodsDescription: [],
     consigneeName: [],
-    incoTerms: [],
+    incoTerm: [],
     shipperName: [],
     description: [],
     weight: [,],
@@ -76,21 +76,26 @@ export class PreAlertUpdateComponent {
     masterAirwayBill: [],
     houseAirwayBill: [],
     consignmentCurrency: [],
+    currency: [],
     airportDestinationCode: [],
     hsCode: [],
+    noOfPieces:[],
     iata: [],
     flightNo: [],
     flightName: [],
     bayanHv: [],
     partnerType: ['',],
     countryOfOrigin: [],
+    originCode: [],
+    origin: [],
     countryOfDestination: [],
-    flightArrivalTime: [],
-    flightArrivalTimeFE: [new Date,],
+    estimatedTimeOfArrival: [],
+    estimatedTimeOfArrivalFE:  [new Date,],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
     noOfCrt: [],
+    totalWeight: [],
     totalShipmentWeight: [],
     totalValue: [],
     createdOn: ['',],
@@ -176,6 +181,7 @@ export class PreAlertUpdateComponent {
   iataIdList: any[] = [];
   countryIdList: any[] = [];
   customerIdList: any[] = [];
+  currencyIdList: any[] = [];
   hsCodeList: any[] = [];
 
   dropdownlist() {
@@ -183,9 +189,10 @@ export class PreAlertUpdateComponent {
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.language.url,
-      this.cas.dropdownlist.setup.iata.url,
       this.cas.dropdownlist.setup.country.url,
+      this.cas.dropdownlist.setup.currency.url,
       this.cas.dropdownlist.setup.hsCode.url,
+      this.cas.dropdownlist.setup.iata.url,
       this.cas.dropdownlist.setup.consignor.url,
       this.cas.dropdownlist.setup.customer.url,
 
@@ -195,10 +202,11 @@ export class PreAlertUpdateComponent {
         this.companyIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.company.key);
         this.languageIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.language.key);
         this.countryIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.country.key);
-        this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[3], this.cas.dropdownlist.setup.hsCode.key);
-        this.iataIdList = this.cas.forLanguageFilterWithoutKey(results[4], this.cas.dropdownlist.setup.iata.key);
-        const consitnor = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.consignor.key);
-        const customer = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.customer.key);
+        this.currencyIdList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.currency.key);
+        this.hsCodeList = this.cas.forLanguageFilterWithoutKey(results[4], this.cas.dropdownlist.setup.hsCode.key);
+        this.iataIdList = this.cas.forLanguageFilterWithoutKey(results[5], this.cas.dropdownlist.setup.iata.key);
+        const consitnor = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.consignor.key);
+        const customer = this.cas.forLanguageFilter(results[7], this.cas.dropdownlist.setup.customer.key);
         customer.forEach(x => this.customerIdList.push(x));
         consitnor.forEach(x => this.customerIdList.push(x));
         this.customerIdList = this.cs.removeDuplicatesFromArrayList(this.customerIdList, 'value')
@@ -270,7 +278,7 @@ export class PreAlertUpdateComponent {
       this.spin.show()
       this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].consignmentId + ' has been updated successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].partnerHouseAirwayBill + ' has been updated successfully' });
           this.router.navigate(['/main/airport/preAlertManifest']);
           this.spin.hide();
         }, error: (err) => {

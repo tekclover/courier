@@ -18,8 +18,8 @@ import java.util.Optional;
 public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBondedManifest, String>,
         JpaSpecificationExecutor<ReplicaBondedManifest> {
 
-    Optional<ReplicaBondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
+    Optional<ReplicaBondedManifest> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndBondedIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String bondedId, Long deletionIndicator);
 
     // Company Table records check
     @Query(value = "Select COUNT (*) From tblcompany \n" +
@@ -61,8 +61,8 @@ public interface ReplicaBondedManifestRepository extends JpaRepository<ReplicaBo
     IKeyValuePair getToCurrencyValue(@Param(value = "companyId") String companyId,
                                      @Param(value = "freightCurrency") String freightCurrency);
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndBondedIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String bondedId, Long deletionIndicator);
+    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndBondedIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String bondedId, Long deletionIndicator);
 
     // Get All NonDeleted BondedManifests
     @Query(value = "Select * From tblbondedmanifest h \n" +

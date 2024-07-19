@@ -15,9 +15,9 @@ public class UpdateCcr {
 
     private String partnerId;
 
-    private String houseAirwayBill;
+//    private String houseAirwayBill;
 
-    private String masterAirwayBill;
+//    private String masterAirwayBill;
 
     private String customsCcrNo;
 
@@ -194,6 +194,8 @@ public class UpdateCcr {
     private String dduCharge;
 
     private String specialApprovalCharge;
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator = 0L;
 

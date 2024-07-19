@@ -18,12 +18,12 @@ public class AddBondedManifest {
 
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
-
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
-
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+//
+//    @NotBlank(message = "Master Airway Bill is mandatory")
+//    private String masterAirwayBill;
+//
+//    @NotBlank(message = "House Airway Bill is mandatory")
+//    private String houseAirwayBill;
 
     private String  bondedId;
 
@@ -45,8 +45,10 @@ public class AddBondedManifest {
 
     private String noOfPackageMawb;
 
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
+    @NotBlank(message = "Partner House Airway Bill is mandatory")
     private String partnerHouseAirwayBill;
 
     private String primaryDo;
@@ -206,6 +208,8 @@ public class AddBondedManifest {
     private String billOfLadingFor;
 
     private String bayanHV;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 

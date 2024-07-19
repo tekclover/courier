@@ -99,24 +99,25 @@
                             </div>
 
                             
-                            <div class="col-6 marginFieldNew borderRadius12" id="incoTerms">
+                            <div class="col-6 marginFieldNew borderRadius12" id="incoTerm">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Inco Terms</p>
-                                <input maxlength="100" pInputText formControlName="incoTerms" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="incoTerm" class=" w-100" pInputText
                                 placeholder="Enter"
-                                [ngClass]="form.get('incoTerms')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('incoTerms')" class="text-danger"><small>{{
+                                [ngClass]="form.get('incoTerm')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('incoTerm')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="countryOfOrigin">
+                            <div class="col-6 marginFieldNew borderRadius12" id="origin">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Origin</p>
-                              <p-dropdown [options]="countryIdList" formControlName="countryOfOrigin" appendTo="body"
-                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
-                                <mat-error *ngIf="errorHandling('countryOfOrigin')" class="text-danger"><small>{{
+                                <input maxlength="100" pInputText formControlName="origin" class=" w-100" pInputText
+                                placeholder="Enter"
+                                [ngClass]="form.get('origin')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('origin')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="description">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Description</p>
-                                <input maxlength="100" pInputText formControlName="goodsDescription" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="description" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('description')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('description')" class="text-danger"><small>{{
@@ -132,13 +133,13 @@
                                 <mat-error *ngIf="errorHandling('hsCode')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="iataId">
+                            <div class="col-6 marginFieldNew borderRadius12" id="iata">
                                 <p class="formControlLabel f600 textBlack mb-0">IATA</p>
                                 <p-dropdown [options]="iataIdList" placeholder="Select" filter="true"
-                                    formControlName="iataId" appendTo="body"
-                                    [ngClass]="form.get('iataId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    formControlName="iata" appendTo="body"
+                                    [ngClass]="form.get('iata')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('iataId')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('iata')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="flightNo">
@@ -157,20 +158,21 @@
                                 <mat-error *ngIf="errorHandling('flightName')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="countryOfOrigin">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Origin Port</p>
-                                <input maxlength="100" pInputText formControlName="countryOfOrigin" class=" w-100" pInputText
-                                placeholder="Enter"
-                                [ngClass]="form.get('countryOfOrigin')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('countryOfOrigin')" class="text-danger"><small>{{
+                            <div class="col-6 marginFieldNew borderRadius12" id="originCode">
+                                <p class="formControlLabel f600 textBlack mb-0">Origin Port</p>
+                                <p-dropdown [options]="countryIdList" placeholder="Select" filter="true"
+                                    formControlName="originCode" appendTo="body"
+                                    [ngClass]="form.get('originCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('originCode')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12" id="numberOfPieces">
+                            <div class="col-6 marginFieldNew borderRadius12" id="noOfPieces">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Number of pieces</p>
-                                <input maxlength="100" pInputText formControlName="numberOfPieces" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="noOfPieces" class=" w-100" pInputText
                                 placeholder="Enter"
-                                [ngClass]="form.get('numberOfPieces')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('numberOfPieces')" class="text-danger"><small>{{
+                                [ngClass]="form.get('noOfPieces')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('noOfPieces')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12" id="estimatedDepartureTimeFE">
@@ -184,10 +186,10 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12" id="flightArrivalTimeFE">
+                            <div class="col-6 marginFieldNew borderRadius12" id="estimatedTimeOfArrivalFE">
                                 <p class="formControlLabel f600 textBlack mb-0">Estimated Time Of Arrival</p>
-                                <p-calendar formControlName="flightArrivalTimeFE" appendTo="body"
-                                [ngClass]="form.get('flightArrivalTimeFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                <p-calendar formControlName="estimatedTimeOfArrivalFE" appendTo="body"
+                                [ngClass]="form.get('estimatedTimeOfArrivalFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
 
@@ -195,12 +197,12 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12" id="totalShipmentWeight">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Total Shipment Weight</p>
-                                <input maxlength="100" pInputText formControlName="totalShipmentWeight" class=" w-100" pInputText
+                            <div class="col-6 marginFieldNew borderRadius12" id="totalWeight">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Total Weight</p>
+                                <input maxlength="100" pInputText formControlName="totalWeight" class=" w-100" pInputText
                                 placeholder="Enter"
-                                [ngClass]="form.get('totalShipmentWeight')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('totalShipmentWeight')" class="text-danger"><small>{{
+                                [ngClass]="form.get('totalWeight')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('totalWeight')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
@@ -221,12 +223,13 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             
-                            <div class="col-6 marginFieldNew borderRadius12" id="consignmentCurrency">
+                            <div class="col-6 marginFieldNew borderRadius12" id="currency">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Currency</p>
-                                <input maxlength="100" pInputText formControlName="consignmentCurrency" class=" w-100" pInputText
-                                placeholder="Enter"
-                                [ngClass]="form.get('consignmentCurrency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('consignmentCurrency')" class="text-danger"><small>{{
+                                <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true"
+                                formControlName="currency" appendTo="body"
+                                [ngClass]="form.get('currency')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('currency')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 

@@ -18,11 +18,11 @@ public class UpdateConsole {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "MasterAirwayBill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
+    private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "HouseAirwayBill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
+    private String partnerHouseAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
@@ -56,10 +56,6 @@ public class UpdateConsole {
     private String customsCurrency;
 
     private String partnerName;
-
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
 
     private String description;
 
@@ -105,13 +101,13 @@ public class UpdateConsole {
 
     private String paymentType;
 
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
+//    private String eventCode;
+//
+//    private String eventText;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -139,9 +135,9 @@ public class UpdateConsole {
 
     private String languageDescription;
 
-    private String statusId;
-
-    private String statusText;
+//    private String statusId;
+//
+//    private String statusText;
 
     private String bondedId;
 
@@ -190,6 +186,8 @@ public class UpdateConsole {
     private String declaredValue;
 
     private String currency;
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator;
 

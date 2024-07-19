@@ -32,15 +32,12 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
     IKeyValuePair getLAndCDescription(@Param(value = "languageId") String languageId,
                                       @Param(value = "companyId") String companyId);
 
-    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, Long deletionIndicator);
+    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndCcrIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String consoleId, String ccrId, Long deletionIndicator);
 
-    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndDeletionIndicator(
+    Optional<Ccr> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndCcrIdAndPieceIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String consoleId, String ccrId, String pieceId, Long deletionIndicator);
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndCustomsCcrNoAndDeletionIndicator(
-            String languageId, String companYId, String partnerId, String masterAirwayBill, String houseAirwayBill, String customsCcrNo, Long deletionIndicator
-    );
 
     //Get IataKd
     @Query(value = "Select \n" +
@@ -55,11 +52,7 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
                             @Param(value = "languageId") String languageId,
                             @Param(value = "companyId") String companyId);
 
-    Optional<Ccr> findByHouseAirwayBill(String houseAirwayBill);
     List<Ccr> findAllByCcrIdAndDeletionIndicator(String ccrId, Long deletionIndicator);
-
-    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-            String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 
     @Transactional
     @Modifying
@@ -73,21 +66,21 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
             "WHERE c_id = :companyId " +
             "AND lang_id = :languageId " +
             "AND partner_id = :partnerId " +
-            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill " +
-            "AND MASTER_AIRWAY_BILL = :masterAirwayBill " +
+            "AND PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAirwayBill " +
+            "AND PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAirwayBill " +
             "AND is_deleted = 0",
             nativeQuery = true)
     public void updateEventCodeFromConsignment(@Param("companyId") String companyId,
                                                @Param("languageId") String languageId,
                                                @Param("partnerId") String partnerId,
-                                               @Param("houseAirwayBill") String houseAirwayBill,
-                                               @Param("masterAirwayBill") String masterAirwayBill,
+                                               @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+                                               @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
                                                @Param("eventCode") String eventCode,
                                                @Param("eventText") String eventText,
                                                @Param("statusId") String statusId,
                                                @Param("statusText") String statusText);
 
-    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
-            String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
+    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+            String companyId, String languageId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String pieceId, Long deletionIndicator);
 }
 
