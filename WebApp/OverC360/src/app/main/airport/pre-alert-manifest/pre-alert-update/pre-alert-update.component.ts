@@ -12,6 +12,7 @@ import { ConsignorService } from '../../../master/consignor/consignor.service';
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
 import { PreAlertEditpopupComponent } from '../pre-alert-editpopup/pre-alert-editpopup.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pre-alert-update',
@@ -37,6 +38,7 @@ export class PreAlertUpdateComponent {
     private auth: AuthService,
     private el: ElementRef,
     public dialog: MatDialog,
+    private datePipe: DatePipe,
   ) {
   }
 
@@ -143,5 +145,24 @@ export class PreAlertUpdateComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.fill(this.pageToken.line);
     });
+  }
+
+  //Download
+  downloadExcel() {
+    const exportData = this.preAlertManifestTableArray.map(item => {
+      const exportItem: any = {};
+      this.cols.forEach(col => {
+        if (col.format == 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
+
+      });
+      return exportItem;
+    });
+
+    // Call ExcelService to export data to Excel
+    this.cs.exportAsExcel(exportData, 'Pre-Alert Manifest');
   }
 }

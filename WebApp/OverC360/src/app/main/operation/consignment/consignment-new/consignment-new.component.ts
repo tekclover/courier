@@ -766,11 +766,10 @@ export class ConsignmentNewComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'pieceId', header: 'Piece ID', showFooter: false  },
+      { field: 'consignmentCurrency', header: 'Consignment Currency', showFooter: false  },
       { field: 'consignmentValue', header: 'Consignment Value', showFooter: true  },
-      { field: 'currency', header: 'Consignment Currency', showFooter: false  },
       { field: 'exchangeRate', header: 'Exchange Rate', showFooter: false  },
-      { field: 'iata', header: 'IATA', showFooter: false  },
+      { field: 'iataCharge', header: 'IATA', showFooter: false  },
       { field: 'customsInsurance', header: 'Customs Insurance', showFooter: true  },
       { field: 'duty', header: 'Duty', showFooter: true, },
       { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: true  },
@@ -785,11 +784,16 @@ export class ConsignmentNewComponent {
   }
 
   callItemLevel(line:any){
-    this.service.searchItem({houseAirwayBill: [line.houseAirwayBill]}).subscribe({next: res=> {
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId]
+    obj.houseAirwayBill = [line.houseAirwayBill];
+
+    this.service.search(obj).subscribe({next: res=> {
       this.billingTable =  res;
     },error: err => {
       this.spin.hide();
-      this.cs.commonerrorNew(err);
+      this.cs.commonerrorNew(err); 
     }})
   }
 
