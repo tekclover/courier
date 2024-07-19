@@ -18,7 +18,7 @@ export class BondedManifestService {
     return this.http.post<any>('/overc-midmile-service/bondedManifest/create', obj);
   }
   CreatefromPrealert(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/console/create/preAlert', obj);
+    return this.http.post<any>('/overc-midmile-service/bondedManifest/create/preAlert', obj);
   }
 
   Update(obj: any) {

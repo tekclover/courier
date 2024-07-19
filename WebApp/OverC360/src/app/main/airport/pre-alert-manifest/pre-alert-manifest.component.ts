@@ -78,7 +78,7 @@ export class PreAlertManifestComponent {
       { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
       { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
       { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
-      { field: 'eventText', header: 'Event' },
+      { field: 'hawbTypeDescription', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
