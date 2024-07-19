@@ -65,12 +65,12 @@
                                 getErrorMessage()}}</small></mat-error>
                     </div>
 
-                    <div class="col-6 marginFieldNew borderRadius12" id="shipperName">
+                    <div class="col-6 marginFieldNew borderRadius12" id="shipper">
                         <p class="formControlLabel f600 textBlack mb-0 ">Shipper Name</p>
-                        <input maxlength="100" pInputText formControlName="shipperName" class=" w-100" pInputText
+                        <input maxlength="100" pInputText formControlName="shipper" class=" w-100" pInputText
                         placeholder="Enter"
-                        [ngClass]="form.get('shipperName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                        <mat-error *ngIf="errorHandling('shipperName')" class="text-danger"><small>{{
+                        [ngClass]="form.get('shipper')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                        <mat-error *ngIf="errorHandling('shipper')" class="text-danger"><small>{{
                                 getErrorMessage()}}</small></mat-error>
                     </div>
 
@@ -231,7 +231,7 @@
                 <div class="d-flex float-right py-2">
                     <button mat-dialog-close class="buttom1 textBlack mx-1"
                     >Cancel</button>
-                    <button type="button" class="buttom1 bgBlack text-white mx-1" (click)="save()">Save</button>
+                    <button type="button" class="buttom1 bgBlack text-white mx-1" (click)="save()">Update</button>
                 </div>
             </div>
         </form>

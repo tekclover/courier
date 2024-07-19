@@ -78,21 +78,26 @@ export class PreAlertEditpopupComponent {
     masterAirwayBill: [],
     houseAirwayBill: [],
     consignmentCurrency: [],
+    currency: [],
     airportDestinationCode: [],
     hsCode: [],
+    noOfPieces:[],
     iata: [],
     flightNo: [],
     flightName: [],
     bayanHv: [],
     partnerType: ['',],
     countryOfOrigin: [],
+    originCode: [],
+    origin: [],
     countryOfDestination: [],
-    flightArrivalTime: [],
-    flightArrivalTimeFE:  [new Date,],
+    estimatedTimeOfArrival: ['',],
+    estimatedTimeOfArrivalFE:  [new Date,],
     estimatedDepartureTime: ['',],
     estimatedDepartureTimeFE: [new Date,],
     noOfPackageMawb: [],
     noOfCrt: [],
+    totalWeight: [],
     totalShipmentWeight: [],
     totalValue: [],
     createdOn: ['',],
@@ -242,33 +247,20 @@ export class PreAlertEditpopupComponent {
     }
     const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
     this.form.controls.estimatedDepartureTime.patchValue(date)
-    if (this.pageToken.pageflow != 'New') {
-      this.spin.show()
-      this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
-        next: (res: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].partnerHouseAirwayBill + ' has been updated successfully' });
-          this.dialogRef.close();
-          this.spin.hide();
-        }, error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        }
-      })
-    } else {
-      this.spin.show()
-      this.service.Create([this.form.getRawValue()]).subscribe({
-        next: (res) => {
-          if (res) {
-            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: ' has been created successfully' });
-            this.dialogRef.close();
-            this.spin.hide();
-          }
-        }, error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        }
-      })
-    }
+
+    const date1 = this.cs.jsonDate(this.form.controls.estimatedTimeOfArrivalFE.value)
+    this.form.controls.estimatedTimeOfArrival.patchValue(date1)
+
+    this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
+      next: (res: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].partnerHouseAirwayBill + ' has been updated successfully' });
+        this.dialogRef.close();
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
   }
 
 
