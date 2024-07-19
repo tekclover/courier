@@ -128,17 +128,17 @@ public class PreAlertService {
 
 
                 // Get Iatakd
-                Optional<IKeyValuePair> optionalIKeyValuePair =
-                        replicaCcrRepository.getIataCurrencyValue(dbPreAlert.getCompanyId(), dbPreAlert.getLanguageId(),
-                                dbPreAlert.getCurrency(), dbPreAlert.getOriginCode());
+                IKeyValuePair optionalIKeyValuePair =
+                        replicaBondedManifestRepository.getToCurrencyValue(dbPreAlert.getCompanyId(), dbPreAlert.getCurrency());
+                IKeyValuePair ikeyIata = replicaCcrRepository.getIataKd(dbPreAlert.getOriginCode(), iKeyValuePair.getLangId(), dbPreAlert.getCompanyId());
+
                 //ExchangeCurrencyRate
-                if (optionalIKeyValuePair.isPresent()) {
-                    IKeyValuePair ikey = optionalIKeyValuePair.get();
-                    if (ikey.getCurrencyValue() != null) {
-                        dbPreAlert.setExchangeRate(ikey.getCurrencyValue());
-                    }
-                    if (ikey.getIataKd() != null) {
-                        dbPreAlert.setIata(ikey.getIataKd());
+                if (optionalIKeyValuePair != null && optionalIKeyValuePair.getCurrencyValue() != null) {
+
+                    dbPreAlert.setExchangeRate(optionalIKeyValuePair.getCurrencyValue());
+                    dbPreAlert.setConsignmentLocalId(optionalIKeyValuePair.getCurrencyId());
+                    if (ikeyIata != null && ikeyIata.getIataKd() != null) {
+                        dbPreAlert.setIata(ikeyIata.getIataKd());
                     }
                 }
 

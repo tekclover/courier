@@ -111,13 +111,13 @@ public class UpdateConsole {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -141,9 +141,9 @@ public class UpdateConsole {
 
     private String languageDescription;
 
-    private String statusId;
+//    private String statusId;
 
-    private String statusText;
+//    private String statusText;
 
     private String bondedId;
 
@@ -192,6 +192,24 @@ public class UpdateConsole {
     private String declaredValue;
 
     private String currency;
+
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator;
 

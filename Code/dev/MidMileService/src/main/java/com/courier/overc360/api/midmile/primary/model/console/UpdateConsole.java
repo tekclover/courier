@@ -105,13 +105,13 @@ public class UpdateConsole {
 
     private String paymentType;
 
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
+//    private String eventCode;
+//
+//    private String eventText;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -139,9 +139,9 @@ public class UpdateConsole {
 
     private String languageDescription;
 
-    private String statusId;
-
-    private String statusText;
+//    private String statusId;
+//
+//    private String statusText;
 
     private String bondedId;
 
@@ -190,6 +190,8 @@ public class UpdateConsole {
     private String declaredValue;
 
     private String currency;
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator;
 

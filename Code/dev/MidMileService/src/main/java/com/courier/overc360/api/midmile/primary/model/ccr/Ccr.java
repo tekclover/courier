@@ -313,6 +313,9 @@ public class Ccr {
     @Column(name = "SPECIAL_APPROVAL_CHARGE", columnDefinition = "nvarchar(50)")
     private String specialApprovalCharge;
 
+    @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
+    private String consignmentLocalId;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

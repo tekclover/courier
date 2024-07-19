@@ -1,18 +1,22 @@
 package com.courier.overc360.api.midmile.replica.model.console;
 
-import com.courier.overc360.api.midmile.primary.model.console.ConsoleCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/**
+/*
  * `LANG_ID`, `C_ID`, `PARTNER_ID`, `MASTER_AIRWAY_BILL`, `HOUSE_AIRWAY_BILL`,`CONSOLE_ID`
  */
 @Table(name = "tblconsole",
@@ -61,12 +65,6 @@ public class ReplicaConsole {
 //    @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
 //    private String pieceItemId;
 
-    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
-    private String languageDescription;
-
-    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
-    private String partnerType;
-
     @Column(name = "CONSIGNMENT_CURRENCY", columnDefinition = "nvarchar(50)")
     private String consignmentCurrency;
 
@@ -100,14 +98,20 @@ public class ReplicaConsole {
     @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
     private String calculatedTotalDuty;
 
+    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
+    private String languageDescription;
+
+    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
+    private String partnerType;
+
     @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(100)")
     private String partnerName;
 
-    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
-    private String statusId;
-
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
-    private String statusText;
+//    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+//    private String statusId;
+//
+//    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+//    private String statusText;
 
     @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
     private String primaryDo;
@@ -172,17 +176,17 @@ public class ReplicaConsole {
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
-    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-    private String eventCode;
-
-    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
-    private String eventText;
-
-    @Column(name = "EVENT_TIMESTAMP")
-    private Date eventTimestamp;
-
-    @Column(name = "STATUS_TIMESTAMP")
-    private Date statusTimestamp;
+//    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+//    private String eventCode;
+//
+//    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+//    private String eventText;
+//
+//    @Column(name = "EVENT_TIMESTAMP")
+//    private Date eventTimestamp;
+//
+//    @Column(name = "STATUS_TIMESTAMP")
+//    private Date statusTimestamp;
 
     @Column(name = "SHIPMENT_BAG_ID")
     private Long shipmentBagId;
@@ -301,6 +305,33 @@ public class ReplicaConsole {
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
+    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
+    private String hawbType;
+
+    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String hawbTypeId;
+
+    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String hawbTypeDescription;
+
+    @Column(name = "HAWB_TIMESTAMP")
+    private Date hawbTimeStamp = new Date();
+
+    @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
+    private String pieceType;
+
+    @Column(name = "PIECE_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String pieceTypeId;
+
+    @Column(name = "PIECE_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String pieceTypeDescription;
+
+    @Column(name = "PIECE_TIMESTAMP")
+    private Date pieceTimeStamp = new Date();
+
+    @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
+    private String consignmentLocalId;
+
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
 
@@ -372,6 +403,5 @@ public class ReplicaConsole {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
-
 
 }

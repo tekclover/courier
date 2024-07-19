@@ -128,4 +128,79 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
 
     Console findByHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
             String houseAirwayBill, String fromConsoleId, String pieceId, Long deletionIndicator);
+
+
+    // Update Consignment Table On Console Create
+    @Transactional
+    @Modifying
+    @Query(value = "Update tblconsignment_entity\n" +
+            "Set \n" +
+            "HAWB_TYP = :hawbType,\n" +
+            "HAWB_TYP_ID = :hawbTypeId,\n" +
+            "HAWB_TYP_TXT = :hawbTypeDescription,\n" +
+            "HAWB_TIMESTAMP = GETDATE()\n" +
+            "Where IS_DELETED = 0 \n" +
+            "AND LANG_ID = :languageId \n" +
+            "And C_ID = :companyId \n" +
+            "AND PARTNER_ID = :partnerId \n" +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill\n" +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill", nativeQuery = true)
+    void updateConsignmentOnConsoleCreate(@Param("languageId") String languageId,
+                                          @Param("companyId") String companyId,
+                                          @Param("partnerId") String partnerId,
+                                          @Param("houseAirwayBill") String houseAirwayBill,
+                                          @Param("masterAirwayBill") String masterAirwayBill,
+                                          @Param("hawbTypeDescription") String hawbTypeDescription,
+                                          @Param("hawbTypeId") String hawbTypeId,
+                                          @Param("hawbType") String hawbType);
+
+
+    // Update PreAlert Table On Console Create
+    @Transactional
+    @Modifying
+    @Query(value = "Update tblprealert\n" +
+            "Set \n" +
+            "HAWB_TYP = :hawbType,\n" +
+            "HAWB_TYP_ID = :hawbTypeId,\n" +
+            "HAWB_TYP_TXT = :hawbTypeDescription,\n" +
+            "HAWB_TIMESTAMP = GETDATE()\n" +
+            "Where IS_DELETED = 0 \n" +
+            "AND LANG_ID = :languageId \n" +
+            "And C_ID = :companyId \n" +
+            "AND PARTNER_ID = :partnerId \n" +
+            "AND PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAirwayBill\n" +
+            "AND PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAirwayBill", nativeQuery = true)
+    void updatePreAlertOnConsoleCreate(@Param("languageId") String languageId,
+                                       @Param("companyId") String companyId,
+                                       @Param("partnerId") String partnerId,
+                                       @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+                                       @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
+                                       @Param("hawbTypeDescription") String hawbTypeDescription,
+                                       @Param("hawbTypeId") String hawbTypeId,
+                                       @Param("hawbType") String hawbType);
+
+    // Update PieceDetails Table On Console Create
+    @Transactional
+    @Modifying
+    @Query(value = "Update tblpiecedetails\n" +
+            "Set \n" +
+            "PIECE_TYP = :hawbType,\n" +
+            "PIECE_TYP_ID = :hawbTypeId,\n" +
+            "PIECE_TYP_TXT = :hawbTypeDescription,\n" +
+            "PIECE_TIMESTAMP = GETDATE()\n" +
+            "Where IS_DELETED = 0 \n" +
+            "AND LANG_ID = :languageId \n" +
+            "And C_ID = :companyId \n" +
+            "AND PARTNER_ID = :partnerId \n" +
+            "AND MASTER_AIRWAY_BILL = :masterAirwayBill\n" +
+            "AND HOUSE_AIRWAY_BILL = :houseAirwayBill", nativeQuery = true)
+    void updatePieceDetailsOnConsoleCreate(@Param("languageId") String languageId,
+                                           @Param("companyId") String companyId,
+                                           @Param("partnerId") String partnerId,
+                                           @Param("houseAirwayBill") String houseAirwayBill,
+                                           @Param("masterAirwayBill") String masterAirwayBill,
+                                           @Param("hawbTypeDescription") String hawbTypeDescription,
+                                           @Param("hawbTypeId") String hawbTypeId,
+                                           @Param("hawbType") String hawbType);
+
 }

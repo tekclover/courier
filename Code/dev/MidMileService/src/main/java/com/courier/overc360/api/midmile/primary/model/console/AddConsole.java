@@ -45,9 +45,9 @@ public class AddConsole {
 
     private String languageDescription;
 
-    private String statusId;
-
-    private String statusText;
+//    private String statusId;
+//
+//    private String statusText;
 
     private String bondedId;
 
@@ -121,13 +121,13 @@ public class AddConsole {
 
     private String paymentType;
 
-    private String eventCode;
-
-    private String eventText;
-
-    private Date eventTimestamp;
-
-    private Date statusTimestamp;
+//    private String eventCode;
+//
+//    private String eventText;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -190,6 +190,8 @@ public class AddConsole {
     private String declaredValue;
 
     private String currency;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 

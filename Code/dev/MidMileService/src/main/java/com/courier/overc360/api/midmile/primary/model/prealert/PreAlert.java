@@ -151,6 +151,9 @@ public class PreAlert {
     @Column(name = "HAWB_TIMESTAMP")
     private Date hawbTimeStamp = new Date();
 
+    @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
+    private String consignmentLocalId;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
