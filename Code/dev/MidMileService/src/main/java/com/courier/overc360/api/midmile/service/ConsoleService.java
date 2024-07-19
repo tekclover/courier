@@ -300,6 +300,7 @@ public class ConsoleService {
 
         for (PreAlert preAlert : preAlerts) {
             AddConsole newConsole = new AddConsole();
+            BeanUtils.copyProperties(preAlert, newConsole, CommonUtils.getNullPropertyNames(preAlert));
             // weight
             newConsole.setTareWeight(preAlert.getTotalWeight());
             newConsole.setGrossWeight(preAlert.getTotalWeight());
@@ -443,7 +444,7 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             // Get Piece
-                            List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getCompanyId(), newConsole.getCompanyId(),
+                            List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
                                     newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
 
                             if (piece != null) {
@@ -646,7 +647,7 @@ public class ConsoleService {
                             newConsole.setUpdatedOn(new Date());
 
                             // Get Piece
-                            List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getCompanyId(), newConsole.getCompanyId(),
+                            List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
                                     newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
 
                             if (piece != null) {
