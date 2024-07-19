@@ -109,7 +109,7 @@ public class ConsignmentService {
         String masterAirwayBill = numberRangeService.getNextNumberRange("MAWB");
 
         //Cassandra save
-//        commonService.createConsignment(consignmentEntityList, loginUserId, masterAirwayBill);
+        commonService.createConsignment(consignmentEntityList, loginUserId, masterAirwayBill);
 
         for (AddConsignment consignmentEntity : consignmentEntityList) {
 
@@ -181,11 +181,11 @@ public class ConsignmentService {
             }
 
             // Duplicate Check Consignment
-            Optional<ConsignmentEntity> duplicateConsignment =
-                    consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
-                            languageId, companyId, partnerId, partnerMawBill, partnerHawBill, 0L);
+            ConsignmentEntity duplicateConsignment =
+                    consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+                            languageId, companyId, partnerId, partnerHawBill, 0L);
 
-            if (duplicateConsignment.isPresent()) {
+            if (duplicateConsignment != null) {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 

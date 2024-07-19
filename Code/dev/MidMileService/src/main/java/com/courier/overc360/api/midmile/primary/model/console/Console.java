@@ -79,6 +79,12 @@ public class Console {
     @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
     private String consignmentValue;
 
+    @Column(name = "CONSOLE_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleName;
+
+    @Column(name = "CONSOLE_GROUP_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleGroupName;
+
     @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
     private String exchangeRate;
 

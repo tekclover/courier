@@ -31,6 +31,10 @@ public class UpdateConsole {
 
     private String consignmentCurrency;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private String consignmentValue;
 
     private String exchangeRate;
