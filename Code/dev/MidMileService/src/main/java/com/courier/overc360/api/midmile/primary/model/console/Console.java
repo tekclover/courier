@@ -175,6 +175,9 @@ public class Console {
     @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
     private String notifyParty;
 
+    @Column(name = "NO_OF_PIECES", columnDefinition = "nvarchar(50)")
+    private String noOfPieces;
+
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 

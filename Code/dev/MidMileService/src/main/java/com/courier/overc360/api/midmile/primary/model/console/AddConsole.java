@@ -53,6 +53,8 @@ public class AddConsole {
 
     private String consignmentValue;
 
+    private String noOfPieces;
+
     private String exchangeRate;
 
     private String iata;
