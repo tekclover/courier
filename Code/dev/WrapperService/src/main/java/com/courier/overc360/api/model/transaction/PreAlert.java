@@ -112,4 +112,11 @@ public class PreAlert {
 
     private String referenceField10;
 
+    private String createdBy;
+
+    private Date createdOn = new Date();
+
+    private String updatedBy;
+
+    private Date updatedOn = new Date();
 }

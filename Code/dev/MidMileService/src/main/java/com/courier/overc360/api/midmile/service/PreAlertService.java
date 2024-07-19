@@ -231,7 +231,6 @@ public class PreAlertService {
                         }
                     }
                 }
-
                 preAlertList.add(savedPreAlert);
             } else {
                log.info("PreAlert Record is Duplicated ");
