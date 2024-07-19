@@ -305,10 +305,8 @@
                 <div class="row scrollNew">
                     <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Company</p>
-                        <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
-                            [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                        <mat-error *ngIf="errorHandling('companyId')"
-                            class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                        <input maxlength="50" pInputText  formControlName="companyId"
+                        class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
@@ -320,8 +318,7 @@
                         <input maxlength="100" pInputText formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
                         placeholder="Enter"
                         [ngClass]="form.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                        <mat-error *ngIf="errorHandling('partnerHouseAirwayBill')" class="text-danger"><small>{{
-                                getErrorMessage()}}</small></mat-error>
+               
                     </div>
                     <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
@@ -329,10 +326,7 @@
                         class="w-100" pInputText placeholder="Enter" />
                     </div>
                 </div>
-                <!-- <div class="d-flex justify-content-end mb-3">
-                    <button (click)="add()" type="button" class="btn ml-2 addNewbuttom bgBlack text-white"><i
-                            class="bi bi-plus-square pr-2"></i>Add Values</button>
-                </div> -->
+                
                 <div class="tableProperties">
                     <p-table #preAlertEditTag [columns]="cols" [value]="preAlertManifestTableArray"  class="custom-table" [scrollable]="true"
                         selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedPreAlertManifest"

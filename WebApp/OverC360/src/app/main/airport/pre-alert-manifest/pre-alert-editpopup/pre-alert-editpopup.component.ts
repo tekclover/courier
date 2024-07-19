@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,6 +39,7 @@ export class PreAlertEditpopupComponent {
     private messageService: MessageService,
     private cas: CommonAPIService,
     private auth: AuthService,
+    private el: ElementRef
   ) {
     this.partnerType = [
       { value: 'customer', label: 'Customer' },
@@ -222,10 +223,53 @@ export class PreAlertEditpopupComponent {
   }
 
   save() {
-    this.dialogRef.close(this.form.getRawValue());
-
-    
-  } 
+    this.submitted = true;
+    if (this.form.invalid) {
+      for (const control in this.form.controls) {
+        const controlInstance = this.form.get(control);
+        if (controlInstance?.invalid) {
+          const invalidControl = this.el.nativeElement.querySelector(`#${control}`);
+          if (invalidControl) {
+            invalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            break;
+          }
+        }
+      }
+    }
+    if (this.form.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', key: 'br', detail: 'Please fill required fields to continue' });
+      return;
+    }
+    const date = this.cs.jsonDate(this.form.controls.estimatedDepartureTimeFE.value)
+    this.form.controls.estimatedDepartureTime.patchValue(date)
+    if (this.pageToken.pageflow != 'New') {
+      this.spin.show()
+      this.service.UpdatePreAlertManifest([this.form.getRawValue()]).subscribe({
+        next: (res: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].partnerHouseAirwayBill + ' has been updated successfully' });
+          this.dialogRef.close();
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    } else {
+      this.spin.show()
+      this.service.Create([this.form.getRawValue()]).subscribe({
+        next: (res) => {
+          if (res) {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: ' has been created successfully' });
+            this.dialogRef.close();
+            this.spin.hide();
+          }
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }
+  }
 
 
 }
