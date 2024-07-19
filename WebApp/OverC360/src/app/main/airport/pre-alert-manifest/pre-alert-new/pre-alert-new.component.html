@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12"  id="partnerMasterAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
-                                <input maxlength="100" pInputText pKeyFilter="num" formControlName="partnerMasterAirwayBill" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="partnerMasterAirwayBill" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('partnerMasterAirwayBill')" class="text-danger"><small>{{
@@ -74,7 +74,7 @@
                             </div>
                             <!-- <div class="col-6 marginFieldNew borderRadius12"  id="partnerHouseAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
-                                <input maxlength="100" pInputText pKeyFilter="num" formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('partnerHouseAirwayBill')" class="text-danger"><small>{{

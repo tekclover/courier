@@ -65,7 +65,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12"  id="partnerMasterAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
-                                <input maxlength="100" pInputText pKeyFilter="num" formControlName="partnerMasterAirwayBill" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="partnerMasterAirwayBill" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('partnerMasterAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('partnerMasterAirwayBill')" class="text-danger"><small>{{
@@ -73,7 +73,7 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12"  id="partnerHouseAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner HAWB</p>
-                                <input maxlength="100" pInputText pKeyFilter="num" formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
+                                <input maxlength="100" pInputText formControlName="partnerHouseAirwayBill" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('partnerHouseAirwayBill')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('partnerHouseAirwayBill')" class="text-danger"><small>{{
@@ -182,8 +182,8 @@
                                 <mat-error *ngIf="errorHandling('masterAirwayBill')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div> -->
-                            <div class="col-6 marginFieldNew borderRadius12" id="estimatedDepartureTime">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Estimated Time Of Departure</p>
+                            <div class="col-6 marginFieldNew borderRadius12" id="estimatedDepartureTimeFE">
+                                <p class="formControlLabel f600 textBlack mb-0">Estimated Time Of Departure</p>
                                 <p-calendar formControlName="estimatedDepartureTimeFE" appendTo="body"
                                 [ngClass]="form.get('estimatedDepartureTimeFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
@@ -193,12 +193,14 @@
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 
-                            <div class="col-6 marginFieldNew borderRadius12" id="flightArrivalTime">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Estimated Time Of Arrival</p>
-                                <input maxlength="100" pInputText formControlName="flightArrivalTime" class=" w-100" pInputText
-                                placeholder="Enter"
-                                [ngClass]="form.get('flightArrivalTime')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('flightArrivalTime')" class="text-danger"><small>{{
+                            <div class="col-6 marginFieldNew borderRadius12" id="flightArrivalTimeFE">
+                                <p class="formControlLabel f600 textBlack mb-0">Estimated Time Of Arrival</p>
+                                <p-calendar formControlName="flightArrivalTimeFE" appendTo="body"
+                                [ngClass]="form.get('flightArrivalTimeFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
+                                [showIcon]="true" />
+
+                                <mat-error *ngIf="errorHandling('estimatedDepartureTime')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
 

@@ -67,15 +67,17 @@ export class PreAlertManifestComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'houseAirwayBill', header: 'Consignment No' },
+      { field: 'companyName', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'hsCode', header: 'HS Code' },
-      { field: 'description', header: 'Description' },
+      { field: 'partnerType', header: 'Partner Type' },
+      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'flightNo', header: 'Flight No' },
+      { field: 'flightName', header: 'Flight Name' },
+      { field: 'estimatedDepartureTime', header: 'Departure Time' },
+      { field: 'flightArrivalTime', header: 'Arrival Time' },
       { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
       { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
       { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
-      { field: 'statusDescription', header: 'Status' },
       { field: 'eventText', header: 'Event' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -111,7 +113,7 @@ export class PreAlertManifestComponent {
       this.service.searchPrealert(obj).subscribe({
         next: (res: any) => {
           this.preAlertManifestTable = res;
-          console.log(res);
+          this.preAlertManifestTable = this.cs.removeDuplicatesFromArrayList(this.preAlertManifestTable, 'partnerMasterAirwayBill')
           this.getSearchDropdown();
           this.spin.hide();
         }, error: (err) => {
@@ -158,7 +160,7 @@ export class PreAlertManifestComponent {
     }
   }
 
-  
+
   openEdit(type: any = 'New', linedata: any = null): void {
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
