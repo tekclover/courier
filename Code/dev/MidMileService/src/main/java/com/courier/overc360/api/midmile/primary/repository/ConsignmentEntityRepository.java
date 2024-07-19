@@ -154,6 +154,6 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("customsValue") String customsValue,
                                   @Param("calculatedTotalDuty") String calculatedTotalDuty);
 
-    Boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
-            String companyId, String langId, String partnerId, String partnerMasterAirwayBill, Long deletionIndicator);
+    ConsignmentEntity findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String partnerHouseAirwayBill, Long deletionIndicator);
 }
