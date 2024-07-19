@@ -237,31 +237,31 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({
-      next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
-        this.spin.hide();
-        this.initialCall();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-    // const consignmentId = this.selectedPreAlertManifest.map(item => item.houseAirwayBill);
-    // this.service.search({ houseAirwayBill: consignmentId }).subscribe({
-    //   next: (result) => {
-    //     this.console.CreateFromConsignment(result).subscribe({
-    //       next: (res) => {
-    //         this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
-    //         this.spin.hide();
-    //         this.initialCall();
-    //       }, error: (err) => {
-    //         this.spin.hide();
-    //         this.cs.commonerrorNew(err);
-    //       }
-    //     })
+    // this.console.CreateFromConsignment(this.selectedPreAlertManifest).subscribe({
+    //   next: (res) => {
+    //     this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
+    //     this.spin.hide();
+    //     this.initialCall();
+    //   }, error: (err) => {
+    //     this.spin.hide();
+    //     this.cs.commonerrorNew(err);
     //   }
     // })
+    const consignmentId = this.selectedPreAlertManifest.map(item => item.partnerMasterAirwayBill);
+    this.service.searchPrealert({ partnerMasterAirwayBill: consignmentId }).subscribe({
+      next: (result) => {
+        this.console.CreateFromConsignment(result).subscribe({
+          next: (res) => {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Console has been created successfully' });
+            this.spin.hide();
+            this.initialCall();
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
+      }
+    })
 
   }
 
@@ -271,32 +271,32 @@ export class PreAlertManifestComponent {
       return;
     }
     this.spin.show();
-    this.manifest.CreatefromPrealert(this.selectedPreAlertManifest).subscribe({
-      next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
-        this.spin.hide();
-        this.downloadExcelByColsAndTarget(res);
-        this.initialCall()
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-    // const consignmentId = this.selectedPreAlertManifest.map(item => item.houseAirwayBill);
-    // this.service.search({ houseAirwayBill: consignmentId }).subscribe({
-    //   next: (result) => {
-    //     this.manifest.Create(result).subscribe({
-    //       next: (res) => {
-    //         this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
-    //         this.spin.hide();
-    //         this.initialCall()
-    //       }, error: (err) => {
-    //         this.spin.hide();
-    //         this.cs.commonerrorNew(err);
-    //       }
-    //     })
+    // this.manifest.CreatefromPrealert(this.selectedPreAlertManifest).subscribe({
+    //   next: (res) => {
+    //     this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
+    //     this.spin.hide();
+    //     this.downloadExcelByColsAndTarget(res);
+    //     this.initialCall()
+    //   }, error: (err) => {
+    //     this.spin.hide();
+    //     this.cs.commonerrorNew(err);
     //   }
     // })
+    const consignmentId = this.selectedPreAlertManifest.map(item => item.partnerMasterAirwayBill);
+    this.service.searchPrealert({ partnerMasterAirwayBill: consignmentId }).subscribe({
+      next: (result) => {
+        this.manifest.CreatefromPrealert(result).subscribe({
+          next: (res) => {
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
+            this.spin.hide();
+            this.initialCall()
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
+      }
+    })
   }
 
   searchform = this.fb.group({
