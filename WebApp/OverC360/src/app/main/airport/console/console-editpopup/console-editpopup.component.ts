@@ -137,6 +137,8 @@ export class ConsoleEditpopupComponent {
     updatedBy: [],
     updatedOn: [],
     volume: [],
+    consoleGroupName: [],
+    consoleName: [],
    
   });
 

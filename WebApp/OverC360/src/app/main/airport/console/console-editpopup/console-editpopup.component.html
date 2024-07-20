@@ -10,16 +10,6 @@
             <div class="d-flex-row">
                 <div class="row scrollNew">
                     <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">HAWB</p>
-                        <input maxlength="50"  formControlName="houseAirwayBill"
-                            class="w-100" pInputText placeholder="Enter" />
-                    </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">MWAB</p>
-                        <input maxlength="50" pInputText formControlName="masterAirwayBill"
-                            class="w-100" pInputText placeholder="Enter" />
-                    </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Partner HWAB</p>
                         <input maxlength="50" pInputText formControlName="partnerHouseAirwayBill"
                             class="w-100" pInputText placeholder="Enter" />
@@ -30,6 +20,20 @@
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
                     
+                    <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0">Console Name</p>
+                        <input maxlength="50"  pInputText formControlName="consoleName"
+                        class="w-100" pInputText placeholder="Enter" />
+                        
+                    </div>
+
+                    <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0">Console Group</p>
+                        <input maxlength="50"  pInputText formControlName="consoleGroupName"
+                        class="w-100" pInputText placeholder="Enter" />
+                        
+                    </div>
+
                     <div class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 required">Airport Origin Code</p>
                         <input maxlength="50"  pInputText formControlName="airportOriginCode"
@@ -48,7 +52,7 @@
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">No Of Piece</p>
-                        <input maxlength="50"  pInputText formControlName="noOfPieceHawb"
+                        <input maxlength="50"  pInputText formControlName="noOfPieces"
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >
@@ -74,7 +78,7 @@
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 required">Consignment Currency</p>
-                        <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="consignmentCurrency" appendTo="body"
+                        <p-dropdown [options]="currencyIdList" placeholder="Select" filter="true" formControlName="currency" appendTo="body"
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12" >

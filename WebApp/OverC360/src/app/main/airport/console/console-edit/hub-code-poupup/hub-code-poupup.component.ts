@@ -67,7 +67,7 @@ hubList:any[]=[];
   showHub=false;
 
 save() {
-this.dialogRef.close(this.form.controls.hubCode.value)
+  this.dialogRef.close(this.form.controls.hubCode.value);
 }
 
 
