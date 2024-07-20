@@ -44,5 +44,11 @@ public interface IKeyValuePair {
 
     String getPieceId();
 
+    String getInvoiceType();
+
+    String getInvoiceNumber();
+
+    String getInvoiceDate();
+
 
 }

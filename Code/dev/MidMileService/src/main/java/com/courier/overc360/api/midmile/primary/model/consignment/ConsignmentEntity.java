@@ -193,7 +193,7 @@ public class ConsignmentEntity {
     @Column(name = "INVOICE_DATE", columnDefinition = "nvarchar(50)")
     private String invoiceDate;
 
-    @Column(name = "INVOICE_Type", columnDefinition = "nvarchar(50)")
+    @Column(name = "INVOICE_TYPE", columnDefinition = "nvarchar(50)")
     private String invoiceType;
 
     @Column(name = "INVOICE_URL", columnDefinition = "nvarchar(500)")

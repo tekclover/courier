@@ -143,7 +143,7 @@ public class ConsoleController {
     }
 
     @ApiOperation(response = MobileApp.class, value = "Find Console For MobileApp")
-    @PostMapping("/find/mobileapp")
+    @GetMapping("/find/mobileapp")
     public ResponseEntity<?> findMobileApp() {
         List<MobileApp> dbMobileApp = consoleService.getAllMobileApp();
         return new ResponseEntity<>(dbMobileApp, HttpStatus.OK);

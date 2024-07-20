@@ -379,6 +379,7 @@ public class ConsoleService {
 
                         String NUM_RAN_OBJ = "CONSOLEID";
                         String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
                         for (AddConsole console : consoleEntryList) {
 
                             boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
@@ -475,8 +476,7 @@ public class ConsoleService {
                                         // Update ConsignmentEntity Table
                                         consoleRepository.updateConsignmentOnConsoleCreate(
                                                 createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
 
                                         // Update PreAlert Table
                                         consoleRepository.updatePreAlertOnConsoleCreate(
@@ -593,20 +593,6 @@ public class ConsoleService {
                                 newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
                                 newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                             }
-
-                            // Customs Value set multiply formula
-//                            String CUS_VAL = null;
-//                            if (console.getConsignmentValue() != null && iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
-//                                Double CON_VAL = Double.valueOf(console.getConsignmentValue());
-//                                Double CURR_VAL = Double.valueOf(iKeyValuePair.getCurrencyValue());
-//                                CUS_VAL = String.valueOf(CON_VAL * CURR_VAL);
-//                                newConsole.setCustomsCurrency(iKeyValuePair.getCurrencyId());
-//                            }
-
-                            // Get Iatakd
-//                            IKeyValuePair iataData = ccrRepository.getIataKd(console.getCountryOfOrigin(),
-//                                    console.getLanguageId(), console.getCompanyId());
-
                             Double consignmentValue = null;
                             if (console.getConsignmentValue() != null) {
                                 consignmentValue = Double.valueOf(console.getConsignmentValue());
@@ -676,8 +662,7 @@ public class ConsoleService {
                                         // Update ConsignmentEntity Table
                                         consoleRepository.updateConsignmentOnConsoleCreate(
                                                 createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
 
                                         // Update PreAlert Table
                                         consoleRepository.updatePreAlertOnConsoleCreate(
@@ -789,8 +774,7 @@ public class ConsoleService {
                     // Update ConsignmentEntity Table
                     consoleRepository.updateConsignmentOnConsoleCreate(
                             createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
 
                     // Update PreAlert Table
                     consoleRepository.updatePreAlertOnConsoleCreate(
@@ -854,6 +838,16 @@ public class ConsoleService {
                     dbConsole.setPieceTimeStamp(new Date());
                 }
 
+                Optional<IKeyValuePair> ikey = replicaConsoleRepository.getInvoice(updateConsole.getCompanyId(),
+                        updateConsole.getLanguageId(), updateConsole.getPartnerId(), updateConsole.getPartnerHouseAirwayBill(),
+                        updateConsole.getPartnerMasterAirwayBill());
+
+                if(ikey.isPresent()) {
+                    IKeyValuePair invoice = ikey.get();
+                    dbConsole.setInvoiceType(invoice.getInvoiceType());
+                    dbConsole.setInvoiceNumber(invoice.getInvoiceNumber());
+                    dbConsole.setInvoiceDate(invoice.getInvoiceDate());
+                }
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
 

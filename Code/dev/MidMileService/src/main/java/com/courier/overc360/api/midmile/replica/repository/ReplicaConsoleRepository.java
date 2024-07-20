@@ -1,5 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
+import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.console.MobileApp;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -78,4 +79,17 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             nativeQuery = true)
     List<MobileApp> getMobileApp();
 
+    @Query(value = "select invoice_type invoiceType, " +
+            " invoice_number invoiceNumber, " +
+            " invoice_date invoiceDate from tblconsignment_entity where " +
+            " partner_house_ab = :partnerHouseAB and " +
+            " partner_master_ab = :partnerMasterAB and " +
+            " partner_id = :partnerId and " +
+            " c_id = :companyId and " +
+            " lang_id = :languageId ", nativeQuery = true)
+    Optional<IKeyValuePair> getInvoice(@Param("companyId") String companyId,
+                             @Param("languageId") String languageId,
+                             @Param("partnerId") String partnerId,
+                             @Param("partnerHouseAB") String partnerHouseAB,
+                             @Param("partnerMasterAB") String partnerMasterAB);
 }
