@@ -439,7 +439,7 @@ public class ConsoleService {
 
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setConsoleId(CONSOLE_ID);
-                            newConsole.setConsoleName(CONSOLE_NAME);
+                            newConsole.setConsoleName("Console - " + CONSOLE_NAME);
                             newConsole.setDeletionIndicator(0L);
                             newConsole.setCreatedBy(loginUserID);
                             newConsole.setCreatedOn(new Date());
@@ -630,7 +630,7 @@ public class ConsoleService {
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
 //                            newConsole.setCustomsValue(CUS_VAL);
                             newConsole.setConsoleId(SUB_CONSOLE_ID);
-                            newConsole.setConsoleName(SUB_CONSOLE_NAME);
+                            newConsole.setConsoleName("Console - " + SUB_CONSOLE_NAME);
                             newConsole.setDeletionIndicator(0L);
                             newConsole.setCreatedBy(loginUserID);
                             newConsole.setCreatedOn(new Date());
@@ -759,7 +759,7 @@ public class ConsoleService {
                     newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
                 newConsole.setConsoleId(CONSOLE_ID);
-                newConsole.setConsoleName(CONSOLE_NAME);
+                newConsole.setConsoleName("Console - " + CONSOLE_NAME);
                 newConsole.setDeletionIndicator(0L);
                 newConsole.setCreatedBy(loginUserID);
                 newConsole.setCreatedOn(new Date());
