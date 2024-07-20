@@ -534,7 +534,7 @@ export class PreAlertManifestComponent {
       return exportItem;
     });
     const itemsSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(itemsData);
-    XLSX.utils.book_append_sheet(wb, itemsSheet, `Items_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`);
+    XLSX.utils.book_append_sheet(wb, itemsSheet, `Items`); //_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}
     sheetNumber += 2;
 
     XLSX.writeFile(

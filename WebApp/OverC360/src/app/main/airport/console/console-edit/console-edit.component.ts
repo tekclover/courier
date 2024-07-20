@@ -15,6 +15,8 @@ import { ConsoleEditpopupComponent } from '../console-editpopup/console-editpopu
 import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { ConsoleBulkComponent } from '../console-bulk/console-bulk.component';
+import { HubCodePoupupComponent } from './hub-code-poupup/hub-code-poupup.component';
 
 @Component({
   selector: 'app-console-edit',
@@ -210,14 +212,14 @@ export class ConsoleEditComponent {
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
-      { field: 'quantity', header: 'No of Piece' },
+      { field: 'noOfPieces', header: 'No of Piece' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'grossWeight', header: 'Weight' },
       { field: 'airportOriginCode', header: 'Airport Origin Code' },
       { field: 'hsCode', header: 'HS Code' },
       { field: 'consigneeName', header: 'Consignee Name' },
       { field: 'consignmentValue', header: 'Consignment Value' },
-      { field: 'consignmentCurrency', header: 'Consignment Currency' },
+      { field: 'currency', header: 'Consignment Currency' },
       { field: 'customsValue', header: 'Customs Value' },
       { field: 'iata', header: 'IATA Charges' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -350,7 +352,7 @@ export class ConsoleEditComponent {
           severity: 'success',
           summary: 'Updated',
           key: 'br',
-          detail: res[0].ccrId + ' has been created successfully',
+          detail: res[0].partnerHouseAirwayBill + ' has been created successfully',
         });
         this.downloadExcelWB(res);
         this.router.navigate(['/main/airport/console']);
@@ -450,6 +452,10 @@ export class ConsoleEditComponent {
     ];
 
     this.invoiceItems = [
+      { field: 'partnerHouseAirwayBill', header: 'BillNumber' },
+      { field: 'invoiceNumber', header: 'InvoiceNumber' },
+      { field: 'hsCode', header: 'HSCode' },
+      { field: 'goodsDescription', header: 'GoodsDescription' },
       { field: 'countryOfOrigin', header: 'Country Of Origin' },
       { field: 'manufacturer', header: 'Manufacturer' },
       { field: 'noOfPieceHawb', header: 'No Of Packages' },
@@ -472,7 +478,7 @@ export class ConsoleEditComponent {
         const consoleData = groupedByConsoleId[consoleId];
         const consoleSheetData = (Object.values(consoleData) as { [x: string]: any }[]).map(item => {
           const exportItem: any = {};
-          res.forEach((col:any) => {
+          this.consoleManifest.forEach((col:any) => {
             if (col.format == 'date') {
               exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
             } else {
@@ -526,5 +532,20 @@ export class ConsoleEditComponent {
       wb,
       `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
     );
+  }
+
+
+  callHubCode() {
+    const dialogRef = this.dialog.open(HubCodePoupupComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { title: 'Hub Code', code: this.selectedConsole },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      //this.initialCall();
+    });
   }
 }

@@ -15,6 +15,7 @@ import { ConsoleBulkComponent } from './console-bulk/console-bulk.component';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { FormBuilder } from '@angular/forms';
 import { ConsignmentLabelComponent } from '../../pdf/consignment-label/consignment-label.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-console',
@@ -29,8 +30,8 @@ export class ConsoleComponent {
   cols: any[] = [];
   target: any[] = [];
 
-  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService, 
-    public dialog: MatDialog, private datePipe: DatePipe, private fb: FormBuilder, private auth: AuthService, private spin: NgxSpinnerService,  private service: ConsoleService,private label: ConsignmentLabelComponent
+  constructor(private messageService: MessageService, private cs: CommonServiceService, private router: Router, private path: PathNameService,
+    public dialog: MatDialog, private datePipe: DatePipe, private fb: FormBuilder, private auth: AuthService, private spin: NgxSpinnerService, private service: ConsoleService, private label: ConsignmentLabelComponent
   ) { }
 
   fullDate: any;
@@ -48,10 +49,10 @@ export class ConsoleComponent {
     this.cols = [
       { field: 'companyId', header: 'Company' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-    //  { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-    //  { field: 'statusText', header: 'Status' },
-      { field: 'hawbTypeDescription', header: 'Event' }, 
-      { field: 'hawbTimeStamp', header: 'Time' }, 
+      //  { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      //  { field: 'statusText', header: 'Status' },
+      { field: 'hawbTypeDescription', header: 'Event' },
+      { field: 'hawbTimeStamp', header: 'Time' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -72,37 +73,37 @@ export class ConsoleComponent {
       { field: 'iata', header: 'IATA Charges' },
     ];
   }
-  updateBulk(){
+  updateBulk() {
     const dialogRef = this.dialog.open(ConsoleBulkComponent, {
       disableClose: true,
       width: '70%',
       maxWidth: '80%',
       position: { top: '6.5%', left: '30%' },
-      data: {title: 'Console',code :  this.selectedConsole} ,
+      data: { title: 'Console', code: this.selectedConsole },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-   this.initialCall();
+      this.initialCall();
     });
-}
+  }
   initialCall() {
     setTimeout(() => {
-    this.spin.show();
-    let obj: any = {};
-    obj.languageId = [this.auth.languageId];
-    obj.companyId = [this.auth.companyId];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        res = this.cs.removeDuplicatesFromArrayList(res, 'partnerMasterAirwayBill')
-        this.consoleTable = res;
-        this.getSearchDropdown();
-        this.spin.hide();
-      }, error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      }
-    })
-  }, 2000);
+      this.spin.show();
+      let obj: any = {};
+      obj.languageId = [this.auth.languageId];
+      obj.companyId = [this.auth.companyId];
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          res = this.cs.removeDuplicatesFromArrayList(res, 'partnerMasterAirwayBill')
+          this.consoleTable = res;
+          this.getSearchDropdown();
+          this.spin.hide();
+        }, error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        }
+      })
+    }, 2000);
   }
 
   onChange() {
@@ -159,10 +160,10 @@ export class ConsoleComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-      const consoleID = this.selectedConsole.map(item => item.consoleId);
-        this.service.search({consoleId: consoleID, companyId: [this.auth.companyId]}).subscribe({
+        const consoleID = this.selectedConsole.map(item => item.consoleId);
+        this.service.search({ consoleId: consoleID, companyId: [this.auth.companyId] }).subscribe({
           next: (res: any) => {
-          this.deleterecord(res);
+            this.deleterecord(res);
           }, error: (err) => {
             this.spin.hide();
             this.cs.commonerrorNew(err);
@@ -203,34 +204,157 @@ export class ConsoleComponent {
       { field: 'customsValue', header: 'Customs KD' },
       { field: 'iata', header: 'IATA KD' },
       { field: 'hsCode', header: 'HS Code' },
+      { field: 'consoleId', header: 'Console ID', format : 'none' },
     ];
 
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
-    } 
+    }
     const consignmentId = this.selectedConsole.map(item => item.partnerMasterAirwayBill);
     this.service.search({ partnerMasterAirwayBill: consignmentId }).subscribe({
       next: (result) => {
-    
-        const   exportData = result.map((item:any, index:any) => {
+
+        // const currentDate = new Date().toLocaleDateString();
+        // const headerRow = {
+        //   '': '#',
+        //   '': 'AWB',
+        //   '': 'Origin',
+        //   '': 'Origin Code',
+        //   currentDate: 'Shipper',
+        //   '': 'WT KG',
+        //   '': 'PCS',
+        //   '': 'Description',
+        //   '': 'Consignee Name',
+        //   '': 'Currency',
+        //   '': 'Value',
+        //   '': 'Customs KD',
+        //   '': 'IATA KD',
+        //   '': 'HS Code'
+        // };
+
+        const exportData = result.map((item: any, index: any) => {
           const exportItem: any = {};
           cols.forEach(col => {
             if (col.format == 'number') {
               exportItem[col.header] = index + 1;
-            } else {
+            }else {
               exportItem[col.header] = item[col.field];
             }
           });
           return exportItem;
         });
-    
         this.cs.downloadExcel(exportData, 'Console', 'Console ID');
       }
     })
 
-
   }
+
+  groupBy(array: any[], key: string) {
+    return array.reduce((result: { [x: string]: any[]; }, currentValue: { [x: string]: any; }) => {
+      const groupKey = currentValue[key];
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(currentValue);
+      return result;
+    }, {});
+  }
+
+
+
+
+  downloadExcelWB() {
+    const cols = [
+      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
+      { field: 'partnerMasterAirwayBill', header: 'AWB' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'airportOriginCode', header: 'Origin Code' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'grossWeight', header: 'WT KG' },
+      { field: 'noOfPieces', header: 'PCS' },
+      { field: 'description', header: 'Description' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'customsValue', header: 'Customs KD' },
+      { field: 'iata', header: 'IATA KD' },
+      { field: 'hsCode', header: 'HS Code' },
+    ];
+  
+    const consignmentIds = this.selectedConsole.map(item => item.partnerMasterAirwayBill);
+    this.service.search({ partnerMasterAirwayBill: consignmentIds }).subscribe({
+      next: (result) => {
+        const groupedByConsoleId = this.groupBy(result, 'consoleId');
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  
+        for (const consoleId in groupedByConsoleId) {
+          if (groupedByConsoleId.hasOwnProperty(consoleId)) {
+            const consoleData = groupedByConsoleId[consoleId];
+  
+            // New row to be added before console data
+            const newRow = {
+              'AWB': 'New AWB',
+              'Origin': 'New Origin',
+              'Origin Code': 'New Origin Code',
+              'Shipper': 'New Shipper',
+              'WT KG': 100,
+              'PCS': 5,
+              'Description': 'New Description',
+              'Consignee Name': 'New Consignee',
+              'Currency': 'USD',
+              'Value': 500,
+              'Customs KD': 450,
+              'IATA KD': 400,
+              'HS Code': 'New HS Code',
+              'Console ID': consoleId // Include the console ID in the new row
+            };
+  
+            const consoleSheetData: any[] = [];
+  
+            // Add new row (newRow) as the first row
+          //  consoleSheetData.push(Object.values(newRow).map(String));
+  
+            // Add headers from cols as the second row
+            consoleSheetData.push(cols.map(col => col.header));
+  
+            // Map console data and convert to array of values
+            const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
+              const exportItem: any = {};
+              cols.forEach(col => {
+                // if (col.format == 'date') {
+                //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+                // } else {
+                //   exportItem[col.header] = item[col.field];
+                // }
+                if (col.format == 'number') {
+                  exportItem[col.header] = index + 1;
+                } else {
+                  exportItem[col.header] = item[col.field];
+                }
+              });
+              return Object.values(exportItem).map(String);
+            });
+  
+            // Add console data rows after headers
+            consoleSheetData.push(...consoleRows);
+  
+            const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
+            XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
+          }
+        }
+  
+        // Generate and download the Excel file
+        XLSX.writeFile(
+          wb,
+          `CONSOLE_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
+        );
+      }
+    });
+  }
+  
+  
+  
 
   onRowExpand(event: TableRowExpandEvent) {
   }
@@ -240,7 +364,7 @@ export class ConsoleComponent {
   getColspan(): number {
     return this.cols.length + 2; // +1 for the expanded content column
   }
-  isSelected(item:any): boolean {
+  isSelected(item: any): boolean {
     return this.selectedConsole.includes(item);
   }
 
@@ -344,14 +468,14 @@ export class ConsoleComponent {
       this.search();
     }
   }
-  generateLabel(){
+  generateLabel() {
     this.uniquePieceId = [];
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
     }
     let obj: any = {};
-    obj.consoleId=[this.selectedConsole[0].consoleId];
+    obj.consoleId = [this.selectedConsole[0].consoleId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
@@ -359,21 +483,21 @@ export class ConsoleComponent {
         this.label.getResultLabel(pieceId)
       },
       error: (err) => {
-       this.spin.hide();
-       this.cs.commonerrorNew(err);
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
       },
     });
   }
-  houseAirwayBill:any;
-  
-  generateInvoice(){
+  houseAirwayBill: any;
+
+  generateInvoice() {
     this.uniqueHouseAirway = [];
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
     }
     let obj: any = {};
-    obj.consoleId=[this.selectedConsole[0].consoleId];
+    obj.consoleId = [this.selectedConsole[0].consoleId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
@@ -381,16 +505,16 @@ export class ConsoleComponent {
         this.label.getResultInvoice(houseAirwayBillArray)
       },
       error: (err) => {
-       this.spin.hide();
-       this.cs.commonerrorNew(err);
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
       },
     });
   }
 
 
-  uniquePieceId: any[] = []; 
-  uniqueHouseAirway: any[] = []; 
-  generateMerge(){
+  uniquePieceId: any[] = [];
+  uniqueHouseAirway: any[] = [];
+  generateMerge() {
     this.uniqueHouseAirway = [];
     this.uniquePieceId = [];
     if (this.selectedConsole.length === 0) {
@@ -398,7 +522,7 @@ export class ConsoleComponent {
       return
     }
     let obj: any = {};
-    obj.consoleId=[this.selectedConsole[0].consoleId];
+    obj.consoleId = [this.selectedConsole[0].consoleId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
@@ -408,15 +532,15 @@ export class ConsoleComponent {
         this.label.generateMutiple(pieceId, houseAirwayBillArray)
       },
       error: (err) => {
-       this.spin.hide();
-       this.cs.commonerrorNew(err);
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
       },
     });
 
   }
 
   @ViewChild('fileInput1') fileInput1!: ElementRef;
-  uploadBayan(){
+  uploadBayan() {
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;

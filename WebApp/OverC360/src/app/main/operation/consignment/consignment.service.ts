@@ -95,7 +95,7 @@ export class ConsignmentService {
   uploadConsignment(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(`/consignment/upload/v2?companyId=${this.auth.companyId}`, formData);
+    return this.http.post<any>(`/consignment/upload/v2?companyId=${this.auth.companyId}&loginUserID=${this.auth.userID}`, formData);
   }
 
   download(obj:any): Promise<File> {
@@ -125,10 +125,9 @@ export class ConsignmentService {
 
  // Upload Pre-Alert Manifest
  uploadPreAlertFiles(file: File, obj: any) {
-  console.log(obj)
   const formData = new FormData();
     formData.append('file', file);
-  return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.estimatedTimeOfArrival}&estimatedTimeOfDeparture=${obj.estimatedDepartureTime}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}`, formData);
+  return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.estimatedTimeOfArrival}&estimatedTimeOfDeparture=${obj.estimatedDepartureTime}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}&loginUserID=${this.auth.userID}`, formData);
 }
 }
 

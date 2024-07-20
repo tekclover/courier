@@ -2,7 +2,24 @@
     <div class="d-flex justify-content-between align-items-center">
         <p class="componentHeader f600 mb-0">Console - {{this.pageToken.pageflow}}</p>
         <div class="d-flex justify-content-between align-items-center">
-            <button type="button"  class="invisible  bgBlack text-white ml-2" (click)="transfer()">Transfer</button>
+            <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
+            style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
+        <p-overlayPanel [style]="{ width: '180' }" #op>
+            <!-- <input type="file" #fileInput1 style="display:none" (change)="onFileSelectedBayan($event)" /> -->
+            <div class="d-flex flex-column">
+                <button style="width: 8rem;" mat-menu-item class="w-100"><img
+                        src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Customs Cleared</button>     
+            </div>
+            <div class="d-flex flex-column">
+                <button style="width: 8rem;" mat-menu-item class="w-100"><img
+                   src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Self Clearance  </button>
+             </div>
+             <div class="d-flex flex-column">
+                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="callHubCode()"><img
+                   src="./assets/common2x/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Outscan  </button>
+             </div>
+        </p-overlayPanel>
+            <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="saveCCR()">CCR</button>
         </div>
     </div>
 
@@ -29,11 +46,11 @@
                         <input maxlength="50" pInputText  formControlName="partnerMasterAirwayBill"
                             class="w-100" pInputText placeholder="Enter" />
                     </div>
-                    <div class="col-3 marginFieldNew borderRadius12">
+                    <!-- <div class="col-3 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
                         <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="statusText"
                         class="w-100" pInputText placeholder="Enter" />
-                    </div>
+                    </div> -->
                 </div>
                 <!-- <div class="d-flex justify-content-end mb-3">
                     <button (click)="add()" type="button" class="btn ml-2 addNewbuttom bgBlack text-white"><i
@@ -99,7 +116,7 @@
             </div>
             <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 3.5%; bottom: 7%;">
                 <button class="buttom1 textBlack mx-1" routerLink="/main/airport/console">Cancel</button>
-                <button class="buttom1 bgBlack text-white mx-1" (click)="saveCCR()">CCR</button>
+                <!-- <button class="buttom1 bgBlack text-white mx-1" (click)="saveCCR()">CCR</button> -->
             </div>
         </form>
     </div>
