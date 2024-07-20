@@ -215,6 +215,8 @@ public class Console {
 
     private String consoleGroupName;
 
+    private String hubCode;
+
     private Long deletionIndicator;
 
     private String consignmentLocalId;

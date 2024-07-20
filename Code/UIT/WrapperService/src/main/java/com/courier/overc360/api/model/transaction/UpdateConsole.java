@@ -225,6 +225,8 @@ public class UpdateConsole {
 
     private String consoleName;
 
+    private String hubCode;
+
     private String consoleGroupName;
 
     private String referenceField1;
