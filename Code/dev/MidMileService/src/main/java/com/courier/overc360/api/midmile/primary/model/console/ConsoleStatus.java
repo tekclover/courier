@@ -27,4 +27,6 @@ public class ConsoleStatus {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    private String hubCode;
+
 }

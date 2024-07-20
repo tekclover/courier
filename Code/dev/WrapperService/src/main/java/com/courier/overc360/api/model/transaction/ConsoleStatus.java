@@ -14,5 +14,6 @@ public class ConsoleStatus {
     private String hawbType;
     private String hawbTypeId;
     private String consoleId;
+    private String hubCode;
 
 }
