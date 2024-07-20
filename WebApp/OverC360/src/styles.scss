@@ -44,7 +44,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 
 .p-component, .p-component *{font-family: 'Nunito', sans-serif !important;}
 .p-datatable .p-datatable-thead > tr > th{color: var(--black) !important;
-    background-color: var(--tableGrey); font-size: var(--line12); font-weight: 500; padding-top: 1rem !important; padding-bottom: 1rem !important;
+    background-color: var(--tableGrey); font-size: var(--line12); font-weight: 500; padding-top: 0.9rem !important; padding-bottom: 0.9rem !important;
     }
 .p-datatable .p-datatable-tbody > tr > td {color: var(--black) !important;font-size: var(--line12); font-weight: 500;padding: 0.8rem 0px !important}
 .paddingZero .p-datatable .p-datatable-tbody > tr > td{padding: 0px 0px !important}
@@ -78,6 +78,9 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-datepicker .p-datepicker-header{padding: 0px !important;}
 .p-datepicker table td{padding: 0px !important;}
 .p-tag{padding: 0.1rem 0.6rem !important;}
+.p-column-filter{padding: 0.2rem 0.5rem !important;font-size: 0.7rem !important;}
+.p-column-filter1{padding: 0rem 0.5rem !important;font-size: 0.7rem !important;}
+
 // .p-picklist .p-picklist-list-wrapper{background-color: var(--black) !important; color: var(--white) !important; border: 0px; border-right: 1px solid #e0e0e0; border-radius: 0px;}
 // .p-picklist .p-picklist-header{color: var(--white);}
 // .p-picklist .p-picklist-list .p-picklist-item{color: var(--white);}

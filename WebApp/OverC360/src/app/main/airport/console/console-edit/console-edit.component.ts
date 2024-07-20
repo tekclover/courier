@@ -17,6 +17,7 @@ import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ConsoleBulkComponent } from '../console-bulk/console-bulk.component';
 import { HubCodePoupupComponent } from './hub-code-poupup/hub-code-poupup.component';
+import { ConsignmentLabelComponent } from '../../../pdf/consignment-label/consignment-label.component';
 
 @Component({
   selector: 'app-console-edit',
@@ -41,6 +42,7 @@ export class ConsoleEditComponent {
     private auth: AuthService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
+    private label: ConsignmentLabelComponent
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -207,12 +209,14 @@ export class ConsoleEditComponent {
   callTableHeader() {
     this.cols = [
       { field:'consoleId', header:'Console No'},
-      { field: 'masterAirwayBill', header: 'MAWB' },
+      { field: 'consoleName', header: 'Console Name' },
+      { field: 'consoleGroupName', header: 'Console Group' },
       { field: 'houseAirwayBill', header: 'Consginment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
       { field: 'noOfPieces', header: 'No of Piece' },
+      { field: 'shipperName', header: 'Shipper' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'grossWeight', header: 'Weight' },
       { field: 'airportOriginCode', header: 'Airport Origin Code' },
@@ -427,10 +431,10 @@ export class ConsoleEditComponent {
       { field: 'countryOfOrigin', header: 'Origin Code' },
       { field: 'shipperName', header: 'Shipper' },
       { field: 'grossWeight', header: 'WT KG' },
-      { field: 'quantity', header: 'PCS' },
+      { field: 'noOfPieces', header: 'PCS' },
       { field: 'description', header: 'Description' },
       { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'currency  ', header: 'Currency' },
       { field: 'consignmentValue', header: 'Value' },
       { field: 'consignmentValueLocal', header: 'Customs KD' },
       { field: 'iata', header: 'Iata KD' },
@@ -444,7 +448,7 @@ export class ConsoleEditComponent {
       { field: 'invoiceNumber', header: 'Invoice Number' },
       { field: 'invoiceDate', header: 'Invoice Date' },
       { field: 'invoiceType', header: 'Invoice Type' },
-      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'currency', header: 'Currency' },
       { field: 'invoiceSupplierName', header: 'Invoice Supplier Name' },
       { field: 'consignmentLocalId', header: 'Freight Currency' },
       { field: 'freightCharges', header: 'Freight Charges' },
@@ -476,19 +480,55 @@ export class ConsoleEditComponent {
     for (const consoleId in groupedByConsoleId) {
       if (groupedByConsoleId.hasOwnProperty(consoleId)) {
         const consoleData = groupedByConsoleId[consoleId];
-        const consoleSheetData = (Object.values(consoleData) as { [x: string]: any }[]).map(item => {
+        // New row to be added before console data
+        const newRow = {
+          '#': '',
+          'AWB': '',
+          'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+          'Origin Code': '',
+          'Shipper': '',
+          'WT KG': '',
+          'PCS': '',
+          'Description': consoleId,
+          'Consignee Name': consoleData[0].partnerMasterAirwayBill,
+          'Currency': '',
+          'Value': 'Date',
+          'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
+          'IATA KD': '',
+          'HS Code': '',
+          'Console ID': '' // Include the console ID in the new row
+        };
+
+        const consoleSheetData: any[] = [];
+
+        // Add new row (newRow) as the first row
+        consoleSheetData.push(Object.values(newRow).map(String));
+
+        // Add headers from cols as the second row
+        consoleSheetData.push(this.consoleManifest.map(col => col.header));
+
+        // Map console data and convert to array of values
+        const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
           const exportItem: any = {};
-          this.consoleManifest.forEach((col:any) => {
-            if (col.format == 'date') {
-              exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+          this.consoleManifest.forEach(col => {
+            // if (col.format == 'date') {
+            //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+            // } else {
+            //   exportItem[col.header] = item[col.field];
+            // }
+            if (col.format == 'number') {
+              exportItem[col.header] = index + 1;
             } else {
               exportItem[col.header] = item[col.field];
             }
           });
-          return exportItem;
+          return Object.values(exportItem).map(String);
         });
 
-        const consoleSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(consoleSheetData);
+        // Add console data rows after headers
+        consoleSheetData.push(...consoleRows);
+
+        const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
         XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
 
         const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
@@ -535,6 +575,97 @@ export class ConsoleEditComponent {
   }
 
 
+  downloadConsole() {
+
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    
+    const cols = [
+      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
+      { field: 'partnerMasterAirwayBill', header: 'AWB' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'airportOriginCode', header: 'Origin Code' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'grossWeight', header: 'WT KG' },
+      { field: 'noOfPieces', header: 'PCS' },
+      { field: 'description', header: 'Description' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'currency', header: 'Currency' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'customsValue', header: 'Customs KD' },
+      { field: 'iata', header: 'IATA KD' },
+      { field: 'hsCode', header: 'HS Code' },
+    ];
+  
+        const groupedByConsoleId = this.groupBy(this.selectedConsole, 'consoleId');
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  
+        for (const consoleId in groupedByConsoleId) {
+          if (groupedByConsoleId.hasOwnProperty(consoleId)) {
+            const consoleData = groupedByConsoleId[consoleId];
+            // New row to be added before console data
+            const newRow = {
+              '#': '',
+              'AWB': '',
+              'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'Origin Code': '',
+              'Shipper': '',
+              'WT KG': '',
+              'PCS': '',
+              'Description': consoleId,
+              'Consignee Name': consoleData[0].partnerMasterAirwayBill,
+              'Currency': '',
+              'Value': 'Date',
+              'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
+              'IATA KD': '',
+              'HS Code': '',
+              'Console ID': '' // Include the console ID in the new row
+            };
+  
+            const consoleSheetData: any[] = [];
+  
+            // Add new row (newRow) as the first row
+            consoleSheetData.push(Object.values(newRow).map(String));
+  
+            // Add headers from cols as the second row
+            consoleSheetData.push(cols.map(col => col.header));
+  
+            // Map console data and convert to array of values
+            const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
+              const exportItem: any = {};
+              cols.forEach(col => {
+                // if (col.format == 'date') {
+                //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+                // } else {
+                //   exportItem[col.header] = item[col.field];
+                // }
+                if (col.format == 'number') {
+                  exportItem[col.header] = index + 1;
+                } else {
+                  exportItem[col.header] = item[col.field];
+                }
+              });
+              return Object.values(exportItem).map(String);
+            });
+  
+            // Add console data rows after headers
+            consoleSheetData.push(...consoleRows);
+  
+            const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
+            XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
+          }
+        }
+  
+        // Generate and download the Excel file
+        XLSX.writeFile(
+          wb,
+          `CONSOLE_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
+        );
+  }
+
+  outScan:any[] = [];
   callHubCode() {
     const dialogRef = this.dialog.open(HubCodePoupupComponent, {
       disableClose: true,
@@ -545,7 +676,138 @@ export class ConsoleEditComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      //this.initialCall();
+      this.outScan = [];
+      for (let i = 0; i < 2; i++) {
+        this.selectedConsole.forEach(x => {
+          x['hawbType'] =  i == 0 ? 'status' : 'event';
+          x['hawbId']  =  i == 0 ? '9' : '9';
+          x['hsCode']  =  result;
+          this.outScan.push(x);
+         })  
+    }
+    this.updateConsole('outscan');
     });
   }
+
+  updateConsole(event:any){
+
+    if (this.selectedConsole.length == 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        key: 'br',
+        detail: 'Kindly select any row',
+      });
+      return;
+    }
+
+    if(event == 'self'){
+      this.selectedConsole.forEach(x => {
+        x['hawbType'] = 'status';
+        x['hawbId'] =  '8';
+       })
+    }
+    if(event == 'cleared'){
+      this.selectedConsole.forEach(x => {
+        x['hawbType'] = 'status';
+        x['hawbId'] =  '7';
+       })
+    }
+    if(event == 'outscan'){
+      this.selectedConsole = [];
+      this.selectedConsole = this.outScan;
+    }
+    this.spin.show();
+    this.service.UpdateStatusforConsole(this.selectedConsole).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: res[0].consoleId + ' has been updated successfully',
+        });
+        this.spin.hide();
+        setTimeout(() => {
+          this.fill(this.pageToken.line);
+        }, 2000);
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+
+  generateLabel() {
+    this.uniquePieceId = [];
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.consoleId = [this.selectedConsole[0].consoleId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        this.label.getResultLabel(pieceId)
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+  houseAirwayBill: any;
+
+  generateInvoice() {
+    this.uniqueHouseAirway = [];
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.consoleId = [this.selectedConsole[0].consoleId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.getResultInvoice(houseAirwayBillArray)
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+  }
+
+
+  uniquePieceId: any[] = [];
+  uniqueHouseAirway: any[] = [];
+  generateMerge() {
+    this.uniqueHouseAirway = [];
+    this.uniquePieceId = [];
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+    let obj: any = {};
+    obj.consoleId = [this.selectedConsole[0].consoleId];
+    this.service.search(obj).subscribe({
+      next: (res: any) => {
+        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const pieceId = this.uniquePieceId.map(item => item.pieceId);
+        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
+        this.label.generateMutiple(pieceId, houseAirwayBillArray)
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+
+  }
+  
 }

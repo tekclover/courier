@@ -33,6 +33,12 @@ export class ConsoleService {
   UpdateCCR(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/ccr/update/list', obj);
   }
+
+  UpdateStatusforConsole(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/console/update/hawbtype', obj);
+  }
+
+  
   Transfer(obj: any) {
     return this.http.post<any>('/overc-midmile-service/console/transfer', obj);
   }

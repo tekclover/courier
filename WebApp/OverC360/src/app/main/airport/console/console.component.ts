@@ -264,7 +264,13 @@ export class ConsoleComponent {
 
 
 
-  downloadExcelWB() {
+ downloadExcelWB() {
+
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+
     const cols = [
       { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
       { field: 'partnerMasterAirwayBill', header: 'AWB' },
@@ -275,7 +281,7 @@ export class ConsoleComponent {
       { field: 'noOfPieces', header: 'PCS' },
       { field: 'description', header: 'Description' },
       { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'consignmentCurrency', header: 'Currency' },
+      { field: 'currency', header: 'Currency' },
       { field: 'consignmentValue', header: 'Value' },
       { field: 'customsValue', header: 'Customs KD' },
       { field: 'iata', header: 'IATA KD' },
@@ -291,29 +297,29 @@ export class ConsoleComponent {
         for (const consoleId in groupedByConsoleId) {
           if (groupedByConsoleId.hasOwnProperty(consoleId)) {
             const consoleData = groupedByConsoleId[consoleId];
-  
             // New row to be added before console data
             const newRow = {
-              'AWB': 'New AWB',
-              'Origin': 'New Origin',
-              'Origin Code': 'New Origin Code',
-              'Shipper': 'New Shipper',
-              'WT KG': 100,
-              'PCS': 5,
-              'Description': 'New Description',
-              'Consignee Name': 'New Consignee',
-              'Currency': 'USD',
-              'Value': 500,
-              'Customs KD': 450,
-              'IATA KD': 400,
-              'HS Code': 'New HS Code',
-              'Console ID': consoleId // Include the console ID in the new row
+              '#': '',
+              'AWB': '',
+              'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'Origin Code': '',
+              'Shipper': '',
+              'WT KG': '',
+              'PCS': '',
+              'Description': consoleId,
+              'Consignee Name': consoleData[0].partnerMasterAirwayBill,
+              'Currency': '',
+              'Value': 'Date',
+              'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
+              'IATA KD': '',
+              'HS Code': '',
+              'Console ID': '' // Include the console ID in the new row
             };
   
             const consoleSheetData: any[] = [];
   
             // Add new row (newRow) as the first row
-          //  consoleSheetData.push(Object.values(newRow).map(String));
+            consoleSheetData.push(Object.values(newRow).map(String));
   
             // Add headers from cols as the second row
             consoleSheetData.push(cols.map(col => col.header));
@@ -338,7 +344,7 @@ export class ConsoleComponent {
   
             // Add console data rows after headers
             consoleSheetData.push(...consoleRows);
-  
+
             const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
             XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
           }
@@ -348,7 +354,7 @@ export class ConsoleComponent {
         XLSX.writeFile(
           wb,
           `CONSOLE_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
-        );
+          );
       }
     });
   }
