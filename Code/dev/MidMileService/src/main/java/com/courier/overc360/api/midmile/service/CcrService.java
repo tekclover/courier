@@ -134,13 +134,14 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-//                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
-//                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(), addCcr.getPieceId(), 0L);
-//                if (duplicateConsole.isPresent()) {
-//                    throw new BadRequestException("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
-//                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
-//                            " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
-//                }
+                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(), addCcr.getPieceId(), 0L);
+                if (duplicateConsole.isPresent()) {
+                    log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
+                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
+                            " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
+                    continue;
+                }
 
                 Double customsValue = null;
                 if (addCcr.getCustomsValue() != null) {

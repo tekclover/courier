@@ -827,7 +827,7 @@ public class ConsoleService {
      * @throws InvocationTargetException
      */
     @Transactional
-    public List<Console> updateConsole(List<UpdateConsole> updateConsoleList, String loginUserID)
+    public List<Console> updateConsoleCcrCreate(List<UpdateConsole> updateConsoleList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             List<Console> updatedConsoleList = new ArrayList<>();
@@ -879,45 +879,6 @@ public class ConsoleService {
                         ccrService.createConsoleCcr(consoleData, loginUserID);
                         log.info("Console to CCR Created");
                     }
-
-                    Optional<IKeyValuePair> statusID4DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "4");
-                    if (statusID4DescOpt.isPresent()) {
-                        IKeyValuePair ikey = statusID4DescOpt.get();
-
-                        // Create Consignment Status Table record with StatusID - 4
-                        consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
-                                updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
-                                updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
-                                "4", ikey.getStatusText(), updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(),
-                                "4", ikey.getStatusText(), updatetedConsole.getPieceTimeStamp(), loginUserID);
-                    }
-
-                    // Create Consignment Status Table record with StatusID - 5
-                    consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
-                            updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
-                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
-                            updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbTypeDescription(),
-                            updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(), updatetedConsole.getPieceTypeId(),
-                            updatetedConsole.getPieceTypeDescription(), updatetedConsole.getPieceTimeStamp(), loginUserID);
-
-                    // Update ConsignmentEntity Table
-                    consoleRepository.updateConsignmentOnConsoleCreate(
-                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
-
-                    // Update PreAlert Table
-                    consoleRepository.updatePreAlertOnConsoleCreate(
-                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
-
-                    // Update PieceDetails Table
-                    consoleRepository.updatePieceDetailsOnConsoleCreate(
-                            updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
-
                     updatedConsoleList.add(updatetedConsole);
                 }
             }

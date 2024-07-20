@@ -73,7 +73,7 @@ public class ConsoleController {
     public ResponseEntity<?> patchConsole(@Valid @RequestBody List<UpdateConsole> updateConsoleList,
                                           @RequestParam String loginUserID)
             throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
-        List<Console> console = consoleService.updateConsole(updateConsoleList, loginUserID);
+        List<Console> console = consoleService.updateConsoleCcrCreate(updateConsoleList, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
