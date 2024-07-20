@@ -310,6 +310,12 @@ public class Ccr {
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
     private String consignmentLocalId;
 
+    @Column(name = "CONSOLE_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleName;
+
+    @Column(name = "CONSOLE_GROUP_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleGroupName;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

@@ -204,6 +204,10 @@ public class UpdateCcr {
 
     private Long deletionIndicator = 0L;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private String referenceField1;
 
     private String referenceField2;

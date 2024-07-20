@@ -194,6 +194,10 @@ public class Ccr {
 
     private String specialApprovalCharge;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private Long deletionIndicator = 0L;
 
     private String consignmentLocalId;

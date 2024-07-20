@@ -830,20 +830,20 @@ public class ConsoleService {
 
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
 
-                Optional<IKeyValuePair> statusID5DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "5");
-                if (statusID5DescOpt.isPresent()) {
-                    IKeyValuePair ikey = statusID5DescOpt.get();
-
-                    dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId("5");
-                    dbConsole.setHawbTypeDescription(ikey.getStatusText());
-                    dbConsole.setHawbTimeStamp(new Date());
-
-                    dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId("5");
-                    dbConsole.setPieceTypeDescription(ikey.getStatusText());
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
+//                Optional<IKeyValuePair> statusID5DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "5");
+//                if (statusID5DescOpt.isPresent()) {
+//                    IKeyValuePair ikey = statusID5DescOpt.get();
+//
+//                    dbConsole.setHawbType("STATUS");
+//                    dbConsole.setHawbTypeId("5");
+//                    dbConsole.setHawbTypeDescription(ikey.getStatusText());
+//                    dbConsole.setHawbTimeStamp(new Date());
+//
+//                    dbConsole.setPieceType("STATUS");
+//                    dbConsole.setPieceTypeId("5");
+//                    dbConsole.setPieceTypeDescription(ikey.getStatusText());
+//                    dbConsole.setPieceTimeStamp(new Date());
+//                }
 
                 Optional<IKeyValuePair> ikey = replicaConsoleRepository.getInvoice(updateConsole.getCompanyId(),
                         updateConsole.getLanguageId(), updateConsole.getPartnerId(), updateConsole.getPartnerHouseAirwayBill(),

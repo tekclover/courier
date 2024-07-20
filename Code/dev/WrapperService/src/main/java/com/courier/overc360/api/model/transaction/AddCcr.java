@@ -199,6 +199,10 @@ public class AddCcr {
 
     private String consignmentLocalId;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private Long deletionIndicator = 0L;
 
     private String referenceField1;

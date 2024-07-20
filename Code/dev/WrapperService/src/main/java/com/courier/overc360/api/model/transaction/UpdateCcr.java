@@ -77,6 +77,10 @@ public class UpdateCcr {
 
 //    private Date statusTimestamp;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private String partnerHouseAirwayBill;
 
     private String partnerMasterAirwayBill;
