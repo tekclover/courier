@@ -672,4 +672,13 @@ public class MidMileController {
         MobileApp[] consoles = midMileService.getAllMobileApp(authToken);
         return new ResponseEntity<>(consoles, HttpStatus.OK);
     }
+
+    @ApiOperation(response = ConsoleStatus[].class, value = "Console HAWB-TYPE Update")
+    @PostMapping("/console/update/hawbtype")
+    public ResponseEntity<?> updateHawbType(@Valid @RequestBody ConsoleStatus[] consoleStatuses,
+                                            @RequestParam String loginUserID,
+                                            @RequestParam String authToken) throws Exception {
+        Console[] consoles = midMileService.updateConsoleStatus(consoleStatuses, loginUserID, authToken);
+        return new ResponseEntity<>(consoles, HttpStatus.OK);
+    }
 }

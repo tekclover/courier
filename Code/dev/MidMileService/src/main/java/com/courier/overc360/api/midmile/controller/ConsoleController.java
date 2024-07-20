@@ -150,7 +150,7 @@ public class ConsoleController {
     }
 
     @ApiOperation(response = Console.class, value = "Console Status Event Update")
-    @PostMapping("/console/update/status")
+    @PostMapping("/update/status")
     public ResponseEntity<?> updateConsoleStatus(@Valid @RequestBody List<ConsoleStatus> consoleStatuses,
                                                  @RequestParam String loginUserID) {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
