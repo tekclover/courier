@@ -223,6 +223,10 @@ public class UpdateConsole {
 
     private Long deletionIndicator;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private String referenceField1;
 
     private String referenceField2;

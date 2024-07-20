@@ -87,9 +87,9 @@ public class ConsoleService {
      */
     private Console getConsole(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill,
                                String consoleId, String pieceId) {
-        Optional<Console> dbConsole = consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
+        Console dbConsole = consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
                 languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, pieceId, 0L);
-        if (dbConsole.isEmpty()) {
+        if (dbConsole == null) {
             String errMsg = "The given values : languageId - " + languageId + ", companyId - " + companyId
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + partnerMasterAirwayBill
                     + ", houseAirwayBill - " + partnerHouseAirwayBill + " and consoleId - " + consoleId + " and pieceId " + pieceId + " doesn't exists";
@@ -97,7 +97,7 @@ public class ConsoleService {
             createConsoleLog(languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, errMsg);
             throw new BadRequestException(errMsg);
         }
-        return dbConsole.get();
+        return dbConsole;
     }
 
     /**
@@ -377,8 +377,9 @@ public class ConsoleService {
                     for (Map.Entry<String, List<AddConsole>> specialApprovalEntry : specialApprovalGroup.entrySet()) {
                         List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
 
-                        String NUM_RAN_OBJ = "CONSOLEID";
-                        String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
+                        String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+                        String CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
 
                         for (AddConsole console : consoleEntryList) {
 
@@ -438,6 +439,7 @@ public class ConsoleService {
 
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
                             newConsole.setConsoleId(CONSOLE_ID);
+                            newConsole.setConsoleName(CONSOLE_NAME);
                             newConsole.setDeletionIndicator(0L);
                             newConsole.setCreatedBy(loginUserID);
                             newConsole.setCreatedOn(new Date());
@@ -488,7 +490,8 @@ public class ConsoleService {
                                         consoleRepository.updatePieceDetailsOnConsoleCreate(
                                                 createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
                                                 createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
+                                                createdConsole.getPieceId());
 
                                         log.info("Console Created <-----------------------> Consignment Event AND Console_Indicator Updated");
                                     }
@@ -567,8 +570,9 @@ public class ConsoleService {
                     // Process each subgroup
                     for (List<AddConsole> subGroup : subGroups) {
                         // Generate a new CONSOLE_ID for each subgroup
-                        String NUM_RAN_OBJ = "CONSOLEID";
-                        String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
+                        String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+                        String SUB_CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
 
                         for (AddConsole console : subGroup) {
                             // Duplicate Check
@@ -626,6 +630,7 @@ public class ConsoleService {
                             newConsole.setExpectedDuty(String.valueOf(totalDuty));
 //                            newConsole.setCustomsValue(CUS_VAL);
                             newConsole.setConsoleId(SUB_CONSOLE_ID);
+                            newConsole.setConsoleName(SUB_CONSOLE_NAME);
                             newConsole.setDeletionIndicator(0L);
                             newConsole.setCreatedBy(loginUserID);
                             newConsole.setCreatedOn(new Date());
@@ -674,7 +679,8 @@ public class ConsoleService {
                                         consoleRepository.updatePieceDetailsOnConsoleCreate(
                                                 createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
                                                 createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
+                                                createdConsole.getPieceId());
 
                                         log.info("Console Created<----------------------->Consignment Event Updated");
                                     }
@@ -713,8 +719,9 @@ public class ConsoleService {
         try {
             List<Console> createdConsoleList = new ArrayList<>();
 
-            String NUM_RAN_OBJ = "CONSOLEID";
-            String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+
+            String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+            String CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
             log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : addConsoleList) {
 
@@ -744,9 +751,6 @@ public class ConsoleService {
                     newConsole.setPieceTimeStamp(new Date());
                 }
 
-
-                newConsole.setConsoleId(CONSOLE_ID);
-
                 IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
                         addConsole.getLanguageId(), addConsole.getCompanyId());
 
@@ -754,6 +758,8 @@ public class ConsoleService {
                     newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
                     newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                 }
+                newConsole.setConsoleId(CONSOLE_ID);
+                newConsole.setConsoleName(CONSOLE_NAME);
                 newConsole.setDeletionIndicator(0L);
                 newConsole.setCreatedBy(loginUserID);
                 newConsole.setCreatedOn(new Date());
@@ -786,7 +792,8 @@ public class ConsoleService {
                     consoleRepository.updatePieceDetailsOnConsoleCreate(
                             createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
                             createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
+                            createdConsole.getPieceId());
 
                     log.info("Console Created<----------------------->Consignment Event Updated");
                 }
@@ -842,7 +849,7 @@ public class ConsoleService {
                         updateConsole.getLanguageId(), updateConsole.getPartnerId(), updateConsole.getPartnerHouseAirwayBill(),
                         updateConsole.getPartnerMasterAirwayBill());
 
-                if(ikey.isPresent()) {
+                if (ikey.isPresent()) {
                     IKeyValuePair invoice = ikey.get();
                     dbConsole.setInvoiceType(invoice.getInvoiceType());
                     dbConsole.setInvoiceNumber(invoice.getInvoiceNumber());
@@ -851,7 +858,7 @@ public class ConsoleService {
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
 
-                if(updateConsole.getCustomsValue() != null) {
+                if (updateConsole.getCustomsValue() != null) {
                     Double customsValue = Double.valueOf(updateConsole.getCustomsValue());
 
                     if (customsValue != null && customsValue < 100) {
@@ -959,13 +966,15 @@ public class ConsoleService {
                     consoleRepository.updatePreAlertOnConsoleCreate(
                             updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
                             updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
+                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType(),
+                            updatetedConsole.getPieceId());
 
                     // Update PieceDetails Table
                     consoleRepository.updatePieceDetailsOnConsoleCreate(
                             updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
                             updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
+                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType(),
+                            updatetedConsole.getPieceId());
 
                     updatedConsoleList.add(updatetedConsole);
                 }
@@ -1037,7 +1046,110 @@ public class ConsoleService {
                 consoleRepository.updatePieceDetailsOnConsoleCreate(
                         updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                         updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                        updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
+                        updatedConsole.getPieceId());
+
+
+                consoleList.add(updatedConsole);
+            }
+        }
+        return consoleList;
+    }
+
+
+    /**
+     * UpdateConsole
+     *
+     * @param updateConsoleList
+     * @param loginUserID
+     * @return
+     */
+    public List<Console> updateConsoleStatus(List<ConsoleStatus> updateConsoleList, String loginUserID) {
+
+        List<Console> consoleList = new ArrayList<>();
+
+        for (ConsoleStatus updateConsole : updateConsoleList) {
+
+            Console dbConsole =
+                    consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
+                            updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(), updateConsole.getPartnerMasterAirwayBill(),
+                            updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId(), 0L);
+
+            if(dbConsole == null ) {
+                throw new BadRequestException("Given values doesn't exist");
+            }
+
+            // Get Status Desc
+            if(updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                Optional<IKeyValuePair> getStatusOpt =
+                        consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getHawbId());
+
+                if (getStatusOpt.isPresent()) {
+                    IKeyValuePair ikey = getStatusOpt.get();
+
+                    dbConsole.setHawbType("STATUS");
+                    dbConsole.setHawbTypeId(updateConsole.getHawbId());
+                    dbConsole.setHawbTypeDescription(ikey.getStatusText());
+                    dbConsole.setHawbTimeStamp(new Date());
+
+                    dbConsole.setPieceType("STATUS");
+                    dbConsole.setPieceTypeId(updateConsole.getHawbId());
+                    dbConsole.setPieceTypeDescription(ikey.getStatusText());
+                    dbConsole.setPieceTimeStamp(new Date());
+                }
+            } else if(updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
+                Optional<IKeyValuePair> getEventStats =
+                        consignmentEntityRepository.getEventText(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getHawbId());
+
+                if (getEventStats.isPresent()) {
+                    IKeyValuePair ikey = getEventStats.get();
+
+                    dbConsole.setHawbType("EVENT");
+                    dbConsole.setHawbTypeId(updateConsole.getHawbId());
+                    dbConsole.setHawbTypeDescription(ikey.getEventText());
+                    dbConsole.setHawbTimeStamp(new Date());
+
+                    dbConsole.setPieceType("EVENT");
+                    dbConsole.setPieceTypeId(updateConsole.getHawbId());
+                    dbConsole.setPieceTypeDescription(ikey.getEventText());
+                    dbConsole.setPieceTimeStamp(new Date());
+                }
+            }
+
+            BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
+            dbConsole.setUpdatedBy(loginUserID);
+            dbConsole.setUpdatedOn(new Date());
+
+            Console updatedConsole = consoleRepository.save(dbConsole);
+
+            if (updatedConsole != null) {
+                // Update ConsignmentEntity Table
+                if(updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                    consoleRepository.updateConsignmentOnConsoleCreate(
+                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType());
+                }
+                // Update PreAlert Table
+                consoleRepository.updatePreAlertOnConsoleCreate(
+                        updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
                         updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType());
+
+                // Update PieceDetails Table
+                consoleRepository.updatePieceDetailsOnConsoleCreate(
+                        updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                        updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
+                        updatedConsole.getPieceId());
+
+                // Create Consignment Status Table record with StatusID - 5
+                consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
+                        updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
+                        updatedConsole.getPartnerMasterAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), updatedConsole.getHawbType(),
+                        updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
+                        updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
+                        updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID);
 
                 consoleList.add(updatedConsole);
             }
@@ -1268,7 +1380,7 @@ public class ConsoleService {
 
 
     //Mobile App
-   public List<MobileApp> getAllMobileApp(){
+    public List<MobileApp> getAllMobileApp() {
         List<MobileApp> consoles = replicaConsoleRepository.getMobileApp();
         return consoles;
     }

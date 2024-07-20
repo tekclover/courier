@@ -221,6 +221,10 @@ public class AddConsole {
 
     private String consignmentLocalId;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private Long deletionIndicator;
 
     private String referenceField1;

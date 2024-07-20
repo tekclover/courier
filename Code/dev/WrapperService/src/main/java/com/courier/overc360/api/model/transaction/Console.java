@@ -211,6 +211,10 @@ public class Console {
 
     private String exemptionReference;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private Long deletionIndicator;
 
     private String consignmentLocalId;

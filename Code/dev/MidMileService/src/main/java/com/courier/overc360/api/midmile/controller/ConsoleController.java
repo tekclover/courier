@@ -149,6 +149,13 @@ public class ConsoleController {
         return new ResponseEntity<>(dbMobileApp, HttpStatus.OK);
     }
 
+    @ApiOperation(response = Console.class, value = "Console Status Event Update")
+    @PostMapping("/console/update/status")
+    public ResponseEntity<?> updateConsoleStatus(@Valid @RequestBody List<ConsoleStatus> consoleStatuses,
+                                                 @RequestParam String loginUserID) {
+        List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
+        return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
+    }
 }
 
 
