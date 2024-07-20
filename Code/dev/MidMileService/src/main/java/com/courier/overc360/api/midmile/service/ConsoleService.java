@@ -1082,35 +1082,35 @@ public class ConsoleService {
             // Get Status Desc
             if(updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
                 Optional<IKeyValuePair> getStatusOpt =
-                        consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getHawbId());
+                        consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
 
                 if (getStatusOpt.isPresent()) {
                     IKeyValuePair ikey = getStatusOpt.get();
 
                     dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId(updateConsole.getHawbId());
+                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
                     dbConsole.setHawbTypeDescription(ikey.getStatusText());
                     dbConsole.setHawbTimeStamp(new Date());
 
                     dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId(updateConsole.getHawbId());
+                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
                     dbConsole.setPieceTypeDescription(ikey.getStatusText());
                     dbConsole.setPieceTimeStamp(new Date());
                 }
             } else if(updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
                 Optional<IKeyValuePair> getEventStats =
-                        consignmentEntityRepository.getEventText(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getHawbId());
+                        consignmentEntityRepository.getEventText(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getHawbTypeId());
 
                 if (getEventStats.isPresent()) {
                     IKeyValuePair ikey = getEventStats.get();
 
                     dbConsole.setHawbType("EVENT");
-                    dbConsole.setHawbTypeId(updateConsole.getHawbId());
+                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
                     dbConsole.setHawbTypeDescription(ikey.getEventText());
                     dbConsole.setHawbTimeStamp(new Date());
 
                     dbConsole.setPieceType("EVENT");
-                    dbConsole.setPieceTypeId(updateConsole.getHawbId());
+                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
                     dbConsole.setPieceTypeDescription(ikey.getEventText());
                     dbConsole.setPieceTimeStamp(new Date());
                 }

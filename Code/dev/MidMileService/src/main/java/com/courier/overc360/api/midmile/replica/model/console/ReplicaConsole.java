@@ -340,6 +340,9 @@ public class ReplicaConsole {
     @Column(name = "PIECE_TIMESTAMP")
     private Date pieceTimeStamp = new Date();
 
+    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String hubCode;
+
     @Column(name = "IS_EXEMPTED" , columnDefinition = "nvarchar(50)")
     private String isExempted;
 

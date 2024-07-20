@@ -325,6 +325,9 @@ public class Console {
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
 
+    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String hubCode;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 

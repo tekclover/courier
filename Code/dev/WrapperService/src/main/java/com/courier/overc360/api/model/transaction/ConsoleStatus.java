@@ -12,7 +12,7 @@ public class ConsoleStatus {
     private String partnerMasterAirwayBill;
     private String pieceId;
     private String hawbType;
-    private String hawbId;
+    private String hawbTypeId;
     private String consoleId;
 
 }
