@@ -128,9 +128,10 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
     @Query(value = "Update tblconsignment_entity\n" +
             "Set \n" +
             "HAWB_TYP = :hawbType, \n" +
-            "HAWB_TYP_ID = :hawbTypeId,\n" +
-            "HAWB_TYP_TXT = :hawbTypeDescription,\n" +
-            "HAWB_TIMESTAMP = GETDATE()\n" +
+            "HAWB_TYP_ID = :hawbTypeId, \n" +
+            "HAWB_TYP_TXT = :hawbTypeDescription, \n" +
+            "HAWB_TIMESTAMP = GETDATE(), \n" +
+            "HUB_CODE = :hubCode \n " +
             "Where IS_DELETED = 0 \n" +
             "AND LANG_ID = :languageId \n" +
             "And C_ID = :companyId \n" +
@@ -144,7 +145,8 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                           @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
                                           @Param("hawbTypeDescription") String hawbTypeDescription,
                                           @Param("hawbTypeId") String hawbTypeId,
-                                          @Param("hawbType") String hawbType);
+                                          @Param("hawbType") String hawbType,
+                                          @Param("hubCode") String hubCode);
 
 
     @Transactional
