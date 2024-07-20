@@ -340,6 +340,18 @@ public class ReplicaConsole {
     @Column(name = "PIECE_TIMESTAMP")
     private Date pieceTimeStamp = new Date();
 
+    @Column(name = "IS_EXEMPTED" , columnDefinition = "nvarchar(50)")
+    private String isExempted;
+
+    @Column(name = "EXEMPTION_FOR" , columnDefinition = "nvarchar(50)")
+    private String exemptionFor;
+
+    @Column(name = "EXEMPTION_BENEFICIARY" , columnDefinition = "nvarchar(50)")
+    private String exemptionBeneficiary;
+
+    @Column(name = "EXEMPTION_REFERENCE" , columnDefinition = "nvarchar(50)")
+    private String exemptionReference;
+
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
     private String consignmentLocalId;
 

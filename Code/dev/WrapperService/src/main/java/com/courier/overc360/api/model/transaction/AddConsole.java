@@ -211,6 +211,14 @@ public class AddConsole {
 
     private Date pieceTimeStamp = new Date();
 
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
     private String consignmentLocalId;
 
     private Long deletionIndicator;

@@ -187,6 +187,18 @@ public class Console {
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
+    @Column(name = "IS_EXEMPTED" , columnDefinition = "nvarchar(50)")
+    private String isExempted;
+
+    @Column(name = "EXEMPTION_FOR" , columnDefinition = "nvarchar(50)")
+    private String exemptionFor;
+
+    @Column(name = "EXEMPTION_BENEFICIARY" , columnDefinition = "nvarchar(50)")
+    private String exemptionBeneficiary;
+
+    @Column(name = "EXEMPTION_REFERENCE" , columnDefinition = "nvarchar(50)")
+    private String exemptionReference;
+
 //    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
 //    private String eventCode;
 //

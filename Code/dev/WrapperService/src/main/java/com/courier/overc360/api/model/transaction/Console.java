@@ -203,6 +203,14 @@ public class Console {
 
     private Date pieceTimeStamp = new Date();
 
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
     private Long deletionIndicator;
 
     private String consignmentLocalId;

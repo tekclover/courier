@@ -238,17 +238,18 @@ public class WrapperServiceController {
     // Consignment-Upload
     @ApiOperation(response = UploadApiResponse.class, value = " Consignment Upload")
     @PostMapping("/consignment/Upload")
-    public ResponseEntity<?> consignmentUpload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> consignmentUpload(@RequestParam("file") MultipartFile file, @RequestParam String loginUserID) {
 
-        Map<String, String> response = fileStorageService.processConsignmentOrders(file);
+        Map<String, String> response = fileStorageService.processConsignmentOrders(file, loginUserID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //Consignment Upload-V2
     @ApiOperation(response = UploadApiResponse.class, value = " Consignment Upload V2")
     @PostMapping("/consignment/upload/v2")
-    public ResponseEntity<?> consignmentUploadV2(@RequestParam("file") MultipartFile multipartFile, @RequestParam String companyId) {
-        Map<String, String> response = fileStorageService.processConsignmentOrdersV2(multipartFile, companyId);
+    public ResponseEntity<?> consignmentUploadV2(@RequestParam("file") MultipartFile multipartFile,
+                                                 @RequestParam String companyId, @RequestParam String loginUserID) {
+        Map<String, String> response = fileStorageService.processConsignmentOrdersV2(multipartFile, companyId, loginUserID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -256,12 +257,14 @@ public class WrapperServiceController {
     @ApiOperation(response = UploadApiResponse.class, value = "PreAlert Upload")
     @PostMapping("/preAlert/upload")
     public ResponseEntity<?> preAlertUpload(@RequestParam("file") MultipartFile multipartFile, @RequestParam String companyId,
-                                            @RequestParam String partnerId, @RequestParam String partnerType, @RequestParam String partnerMasterAirwayBill,
+                                            @RequestParam String partnerId, @RequestParam String partnerType,
+                                            @RequestParam String partnerMasterAirwayBill,
                                             @RequestParam String flightNo, @RequestParam String flightName,
+                                            @RequestParam String loginUserID,
                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfDeparture,
                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date estimatedTimeOfArrival) {
-        Map<String, String> response = fileStorageService.processPreAlertUpload(multipartFile, companyId, partnerType, partnerId, partnerMasterAirwayBill, flightNo,
-                flightName, estimatedTimeOfDeparture, estimatedTimeOfArrival);
+        Map<String, String> response = fileStorageService.processPreAlertUpload(multipartFile, companyId, partnerType,
+                partnerId, partnerMasterAirwayBill, flightNo, flightName, estimatedTimeOfDeparture, estimatedTimeOfArrival, loginUserID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

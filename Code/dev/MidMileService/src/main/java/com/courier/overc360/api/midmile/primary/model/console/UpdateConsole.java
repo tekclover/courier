@@ -195,6 +195,14 @@ public class UpdateConsole {
 
     private String consignmentLocalId;
 
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
     private Long deletionIndicator;
 
     private String referenceField1;

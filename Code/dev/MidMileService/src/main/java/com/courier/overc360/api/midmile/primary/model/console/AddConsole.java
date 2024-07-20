@@ -193,6 +193,14 @@ public class AddConsole {
 
     private String currency;
 
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
     private String consignmentLocalId;
 
     private String referenceField1;

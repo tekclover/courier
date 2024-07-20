@@ -220,7 +220,7 @@ public class FileStorageService {
     }
 
     // ProcessConsignmentOrder - V1
-    public Map<String, String> processConsignmentOrders(MultipartFile file) {
+    public Map<String, String> processConsignmentOrders(MultipartFile file, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
             try {
@@ -252,7 +252,7 @@ public class FileStorageService {
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Uploaded", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, loginUserID, authToken.getAccess_token());
 
             if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
@@ -351,7 +351,7 @@ public class FileStorageService {
 
 
     //ProcessConsignmentOrders-V2
-    public Map<String, String> processConsignmentOrdersV2(MultipartFile file, String companyId) {
+    public Map<String, String> processConsignmentOrdersV2(MultipartFile file, String companyId, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
             try {
@@ -398,7 +398,7 @@ public class FileStorageService {
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Upload", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, loginUserID, authToken.getAccess_token());
 
             if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
@@ -417,7 +417,7 @@ public class FileStorageService {
     //ProcessConsignmentOrders-V2
     public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType,
                                                      String partnerId, String partnerMasterAirwayBill, String flightNo, String flightName,
-                                                     Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel) {
+                                                     Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
             try {
@@ -453,7 +453,7 @@ public class FileStorageService {
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.createPreAlert(consignmentOrders, "Upload", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.createPreAlert(consignmentOrders, loginUserID, authToken.getAccess_token());
 
             if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
@@ -1959,7 +1959,7 @@ public class FileStorageService {
      * @param flightNo
      * @param flightName
      * @param estimatedTimeOfDeparture
-     * @param estimatedTimeTravel
+     * @param estimatedTimeOfTravel
      * @return
      */
     public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerMasterAirwayBill,
