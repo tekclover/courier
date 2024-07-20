@@ -323,11 +323,11 @@ export const navbarData: INavbarData[] = [
                 routerLink: '/main/airport/preAlertManifest',
                 label: 'Pre Alert Manifest'
             },
-            {
-                routerId: 5102,
-                routerLink: '/main/airport/bondedManifest',
-                label: 'Bonded Manifest'
-            },
+            // {
+            //     routerId: 5102,
+            //     routerLink: '/main/airport/bondedManifest',
+            //     label: 'Bonded Manifest'
+            // },
             {
                 routerId: 5103,
                 routerLink: '/main/airport/console',
@@ -338,11 +338,11 @@ export const navbarData: INavbarData[] = [
             //     routerLink: '/main/airport/consolidatedManifest',
             //     label: 'Consolidated Manifest'
             // },
-            {
-                routerId: 5104,
-                routerLink: '/main/airport/ccr',
-                label: 'CCR'
-            },
+            // {
+            //     routerId: 5104,
+            //     routerLink: '/main/airport/ccr',
+            //     label: 'CCR'
+            // },
         ]
     },
     {
