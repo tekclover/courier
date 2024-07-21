@@ -57,28 +57,40 @@ export class ConsoleEditComponent {
   form = this.fb.group({
     actualCurrency: [],
     actualValue: [],
+    addIata: [],
+    addInsurance: [],
     airportOriginCode: [],
     bondedId: [],
+    calculatedTotalDuty: [],
     companyId: [],
     companyName: [],
     consigneeCivilId: [],
     consigneeName: [],
     consignmentCurrency: [],
+    consignmentLocalId: [],
     consignmentValue: [],
+    consignmentValueLocal: [],
+    consoleGroupName: [],
     consoleId: [],
+    consoleName: [],
     countryOfOrigin: [],
     createdBy: [],
     createdOn: [],
     currency: [],
     customsCurrency: [],
+    customsInsurance: [],
     customsKd: [],
     customsValue: [],
+    dduCharge: [],
     declaredValue: [],
     deletionIndicator: [],
     description: [],
-    eventCode: [],
-    eventText: [],
-    eventTimestamp: [],
+    duty: [],
+    dutyPercentage: [],
+    exchangeRate: [],
+    exemptionBeneficiary: [],
+    exemptionFor: [],
+    exemptionReference: [],
     expectedDuty: [],
     finalDestination: [],
     freightCharges: [],
@@ -86,17 +98,21 @@ export class ConsoleEditComponent {
     goodsDescription: [],
     goodsType: [],
     grossWeight: [],
-    houseAirwayBill: [],
+    hawbTimeStamp: [],
+    hawbType: [],
+    hawbTypeDescription: [],
+    hawbTypeId: [],
     hsCode: [],
-    iataKd: [],
-    pieceId: [],
-    pieceItemId: [],
+    hubCode: [],
+    iata: [],
+    iataCharge: [],
     incoTerms: [],
     invoiceDate: [],
     invoiceNumber: [],
     invoiceSupplierName: [],
     invoiceType: [],
     isConsolidatedShipment: [],
+    isExempted: [],
     isPendingShipment: [],
     isSplitBillOfLading: [],
     landedQuantity: [],
@@ -104,10 +120,10 @@ export class ConsoleEditComponent {
     languageId: [],
     manifestedGrossWeight: [],
     manifestedQuantity: [],
-    masterAirwayBill: [],
     netWeight: [],
     noOfPackageMawb: [],
     noOfPieceHawb: [],
+    noOfPieces: [],
     notifyParty: [],
     partnerHouseAirwayBill: [],
     partnerId: [],
@@ -115,6 +131,12 @@ export class ConsoleEditComponent {
     partnerName: [],
     partnerType: [],
     paymentType: [],
+    pieceId: [],
+    pieceTimeStamp: [],
+    pieceType: [],
+    pieceTypeDescription: [],
+    pieceTypeId: [],
+    primaryDo: [],
     productId: [],
     productName: [],
     quantity: [],
@@ -138,17 +160,15 @@ export class ConsoleEditComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    selectedConsole: [],
     remarks: [],
+    secondaryDo: [],
     serviceTypeId: [],
     serviceTypeName: [],
     shipmentBagId: [],
     shipperId: [],
     shipperName: [],
+    specialApprovalCharge: [],
     specialApprovalValue: [],
-    statusId: [],
-    statusText: [],
-    statusTimestamp: [],
     subProductId: [],
     subProductName: [],
     tareWeight: [],
@@ -156,6 +176,8 @@ export class ConsoleEditComponent {
     updatedBy: [],
     updatedOn: [],
     volume: [],
+    statusText: [],
+    statusId: [],
 
   });
 
@@ -211,7 +233,6 @@ export class ConsoleEditComponent {
       { field:'consoleId', header:'Console No'},
       { field: 'consoleName', header: 'Console Name' },
       { field: 'consoleGroupName', header: 'Console Group' },
-      { field: 'houseAirwayBill', header: 'Consginment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -313,8 +334,6 @@ export class ConsoleEditComponent {
         x.eventCode = 10;
       });
       const a = this.subProductArray.filter(x => x.eventCode == 10);
-     console.log(a)
-     console.log(this.subProductArray.length)
       this.service.Update(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -380,10 +399,7 @@ export class ConsoleEditComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.subProductArray.splice(item, 0);
-        this.subProductArray.splice(item, 1, result);
-        this.subProductArray = [...this.subProductArray]
-
+        this.fill(this.pageToken.line);
       }
     });
   }
@@ -681,7 +697,7 @@ export class ConsoleEditComponent {
         this.selectedConsole.forEach(x => {
           x['hawbType'] =  i == 0 ? 'status' : 'event';
           x['hawbId']  =  i == 0 ? '9' : '9';
-          x['hsCode']  =  result;
+          x['hubCode']  =  result;
           this.outScan.push(x);
          })  
     }
@@ -729,6 +745,7 @@ export class ConsoleEditComponent {
         this.spin.hide();
         setTimeout(() => {
           this.fill(this.pageToken.line);
+          this.selectedConsole = [];
         }, 2000);
       },
       error: (err) => {

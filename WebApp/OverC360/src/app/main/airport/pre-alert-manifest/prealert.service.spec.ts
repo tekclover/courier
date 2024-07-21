@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
+import { PrealertService } from './prealert.service';
 
-describe('PreAlertManifestService', () => {
-  let service: PreAlertManifestService;
+describe('PrealertService', () => {
+  let service: PrealertService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PreAlertManifestService);
+    service = TestBed.inject(PrealertService);
   });
 
   it('should be created', () => {

@@ -62,6 +62,7 @@ export class ConsoleEditpopupComponent {
     description: [],
     eventCode: [],
     eventText: [],
+    pieceId: [],
     eventTimestamp: [],
     expectedDuty: [],
     finalDestination: [],
@@ -90,6 +91,7 @@ export class ConsoleEditpopupComponent {
     netWeight: [],
     noOfPackageMawb: [],
     noOfPieceHawb: [],
+    noOfPieces: [],
     notifyParty: [],
     partnerHouseAirwayBill: [],
     partnerId: [],
@@ -193,7 +195,22 @@ export class ConsoleEditpopupComponent {
   }
 selecetedTrasnfer:any[]=[];
 save() {
-   this.dialogRef.close(this.form.getRawValue());
+  this.spin.hide();
+  this.service.updateSingle([this.form.getRawValue()]).subscribe({
+    next: (res) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Updated',
+        key: 'br',
+        detail: res[0].consoleId + ' has been updated successfully',
+      });
+      this.dialogRef.close(this.form.getRawValue());
+    },
+    error: (err) => {
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    },
+  });
  } 
 
 }

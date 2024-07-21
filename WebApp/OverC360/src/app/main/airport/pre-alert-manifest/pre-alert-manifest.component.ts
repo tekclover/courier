@@ -20,6 +20,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
 import * as XLSX from 'xlsx';
+import { PrealertService } from './prealert.service';
 @Component({
   selector: 'app-pre-alert-manifest',
   templateUrl: './pre-alert-manifest.component.html',
@@ -52,6 +53,7 @@ export class PreAlertManifestComponent {
     private manifest: BondedManifestService,
     private console: ConsoleService,
     private fb: FormBuilder,
+    private prealertService: PrealertService
   ) { }
 
   fullDate: any;
@@ -184,21 +186,26 @@ export class PreAlertManifestComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedPreAlertManifest);
+        const partnerMasterAirwayBill = this.selectedPreAlertManifest.map(item => item.partnerMasterAirwayBill);
+        this.service.searchPrealert({ partnerMasterAirwayBill: partnerMasterAirwayBill }).subscribe({
+          next: (result) => {
+            this.deleterecord(result);
+          }
+        })
       }
     });
   }
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines).subscribe({
+    this.prealertService.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Prealert has been deleted successfully' });
+       this.initialCall();
         this.spin.hide();
-        this.initialCall();
       }, error: (err) => {
-        this.cs.commonerrorNew(err);
         this.spin.hide();
+        this.cs.commonerrorNew(err);
       }
     })
   }

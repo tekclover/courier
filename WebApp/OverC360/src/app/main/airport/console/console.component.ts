@@ -273,7 +273,7 @@ export class ConsoleComponent {
 
     const cols = [
       { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
-      { field: 'partnerMasterAirwayBill', header: 'AWB' },
+      { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
       { field: 'shipperName', header: 'Shipper' },
