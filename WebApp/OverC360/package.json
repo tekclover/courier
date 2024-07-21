@@ -9,7 +9,6 @@
     "test": "ng test",
     "development": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration development --base-href=/webportal/",
     "aot": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng serve --o"
-
   },
   "private": true,
   "dependencies": {
@@ -28,6 +27,7 @@
     "@types/pdfmake": "^0.2.9",
     "bootstrap": "^4.6.2",
     "crypto-js": "^4.2.0",
+    "file-saver": "^2.0.5",
     "force": "^0.0.3",
     "ngx-barcode6": "^1.0.24",
     "ngx-spinner": "^17.0.0",

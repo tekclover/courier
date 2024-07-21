@@ -262,8 +262,6 @@ export class ConsoleComponent {
   }
 
 
-
-
  downloadExcelWB() {
 
     if (this.selectedConsole.length === 0) {
@@ -300,8 +298,8 @@ export class ConsoleComponent {
             // New row to be added before console data
             const newRow = {
               '#': '',
-              'AWB': '',
-              'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
               'Origin Code': '',
               'Shipper': '',
               'WT KG': '',
@@ -318,6 +316,7 @@ export class ConsoleComponent {
   
             const consoleSheetData: any[] = [];
   
+            
             // Add new row (newRow) as the first row
             consoleSheetData.push(Object.values(newRow).map(String));
   
