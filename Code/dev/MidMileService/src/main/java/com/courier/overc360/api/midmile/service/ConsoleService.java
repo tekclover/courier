@@ -575,7 +575,7 @@ public class ConsoleService {
                             if (duplicateConsole) {
                                 // Log the duplicate and skip the record
                                 System.out.println("Duplicate found for PartnerHouseAirwayBillNo: " + console.getPartnerHouseAirwayBill());
-                                continue;
+//                                continue;
                             }
 
                             // Pass ConsignmentCurrency

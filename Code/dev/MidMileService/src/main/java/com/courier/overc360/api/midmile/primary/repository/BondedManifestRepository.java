@@ -94,6 +94,6 @@ public interface BondedManifestRepository extends JpaRepository<BondedManifest, 
                                                @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill);
 
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+    BondedManifest findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, Long deletionIndicator);
 }

@@ -115,7 +115,7 @@ public class PreAlertService {
                             (dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(),
                                     dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-            if (preAlertOptional.isPresent()) {
+            if (!preAlertOptional.isPresent()) {
 
                 ConsignmentEntity consignment =
                         consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
