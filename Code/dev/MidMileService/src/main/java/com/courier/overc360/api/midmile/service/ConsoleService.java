@@ -511,10 +511,6 @@ public class ConsoleService {
 
                 // Process each smaller group
                 for (List<AddConsole> smallerGroup : smallerGroups) {
-                    // Generate a new CONSOLE_ID for each smaller group
-//                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-
-                    // Further group the consignments based on the total value condition
                     List<List<AddConsole>> subGroups = new ArrayList<>();
                     List<AddConsole> currentSubGroup = new ArrayList<>();
                     Double currentSubGroupValue = 0.0;
@@ -566,7 +562,7 @@ public class ConsoleService {
                         // Generate a new CONSOLE_ID for each subgroup
 
                         String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-                        String SUB_CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
+                        Long SUB_CONSOLE_NAME = 1L;
 
                         for (AddConsole console : subGroup) {
                             // Duplicate Check
@@ -687,6 +683,7 @@ public class ConsoleService {
                                 createdConsoleList.add(duplicateConsole);
                             }
                         }
+                        SUB_CONSOLE_NAME ++;
                     }
                 }
             }
@@ -712,9 +709,8 @@ public class ConsoleService {
         try {
             List<Console> createdConsoleList = new ArrayList<>();
 
-
             String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-            String CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
+            Long CONSOLE_NAME = 1L;
             log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : addConsoleList) {
 
@@ -756,6 +752,8 @@ public class ConsoleService {
                     newConsole.setCreatedOn(new Date());
                     newConsole.setUpdatedBy(loginUserID);
                     newConsole.setUpdatedOn(new Date());
+
+                    CONSOLE_NAME ++;
 
                     Console createdConsole = consoleRepository.save(newConsole);
 
