@@ -59,12 +59,12 @@ public class Console {
     private String pieceId;
 
 //    @Id
-//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String houseAirwayBill;
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
 //    @Id
-//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String masterAirwayBill;
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
@@ -357,6 +357,9 @@ public class Console {
 
     @Column(name = "PIECE_TIMESTAMP")
     private Date pieceTimeStamp = new Date();
+
+    @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
+    private String customsCcrNo;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;

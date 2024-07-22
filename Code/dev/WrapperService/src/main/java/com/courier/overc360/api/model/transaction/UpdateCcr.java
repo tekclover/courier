@@ -95,6 +95,10 @@ public class UpdateCcr {
 
     private String manifestedQuantity;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String landedQuantity;
 
     private String totalQuantity;

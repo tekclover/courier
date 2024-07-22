@@ -52,12 +52,12 @@ public class BondedManifest {
     private String partnerHouseAirwayBill;
 
 //    @Id
-//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String masterAirwayBill;
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
 //
 //    @Id
-//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String houseAirwayBill;
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;

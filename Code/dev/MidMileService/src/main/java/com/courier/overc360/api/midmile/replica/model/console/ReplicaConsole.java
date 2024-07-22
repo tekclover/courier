@@ -65,12 +65,12 @@ public class ReplicaConsole {
     private String consoleGroupName;
 
 //    @Id
-//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String houseAirwayBill;
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
 //    @Id
-//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String masterAirwayBill;
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
@@ -354,6 +354,9 @@ public class ReplicaConsole {
 
     @Column(name = "EXEMPTION_REFERENCE" , columnDefinition = "nvarchar(50)")
     private String exemptionReference;
+
+    @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
+    private String customsCcrNo;
 
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
     private String consignmentLocalId;

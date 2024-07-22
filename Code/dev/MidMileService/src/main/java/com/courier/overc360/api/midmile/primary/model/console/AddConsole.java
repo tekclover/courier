@@ -199,6 +199,8 @@ public class AddConsole {
 
     private String hubCode;
 
+    private String customsCcrNo;
+
     private String exemptionBeneficiary;
 
     private String exemptionReference;

@@ -79,6 +79,8 @@ public class UpdatePreAlert {
 
     private String incoTerm;
 
+    private String houseAirwayBill;
+
     private String consignmentLocalId;
 
     private String referenceField1;
