@@ -162,6 +162,8 @@ public class AddConsignment {
 
     private String calculatedTotalDuty;
 
+    private String customsInsurance;
+
 //    @NotBlank(message = "NetWeight is mandatory")
     private String netWeight;
 
