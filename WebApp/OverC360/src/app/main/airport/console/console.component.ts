@@ -347,6 +347,103 @@ export class ConsoleComponent {
     });
   }
   
+
+  downloadExcelWBRD() {
+
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return
+    }
+
+    const cols = [
+      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
+      { field: 'partnerHouseAirwayBill', header: 'AWB' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'airportOriginCode', header: 'Origin Code' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'grossWeight', header: 'WT KG' },
+      { field: 'noOfPieces', header: 'PCS' },
+      { field: 'description', header: 'Description' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'currency', header: 'Currency' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'customsValue', header: 'Customs KD' },
+      { field: 'iata', header: 'IATA KD' },
+      { field: 'hsCode', header: 'HS Code' },
+    ];
+  
+    const consignmentIds = this.selectedConsole.map(item => item.partnerMasterAirwayBill);
+    this.service.search({ partnerMasterAirwayBill: consignmentIds }).subscribe({
+      next: (result) => {
+        const groupedByConsoleId = this.groupBy(result, 'consoleId');
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  
+        for (const consoleId in groupedByConsoleId) {
+          if (groupedByConsoleId.hasOwnProperty(consoleId)) {
+            const consoleData = groupedByConsoleId[consoleId];
+            // New row to be added before console data
+            
+            const newRow = {
+              '#': '',
+              'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
+              'Origin Code': '',
+              'Shipper': '',
+              'WT KG': '',
+              'PCS': '',
+              'Description': consoleId,
+              'Consignee Name': consoleData[0].partnerMasterAirwayBill,
+              'Currency': '',
+              'Value': 'Date',
+              'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
+              'IATA KD': '',
+              'HS Code': '',
+              'Console ID': '' // Include the console ID in the new row
+            };
+  
+            const consoleSheetData: any[] = [];
+  
+            
+            // Add new row (newRow) as the first row
+            consoleSheetData.push(Object.values(newRow).map(String));
+  
+            // Add headers from cols as the second row
+            consoleSheetData.push(cols.map(col => col.header));
+  
+            // Map console data and convert to array of values
+            const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
+              const exportItem: any = {};
+              cols.forEach(col => {
+                // if (col.format == 'date') {
+                //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+                // } else {
+                //   exportItem[col.header] = item[col.field];
+                // }
+                if (col.format == 'number') {
+                  exportItem[col.header] = index + 1;
+                } else {
+                  exportItem[col.header] = item[col.field];
+                }
+              });
+              return Object.values(exportItem).map(String);
+            });
+  
+            // Add console data rows after headers
+            consoleSheetData.push(...consoleRows);
+
+            const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
+            XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
+          }
+        }
+  
+        // Generate and download the Excel file
+        XLSX.writeFile(
+          wb,
+          `CONSOLE_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
+          );
+      }
+    });
+  }
   
   
 
