@@ -9,6 +9,7 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -477,7 +478,7 @@ public class MidMileController {
     @ApiOperation(response = Console.class, value = "Update Console For Mobile App") // label for swagger
     @PatchMapping("/console/update/mobileApp")
     public ResponseEntity<?> patchConsoleForMobileApp(@Valid @RequestBody List<UpdateConsole> updateConsole,
-                                          @RequestParam String loginUserID, @RequestParam String authToken) {
+                                                      @RequestParam String loginUserID, @RequestParam String authToken) {
         Console[] console = midMileService.updateConsoleForMobileApp(updateConsole, loginUserID, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
@@ -500,13 +501,24 @@ public class MidMileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find Console
+    // Find Consoles - normal
     @ApiOperation(response = Console[].class, value = "Find Console") // label for swagger
     @PostMapping("/console/findConsole")
     public ResponseEntity<?> findConsole(@RequestBody FindConsole findConsole,
                                          @RequestParam String authToken) throws Exception {
         Console[] console = midMileService.findConsole(findConsole, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
+    }
+
+    // Find Consoles - normal
+    @ApiOperation(response = Console.class, value = "Find Consoles By Pagination") // label for swagger
+    @PostMapping("/console/findConsole/pagination")
+    public Page<Console> findConsolesByPagination(@RequestBody FindConsole findConsole,
+                                                  @RequestParam(defaultValue = "0") Integer pageNo,
+                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                  @RequestParam(defaultValue = "consoleId") String sortBy,
+                                                  @RequestParam String authToken) throws Exception {
+        return midMileService.findConsolesByPagination(findConsole, pageNo, pageSize, sortBy, authToken);
     }
 
     // Console Create preAlertResponse

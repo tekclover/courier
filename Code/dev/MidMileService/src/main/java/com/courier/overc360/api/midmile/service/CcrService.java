@@ -719,8 +719,7 @@ public class CcrService {
                                 console.setUpdatedBy("Bayan");
                                 console.setUpdatedOn(new Date());
 
-                                Console updateConsole = consoleRepository.save(console);
-//                                updatedCcrList.add(updatedCcr);
+                                consoleRepository.save(console);
                             }
                         }
                     }

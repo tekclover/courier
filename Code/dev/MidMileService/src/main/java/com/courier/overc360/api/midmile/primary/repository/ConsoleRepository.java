@@ -244,4 +244,6 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
 
     Console findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String pieceId, Long deletionIndicator);
+
+    List<Console> findByConsoleIdAndDeletionIndicator(String consoleId, Long deletionIndicator);
 }
