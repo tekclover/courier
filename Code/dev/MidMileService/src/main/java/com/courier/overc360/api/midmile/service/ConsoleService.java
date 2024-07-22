@@ -1261,6 +1261,7 @@ public class ConsoleService {
                         dbConsole.setUpdatedOn(new Date());
 
                         consoleRepository.save(dbConsole);
+                        log.info("Delete Console List---------------------------> " + dbConsole);
                     }
                 }
             }
