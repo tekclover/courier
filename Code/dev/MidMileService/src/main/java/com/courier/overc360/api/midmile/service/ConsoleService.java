@@ -15,6 +15,7 @@ import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifest
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.specification.ConsoleSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -336,8 +337,7 @@ public class ConsoleService {
     public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<Console> createdConsoleList = new ArrayList<>();
-
-        int consoleCounter = 1;
+        Map<String, Integer> consoleNameCounterMap = new HashMap<>();
 
         // Separate records where hsCode is null
         List<AddConsole> nullHsCodeList = addConsoleList.stream()
@@ -349,8 +349,18 @@ public class ConsoleService {
                 .filter(console -> !console.getHsCode().isEmpty())
                 .collect(Collectors.groupingBy(AddConsole::getHsCode));
 
+//        request pass multiple record set consolename based on consoleid
+//         example consoleId - 121 console name -1
+//                    consoleId - 121 console name - 1
+//         consoleId - 222 console name - 2
+//         console Id - 222 console name - 2
+//         console Id - 333 console name - 3
+//         console Id - 333 console name - 3
+//         console Id - 333 console name - 3
+
         if (!nullHsCodeList.isEmpty()) {
             String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+            int consoleCounter = 1;
             log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : nullHsCodeList) {
 
@@ -386,7 +396,12 @@ public class ConsoleService {
                         newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                     }
                     newConsole.setConsoleId(CONSOLE_ID);
-                    newConsole.setConsoleName("Console - " + consoleCounter);
+                    // Increment consoleName counter for the given consoleId
+                    int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
+                    newConsole.setConsoleName("Console - " + currentConsoleName);
+                    consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
+
+//                    newConsole.setConsoleName("Console - " + consoleCounter);
                     newConsole.setDeletionIndicator(0L);
                     newConsole.setCreatedBy(loginUserID);
                     newConsole.setCreatedOn(new Date());
@@ -423,7 +438,6 @@ public class ConsoleService {
                     createdConsoleList.add(duplicateConsole);
                 }
             }
-            consoleCounter ++;
         }
 
         Map<String, Map<String, List<AddConsole>>> groupedBySpecialApproval = new HashMap<>();
@@ -451,7 +465,7 @@ public class ConsoleService {
                         List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
 
                         String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-
+                        int consoleCount = 1;
                         for (AddConsole console : consoleEntryList) {
 
                             Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
@@ -504,7 +518,13 @@ public class ConsoleService {
 
                                 newConsole.setExpectedDuty(String.valueOf(totalDuty));
                                 newConsole.setConsoleId(CONSOLE_ID);
-                                newConsole.setConsoleName("Console - " + consoleCounter);
+
+                                // Increment consoleName counter for the given consoleId
+                                int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
+                                newConsole.setConsoleName("Console - " + currentConsoleName);
+                                consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
+
+//                                newConsole.setConsoleName("Console - " + consoleCount);
                                 newConsole.setDeletionIndicator(0L);
                                 newConsole.setCreatedBy(loginUserID);
                                 newConsole.setCreatedOn(new Date());
@@ -531,7 +551,7 @@ public class ConsoleService {
 
                                         Console createdConsole = consoleRepository.save(newConsole);
 
-                                        consoleCounter ++;
+                                        consoleCount++;
                                         if (createdConsole != null) {
                                             // Save ConsignmentStatus
                                             consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
@@ -682,7 +702,11 @@ public class ConsoleService {
                                 newConsole.setExpectedDuty(String.valueOf(totalDuty));
 //                            newConsole.setCustomsValue(CUS_VAL);
                                 newConsole.setConsoleId(SUB_CONSOLE_ID);
-                                newConsole.setConsoleName("Console - " + consoleCounter);
+                                // Increment consoleName counter for the given consoleId
+                                int currentConsoleName = consoleNameCounterMap.getOrDefault(SUB_CONSOLE_ID, 0) + 1;
+                                newConsole.setConsoleName("Console - " + currentConsoleName);
+                                consoleNameCounterMap.put(SUB_CONSOLE_ID, currentConsoleName);
+
                                 newConsole.setDeletionIndicator(0L);
                                 newConsole.setCreatedBy(loginUserID);
                                 newConsole.setCreatedOn(new Date());
@@ -698,7 +722,6 @@ public class ConsoleService {
                                         newConsole.setPieceId(pieceId);
                                         Console createdConsole = consoleRepository.save(newConsole);
 
-                                        consoleCounter ++;
                                         if (eventDescOpt.isPresent()) {
                                             IKeyValuePair ikey = eventDescOpt.get();
 
@@ -729,13 +752,6 @@ public class ConsoleService {
                                                     createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
                                                     createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
 
-                                            // Update PieceDetails Table
-//                                        consoleRepository.updatePieceDetailsOnConsoleCreate(
-//                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-//                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-//                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
-//                                                createdConsole.getPieceId());
-
                                             log.info("Console Created<----------------------->Consignment Event Updated");
                                         }
                                         createdConsoleList.add(createdConsole);
@@ -745,7 +761,6 @@ public class ConsoleService {
                                             " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
                                             " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
                                 }
-
                             } else {
                                 createdConsoleList.add(duplicateConsole);
                             }
@@ -819,7 +834,7 @@ public class ConsoleService {
                     newConsole.setUpdatedBy(loginUserID);
                     newConsole.setUpdatedOn(new Date());
 
-                    CONSOLE_NAME ++;
+                    CONSOLE_NAME++;
 
                     Console createdConsole = consoleRepository.save(newConsole);
 
@@ -1249,6 +1264,7 @@ public class ConsoleService {
             IOException, CsvException {
         try {
             if (deleteInputList != null || !deleteInputList.isEmpty()) {
+                log.info("Console List ------------------------->" + deleteInputList);
                 for (ConsoleDeleteInput deleteInput : deleteInputList) {
 
                     Console dbConsole = getConsole(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
@@ -1261,6 +1277,7 @@ public class ConsoleService {
                         dbConsole.setUpdatedOn(new Date());
 
                         consoleRepository.save(dbConsole);
+                        log.info("Delete Console List---------------------------> " + dbConsole);
                     }
                 }
             }
@@ -1354,22 +1371,23 @@ public class ConsoleService {
      * @return
      * @throws Exception
      */
-//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
-//
-//        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
-//        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
-//        log.info("found Consoles --> {}", results);
-//        return results;
-//    }
     public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
 
-        log.info("given Params for find -- > {}", findConsole);
-        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
-                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
-                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
-//        log.info("found Consoles --> {}", consoleList);
-        return consoleList;
+        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
+        log.info("found Consoles --> {}", results);
+        return results;
     }
+
+//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
+//
+//        log.info("given Params for find -- > {}", findConsole);
+//        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
+//                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
+//                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
+//        log.info("found Consoles --> {}", consoleList);
+//        return consoleList;
+//    }
 
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String
