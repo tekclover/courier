@@ -20,6 +20,10 @@ import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -1365,29 +1369,40 @@ public class ConsoleService {
     }
 
     /**
-     * Find Console
+     * Find Consoles by Pagination
+     *
+     * @param findConsole
+     * @param pageNo
+     * @param pageSize
+     * @param sortBy
+     * @return
+     * @throws Exception
+     */
+    public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
+
+        log.info("given Params for find -- > {}", findConsole);
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+        Page<ReplicaConsole> results = replicaConsoleRepository.findAll(spec, paging);
+        log.info("no of Consoles fetched --> " + results.getSize());
+        return results;
+    }
+
+    /**
+     * Find Consoles - normal
      *
      * @param findConsole
      * @return
      * @throws Exception
      */
-    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
+    public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
 
-        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
-        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
-        log.info("found Consoles --> {}", results);
-        return results;
+        log.info("given Params for find -- > {}", findConsole);
+        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
+                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
+                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
+        return consoleList;
     }
-
-//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
-//
-//        log.info("given Params for find -- > {}", findConsole);
-//        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
-//                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
-//                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
-//        log.info("found Consoles --> {}", consoleList);
-//        return consoleList;
-//    }
 
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String
