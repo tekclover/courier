@@ -521,6 +521,15 @@ public class MidMileController {
         return midMileService.findConsolesByPagination(findConsole, pageNo, pageSize, sortBy, authToken);
     }
 
+    // GET MobileDashboard - Console count
+    @ApiOperation(response = MobileDashboard.class, value = "Get MobileDashboard") // label for swagger
+    @GetMapping("/console/mobileDashboard/get")
+    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
+                                                @RequestParam String partnerMasterAirwayBill, @RequestParam String authToken) {
+        MobileDashboard dashboard = midMileService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill, authToken);
+        return new ResponseEntity<>(dashboard, HttpStatus.OK);
+    }
+
     // Console Create preAlertResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on PreAlert Input")
     @PostMapping("/console/prealert")

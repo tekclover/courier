@@ -1384,7 +1384,7 @@ public class ConsoleService {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         ConsoleSpecification spec = new ConsoleSpecification(findConsole);
         Page<ReplicaConsole> results = replicaConsoleRepository.findAll(spec, paging);
-        log.info("no of Consoles fetched --> " + results.getSize());
+//        log.info("no of Consoles fetched --> {}", results.getSize());
         return results;
     }
 
@@ -1404,9 +1404,25 @@ public class ConsoleService {
         return consoleList;
     }
 
+    /**
+     * Mobile Dashboard - Get Consoles Count
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerMasterAirwayBill
+     * @return
+     */
+    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill) {
+
+        MobileDashboard mobileDashboard = new MobileDashboard();
+        long consoleCount = replicaConsoleRepository.getMobileDashboardCount(languageId, companyId, "5", partnerMasterAirwayBill);
+        log.info("consoleCount --> {}", consoleCount);
+        mobileDashboard.setConsoleCount(consoleCount);
+        return mobileDashboard;
+    }
+
     //==========================================Console_ErrorLog================================================
-    private void createConsoleLog(String languageId, String companyId, String partnerId, String
-            masterAirwayBill,
+    private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,
                                   String houseAirwayBill, String consoleId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
@@ -1423,8 +1439,7 @@ public class ConsoleService {
         errorLogRepository.save(errorLog);
     }
 
-    private void createConsoleLog2(List<AddConsole> addConsoleList, String error) throws
-            IOException, CsvException {
+    private void createConsoleLog2(List<AddConsole> addConsoleList, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (AddConsole addConsole : addConsoleList) {
@@ -1445,8 +1460,7 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createConsoleLog3(List<UpdateConsole> updateConsoleList, String error) throws
-            IOException, CsvException {
+    private void createConsoleLog3(List<UpdateConsole> updateConsoleList, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (UpdateConsole updateConsole : updateConsoleList) {
@@ -1468,8 +1482,7 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createConsoleLog4(List<ConsoleDeleteInput> deleteInputList, String error) throws
-            IOException, CsvException {
+    private void createConsoleLog4(List<ConsoleDeleteInput> deleteInputList, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (ConsoleDeleteInput deleteInput : deleteInputList) {

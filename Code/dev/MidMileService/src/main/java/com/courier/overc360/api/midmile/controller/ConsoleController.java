@@ -168,7 +168,13 @@ public class ConsoleController {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
+
+    @ApiOperation(response = MobileDashboard.class, value = "Get Mobile Dashboard Count") // label for swagger
+    @GetMapping("/mobileDashboard/get")
+    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
+                                                @RequestParam String partnerMasterAirwayBill) throws Exception {
+        MobileDashboard consolesCount = consoleService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill);
+        return new ResponseEntity<>(consolesCount, HttpStatus.OK);
+    }
+
 }
-
-
-
