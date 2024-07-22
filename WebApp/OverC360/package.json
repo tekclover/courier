@@ -27,6 +27,7 @@
     "@types/pdfmake": "^0.2.9",
     "bootstrap": "^4.6.2",
     "crypto-js": "^4.2.0",
+    "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "force": "^0.0.3",
     "ngx-barcode6": "^1.0.24",
