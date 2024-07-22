@@ -109,7 +109,7 @@
               <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [class.selectedRow]="selectedModule[0] === rowData">
                   <td style="width: 5rem; justify-content: center;">
-                    <p-tableCheckbox class="pl-4" [value]="rowData" />
+                    <p-tableCheckbox class="pl-3" [value]="rowData" />
                   </td>
                   <td *ngFor="let col of columns">
                     <ng-container *ngIf="col.format !== 'date'; else dateTemplate">

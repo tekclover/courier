@@ -292,26 +292,22 @@
  -->
 
  <div class="componentBody">
-    <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Pre Alert Manifest - {{this.pageToken.pageflow}}</p>
-
         <div class="d-flex justify-content-between align-items-center">
-            <img type="button" (click)="bulkUpdate.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
-                style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
-            <p-overlayPanel [style]="{ width: '180' }" #bulkUpdate>
-                <div class="d-flex flex-column">
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
-                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
-                        Update</button>
-                </div>
-            </p-overlayPanel>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center">
-            <button type="button" *ngIf="this.pageToken.pageflow=='Edit'" class="buttom1 bgBlack text-white ml-2"
+            <p class="componentHeader f600 mb-0">Pre Alert Manifest - {{this.pageToken.pageflow}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <img type="button" (click)="bulkUpdate.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
+                    style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
+                <p-overlayPanel [style]="{ width: '180' }" #bulkUpdate>
+                    <div class="d-flex flex-column">
+                        <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
+                                src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
+                            Update</button>
+                    </div>
+                </p-overlayPanel>
+                <button type="button" *ngIf="this.pageToken.pageflow=='Edit'" class="buttom1 bgBlack text-white ml-2"
                 (click)="downloadExcel()">Download</button>
+            </div>
         </div>
-    </div>
 
     <div class="mx-auto mt-4">
         <form [formGroup]="form">
@@ -350,7 +346,7 @@
                         <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                             <tr  [class.selectedRow]="selectedPreAlertManifest[0] === rowData">
                                 <td style="width: 5rem; justify-content: center;" pFrozenColumn>
-                                    <p-tableCheckbox class="pl-4" [value]="rowData" />
+                                    <p-tableCheckbox class="pl-3" [value]="rowData" />
                                 </td>
                                 <td *ngFor="let col of columns">
                                     <ng-container *ngIf="col.format !== 'date'; else dateTemplate">

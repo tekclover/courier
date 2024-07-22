@@ -231,7 +231,7 @@ export class ConsoleNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.spin.show()
-      this.service.Update([this.form.getRawValue()]).subscribe({
+      this.service.updateSingle([this.form.getRawValue()]).subscribe({
         next: (res: any) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res[0].consoleId + ' has been updated successfully' });
           this.router.navigate(['/main/airport/console']);

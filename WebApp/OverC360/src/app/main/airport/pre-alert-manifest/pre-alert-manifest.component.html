@@ -8,15 +8,8 @@
                 style="margin: 0 17px; height: 1.5rem;">
             <img type="button" (click)="deleteDialog()" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
-            <img type="button" (click)="op.toggle($event)" src="./assets/common/settings.png" alt="" srcset=""
+            <img type="button"src="./assets/common/settings.png" alt="" srcset=""
                 style="margin-left: 19px; margin-right: 28px; height: 1.5rem;">
-            <p-overlayPanel [style]="{ width: '180' }" #op>
-                <div class="d-flex flex-column">
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
-                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
-                        Update</button>
-                </div>
-            </p-overlayPanel>
             <button type="button" class="btn ml-2 addNewbuttom bgBlack text-white" (click)="openCrud('New')"><i
                     class="bi bi-plus-square pr-2"></i> Add New</button>
         </div>
@@ -124,13 +117,24 @@
                         {{ col.header }}
                     </th>
                 </tr>
+                <!-- <tr>
+                    <th  style="width: 5rem;" pFrozenColumn>
+                        <p-tableHeaderCheckbox [disabled]="true" class="pl-3"></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns">
+                        <input pInputText type="text"
+                            (input)="preAlertManifestTag.filter($any($event.target)?.value, col.field, 'contains')"
+                            [value]="$any(preAlertManifestTag.filters[col.field])?.value" placeholder="Search"
+                            class="p-column-filter">
+                    </th>
+                </tr> -->
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;">
-                        <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-4"
+                        <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-3"
                             [value]="rowData"></p-checkbox> -->
-                        <p-tableCheckbox class="pl-4" [value]="rowData" />
+                        <p-tableCheckbox class="pl-3" [value]="rowData" />
                     </td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.format !== 'date' && col.format !== 'boolean'; else dateTemplate">

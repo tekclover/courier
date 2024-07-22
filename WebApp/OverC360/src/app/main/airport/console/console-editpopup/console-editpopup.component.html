@@ -92,7 +92,20 @@
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                         
                     </div>
-                  
+                    <div class="col-6 marginFieldNew borderRadius12" >
+                        <p class="formControlLabel f600 textBlack mb-0">Customs CCR No</p>
+                        <input maxlength="50" pInputText formControlName="customsCcrNo" [ngClass]="form.get('customsCcrNo')?.invalid && form.get('customsCcrNo')?.dirty ? 'invalid' : ''" class="w-100" placeholder="Enter" />          
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Primary DO </p>
+                        <input maxlength="50" pInputText formControlName="primaryDo"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
+                    <div class="col-6 marginFieldNew borderRadius12">
+                        <p class="formControlLabel f600 textBlack mb-0">Secondary DO </p>
+                        <input maxlength="50" pInputText formControlName="secondaryDo"
+                            class="w-100" pInputText placeholder="Enter" />
+                    </div>
                 </div>
                 <div class="d-flex float-right py-2">
                     <button mat-dialog-close class="buttom1 textBlack mx-1"

@@ -342,7 +342,7 @@ export class ConsoleEditComponent {
         x.eventCode = 10;
       });
       const a = this.subProductArray.filter(x => x.eventCode == 10);
-      this.service.Update(this.selectedConsole).subscribe({
+      this.service.updateSingle(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
@@ -773,7 +773,7 @@ export class ConsoleEditComponent {
       return
     }
     let obj: any = {};
-    obj.consoleId = [this.selectedConsole[0].consoleId];
+    obj.consoleId = this.selectedConsole.map(item => item.consoleId);
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
@@ -795,7 +795,7 @@ export class ConsoleEditComponent {
       return
     }
     let obj: any = {};
-    obj.consoleId = [this.selectedConsole[0].consoleId];
+    obj.consoleId = this.selectedConsole.map(item => item.consoleId);
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
@@ -820,7 +820,7 @@ export class ConsoleEditComponent {
       return
     }
     let obj: any = {};
-    obj.consoleId = [this.selectedConsole[0].consoleId];
+    obj.consoleId = this.selectedConsole.map(item => item.consoleId);
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');

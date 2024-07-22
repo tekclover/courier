@@ -110,7 +110,7 @@
                             </tr>
                             <tr>
                                 <th  style="width: 5rem;" pFrozenColumn>
-                                    <p-tableHeaderCheckbox [disabled]="true" class="pl-4"></p-tableHeaderCheckbox>
+                                    <p-tableHeaderCheckbox [disabled]="true" class="pl-3"></p-tableHeaderCheckbox>
                                 </th>
                                 <th *ngFor="let col of columns">
                                     <input pInputText type="text"
@@ -125,7 +125,7 @@
                         <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                             <tr [class.selectedRow]="selectedConsole[0] === rowData">
                                 <td style="width: 5rem;" pFrozenColumn>
-                                    <p-tableCheckbox class="pl-4" [value]="rowData" />
+                                    <p-tableCheckbox class="pl-3" [value]="rowData" />
                                 </td>
                                 <td *ngFor="let col of columns">
                                     <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
