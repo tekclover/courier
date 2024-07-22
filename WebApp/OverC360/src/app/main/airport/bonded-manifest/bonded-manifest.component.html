@@ -99,7 +99,7 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;">
-                            <p-tableCheckbox  class="pl-3" [value]="rowData" />
+                            <p-tableCheckbox  class="pl-4" [value]="rowData" />
                     </td>
                     <td style="width: 5rem; justify-content: center;">
                         <i style="font-size: 14px;" [pRowToggler]="rowData" [ngClass]="expanded ?  'bi-chevron-up' : 'bi-chevron-right'"></i>

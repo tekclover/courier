@@ -283,12 +283,12 @@
                             <mat-error *ngIf="errorHandlingShipment('invoiceAmount')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="invoiceUrl">
+                        <div class="col-3 marginFieldNew borderRadius12" *ngIf="this.shipmentInfo.controls.invoiceUrl.value">
                             <p class="formControlLabel f600 textBlack mb-0">Invoice URL </p>
                             <p-inputGroup>
-                                <input maxlength="50"
+                                <input maxlength="500"
                                     [ngClass]="shipmentInfo.get('invoiceUrl')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    pKeyFilter="num" formControlName="invoiceUrl" pInputText placeholder="Enter" />
+                                    formControlName="invoiceUrl" pInputText placeholder="Enter" />
                                 <button type="button" pButton
                                     (click)="downloadInvoice(this.shipmentInfo.controls.invoiceUrl.value);"
                                     class="bgBlack border-0"><i class="bi bi-download"></i></button>
@@ -989,7 +989,7 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded" let-i="rowIndex">
                         <tr>
                             <td style="width: 5rem; justify-content: center;">
-                                <p-tableCheckbox [disabled]="true" class="pl-3" [value]="rowData" />
+                                <p-tableCheckbox [disabled]="true" class="pl-4" [value]="rowData" />
                             </td>
                             <td *ngFor="let col of columns" [style]="col.style">
                                 <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
@@ -1058,12 +1058,12 @@
                             <mat-error *ngIf="errorHandlingBilling('customsInsurance')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
-                        <div class="col-3 marginFieldNew borderRadius12" id="duty">
+                        <div class="col-3 marginFieldNew borderRadius12" id="dutyPercentage">
                             <p class="formControlLabel f600 textBlack mb-0">Duty Percentage</p>
-                            <input maxlength="50" formControlName="duty"
-                                [ngClass]="billing.get('duty')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                            <input maxlength="50" formControlName="dutyPercentage"
+                                [ngClass]="billing.get('dutyPercentage')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                 class=" w-100" pInputText placeholder="Enter" />
-                            <mat-error *ngIf="errorHandlingBilling('duty')"
+                            <mat-error *ngIf="errorHandlingBilling('dutyPercentage')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                         </div>
                         <!-- <div class="col-3 marginFieldNew borderRadius12" id="consignmentValueLocal">
@@ -1318,7 +1318,7 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr>
                             <td style="width: 5rem; justify-content: center;">
-                                <p-tableCheckbox [disabled]="true" class="pl-3" [value]="rowData" />
+                                <p-tableCheckbox [disabled]="true" class="pl-4" [value]="rowData" />
                             </td>
                             <td *ngFor="let col of columns" [style]="col.style">
                                 <ng-container *ngIf="col.format !== 'date'; else dateTemplate">

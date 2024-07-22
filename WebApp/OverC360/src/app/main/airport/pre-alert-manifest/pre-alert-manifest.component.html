@@ -128,9 +128,9 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr [ngClass]="{'selectedRow': isSelected(rowData)}">
                     <td style="width: 5rem; justify-content: center;">
-                        <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-3"
+                        <!-- <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedPreAlertManifest" class="pl-4"
                             [value]="rowData"></p-checkbox> -->
-                        <p-tableCheckbox class="pl-3" [value]="rowData" />
+                        <p-tableCheckbox class="pl-4" [value]="rowData" />
                     </td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.format !== 'date' && col.format !== 'boolean'; else dateTemplate">
