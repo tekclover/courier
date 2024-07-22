@@ -203,8 +203,8 @@ public class PreAlertService {
 
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
-                dbPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
-                dbPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
+                newPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
+                newPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
                 newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
