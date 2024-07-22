@@ -730,13 +730,13 @@ export class ConsoleEditComponent {
     if(event == 'self'){
       this.selectedConsole.forEach(x => {
         x['hawbType'] = 'status';
-        x['hawbId'] =  '8';
+        x['hawbTypeId'] =  '8';
        })
     }
     if(event == 'cleared'){
       this.selectedConsole.forEach(x => {
         x['hawbType'] = 'status';
-        x['hawbId'] =  '7';
+        x['hawbTypeId'] =  '7';
        })
     }
     if(event == 'outscan'){
