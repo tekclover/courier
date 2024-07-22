@@ -73,19 +73,7 @@ export class ConsoleComponent {
       { field: 'iata', header: 'IATA Charges' },
     ];
   }
-  updateBulk() {
-    const dialogRef = this.dialog.open(ConsoleBulkComponent, {
-      disableClose: true,
-      width: '70%',
-      maxWidth: '80%',
-      position: { top: '6.5%', left: '30%' },
-      data: { title: 'Console', code: this.selectedConsole },
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.initialCall();
-    });
-  }
   initialCall() {
     setTimeout(() => {
       this.spin.show();
@@ -175,6 +163,7 @@ export class ConsoleComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
+    console.log(lines)
     this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });

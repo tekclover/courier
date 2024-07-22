@@ -25,6 +25,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TagModule } from 'primeng/tag';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 @NgModule({
   declarations: [],
   imports: [
@@ -53,7 +54,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     MultiSelectModule,
     TagModule,
     InputGroupAddonModule,
-    InputGroupModule
+    InputGroupModule,
+    TieredMenuModule
   ], 
   exports: [
     CommonModule,
@@ -81,7 +83,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     MultiSelectModule,
     TagModule,
     InputGroupAddonModule,
-    InputGroupModule
+    InputGroupModule,
+    TieredMenuModule
   ]
 })
 export class PrimengModule { }

@@ -39,6 +39,23 @@ export class CommonServiceService {
     );
   }
 
+  exportAsPrealertExcel(data: any, filename: string = "Downloaded_Excel") {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    // converts a DOM TABLE element to a worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'IW Manifest');
+    /* save to file */
+    XLSX.writeFile(
+      wb,
+      filename + `_${new Date().getDate() +
+      '-' +
+      (new Date().getMonth() + 1) +
+      '-' +
+      new Date().getFullYear()
+      }.xlsx`
+    );
+  }
+
   downloadExcel(data: any[], filename: string = "Downloaded_Excel", groupByField:any) {
     const workbook = XLSX.utils.book_new();
 

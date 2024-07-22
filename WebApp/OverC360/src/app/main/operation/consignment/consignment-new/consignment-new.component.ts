@@ -787,7 +787,7 @@ export class ConsignmentNewComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId]
-    obj.houseAirwayBill = [line.partnerHouseAirwayBill];
+    obj.houseAirwayBill = [line.houseAirwayBill];
 
     this.service.search(obj).subscribe({next: res=> {
       this.billingTable =  res;
