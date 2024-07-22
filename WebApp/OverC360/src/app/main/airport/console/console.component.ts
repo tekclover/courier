@@ -73,19 +73,7 @@ export class ConsoleComponent {
       { field: 'iata', header: 'IATA Charges' },
     ];
   }
-  updateBulk() {
-    const dialogRef = this.dialog.open(ConsoleBulkComponent, {
-      disableClose: true,
-      width: '70%',
-      maxWidth: '80%',
-      position: { top: '6.5%', left: '30%' },
-      data: { title: 'Console', code: this.selectedConsole },
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.initialCall();
-    });
-  }
   initialCall() {
     setTimeout(() => {
       this.spin.show();
@@ -175,6 +163,7 @@ export class ConsoleComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
+    console.log(lines)
     this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
@@ -262,8 +251,6 @@ export class ConsoleComponent {
   }
 
 
-
-
  downloadExcelWB() {
 
     if (this.selectedConsole.length === 0) {
@@ -273,7 +260,7 @@ export class ConsoleComponent {
 
     const cols = [
       { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
-      { field: 'partnerMasterAirwayBill', header: 'AWB' },
+      { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
       { field: 'shipperName', header: 'Shipper' },
@@ -300,8 +287,8 @@ export class ConsoleComponent {
             // New row to be added before console data
             const newRow = {
               '#': '',
-              'AWB': '',
-              'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
               'Origin Code': '',
               'Shipper': '',
               'WT KG': '',
@@ -318,6 +305,7 @@ export class ConsoleComponent {
   
             const consoleSheetData: any[] = [];
   
+            
             // Add new row (newRow) as the first row
             consoleSheetData.push(Object.values(newRow).map(String));
   

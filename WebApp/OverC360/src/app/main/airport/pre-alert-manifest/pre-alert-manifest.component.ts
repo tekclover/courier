@@ -20,6 +20,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
 import * as XLSX from 'xlsx';
+import { PrealertService } from './prealert.service';
 @Component({
   selector: 'app-pre-alert-manifest',
   templateUrl: './pre-alert-manifest.component.html',
@@ -52,6 +53,7 @@ export class PreAlertManifestComponent {
     private manifest: BondedManifestService,
     private console: ConsoleService,
     private fb: FormBuilder,
+    private prealertService: PrealertService
   ) { }
 
   fullDate: any;
@@ -184,41 +186,65 @@ export class PreAlertManifestComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedPreAlertManifest);
+        const partnerMasterAirwayBill = this.selectedPreAlertManifest.map(item => item.partnerMasterAirwayBill);
+        this.service.searchPrealert({ partnerMasterAirwayBill: partnerMasterAirwayBill }).subscribe({
+          next: (result) => {
+            this.deleterecord(result);
+          }
+        })
       }
     });
   }
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines).subscribe({
+    this.prealertService.Delete(lines).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Prealert has been deleted successfully' });
+       this.initialCall();
         this.spin.hide();
-        this.initialCall();
       }, error: (err) => {
-        this.cs.commonerrorNew(err);
         this.spin.hide();
+        this.cs.commonerrorNew(err);
       }
     })
   }
 
   downloadExcel() {
+
+    const preAlertColumn = [
+      { field: 'partnerHouseAirwayBill', header: 'MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'HAWB' },
+      { field: 'totalWeight', header: 'Weight' },
+      { field: 'noOfPieces', header: 'PCS' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'bayanHv', header: 'Bayan HV' },
+      { field: 'currency', header: 'Currency' },
+      { field: 'description', header: 'Description(en)' },
+      { field: 'consigneeName', header: 'Cnee Name' },
+      { field: 'shipper', header: 'Shipper' },
+      { field: 'origin', header: 'Origin' },
+      { field: 'originCode', header: 'Origin Code' },
+      { field: 'customsValue', header: 'Value KD' },
+      { field: 'iata', header: 'IATA' },
+      { field: 'hsCode', header: 'HSCode' },
+      { field: 'incoTerm', header: 'DDU & DDB' },
+    ]
     const exportData = this.preAlertManifestTable.map(item => {
       const exportItem: any = {};
-      this.cols.forEach(col => {
-        if (col.format == 'date') {
-          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-        } else {
-          exportItem[col.header] = item[col.field];
-        }
-
+      preAlertColumn.forEach(col => {
+        // if (col.format == 'date') {
+        //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        // } else {
+        //   exportItem[col.header] = item[col.field];
+        // }
+        exportItem[col.header] = item[col.field];
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Pre-Alert Manifest');
+    this.cs.exportAsPrealertExcel(exportData, 'Pre-Alert Manifest');
   }
 
   onRowExpand(event: TableRowExpandEvent) {

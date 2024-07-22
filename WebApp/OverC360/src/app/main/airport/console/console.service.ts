@@ -26,6 +26,10 @@ export class ConsoleService {
     return this.http.patch<any>('/overc-midmile-service/console/update/list', obj);
   }
 
+  updateSingle(obj: any) {
+    return this.http.patch<any>('/overc-midmile-service/console/update', obj);
+  }
+
   createCCR(obj: any) {
     return this.http.patch<any>('/overc-midmile-service/console/update/ccr/create', obj);
   }

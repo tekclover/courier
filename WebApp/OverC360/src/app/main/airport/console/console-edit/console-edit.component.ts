@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -57,28 +57,40 @@ export class ConsoleEditComponent {
   form = this.fb.group({
     actualCurrency: [],
     actualValue: [],
+    addIata: [],
+    addInsurance: [],
     airportOriginCode: [],
     bondedId: [],
+    calculatedTotalDuty: [],
     companyId: [],
     companyName: [],
     consigneeCivilId: [],
     consigneeName: [],
     consignmentCurrency: [],
+    consignmentLocalId: [],
     consignmentValue: [],
+    consignmentValueLocal: [],
+    consoleGroupName: [],
     consoleId: [],
+    consoleName: [],
     countryOfOrigin: [],
     createdBy: [],
     createdOn: [],
     currency: [],
     customsCurrency: [],
+    customsInsurance: [],
     customsKd: [],
     customsValue: [],
+    dduCharge: [],
     declaredValue: [],
     deletionIndicator: [],
     description: [],
-    eventCode: [],
-    eventText: [],
-    eventTimestamp: [],
+    duty: [],
+    dutyPercentage: [],
+    exchangeRate: [],
+    exemptionBeneficiary: [],
+    exemptionFor: [],
+    exemptionReference: [],
     expectedDuty: [],
     finalDestination: [],
     freightCharges: [],
@@ -86,17 +98,21 @@ export class ConsoleEditComponent {
     goodsDescription: [],
     goodsType: [],
     grossWeight: [],
-    houseAirwayBill: [],
+    hawbTimeStamp: [],
+    hawbType: [],
+    hawbTypeDescription: [],
+    hawbTypeId: [],
     hsCode: [],
-    iataKd: [],
-    pieceId: [],
-    pieceItemId: [],
+    hubCode: [],
+    iata: [],
+    iataCharge: [],
     incoTerms: [],
     invoiceDate: [],
     invoiceNumber: [],
     invoiceSupplierName: [],
     invoiceType: [],
     isConsolidatedShipment: [],
+    isExempted: [],
     isPendingShipment: [],
     isSplitBillOfLading: [],
     landedQuantity: [],
@@ -104,10 +120,10 @@ export class ConsoleEditComponent {
     languageId: [],
     manifestedGrossWeight: [],
     manifestedQuantity: [],
-    masterAirwayBill: [],
     netWeight: [],
     noOfPackageMawb: [],
     noOfPieceHawb: [],
+    noOfPieces: [],
     notifyParty: [],
     partnerHouseAirwayBill: [],
     partnerId: [],
@@ -115,6 +131,12 @@ export class ConsoleEditComponent {
     partnerName: [],
     partnerType: [],
     paymentType: [],
+    pieceId: [],
+    pieceTimeStamp: [],
+    pieceType: [],
+    pieceTypeDescription: [],
+    pieceTypeId: [],
+    primaryDo: [],
     productId: [],
     productName: [],
     quantity: [],
@@ -138,17 +160,15 @@ export class ConsoleEditComponent {
     referenceField7: [],
     referenceField8: [],
     referenceField9: [],
-    selectedConsole: [],
     remarks: [],
+    secondaryDo: [],
     serviceTypeId: [],
     serviceTypeName: [],
     shipmentBagId: [],
     shipperId: [],
     shipperName: [],
+    specialApprovalCharge: [],
     specialApprovalValue: [],
-    statusId: [],
-    statusText: [],
-    statusTimestamp: [],
     subProductId: [],
     subProductName: [],
     tareWeight: [],
@@ -156,6 +176,8 @@ export class ConsoleEditComponent {
     updatedBy: [],
     updatedOn: [],
     volume: [],
+    statusText: [],
+    statusId: [],
 
   });
 
@@ -211,7 +233,6 @@ export class ConsoleEditComponent {
       { field:'consoleId', header:'Console No'},
       { field: 'consoleName', header: 'Console Name' },
       { field: 'consoleGroupName', header: 'Console Group' },
-      { field: 'houseAirwayBill', header: 'Consginment No' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'description', header: 'Commodity' },
@@ -313,8 +334,6 @@ export class ConsoleEditComponent {
         x.eventCode = 10;
       });
       const a = this.subProductArray.filter(x => x.eventCode == 10);
-     console.log(a)
-     console.log(this.subProductArray.length)
       this.service.Update(this.selectedConsole).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -380,10 +399,7 @@ export class ConsoleEditComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.subProductArray.splice(item, 0);
-        this.subProductArray.splice(item, 1, result);
-        this.subProductArray = [...this.subProductArray]
-
+        this.fill(this.pageToken.line);
       }
     });
   }
@@ -476,15 +492,15 @@ export class ConsoleEditComponent {
 
     const groupedByConsoleId = this.groupBy(res, 'consoleId');
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-
+    let index = 0;
     for (const consoleId in groupedByConsoleId) {
       if (groupedByConsoleId.hasOwnProperty(consoleId)) {
         const consoleData = groupedByConsoleId[consoleId];
         // New row to be added before console data
         const newRow = {
           '#': '',
-          'AWB': '',
-          'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+          'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+          'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
           'Origin Code': '',
           'Shipper': '',
           'WT KG': '',
@@ -529,7 +545,7 @@ export class ConsoleEditComponent {
         consoleSheetData.push(...consoleRows);
 
         const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
-        XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
+        XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${index + 1}`);
 
         const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
 
@@ -549,7 +565,7 @@ export class ConsoleEditComponent {
               return exportItem;
             });
             const invoiceSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoicesData);
-            XLSX.utils.book_append_sheet(wb, invoiceSheet, `INVOICE-${consoleId}`);
+            XLSX.utils.book_append_sheet(wb, invoiceSheet, `INVOICES-${index + 1}`);
 
             const invoiceItemsData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
               const exportItem: any = {};
@@ -563,10 +579,11 @@ export class ConsoleEditComponent {
               return exportItem;
             });
             const invoiceItemSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoiceItemsData);
-            XLSX.utils.book_append_sheet(wb, invoiceItemSheet, `INVOICEITEM-${consoleId}`);
+            XLSX.utils.book_append_sheet(wb, invoiceItemSheet, `INVOICEITEM-${index + 1}`);
           }
         }
       }
+      index++;
     }
     XLSX.writeFile(
       wb,
@@ -584,7 +601,7 @@ export class ConsoleEditComponent {
     
     const cols = [
       { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
-      { field: 'partnerMasterAirwayBill', header: 'AWB' },
+      { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
       { field: 'shipperName', header: 'Shipper' },
@@ -601,15 +618,15 @@ export class ConsoleEditComponent {
   
         const groupedByConsoleId = this.groupBy(this.selectedConsole, 'consoleId');
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  
+        let index = 0;
         for (const consoleId in groupedByConsoleId) {
           if (groupedByConsoleId.hasOwnProperty(consoleId)) {
             const consoleData = groupedByConsoleId[consoleId];
             // New row to be added before console data
             const newRow = {
               '#': '',
-              'AWB': '',
-              'Origin': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+              'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
               'Origin Code': '',
               'Shipper': '',
               'WT KG': '',
@@ -654,8 +671,9 @@ export class ConsoleEditComponent {
             consoleSheetData.push(...consoleRows);
   
             const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
-            XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${consoleId}`);
+            XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${index + 1}`);
           }
+          index ++;
         }
   
         // Generate and download the Excel file
@@ -681,7 +699,7 @@ export class ConsoleEditComponent {
         this.selectedConsole.forEach(x => {
           x['hawbType'] =  i == 0 ? 'status' : 'event';
           x['hawbId']  =  i == 0 ? '9' : '9';
-          x['hsCode']  =  result;
+          x['hubCode']  =  result;
           this.outScan.push(x);
          })  
     }
@@ -729,6 +747,7 @@ export class ConsoleEditComponent {
         this.spin.hide();
         setTimeout(() => {
           this.fill(this.pageToken.line);
+          this.selectedConsole = [];
         }, 2000);
       },
       error: (err) => {
@@ -762,7 +781,7 @@ export class ConsoleEditComponent {
   houseAirwayBill: any;
 
   generateInvoice() {
-    this.uniqueHouseAirway = [];
+    this.uniquePartnerHouseAirwayBill = [];
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
@@ -771,9 +790,9 @@ export class ConsoleEditComponent {
     obj.consoleId = [this.selectedConsole[0].consoleId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
-        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
-        this.label.getResultInvoice(houseAirwayBillArray)
+        this.uniquePartnerHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'partnerHouseAirwayBill');
+        const partnerHouseAirwayBill = this.uniquePartnerHouseAirwayBill.map(item => item.partnerHouseAirwayBill);
+        this.label.getResultInvoice(partnerHouseAirwayBill)
       },
       error: (err) => {
         this.spin.hide();
@@ -784,9 +803,9 @@ export class ConsoleEditComponent {
 
 
   uniquePieceId: any[] = [];
-  uniqueHouseAirway: any[] = [];
+  uniquePartnerHouseAirwayBill: any[] = [];
   generateMerge() {
-    this.uniqueHouseAirway = [];
+    this.uniquePartnerHouseAirwayBill = [];
     this.uniquePieceId = [];
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
@@ -797,10 +816,10 @@ export class ConsoleEditComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
-        this.uniqueHouseAirway = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        this.uniquePartnerHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'partnerHouseAirwayBill');
         const pieceId = this.uniquePieceId.map(item => item.pieceId);
-        const houseAirwayBillArray = this.uniqueHouseAirway.map(item => item.houseAirwayBill);
-        this.label.generateMutiple(pieceId, houseAirwayBillArray)
+        const partnerHouseAirwayBillArray = this.uniquePartnerHouseAirwayBill.map(item => item.partnerHouseAirwayBill);
+        this.label.generateMutiple(pieceId, partnerHouseAirwayBillArray)
       },
       error: (err) => {
         this.spin.hide();
@@ -810,4 +829,49 @@ export class ConsoleEditComponent {
 
   }
   
+
+
+  @ViewChild('fileInput1') fileInput1!: ElementRef;
+  uploadBayan() {
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    this.fileInput1.nativeElement.click();
+  }
+  selectedFiles: File | null = null;
+  onFileSelectedBayan(event: any): void {
+    const filePath = '/' + this.selectedConsole[0].consoleId + '/';
+    const file: File = event.target.files[0];
+    this.selectedFiles = file;
+    this.spin.show();
+    this.service.uploadBayan(this.selectedFiles, filePath).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uploaded',
+          key: 'br',
+          detail: 'File uploaded successfully',
+        });
+        this.spin.hide();
+      }, error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    });
+  }
+
+  updateBulk() {
+    const dialogRef = this.dialog.open(ConsoleBulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { title: 'Console', code: this.selectedConsole },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.fill(this.pageToken.line);
+    });
+  }
 }
