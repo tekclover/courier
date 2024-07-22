@@ -197,7 +197,9 @@ public class PieceDetailsService {
                                     languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, addPieceDetails.getPieceId(), 0l);
 
                     if (duplicatePieceDetails.isPresent()) {
-                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
+//                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
+                        log.info("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
+
                     } else {
 
                         String PIECE_ID = houseAirwayBill + String.format("%03d", pieceCounter++);

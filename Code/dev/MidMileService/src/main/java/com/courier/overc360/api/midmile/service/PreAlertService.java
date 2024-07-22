@@ -115,7 +115,8 @@ public class PreAlertService {
                             (dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(),
                                     dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-            if (!preAlertOptional.isPresent()) {
+            if (preAlertOptional.isPresent()) {
+
                 ConsignmentEntity consignment =
                         consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
                                 iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
@@ -242,8 +243,8 @@ public class PreAlertService {
                 }
                 preAlertList.add(savedPreAlert);
             } else {
-                log.info("PreAlert Record is Duplicated ");
-                continue;
+                log.info("PreAlert Record is Getting Duplicate CompanyId - " + dbPreAlert.getCompanyId() + " PartnerId " + dbPreAlert.getPartnerId() +
+                        " PartnerHouseAirwayBill " + dbPreAlert.getPartnerHouseAirwayBill() + " PartnerMasterAirwayBill " + dbPreAlert.getPartnerMasterAirwayBill());
             }
         }
         return preAlertList;

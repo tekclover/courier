@@ -140,7 +140,7 @@ public class CcrService {
                     log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
                             " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
-                    continue;
+//                    continue;
                 }
 
                 Double customsValue = null;
