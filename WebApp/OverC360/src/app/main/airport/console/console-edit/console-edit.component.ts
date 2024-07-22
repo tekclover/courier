@@ -18,6 +18,7 @@ import * as XLSX from 'xlsx';
 import { ConsoleBulkComponent } from '../console-bulk/console-bulk.component';
 import { HubCodePoupupComponent } from './hub-code-poupup/hub-code-poupup.component';
 import { ConsignmentLabelComponent } from '../../../pdf/consignment-label/consignment-label.component';
+import { format } from 'util';
 
 @Component({
   selector: 'app-console-edit',
@@ -235,6 +236,8 @@ export class ConsoleEditComponent {
       { field: 'consoleGroupName', header: 'Console Group' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'hawbTypeDescription', header: 'Event' },
+      { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
       { field: 'description', header: 'Commodity' },
       { field: 'noOfPieces', header: 'No of Piece' },
       { field: 'shipperName', header: 'Shipper' },
@@ -862,6 +865,15 @@ export class ConsoleEditComponent {
   }
 
   updateBulk() {
+    if (this.selectedConsole.length == 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        key: 'br',
+        detail: 'Kindly select any row',
+      });
+      return;
+    }
     const dialogRef = this.dialog.open(ConsoleBulkComponent, {
       disableClose: true,
       width: '70%',

@@ -51,8 +51,8 @@ export class ConsoleComponent {
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       //  { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       //  { field: 'statusText', header: 'Status' },
-      { field: 'hawbTypeDescription', header: 'Event' },
-      { field: 'hawbTimeStamp', header: 'Time' },
+     
+    
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
