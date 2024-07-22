@@ -15,6 +15,7 @@ import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifest
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.specification.ConsoleSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -1249,6 +1250,7 @@ public class ConsoleService {
             IOException, CsvException {
         try {
             if (deleteInputList != null || !deleteInputList.isEmpty()) {
+                log.info("Console List ------------------------->" + deleteInputList);
                 for (ConsoleDeleteInput deleteInput : deleteInputList) {
 
                     Console dbConsole = getConsole(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
@@ -1355,22 +1357,23 @@ public class ConsoleService {
      * @return
      * @throws Exception
      */
-//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
-//
-//        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
-//        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
-//        log.info("found Consoles --> {}", results);
-//        return results;
-//    }
     public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
 
-        log.info("given Params for find -- > {}", findConsole);
-        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
-                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
-                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
-//        log.info("found Consoles --> {}", consoleList);
-        return consoleList;
+        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
+        log.info("found Consoles --> {}", results);
+        return results;
     }
+
+//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
+//
+//        log.info("given Params for find -- > {}", findConsole);
+//        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
+//                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
+//                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
+//        log.info("found Consoles --> {}", consoleList);
+//        return consoleList;
+//    }
 
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String
