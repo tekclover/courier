@@ -1416,6 +1416,11 @@ public class ConsoleService {
         return consoles;
     }
 
+    public List<Console> getConsole(String consoleId) {
+        List<Console> getConsoleId = replicaConsoleRepository.findByConsoleIdAndDeletionIndicator(consoleId, 0L);
+        return getConsoleId;
+    }
+
 }
 
 

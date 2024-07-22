@@ -179,7 +179,9 @@ public class PreAlertService {
 
                     if (dbPreAlert.getAddInsurance() != null) {
                         Double addInsurance = Double.valueOf(dbPreAlert.getAddInsurance());
-                        dbPreAlert.setCustomsValue(String.valueOf(addIata + addInsurance));
+                        //Decimal Format
+                        String formatCustomsValue = decimalFormat.format(String.valueOf(addIata + addInsurance));
+                        dbPreAlert.setCustomsValue(formatCustomsValue);
 
                         if (dbPreAlert.getDuty() != null) {
                             Double customsValue = Double.valueOf(dbPreAlert.getCustomsValue());

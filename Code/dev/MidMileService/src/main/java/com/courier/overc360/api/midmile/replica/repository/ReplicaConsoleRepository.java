@@ -1,6 +1,7 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
+import com.courier.overc360.api.midmile.primary.model.console.Console;
 import com.courier.overc360.api.midmile.primary.model.console.MobileApp;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -92,4 +93,6 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
                              @Param("partnerId") String partnerId,
                              @Param("partnerHouseAB") String partnerHouseAB,
                              @Param("partnerMasterAB") String partnerMasterAB);
+
+    List<Console> findByConsoleIdAndDeletionIndicator(String consoleId, Long deletionIndicator);
 }
