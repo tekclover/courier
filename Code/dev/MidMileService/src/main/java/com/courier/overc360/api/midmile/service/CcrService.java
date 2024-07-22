@@ -137,9 +137,9 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                Ccr duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
                         addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(), addCcr.getPieceId(), 0L);
-                if (!duplicateConsole.isPresent()) {
+                if (duplicateConsole == null) {
 
                     Double customsValue = null;
                     if (addCcr.getCustomsValue() != null) {
@@ -167,27 +167,9 @@ public class CcrService {
 
                     Ccr createdCcr = ccrRepository.save(newCcr);
 
-//                if (createdCcr != null) {
-//                    ccrRepository.updateEventCodeFromConsignment(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
-//                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getEventCode(), createdCcr.getEventText(),
-//                            createdCcr.getStatusId(), createdCcr.getStatusText());
-//                    log.info("CCR Created <-----------------------> Consignment Event Updated");
-//
-//                    //Console Update
-//                    consoleRepository.consoleUpdateBasedOnCCRUpdate(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
-//                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getStatusId(), createdCcr.getEventCode(),
-//                            createdCcr.getStatusText(), createdCcr.getEventText(), createdCcr.getConsoleId());
-//                    log.info("CCR Created <---------------------------> Console Event Updated");
-//
-//                    // Save ConsignmentStatus
-//                    consignmentStatusService.createConsignmentStatusParams(createdCcr.getCompanyId(), createdCcr.getCompanyName(),
-//                            createdCcr.getLanguageId(), createdCcr.getLanguageDescription(), createdCcr.getPieceId(), createdCcr.getStatusId(),
-//                            createdCcr.getMasterAirwayBill(), createdCcr.getHouseAirwayBill(), createdCcr.getStatusText(), createdCcr.getStatusId(),
-//                            createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
-//                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID);
-//                }
                     createdCcrList.add(createdCcr);
                 } else {
+                    createdCcrList.add(duplicateConsole);
                     log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
                             " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
