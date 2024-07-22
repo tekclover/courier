@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -325,6 +326,13 @@ public class ConsoleService {
         return createConsoleList(consoleList, loginUserID);
     }
 
+//     CONSOLEID - 41000000306 consoleName - 1
+//     CONSOLEID - 41000000306 consoleName - 2
+//     CONSOLEID - 41000000306 consoleName - 3
+//    CONSOLEID - 41000000306 consoleName - 4
+//    CONSOLEID - 41000000306 consoleName - 5
+//    CONSOLEID - 41000000306 consoleName - 6
+
     /**
      * @param addConsoleList
      * @param loginUserID
@@ -338,6 +346,8 @@ public class ConsoleService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<Console> createdConsoleList = new ArrayList<>();
         Map<String, Integer> consoleNameCounterMap = new HashMap<>();
+        Map<String, Integer> consoleIdNameMap = new HashMap<>();
+        AtomicInteger consoleNameCounter = new AtomicInteger(1);
 
         // Separate records where hsCode is null
         List<AddConsole> nullHsCodeList = addConsoleList.stream()
@@ -349,18 +359,9 @@ public class ConsoleService {
                 .filter(console -> !console.getHsCode().isEmpty())
                 .collect(Collectors.groupingBy(AddConsole::getHsCode));
 
-//        request pass multiple record set consolename based on consoleid
-//         example consoleId - 121 console name -1
-//                    consoleId - 121 console name - 1
-//         consoleId - 222 console name - 2
-//         console Id - 222 console name - 2
-//         console Id - 333 console name - 3
-//         console Id - 333 console name - 3
-//         console Id - 333 console name - 3
-
+        //If HsCode is null
         if (!nullHsCodeList.isEmpty()) {
             String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-            int consoleCounter = 1;
             log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : nullHsCodeList) {
 
@@ -396,12 +397,11 @@ public class ConsoleService {
                         newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                     }
                     newConsole.setConsoleId(CONSOLE_ID);
-                    // Increment consoleName counter for the given consoleId
-                    int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
-                    newConsole.setConsoleName("Console - " + currentConsoleName);
-                    consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
 
-//                    newConsole.setConsoleName("Console - " + consoleCounter);
+                    // Use the consoleIdNameMap to set the consoleName
+                    int currentConsoleName = consoleIdNameMap.computeIfAbsent(CONSOLE_ID, k -> consoleNameCounter.getAndIncrement());
+                    newConsole.setConsoleName("Console - " + currentConsoleName);
+
                     newConsole.setDeletionIndicator(0L);
                     newConsole.setCreatedBy(loginUserID);
                     newConsole.setCreatedOn(new Date());
@@ -442,7 +442,7 @@ public class ConsoleService {
 
         Map<String, Map<String, List<AddConsole>>> groupedBySpecialApproval = new HashMap<>();
 
-        //Group Second
+        //GROUP BY HSCODE
         for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
             List<AddConsole> consoleList = entry.getValue();
             String hsCode = entry.getKey();
@@ -451,6 +451,8 @@ public class ConsoleService {
             for (AddConsole getCompany : consoleList) {
                 specialApproval = replicaConsoleRepository.getSpecialApproval(getCompany.getCompanyId(), hsCode);
             }
+
+            //SPECIAL APPROVAL
             if (specialApproval != null) {
                 if (specialApproval != null && !specialApproval.isBlank()) {
                     groupedBySpecialApproval
@@ -465,7 +467,6 @@ public class ConsoleService {
                         List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
 
                         String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-                        int consoleCount = 1;
                         for (AddConsole console : consoleEntryList) {
 
                             Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
@@ -519,10 +520,10 @@ public class ConsoleService {
                                 newConsole.setExpectedDuty(String.valueOf(totalDuty));
                                 newConsole.setConsoleId(CONSOLE_ID);
 
-                                // Increment consoleName counter for the given consoleId
-                                int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
+                                // Use the consoleIdNameMap to set the consoleName
+                                int currentConsoleName = consoleIdNameMap.computeIfAbsent(CONSOLE_ID, k -> consoleNameCounter.getAndIncrement());
                                 newConsole.setConsoleName("Console - " + currentConsoleName);
-                                consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
+
 
 //                                newConsole.setConsoleName("Console - " + consoleCount);
                                 newConsole.setDeletionIndicator(0L);
@@ -551,7 +552,6 @@ public class ConsoleService {
 
                                         Console createdConsole = consoleRepository.save(newConsole);
 
-                                        consoleCount++;
                                         if (createdConsole != null) {
                                             // Save ConsignmentStatus
                                             consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
