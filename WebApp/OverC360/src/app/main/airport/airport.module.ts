@@ -21,6 +21,7 @@ import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest/pre-ale
 import { PreAlertUpdateComponent } from './pre-alert-manifest/pre-alert-update/pre-alert-update.component';
 import { PreAlertEditpopupComponent } from './pre-alert-manifest/pre-alert-editpopup/pre-alert-editpopup.component';
 import { HubCodePoupupComponent } from './console/console-edit/hub-code-poupup/hub-code-poupup.component';
+import { PreAlertBulkComponent } from './pre-alert-manifest/pre-alert-bulk/pre-alert-bulk.component';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { HubCodePoupupComponent } from './console/console-edit/hub-code-poupup/h
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, HubCodePoupupComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, HubCodePoupupComponent, PreAlertBulkComponent
 
 
   ],

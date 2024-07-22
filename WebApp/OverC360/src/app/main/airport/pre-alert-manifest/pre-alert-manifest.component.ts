@@ -21,6 +21,7 @@ import { ConsignmentUpdatebulkComponent } from '../../operation/consignment/cons
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
 import * as XLSX from 'xlsx';
 import { PrealertService } from './prealert.service';
+import { PreAlertBulkComponent } from './pre-alert-bulk/pre-alert-bulk.component';
 @Component({
   selector: 'app-pre-alert-manifest',
   templateUrl: './pre-alert-manifest.component.html',
@@ -93,7 +94,7 @@ export class PreAlertManifestComponent {
     ];
   }
   updateBulk() {
-    const dialogRef = this.dialog.open(ConsignmentUpdatebulkComponent, {
+    const dialogRef = this.dialog.open(PreAlertBulkComponent, {
       disableClose: true,
       width: '70%',
       maxWidth: '80%',
