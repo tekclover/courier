@@ -295,6 +295,9 @@ public class ReplicaConsignmentEntity {
     @Column(name = "MODE_OF_TRANSPORT", columnDefinition = "nvarchar(50)")
     private String modeOfTransport;
 
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
     @Column(name = "INSURANCE", columnDefinition = "nvarchar(50)")
     private String insurance;
 

@@ -41,6 +41,8 @@ public class UpdateConsignment {
 
     private String paymentType;
 
+    private String customsInsurance;
+
 //    private String eventCode;
 
 //    private String eventText;

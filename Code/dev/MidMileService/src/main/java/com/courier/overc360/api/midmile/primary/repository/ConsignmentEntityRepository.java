@@ -136,7 +136,8 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
             "ADD_IATA = :addIata," +
             "ADD_INSURANCE = :addInsurance," +
             "CUSTOMS_VALUE = :customsValue," +
-            "CALCULATED_TOTAL_DUTY = :calculatedTotalDuty where " +
+            "CALCULATED_TOTAL_DUTY = :calculatedTotalDuty," +
+            "CUSTOMS_INSURANCE = :customsInsurance where " +
             "c_id in (:companyId) and lang_id in (:languageId) and " +
             "partner_id in (:partnerId) and partner_house_ab in (:partnerHouseAB) and " +
             "is_deleted = 0 ", nativeQuery = true)
@@ -152,7 +153,8 @@ Optional<IKeyValuePair> getEventText(@Param("languageId") String languageId,
                                   @Param("addIata") String addIata,
                                   @Param("addInsurance") String addInsurance,
                                   @Param("customsValue") String customsValue,
-                                  @Param("calculatedTotalDuty") String calculatedTotalDuty);
+                                  @Param("calculatedTotalDuty") String calculatedTotalDuty,
+                                  @Param("customsInsurance") String customsInsurance);
 
     @Modifying
     @Query(value = "update tblpiecedetails " +

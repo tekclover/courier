@@ -225,7 +225,7 @@ public class PreAlertService {
                             savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
                             savedPreAlert.getConsignmentValue(), savedPreAlert.getExchangeRate(), savedPreAlert.getIata(),
                             savedPreAlert.getConsignmentValueLocal(), savedPreAlert.getAddIata(), savedPreAlert.getAddInsurance(),
-                            savedPreAlert.getCustomsValue(), savedPreAlert.getCalculatedTotalDuty());
+                            savedPreAlert.getCustomsValue(), savedPreAlert.getCalculatedTotalDuty(), savedPreAlert.getCustomsInsurance());
                     log.info("consignment updated");
 
                     consignmentEntityRepository.updatePieceId(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
