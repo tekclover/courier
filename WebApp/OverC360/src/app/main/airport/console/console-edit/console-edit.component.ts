@@ -19,6 +19,7 @@ import { ConsoleBulkComponent } from '../console-bulk/console-bulk.component';
 import { HubCodePoupupComponent } from './hub-code-poupup/hub-code-poupup.component';
 import { ConsignmentLabelComponent } from '../../../pdf/consignment-label/consignment-label.component';
 import { format } from 'util';
+import { DeleteComponent } from '../../../../common-dialog/delete/delete.component';
 
 @Component({
   selector: 'app-console-edit',
@@ -892,5 +893,49 @@ export class ConsoleEditComponent {
     dialogRef.afterClosed().subscribe((result) => {
       this.fill(this.pageToken.line);
     });
+  }
+
+
+  deleteDialog() {
+    if (this.selectedConsole.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
+      return;
+    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      disableClose: true,
+      width: '60%',
+      maxWidth: '82%',
+      position: { top: '6.5%', left: '30%' },
+      data: { line: this.selectedConsole, module: 'Console', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const consoleID = this.selectedConsole.map(item => item.consoleId);
+        this.service.search({ consoleId: consoleID, companyId: [this.auth.companyId] }).subscribe({
+          next: (res: any) => {
+            this.deleterecord(res);
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          }
+        })
+      }
+    });
+  }
+
+  deleterecord(lines: any) {
+    this.spin.show();
+    console.log(lines)
+    this.service.Delete(lines).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Selected records deleted successfully' });
+        this.spin.hide();
+        this.fill(this.pageToken.line);
+      }, error: (err) => {
+        this.cs.commonerrorNew(err);
+        this.spin.hide();
+      }
+    })
   }
 }
