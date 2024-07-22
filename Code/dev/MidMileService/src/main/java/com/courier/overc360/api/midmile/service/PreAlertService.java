@@ -115,7 +115,8 @@ public class PreAlertService {
                             (dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(),
                                     dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-            if (!preAlertOptional.isPresent()) {
+            if (preAlertOptional.isPresent()) {
+
                 ConsignmentEntity consignment =
                         consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
                                 iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
@@ -178,7 +179,9 @@ public class PreAlertService {
 
                     if (dbPreAlert.getAddInsurance() != null) {
                         Double addInsurance = Double.valueOf(dbPreAlert.getAddInsurance());
-                        dbPreAlert.setCustomsValue(String.valueOf(addIata + addInsurance));
+                        //Decimal Format
+                        String formatCustomsValue = decimalFormat.format(String.valueOf(addIata + addInsurance));
+                        dbPreAlert.setCustomsValue(formatCustomsValue);
 
                         if (dbPreAlert.getDuty() != null) {
                             Double customsValue = Double.valueOf(dbPreAlert.getCustomsValue());
@@ -203,8 +206,8 @@ public class PreAlertService {
 
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
-                dbPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
-                dbPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
+                newPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
+                newPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
                 newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
@@ -242,8 +245,8 @@ public class PreAlertService {
                 }
                 preAlertList.add(savedPreAlert);
             } else {
-                log.info("PreAlert Record is Duplicated ");
-                continue;
+                log.info("PreAlert Record is Getting Duplicate CompanyId - " + dbPreAlert.getCompanyId() + " PartnerId " + dbPreAlert.getPartnerId() +
+                        " PartnerHouseAirwayBill " + dbPreAlert.getPartnerHouseAirwayBill() + " PartnerMasterAirwayBill " + dbPreAlert.getPartnerMasterAirwayBill());
             }
         }
         return preAlertList;

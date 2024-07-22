@@ -265,6 +265,9 @@ public class Console {
     @Column(name = "CUSTOMS_KD", columnDefinition = "nvarchar(50)")
     private String customsKd;
 
+    @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String totalDuty;
+
     @Column(name = "PRODUCT_ID", columnDefinition = "nvarchar(50)")
     private String productId;
 

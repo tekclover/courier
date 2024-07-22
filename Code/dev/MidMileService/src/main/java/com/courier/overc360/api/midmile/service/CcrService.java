@@ -64,6 +64,9 @@ public class CcrService {
 
     @Autowired
     ConsoleRepository consoleRepository;
+
+    @Autowired
+    ConsoleService consoleService;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -114,7 +117,7 @@ public class CcrService {
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + partnerMasterAirwayBill + ", houseAirwayBill - "
                     + partnerHouseAirwayBill + " , consoleId - " + consoleId + ", and ccrId - " + ccrId + ", and pieceId - " + pieceId + " doesn't exists";
             // Error Log
-            createCcrLog1(languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId,  errMsg);
+            createCcrLog1(languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCcr.get();
@@ -140,7 +143,7 @@ public class CcrService {
                     log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
                             " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
-                    continue;
+//                    continue;
                 }
 
                 Double customsValue = null;
@@ -333,7 +336,6 @@ public class CcrService {
                 BeanUtils.copyProperties(updateCcr, dbCcr, CommonUtils.getNullPropertyNames(updateCcr));
                 dbCcr.setUpdatedBy(loginUserID);
                 dbCcr.setUpdatedOn(new Date());
-
 
 
                 Ccr updatedCcr = ccrRepository.save(dbCcr);
@@ -685,6 +687,59 @@ public class CcrService {
 
                             Ccr updatedCcr = ccrRepository.save(dbCcr);
                             updatedCcrList.add(updatedCcr);
+                        }
+
+                        List<Console> dbConsoleList = consoleService.getConsole(dbCcr.getConsoleId());
+
+                        for (Console console : dbConsoleList) {
+                            String consoleConsignmentValue = null;
+                            String dbConsoleConsignmentValue = null;
+                            boolean consolePass = false;
+                            if (updateCcr.getConsignmentValue() != null) {
+                                if (updateCcr.getConsignmentValue().contains(".")) {
+                                    String ccv = updateCcr.getConsignmentValue();
+                                    String ccv1 = null;
+                                    if ((ccv.substring(ccv.indexOf("."), ccv.length()).length() > 4)) {
+                                        ccv1 = ccv.substring(0, ccv.indexOf(".") + 4);
+                                    } else {
+                                        ccv1 = ccv;
+                                    }
+                                    DecimalFormat decimalFormat = new DecimalFormat("0.#####");
+                                    consoleConsignmentValue = decimalFormat.format(Double.valueOf(ccv1));
+                                } else {
+                                    consoleConsignmentValue = updateCcr.getConsignmentValue();
+                                }
+                            }
+                            if (console.getConsignmentValue() != null) {
+                                if (console.getConsignmentValue().contains(".")) {
+                                    String dbcv = console.getConsignmentValue();
+                                    String dbcv1 = null;
+                                    if ((dbcv.substring(dbcv.indexOf("."), dbcv.length()).length() > 4)) {
+                                        dbcv1 = dbcv.substring(0, dbcv.indexOf(".") + 4);
+                                    } else {
+                                        dbcv1 = dbcv;
+                                    }
+                                    DecimalFormat decimalFormat = new DecimalFormat("0.#####");
+                                    dbConsoleConsignmentValue = decimalFormat.format(Double.valueOf(dbcv1));
+                                } else {
+                                    dbConsoleConsignmentValue = console.getConsignmentValue();
+                                }
+                            }
+                            if (consoleConsignmentValue != null && dbConsoleConsignmentValue != null) {
+                                consolePass = consoleConsignmentValue.equalsIgnoreCase(dbConsoleConsignmentValue);
+                            }
+                            if (console.getHsCode().equalsIgnoreCase(updateCcr.getHsCode()) && consolePass) {
+                                log.info("Updating CCR from Pdf: " + updateCcr);
+                                console.setCustomsCcrNo(updateCcr.getCustomsCcrNo());
+                                console.setPrimaryDo(updateCcr.getPrimaryDo());
+                                console.setCustomsKd(updateCcr.getCustomsKd());
+                                console.setTotalDuty(updateCcr.getTotalDuty());
+                                console.setUpdatedBy("Bayan");
+                                console.setUpdatedOn(new Date());
+
+                                Console updateConsole = consoleRepository.save(console);
+//                                updatedCcrList.add(updatedCcr);
+                            }
                         }
                     }
                 }

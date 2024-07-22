@@ -389,7 +389,7 @@ public class ConsoleService {
 
                             if (duplicateConsole) {
                                 System.out.println("Duplicate found for PartnerHouseAirwayBillNo: " + console.getPartnerHouseAirwayBill());
-                                continue;
+//                                continue;
                             }
 
                             // Pass ConsignmentCurrency
@@ -487,13 +487,6 @@ public class ConsoleService {
                                                 createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
                                                 createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
 
-                                        // Update PieceDetails Table
-//                                        consoleRepository.updatePieceDetailsOnConsoleCreate(
-//                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-//                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-//                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
-//                                                createdConsole.getPieceId());
-
                                         log.info("Console Created <-----------------------> Consignment Status Insert and Console_Indicator Updated");
                                     }
                                     createdConsoleList.add(createdConsole);
@@ -502,7 +495,6 @@ public class ConsoleService {
                                 log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
                                         " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
                                         " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
-                                continue;
 
                             }
                         }
@@ -583,7 +575,7 @@ public class ConsoleService {
                             if (duplicateConsole) {
                                 // Log the duplicate and skip the record
                                 System.out.println("Duplicate found for PartnerHouseAirwayBillNo: " + console.getPartnerHouseAirwayBill());
-                                continue;
+//                                continue;
                             }
 
                             // Pass ConsignmentCurrency
@@ -692,7 +684,6 @@ public class ConsoleService {
                                 log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
                                         " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
                                         " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
-                                continue;
                             }
 
                         }
@@ -731,7 +722,8 @@ public class ConsoleService {
                         addConsole.getLanguageId(), addConsole.getCompanyId(), addConsole.getPartnerId(), addConsole.getPartnerMasterAirwayBill(), addConsole.getPartnerHouseAirwayBill(),
                         addConsole.getPieceId(), 0L);
                 if (duplicateConsole) {
-                    throw new BadRequestException("Record is getting Duplicated with given values : PartnerHouseAirwayBill - " + addConsole.getPartnerHouseAirwayBill());
+//                    throw new BadRequestException("Record is getting Duplicated with given values : PartnerHouseAirwayBill - " + addConsole.getPartnerHouseAirwayBill());
+                log.info("Record is getting Duplicated with given values : PartnerHouseAirwayBill - " + addConsole.getPartnerHouseAirwayBill());
                 }
 
                 Console newConsole = new Console();
@@ -1422,6 +1414,11 @@ public class ConsoleService {
     public List<MobileApp> getAllMobileApp() {
         List<MobileApp> consoles = replicaConsoleRepository.getMobileApp();
         return consoles;
+    }
+
+    public List<Console> getConsole(String consoleId) {
+        List<Console> getConsoleId = replicaConsoleRepository.findByConsoleIdAndDeletionIndicator(consoleId, 0L);
+        return getConsoleId;
     }
 
 }
