@@ -1499,7 +1499,7 @@ public class ConsoleService {
     }
 
     public List<Console> getConsole(String consoleId) {
-        List<Console> getConsoleId = replicaConsoleRepository.findByConsoleIdAndDeletionIndicator(consoleId, 0L);
+        List<Console> getConsoleId = consoleRepository.findByConsoleIdAndDeletionIndicator(consoleId, 0L);
         return getConsoleId;
     }
 
