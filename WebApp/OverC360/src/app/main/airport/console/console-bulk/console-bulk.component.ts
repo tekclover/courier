@@ -301,17 +301,6 @@ else{
   });
 }
  } 
- cancel(){
-  if(this.data.title=='Console' ){
-    this.dialogRef.close()
-  this.router.navigate(['/main/airport/console']);
-  }
-  else{
-    this.dialogRef.close()
-    this.router.navigate(['/main/airport/ccr']);
-  }
- }
-
 }
 
 

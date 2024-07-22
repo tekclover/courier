@@ -373,7 +373,7 @@
                             <tr [formGroup]="item">
 
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
-                                        formControlName="packReferenceNumber"></td>
+                                        formControlName="pieceId"></td>
                                 <td><input class="inputborderLess pl-3" placeholder="Enter"
                                         formControlName="pieceProductCode">
                                 </td>
@@ -1336,7 +1336,7 @@
                             <ng-container *ngFor="let col of columns">
                                 <ng-container *ngIf="col.showFooter">
                                     <td>
-                                        {{ calculateFooterTotal(col.field) }}
+                                        {{ calculateFooterTotal(col.field) != 0 ? calculateFooterTotal(col.field) : '' }}
                                     </td>
                                 </ng-container>
                                 <ng-container *ngIf="!col.showFooter">

@@ -77,10 +77,9 @@ export class PreAlertManifestComponent {
       { field: 'flightName', header: 'Flight Name' },
       { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date' },
       { field: 'estimatedTimeOfArrival', header: 'Arrival Time', format: 'date' },
-      { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
-      { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
-      { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
-      { field: 'hawbTypeDescription', header: 'Event' },
+     // { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
+     // { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
+     // { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
