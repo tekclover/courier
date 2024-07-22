@@ -74,7 +74,7 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [class.selectedRow]="selectedRateParameter[0] === rowData">
                     <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedRateParameter" class="pl-4"
+                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedRateParameter" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
                     <td *ngFor="let col of columns">

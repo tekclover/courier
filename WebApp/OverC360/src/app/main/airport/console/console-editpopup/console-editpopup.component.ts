@@ -54,6 +54,7 @@ export class ConsoleEditpopupComponent {
     createdBy: [],
     createdOn: [],
     currency: [],
+    customsCcrNo: [],
     customsCurrency: [],
     customsKd: [],
     customsValue: [],
@@ -141,6 +142,9 @@ export class ConsoleEditpopupComponent {
     volume: [],
     consoleGroupName: [],
     consoleName: [],
+    primaryDo: [],
+    secondaryDo: [],
+    
    
   });
 

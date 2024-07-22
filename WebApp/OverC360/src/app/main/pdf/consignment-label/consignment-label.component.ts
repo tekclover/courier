@@ -895,7 +895,7 @@ export class ConsignmentLabelComponent {
         res.forEach((x: any, i:any) => {
           this.generateMutipleLabel(x);
           if(i +1  == res.length){
-            this.ccrService.genearateInvoice({ partnerHouseAirwayBill: invoiceResult }).subscribe({
+            this.ccrService.genearateInvoice({ houseAirwayBill: invoiceResult }).subscribe({
               next: (res: any) => {
                 res.forEach((x: any, i:any) => {
                   this.generateMultipleInvoice(x, i + 1, res.length)

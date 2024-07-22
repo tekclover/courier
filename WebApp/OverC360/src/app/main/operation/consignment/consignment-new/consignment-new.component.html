@@ -989,7 +989,7 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded" let-i="rowIndex">
                         <tr>
                             <td style="width: 5rem; justify-content: center;">
-                                <p-tableCheckbox [disabled]="true" class="pl-4" [value]="rowData" />
+                                <p-tableCheckbox [disabled]="true" class="pl-3" [value]="rowData" />
                             </td>
                             <td *ngFor="let col of columns" [style]="col.style">
                                 <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
@@ -1318,7 +1318,7 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr>
                             <td style="width: 5rem; justify-content: center;">
-                                <p-tableCheckbox [disabled]="true" class="pl-4" [value]="rowData" />
+                                <p-tableCheckbox [disabled]="true" class="pl-3" [value]="rowData" />
                             </td>
                             <td *ngFor="let col of columns" [style]="col.style">
                                 <ng-container *ngIf="col.format !== 'date'; else dateTemplate">

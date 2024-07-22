@@ -46,7 +46,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-datatable .p-datatable-thead > tr > th{color: var(--black) !important;
     background-color: var(--tableGrey); font-size: var(--line12); font-weight: 500; padding-top: 1rem  !important; padding-bottom: 1rem  !important;
     }
-.p-datatable .p-datatable-tbody > tr > td {color: var(--black) !important;font-size: var(--line12); font-weight: 500;padding: 0.8rem 0px !important}
+.p-datatable .p-datatable-tbody > tr > td {color: var(--black) !important;font-size: var(--line12); font-weight: 500;padding: 0.8rem 0.5rem !important}
 .paddingZero .p-datatable .p-datatable-tbody > tr > td{padding: 0px 0px !important}
 .p-paginator {padding: 0.1rem 1rem !important; position: fixed; top: calc(100vh - 6rem); right: 3%;}
 .p-paginator .p-paginator-current {height: 1.357rem !important;font-size: 0.8rem !important;}
