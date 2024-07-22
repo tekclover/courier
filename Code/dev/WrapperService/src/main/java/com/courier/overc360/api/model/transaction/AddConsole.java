@@ -189,6 +189,10 @@ public class AddConsole {
 
     private String freightCurrency;
 
+    private String houseAirwayBill;
+
+    private String masterAirwayBill;
+
     private String freightCharges;
 
     private String declaredValue;
