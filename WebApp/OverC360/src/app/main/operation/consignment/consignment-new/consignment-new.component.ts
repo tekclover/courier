@@ -742,8 +742,6 @@ export class ConsignmentNewComponent {
     obj.houseAirwayBill = [this.pageToken.line.houseAirwayBill];
 
     this.service.searchStatus(obj).subscribe({next: res=> {
-      console.log(res);
-      res = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
       this.cnTable =  res;
     },error: err => {
       this.spin.hide();

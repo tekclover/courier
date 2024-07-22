@@ -12,4 +12,8 @@ export class PrealertService {
   Delete(obj: any) {
     return this.http.post<any>('/overc-midmile-service/prealert/delete/list', obj);
   }
+
+  update(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/prealert/update/list', obj);
+  }
 }

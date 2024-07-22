@@ -10,6 +10,7 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { ConsignmentUpdatebulkComponent } from '../../../operation/consignment/consignment-updatebulk/consignment-updatebulk.component';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
+import { PrealertService } from '../prealert.service';
 
 @Component({
   selector: 'app-pre-alert-bulk',
@@ -31,6 +32,7 @@ export class PreAlertBulkComponent {
     private fb: FormBuilder,
     private service: ConsignmentService,
     private messageService: MessageService,
+    private prealertService: PrealertService,
     private cas: CommonAPIService,
     private auth: AuthService,
   ) {
@@ -262,8 +264,7 @@ export class PreAlertBulkComponent {
         x.hubCode = this.form.controls.hubCode.value;
       });
     }
-    if ((this.data.title != 'Bonded Manifest')) {
-      this.service.Update(this.Consigment).subscribe({
+      this.prealertService.update(this.Consigment).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
@@ -287,27 +288,7 @@ export class PreAlertBulkComponent {
           this.cs.commonerrorNew(err);
         },
       });
-    }
-    else {
-      this.service.UpdateBondedManifest(this.Consigment).subscribe({
-        next: (res) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Updated',
-            key: 'br',
-            detail: 'Selected Values has been updated successfully',
-          });
-          this.dialogRef.close()
-          this.router.navigate(['/main/airport/bondedManifest']);
-
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
-    }
+   
   }
   
   cancel() {

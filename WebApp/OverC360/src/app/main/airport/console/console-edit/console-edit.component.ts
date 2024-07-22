@@ -255,7 +255,12 @@ export class ConsoleEditComponent {
       { field: 'exemptionFor', header: 'Exemption For' },
       { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
       { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'ccrId', header: 'CCR ID' },
       { field: 'customsCcrNo', header: 'Custom CCR No' },
+      { field: 'primaryDo', header: 'Primary DO' },
+      { field: 'secondaryDo', header: 'Secondary DO' },
+      { field: 'totalDuty', header: 'Duty from Bayan' },
+      { field: 'customsKd', header: 'Customs from Bayan' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [

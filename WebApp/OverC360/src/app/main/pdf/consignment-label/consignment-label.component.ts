@@ -1418,6 +1418,10 @@ export class ConsignmentLabelComponent {
     )
 
     //pdfMake.createPdf(dd).open();
+    if(result.pieceId == '10000000617001'){
+      console.log(2)
+      pdfMake.createPdf(dd).download('ds');
+    }
     const pdfDocGenerator = pdfMake.createPdf(dd);
     pdfDocGenerator.getBlob((blob) => {
       var file = new File([blob], result.pieceId + '_' + 'labels' + ".pdf");
