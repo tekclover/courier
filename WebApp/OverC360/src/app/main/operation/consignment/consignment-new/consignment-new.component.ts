@@ -789,7 +789,7 @@ export class ConsignmentNewComponent {
     obj.companyId = [this.auth.companyId]
     obj.houseAirwayBill = [line.houseAirwayBill];
 
-    this.service.searchItem(obj).subscribe({next: res=> {
+    this.service.search(obj).subscribe({next: res=> {
       this.billingTable =  res;
     },error: err => {
       this.spin.hide();

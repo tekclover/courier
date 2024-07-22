@@ -160,6 +160,9 @@
                                 <img [src]="rowData[col.field] == 0 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'Yes' : 'No'}}" style="height: 1.1rem;width: 1.1rem;">
                             </span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy HH:mm'}}</span>
+                            <span *ngIf="col.format === 'date1'">{{rowData[col.field] | date: 'dd-MM-yyyy'}}</span>
+                            <span *ngIf="col.format === 'date1'">{{rowData[col.field] | date: 'dd-MM-yyyy'}}</span>
+
                         </ng-template>
                         
                     </td>

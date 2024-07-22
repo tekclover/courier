@@ -706,7 +706,7 @@ export class ConsoleEditComponent {
       for (let i = 0; i < 2; i++) {
         this.selectedConsole.forEach(x => {
           x['hawbType'] =  i == 0 ? 'status' : 'event';
-          x['hawbId']  =  i == 0 ? '9' : '9';
+          x['hawbTypeId']  =  i == 0 ? '9' : '9';
           x['hubCode']  =  result;
           this.outScan.push(x);
          })  
@@ -798,9 +798,11 @@ export class ConsoleEditComponent {
     obj.consoleId = this.selectedConsole.map(item => item.consoleId);
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
-        const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
-        this.label.getResultInvoice(houseAirwayBill)
+        if(res){
+          this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+          const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
+          this.label.getResultInvoice(houseAirwayBill)
+        }
       },
       error: (err) => {
         this.spin.hide();
