@@ -76,7 +76,8 @@ public class ConsignmentStatusService {
     public void insertConsignmentStatusRecord(String languageId, String languageDesc, String companyId, String companyName,
                                               String pieceId, String masterAirwayBill, String houseAirwayBill,
                                               String hawbType, String hawbTypeId, String hawbTypeDescription, Date hawbTimeStamp,
-                                              String pieceType, String pieceTypeId, String pieceTypeDescription, Date pieceTimeStamp, String loginUserID) {
+                                              String pieceType, String pieceTypeId, String pieceTypeDescription, Date pieceTimeStamp,
+                                              String loginUserID, String partnerHouseAirwayBill, String partnerMasterAirwayBill) {
         try {
             if (languageId != null && companyId != null && pieceId != null && houseAirwayBill != null) {
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
@@ -95,6 +96,8 @@ public class ConsignmentStatusService {
                 newConsignmentStatus.setCompanyName(companyName);
 
                 newConsignmentStatus.setPieceId(pieceId);
+                newConsignmentStatus.setPartnerHouseAirwayBill(partnerHouseAirwayBill);
+                newConsignmentStatus.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
                 newConsignmentStatus.setMasterAirwayBill(masterAirwayBill);
                 newConsignmentStatus.setHouseAirwayBill(houseAirwayBill);
 

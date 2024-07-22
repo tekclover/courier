@@ -29,6 +29,10 @@ public class AddCcr {
 
     private String ccrId;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String customsCcrNo;
 
     private String pieceId;

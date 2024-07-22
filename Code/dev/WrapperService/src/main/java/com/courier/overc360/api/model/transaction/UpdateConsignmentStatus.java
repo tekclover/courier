@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 @Data
@@ -40,6 +41,10 @@ public class UpdateConsignmentStatus {
 //    private Date eventTimestamp;
 //
 //    private Date statusTimestamp;
+
+    private String partnerHouseAirwayBill;
+
+    private String partnerMasterAirwayBill;
 
     private String hawbType;
 

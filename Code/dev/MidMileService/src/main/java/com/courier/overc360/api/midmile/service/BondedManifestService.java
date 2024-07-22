@@ -221,7 +221,9 @@ public class BondedManifestService {
                         addBondedManifest.getPartnerMasterAirwayBill(), addBondedManifest.getPartnerHouseAirwayBill(), 0L);
 
                 if (duplicateRecord) {
-                    throw new BadRequestException("Record is getting Duplicated with given values : partnerHouseAirwayBill - " + addBondedManifest.getPartnerHouseAirwayBill());
+//                    throw new BadRequestException("Record is getting Duplicated with given values : partnerHouseAirwayBill - " + addBondedManifest.getPartnerHouseAirwayBill());
+                    log.info("Record is getting Duplicated with given values : partnerHouseAirwayBill - " + addBondedManifest.getPartnerHouseAirwayBill());
+//                    continue;
                 }
 
                 BondedManifest newBondedManifest = new BondedManifest();
@@ -276,7 +278,7 @@ public class BondedManifestService {
                     newBondedManifest.setFinalDestination(finalDestination);
                 }
                 newBondedManifest.setBondedId(BONDED_ID);
-                newBondedManifest.setBillOfLadingFor("Import");
+                newBondedManifest.setBillOfLadingFor("I");
                 newBondedManifest.setDeletionIndicator(0L);
                 newBondedManifest.setCreatedBy(loginUserID);
                 newBondedManifest.setCreatedOn(new Date());

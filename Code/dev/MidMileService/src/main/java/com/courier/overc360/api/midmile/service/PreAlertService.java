@@ -203,6 +203,8 @@ public class PreAlertService {
 
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
+                dbPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
+                dbPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
                 newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
@@ -231,10 +233,10 @@ public class PreAlertService {
                     if (piece != null) {
                         for (String pieceId : piece) {
                             consignmentStatusService.insertConsignmentStatusRecord(savedPreAlert.getLanguageId(), savedPreAlert.getLanguageDescription(),
-                                    savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getPartnerMasterAirwayBill(),
-                                    savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
+                                    savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getMasterAirwayBill(),
+                                    savedPreAlert.getHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
                                     savedPreAlert.getHawbTimeStamp(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
-                                    savedPreAlert.getHawbTimeStamp(), loginUserID);
+                                    savedPreAlert.getHawbTimeStamp(), loginUserID,  savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
                         }
                     }
                 }

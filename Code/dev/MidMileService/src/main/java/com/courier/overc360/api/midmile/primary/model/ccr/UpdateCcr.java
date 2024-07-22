@@ -24,9 +24,9 @@ public class UpdateCcr {
     @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
-//    private String houseAirwayBill;
+    private String houseAirwayBill;
 
-//    private String masterAirwayBill;
+    private String masterAirwayBill;
 
     private String customsCcrNo;
 

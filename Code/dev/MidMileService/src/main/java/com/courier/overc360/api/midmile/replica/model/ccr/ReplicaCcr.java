@@ -69,6 +69,12 @@ public class ReplicaCcr {
     @Column(name = "PARTNER_NAME" , columnDefinition = "nvarchar(100)")
     private String partnerName;
 
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
+
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
+
 //    @Column(name = "STATUS_ID" , columnDefinition = "nvarchar(50)")
 //    private String statusId;
 

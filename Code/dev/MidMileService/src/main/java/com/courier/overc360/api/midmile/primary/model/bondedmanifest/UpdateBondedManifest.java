@@ -19,10 +19,10 @@ public class UpdateBondedManifest {
     private String partnerId;
 
 //    @NotBlank(message = "Master Airway Bill is mandatory")
-//    private String masterAirwayBill;
+    private String masterAirwayBill;
 
 //    @NotBlank(message = "House Airway Bill is mandatory")
-//    private String houseAirwayBill;
+    private String houseAirwayBill;
 
     @NotBlank(message = "BondedId is mandatory")
     private String bondedId;

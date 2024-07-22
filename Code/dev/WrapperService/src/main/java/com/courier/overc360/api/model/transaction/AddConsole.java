@@ -227,6 +227,8 @@ public class AddConsole {
 
     private String hubCode;
 
+    private String customsCcrNo;
+
     private Long deletionIndicator;
 
     private String referenceField1;

@@ -61,6 +61,12 @@ public class Ccr {
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
+
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
+
     @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 
