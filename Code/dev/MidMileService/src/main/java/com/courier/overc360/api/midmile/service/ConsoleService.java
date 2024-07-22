@@ -337,8 +337,7 @@ public class ConsoleService {
     public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<Console> createdConsoleList = new ArrayList<>();
-
-
+        Map<String, Integer> consoleNameCounterMap = new HashMap<>();
 
         // Separate records where hsCode is null
         List<AddConsole> nullHsCodeList = addConsoleList.stream()
@@ -349,6 +348,15 @@ public class ConsoleService {
         Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
                 .filter(console -> !console.getHsCode().isEmpty())
                 .collect(Collectors.groupingBy(AddConsole::getHsCode));
+
+//        request pass multiple record set consolename based on consoleid
+//         example consoleId - 121 console name -1
+//                    consoleId - 121 console name - 1
+//         consoleId - 222 console name - 2
+//         console Id - 222 console name - 2
+//         console Id - 333 console name - 3
+//         console Id - 333 console name - 3
+//         console Id - 333 console name - 3
 
         if (!nullHsCodeList.isEmpty()) {
             String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
@@ -388,7 +396,12 @@ public class ConsoleService {
                         newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
                     }
                     newConsole.setConsoleId(CONSOLE_ID);
-                    newConsole.setConsoleName("Console - " + consoleCounter);
+                    // Increment consoleName counter for the given consoleId
+                    int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
+                    newConsole.setConsoleName("Console - " + currentConsoleName);
+                    consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
+
+//                    newConsole.setConsoleName("Console - " + consoleCounter);
                     newConsole.setDeletionIndicator(0L);
                     newConsole.setCreatedBy(loginUserID);
                     newConsole.setCreatedOn(new Date());
@@ -397,7 +410,6 @@ public class ConsoleService {
 
                     Console createdConsole = consoleRepository.save(newConsole);
 
-                    consoleCounter ++;
                     if (createdConsole != null) {
                         // Save ConsignmentStatus
                         consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
@@ -506,7 +518,13 @@ public class ConsoleService {
 
                                 newConsole.setExpectedDuty(String.valueOf(totalDuty));
                                 newConsole.setConsoleId(CONSOLE_ID);
-                                newConsole.setConsoleName("Console - " + consoleCount);
+
+                                // Increment consoleName counter for the given consoleId
+                                int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
+                                newConsole.setConsoleName("Console - " + currentConsoleName);
+                                consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
+
+//                                newConsole.setConsoleName("Console - " + consoleCount);
                                 newConsole.setDeletionIndicator(0L);
                                 newConsole.setCreatedBy(loginUserID);
                                 newConsole.setCreatedOn(new Date());
@@ -533,7 +551,7 @@ public class ConsoleService {
 
                                         Console createdConsole = consoleRepository.save(newConsole);
 
-                                        consoleCount ++;
+                                        consoleCount++;
                                         if (createdConsole != null) {
                                             // Save ConsignmentStatus
                                             consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
@@ -631,7 +649,6 @@ public class ConsoleService {
                         // Generate a new CONSOLE_ID for each subgroup
 
                         String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-                        int consoleName = 1;
 
                         for (AddConsole console : subGroup) {
                             // Duplicate Check
@@ -685,7 +702,11 @@ public class ConsoleService {
                                 newConsole.setExpectedDuty(String.valueOf(totalDuty));
 //                            newConsole.setCustomsValue(CUS_VAL);
                                 newConsole.setConsoleId(SUB_CONSOLE_ID);
-                                newConsole.setConsoleName("Console - " + consoleName);
+                                // Increment consoleName counter for the given consoleId
+                                int currentConsoleName = consoleNameCounterMap.getOrDefault(SUB_CONSOLE_ID, 0) + 1;
+                                newConsole.setConsoleName("Console - " + currentConsoleName);
+                                consoleNameCounterMap.put(SUB_CONSOLE_ID, currentConsoleName);
+
                                 newConsole.setDeletionIndicator(0L);
                                 newConsole.setCreatedBy(loginUserID);
                                 newConsole.setCreatedOn(new Date());
@@ -701,7 +722,6 @@ public class ConsoleService {
                                         newConsole.setPieceId(pieceId);
                                         Console createdConsole = consoleRepository.save(newConsole);
 
-                                        consoleName ++;
                                         if (eventDescOpt.isPresent()) {
                                             IKeyValuePair ikey = eventDescOpt.get();
 
@@ -741,7 +761,6 @@ public class ConsoleService {
                                             " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
                                             " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
                                 }
-
                             } else {
                                 createdConsoleList.add(duplicateConsole);
                             }
@@ -815,7 +834,7 @@ public class ConsoleService {
                     newConsole.setUpdatedBy(loginUserID);
                     newConsole.setUpdatedOn(new Date());
 
-                    CONSOLE_NAME ++;
+                    CONSOLE_NAME++;
 
                     Console createdConsole = consoleRepository.save(newConsole);
 
