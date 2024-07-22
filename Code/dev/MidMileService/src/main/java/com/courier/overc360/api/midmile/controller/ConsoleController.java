@@ -169,6 +169,7 @@ public class ConsoleController {
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
 
+    // GET MobileDashboard - Console count
     @ApiOperation(response = MobileDashboard.class, value = "Get Mobile Dashboard Count") // label for swagger
     @GetMapping("/mobileDashboard/get")
     public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
