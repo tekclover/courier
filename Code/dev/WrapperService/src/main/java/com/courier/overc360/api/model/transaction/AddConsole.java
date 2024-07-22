@@ -229,6 +229,8 @@ public class AddConsole {
 
     private String customsCcrNo;
 
+    private String totalDuty;
+
     private Long deletionIndicator;
 
     private String referenceField1;

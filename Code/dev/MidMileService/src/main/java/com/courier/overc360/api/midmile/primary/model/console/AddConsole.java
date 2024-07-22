@@ -201,6 +201,8 @@ public class AddConsole {
 
     private String customsCcrNo;
 
+    private String totalDuty;
+
     private String exemptionBeneficiary;
 
     private String exemptionReference;

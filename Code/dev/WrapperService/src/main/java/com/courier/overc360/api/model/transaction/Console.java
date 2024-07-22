@@ -223,6 +223,8 @@ public class Console {
 
     private String consignmentLocalId;
 
+    private String totalDuty;
+
     private String referenceField1;
 
     private String referenceField2;

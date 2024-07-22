@@ -139,38 +139,33 @@ public class CcrService {
 
                 Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
                         addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(), addCcr.getPieceId(), 0L);
-                if (duplicateConsole.isPresent()) {
-                    log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
-                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
-                            " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
-//                    continue;
-                }
+                if (!duplicateConsole.isPresent()) {
 
-                Double customsValue = null;
-                if (addCcr.getCustomsValue() != null) {
-                    customsValue = Double.valueOf(addCcr.getCustomsValue());
-                }
-                Ccr newCcr = new Ccr();
-                BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
+                    Double customsValue = null;
+                    if (addCcr.getCustomsValue() != null) {
+                        customsValue = Double.valueOf(addCcr.getCustomsValue());
+                    }
+                    Ccr newCcr = new Ccr();
+                    BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
 
-                if (customsValue != null && customsValue < 100) {
-                    newCcr.setIsExempted("yes");
-                    newCcr.setExemptionFor("Regulation 94-2020");
-                    newCcr.setExemptionBeneficiary("others");
-                    newCcr.setExemptionReference("99");
-                } else {
-                    newCcr.setIsExempted("No");
-                }
-                newCcr.setCcrId(CCR_ID);
+                    if (customsValue != null && customsValue < 100) {
+                        newCcr.setIsExempted("yes");
+                        newCcr.setExemptionFor("Regulation 94-2020");
+                        newCcr.setExemptionBeneficiary("others");
+                        newCcr.setExemptionReference("99");
+                    } else {
+                        newCcr.setIsExempted("No");
+                    }
+                    newCcr.setCcrId(CCR_ID);
 
 
-                newCcr.setDeletionIndicator(0L);
-                newCcr.setCreatedBy(loginUserID);
-                newCcr.setCreatedOn(new Date());
-                newCcr.setUpdatedBy(loginUserID);
-                newCcr.setUpdatedOn(new Date());
+                    newCcr.setDeletionIndicator(0L);
+                    newCcr.setCreatedBy(loginUserID);
+                    newCcr.setCreatedOn(new Date());
+                    newCcr.setUpdatedBy(loginUserID);
+                    newCcr.setUpdatedOn(new Date());
 
-                Ccr createdCcr = ccrRepository.save(newCcr);
+                    Ccr createdCcr = ccrRepository.save(newCcr);
 
 //                if (createdCcr != null) {
 //                    ccrRepository.updateEventCodeFromConsignment(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
@@ -191,7 +186,12 @@ public class CcrService {
 //                            createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
 //                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID);
 //                }
-                createdCcrList.add(createdCcr);
+                    createdCcrList.add(createdCcr);
+                } else {
+                    log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
+                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
+                            " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
+                }
             }
             return createdCcrList;
         } catch (Exception e) {
@@ -729,7 +729,7 @@ public class CcrService {
                                 consolePass = consoleConsignmentValue.equalsIgnoreCase(dbConsoleConsignmentValue);
                             }
                             if (console.getHsCode().equalsIgnoreCase(updateCcr.getHsCode()) && consolePass) {
-                                log.info("Updating CCR from Pdf: " + updateCcr);
+                                log.info("Updating CONSOLE from Pdf: " + updateCcr);
                                 console.setCustomsCcrNo(updateCcr.getCustomsCcrNo());
                                 console.setPrimaryDo(updateCcr.getPrimaryDo());
                                 console.setCustomsKd(updateCcr.getCustomsKd());

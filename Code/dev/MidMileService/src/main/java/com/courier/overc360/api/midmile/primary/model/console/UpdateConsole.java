@@ -141,6 +141,8 @@ public class UpdateConsole {
 
     private String isPendingShipment;
 
+    private String totalDuty;
+
     private String goodsType;
 
     private String countryOfOrigin;

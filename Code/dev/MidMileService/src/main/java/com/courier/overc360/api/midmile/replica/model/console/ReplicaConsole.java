@@ -316,6 +316,9 @@ public class ReplicaConsole {
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
+    @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String totalDuty;
+
     @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
     private String hawbType;
 
