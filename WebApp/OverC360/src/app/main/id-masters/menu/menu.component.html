@@ -80,7 +80,7 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [class.selectedRow]="selectedMenu[0] === rowData">
                     <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedMenu" class="pl-3"
+                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedMenu" class="pl-4"
                             [value]="rowData"></p-checkbox>
                     </td>
                     <!-- <td style="width:6rem;">

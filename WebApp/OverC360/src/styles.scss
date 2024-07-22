@@ -52,7 +52,7 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-paginator .p-paginator-current {height: 1.357rem !important;font-size: 0.8rem !important;}
 .p-paginator .p-paginator-pages .p-paginator-page {height: 1.357rem !important;}
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight { background: var(--black); border-radius: 8px !important; color: var(--white); padding: 0.9rem !important;}
-.p-datatable.p-datatable-sm .p-datatable-thead > tr > th {padding: 0.5rem 0rem;}
+
 .p-checkbox .p-checkbox-box.p-highlight{background-color: var(--overcOrange); border-color: var(--black);}
 .p-datatable.p-datatable-sm .p-datatable-tfoot > tr > td{padding: 0.5rem 0rem;}
 .p-inputtext{font-size: var(--line14) !important;}
@@ -79,7 +79,13 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 .p-datepicker table td{padding: 0px !important;}
 .p-tag{padding: 0.1rem 0.6rem !important;}
 
+.custom-table .p-datatable .p-datatable-thead > tr:nth-child(2) > th {
+   padding-top: 0.1rem  !important; padding-bottom: 0.5rem  !important;
+  }
 
+
+
+.p-column-filter{padding: 0.3rem 0.4rem !important;font-size: 0.7rem !important;}
 // .p-picklist .p-picklist-list-wrapper{background-color: var(--black) !important; color: var(--white) !important; border: 0px; border-right: 1px solid #e0e0e0; border-radius: 0px;}
 // .p-picklist .p-picklist-header{color: var(--white);}
 // .p-picklist .p-picklist-list .p-picklist-item{color: var(--white);}

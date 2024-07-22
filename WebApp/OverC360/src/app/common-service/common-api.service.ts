@@ -68,6 +68,7 @@ export class CommonAPIService {
       hsCode: { url: this.setup + 'hsCode', key: { key: 'hsCode', value: 'hsCode', languageId: 'languageId', companyId: 'companyId' } },
       status: { url: this.setup + 'status', key: { key: 'statusId', value: 'statusDescription', languageId: 'languageId' } },
       event: { url: this.setup + 'event', key: { key: 'eventCode', value: 'eventDescription', languageId: 'languageId', companyId: 'companyId'  } },
+      airportOrigin:{url:this.setup + 'airportCode',key:{key:'airportCode',value:'airportText', languageId :'languageId', companyId: 'companyId'}},
     },
   }
  

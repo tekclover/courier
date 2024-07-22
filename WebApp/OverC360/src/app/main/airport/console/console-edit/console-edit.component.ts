@@ -250,6 +250,11 @@ export class ConsoleEditComponent {
       { field: 'currency', header: 'Consignment Currency' },
       { field: 'customsValue', header: 'Customs Value' },
       { field: 'iata', header: 'IATA Charges' },
+      { field: 'isExempted', header: 'Is Exempted' },
+      { field: 'exemptionFor', header: 'Exemption For' },
+      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'customsCcrNo', header: 'Custom CCR No' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
@@ -784,7 +789,7 @@ export class ConsoleEditComponent {
   houseAirwayBill: any;
 
   generateInvoice() {
-    this.uniquePartnerHouseAirwayBill = [];
+    this.uniqueHouseAirwayBill = [];
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
@@ -793,9 +798,9 @@ export class ConsoleEditComponent {
     obj.consoleId = [this.selectedConsole[0].consoleId];
     this.service.search(obj).subscribe({
       next: (res: any) => {
-        this.uniquePartnerHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'partnerHouseAirwayBill');
-        const partnerHouseAirwayBill = this.uniquePartnerHouseAirwayBill.map(item => item.partnerHouseAirwayBill);
-        this.label.getResultInvoice(partnerHouseAirwayBill)
+        this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+        const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
+        this.label.getResultInvoice(houseAirwayBill)
       },
       error: (err) => {
         this.spin.hide();
@@ -806,9 +811,9 @@ export class ConsoleEditComponent {
 
 
   uniquePieceId: any[] = [];
-  uniquePartnerHouseAirwayBill: any[] = [];
+  uniqueHouseAirwayBill: any[] = [];
   generateMerge() {
-    this.uniquePartnerHouseAirwayBill = [];
+    this.uniqueHouseAirwayBill = [];
     this.uniquePieceId = [];
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
@@ -819,10 +824,10 @@ export class ConsoleEditComponent {
     this.service.search(obj).subscribe({
       next: (res: any) => {
         this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
-        this.uniquePartnerHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'partnerHouseAirwayBill');
+        this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
         const pieceId = this.uniquePieceId.map(item => item.pieceId);
-        const partnerHouseAirwayBillArray = this.uniquePartnerHouseAirwayBill.map(item => item.partnerHouseAirwayBill);
-        this.label.generateMutiple(pieceId, partnerHouseAirwayBillArray)
+        const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
+        this.label.generateMutiple(pieceId, houseAirwayBill)
       },
       error: (err) => {
         this.spin.hide();

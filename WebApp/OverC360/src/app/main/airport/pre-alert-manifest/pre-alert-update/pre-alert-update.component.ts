@@ -13,6 +13,7 @@ import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
 import { PreAlertEditpopupComponent } from '../pre-alert-editpopup/pre-alert-editpopup.component';
 import { DatePipe } from '@angular/common';
+import { PreAlertBulkComponent } from '../pre-alert-bulk/pre-alert-bulk.component';
 
 @Component({
   selector: 'app-pre-alert-update',
@@ -164,4 +165,29 @@ export class PreAlertUpdateComponent {
     // Call ExcelService to export data to Excel
     this.cs.exportAsExcel(exportData, 'Pre-Alert Manifest');
   }
+
+  updateBulk() {
+    if (this.selectedPreAlertManifest.length == 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        key: 'br',
+        detail: 'Kindly select any row',
+      });
+      return;
+    }
+    const dialogRef = this.dialog.open(PreAlertBulkComponent, {
+      disableClose: true,
+      width: '70%',
+      maxWidth: '80%',
+      position: { top: '6.5%', left: '30%' },
+      data: { title: 'PreAlertManifest', code: this.selectedPreAlertManifest },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.initialCall();
+      this.ngOnInit();
+    });
+  }
+
 }

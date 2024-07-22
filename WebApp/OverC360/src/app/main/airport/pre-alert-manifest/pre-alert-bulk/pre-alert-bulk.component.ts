@@ -19,6 +19,7 @@ import { ConsignmentService } from '../../../operation/consignment/consignment.s
 export class PreAlertBulkComponent {
   status: any[] = [];
   incoTerms: any[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<ConsignmentUpdatebulkComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -37,15 +38,14 @@ export class PreAlertBulkComponent {
       { value: 'DDU', label: 'DDU' },
       { value: 'DDP', label: 'DDP' }
     ];
-
   }
 
   // form builder initialize
   form = this.fb.group({
     actualCurrency: [],
     actualValue: [],
-    airportOriginCode: [],
     bondedId: [],
+    bayanHv: [],
     companyId: [],
     companyName: [],
     consigneeCivilId: [],
@@ -66,6 +66,7 @@ export class PreAlertBulkComponent {
     eventCode: [],
     eventText: [],
     flightNo: [],
+    flightName: [],
     eventTimestamp: [],
     hubCode: [],
     expectedDuty: [],
@@ -96,6 +97,8 @@ export class PreAlertBulkComponent {
     noOfPackageMawb: [],
     noOfPieceHawb: [],
     notifyParty: [],
+    origin: [],
+    originCode: [],
     partnerHouseAirwayBill: [],
     partnerId: [],
     partnerMasterAirwayBill: [],
@@ -106,6 +109,14 @@ export class PreAlertBulkComponent {
     productName: [],
     quantity: [],
     referenceField1: [],
+    referenceField2: [],
+    referenceField3: [],
+    referenceField4: [],
+    referenceField5: [],
+    referenceField6: [],
+    referenceField7: [],
+    referenceField8: [],
+    referenceField9: [],
     referenceField10: [],
     referenceField11: [],
     referenceField12: [],
@@ -117,15 +128,7 @@ export class PreAlertBulkComponent {
     eventDescription: [],
     referenceField18: [],
     referenceField19: [],
-    referenceField2: [],
     referenceField20: [],
-    referenceField3: [],
-    referenceField4: [],
-    referenceField5: [],
-    referenceField6: [],
-    referenceField7: [],
-    referenceField8: [],
-    referenceField9: [],
     selectedConsole: [],
     remarks: [],
     serviceTypeId: [],
@@ -158,6 +161,9 @@ export class PreAlertBulkComponent {
   eventList: any[] = [];
   hubList: any[] = [];
   Consigment: any[] = [];
+  currencyIdList: any[] = [];
+  airportOriginList: any[] = [];
+
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
@@ -168,6 +174,8 @@ export class PreAlertBulkComponent {
       this.cas.dropdownlist.setup.consignor.url,
       this.cas.dropdownlist.setup.customer.url,
       this.cas.dropdownlist.setup.hub.url,
+      this.cas.dropdownlist.setup.currency.url,
+      this.cas.dropdownlist.setup.airportOrigin.url,
     ]).subscribe({
       next: (results: any) => {
 
@@ -178,6 +186,8 @@ export class PreAlertBulkComponent {
         const consitnor = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.consignor.key);
         const customer = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.customer.key);
         this.hubList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.hub.key);
+        this.currencyIdList = this.cas.foreachlist(results[7], this.cas.dropdownlist.setup.currency.key);
+        this.airportOriginList = this.cas.forLanguageFilter(results[8], this.cas.dropdownlist.setup.airportOrigin.key);
         customer.forEach(x => this.consignorIdList.push(x));
         consitnor.forEach(x => this.consignorIdList.push(x));
         this.consignorIdList = this.cs.removeDuplicatesFromArrayList(this.consignorIdList, 'value')
@@ -190,15 +200,16 @@ export class PreAlertBulkComponent {
         this.cs.commonerrorNew(err);
       },
     });
-
   }
+
   ngOnInit(): void {
     this.dropdownlist();
     console.log(this.data)
     console.log(this.data.title)
     this.Consigment = this.data.code;
-
+    console.log(this.currencyIdList)
   }
+
   showHub = false;
   eventChange() {
     if ((this.form.controls.eventCode.value == '15') && (this.data.title == 'Consignment')) {
@@ -298,6 +309,7 @@ export class PreAlertBulkComponent {
       });
     }
   }
+  
   cancel() {
     if (this.data.title.value == 'Consignment') {
       this.dialogRef.close()
@@ -305,7 +317,11 @@ export class PreAlertBulkComponent {
     }
     if (this.data.title == 'PreAlertManifest') {
       this.dialogRef.close()
-      this.router.navigate(['/main/airport/preAlertManifest']);
+      // this.router.navigate(['/main/airport/preAlertManifest']);
+    }
+    if (this.data.title == 'PreAlertManifest - Edit') {
+      this.dialogRef.close()
+      this.router.navigate(['/main/airport/preAlertManifest-update']);
     }
     if (this.data.line == 'Bonded Manifest') {
       this.dialogRef.close()

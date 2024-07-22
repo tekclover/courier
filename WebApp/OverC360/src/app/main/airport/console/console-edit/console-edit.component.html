@@ -25,9 +25,6 @@
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="downloadConsole(); op.hide()"><img
                             src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;"
                             srcset="">Console</button>
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="saveCCR(); op.hide()"><img
-                            src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">CCR
-                    </button>
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel(); op.hide()"><img
                             src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Label
                     </button>
@@ -45,6 +42,9 @@
             <p-overlayPanel [style]="{ width: '180' }" #op>
                 <input type="file" #fileInput1 style="display:none" (change)="onFileSelectedBayan($event)" />
                 <div class="d-flex flex-column">
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="saveCCR(); op.hide()"><img
+                        src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Create CCR
+                </button>
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="uploadBayan()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload
                         Bayan</button>
@@ -95,7 +95,7 @@
                     <p-table #ccrTag [columns]="cols" [value]="subProductArray" class="custom-table" [scrollable]="true"
                         selectionMode="multiple" sortField="createdOn" [sortOrder]="-1" [(selection)]="selectedConsole"
                         scrollHeight="calc(100vh - 23rem)" sortField="createdOn" [sortOrder]="-1"
-                        [tableStyle]="{'width': '190rem'}" styleClass="p-datatable-sm">
+                        [tableStyle]="{'width': '270rem'}" styleClass="p-datatable-sm">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th style="width: 5rem;" pFrozenColumn>
@@ -109,24 +109,23 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th style="width: 5rem;" pFrozenColumn>
-                                    <p-tableHeaderCheckbox [disabled]="true" class="pl-3"></p-tableHeaderCheckbox>
+                                <th  style="width: 5rem;" pFrozenColumn>
+                                    <p-tableHeaderCheckbox [disabled]="true" class="pl-4"></p-tableHeaderCheckbox>
                                 </th>
                                 <th *ngFor="let col of columns">
                                     <input pInputText type="text"
                                         (input)="ccrTag.filter($any($event.target)?.value, col.field, 'contains')"
                                         [value]="$any(ccrTag.filters[col.field])?.value" placeholder="Search"
-                                        class=" w-100">
+                                        class="p-column-filter">
                                 </th>
-                                <th style="width: 5rem;" pFrozenColumn alignFrozen="right">
-
+                                <th  style="width: 5rem;" pFrozenColumn alignFrozen="right">
                                 </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                             <tr [class.selectedRow]="selectedConsole[0] === rowData">
-                                <td style="width: 5rem; justify-content: center;" pFrozenColumn>
-                                    <p-tableCheckbox class="pl-3" [value]="rowData" />
+                                <td style="width: 5rem;" pFrozenColumn>
+                                    <p-tableCheckbox class="pl-4" [value]="rowData" />
                                 </td>
                                 <td *ngFor="let col of columns">
                                     <ng-container *ngIf="col.format !== 'date'; else dateTemplate">

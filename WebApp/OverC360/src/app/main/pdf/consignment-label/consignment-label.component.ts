@@ -612,7 +612,7 @@ export class ConsignmentLabelComponent {
 
   getResultInvoice(invoiceResult:any){
     this.spin.show()
-    this.ccrService.genearateInvoice({ partnerHouseAirwayBill: invoiceResult }).subscribe({
+    this.ccrService.genearateInvoice({ houseAirwayBill: invoiceResult }).subscribe({
       next: (res: any) => {
         this.generateSingleInvoice(res);
       }, error: (err: any) => {
