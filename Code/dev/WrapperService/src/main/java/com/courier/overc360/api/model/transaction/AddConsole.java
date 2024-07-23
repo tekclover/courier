@@ -183,6 +183,8 @@ public class AddConsole {
 
     private String hsCode;
 
+    private String hubName;
+
     private String goodsDescription;
 
     private String quantity;

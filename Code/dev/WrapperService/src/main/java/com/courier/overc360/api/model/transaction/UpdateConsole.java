@@ -49,6 +49,8 @@ public class UpdateConsole {
 
     private String partnerName;
 
+    private String hubName;
+
 //    private String partnerMasterAirwayBill;
 //
 //    private String partnerHouseAirwayBill;
