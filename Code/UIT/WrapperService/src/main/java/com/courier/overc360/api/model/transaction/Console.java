@@ -15,9 +15,9 @@ public class Console {
 
     private String partnerId;
 
-//    private String masterAirwayBill;
+    private String masterAirwayBill;
 
-//    private String houseAirwayBill;
+    private String houseAirwayBill;
 
     private String consoleId;
 
@@ -217,9 +217,15 @@ public class Console {
 
     private String hubCode;
 
+    private String customsCcrNo;
+
     private Long deletionIndicator;
 
     private String consignmentLocalId;
+
+    private String totalDuty;
+
+    private String hubName;
 
     private String referenceField1;
 

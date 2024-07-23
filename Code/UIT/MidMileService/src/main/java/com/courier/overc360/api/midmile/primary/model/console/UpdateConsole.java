@@ -27,6 +27,10 @@ public class UpdateConsole {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String partnerType;
 
     private String consignmentCurrency;
@@ -115,11 +119,29 @@ public class UpdateConsole {
 //
 //    private Date statusTimestamp;
 
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
     private String isConsolidatedShipment;
 
     private String isSplitBillOfLading;
 
     private String isPendingShipment;
+
+    private String totalDuty;
 
     private String goodsType;
 
@@ -203,7 +225,11 @@ public class UpdateConsole {
 
     private String exemptionBeneficiary;
 
+    private String customsCcrNo;
+
     private String exemptionReference;
+
+    private String hubName;
 
     private Long deletionIndicator;
 

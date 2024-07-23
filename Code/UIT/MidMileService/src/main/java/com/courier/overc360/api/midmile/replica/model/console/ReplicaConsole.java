@@ -65,12 +65,12 @@ public class ReplicaConsole {
     private String consoleGroupName;
 
 //    @Id
-//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String houseAirwayBill;
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
 //    @Id
-//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String masterAirwayBill;
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
@@ -316,6 +316,9 @@ public class ReplicaConsole {
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
+    @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String totalDuty;
+
     @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
     private String hawbType;
 
@@ -355,8 +358,14 @@ public class ReplicaConsole {
     @Column(name = "EXEMPTION_REFERENCE" , columnDefinition = "nvarchar(50)")
     private String exemptionReference;
 
+    @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
+    private String customsCcrNo;
+
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
     private String consignmentLocalId;
+
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;

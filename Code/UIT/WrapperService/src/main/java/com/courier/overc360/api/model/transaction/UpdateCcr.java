@@ -77,6 +77,10 @@ public class UpdateCcr {
 
 //    private Date statusTimestamp;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private String partnerHouseAirwayBill;
 
     private String partnerMasterAirwayBill;
@@ -90,6 +94,10 @@ public class UpdateCcr {
     private String netWeight;
 
     private String manifestedQuantity;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
 
     private String landedQuantity;
 

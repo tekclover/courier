@@ -23,6 +23,10 @@ public class UpdateBondedManifest {
 
     private String pieceId;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String pieceItemId;
 
     private String languageDescription;

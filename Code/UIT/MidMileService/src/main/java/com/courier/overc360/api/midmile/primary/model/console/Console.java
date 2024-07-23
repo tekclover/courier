@@ -59,12 +59,12 @@ public class Console {
     private String pieceId;
 
 //    @Id
-//    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String houseAirwayBill;
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
 //    @Id
-//    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
-//    private String masterAirwayBill;
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String masterAirwayBill;
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
@@ -265,6 +265,9 @@ public class Console {
     @Column(name = "CUSTOMS_KD", columnDefinition = "nvarchar(50)")
     private String customsKd;
 
+    @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String totalDuty;
+
     @Column(name = "PRODUCT_ID", columnDefinition = "nvarchar(50)")
     private String productId;
 
@@ -328,6 +331,9 @@ public class Console {
     @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
     private String hubCode;
 
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -357,6 +363,9 @@ public class Console {
 
     @Column(name = "PIECE_TIMESTAMP")
     private Date pieceTimeStamp = new Date();
+
+    @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
+    private String customsCcrNo;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;

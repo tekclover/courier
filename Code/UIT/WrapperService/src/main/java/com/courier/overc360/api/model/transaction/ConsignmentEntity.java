@@ -182,6 +182,8 @@ public class ConsignmentEntity {
 
     private String consignmentValue;
 
+    private String customsInsurance;
+
     private String actualCurrency;
 
     private String totalDuty;

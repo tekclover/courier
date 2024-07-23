@@ -50,13 +50,11 @@ public class ConsignmentStatus {
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-//    @Id
-//    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
-//    private String statusId;
-//
-//    @Id
-//    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-//    private String eventCode;
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
+
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
 
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;

@@ -29,6 +29,10 @@ public class AddCcr {
 
     private String ccrId;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String customsCcrNo;
 
     private String pieceId;
@@ -198,6 +202,10 @@ public class AddCcr {
     private String specialApprovalCharge;
 
     private String consignmentLocalId;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private Long deletionIndicator = 0L;
 

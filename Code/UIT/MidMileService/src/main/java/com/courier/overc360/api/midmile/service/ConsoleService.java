@@ -15,10 +15,15 @@ import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifest
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.specification.ConsoleSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -324,38 +330,532 @@ public class ConsoleService {
         return createConsoleList(consoleList, loginUserID);
     }
 
-    /**
-     * @param addConsoleList
-     * @param loginUserID
-     * @return
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws IOException
-     * @throws CsvException
-     */
+
+//    /**
+//     * @param addConsoleList
+//     * @param loginUserID
+//     * @return
+//     * @throws IllegalAccessException
+//     * @throws InvocationTargetException
+//     * @throws IOException
+//     * @throws CsvException
+//     */
+//    public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
+//            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+//        List<Console> createdConsoleList = new ArrayList<>();
+//        Map<String, Integer> consoleNameCounterMap = new HashMap<>();
+//        Map<String, Integer> consoleIdNameMap = new HashMap<>();
+//        AtomicInteger consoleNameCounter = new AtomicInteger(1);
+//
+//        // Separate records where hsCode is null
+//        List<AddConsole> nullHsCodeList = addConsoleList.stream()
+//                .filter(console -> console.getHsCode().isEmpty())
+//                .collect(Collectors.toList());
+//
+//        // Create a map to group consignments by hsCode
+//        Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
+//                .filter(console -> !console.getHsCode().isEmpty())
+//                .collect(Collectors.groupingBy(AddConsole::getHsCode));
+//
+//        //If HsCode is null
+//        if (!nullHsCodeList.isEmpty()) {
+//            String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+//            log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
+//            for (AddConsole addConsole : nullHsCodeList) {
+//
+//                Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+//                        addConsole.getLanguageId(), addConsole.getCompanyId(), addConsole.getPartnerId(), addConsole.getPartnerMasterAirwayBill(), addConsole.getPartnerHouseAirwayBill(),
+//                        addConsole.getPieceId(), 0L);
+//                if (duplicateConsole == null) {
+//
+//                    Console newConsole = new Console();
+//                    BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
+//
+//                    Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+//                            addConsole.getLanguageId(), addConsole.getCompanyId(), "5");
+//                    if (eventDescOpt.isPresent()) {
+//                        IKeyValuePair ikey = eventDescOpt.get();
+//
+//                        newConsole.setHawbType("EVENT");
+//                        newConsole.setHawbTypeId("5");
+//                        newConsole.setHawbTypeDescription(ikey.getEventText());
+//                        newConsole.setHawbTimeStamp(new Date());
+//
+//                        newConsole.setPieceType("EVENT");
+//                        newConsole.setPieceTypeId("5");
+//                        newConsole.setPieceTypeDescription(ikey.getEventText());
+//                        newConsole.setPieceTimeStamp(new Date());
+//                    }
+//
+//                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+//                            addConsole.getLanguageId(), addConsole.getCompanyId());
+//
+//                    if (lAndCDesc != null) {
+//                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+//                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+//                    }
+//                    newConsole.setConsoleId(CONSOLE_ID);
+//
+//                    // Use the consoleIdNameMap to set the consoleName
+//                    int currentConsoleName = consoleIdNameMap.computeIfAbsent(CONSOLE_ID, k -> consoleNameCounter.getAndIncrement());
+//                    newConsole.setConsoleName("Console - " + currentConsoleName);
+//
+//                    newConsole.setDeletionIndicator(0L);
+//                    newConsole.setCreatedBy(loginUserID);
+//                    newConsole.setCreatedOn(new Date());
+//                    newConsole.setUpdatedBy(loginUserID);
+//                    newConsole.setUpdatedOn(new Date());
+//
+//                    Console createdConsole = consoleRepository.save(newConsole);
+//
+//                    if (createdConsole != null) {
+//                        // Save ConsignmentStatus
+//                        consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+//                                createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+//                                createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+//                                createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+//                                createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+//                                createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+//                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+//
+//                        // Update ConsignmentEntity Table
+//                        consoleRepository.updateConsignmentOnConsoleCreate(
+//                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+//                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+//
+//                        // Update PreAlert Table
+//                        consoleRepository.updatePreAlertOnConsoleCreate(
+//                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+//                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+//                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+//
+//                        log.info("Console Created<----------------------->Consignment Status Created");
+//                    }
+//                    createdConsoleList.add(createdConsole);
+//                } else {
+//                    createdConsoleList.add(duplicateConsole);
+//                }
+//            }
+//        }
+//
+//        Map<String, Map<String, List<AddConsole>>> groupedBySpecialApproval = new HashMap<>();
+//
+//        //GROUP BY HSCODE
+//        for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
+//            List<AddConsole> consoleList = entry.getValue();
+//            String hsCode = entry.getKey();
+//
+//            String specialApproval = null;
+//            for (AddConsole getCompany : consoleList) {
+//                specialApproval = replicaConsoleRepository.getSpecialApproval(getCompany.getCompanyId(), hsCode);
+//            }
+//
+//            //SPECIAL APPROVAL
+//            if (specialApproval != null) {
+//                if (specialApproval != null && !specialApproval.isBlank()) {
+//                    groupedBySpecialApproval
+//                            .computeIfAbsent(hsCode, k -> new HashMap<>())
+//                            .computeIfAbsent(specialApproval, k -> new ArrayList<>())
+//                            .addAll(consoleList);
+//                }
+//                for (Map.Entry<String, Map<String, List<AddConsole>>> hsCodeEntry : groupedBySpecialApproval.entrySet()) {
+//                    Map<String, List<AddConsole>> specialApprovalGroup = hsCodeEntry.getValue();
+//
+//                    for (Map.Entry<String, List<AddConsole>> specialApprovalEntry : specialApprovalGroup.entrySet()) {
+//                        List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
+//
+//                        String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+//                        for (AddConsole console : consoleEntryList) {
+//
+//                            Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+//                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getPartnerMasterAirwayBill(),
+//                                    console.getPartnerHouseAirwayBill(), console.getPieceId(), 0L);
+//
+//                            if (duplicateConsole == null) {
+//
+//                                // Pass ConsignmentCurrency
+//                                IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+//                                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+//                                        console.getLanguageId(), console.getCompanyId());
+//
+//                                Console newConsole = new Console();
+//                                BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+//
+//                                Double consignmentValue = null;
+//                                if (console.getConsignmentValue() != null) {
+//                                    consignmentValue = Double.valueOf(console.getConsignmentValue());
+//                                }
+//                                // Set TotalDuty Value
+//                                double totalDuty = 0;
+//                                if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
+//                                    double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+//                                    if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
+//                                        totalDuty = toCurrencyValue * consignmentValue;
+//                                        if (totalDuty > 100) {
+//                                            totalDuty += totalDuty * 0.05;
+//                                        }
+//                                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+//                                            totalDuty += 4;
+//                                        }
+//                                    }
+//                                }
+//                                if (lAndCDesc != null) {
+//                                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+//                                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+//                                }
+//
+//                                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+//                                        console.getLanguageId(), console.getCompanyId(), "5");
+//                                if (eventDescOpt.isPresent()) {
+//                                    IKeyValuePair ikey = eventDescOpt.get();
+//
+//                                    newConsole.setHawbType("EVENT");
+//                                    newConsole.setHawbTypeId("5");
+//                                    newConsole.setHawbTypeDescription(ikey.getEventText());
+//                                    newConsole.setHawbTimeStamp(new Date());
+//                                }
+//
+//                                newConsole.setExpectedDuty(String.valueOf(totalDuty));
+//                                newConsole.setConsoleId(CONSOLE_ID);
+//
+//                                // Set consoleName based on consoleId
+////                                int currentConsoleName = consoleNameCounterMap.getOrDefault(CONSOLE_ID, 0) + 1;
+////                                newConsole.setConsoleName(String.valueOf(currentConsoleName));
+////                                consoleNameCounterMap.put(CONSOLE_ID, currentConsoleName);
+//
+////                                newConsole.setConsoleName("Console - " + consoleCount);
+//                                newConsole.setDeletionIndicator(0L);
+//                                newConsole.setCreatedBy(loginUserID);
+//                                newConsole.setCreatedOn(new Date());
+//                                newConsole.setUpdatedBy(loginUserID);
+//                                newConsole.setUpdatedOn(new Date());
+//
+//                                // Get Piece
+//                                List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+//                                        newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+//
+//                                if (piece != null) {
+//                                    for (String pieceId : piece) {
+//
+//                                        newConsole.setPieceId(pieceId);
+//
+//                                        if (eventDescOpt.isPresent()) {
+//                                            IKeyValuePair ikey = eventDescOpt.get();
+//
+//                                            newConsole.setPieceType("EVENT");
+//                                            newConsole.setPieceTypeId("5");
+//                                            newConsole.setPieceTypeDescription(ikey.getEventText());
+//                                            newConsole.setPieceTimeStamp(new Date());
+//                                        }
+//
+//                                        Console createdConsole = consoleRepository.save(newConsole);
+//
+//                                        if (createdConsole != null) {
+//                                            // Save ConsignmentStatus
+//                                            consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+//                                                    createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+//                                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+//                                                    createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+//                                                    createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+//                                                    createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+//                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+//
+//                                            // Update ConsignmentEntity Table
+//                                            consoleRepository.updateConsignmentOnConsoleCreate(
+//                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+//                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+//
+//                                            // Update PreAlert Table
+//                                            consoleRepository.updatePreAlertOnConsoleCreate(
+//                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+//                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+//                                                    createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+//
+//                                            log.info("Console Created <-----------------------> Consignment Status Insert and Console_Indicator Updated");
+//                                        }
+//                                        createdConsoleList.add(createdConsole);
+//                                    }
+//                                } else {
+//                                    log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+//                                            " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+//                                            " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
+//
+//                                }
+//                            } else {
+//                                createdConsoleList.add(duplicateConsole);
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                // Further group the consignments into smaller groups of up to 6 records each
+//                List<List<AddConsole>> smallerGroups = new ArrayList<>();
+//                for (int i = 0; i < consoleList.size(); i += 99) {
+//                    List<AddConsole> subList = consoleList.subList(i, Math.min(i + 99, consoleList.size()));
+//                    smallerGroups.add(subList);
+//                }
+//
+//                // Process each smaller group
+//                for (List<AddConsole> smallerGroup : smallerGroups) {
+//                    List<List<AddConsole>> subGroups = new ArrayList<>();
+//                    List<AddConsole> currentSubGroup = new ArrayList<>();
+//                    Double currentSubGroupValue = 0.0;
+//
+//                    for (AddConsole console : smallerGroup) {
+//                        Double consignmentValue = null;
+//
+//                        IKeyValuePair iKeyValue = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+//
+//                        Double toCurrencyValue = 0.0;
+//                        if (iKeyValue != null && iKeyValue.getCurrencyValue() != null) {
+//                            toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
+//                        }
+//                        Double totalDuty = 0.0;
+//                        if (console.getConsignmentValue() != null) {
+//                            consignmentValue = Double.parseDouble(console.getConsignmentValue());
+//                            totalDuty = toCurrencyValue * consignmentValue;
+//                        }
+//                        if (totalDuty > 100) {
+//                            totalDuty += totalDuty * 0.05;
+//                        }
+//                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+//                            totalDuty += 4;
+//                        }
+//
+//                        Double iataKd = 0.0;
+//                        if (console.getIata() != null) {
+//                            iataKd = Double.valueOf(console.getIata());
+//                        }
+//                        Double recordValue = iataKd + totalDuty;
+//
+//                        if (currentSubGroupValue + recordValue > 5000) {
+//                            subGroups.add(currentSubGroup);
+//                            currentSubGroup = new ArrayList<>();
+//                            currentSubGroupValue = 0.0;
+//                        }
+//
+//                        currentSubGroup.add(console);
+//                        currentSubGroupValue += recordValue;
+//                    }
+//
+//                    if (!currentSubGroup.isEmpty()) {
+//                        subGroups.add(currentSubGroup);
+//                    }
+//
+//                    // Process each subgroup
+//                    for (List<AddConsole> subGroup : subGroups) {
+//                        // Generate a new CONSOLE_ID for each subgroup
+//
+//                        String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+//
+//                        for (AddConsole console : subGroup) {
+//                            // Duplicate Check
+//                            Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+//                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getPartnerMasterAirwayBill(), console.getPartnerHouseAirwayBill(), console.getPieceId(), 0L);
+//
+//                            if (duplicateConsole == null) {
+//
+//                                // Pass ConsignmentCurrency
+//                                IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+//
+//                                Console newConsole = new Console();
+//                                BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+//
+//                                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(console.getLanguageId(), console.getCompanyId());
+//
+//                                if (lAndCDesc != null) {
+//                                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+//                                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+//                                }
+//                                Double consignmentValue = null;
+//                                if (console.getConsignmentValue() != null) {
+//                                    consignmentValue = Double.valueOf(console.getConsignmentValue());
+//                                }
+//                                // Set TotalDuty Value
+//                                double totalDuty = 0;
+//                                if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
+//                                    double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+//                                    if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
+//                                        totalDuty = toCurrencyValue * consignmentValue;
+//                                        if (totalDuty > 100) {
+//                                            totalDuty += totalDuty * 0.05;
+//                                        }
+//                                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+//                                            totalDuty += 4;
+//                                        }
+//                                    }
+//                                }
+//
+//                                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+//                                        console.getLanguageId(), console.getCompanyId(), "5");
+//                                if (eventDescOpt.isPresent()) {
+//                                    IKeyValuePair ikey = eventDescOpt.get();
+//
+//                                    newConsole.setHawbType("EVENT");
+//                                    newConsole.setHawbTypeId("5");
+//                                    newConsole.setHawbTypeDescription(ikey.getEventText());
+//                                    newConsole.setHawbTimeStamp(new Date());
+//                                }
+//
+//                                newConsole.setExpectedDuty(String.valueOf(totalDuty));
+////                            newConsole.setCustomsValue(CUS_VAL);
+//                                newConsole.setConsoleId(SUB_CONSOLE_ID);
+//                                // Increment consoleName counter for the given consoleId
+//                                int currentConsoleName = consoleNameCounterMap.getOrDefault(SUB_CONSOLE_ID, 0) + 1;
+//                                newConsole.setConsoleName("Console - " + currentConsoleName);
+//                                consoleNameCounterMap.put(SUB_CONSOLE_ID, currentConsoleName);
+//
+//                                newConsole.setDeletionIndicator(0L);
+//                                newConsole.setCreatedBy(loginUserID);
+//                                newConsole.setCreatedOn(new Date());
+//                                newConsole.setUpdatedBy(loginUserID);
+//                                newConsole.setUpdatedOn(new Date());
+//
+//                                // Get Piece
+//                                List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+//                                        newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+//
+//                                if (piece != null) {
+//                                    for (String pieceId : piece) {
+//                                        newConsole.setPieceId(pieceId);
+//                                        Console createdConsole = consoleRepository.save(newConsole);
+//
+//                                        if (eventDescOpt.isPresent()) {
+//                                            IKeyValuePair ikey = eventDescOpt.get();
+//
+//                                            newConsole.setPieceType("EVENT");
+//                                            newConsole.setPieceTypeId("5");
+//                                            newConsole.setPieceTypeDescription(ikey.getEventText());
+//                                            newConsole.setPieceTimeStamp(new Date());
+//                                        }
+//
+//                                        if (createdConsole != null) {
+//                                            // Save ConsignmentStatus
+//                                            consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+//                                                    createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+//                                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+//                                                    createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+//                                                    createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+//                                                    createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+//                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+//
+//                                            // Update ConsignmentEntity Table
+//                                            consoleRepository.updateConsignmentOnConsoleCreate(
+//                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+//                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+//
+//                                            // Update PreAlert Table
+//                                            consoleRepository.updatePreAlertOnConsoleCreate(
+//                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+//                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+//                                                    createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+//
+//                                            log.info("Console Created<----------------------->Consignment Event Updated");
+//                                        }
+//                                        createdConsoleList.add(createdConsole);
+//                                    }
+//                                } else {
+//                                    log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+//                                            " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+//                                            " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
+//                                }
+//                            } else {
+//                                createdConsoleList.add(duplicateConsole);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return createdConsoleList;
+//    }
+
+
+
     public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<Console> createdConsoleList = new ArrayList<>();
 
         // Separate records where hsCode is null
-        List<AddConsole> nullHsCodeList = addConsoleList.stream()
-                .filter(console -> console.getHsCode().isEmpty())
-                .collect(Collectors.toList());
+        List<AddConsole> nullHsCodeList = addConsoleList.stream().filter(console -> console.getHsCode().isEmpty()).collect(Collectors.toList());
 
         // Create a map to group consignments by hsCode
         Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
                 .filter(console -> !console.getHsCode().isEmpty())
                 .collect(Collectors.groupingBy(AddConsole::getHsCode));
 
+        //If HsCode is null
         if (!nullHsCodeList.isEmpty()) {
-            List<Console> addConsole = createConsoleNormal(nullHsCodeList, loginUserID);
-            for (Console console : addConsole) {
-                createdConsoleList.add(console);
+            String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+            log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
+            for (AddConsole addConsole : nullHsCodeList) {
+
+                Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                        addConsole.getLanguageId(), addConsole.getCompanyId(), addConsole.getPartnerId(), addConsole.getPartnerMasterAirwayBill(), addConsole.getPartnerHouseAirwayBill(),
+                        addConsole.getPieceId(), 0L);
+                if (duplicateConsole == null) {
+
+                    Console newConsole = new Console();
+                    BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
+
+                    Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+                            addConsole.getLanguageId(), addConsole.getCompanyId(), "5");
+                    if (eventDescOpt.isPresent()) {
+                        IKeyValuePair ikey = eventDescOpt.get();
+
+                        newConsole.setHawbType("EVENT");
+                        newConsole.setHawbTypeId("5");
+                        newConsole.setHawbTypeDescription(ikey.getEventText());
+                        newConsole.setHawbTimeStamp(new Date());
+
+                        newConsole.setPieceType("EVENT");
+                        newConsole.setPieceTypeId("5");
+                        newConsole.setPieceTypeDescription(ikey.getEventText());
+                        newConsole.setPieceTimeStamp(new Date());
+                    }
+
+                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                            addConsole.getLanguageId(), addConsole.getCompanyId());
+
+                    if (lAndCDesc != null) {
+                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                    }
+                    newConsole.setConsoleId(CONSOLE_ID);
+                    newConsole.setDeletionIndicator(0L);
+                    newConsole.setCreatedBy(loginUserID);
+                    newConsole.setCreatedOn(new Date());
+                    newConsole.setUpdatedBy(loginUserID);
+                    newConsole.setUpdatedOn(new Date());
+
+                    // Get Piece
+                    List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+                            newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+
+                    if (piece != null) {
+                        for (String pieceId : piece) {
+                            newConsole.setPieceId(pieceId);
+
+                            if (eventDescOpt.isPresent()) {
+                                IKeyValuePair ikey = eventDescOpt.get();
+
+                                newConsole.setPieceType("EVENT");
+                                newConsole.setPieceTypeId("5");
+                                newConsole.setPieceTypeDescription(ikey.getEventText());
+                                newConsole.setPieceTimeStamp(new Date());
+                            }
+                            createdConsoleList.add(newConsole);
+                        }
+                    }
+                } else {
+                    createdConsoleList.add(duplicateConsole);
+                }
             }
         }
 
         Map<String, Map<String, List<AddConsole>>> groupedBySpecialApproval = new HashMap<>();
 
+        //GROUP BY HSCODE
         for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
             List<AddConsole> consoleList = entry.getValue();
             String hsCode = entry.getKey();
@@ -364,6 +864,8 @@ public class ConsoleService {
             for (AddConsole getCompany : consoleList) {
                 specialApproval = replicaConsoleRepository.getSpecialApproval(getCompany.getCompanyId(), hsCode);
             }
+
+            //SPECIAL APPROVAL
             if (specialApproval != null) {
                 if (specialApproval != null && !specialApproval.isBlank()) {
                     groupedBySpecialApproval
@@ -377,132 +879,92 @@ public class ConsoleService {
                     for (Map.Entry<String, List<AddConsole>> specialApprovalEntry : specialApprovalGroup.entrySet()) {
                         List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
 
-
                         String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-                        String CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
-
                         for (AddConsole console : consoleEntryList) {
 
-                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                            Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
                                     console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getPartnerMasterAirwayBill(),
                                     console.getPartnerHouseAirwayBill(), console.getPieceId(), 0L);
 
-                            if (duplicateConsole) {
-                                System.out.println("Duplicate found for PartnerHouseAirwayBillNo: " + console.getPartnerHouseAirwayBill());
-                                continue;
-                            }
+                            if (duplicateConsole == null) {
 
-                            // Pass ConsignmentCurrency
-                            IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
-                            IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
-                                    console.getLanguageId(), console.getCompanyId());
+                                // Pass ConsignmentCurrency
+                                IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+                                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                                        console.getLanguageId(), console.getCompanyId());
 
-                            Console newConsole = new Console();
-                            BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+                                Console newConsole = new Console();
+                                BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
 
-                            Double consignmentValue = null;
-                            if (console.getConsignmentValue() != null) {
-                                consignmentValue = Double.valueOf(console.getConsignmentValue());
-                            }
-                            // Set TotalDuty Value
-                            double totalDuty = 0;
-                            if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
-                                double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
-                                if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
-                                    totalDuty = toCurrencyValue * consignmentValue;
-                                    if (totalDuty > 100) {
-                                        totalDuty += totalDuty * 0.05;
-                                    }
-                                    if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
-                                        totalDuty += 4;
+                                Double consignmentValue = null;
+                                if (console.getConsignmentValue() != null) {
+                                    consignmentValue = Double.valueOf(console.getConsignmentValue());
+                                }
+                                // Set TotalDuty Value
+                                double totalDuty = 0;
+                                if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
+                                    double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+                                    if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
+                                        totalDuty = toCurrencyValue * consignmentValue;
+                                        if (totalDuty > 100) {
+                                            totalDuty += totalDuty * 0.05;
+                                        }
+                                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+                                            totalDuty += 4;
+                                        }
                                     }
                                 }
-                            }
-//                            if (iataData != null && iataData.getIataKd() != null) {
-//                                newConsole.setIataKd(iataData.getIataKd());
-//                            }
-                            if (lAndCDesc != null) {
-                                newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
-                                newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
-                            }
+                                if (lAndCDesc != null) {
+                                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                                }
 
-                            Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
-                                    console.getLanguageId(), console.getCompanyId(), "5");
-                            if (eventDescOpt.isPresent()) {
-                                IKeyValuePair ikey = eventDescOpt.get();
+                                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+                                        console.getLanguageId(), console.getCompanyId(), "5");
+                                if (eventDescOpt.isPresent()) {
+                                    IKeyValuePair ikey = eventDescOpt.get();
 
-                                newConsole.setHawbType("EVENT");
-                                newConsole.setHawbTypeId("5");
-                                newConsole.setHawbTypeDescription(ikey.getEventText());
-                                newConsole.setHawbTimeStamp(new Date());
-                            }
+                                    newConsole.setHawbType("EVENT");
+                                    newConsole.setHawbTypeId("5");
+                                    newConsole.setHawbTypeDescription(ikey.getEventText());
+                                    newConsole.setHawbTimeStamp(new Date());
+                                }
 
-                            newConsole.setExpectedDuty(String.valueOf(totalDuty));
-                            newConsole.setConsoleId(CONSOLE_ID);
-                            newConsole.setConsoleName("Console - " + CONSOLE_NAME);
-                            newConsole.setDeletionIndicator(0L);
-                            newConsole.setCreatedBy(loginUserID);
-                            newConsole.setCreatedOn(new Date());
-                            newConsole.setUpdatedBy(loginUserID);
-                            newConsole.setUpdatedOn(new Date());
+                                newConsole.setExpectedDuty(String.valueOf(totalDuty));
+                                newConsole.setConsoleId(CONSOLE_ID);
+                                newConsole.setDeletionIndicator(0L);
+                                newConsole.setCreatedBy(loginUserID);
+                                newConsole.setCreatedOn(new Date());
+                                newConsole.setUpdatedBy(loginUserID);
+                                newConsole.setUpdatedOn(new Date());
 
-                            // Get Piece
-                            List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
-                                    newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+                                // Get Piece
+                                List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+                                        newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
 
-                            if (piece != null) {
-                                for (String pieceId : piece) {
+                                if (piece != null) {
+                                    for (String pieceId : piece) {
 
-                                    newConsole.setPieceId(pieceId);
+                                        newConsole.setPieceId(pieceId);
 
-                                    if (eventDescOpt.isPresent()) {
-                                        IKeyValuePair ikey = eventDescOpt.get();
+                                        if (eventDescOpt.isPresent()) {
+                                            IKeyValuePair ikey = eventDescOpt.get();
 
-                                        newConsole.setPieceType("EVENT");
-                                        newConsole.setPieceTypeId("5");
-                                        newConsole.setPieceTypeDescription(ikey.getEventText());
-                                        newConsole.setPieceTimeStamp(new Date());
+                                            newConsole.setPieceType("EVENT");
+                                            newConsole.setPieceTypeId("5");
+                                            newConsole.setPieceTypeDescription(ikey.getEventText());
+                                            newConsole.setPieceTimeStamp(new Date());
+                                        }
+                                        createdConsoleList.add(newConsole);
                                     }
+                                } else {
+                                    log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+                                            " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+                                            " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
 
-                                    Console createdConsole = consoleRepository.save(newConsole);
-
-                                    if (createdConsole != null) {
-                                        // Save ConsignmentStatus
-                                        consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
-                                                createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
-                                                createdConsole.getPartnerMasterAirwayBill(), createdConsole.getPartnerHouseAirwayBill(), createdConsole.getHawbType(),
-                                                createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
-                                                createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
-                                                createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID);
-
-                                        // Update ConsignmentEntity Table
-                                        consoleRepository.updateConsignmentOnConsoleCreate(
-                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
-
-                                        // Update PreAlert Table
-                                        consoleRepository.updatePreAlertOnConsoleCreate(
-                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
-
-                                        // Update PieceDetails Table
-//                                        consoleRepository.updatePieceDetailsOnConsoleCreate(
-//                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-//                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-//                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
-//                                                createdConsole.getPieceId());
-
-                                        log.info("Console Created <-----------------------> Consignment Status Insert and Console_Indicator Updated");
-                                    }
-                                    createdConsoleList.add(createdConsole);
                                 }
                             } else {
-                                log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
-                                        " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
-                                        " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
-                                continue;
-
+                                createdConsoleList.add(duplicateConsole);
                             }
                         }
                     }
@@ -517,10 +979,6 @@ public class ConsoleService {
 
                 // Process each smaller group
                 for (List<AddConsole> smallerGroup : smallerGroups) {
-                    // Generate a new CONSOLE_ID for each smaller group
-//                    String CONSOLE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-
-                    // Further group the consignments based on the total value condition
                     List<List<AddConsole>> subGroups = new ArrayList<>();
                     List<AddConsole> currentSubGroup = new ArrayList<>();
                     Double currentSubGroupValue = 0.0;
@@ -546,7 +1004,6 @@ public class ConsoleService {
                             totalDuty += 4;
                         }
 
-//                        IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
                         Double iataKd = 0.0;
                         if (console.getIata() != null) {
                             iataKd = Double.valueOf(console.getIata());
@@ -572,135 +1029,157 @@ public class ConsoleService {
                         // Generate a new CONSOLE_ID for each subgroup
 
                         String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-                        String SUB_CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
 
                         for (AddConsole console : subGroup) {
                             // Duplicate Check
-                            boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                            Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
                                     console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getPartnerMasterAirwayBill(), console.getPartnerHouseAirwayBill(), console.getPieceId(), 0L);
 
-                            if (duplicateConsole) {
-                                // Log the duplicate and skip the record
-                                System.out.println("Duplicate found for PartnerHouseAirwayBillNo: " + console.getPartnerHouseAirwayBill());
-                                continue;
-                            }
+                            if (duplicateConsole == null) {
 
-                            // Pass ConsignmentCurrency
-                            IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+                                // Pass ConsignmentCurrency
+                                IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
 
-                            Console newConsole = new Console();
-                            BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+                                Console newConsole = new Console();
+                                BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
 
-                            IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(console.getLanguageId(), console.getCompanyId());
+                                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(console.getLanguageId(), console.getCompanyId());
 
-                            if (lAndCDesc != null) {
-                                newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
-                                newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
-                            }
-                            Double consignmentValue = null;
-                            if (console.getConsignmentValue() != null) {
-                                consignmentValue = Double.valueOf(console.getConsignmentValue());
-                            }
-                            // Set TotalDuty Value
-                            double totalDuty = 0;
-                            if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
-                                double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
-                                if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
-                                    totalDuty = toCurrencyValue * consignmentValue;
-                                    if (totalDuty > 100) {
-                                        totalDuty += totalDuty * 0.05;
-                                    }
-                                    if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
-                                        totalDuty += 4;
+                                if (lAndCDesc != null) {
+                                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                                }
+                                Double consignmentValue = null;
+                                if (console.getConsignmentValue() != null) {
+                                    consignmentValue = Double.valueOf(console.getConsignmentValue());
+                                }
+                                // Set TotalDuty Value
+                                double totalDuty = 0;
+                                if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
+                                    double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+                                    if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
+                                        totalDuty = toCurrencyValue * consignmentValue;
+                                        if (totalDuty > 100) {
+                                            totalDuty += totalDuty * 0.05;
+                                        }
+                                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+                                            totalDuty += 4;
+                                        }
                                     }
                                 }
-                            }
 
-                            Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
-                                    console.getLanguageId(), console.getCompanyId(), "5");
-                            if (eventDescOpt.isPresent()) {
-                                IKeyValuePair ikey = eventDescOpt.get();
+                                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+                                        console.getLanguageId(), console.getCompanyId(), "5");
+                                if (eventDescOpt.isPresent()) {
+                                    IKeyValuePair ikey = eventDescOpt.get();
 
-                                newConsole.setHawbType("EVENT");
-                                newConsole.setHawbTypeId("5");
-                                newConsole.setHawbTypeDescription(ikey.getEventText());
-                                newConsole.setHawbTimeStamp(new Date());
-                            }
+                                    newConsole.setHawbType("EVENT");
+                                    newConsole.setHawbTypeId("5");
+                                    newConsole.setHawbTypeDescription(ikey.getEventText());
+                                    newConsole.setHawbTimeStamp(new Date());
+                                }
 
-                            newConsole.setExpectedDuty(String.valueOf(totalDuty));
+                                newConsole.setExpectedDuty(String.valueOf(totalDuty));
 //                            newConsole.setCustomsValue(CUS_VAL);
-                            newConsole.setConsoleId(SUB_CONSOLE_ID);
-                            newConsole.setConsoleName("Console - " + SUB_CONSOLE_NAME);
-                            newConsole.setDeletionIndicator(0L);
-                            newConsole.setCreatedBy(loginUserID);
-                            newConsole.setCreatedOn(new Date());
-                            newConsole.setUpdatedBy(loginUserID);
-                            newConsole.setUpdatedOn(new Date());
+                                newConsole.setConsoleId(SUB_CONSOLE_ID);
+                                newConsole.setDeletionIndicator(0L);
+                                newConsole.setCreatedBy(loginUserID);
+                                newConsole.setCreatedOn(new Date());
+                                newConsole.setUpdatedBy(loginUserID);
+                                newConsole.setUpdatedOn(new Date());
 
-                            // Get Piece
-                            List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
-                                    newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+                                // Get Piece
+                                List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+                                        newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
 
-                            if (piece != null) {
-                                for (String pieceId : piece) {
-                                    newConsole.setPieceId(pieceId);
-                                    Console createdConsole = consoleRepository.save(newConsole);
+                                if (piece != null) {
+                                    for (String pieceId : piece) {
+                                        newConsole.setPieceId(pieceId);
+//                                        Console createdConsole = consoleRepository.save(newConsole);
 
-                                    if (eventDescOpt.isPresent()) {
-                                        IKeyValuePair ikey = eventDescOpt.get();
+                                        if (eventDescOpt.isPresent()) {
+                                            IKeyValuePair ikey = eventDescOpt.get();
 
-                                        newConsole.setPieceType("EVENT");
-                                        newConsole.setPieceTypeId("5");
-                                        newConsole.setPieceTypeDescription(ikey.getEventText());
-                                        newConsole.setPieceTimeStamp(new Date());
+                                            newConsole.setPieceType("EVENT");
+                                            newConsole.setPieceTypeId("5");
+                                            newConsole.setPieceTypeDescription(ikey.getEventText());
+                                            newConsole.setPieceTimeStamp(new Date());
+                                        }
+                                        createdConsoleList.add(newConsole);
                                     }
-
-                                    if (createdConsole != null) {
-                                        // Save ConsignmentStatus
-                                        consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
-                                                createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
-                                                createdConsole.getPartnerMasterAirwayBill(), createdConsole.getPartnerHouseAirwayBill(), createdConsole.getHawbType(),
-                                                createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
-                                                createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
-                                                createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID);
-
-                                        // Update ConsignmentEntity Table
-                                        consoleRepository.updateConsignmentOnConsoleCreate(
-                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
-
-                                        // Update PreAlert Table
-                                        consoleRepository.updatePreAlertOnConsoleCreate(
-                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
-
-                                        // Update PieceDetails Table
-//                                        consoleRepository.updatePieceDetailsOnConsoleCreate(
-//                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-//                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-//                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
-//                                                createdConsole.getPieceId());
-
-                                        log.info("Console Created<----------------------->Consignment Event Updated");
-                                    }
-                                    createdConsoleList.add(createdConsole);
+                                } else {
+                                    log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+                                            " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+                                            " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
                                 }
                             } else {
-                                log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
-                                        " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
-                                        " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
-                                continue;
+                                createdConsoleList.add(duplicateConsole);
                             }
-
                         }
                     }
                 }
             }
         }
-        return createdConsoleList;
+        return setConsoleName(createdConsoleList, loginUserID);
     }
 
+
+    // SetConsoleName
+
+    /**
+     *
+     * @param consoleList
+     * @param loginUserID
+     * @return
+     */
+    public List<Console> setConsoleName(List<Console> consoleList, String loginUserID) {
+
+        List<Console> multiConsole = new ArrayList<>();
+        // Create a map to group consignments by consoleId
+        int consoleName = 1;
+        Map<String, List<Console>> groupByConsoleId = consoleList.stream()
+                .collect(Collectors.groupingBy(Console::getConsoleId));
+
+        for (Map.Entry<String, List<Console>> entry : groupByConsoleId.entrySet()) {
+            List<Console> listConsole = entry.getValue();
+            String currentConsoleName = "ConsoleName - " + consoleName;
+            for (Console console : listConsole) {
+                console.setConsoleName(currentConsoleName);
+                log.info("CONSOLE_ID ----------->" + console.getConsoleId() + "------------CONSOLE_NAME---" + currentConsoleName);
+
+                Console createdConsole = consoleRepository.save(console);
+
+                if (createdConsole != null) {
+                    // Save ConsignmentStatus
+                    consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+                            createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(), createdConsole.getMasterAirwayBill(),
+                            createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(), createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+                            createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+                            createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill()
+                    );
+
+                    // Update ConsignmentEntity Table
+                    consoleRepository.updateConsignmentOnConsoleCreate(
+                            createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill()
+                    );
+
+                    // Update PreAlert Table
+                    consoleRepository.updatePreAlertOnConsoleCreate(
+                            createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType()
+                    );
+
+                    log.info("Console Created<----------------------->Consignment Status Created");
+                    multiConsole.add(createdConsole);
+                }
+            }
+            consoleName++;
+        }
+        return multiConsole;
+    }
 
     /**
      * Create Console
@@ -719,85 +1198,88 @@ public class ConsoleService {
         try {
             List<Console> createdConsoleList = new ArrayList<>();
 
-
             String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
-            String CONSOLE_NAME = numberRangeService.getNextNumberRange("CONSOLENAME");
+            Long CONSOLE_NAME = 1L;
             log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
             for (AddConsole addConsole : addConsoleList) {
 
-                boolean duplicateConsole = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
                         addConsole.getLanguageId(), addConsole.getCompanyId(), addConsole.getPartnerId(), addConsole.getPartnerMasterAirwayBill(), addConsole.getPartnerHouseAirwayBill(),
                         addConsole.getPieceId(), 0L);
-                if (duplicateConsole) {
-                    throw new BadRequestException("Record is getting Duplicated with given values : PartnerHouseAirwayBill - " + addConsole.getPartnerHouseAirwayBill());
-                }
+                if (duplicateConsole == null) {
 
-                Console newConsole = new Console();
-                BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
+                    Console newConsole = new Console();
+                    BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
 
-                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
-                        addConsole.getLanguageId(), addConsole.getCompanyId(), "5");
-                if (eventDescOpt.isPresent()) {
-                    IKeyValuePair ikey = eventDescOpt.get();
+                    Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+                            addConsole.getLanguageId(), addConsole.getCompanyId(), "5");
+                    if (eventDescOpt.isPresent()) {
+                        IKeyValuePair ikey = eventDescOpt.get();
 
-                    newConsole.setHawbType("EVENT");
-                    newConsole.setHawbTypeId("5");
-                    newConsole.setHawbTypeDescription(ikey.getEventText());
-                    newConsole.setHawbTimeStamp(new Date());
+                        newConsole.setHawbType("EVENT");
+                        newConsole.setHawbTypeId("5");
+                        newConsole.setHawbTypeDescription(ikey.getEventText());
+                        newConsole.setHawbTimeStamp(new Date());
 
-                    newConsole.setPieceType("EVENT");
-                    newConsole.setPieceTypeId("5");
-                    newConsole.setPieceTypeDescription(ikey.getEventText());
-                    newConsole.setPieceTimeStamp(new Date());
-                }
+                        newConsole.setPieceType("EVENT");
+                        newConsole.setPieceTypeId("5");
+                        newConsole.setPieceTypeDescription(ikey.getEventText());
+                        newConsole.setPieceTimeStamp(new Date());
+                    }
 
-                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
-                        addConsole.getLanguageId(), addConsole.getCompanyId());
+                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+                            addConsole.getLanguageId(), addConsole.getCompanyId());
 
-                if (lAndCDesc != null) {
-                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
-                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
-                }
-                newConsole.setConsoleId(CONSOLE_ID);
-                newConsole.setConsoleName("Console - " + CONSOLE_NAME);
-                newConsole.setDeletionIndicator(0L);
-                newConsole.setCreatedBy(loginUserID);
-                newConsole.setCreatedOn(new Date());
-                newConsole.setUpdatedBy(loginUserID);
-                newConsole.setUpdatedOn(new Date());
+                    if (lAndCDesc != null) {
+                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+                    }
+                    newConsole.setConsoleId(CONSOLE_ID);
+                    newConsole.setConsoleName("Console - " + CONSOLE_NAME);
+                    newConsole.setDeletionIndicator(0L);
+                    newConsole.setCreatedBy(loginUserID);
+                    newConsole.setCreatedOn(new Date());
+                    newConsole.setUpdatedBy(loginUserID);
+                    newConsole.setUpdatedOn(new Date());
 
-                Console createdConsole = consoleRepository.save(newConsole);
+                    CONSOLE_NAME++;
 
-                if (createdConsole != null) {
-                    // Save ConsignmentStatus
-                    consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
-                            createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
-                            createdConsole.getPartnerMasterAirwayBill(), createdConsole.getPartnerHouseAirwayBill(), createdConsole.getHawbType(),
-                            createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
-                            createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
-                            createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID);
+                    Console createdConsole = consoleRepository.save(newConsole);
 
-                    // Update ConsignmentEntity Table
-                    consoleRepository.updateConsignmentOnConsoleCreate(
-                            createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+                    if (createdConsole != null) {
+                        // Save ConsignmentStatus
+                        consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+                                createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+                                createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+                                createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+                                createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+                                createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill());
 
-                    // Update PreAlert Table
-                    consoleRepository.updatePreAlertOnConsoleCreate(
-                            createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
-                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
-                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+                        // Update ConsignmentEntity Table
+                        consoleRepository.updateConsignmentOnConsoleCreate(
+                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
 
-                    // Update PieceDetails Table
+                        // Update PreAlert Table
+                        consoleRepository.updatePreAlertOnConsoleCreate(
+                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+
+                        // Update PieceDetails Table
 //                    consoleRepository.updatePieceDetailsOnConsoleCreate(
 //                            createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
 //                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
 //                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
 //                            createdConsole.getPieceId());
 
-                    log.info("Console Created<----------------------->Consignment Status Created");
+                        log.info("Console Created<----------------------->Consignment Status Created");
+                    }
+                    createdConsoleList.add(createdConsole);
+                } else {
+                    createdConsoleList.add(duplicateConsole);
                 }
-                createdConsoleList.add(createdConsole);
             }
             return createdConsoleList;
         } catch (Exception e) {
@@ -829,21 +1311,6 @@ public class ConsoleService {
                         updateConsole.getPartnerMasterAirwayBill(), updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId());
 
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
-
-                Optional<IKeyValuePair> statusID5DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "5");
-                if (statusID5DescOpt.isPresent()) {
-                    IKeyValuePair ikey = statusID5DescOpt.get();
-
-                    dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId("5");
-                    dbConsole.setHawbTypeDescription(ikey.getStatusText());
-                    dbConsole.setHawbTimeStamp(new Date());
-
-                    dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId("5");
-                    dbConsole.setPieceTypeDescription(ikey.getStatusText());
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
 
                 Optional<IKeyValuePair> ikey = replicaConsoleRepository.getInvoice(updateConsole.getCompanyId(),
                         updateConsole.getLanguageId(), updateConsole.getPartnerId(), updateConsole.getPartnerHouseAirwayBill(),
@@ -915,7 +1382,7 @@ public class ConsoleService {
 
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
 
-                Optional<IKeyValuePair> statusID5DescOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "5");
+                Optional<IKeyValuePair> statusID5DescOpt = consignmentEntityRepository.getStatusText(dbConsole.getLanguageId(), "5");
                 if (statusID5DescOpt.isPresent()) {
                     IKeyValuePair ikey = statusID5DescOpt.get();
 
@@ -943,31 +1410,32 @@ public class ConsoleService {
                         // Create Consignment Status Table record with StatusID - 4
                         consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
                                 updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
-                                updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
+                                updatetedConsole.getMasterAirwayBill(), updatetedConsole.getHouseAirwayBill(), updatetedConsole.getHawbType(),
                                 updatetedConsole.getHawbTypeId(), ikey.getStatusText(), updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(),
-                                updatetedConsole.getPieceTypeId(), ikey.getStatusText(), updatetedConsole.getPieceTimeStamp(), loginUserID);
+                                updatetedConsole.getPieceTypeId(), ikey.getStatusText(), updatetedConsole.getPieceTimeStamp(), loginUserID,
+                                updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill());
                     }
 
                     // Create Consignment Status Table record with StatusID - 5
                     consignmentStatusService.insertConsignmentStatusRecord(updatetedConsole.getLanguageId(), updatetedConsole.getLanguageDescription(),
                             updatetedConsole.getCompanyId(), updatetedConsole.getCompanyName(), updatetedConsole.getPieceId(),
-                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getHawbType(),
+                            updatetedConsole.getMasterAirwayBill(), updatetedConsole.getHouseAirwayBill(), updatetedConsole.getHawbType(),
                             updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbTypeDescription(),
                             updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(), updatetedConsole.getPieceTypeId(),
-                            updatetedConsole.getPieceTypeDescription(), updatetedConsole.getPieceTimeStamp(), loginUserID);
+                            updatetedConsole.getPieceTypeDescription(), updatetedConsole.getPieceTimeStamp(), loginUserID,
+                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill());
 
                     // Update ConsignmentEntity Table
                     consoleRepository.updateConsignmentOnConsoleCreate(
                             updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
-                            updatetedConsole.getPartnerMasterAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
+                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
                             updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType(), updateConsole.getHubCode());
 
                     // Update PreAlert Table
                     consoleRepository.updatePreAlertOnConsoleCreate(
                             updatetedConsole.getLanguageId(), updatetedConsole.getCompanyId(), updatetedConsole.getPartnerId(),
                             updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(),
-                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType(),
-                            updatetedConsole.getPieceId());
+                            updatetedConsole.getHawbTypeDescription(), updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbType());
 
                     // Update PieceDetails Table
                     consoleRepository.updatePieceDetailsOnConsoleCreate(
@@ -1012,20 +1480,40 @@ public class ConsoleService {
             dbConsole.setUpdatedOn(new Date());
 
             // Get Status Desc
-            Optional<IKeyValuePair> getStatusOpt = consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), "5");
+            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                Optional<IKeyValuePair> getStatusOpt =
+                        consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
 
-            if (getStatusOpt.isPresent()) {
-                IKeyValuePair ikey = getStatusOpt.get();
+                if (getStatusOpt.isPresent()) {
+                    IKeyValuePair ikey = getStatusOpt.get();
 
-                dbConsole.setHawbType("STATUS");
-                dbConsole.setHawbTypeId("5");
-                dbConsole.setHawbTypeDescription(ikey.getStatusText());
-                dbConsole.setHawbTimeStamp(new Date());
+                    dbConsole.setHawbType("STATUS");
+                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setHawbTypeDescription(ikey.getStatusText());
+                    dbConsole.setHawbTimeStamp(new Date());
 
-                dbConsole.setPieceType("STATUS");
-                dbConsole.setPieceTypeId("5");
-                dbConsole.setPieceTypeDescription(ikey.getStatusText());
-                dbConsole.setPieceTimeStamp(new Date());
+                    dbConsole.setPieceType("STATUS");
+                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setPieceTypeDescription(ikey.getStatusText());
+                    dbConsole.setPieceTimeStamp(new Date());
+                }
+            } else if (updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
+                Optional<IKeyValuePair> getEventStats =
+                        consignmentEntityRepository.getEventText(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getHawbTypeId());
+
+                if (getEventStats.isPresent()) {
+                    IKeyValuePair ikey = getEventStats.get();
+
+                    dbConsole.setHawbType("EVENT");
+                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setHawbTypeDescription(ikey.getEventText());
+                    dbConsole.setHawbTimeStamp(new Date());
+
+                    dbConsole.setPieceType("EVENT");
+                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setPieceTypeDescription(ikey.getEventText());
+                    dbConsole.setPieceTimeStamp(new Date());
+                }
             }
             Console updatedConsole = consoleRepository.save(dbConsole);
 
@@ -1049,6 +1537,15 @@ public class ConsoleService {
                         updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
                         updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
                         updatedConsole.getPieceId());
+
+                //Insert ConsignmentStatus
+                consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
+                        updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
+                        updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
+                        updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
+                        updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
+                        updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill());
 
 
                 consoleList.add(updatedConsole);
@@ -1076,50 +1573,56 @@ public class ConsoleService {
                             updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(), updateConsole.getPartnerMasterAirwayBill(),
                             updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId(), 0L);
 
-            if(dbConsole == null ) {
-                throw new BadRequestException("Given values doesn't exist");
+            if (dbConsole == null) {
+                throw new BadRequestException("Given Values Doesn't exist");
             }
+            BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
 
             // Get Status Desc
-            if(updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
                 Optional<IKeyValuePair> getStatusOpt =
-                        consignmentEntityRepository.getStatusText(updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
+                        consignmentEntityRepository.getStatusText(dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
 
                 if (getStatusOpt.isPresent()) {
                     IKeyValuePair ikey = getStatusOpt.get();
 
                     dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
                     dbConsole.setHawbTypeDescription(ikey.getStatusText());
                     dbConsole.setHawbTimeStamp(new Date());
 
                     dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
                     dbConsole.setPieceTypeDescription(ikey.getStatusText());
                     dbConsole.setPieceTimeStamp(new Date());
                 }
-            } else if(updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
+            } else if (dbConsole.getHawbType().equalsIgnoreCase("EVENT")) {
                 Optional<IKeyValuePair> getEventStats =
-                        consignmentEntityRepository.getEventText(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getHawbTypeId());
+                        consignmentEntityRepository.getEventText(dbConsole.getLanguageId(), dbConsole.getCompanyId(), dbConsole.getHawbTypeId());
 
                 if (getEventStats.isPresent()) {
                     IKeyValuePair ikey = getEventStats.get();
 
                     dbConsole.setHawbType("EVENT");
-                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
                     dbConsole.setHawbTypeDescription(ikey.getEventText());
                     dbConsole.setHawbTimeStamp(new Date());
 
                     dbConsole.setPieceType("EVENT");
-                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
                     dbConsole.setPieceTypeDescription(ikey.getEventText());
                     dbConsole.setPieceTimeStamp(new Date());
                 }
             }
 
-
-
-            BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
+            // HubName
+            if(dbConsole.getHubCode() != null) {
+                String hubCodeDesc = consoleRepository.getHubName(
+                        dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHubCode());
+                if(hubCodeDesc != null) {
+                    dbConsole.setHubName(hubCodeDesc);
+                }
+            }
             dbConsole.setUpdatedBy(loginUserID);
             dbConsole.setUpdatedOn(new Date());
 
@@ -1127,7 +1630,7 @@ public class ConsoleService {
 
             if (updatedConsole != null) {
                 // Update ConsignmentEntity Table
-                if(updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
                     consoleRepository.updateConsignmentOnConsoleCreate(
                             updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                             updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
@@ -1151,10 +1654,11 @@ public class ConsoleService {
                 // Create Consignment Status Table record with StatusID - 5
                 consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
                         updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
-                        updatedConsole.getPartnerMasterAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), updatedConsole.getHawbType(),
+                        updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
                         updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
                         updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
-                        updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID);
+                        updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill());
 
                 consoleList.add(updatedConsole);
             }
@@ -1174,6 +1678,7 @@ public class ConsoleService {
             IOException, CsvException {
         try {
             if (deleteInputList != null || !deleteInputList.isEmpty()) {
+                log.info("Console List ------------------------->" + deleteInputList);
                 for (ConsoleDeleteInput deleteInput : deleteInputList) {
 
                     Console dbConsole = getConsole(deleteInput.getLanguageId(), deleteInput.getCompanyId(),
@@ -1186,6 +1691,7 @@ public class ConsoleService {
                         dbConsole.setUpdatedOn(new Date());
 
                         consoleRepository.save(dbConsole);
+                        log.info("Delete Console List---------------------------> " + dbConsole);
                     }
                 }
             }
@@ -1273,32 +1779,60 @@ public class ConsoleService {
     }
 
     /**
-     * Find Console
+     * Find Consoles by Pagination
+     *
+     * @param findConsole
+     * @param pageNo
+     * @param pageSize
+     * @param sortBy
+     * @return
+     * @throws Exception
+     */
+    public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
+
+        log.info("given Params for find -- > {}", findConsole);
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+        Page<ReplicaConsole> results = replicaConsoleRepository.findAll(spec, paging);
+        log.info("no of Consoles fetched --> " + results.getSize());
+        return results;
+    }
+
+    /**
+     * Find Consoles - normal
      *
      * @param findConsole
      * @return
      * @throws Exception
      */
-//    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
-//
-//        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
-//        List<ReplicaConsole> results = replicaConsoleRepository.findAll(spec);
-//        log.info("found Consoles --> {}", results);
-//        return results;
-//    }
-    public List<ReplicaConsole> findConsole(FindConsole findConsole) throws Exception {
+    public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
 
         log.info("given Params for find -- > {}", findConsole);
         List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
                 findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
                 findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
-//        log.info("found Consoles --> {}", consoleList);
         return consoleList;
     }
 
+    /**
+     * Mobile Dashboard - Get Consoles Count
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerMasterAirwayBill
+     * @return
+     */
+    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill) {
+
+        MobileDashboard mobileDashboard = new MobileDashboard();
+        long consoleCount = replicaConsoleRepository.getMobileDashboardCount(languageId, companyId, "5", partnerMasterAirwayBill);
+        log.info("consoleCount --> {}", consoleCount);
+        mobileDashboard.setConsoleCount(consoleCount);
+        return mobileDashboard;
+    }
+
     //==========================================Console_ErrorLog================================================
-    private void createConsoleLog(String languageId, String companyId, String partnerId, String
-            masterAirwayBill,
+    private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,
                                   String houseAirwayBill, String consoleId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
@@ -1315,8 +1849,7 @@ public class ConsoleService {
         errorLogRepository.save(errorLog);
     }
 
-    private void createConsoleLog2(List<AddConsole> addConsoleList, String error) throws
-            IOException, CsvException {
+    private void createConsoleLog2(List<AddConsole> addConsoleList, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (AddConsole addConsole : addConsoleList) {
@@ -1337,8 +1870,7 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createConsoleLog3(List<UpdateConsole> updateConsoleList, String error) throws
-            IOException, CsvException {
+    private void createConsoleLog3(List<UpdateConsole> updateConsoleList, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (UpdateConsole updateConsole : updateConsoleList) {
@@ -1360,8 +1892,7 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createConsoleLog4(List<ConsoleDeleteInput> deleteInputList, String error) throws
-            IOException, CsvException {
+    private void createConsoleLog4(List<ConsoleDeleteInput> deleteInputList, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (ConsoleDeleteInput deleteInput : deleteInputList) {
@@ -1389,6 +1920,481 @@ public class ConsoleService {
         List<MobileApp> consoles = replicaConsoleRepository.getMobileApp();
         return consoles;
     }
+
+    public List<Console> getConsole(String consoleId) {
+        List<Console> getConsoleId = consoleRepository.findByConsoleIdAndDeletionIndicator(consoleId, 0L);
+        return getConsoleId;
+    }
+
+
+    // public List<Console> createConsoleList(List<AddConsole> addConsoleList, String loginUserID)
+    //            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+    //        List<Console> createdConsoleList = new ArrayList<>();
+    //
+    //        int consoleCounter = 1;
+    //
+    //        // Separate records where hsCode is null
+    //        List<AddConsole> nullHsCodeList = addConsoleList.stream()
+    //                .filter(console -> console.getHsCode().isEmpty())
+    //                .collect(Collectors.toList());
+    //
+    //        // Create a map to group consignments by hsCode
+    //        Map<String, List<AddConsole>> groupedByHsCode = addConsoleList.stream()
+    //                .filter(console -> !console.getHsCode().isEmpty())
+    //                .collect(Collectors.groupingBy(AddConsole::getHsCode));
+    //
+    //        if (!nullHsCodeList.isEmpty()) {
+    //            List<Console> addConsole = createConsoleNormal(nullHsCodeList, loginUserID);
+    //            for (Console console : addConsole) {
+    //                createdConsoleList.add(console);
+    //            }
+    //        }
+    //
+    //        Map<String, Map<String, List<AddConsole>>> groupedBySpecialApproval = new HashMap<>();
+    //
+    //        for (Map.Entry<String, List<AddConsole>> entry : groupedByHsCode.entrySet()) {
+    //            List<AddConsole> consoleList = entry.getValue();
+    //            String hsCode = entry.getKey();
+    //
+    //            String specialApproval = null;
+    //            for (AddConsole getCompany : consoleList) {
+    //                specialApproval = replicaConsoleRepository.getSpecialApproval(getCompany.getCompanyId(), hsCode);
+    //            }
+    //            if (specialApproval != null) {
+    //                if (specialApproval != null && !specialApproval.isBlank()) {
+    //                    groupedBySpecialApproval
+    //                            .computeIfAbsent(hsCode, k -> new HashMap<>())
+    //                            .computeIfAbsent(specialApproval, k -> new ArrayList<>())
+    //                            .addAll(consoleList);
+    //                }
+    //                for (Map.Entry<String, Map<String, List<AddConsole>>> hsCodeEntry : groupedBySpecialApproval.entrySet()) {
+    //                    Map<String, List<AddConsole>> specialApprovalGroup = hsCodeEntry.getValue();
+    //
+    //                    for (Map.Entry<String, List<AddConsole>> specialApprovalEntry : specialApprovalGroup.entrySet()) {
+    //                        List<AddConsole> consoleEntryList = specialApprovalEntry.getValue();
+    //
+    //
+    //                        String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+    //                        int CONSOLE_NAME = 1;
+    //
+    //                        for (AddConsole console : consoleEntryList) {
+    //
+    //                            Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+    //                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getPartnerMasterAirwayBill(),
+    //                                    console.getPartnerHouseAirwayBill(), console.getPieceId(), 0L);
+    //
+    //                            if (duplicateConsole == null) {
+    //
+    //                                // Pass ConsignmentCurrency
+    //                                IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+    //                                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+    //                                        console.getLanguageId(), console.getCompanyId());
+    //
+    //                                Console newConsole = new Console();
+    //                                BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+    //
+    //                                Double consignmentValue = null;
+    //                                if (console.getConsignmentValue() != null) {
+    //                                    consignmentValue = Double.valueOf(console.getConsignmentValue());
+    //                                }
+    //                                // Set TotalDuty Value
+    //                                double totalDuty = 0;
+    //                                if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
+    //                                    double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+    //                                    if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
+    //                                        totalDuty = toCurrencyValue * consignmentValue;
+    //                                        if (totalDuty > 100) {
+    //                                            totalDuty += totalDuty * 0.05;
+    //                                        }
+    //                                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+    //                                            totalDuty += 4;
+    //                                        }
+    //                                    }
+    //                                }
+    ////                            if (iataData != null && iataData.getIataKd() != null) {
+    ////                                newConsole.setIataKd(iataData.getIataKd());
+    ////                            }
+    //                                if (lAndCDesc != null) {
+    //                                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+    //                                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+    //                                }
+    //
+    //                                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+    //                                        console.getLanguageId(), console.getCompanyId(), "5");
+    //                                if (eventDescOpt.isPresent()) {
+    //                                    IKeyValuePair ikey = eventDescOpt.get();
+    //
+    //                                    newConsole.setHawbType("EVENT");
+    //                                    newConsole.setHawbTypeId("5");
+    //                                    newConsole.setHawbTypeDescription(ikey.getEventText());
+    //                                    newConsole.setHawbTimeStamp(new Date());
+    //                                }
+    //
+    //                                newConsole.setExpectedDuty(String.valueOf(totalDuty));
+    //                                newConsole.setConsoleId(CONSOLE_ID);
+    //                                newConsole.setConsoleName("Console - " + CONSOLE_NAME);
+    //                                newConsole.setDeletionIndicator(0L);
+    //                                newConsole.setCreatedBy(loginUserID);
+    //                                newConsole.setCreatedOn(new Date());
+    //                                newConsole.setUpdatedBy(loginUserID);
+    //                                newConsole.setUpdatedOn(new Date());
+    //
+    //                                // Get Piece
+    //                                List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+    //                                        newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+    //
+    //                                if (piece != null) {
+    //                                    for (String pieceId : piece) {
+    //
+    //                                        newConsole.setPieceId(pieceId);
+    //
+    //                                        if (eventDescOpt.isPresent()) {
+    //                                            IKeyValuePair ikey = eventDescOpt.get();
+    //
+    //                                            newConsole.setPieceType("EVENT");
+    //                                            newConsole.setPieceTypeId("5");
+    //                                            newConsole.setPieceTypeDescription(ikey.getEventText());
+    //                                            newConsole.setPieceTimeStamp(new Date());
+    //                                        }
+    //
+    //                                        Console createdConsole = consoleRepository.save(newConsole);
+    //
+    //                                        if (createdConsole != null) {
+    //                                            // Save ConsignmentStatus
+    //                                            consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+    //                                                    createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+    //                                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+    //                                                    createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+    //                                                    createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+    //                                                    createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+    //                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+    //
+    //                                            // Update ConsignmentEntity Table
+    //                                            consoleRepository.updateConsignmentOnConsoleCreate(
+    //                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    //                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+    //
+    //                                            // Update PreAlert Table
+    //                                            consoleRepository.updatePreAlertOnConsoleCreate(
+    //                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    //                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+    //                                                    createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+    //
+    //                                            log.info("Console Created <-----------------------> Consignment Status Insert and Console_Indicator Updated");
+    //                                        }
+    //                                        createdConsoleList.add(createdConsole);
+    //                                    }
+    //                                } else {
+    //                                    log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+    //                                            " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+    //                                            " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
+    //
+    //                                }
+    //                            } else {
+    //                                createdConsoleList.add(duplicateConsole);
+    //                            }
+    //                        }
+    //                        CONSOLE_NAME++;
+    //                    }
+    //                }
+    //            } else {
+    //                // Further group the consignments into smaller groups of up to 6 records each
+    //                List<List<AddConsole>> smallerGroups = new ArrayList<>();
+    //                for (int i = 0; i < consoleList.size(); i += 99) {
+    //                    List<AddConsole> subList = consoleList.subList(i, Math.min(i + 99, consoleList.size()));
+    //                    smallerGroups.add(subList);
+    //                }
+    //
+    //                // Process each smaller group
+    //                for (List<AddConsole> smallerGroup : smallerGroups) {
+    //                    List<List<AddConsole>> subGroups = new ArrayList<>();
+    //                    List<AddConsole> currentSubGroup = new ArrayList<>();
+    //                    Double currentSubGroupValue = 0.0;
+    //
+    //                    for (AddConsole console : smallerGroup) {
+    //                        Double consignmentValue = null;
+    //
+    //                        IKeyValuePair iKeyValue = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+    //
+    //                        Double toCurrencyValue = 0.0;
+    //                        if (iKeyValue != null && iKeyValue.getCurrencyValue() != null) {
+    //                            toCurrencyValue = Double.parseDouble(iKeyValue.getCurrencyValue());
+    //                        }
+    //                        Double totalDuty = 0.0;
+    //                        if (console.getConsignmentValue() != null) {
+    //                            consignmentValue = Double.parseDouble(console.getConsignmentValue());
+    //                            totalDuty = toCurrencyValue * consignmentValue;
+    //                        }
+    //                        if (totalDuty > 100) {
+    //                            totalDuty += totalDuty * 0.05;
+    //                        }
+    //                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+    //                            totalDuty += 4;
+    //                        }
+    //
+    ////                        IKeyValuePair iataValue = ccrRepository.getIataKd(console.getCountryOfOrigin(), console.getLanguageId(), console.getCompanyId());
+    //                        Double iataKd = 0.0;
+    //                        if (console.getIata() != null) {
+    //                            iataKd = Double.valueOf(console.getIata());
+    //                        }
+    //                        Double recordValue = iataKd + totalDuty;
+    //
+    //                        if (currentSubGroupValue + recordValue > 5000) {
+    //                            subGroups.add(currentSubGroup);
+    //                            currentSubGroup = new ArrayList<>();
+    //                            currentSubGroupValue = 0.0;
+    //                        }
+    //
+    //                        currentSubGroup.add(console);
+    //                        currentSubGroupValue += recordValue;
+    //                    }
+    //
+    //                    if (!currentSubGroup.isEmpty()) {
+    //                        subGroups.add(currentSubGroup);
+    //                    }
+    //
+    //                    // Process each subgroup
+    //                    for (List<AddConsole> subGroup : subGroups) {
+    //                        // Generate a new CONSOLE_ID for each subgroup
+    //
+    //                        String SUB_CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+    //                        Long SUB_CONSOLE_NAME = 1L;
+    //
+    //                        for (AddConsole console : subGroup) {
+    //                            // Duplicate Check
+    //                            Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+    //                                    console.getLanguageId(), console.getCompanyId(), console.getPartnerId(), console.getPartnerMasterAirwayBill(), console.getPartnerHouseAirwayBill(), console.getPieceId(), 0L);
+    //
+    //                            if (duplicateConsole == null) {
+    //
+    //                                // Pass ConsignmentCurrency
+    //                                IKeyValuePair iKeyValuePair = replicaBondedManifestRepository.getToCurrencyValue(console.getCompanyId(), console.getConsignmentCurrency());
+    //
+    //                                Console newConsole = new Console();
+    //                                BeanUtils.copyProperties(console, newConsole, CommonUtils.getNullPropertyNames(console));
+    //
+    //                                IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(console.getLanguageId(), console.getCompanyId());
+    //
+    //                                if (lAndCDesc != null) {
+    //                                    newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+    //                                    newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+    //                                }
+    //                                Double consignmentValue = null;
+    //                                if (console.getConsignmentValue() != null) {
+    //                                    consignmentValue = Double.valueOf(console.getConsignmentValue());
+    //                                }
+    //                                // Set TotalDuty Value
+    //                                double totalDuty = 0;
+    //                                if (iKeyValuePair != null && iKeyValuePair.getCurrencyValue() != null) {
+    //                                    double toCurrencyValue = Double.parseDouble(iKeyValuePair.getCurrencyValue());
+    //                                    if (toCurrencyValue != 0 && consignmentValue != 0 && consignmentValue != null) {
+    //                                        totalDuty = toCurrencyValue * consignmentValue;
+    //                                        if (totalDuty > 100) {
+    //                                            totalDuty += totalDuty * 0.05;
+    //                                        }
+    //                                        if (console.getIncoTerms() != null && console.getIncoTerms().equalsIgnoreCase("DDU")) {
+    //                                            totalDuty += 4;
+    //                                        }
+    //                                    }
+    //                                }
+    //
+    //                                Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+    //                                        console.getLanguageId(), console.getCompanyId(), "5");
+    //                                if (eventDescOpt.isPresent()) {
+    //                                    IKeyValuePair ikey = eventDescOpt.get();
+    //
+    //                                    newConsole.setHawbType("EVENT");
+    //                                    newConsole.setHawbTypeId("5");
+    //                                    newConsole.setHawbTypeDescription(ikey.getEventText());
+    //                                    newConsole.setHawbTimeStamp(new Date());
+    //                                }
+    //
+    //                                newConsole.setExpectedDuty(String.valueOf(totalDuty));
+    ////                            newConsole.setCustomsValue(CUS_VAL);
+    //                                newConsole.setConsoleId(SUB_CONSOLE_ID);
+    //                                newConsole.setConsoleName("Console - " + SUB_CONSOLE_NAME);
+    //                                newConsole.setDeletionIndicator(0L);
+    //                                newConsole.setCreatedBy(loginUserID);
+    //                                newConsole.setCreatedOn(new Date());
+    //                                newConsole.setUpdatedBy(loginUserID);
+    //                                newConsole.setUpdatedOn(new Date());
+    //
+    //                                // Get Piece
+    //                                List<String> piece = replicaPieceDetailsRepository.getPieceId(newConsole.getLanguageId(), newConsole.getCompanyId(),
+    //                                        newConsole.getPartnerId(), newConsole.getPartnerHouseAirwayBill(), newConsole.getPartnerMasterAirwayBill());
+    //
+    //                                if (piece != null) {
+    //                                    for (String pieceId : piece) {
+    //                                        newConsole.setPieceId(pieceId);
+    //                                        Console createdConsole = consoleRepository.save(newConsole);
+    //
+    //                                        if (eventDescOpt.isPresent()) {
+    //                                            IKeyValuePair ikey = eventDescOpt.get();
+    //
+    //                                            newConsole.setPieceType("EVENT");
+    //                                            newConsole.setPieceTypeId("5");
+    //                                            newConsole.setPieceTypeDescription(ikey.getEventText());
+    //                                            newConsole.setPieceTimeStamp(new Date());
+    //                                        }
+    //
+    //                                        if (createdConsole != null) {
+    //                                            // Save ConsignmentStatus
+    //                                            consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+    //                                                    createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+    //                                                    createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+    //                                                    createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+    //                                                    createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+    //                                                    createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+    //                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+    //
+    //                                            // Update ConsignmentEntity Table
+    //                                            consoleRepository.updateConsignmentOnConsoleCreate(
+    //                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    //                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+    //
+    //                                            // Update PreAlert Table
+    //                                            consoleRepository.updatePreAlertOnConsoleCreate(
+    //                                                    createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    //                                                    createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+    //                                                    createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+    //
+    //                                            // Update PieceDetails Table
+    ////                                        consoleRepository.updatePieceDetailsOnConsoleCreate(
+    ////                                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    ////                                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+    ////                                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
+    ////                                                createdConsole.getPieceId());
+    //
+    //                                            log.info("Console Created<----------------------->Consignment Event Updated");
+    //                                        }
+    //                                        createdConsoleList.add(createdConsole);
+    //                                    }
+    //                                } else {
+    //                                    log.info("Piece Not Available in the CompanyId " + newConsole.getCompanyId() + " LanguageId " + newConsole.getConsoleId() +
+    //                                            " PartnerId " + newConsole.getPartnerId() + " PartnerHouseAirwayBill " + newConsole.getPartnerMasterAirwayBill() +
+    //                                            " PartnerMasterAirwayBill " + newConsole.getPartnerMasterAirwayBill() + " Doesn't exist");
+    //                                }
+    //
+    //                            } else {
+    //                                createdConsoleList.add(duplicateConsole);
+    //                            }
+    //                        }
+    //                        SUB_CONSOLE_NAME ++;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        return createdConsoleList;
+    //    }
+    //
+    //
+    //    /**
+    //     * Create Console
+    //     *
+    //     * @param addConsoleList
+    //     * @param loginUserID
+    //     * @return
+    //     * @throws IllegalAccessException
+    //     * @throws InvocationTargetException
+    //     * @throws IOException
+    //     * @throws CsvException
+    //     */
+    //    @Transactional
+    //    public List<Console> createConsoleNormal(List<AddConsole> addConsoleList, String loginUserID)
+    //            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+    //        try {
+    //            List<Console> createdConsoleList = new ArrayList<>();
+    //
+    //            String CONSOLE_ID = numberRangeService.getNextNumberRange("CONSOLEID");
+    //            log.info("next Value from NumberRange for CONSOLE_ID : " + CONSOLE_ID);
+    //            for (AddConsole addConsole : addConsoleList) {
+    //
+    //                Console duplicateConsole = replicaConsoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+    //                        addConsole.getLanguageId(), addConsole.getCompanyId(), addConsole.getPartnerId(), addConsole.getPartnerMasterAirwayBill(), addConsole.getPartnerHouseAirwayBill(),
+    //                        addConsole.getPieceId(), 0L);
+    //                if (duplicateConsole == null) {
+    //
+    //                    Console newConsole = new Console();
+    //                    BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
+    //
+    //                    Optional<IKeyValuePair> eventDescOpt = consignmentEntityRepository.getEventText(
+    //                            addConsole.getLanguageId(), addConsole.getCompanyId(), "5");
+    //                    if (eventDescOpt.isPresent()) {
+    //                        IKeyValuePair ikey = eventDescOpt.get();
+    //
+    //                        newConsole.setHawbType("EVENT");
+    //                        newConsole.setHawbTypeId("5");
+    //                        newConsole.setHawbTypeDescription(ikey.getEventText());
+    //                        newConsole.setHawbTimeStamp(new Date());
+    //
+    //                        newConsole.setPieceType("EVENT");
+    //                        newConsole.setPieceTypeId("5");
+    //                        newConsole.setPieceTypeDescription(ikey.getEventText());
+    //                        newConsole.setPieceTimeStamp(new Date());
+    //                    }
+    //
+    //                    IKeyValuePair lAndCDesc = consoleRepository.getLAndCDescription(
+    //                            addConsole.getLanguageId(), addConsole.getCompanyId());
+    //
+    //                    if (lAndCDesc != null) {
+    //                        newConsole.setLanguageDescription(lAndCDesc.getLangDesc());
+    //                        newConsole.setCompanyName(lAndCDesc.getCompanyDesc());
+    //                    }
+    //                    newConsole.setConsoleId(CONSOLE_ID);
+    //                    newConsole.setConsoleName("Console - " + );
+    //                    newConsole.setDeletionIndicator(0L);
+    //                    newConsole.setCreatedBy(loginUserID);
+    //                    newConsole.setCreatedOn(new Date());
+    //                    newConsole.setUpdatedBy(loginUserID);
+    //                    newConsole.setUpdatedOn(new Date());
+    //
+    //                    CONSOLE_NAME ++;
+    //
+    //                    Console createdConsole = consoleRepository.save(newConsole);
+    //
+    //                    if (createdConsole != null) {
+    //                        // Save ConsignmentStatus
+    //                        consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
+    //                                createdConsole.getCompanyId(), createdConsole.getCompanyName(), createdConsole.getPieceId(),
+    //                                createdConsole.getMasterAirwayBill(), createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(),
+    //                                createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
+    //                                createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
+    //                                createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
+    //                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+    //
+    //                        // Update ConsignmentEntity Table
+    //                        consoleRepository.updateConsignmentOnConsoleCreate(
+    //                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    //                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill());
+    //
+    //                        // Update PreAlert Table
+    //                        consoleRepository.updatePreAlertOnConsoleCreate(
+    //                                createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    //                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+    //                                createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType());
+    //
+    //                        // Update PieceDetails Table
+    ////                    consoleRepository.updatePieceDetailsOnConsoleCreate(
+    ////                            createdConsole.getLanguageId(), createdConsole.getCompanyId(), createdConsole.getPartnerId(),
+    ////                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(),
+    ////                            createdConsole.getHawbTypeDescription(), createdConsole.getHawbTypeId(), createdConsole.getHawbType(),
+    ////                            createdConsole.getPieceId());
+    //
+    //                        log.info("Console Created<----------------------->Consignment Status Created");
+    //                    }
+    //                    createdConsoleList.add(createdConsole);
+    //                } else {
+    //                    createdConsoleList.add(duplicateConsole);
+    //                }
+    //            }
+    //            return createdConsoleList;
+    //        } catch (Exception e) {
+    //            // Error Log
+    //            createConsoleLog2(addConsoleList, e.toString());
+    //            e.printStackTrace();
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
 
 }
 

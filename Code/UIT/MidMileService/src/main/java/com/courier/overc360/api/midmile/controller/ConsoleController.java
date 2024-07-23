@@ -12,6 +12,7 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -81,7 +82,7 @@ public class ConsoleController {
     @ApiOperation(response = Console.class, value = "Update Console For Mobile App") // label for Swagger
     @PatchMapping("/update/list/mobile")
     public ResponseEntity<?> patchConsoleForMobileApp(@Valid @RequestBody List<UpdateConsole> updateConsoleList,
-                                          @RequestParam String loginUserID)
+                                                      @RequestParam String loginUserID)
             throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
         List<Console> console = consoleService.updateConsoleForMobileApp(updateConsoleList, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
@@ -91,7 +92,7 @@ public class ConsoleController {
     @ApiOperation(response = Console.class, value = "Update Console")
     @PatchMapping("/update/list/normal")
     public ResponseEntity<?> patchConsoleList(@Valid @RequestBody List<UpdateConsole> updateConsoleList, @RequestParam String loginUserID) {
-       List<Console> dbConsole =  consoleService.updateConsoleList(updateConsoleList, loginUserID);
+        List<Console> dbConsole = consoleService.updateConsoleList(updateConsoleList, loginUserID);
         return new ResponseEntity<>(dbConsole, HttpStatus.OK);
     }
 
@@ -134,11 +135,22 @@ public class ConsoleController {
     }
 
 
-    // Find Console
+    // Find Console - normal
     @ApiOperation(response = ReplicaConsole.class, value = "Find Console") // label for swagger
     @PostMapping("/findConsole")
-    public ResponseEntity<?> findConsole(@Valid @RequestBody FindConsole findConsole) throws Exception {
-        List<ReplicaConsole> consoleList = consoleService.findConsole(findConsole);
+    public ResponseEntity<?> fetchConsoles(@Valid @RequestBody FindConsole findConsole) throws Exception {
+        List<ReplicaConsole> consoleList = consoleService.findConsoles(findConsole);
+        return new ResponseEntity<>(consoleList, HttpStatus.OK);
+    }
+
+    // Find Console
+    @ApiOperation(response = ReplicaConsole.class, value = "Find Consoles by Pagination") // label for swagger
+    @PostMapping("/findConsole/pagination")
+    public ResponseEntity<?> findConsolesByPagination(@Valid @RequestBody FindConsole findConsole,
+                                                      @RequestParam(defaultValue = "0") Integer pageNo,
+                                                      @RequestParam(defaultValue = "10") Integer pageSize,
+                                                      @RequestParam(defaultValue = "consoleId") String sortBy) throws Exception {
+        Page<ReplicaConsole> consoleList = consoleService.findConsolesByPagination(findConsole, pageNo, pageSize, sortBy);
         return new ResponseEntity<>(consoleList, HttpStatus.OK);
     }
 
@@ -156,7 +168,14 @@ public class ConsoleController {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
+
+    // GET MobileDashboard - Console count
+    @ApiOperation(response = MobileDashboard.class, value = "Get Mobile Dashboard Count") // label for swagger
+    @GetMapping("/mobileDashboard/get")
+    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
+                                                @RequestParam String partnerMasterAirwayBill) throws Exception {
+        MobileDashboard consolesCount = consoleService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill);
+        return new ResponseEntity<>(consolesCount, HttpStatus.OK);
+    }
+
 }
-
-
-

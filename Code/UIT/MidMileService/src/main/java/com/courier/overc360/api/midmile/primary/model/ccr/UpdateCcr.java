@@ -24,9 +24,9 @@ public class UpdateCcr {
     @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
-//    private String houseAirwayBill;
+    private String houseAirwayBill;
 
-//    private String masterAirwayBill;
+    private String masterAirwayBill;
 
     private String customsCcrNo;
 
@@ -203,6 +203,10 @@ public class UpdateCcr {
     private String consignmentLocalId;
 
     private Long deletionIndicator = 0L;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private String referenceField1;
 

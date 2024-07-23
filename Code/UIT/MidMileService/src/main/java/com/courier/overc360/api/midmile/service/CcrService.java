@@ -64,6 +64,9 @@ public class CcrService {
 
     @Autowired
     ConsoleRepository consoleRepository;
+
+    @Autowired
+    ConsoleService consoleService;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -114,7 +117,7 @@ public class CcrService {
                     + ", partnerId - " + partnerId + ", masterAirwayBill - " + partnerMasterAirwayBill + ", houseAirwayBill - "
                     + partnerHouseAirwayBill + " , consoleId - " + consoleId + ", and ccrId - " + ccrId + ", and pieceId - " + pieceId + " doesn't exists";
             // Error Log
-            createCcrLog1(languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId,  errMsg);
+            createCcrLog1(languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbCcr.get();
@@ -134,61 +137,43 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                Ccr duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
                         addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(), addCcr.getPieceId(), 0L);
-                if (duplicateConsole.isPresent()) {
+                if (duplicateConsole == null) {
+
+                    Double customsValue = null;
+                    if (addCcr.getCustomsValue() != null) {
+                        customsValue = Double.valueOf(addCcr.getCustomsValue());
+                    }
+                    Ccr newCcr = new Ccr();
+                    BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
+
+                    if (customsValue != null && customsValue < 100) {
+                        newCcr.setIsExempted("yes");
+                        newCcr.setExemptionFor("Regulation 94-2020");
+                        newCcr.setExemptionBeneficiary("others");
+                        newCcr.setExemptionReference("99");
+                    } else {
+                        newCcr.setIsExempted("No");
+                    }
+                    newCcr.setCcrId(CCR_ID);
+
+
+                    newCcr.setDeletionIndicator(0L);
+                    newCcr.setCreatedBy(loginUserID);
+                    newCcr.setCreatedOn(new Date());
+                    newCcr.setUpdatedBy(loginUserID);
+                    newCcr.setUpdatedOn(new Date());
+
+                    Ccr createdCcr = ccrRepository.save(newCcr);
+
+                    createdCcrList.add(createdCcr);
+                } else {
+                    createdCcrList.add(duplicateConsole);
                     log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
                             " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
                             " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
-                    continue;
                 }
-
-                Double customsValue = null;
-                if (addCcr.getCustomsValue() != null) {
-                    customsValue = Double.valueOf(addCcr.getCustomsValue());
-                }
-                Ccr newCcr = new Ccr();
-                BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
-
-                if (customsValue != null && customsValue < 100) {
-                    newCcr.setIsExempted("yes");
-                    newCcr.setExemptionFor("Regulation 94-2020");
-                    newCcr.setExemptionBeneficiary("others");
-                    newCcr.setExemptionReference("99");
-                } else {
-                    newCcr.setIsExempted("No");
-                }
-                newCcr.setCcrId(CCR_ID);
-
-
-                newCcr.setDeletionIndicator(0L);
-                newCcr.setCreatedBy(loginUserID);
-                newCcr.setCreatedOn(new Date());
-                newCcr.setUpdatedBy(loginUserID);
-                newCcr.setUpdatedOn(new Date());
-
-                Ccr createdCcr = ccrRepository.save(newCcr);
-
-//                if (createdCcr != null) {
-//                    ccrRepository.updateEventCodeFromConsignment(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
-//                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getEventCode(), createdCcr.getEventText(),
-//                            createdCcr.getStatusId(), createdCcr.getStatusText());
-//                    log.info("CCR Created <-----------------------> Consignment Event Updated");
-//
-//                    //Console Update
-//                    consoleRepository.consoleUpdateBasedOnCCRUpdate(createdCcr.getCompanyId(), createdCcr.getLanguageId(), createdCcr.getPartnerId(),
-//                            createdCcr.getHouseAirwayBill(), createdCcr.getMasterAirwayBill(), createdCcr.getStatusId(), createdCcr.getEventCode(),
-//                            createdCcr.getStatusText(), createdCcr.getEventText(), createdCcr.getConsoleId());
-//                    log.info("CCR Created <---------------------------> Console Event Updated");
-//
-//                    // Save ConsignmentStatus
-//                    consignmentStatusService.createConsignmentStatusParams(createdCcr.getCompanyId(), createdCcr.getCompanyName(),
-//                            createdCcr.getLanguageId(), createdCcr.getLanguageDescription(), createdCcr.getPieceId(), createdCcr.getStatusId(),
-//                            createdCcr.getMasterAirwayBill(), createdCcr.getHouseAirwayBill(), createdCcr.getStatusText(), createdCcr.getStatusId(),
-//                            createdCcr.getStatusText(), createdCcr.getEventCode(), createdCcr.getEventText(), createdCcr.getEventCode(),
-//                            createdCcr.getEventText(), createdCcr.getEventTimestamp(), createdCcr.getEventTimestamp(), createdCcr.getStatusTimestamp(), loginUserID);
-//                }
-                createdCcrList.add(createdCcr);
             }
             return createdCcrList;
         } catch (Exception e) {
@@ -333,7 +318,6 @@ public class CcrService {
                 BeanUtils.copyProperties(updateCcr, dbCcr, CommonUtils.getNullPropertyNames(updateCcr));
                 dbCcr.setUpdatedBy(loginUserID);
                 dbCcr.setUpdatedOn(new Date());
-
 
 
                 Ccr updatedCcr = ccrRepository.save(dbCcr);
@@ -685,6 +669,58 @@ public class CcrService {
 
                             Ccr updatedCcr = ccrRepository.save(dbCcr);
                             updatedCcrList.add(updatedCcr);
+                        }
+
+                        List<Console> dbConsoleList = consoleService.getConsole(dbCcr.getConsoleId());
+
+                        for (Console console : dbConsoleList) {
+                            String consoleConsignmentValue = null;
+                            String dbConsoleConsignmentValue = null;
+                            boolean consolePass = false;
+                            if (updateCcr.getConsignmentValue() != null) {
+                                if (updateCcr.getConsignmentValue().contains(".")) {
+                                    String ccv = updateCcr.getConsignmentValue();
+                                    String ccv1 = null;
+                                    if ((ccv.substring(ccv.indexOf("."), ccv.length()).length() > 4)) {
+                                        ccv1 = ccv.substring(0, ccv.indexOf(".") + 4);
+                                    } else {
+                                        ccv1 = ccv;
+                                    }
+                                    DecimalFormat decimalFormat = new DecimalFormat("0.#####");
+                                    consoleConsignmentValue = decimalFormat.format(Double.valueOf(ccv1));
+                                } else {
+                                    consoleConsignmentValue = updateCcr.getConsignmentValue();
+                                }
+                            }
+                            if (console.getConsignmentValue() != null) {
+                                if (console.getConsignmentValue().contains(".")) {
+                                    String dbcv = console.getConsignmentValue();
+                                    String dbcv1 = null;
+                                    if ((dbcv.substring(dbcv.indexOf("."), dbcv.length()).length() > 4)) {
+                                        dbcv1 = dbcv.substring(0, dbcv.indexOf(".") + 4);
+                                    } else {
+                                        dbcv1 = dbcv;
+                                    }
+                                    DecimalFormat decimalFormat = new DecimalFormat("0.#####");
+                                    dbConsoleConsignmentValue = decimalFormat.format(Double.valueOf(dbcv1));
+                                } else {
+                                    dbConsoleConsignmentValue = console.getConsignmentValue();
+                                }
+                            }
+                            if (consoleConsignmentValue != null && dbConsoleConsignmentValue != null) {
+                                consolePass = consoleConsignmentValue.equalsIgnoreCase(dbConsoleConsignmentValue);
+                            }
+                            if (console.getHsCode().equalsIgnoreCase(updateCcr.getHsCode()) && consolePass) {
+                                log.info("Updating CONSOLE from Pdf: " + updateCcr);
+                                console.setCustomsCcrNo(updateCcr.getCustomsCcrNo());
+                                console.setPrimaryDo(updateCcr.getPrimaryDo());
+                                console.setCustomsKd(updateCcr.getCustomsKd());
+                                console.setTotalDuty(updateCcr.getTotalDuty());
+                                console.setUpdatedBy("Bayan");
+                                console.setUpdatedOn(new Date());
+
+                                consoleRepository.save(console);
+                            }
                         }
                     }
                 }

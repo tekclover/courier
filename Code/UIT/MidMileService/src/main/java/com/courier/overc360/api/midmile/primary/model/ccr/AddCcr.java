@@ -25,8 +25,8 @@ public class AddCcr {
     @NotBlank(message = "Partner House Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
-//    private String masterAirwayBill;
-//    private String houseAirwayBill;
+    private String masterAirwayBill;
+    private String houseAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
@@ -202,6 +202,10 @@ public class AddCcr {
     private String consignmentLocalId;
 
     private Long deletionIndicator = 0L;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private String referenceField1;
 

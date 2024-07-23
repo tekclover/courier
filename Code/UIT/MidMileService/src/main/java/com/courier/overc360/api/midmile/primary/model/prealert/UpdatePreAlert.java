@@ -27,6 +27,8 @@ public class UpdatePreAlert {
     @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
+    private String houseAirwayBill;
+
     private String totalWeight;
 
     private String flightNo;

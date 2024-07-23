@@ -94,6 +94,8 @@ public class PreAlert {
 
     private String consignmentLocalId;
 
+    private String houseAirwayBill;
+
     private String referenceField1;
 
     private String referenceField2;
