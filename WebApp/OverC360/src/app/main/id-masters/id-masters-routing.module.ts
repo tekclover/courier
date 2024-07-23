@@ -56,6 +56,8 @@ import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/r
 import { RateParameterComponent } from './rate-parameter/rate-parameter.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
+import { StatusEventComponent } from './status-event/status-event.component';
+import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
 
 const routes: Routes = [
 
@@ -115,6 +117,9 @@ const routes: Routes = [
 
   { path: 'userrole', component: UserRoleComponent, data: { title: 'Master', module: 'UserRole' } },
   { path: 'userrole-new/:code', component: UserRoleNewComponent, data: { title: 'Master', module: 'UserRole - Add New' } },
+  
+  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Setup', module: 'StatusEvent' } },
+  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Setup', module: 'StatusEvent - Add New' } },
 
 ];
 

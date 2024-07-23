@@ -61,6 +61,8 @@ import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/r
 import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
 import { SubProductsValuesComponent } from './sub-product/sub-products-values/sub-products-values.component';
 import { ProductValueComponent } from './product/product-value/product-value.component';
+import { StatusEventComponent } from './status-event/status-event.component';
+import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
 
 
 @NgModule({
@@ -107,6 +109,8 @@ import { ProductValueComponent } from './product/product-value/product-value.com
     UserRoleNewComponent,
     SubProductsValuesComponent,
     ProductValueComponent,
+    StatusEventComponent,
+    StatusEventNewComponent,
   ],
   imports: [
     CommonModule,
