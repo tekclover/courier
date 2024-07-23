@@ -364,6 +364,9 @@ public class ReplicaConsole {
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
     private String consignmentLocalId;
 
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
 

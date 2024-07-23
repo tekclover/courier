@@ -229,6 +229,8 @@ public class UpdateConsole {
 
     private String exemptionReference;
 
+    private String hubName;
+
     private Long deletionIndicator;
 
     private String referenceField1;
