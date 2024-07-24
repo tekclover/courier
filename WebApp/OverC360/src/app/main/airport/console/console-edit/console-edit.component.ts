@@ -393,7 +393,7 @@ export class ConsoleEditComponent {
           key: 'br',
           detail: res[0].partnerHouseAirwayBill + ' has been created successfully',
         });
-        this.downloadExcelWB1(res);
+        this.downloadCCR(res);
         //this.router.navigate(['/main/airport/console']);
       },
       error: (err) => {
@@ -456,167 +456,14 @@ export class ConsoleEditComponent {
   invoices: any[] = [];
   invoiceItems: any[] = [];
 
-  downloadExcelWB(res:any) {
-    this.consoleManifest = [
-      { field: 'partnerHouseAirwayBill', header: 'AWB' },
-      { field: 'airportOriginCode', header: 'Origin' },
-      { field: 'countryOfOrigin', header: 'Origin Code' },
-      { field: 'shipperName', header: 'Shipper' },
-      { field: 'grossWeight', header: 'WT KG' },
-      { field: 'noOfPieces', header: 'PCS' },
-      { field: 'description', header: 'Description' },
-      { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'currency  ', header: 'Currency' },
-      { field: 'consignmentValue', header: 'Value' },
-      { field: 'consignmentValueLocal', header: 'Customs KD' },
-      { field: 'iata', header: 'Iata KD' },
-      { field: 'hsCode', header: 'HS Code' },
-    ];
-
-    this.invoices = [
-      { field: 'partnerHouseAirwayBill', header: 'Airway Bill No' },
-      { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'consigneeCivilId', header: 'Consignee Civil ID' },
-      { field: 'invoiceNumber', header: 'Invoice Number' },
-      { field: 'invoiceDate', header: 'Invoice Date' },
-      { field: 'invoiceType', header: 'Invoice Type' },
-      { field: 'currency', header: 'Currency' },
-      { field: 'invoiceSupplierName', header: 'Invoice Supplier Name' },
-      { field: 'consignmentLocalId', header: 'Freight Currency' },
-      { field: 'freightCharges', header: 'Freight Charges' },
-      { field: 'countryOfOrigin', header: 'Country Of Supply' },
-    ];
-
-    this.invoiceItems = [
-      { field: 'partnerHouseAirwayBill', header: 'BillNumber' },
-      { field: 'invoiceNumber', header: 'InvoiceNumber' },
-      { field: 'hsCode', header: 'HSCode' },
-      { field: 'goodsDescription', header: 'GoodsDescription' },
-      { field: 'countryOfOrigin', header: 'Country Of Origin' },
-      { field: 'manufacturer', header: 'Manufacturer' },
-      { field: 'noOfPieceHawb', header: 'No Of Packages' },
-      { field: 'consignmentValue', header: 'Item Total Price' },
-      { field: 'packageType', header: 'Package Type' },
-      { field: 'quantity', header: 'Quantity' },
-      { field: 'netWeight', header: 'Net Weight' },
-      { field: 'grossWeight', header: 'Gross Weight' },
-      { field: 'isExempted', header: 'Is Exempted' },
-      { field: 'exemptionFor', header: 'Exemption For' },
-      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
-      { field: 'exemptionReference', header: 'Exemption Reference' },
-    ];
-
-    const groupedByConsoleId = this.groupBy(res, 'consoleId');
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    let index = 0;
-    for (const consoleId in groupedByConsoleId) {
-      if (groupedByConsoleId.hasOwnProperty(consoleId)) {
-        const consoleData = groupedByConsoleId[consoleId];
-        // New row to be added before console data
-        const newRow = {
-          '#': '',
-          'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
-          'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
-          'Origin Code': '',
-          'Shipper': '',
-          'WT KG': '',
-          'PCS': '',
-          'Description': consoleId,
-          'Consignee Name': consoleData[0].partnerMasterAirwayBill,
-          'Currency': '',
-          'Value': 'Date',
-          'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
-          'IATA KD': '',
-          'HS Code': '',
-          'Console ID': '' // Include the console ID in the new row
-        };
-
-        const consoleSheetData: any[] = [];
-
-        // Add new row (newRow) as the first row
-        consoleSheetData.push(Object.values(newRow).map(String));
-
-        // Add headers from cols as the second row
-        consoleSheetData.push(this.consoleManifest.map(col => col.header));
-
-        // Map console data and convert to array of values
-        const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
-          const exportItem: any = {};
-          this.consoleManifest.forEach(col => {
-            // if (col.format == 'date') {
-            //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-            // } else {
-            //   exportItem[col.header] = item[col.field];
-            // }
-            if (col.format == 'number') {
-              exportItem[col.header] = index + 1;
-            } else {
-              exportItem[col.header] = item[col.field];
-            }
-          });
-          return Object.values(exportItem).map(String);
-        });
-
-        // Add console data rows after headers
-        consoleSheetData.push(...consoleRows);
-
-        const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
-        XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${index + 1}`);
-
-        const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
-
-        for (const ccrId in groupedByCcrId) {
-          if (groupedByCcrId.hasOwnProperty(ccrId)) {
-            const ccrData = groupedByCcrId[ccrId];
-
-            const invoicesData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
-              const exportItem: any = {};
-              this.invoices.forEach(col => {
-                if (col.format == 'date') {
-                  exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-                } else {
-                  exportItem[col.header] = item[col.field];
-                }
-              });
-              return exportItem;
-            });
-            const invoiceSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoicesData);
-            XLSX.utils.book_append_sheet(wb, invoiceSheet, `INVOICES-${index + 1}`);
-
-            const invoiceItemsData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
-              const exportItem: any = {};
-              this.invoiceItems.forEach(col => {
-                if (col.format && col.format == 'date') {
-                  exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-                } else {
-                  exportItem[col.header] = item[col.field];
-                }
-              });
-              return exportItem;
-            });
-            const invoiceItemSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoiceItemsData);
-            XLSX.utils.book_append_sheet(wb, invoiceItemSheet, `INVOICEITEM-${index + 1}`);
-          }
-        }
-      }
-      index++;
-    }
-    XLSX.writeFile(
-      wb,
-      `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
-    );
-  }
-
-
   downloadConsole() {
-
     if (this.selectedConsole.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
-      return
+      return;
     }
-    
+  
     const cols = [
-      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
+      { field: 'partnerMasterAirwayBill', header: '#' },
       { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
@@ -633,11 +480,36 @@ export class ConsoleEditComponent {
     ];
   
         const groupedByConsoleId = this.groupBy(this.selectedConsole, 'consoleId');
-        const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        let index = 0;
+  
+        const workbook = new ExcelJS.Workbook();
+        const currentDate = new Date();
+        const worksheetPromises = [];
+  
         for (const consoleId in groupedByConsoleId) {
           if (groupedByConsoleId.hasOwnProperty(consoleId)) {
             const consoleData = groupedByConsoleId[consoleId];
+  
+            const worksheet = workbook.addWorksheet(`CONSOLE-${consoleId}`);
+  
+            // Add image to worksheet (assuming iwExpressLogo.headerLogo is your base64 image)
+            const base64Image1 = iwExpressLogo.headerLogo;
+            const logoId = workbook.addImage({
+              base64: base64Image1,
+              extension: 'png',
+            });
+            worksheet.addImage(logoId, {
+              tl: { col: 4, row: 0 }, // Top-left position
+              ext: { width: 350, height: 100 }, // Width and height
+            });
+  
+            // Skip 5 rows before adding headers and data
+            for (let i = 0; i < 4; i++) {
+              worksheet.addRow([]); // Add empty rows to skip
+            }
+  
+            // Add headers
+            
+  
             // New row to be added before console data
             const newRow = {
               '#': '',
@@ -651,52 +523,52 @@ export class ConsoleEditComponent {
               'Consignee Name': consoleData[0].partnerMasterAirwayBill,
               'Currency': '',
               'Value': 'Date',
-              'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
+              'Customs KD': this.datePipe.transform(currentDate, 'dd-MM-yyyy'),
               'IATA KD': '',
               'HS Code': '',
-              'Console ID': '' // Include the console ID in the new row
             };
   
-            const consoleSheetData: any[] = [];
+            worksheet.addRow(Object.values(newRow));
+
+            worksheet.addRow(Object.values(cols.map(col => col.header)));
   
-            // Add new row (newRow) as the first row
-            consoleSheetData.push(Object.values(newRow).map(String));
-  
-            // Add headers from cols as the second row
-            consoleSheetData.push(cols.map(col => col.header));
-  
-            // Map console data and convert to array of values
-            const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
+            // Map console data and convert to rows
+            consoleData.forEach((item:any) => {
               const exportItem: any = {};
               cols.forEach(col => {
-                // if (col.format == 'date') {
-                //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-                // } else {
-                //   exportItem[col.header] = item[col.field];
-                // }
-                if (col.format == 'number') {
-                  exportItem[col.header] = index + 1;
-                } else {
+                if (col.field === 'partnerMasterAirwayBill') {
                   exportItem[col.header] = item[col.field];
+                } else if (col.field === 'grossWeight' || col.field === 'noOfPieces') {
+                  exportItem[col.header] = item[col.field];
+                } else {
+                  exportItem[col.header] = item[col.field] || '';
                 }
               });
-              return Object.values(exportItem).map(String);
+              worksheet.addRow(Object.values(exportItem));
             });
   
-            // Add console data rows after headers
-            consoleSheetData.push(...consoleRows);
-  
-            const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
-            XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${index + 1}`);
+            worksheetPromises.push(worksheet);
           }
-          index ++;
         }
-  
-        // Generate and download the Excel file
-        XLSX.writeFile(
-          wb,
-          `CONSOLE_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
-        );
+           // Prepare file for download
+           workbook.xlsx.writeBuffer().then((data) => {
+            const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      
+            // Create a temporary anchor element
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `CONSOLE_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+            document.body.appendChild(a);
+      
+            // Simulate click to trigger download
+            a.click();
+      
+            // Clean up
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          });
   }
 
   outScan:any[] = [];
@@ -946,7 +818,7 @@ export class ConsoleEditComponent {
     })
   }
 
-  downloadExcelWB1(res: any) {
+  downloadCCR(res: any) {
 
   
     const consoleManifestColumns = [
@@ -1104,7 +976,7 @@ export class ConsoleEditComponent {
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
-      a.download = `CONSOLE_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+      a.download = `CCR_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
       document.body.appendChild(a);
 
       // Simulate click to trigger download
@@ -1116,3 +988,175 @@ export class ConsoleEditComponent {
     });
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// downloadExcelWB(res:any) {
+//   this.consoleManifest = [
+//     { field: 'partnerHouseAirwayBill', header: 'AWB' },
+//     { field: 'airportOriginCode', header: 'Origin' },
+//     { field: 'countryOfOrigin', header: 'Origin Code' },
+//     { field: 'shipperName', header: 'Shipper' },
+//     { field: 'grossWeight', header: 'WT KG' },
+//     { field: 'noOfPieces', header: 'PCS' },
+//     { field: 'description', header: 'Description' },
+//     { field: 'consigneeName', header: 'Consignee Name' },
+//     { field: 'currency  ', header: 'Currency' },
+//     { field: 'consignmentValue', header: 'Value' },
+//     { field: 'consignmentValueLocal', header: 'Customs KD' },
+//     { field: 'iata', header: 'Iata KD' },
+//     { field: 'hsCode', header: 'HS Code' },
+//   ];
+
+//   this.invoices = [
+//     { field: 'partnerHouseAirwayBill', header: 'Airway Bill No' },
+//     { field: 'consigneeName', header: 'Consignee Name' },
+//     { field: 'consigneeCivilId', header: 'Consignee Civil ID' },
+//     { field: 'invoiceNumber', header: 'Invoice Number' },
+//     { field: 'invoiceDate', header: 'Invoice Date' },
+//     { field: 'invoiceType', header: 'Invoice Type' },
+//     { field: 'currency', header: 'Currency' },
+//     { field: 'invoiceSupplierName', header: 'Invoice Supplier Name' },
+//     { field: 'consignmentLocalId', header: 'Freight Currency' },
+//     { field: 'freightCharges', header: 'Freight Charges' },
+//     { field: 'countryOfOrigin', header: 'Country Of Supply' },
+//   ];
+
+//   this.invoiceItems = [
+//     { field: 'partnerHouseAirwayBill', header: 'BillNumber' },
+//     { field: 'invoiceNumber', header: 'InvoiceNumber' },
+//     { field: 'hsCode', header: 'HSCode' },
+//     { field: 'goodsDescription', header: 'GoodsDescription' },
+//     { field: 'countryOfOrigin', header: 'Country Of Origin' },
+//     { field: 'manufacturer', header: 'Manufacturer' },
+//     { field: 'noOfPieceHawb', header: 'No Of Packages' },
+//     { field: 'consignmentValue', header: 'Item Total Price' },
+//     { field: 'packageType', header: 'Package Type' },
+//     { field: 'quantity', header: 'Quantity' },
+//     { field: 'netWeight', header: 'Net Weight' },
+//     { field: 'grossWeight', header: 'Gross Weight' },
+//     { field: 'isExempted', header: 'Is Exempted' },
+//     { field: 'exemptionFor', header: 'Exemption For' },
+//     { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+//     { field: 'exemptionReference', header: 'Exemption Reference' },
+//   ];
+
+//   const groupedByConsoleId = this.groupBy(res, 'consoleId');
+//   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+//   let index = 0;
+//   for (const consoleId in groupedByConsoleId) {
+//     if (groupedByConsoleId.hasOwnProperty(consoleId)) {
+//       const consoleData = groupedByConsoleId[consoleId];
+//       // New row to be added before console data
+//       const newRow = {
+//         '#': '',
+//         'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
+//         'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
+//         'Origin Code': '',
+//         'Shipper': '',
+//         'WT KG': '',
+//         'PCS': '',
+//         'Description': consoleId,
+//         'Consignee Name': consoleData[0].partnerMasterAirwayBill,
+//         'Currency': '',
+//         'Value': 'Date',
+//         'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
+//         'IATA KD': '',
+//         'HS Code': '',
+//         'Console ID': '' // Include the console ID in the new row
+//       };
+
+//       const consoleSheetData: any[] = [];
+
+//       // Add new row (newRow) as the first row
+//       consoleSheetData.push(Object.values(newRow).map(String));
+
+//       // Add headers from cols as the second row
+//       consoleSheetData.push(this.consoleManifest.map(col => col.header));
+
+//       // Map console data and convert to array of values
+//       const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
+//         const exportItem: any = {};
+//         this.consoleManifest.forEach(col => {
+//           // if (col.format == 'date') {
+//           //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+//           // } else {
+//           //   exportItem[col.header] = item[col.field];
+//           // }
+//           if (col.format == 'number') {
+//             exportItem[col.header] = index + 1;
+//           } else {
+//             exportItem[col.header] = item[col.field];
+//           }
+//         });
+//         return Object.values(exportItem).map(String);
+//       });
+
+//       // Add console data rows after headers
+//       consoleSheetData.push(...consoleRows);
+
+//       const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
+//       XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${index + 1}`);
+
+//       const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
+
+//       for (const ccrId in groupedByCcrId) {
+//         if (groupedByCcrId.hasOwnProperty(ccrId)) {
+//           const ccrData = groupedByCcrId[ccrId];
+
+//           const invoicesData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
+//             const exportItem: any = {};
+//             this.invoices.forEach(col => {
+//               if (col.format == 'date') {
+//                 exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+//               } else {
+//                 exportItem[col.header] = item[col.field];
+//               }
+//             });
+//             return exportItem;
+//           });
+//           const invoiceSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoicesData);
+//           XLSX.utils.book_append_sheet(wb, invoiceSheet, `INVOICES-${index + 1}`);
+
+//           const invoiceItemsData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
+//             const exportItem: any = {};
+//             this.invoiceItems.forEach(col => {
+//               if (col.format && col.format == 'date') {
+//                 exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+//               } else {
+//                 exportItem[col.header] = item[col.field];
+//               }
+//             });
+//             return exportItem;
+//           });
+//           const invoiceItemSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoiceItemsData);
+//           XLSX.utils.book_append_sheet(wb, invoiceItemSheet, `INVOICEITEM-${index + 1}`);
+//         }
+//       }
+//     }
+//     index++;
+//   }
+//   XLSX.writeFile(
+//     wb,
+//     `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
+//   );
+// }
