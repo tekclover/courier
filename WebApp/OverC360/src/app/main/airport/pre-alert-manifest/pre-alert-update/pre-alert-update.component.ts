@@ -149,23 +149,36 @@ export class PreAlertUpdateComponent {
 
   //Download
   downloadExcel() {
+
+    const preAlertColumn = [
+      { field: 'partnerHouseAirwayBill', header: 'MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'HAWB' },
+      { field: 'totalWeight', header: 'Weight' },
+      { field: 'noOfPieces', header: 'PCS' },
+      { field: 'consignmentValue', header: 'Value' },
+      { field: 'bayanHv', header: 'Bayan HV' },
+      { field: 'currency', header: 'Currency' },
+      { field: 'description', header: 'Description(en)' },
+      { field: 'consigneeName', header: 'Cnee Name' },
+      { field: 'shipper', header: 'Shipper' },
+      { field: 'origin', header: 'Origin' },
+      { field: 'originCode', header: 'Origin Code' },
+      { field: 'customsValue', header: 'Value KD' },
+      { field: 'iata', header: 'IATA' },
+      { field: 'hsCode', header: 'HSCode' },
+      { field: 'incoTerm', header: 'DDU & DDB' },
+    ]
     const exportData = this.preAlertManifestTableArray.map(item => {
       const exportItem: any = {};
-      this.cols.forEach(col => {
-        if (col.format == 'date') {
-          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-        } else {
-          exportItem[col.header] = item[col.field];
-        }
-
+      preAlertColumn.forEach(col => {
+        exportItem[col.header] = item[col.field];
       });
       return exportItem;
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Pre-Alert Manifest');
+    this.cs.exportAsPrealertExcel(exportData, 'Pre-Alert Manifest');
   }
-
   updateBulk() {
     if (this.selectedPreAlertManifest.length == 0) {
       this.messageService.add({

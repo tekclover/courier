@@ -87,6 +87,19 @@
                         Actions
                     </th>
                 </tr>
+                <tr>
+                    <th  style="width: 5rem;" pFrozenColumn>
+                        <p-tableHeaderCheckbox [disabled]="true" class="pl-3"></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns">
+                        <input pInputText type="text"
+                            (input)="consignmentTag.filter($any($event.target)?.value, col.field, 'contains')"
+                            [value]="$any(consignmentTag.filters[col.field])?.value" placeholder="Search"
+                            class="p-column-filter">
+                    </th>
+                    <th  style="width: 5rem;" pFrozenColumn alignFrozen="right">
+                    </th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr  [ngClass]="{'selectedRow': isSelected(rowData)}">
