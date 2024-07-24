@@ -135,6 +135,8 @@ public class AddConsole {
 //
 //    private Date statusTimestamp;
 
+    private String hubName;
+
     private String isConsolidatedShipment;
 
     private String isSplitBillOfLading;

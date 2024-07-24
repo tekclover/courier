@@ -25,6 +25,10 @@ public class AddConsole {
     @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
     private String partnerHouseAirwayBill;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String partnerType;
 
     private String consoleName;
@@ -131,6 +135,8 @@ public class AddConsole {
 //
 //    private Date statusTimestamp;
 
+    private String hubName;
+
     private String isConsolidatedShipment;
 
     private String isSplitBillOfLading;
@@ -198,6 +204,10 @@ public class AddConsole {
     private String exemptionFor;
 
     private String hubCode;
+
+    private String customsCcrNo;
+
+    private String totalDuty;
 
     private String exemptionBeneficiary;
 

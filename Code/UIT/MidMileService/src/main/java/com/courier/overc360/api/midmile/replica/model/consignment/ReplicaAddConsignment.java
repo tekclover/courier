@@ -76,6 +76,8 @@ public class ReplicaAddConsignment {
 
     private Long manifestIndicator;
 
+    private String customsInsurance;
+
     private String flightNo;
 
     private String flightName;

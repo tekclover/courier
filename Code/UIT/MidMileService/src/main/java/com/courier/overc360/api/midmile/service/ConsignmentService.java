@@ -186,7 +186,9 @@ public class ConsignmentService {
                             languageId, companyId, partnerId, partnerHawBill, 0L);
 
             if (duplicateConsignment != null) {
-                throw new BadRequestException("Given value Getting Duplicate");
+                log.info("Given value Getting Duplicate CompanyId -" + companyId + " LanguageId " + languageId + " PartnerId " + partnerId +
+                        " PartnerHouseAirwayBill " + partnerHawBill);
+                continue;
             }
 
             if (consignmentEntity.getLoadTypeId() != null) {
@@ -346,7 +348,7 @@ public class ConsignmentService {
             newConsignment.setHawbType("STATUS");
             newConsignment.setHawbTypeId("1");
             Optional<IKeyValuePair> statusText = consignmentEntityRepository.getStatusText(newConsignment.getLanguageId(), "1");
-            if(statusText.isPresent()) {
+            if (statusText.isPresent()) {
                 IKeyValuePair ikey = statusText.get();
                 newConsignment.setHawbTypeDescription(ikey.getStatusText());
                 newConsignment.setHawbTimeStamp(new Date());

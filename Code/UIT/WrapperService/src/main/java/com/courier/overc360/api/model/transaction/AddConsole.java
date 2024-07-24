@@ -183,11 +183,17 @@ public class AddConsole {
 
     private String hsCode;
 
+    private String hubName;
+
     private String goodsDescription;
 
     private String quantity;
 
     private String freightCurrency;
+
+    private String houseAirwayBill;
+
+    private String masterAirwayBill;
 
     private String freightCharges;
 
@@ -226,6 +232,10 @@ public class AddConsole {
     private String consoleGroupName;
 
     private String hubCode;
+
+    private String customsCcrNo;
+
+    private String totalDuty;
 
     private Long deletionIndicator;
 

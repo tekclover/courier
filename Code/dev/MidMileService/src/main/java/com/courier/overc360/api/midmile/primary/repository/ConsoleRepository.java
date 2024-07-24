@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -246,4 +247,9 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String pieceId, Long deletionIndicator);
 
     List<Console> findByConsoleIdAndDeletionIndicator(String consoleId, Long deletionIndicator);
+
+    @Query(value = "select hub_name from tblhub where c_id = :companyId and lang_id = :languageId and hub_code = :hubCode and is_deleted =0", nativeQuery = true)
+    public String getHubName(@Param("companyId") String companyId,
+                             @Param("languageId") String languageId,
+                             @Param("hubCode") String hubCode);
 }

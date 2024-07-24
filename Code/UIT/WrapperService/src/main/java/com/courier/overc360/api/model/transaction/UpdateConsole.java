@@ -33,6 +33,10 @@ public class UpdateConsole {
 //    @NotBlank(message = "PieceItemId is mandatory")
 //    private String pieceItemId;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String partnerType;
 
     private String expectedDuty;
@@ -44,6 +48,8 @@ public class UpdateConsole {
     private String noOfPieces;
 
     private String partnerName;
+
+    private String hubName;
 
 //    private String partnerMasterAirwayBill;
 //
@@ -226,6 +232,8 @@ public class UpdateConsole {
     private String consoleName;
 
     private String hubCode;
+
+    private String customsCcrNo;
 
     private String consoleGroupName;
 

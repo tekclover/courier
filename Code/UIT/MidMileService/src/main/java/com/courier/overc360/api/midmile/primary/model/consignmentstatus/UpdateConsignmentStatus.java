@@ -2,6 +2,7 @@ package com.courier.overc360.api.midmile.primary.model.consignmentstatus;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -25,6 +26,12 @@ public class UpdateConsignmentStatus {
 //
 //    @NotBlank(message = "EventCode is mandatory")
 //    private String eventCode;
+
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
+
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
 
     private String masterAirwayBill;
 

@@ -1,6 +1,7 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
+import com.courier.overc360.api.midmile.primary.model.console.Console;
 import com.courier.overc360.api.midmile.primary.model.console.MobileApp;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,7 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
     Optional<ReplicaConsole> findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String consoleId, Long deletionIndicator);
 
-    boolean existsByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
+    Console findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
             String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
 
     // Duplicate Header Check
@@ -48,13 +49,13 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
 
 
     // Find Consoles with given Params Only
-    @Query(value = "SELECT * FROM tblconsole tc \n" +
-            "WHERE tc.IS_DELETED = 0 \n" +
-            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId)) \n" +
-            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId)) \n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId)) \n" +
-            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill)) \n" +
-            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill)) \n" +
+    @Query(value = "SELECT * FROM tblconsole tc\n" +
+            "WHERE tc.IS_DELETED = 0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
+            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
             "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
     List<ReplicaConsole> findConsolesWithQry(
             @Param("languageId") List<String> languageId,
@@ -63,6 +64,30 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
             @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
             @Param("consoleId") List<String> consoleId);
+
+
+    // Find Consoles By Automatic Pagination - SQL Qry
+    @Query(value = "SELECT * FROM tblconsole tc\n" +
+            "WHERE tc.IS_DELETED = 0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
+            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))\n" +
+//            "ORDER BY CTD_ON DESC\n" +
+            "ORDER BY (SELECT NULL) \n" +
+            "OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY", nativeQuery = true)
+    List<ReplicaConsole> findConsolesByPagination(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("partnerId") List<String> partnerId,
+            @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
+            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
+            @Param("consoleId") List<String> consoleId,
+            @Param("limit") int limit,
+            @Param("offset") int offset);
+
 
     @Query(value = "SELECT t.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, " +
             "t.PARTNER_ID AS partnerId, " +
@@ -88,8 +113,24 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             " c_id = :companyId and " +
             " lang_id = :languageId ", nativeQuery = true)
     Optional<IKeyValuePair> getInvoice(@Param("companyId") String companyId,
-                             @Param("languageId") String languageId,
-                             @Param("partnerId") String partnerId,
-                             @Param("partnerHouseAB") String partnerHouseAB,
-                             @Param("partnerMasterAB") String partnerMasterAB);
+                                       @Param("languageId") String languageId,
+                                       @Param("partnerId") String partnerId,
+                                       @Param("partnerHouseAB") String partnerHouseAB,
+                                       @Param("partnerMasterAB") String partnerMasterAB);
+
+    List<Console> findByConsoleIdAndDeletionIndicator(String consoleId, Long deletionIndicator);
+
+
+    // Get Mobile Dashboard Count
+    @Query(value = "Select COUNT(*) From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0 And\n" +
+            "tc.LANG_ID = :languageId And\n" +
+            "tc.C_ID = :companyId And\n" +
+            "tc.HAWB_TYP_ID != :hawbTypeId And\n" +
+            "tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    long getMobileDashboardCount(@Param("languageId") String languageId,
+                                 @Param("companyId") String companyId,
+                                 @Param("hawbTypeId") String hawbTypeId,
+                                 @Param("partnerMasterAB") String partnerMasterAB);
+
 }

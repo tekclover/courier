@@ -160,6 +160,9 @@ public class ConsignmentEntity {
     @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
     private String customsValue;
 
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
     @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
     private String calculatedTotalDuty;
 

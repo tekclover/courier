@@ -38,6 +38,9 @@ public class PreAlert {
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
+
     @Id
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
@@ -45,6 +48,7 @@ public class PreAlert {
     @Id
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
+
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;

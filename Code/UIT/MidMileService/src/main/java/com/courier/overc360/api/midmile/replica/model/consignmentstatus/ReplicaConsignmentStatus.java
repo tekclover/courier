@@ -51,6 +51,12 @@ public class ReplicaConsignmentStatus {
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerHouseAirwayBill;
+
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String partnerMasterAirwayBill;
+
 //    @Id
 //    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
 //    private String statusId;

@@ -225,6 +225,8 @@ public class Console {
 
     private String totalDuty;
 
+    private String hubName;
+
     private String referenceField1;
 
     private String referenceField2;

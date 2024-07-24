@@ -119,4 +119,18 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
                                        @Param("partnerMasterAB") String partnerMasterAB);
 
     List<Console> findByConsoleIdAndDeletionIndicator(String consoleId, Long deletionIndicator);
+
+
+    // Get Mobile Dashboard Count
+    @Query(value = "Select COUNT(*) From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0 And\n" +
+            "tc.LANG_ID = :languageId And\n" +
+            "tc.C_ID = :companyId And\n" +
+            "tc.HAWB_TYP_ID != :hawbTypeId And\n" +
+            "tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    long getMobileDashboardCount(@Param("languageId") String languageId,
+                                 @Param("companyId") String companyId,
+                                 @Param("hawbTypeId") String hawbTypeId,
+                                 @Param("partnerMasterAB") String partnerMasterAB);
+
 }

@@ -15,9 +15,9 @@ public class BondedManifest {
 
     private String partnerId;
 
-//    private String masterAirwayBill;
+    private String masterAirwayBill;
 
-//    private String houseAirwayBill;
+    private String houseAirwayBill;
 
     private String  bondedId;
 

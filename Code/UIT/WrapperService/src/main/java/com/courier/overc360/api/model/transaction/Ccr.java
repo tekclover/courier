@@ -24,6 +24,11 @@ public class Ccr {
     private String ccrId;
 
     private String customsCcrNo;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
 //    private String statusText;
 
     private String pieceId;
@@ -193,6 +198,10 @@ public class Ccr {
     private String dduCharge;
 
     private String specialApprovalCharge;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private Long deletionIndicator = 0L;
 

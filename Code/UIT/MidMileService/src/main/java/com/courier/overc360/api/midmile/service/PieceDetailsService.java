@@ -197,7 +197,9 @@ public class PieceDetailsService {
                                     languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, addPieceDetails.getPieceId(), 0l);
 
                     if (duplicatePieceDetails.isPresent()) {
-                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
+//                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
+                        log.info("Record is getting Duplicated with the given values : pieceId - " + addPieceDetails.getPieceId());
+
                     } else {
 
                         String PIECE_ID = houseAirwayBill + String.format("%03d", pieceCounter++);
@@ -315,10 +317,10 @@ public class PieceDetailsService {
 
                         // Save ConsignmentStatus
                         consignmentStatusService.insertConsignmentStatusRecord(savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(),
-                                savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getPartnerMasterAirwayBill(),
-                                savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                                savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
+                                savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                                savePieceDetails.getPieceTimeStamp(),loginUserID );
+                                savePieceDetails.getPieceTimeStamp(),loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill());
 
                         AddPieceDetails pieceDetails = new AddPieceDetails();
                         BeanUtils.copyProperties(savePieceDetails, pieceDetails);
@@ -388,10 +390,10 @@ public class PieceDetailsService {
 
                 // Save ConsignmentStatus
                 consignmentStatusService.insertConsignmentStatusRecord(savePieceDetails.getLanguageId(), savePieceDetails.getLanguageDescription(),
-                        savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getPartnerMasterAirwayBill(),
-                        savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
+                        savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
+                        savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                         savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                        savePieceDetails.getPieceTimeStamp(),loginUserID );
+                        savePieceDetails.getPieceTimeStamp(),loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill() );
 
                 AddPieceDetails pieceDetails = new AddPieceDetails();
                 BeanUtils.copyProperties(savePieceDetails, pieceDetails);

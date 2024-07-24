@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -1039,7 +1040,7 @@ public class MidMileService {
         }
     }
 
-    // Find Console
+    // Find Consoles - normal
     public Console[] findConsole(FindConsole findConsole, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -1049,6 +1050,52 @@ public class MidMileService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole");
             HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
             ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Consoles By Pagination
+    public PaginatedResponse<Console> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize,
+                                                               String sortBy, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole/pagination")
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("pageSize", pageSize)
+                    .queryParam("sortBy", sortBy);
+            HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
+            ParameterizedTypeReference<PaginatedResponse<Console>> responseType = new ParameterizedTypeReference<PaginatedResponse<Console>>() {
+            };
+            ResponseEntity<PaginatedResponse<Console>> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, responseType);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // GET MobileDashboard - Console count
+    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "ClassicWMS RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder
+                    .fromHttpUrl(getMidMileServiceUrl() + "console/mobileDashboard/get")
+                    .queryParam("languageId", languageId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, MobileDashboard.class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
