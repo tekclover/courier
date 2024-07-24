@@ -152,32 +152,44 @@ public class ConsignmentStatusService {
      * @throws CsvException
      */
     @Transactional
-    public void createConsignmentStatusParams(String companyId, String companyName, String languageId, String languageDesc,
-                                              String pieceId, String statusId, String masterAirwayBill, String houseAirwayBill,
-                                              String statusText, String pieceStatusId, String pieceStatusText, String eventCode,
-                                              String eventText, String pieceEventCode, String pieceEventText, Date pieceEventTimestamp,
-                                              Date eventTimestamp, Date statusTimestamp, String loginUserID) {
+    public void insertConsignmentStatusRecord(String languageId, String languageDesc, String companyId, String companyName,
+                                              String pieceId, String masterAirwayBill, String houseAirwayBill,
+                                              String hawbType, String hawbTypeId, String hawbTypeDescription, Date hawbTimeStamp,
+                                              String pieceType, String pieceTypeId, String pieceTypeDescription, Date pieceTimeStamp,
+                                              String loginUserID, String partnerHouseAirwayBill, String partnerMasterAirwayBill, Long bagId) {
         try {
-            if (companyId != null && pieceId != null && languageId != null && houseAirwayBill != null && statusId != null && eventCode != null) {
+            if (languageId != null && companyId != null && pieceId != null && houseAirwayBill != null) {
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
-                newConsignmentStatus.setCompanyId(companyId);
-                newConsignmentStatus.setCompanyName(companyName);
+
+                Long statusId = consignmentStatusRepository.statusId();
+
+                if(statusId == null || statusId == 0) {
+                    statusId = 1L;
+                } else {
+                    statusId ++;
+                }
+                newConsignmentStatus.setConsignmentStatusId(statusId);
                 newConsignmentStatus.setLanguageId(languageId);
                 newConsignmentStatus.setLanguageDescription(languageDesc);
+                newConsignmentStatus.setCompanyId(companyId);
+                newConsignmentStatus.setCompanyName(companyName);
+
                 newConsignmentStatus.setPieceId(pieceId);
-//                newConsignmentStatus.setStatusId(statusId);
+                newConsignmentStatus.setPartnerHouseAirwayBill(partnerHouseAirwayBill);
+                newConsignmentStatus.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
                 newConsignmentStatus.setMasterAirwayBill(masterAirwayBill);
                 newConsignmentStatus.setHouseAirwayBill(houseAirwayBill);
-//                newConsignmentStatus.setStatusText(statusText);
-//                newConsignmentStatus.setEventCode(eventCode);
-//                newConsignmentStatus.setPieceStatusId(pieceStatusId);
-//                newConsignmentStatus.setPieceStatusText(pieceStatusText);
-//                newConsignmentStatus.setEventText(eventText);
-//                newConsignmentStatus.setPieceEventCode(pieceEventCode);
-//                newConsignmentStatus.setPieceEventText(pieceEventText);
-//                newConsignmentStatus.setPieceEventTimestamp(pieceEventTimestamp);
-//                newConsignmentStatus.setEventTimestamp(eventTimestamp);
-//                newConsignmentStatus.setStatusTimestamp(statusTimestamp);
+
+                newConsignmentStatus.setHawbType(hawbType);
+                newConsignmentStatus.setHawbTypeId(hawbTypeId);
+                newConsignmentStatus.setHawbTypeDescription(hawbTypeDescription);
+                newConsignmentStatus.setHawbTimeStamp(hawbTimeStamp);
+
+                newConsignmentStatus.setPieceType(pieceType);
+                newConsignmentStatus.setPieceTypeId(pieceTypeId);
+                newConsignmentStatus.setPieceTypeDescription(pieceTypeDescription);
+                newConsignmentStatus.setPieceTimeStamp(pieceTimeStamp);
+                newConsignmentStatus.setBagId(String.valueOf(bagId));
 
                 newConsignmentStatus.setDeletionIndicator(0L);
                 newConsignmentStatus.setCreatedBy(loginUserID);

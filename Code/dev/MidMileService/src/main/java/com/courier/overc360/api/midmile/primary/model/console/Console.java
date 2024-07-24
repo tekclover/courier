@@ -58,11 +58,11 @@ public class Console {
     @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
-//    @Id
+    //    @Id
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-//    @Id
+    //    @Id
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
@@ -187,16 +187,16 @@ public class Console {
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
-    @Column(name = "IS_EXEMPTED" , columnDefinition = "nvarchar(50)")
+    @Column(name = "IS_EXEMPTED", columnDefinition = "nvarchar(50)")
     private String isExempted;
 
-    @Column(name = "EXEMPTION_FOR" , columnDefinition = "nvarchar(50)")
+    @Column(name = "EXEMPTION_FOR", columnDefinition = "nvarchar(50)")
     private String exemptionFor;
 
-    @Column(name = "EXEMPTION_BENEFICIARY" , columnDefinition = "nvarchar(50)")
+    @Column(name = "EXEMPTION_BENEFICIARY", columnDefinition = "nvarchar(50)")
     private String exemptionBeneficiary;
 
-    @Column(name = "EXEMPTION_REFERENCE" , columnDefinition = "nvarchar(50)")
+    @Column(name = "EXEMPTION_REFERENCE", columnDefinition = "nvarchar(50)")
     private String exemptionReference;
 
 //    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
@@ -364,7 +364,7 @@ public class Console {
     @Column(name = "PIECE_TIMESTAMP")
     private Date pieceTimeStamp = new Date();
 
-    @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
+    @Column(name = "CUSTOMS_CCR_NO", columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
@@ -438,6 +438,10 @@ public class Console {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
+
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag = 0L;
 
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

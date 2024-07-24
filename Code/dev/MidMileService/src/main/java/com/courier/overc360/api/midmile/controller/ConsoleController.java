@@ -178,4 +178,13 @@ public class ConsoleController {
         return new ResponseEntity<>(consolesCount, HttpStatus.OK);
     }
 
+    // Generate Location Sheet
+    @ApiOperation(response = LocationSheetOutput.class, value = "Generate Location Sheet")
+    @PostMapping("/locationSheet")
+    public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> locationSheetInputs,
+                                               @RequestParam String loginUserID) {
+        List<LocationSheetOutput> sheetOutputs = consoleService.generateLocationSheet(locationSheetInputs, loginUserID);
+        return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
+    }
+
 }

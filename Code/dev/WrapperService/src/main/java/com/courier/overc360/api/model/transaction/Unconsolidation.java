@@ -1,44 +1,41 @@
-package com.courier.overc360.api.midmile.primary.model.console;
+package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
-public class UpdateConsole {
+public class Unconsolidation {
 
-    @NotBlank(message = "LanguageId is mandatory")
+//    private String consoleId;
+
     private String languageId;
 
-    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
-    private String partnerMasterAirwayBill;
-
-    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
     private String partnerHouseAirwayBill;
 
-    @NotBlank(message = "ConsoleId is mandatory")
-    private String consoleId;
+    private String partnerMasterAirwayBill;
 
-    private String masterAirwayBill;
+    private String pieceId;
 
     private String houseAirwayBill;
 
-    private String partnerType;
+    private String masterAirwayBill;
+
+    private String companyName;
+
+//    private String pieceItemId;
 
     private String consignmentCurrency;
+
+    private String consignmentValue;
 
     private String consoleName;
 
     private String consoleGroupName;
-
-    private String consignmentValue;
 
     private String exchangeRate;
 
@@ -58,29 +55,33 @@ public class UpdateConsole {
 
     private String calculatedTotalDuty;
 
-    private String expectedDuty;
+    private String languageDescription;
 
-    private String customsCurrency;
+    private String partnerType;
 
     private String partnerName;
 
-    private String description;
-
-    private String dutyPercentage;
-
-    private String iataCharge;
-
-    private String noOfPieces;
-
-    private String dduCharge;
-
-    private String specialApprovalCharge;
-
-    private String netWeight;
+//    private String statusId;
+//
+//    private String statusText;
 
     private String primaryDo;
 
     private String secondaryDo;
+
+    private String noOfPackageMawb;
+
+    private String noOfPieceHawb;
+
+    private String bondedId;
+
+    private String expectedDuty;
+
+    private String customsCurrency;
+
+    private String description;
+
+    private String netWeight;
 
     private String manifestedGrossWeight;
 
@@ -100,15 +101,17 @@ public class UpdateConsole {
 
     private String notifyParty;
 
-    private String consigneeName;
-
-    private String shipperId;
-
-    private String shipperName;
-
-    private String remarks;
+    private String noOfPieces;
 
     private String paymentType;
+
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
 
 //    private String eventCode;
 //
@@ -118,21 +121,21 @@ public class UpdateConsole {
 //
 //    private Date statusTimestamp;
 
-    private String hawbType;
+    private Long shipmentBagId;
 
-    private String hawbTypeId;
+    private String dutyPercentage;
 
-    private String hawbTypeDescription;
+    private String iataCharge;
 
-    private Date hawbTimeStamp = new Date();
+    private String dduCharge;
 
-    private String pieceType;
+    private String specialApprovalCharge;
 
-    private String pieceTypeId;
+    private String consigneeName;
 
-    private String pieceTypeDescription;
+    private String shipperName;
 
-    private Date pieceTimeStamp = new Date();
+    private String remarks;
 
     private String isConsolidatedShipment;
 
@@ -140,41 +143,21 @@ public class UpdateConsole {
 
     private String isPendingShipment;
 
-    private String totalDuty;
-
     private String goodsType;
 
     private String countryOfOrigin;
-
-    private String noOfPieceHawb;
-
-    private String airportOriginCode;
-
-    private String customsKd;
-
-    private String noOfPackageMawb;
-
-    private String companyName;
-
-    private String pieceId;
-
-//    private String pieceItemId;
-
-    private String languageDescription;
-
-//    private String statusId;
-//
-//    private String statusText;
-
-    private String bondedId;
-
-    private Long shipmentBagId;
 
     private String actualCurrency;
 
     private String actualValue;
 
     private String specialApprovalValue;
+
+    private String airportOriginCode;
+
+    private String customsKd;
+
+    private String totalDuty;
 
     private String productId;
 
@@ -187,6 +170,8 @@ public class UpdateConsole {
     private String serviceTypeId;
 
     private String serviceTypeName;
+
+    private String shipperId;
 
     private String consigneeCivilId;
 
@@ -214,23 +199,31 @@ public class UpdateConsole {
 
     private String currency;
 
-    private String consignmentLocalId;
-
-    private String isExempted;
-
-    private String exemptionFor;
-
     private String hubCode;
-
-    private String exemptionBeneficiary;
-
-    private String customsCcrNo;
-
-    private String exemptionReference;
 
     private String hubName;
 
     private Long deletionIndicator;
+
+    private String consignmentLocalId;
+
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp;
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp;
+
+    private String customsCcrNo;
 
     private String referenceField1;
 
@@ -272,7 +265,15 @@ public class UpdateConsole {
 
     private String referenceField20;
 
-    // consolidation check
+    private String createdBy;
+
+    private Date createdOn;
+
+    private String updatedBy;
+
+    private Date updatedOn;
+
+    // unconsolidation
     private Long unconsolidatedFlag;
 
 }

@@ -1,4 +1,4 @@
-package com.courier.overc360.api.midmile.replica.model.console;
+package com.courier.overc360.api.midmile.replica.model.console.unconsolidation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,22 +17,22 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 /*
- * `LANG_ID`, `C_ID`, `PARTNER_ID`, `MASTER_AIRWAY_BILL`, `HOUSE_AIRWAY_BILL`,`CONSOLE_ID`
+ * `LANG_ID`, `C_ID`, `PARTNER_ID`, `PARTNER_MASTER_AIRWAY_BILL`, `PARTNER_HOUSE_AIRWAY_BILL`, `CONSOLE_ID`
  */
-@Table(name = "tblconsole",
+@Table(name = "tblunconsolidation",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "unique_key_console",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "CONSOLE_ID", "PIECE_ID"}
+                        name = "unique_key_unconsolidation",
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "PIECE_ID"}
                 )
         }
 )
-@IdClass(ReplicaConsoleCompositeKey.class)
-public class ReplicaConsole {
+@IdClass(ReplicaUnconsolidationCompositeKey.class)
+public class ReplicaUnconsolidation {
 
-    @Id
-    @Column(name = "CONSOLE_ID")
-    private String consoleId;
+//    @Id
+//    @Column(name = "CONSOLE_ID")
+//    private String consoleId;
 
     @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
@@ -47,10 +47,6 @@ public class ReplicaConsole {
     private String partnerId;
 
     @Id
-    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
-    private String pieceId;
-
-    @Id
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
@@ -58,11 +54,9 @@ public class ReplicaConsole {
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
-    @Column(name = "CONSOLE_NAME", columnDefinition = "nvarchar(50)")
-    private String consoleName;
-
-    @Column(name = "CONSOLE_GROUP_NAME", columnDefinition = "nvarchar(50)")
-    private String consoleGroupName;
+    @Id
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
+    private String pieceId;
 
     //    @Id
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
@@ -85,6 +79,12 @@ public class ReplicaConsole {
     @Column(name = "CONSIGNMENT_VALUE", columnDefinition = "nvarchar(50)")
     private String consignmentValue;
 
+    @Column(name = "CONSOLE_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleName;
+
+    @Column(name = "CONSOLE_GROUP_NAME", columnDefinition = "nvarchar(50)")
+    private String consoleGroupName;
+
     @Column(name = "EXCHANGE_RATE", columnDefinition = "nvarchar(50)")
     private String exchangeRate;
 
@@ -96,9 +96,6 @@ public class ReplicaConsole {
 
     @Column(name = "DUTY", columnDefinition = "nvarchar(50)")
     private String duty;
-
-    @Column(name = "NO_OF_PIECES", columnDefinition = "nvarchar(50)")
-    private String noOfPieces;
 
     @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
     private String consignmentValueLocal;
@@ -184,8 +181,23 @@ public class ReplicaConsole {
     @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
     private String notifyParty;
 
+    @Column(name = "NO_OF_PIECES", columnDefinition = "nvarchar(50)")
+    private String noOfPieces;
+
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
+
+    @Column(name = "IS_EXEMPTED", columnDefinition = "nvarchar(50)")
+    private String isExempted;
+
+    @Column(name = "EXEMPTION_FOR", columnDefinition = "nvarchar(50)")
+    private String exemptionFor;
+
+    @Column(name = "EXEMPTION_BENEFICIARY", columnDefinition = "nvarchar(50)")
+    private String exemptionBeneficiary;
+
+    @Column(name = "EXEMPTION_REFERENCE", columnDefinition = "nvarchar(50)")
+    private String exemptionReference;
 
 //    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
 //    private String eventCode;
@@ -253,6 +265,9 @@ public class ReplicaConsole {
     @Column(name = "CUSTOMS_KD", columnDefinition = "nvarchar(50)")
     private String customsKd;
 
+    @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
+    private String totalDuty;
+
     @Column(name = "PRODUCT_ID", columnDefinition = "nvarchar(50)")
     private String productId;
 
@@ -313,11 +328,17 @@ public class ReplicaConsole {
     @Column(name = "CURRENCY", columnDefinition = "nvarchar(50)")
     private String currency;
 
+    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String hubCode;
+
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
-    @Column(name = "TOTAL_DUTY", columnDefinition = "nvarchar(50)")
-    private String totalDuty;
+    @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
+    private String consignmentLocalId;
 
     @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
     private String hawbType;
@@ -343,29 +364,8 @@ public class ReplicaConsole {
     @Column(name = "PIECE_TIMESTAMP")
     private Date pieceTimeStamp = new Date();
 
-    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
-    private String hubCode;
-
-    @Column(name = "IS_EXEMPTED", columnDefinition = "nvarchar(50)")
-    private String isExempted;
-
-    @Column(name = "EXEMPTION_FOR", columnDefinition = "nvarchar(50)")
-    private String exemptionFor;
-
-    @Column(name = "EXEMPTION_BENEFICIARY", columnDefinition = "nvarchar(50)")
-    private String exemptionBeneficiary;
-
-    @Column(name = "EXEMPTION_REFERENCE", columnDefinition = "nvarchar(50)")
-    private String exemptionReference;
-
     @Column(name = "CUSTOMS_CCR_NO", columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
-
-    @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
-    private String consignmentLocalId;
-
-    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
-    private String hubName;
 
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
