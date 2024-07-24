@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusEventService } from '../status-event.service';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,21 +8,20 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
+import { UomService } from '../uom.service';
 
 @Component({
-  selector: 'app-status-event-new',
-  templateUrl: './status-event-new.component.html',
-  styleUrl: './status-event-new.component.scss'
+  selector: 'app-uom-new',
+  templateUrl: './uom-new.component.html',
+  styleUrl: './uom-new.component.scss'
 })
-export class StatusEventNewComponent {
+export class UomNewComponent {
 
+  
   
   active: number | undefined = 0;
   status: any[] = [];
-  action: any[] = [];
-  level: any[] = [];
-  conclusive: any[] = [];
-  type: any[] = [];
+  uomType: any[] = [];
 
   constructor(
     private cs: CommonServiceService,
@@ -32,7 +30,7 @@ export class StatusEventNewComponent {
     private router: Router,
     private path: PathNameService,
     private fb: FormBuilder,
-    private service: StatusEventService,
+    private service: UomService,
     private messageService: MessageService,
     private numberRangeService: NumberrangeService,
     private auth: AuthService,
@@ -41,23 +39,11 @@ export class StatusEventNewComponent {
       { value: '17', label: 'Inactive' },
       { value: '16', label: 'Active' }
     ];
-    this.action = [
-      { value: 'automatic', label: 'Automatic' },
-      { value: 'manual', label: 'Manual' }
-    ];
-    this.level = [
-      { value: 'bag', label: 'Bag' },
-      { value: 'shipment', label: 'Shipment' },
-      { value: 'both', label: 'Both' }
-    ];
-    this.conclusive = [
-      { value: '0', label: 'No' },
-      { value: '1', label: 'Yes' }
-    ];
-    this.type = [
-      { value: 'status', label: 'Status' },
-      { value: 'event', label: 'Event' }
-    ];
+    this.uomType = [
+      {value: 'dimension', label:'Dimension'},
+      {value: 'weight', label: 'Weight'},
+      {value: 'quantity', label:'Quantity'}
+    ]
   }
 
   numCondition: any;
@@ -65,19 +51,13 @@ export class StatusEventNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    typeId: [, Validators.required],
-    type: [, Validators.required],
+    uomId: [],
+    uomType: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
     companyId: [this.auth.companyId, Validators.required],
-    typeText: [],
-    trigger: [],
-    conclusive: [],
-    level: [, Validators.required],
-    action: [, Validators.required],
-    preRequisite: [, Validators.required],
+    uomDescription: [, Validators.required],
     companyName: [],
-    remark: [],
     referenceField1: [],
     referenceField2: [],
     referenceField3: [],
@@ -113,7 +93,7 @@ export class StatusEventNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'Status/Event', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'UOM', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -123,7 +103,7 @@ export class StatusEventNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.preRequisite.disable();
+      this.form.controls.uomId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
@@ -133,19 +113,15 @@ export class StatusEventNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
-  typeIdList: any[] = [];
-
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
-      this.cas.dropdownlist.setup.statusevent.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.typeIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.statusevent.key);
         this.spin.hide();
       },
       error: (err: any) => {
@@ -173,8 +149,8 @@ export class StatusEventNewComponent {
       this.spin.show()
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.typeId + ' has been updated successfully' });
-          this.router.navigate(['/main/idMaster/statusevent']);
+          this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.uomId + ' has been updated successfully' });
+          this.router.navigate(['/main/idMaster/uom']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -186,8 +162,8 @@ export class StatusEventNewComponent {
       this.service.Create(this.form.getRawValue()).subscribe({
         next: (res) => {
           if (res) {
-            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.typeId + ' has been created successfully' });
-            this.router.navigate(['/main/idMaster/statusevent']);
+            this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.uomId + ' has been created successfully' });
+            this.router.navigate(['/main/idMaster/uom']);
             this.spin.hide();
           }
         }, error: (err) => {
@@ -197,7 +173,5 @@ export class StatusEventNewComponent {
       })
     }
   }
+
 }
-
-
-

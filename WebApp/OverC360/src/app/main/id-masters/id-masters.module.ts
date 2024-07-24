@@ -63,6 +63,8 @@ import { SubProductsValuesComponent } from './sub-product/sub-products-values/su
 import { ProductValueComponent } from './product/product-value/product-value.component';
 import { StatusEventComponent } from './status-event/status-event.component';
 import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
+import { UomComponent } from './uom/uom.component';
+import { UomNewComponent } from './uom/uom-new/uom-new.component';
 
 
 @NgModule({
@@ -111,6 +113,8 @@ import { StatusEventNewComponent } from './status-event/status-event-new/status-
     ProductValueComponent,
     StatusEventComponent,
     StatusEventNewComponent,
+    UomComponent,
+    UomNewComponent,
   ],
   imports: [
     CommonModule,

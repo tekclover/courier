@@ -1,5 +1,6 @@
-import { DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { UomService } from './uom.service';
+import { DatePipe } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -11,18 +12,17 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { AuthService } from '../../../core/core';
-import { StatusEventService } from './status-event.service';
 
 @Component({
-  selector: 'app-status-event',
-  templateUrl: './status-event.component.html',
-  styleUrl: './status-event.component.scss'
+  selector: 'app-uom',
+  templateUrl: './uom.component.html',
+  styleUrl: './uom.component.scss'
 })
-export class StatusEventComponent {
+export class UomComponent {
 
-  
-  statusEventTable: any[] = [];
-  selectedStatusEvent: any[] = [];
+   
+  uomTable: any[] = [];
+  selectedUom: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
@@ -31,7 +31,7 @@ export class StatusEventComponent {
     private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
-    private service: StatusEventService,
+    private service: UomService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
@@ -43,7 +43,7 @@ export class StatusEventComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Status/Event'];
+    const dataToSend = ['Setup', 'UOM'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -53,14 +53,9 @@ export class StatusEventComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'preRequisite', header: 'Pre Requisite' },
-      { field: 'type', header: 'Type' },
-      { field: 'action', header: 'Action' },
-      { field: 'trigger', header: 'Trigger' },
-      { field: 'level', header: 'Level' },
-      { field: 'conclusive', header: 'Conclusive' },
-      { field: 'remark', header: 'Remark' },
-      { field: 'statusDescription', header: 'Status' },
+      { field: 'uomId', header: 'UOM ID' },
+      { field: 'uomDescription', header: 'UOM Name' },
+      { field: 'uomType', header: 'UOM Type' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -68,9 +63,6 @@ export class StatusEventComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'typeId', header: 'Type ID' },
-      {field: 'statusId', header: 'Status ID'},
-      { field: 'typeText', header: 'Type Name' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -96,7 +88,7 @@ export class StatusEventComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           console.log(res);
-          this.statusEventTable = res;
+          this.uomTable = res;
           this.getSearchDropdown();
           this.spin.hide();
         }, error: (err: any) => {
@@ -108,9 +100,9 @@ export class StatusEventComponent {
   }
 
   onChange() {
-    const choosen = this.selectedStatusEvent[this.selectedStatusEvent.length - 1];
-    this.selectedStatusEvent.length = 0;
-    this.selectedStatusEvent.push(choosen);
+    const choosen = this.selectedUom[this.selectedUom.length - 1];
+    this.selectedUom.length = 0;
+    this.selectedUom.push(choosen);
   }
 
   customTable() {
@@ -124,22 +116,22 @@ export class StatusEventComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedStatusEvent[0]);
+        this.deleterecord(this.selectedUom[0]);
       }
     });
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedStatusEvent.length === 0 && type != 'New') {
+    if (this.selectedUom.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedStatusEvent[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/statusevent-new/' + paramdata]);
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedUom[0] : linedata, pageflow: type });
+      this.router.navigate(['/main/idMaster/uom-new/' + paramdata]);
     }
   }
 
   deleteDialog() {
-    if (this.selectedStatusEvent.length === 0) {
+    if (this.selectedUom.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return;
     }
@@ -148,12 +140,12 @@ export class StatusEventComponent {
       width: '60%',
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
-      data: { line: this.selectedStatusEvent, module: 'Status/Event', body: 'This action cannot be undone. All values associated with this field will be lost.' },
+      data: { line: this.selectedUom, module: 'UOM', body: 'This action cannot be undone. All values associated with this field will be lost.' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleterecord(this.selectedStatusEvent[0]);
+        this.deleterecord(this.selectedUom[0]);
       }
     });
   }
@@ -162,7 +154,7 @@ export class StatusEventComponent {
     this.spin.show();
     this.service.Delete(lines.typeId).subscribe({
       next: (res: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.typeId + ' deleted successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.uomId + ' deleted successfully' });
         this.spin.hide();
         this.initialCall();
       }, error: (err: any) => {
@@ -173,7 +165,7 @@ export class StatusEventComponent {
   }
 
   downloadExcel() {
-    const exportData = this.statusEventTable.map(item => {
+    const exportData = this.uomTable.map(item => {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
@@ -188,29 +180,29 @@ export class StatusEventComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Status/Event');
+    this.cs.exportAsExcel(exportData, 'UOM');
   }
 
   searchform = this.fb.group({
-    typeId: [],
-    // statusId: [],
+    uomId: [],
+    statusId: [],
     companyId: [[this.auth.companyId],],
     languageId: [[this.auth.languageId],]
   })
 
   readonly fieldDisplayNames: Record<string, string> = {
-    typeId: 'Status/Event',
+    uomId: 'UOM',
     statusId: 'Status'
   };
 
   languageDropdown: any = [];
   companyDropdown: any = [];
-  typeDropdown: any = [];
+  uomDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
 
-    this.statusEventTable.forEach(res => {
+    this.uomTable.forEach(res => {
 
       if (res.languageId != null) {
         this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
@@ -220,9 +212,9 @@ export class StatusEventComponent {
         this.companyDropdown.push({ value: res.companyId, label: res.companyName });
         this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
       }
-      if (res.preRequisite != null) {
-        this.typeDropdown.push({ value: res.preRequisite, label: res.preRequisite });
-        this.typeDropdown = this.cs.removeDuplicatesFromArrayList(this.typeDropdown, 'value');
+      if (res.uomId != null) {
+        this.uomDropdown.push({ value: res.uomId, label: res.uomDescription });
+        this.uomDropdown = this.cs.removeDuplicatesFromArrayList(this.uomDropdown, 'value');
       }
       if (res.statusId != null) {
         this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
@@ -232,7 +224,7 @@ export class StatusEventComponent {
      this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
-  @ViewChild('statusEvent') overlayPanel!: OverlayPanel;
+  @ViewChild('uom') overlayPanel!: OverlayPanel;
   closeOverLay() {
     this.overlayPanel.hide();
   }
@@ -247,7 +239,7 @@ export class StatusEventComponent {
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
-        this.statusEventTable = res;
+        this.uomTable = res;
         this.spin.hide();
         this.overlayPanel.hide();
       },
@@ -260,8 +252,8 @@ export class StatusEventComponent {
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
-      typeId: [],
-      // statusId: [],
+      uomId: [],
+      statusId: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
     })
