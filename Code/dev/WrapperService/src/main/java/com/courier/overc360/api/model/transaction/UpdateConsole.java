@@ -2,7 +2,6 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -276,5 +275,8 @@ public class UpdateConsole {
     private String referenceField19;
 
     private String referenceField20;
+
+    // consolidation check
+    private Long unconsolidatedFlag;
 
 }

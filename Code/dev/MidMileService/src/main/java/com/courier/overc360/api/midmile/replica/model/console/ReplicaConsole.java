@@ -64,11 +64,11 @@ public class ReplicaConsole {
     @Column(name = "CONSOLE_GROUP_NAME", columnDefinition = "nvarchar(50)")
     private String consoleGroupName;
 
-//    @Id
+    //    @Id
     @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-//    @Id
+    //    @Id
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
@@ -346,19 +346,19 @@ public class ReplicaConsole {
     @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
     private String hubCode;
 
-    @Column(name = "IS_EXEMPTED" , columnDefinition = "nvarchar(50)")
+    @Column(name = "IS_EXEMPTED", columnDefinition = "nvarchar(50)")
     private String isExempted;
 
-    @Column(name = "EXEMPTION_FOR" , columnDefinition = "nvarchar(50)")
+    @Column(name = "EXEMPTION_FOR", columnDefinition = "nvarchar(50)")
     private String exemptionFor;
 
-    @Column(name = "EXEMPTION_BENEFICIARY" , columnDefinition = "nvarchar(50)")
+    @Column(name = "EXEMPTION_BENEFICIARY", columnDefinition = "nvarchar(50)")
     private String exemptionBeneficiary;
 
-    @Column(name = "EXEMPTION_REFERENCE" , columnDefinition = "nvarchar(50)")
+    @Column(name = "EXEMPTION_REFERENCE", columnDefinition = "nvarchar(50)")
     private String exemptionReference;
 
-    @Column(name = "CUSTOMS_CCR_NO" , columnDefinition = "nvarchar(500)")
+    @Column(name = "CUSTOMS_CCR_NO", columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
 
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
@@ -438,5 +438,9 @@ public class ReplicaConsole {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
+
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag;
 
 }

@@ -199,10 +199,10 @@ public class PreAlertService {
                 //HAWB_TYPE
                 dbPreAlert.setHawbType("EVENT");
                 dbPreAlert.setHawbTypeId("3");
-                Optional<IKeyValuePair> statusText = consignmentEntityRepository.getEventText(iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), "3");
+                Optional<String> statusText = consignmentEntityRepository.statusEventText(dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(),  "44");
                 if (statusText.isPresent()) {
-                    IKeyValuePair ikey = statusText.get();
-                    dbPreAlert.setHawbTypeDescription(ikey.getEventText());
+                    String ikey = statusText.get();
+                    dbPreAlert.setHawbTypeDescription(ikey);
                     dbPreAlert.setHawbTimeStamp(new Date());
                 }
 

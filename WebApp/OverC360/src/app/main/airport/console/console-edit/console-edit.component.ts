@@ -393,8 +393,8 @@ export class ConsoleEditComponent {
           key: 'br',
           detail: res[0].partnerHouseAirwayBill + ' has been created successfully',
         });
-        this.downloadExcelWB(res);
-        this.router.navigate(['/main/airport/console']);
+        this.downloadExcelWB1(res);
+        //this.router.navigate(['/main/airport/console']);
       },
       error: (err) => {
         this.spin.hide();
@@ -950,7 +950,7 @@ export class ConsoleEditComponent {
 
   
     const consoleManifestColumns = [
-      { field: 'partnerMasterAirwayBill', header: '#' },
+      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
       { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
@@ -1009,10 +1009,25 @@ export class ConsoleEditComponent {
         const consoleData = groupedByConsoleId[consoleId];
   
         const worksheetConsole = workbook.addWorksheet(`CONSOLE-${index + 1}`);
-        worksheetConsole.columns = consoleManifestColumns;
-  
-        // Add new row
-        const newRow = {
+
+                    // Add image to worksheet (assuming iwExpressLogo.headerLogo is your base64 image)
+                    const base64Image1 = iwExpressLogo.headerLogo;
+                    const logoId = workbook.addImage({
+                      base64: base64Image1,
+                      extension: 'png',
+                    });
+                    worksheetConsole.addImage(logoId, {
+                      tl: { col: 4, row: 0 }, // Top-left position
+                      ext: { width: 350, height: 100 }, // Width and height
+                    });
+          
+                    // Skip 5 rows before adding headers and data
+                    for (let i = 0; i < 4; i++) {
+                      worksheetConsole.addRow([]); // Add empty rows to skip
+                    }
+
+         // Add new row
+         const newRow = {
           index: '',
           partnerHouseAirwayBill: consoleData[0].consoleGroupName || '',
           airportOriginCode: consoleData[0].consoleName || '',
@@ -1027,23 +1042,24 @@ export class ConsoleEditComponent {
           consignmentValueLocal:  this.datePipe.transform(currentDate, 'dd-MM-yyyy'),
           iata: '',
           hsCode: '',
-          consoleId: consoleId
         };
-        worksheetConsole.addRow(newRow);
+        worksheetConsole.addRow(Object.values(newRow));
+
+        worksheetConsole.addRow(Object.values(consoleManifestColumns.map(col => col.header)));
   
+       
+
         // Add console data rows
-        consoleData.forEach((item: any, idx: number) => {
+        consoleData.forEach((item: any, index: number) => {
           const exportItem: any = {};
           consoleManifestColumns.forEach(col => {
-            if (col.field === 'partnerMasterAirwayBill') {
-              exportItem[col.header] = item[col.field];
-            } else if (col.field === 'grossWeight' || col.field === 'noOfPieces') {
-              exportItem[col.header] = item[col.field];
+            if (col.format == 'number') {
+              exportItem[col.header] = index + 1;
             } else {
-              exportItem[col.header] = item[col.field] || '';
+              exportItem[col.header] = item[col.field];
             }
           });
-          worksheetConsole.addRow(exportItem);
+          worksheetConsole.addRow(Object.values(exportItem));
         });
   
         const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
@@ -1061,7 +1077,7 @@ export class ConsoleEditComponent {
                 exportItem[col.header] = item[col.field];
               });
               
-              worksheetInvoices.addRow(exportItem);
+              worksheetInvoices.addRow(Object.values(exportItem));
             });
   
             const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${index + 1}`);
@@ -1072,7 +1088,7 @@ export class ConsoleEditComponent {
               invoiceItemsColumns.forEach(col => {
                   exportItem[col.header] = item[col.field];
               });
-              worksheetInvoiceItems.addRow(exportItem);
+              worksheetInvoiceItems.addRow(Object.values(exportItem));
             });
           }
         }

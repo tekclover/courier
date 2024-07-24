@@ -133,4 +133,7 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
                                  @Param("hawbTypeId") String hawbTypeId,
                                  @Param("partnerMasterAB") String partnerMasterAB);
 
+    boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerMasterAirwayBill, String consoleId, Long deletionIndicator);
+
 }

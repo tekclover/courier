@@ -530,6 +530,15 @@ public class MidMileController {
         return new ResponseEntity<>(dashboard, HttpStatus.OK);
     }
 
+    // Generate Location Sheet
+    @ApiOperation(response = LocationSheetOutput.class, value = "Generate LocationSheet") // label for swagger
+    @PostMapping("/console/location/sheet")
+    public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
+                                               @RequestParam String loginUserID, @RequestParam String authToken) {
+        LocationSheetOutput[] sheetOutputs = midMileService.generateLocationSheet(sheetInputs, loginUserID, authToken);
+        return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
+    }
+
     // Console Create preAlertResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on PreAlert Input")
     @PostMapping("/console/prealert")
@@ -626,7 +635,8 @@ public class MidMileController {
     // Find ConsignmentInvoice
     @ApiOperation(response = InvoiceForm[].class, value = "Find ConsignmentInvoice") //label for swagger
     @PostMapping("/consignment/findConsignmentInvoice")
-    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice,
+                                                @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
     }
 
@@ -694,12 +704,70 @@ public class MidMileController {
         return new ResponseEntity<>(consoles, HttpStatus.OK);
     }
 
-    @ApiOperation(response = ConsoleStatus[].class, value = "Console HAWB-TYPE Update")
-    @PostMapping("/console/update/hawbtype")
+    @ApiOperation(response = ConsoleStatus[].class, value = "Console Status Update ")
+    @PostMapping("/console/status/update")
     public ResponseEntity<?> updateHawbType(@Valid @RequestBody ConsoleStatus[] consoleStatuses,
                                             @RequestParam String loginUserID,
                                             @RequestParam String authToken) throws Exception {
         Console[] consoles = midMileService.updateConsoleStatus(consoleStatuses, loginUserID, authToken);
         return new ResponseEntity<>(consoles, HttpStatus.OK);
     }
+
+    //===============================================Unconsolidation===================================================
+    // Get All Unconsolidation Details
+    @ApiOperation(response = Unconsolidation[].class, value = "Get all Unconsolidation Details")
+    @GetMapping("/unconsolidation")
+    public ResponseEntity<?> getAllUnconsolidationDetails(@RequestParam String authToken) {
+        Unconsolidation[] unconsolidations = midMileService.getAllUnconsolidations(authToken);
+        return new ResponseEntity<>(unconsolidations, HttpStatus.OK);
+    }
+
+    // Get Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Get Unconsolidation") // label for swagger
+    @GetMapping("/unconsolidation/get")
+    public ResponseEntity<?> getUnconsolidation(@RequestParam String partnerId, @RequestParam String languageId,
+                                                @RequestParam String companyId, @RequestParam String partnerMasterAirwayBill,
+                                                @RequestParam String partnerHouseAirwayBill, @RequestParam String pieceId,
+                                                @RequestParam String authToken) {
+        Unconsolidation unconsolidation = midMileService.getUnconsolidation(languageId, companyId, partnerId,
+                partnerHouseAirwayBill, partnerMasterAirwayBill, pieceId, authToken);
+        return new ResponseEntity<>(unconsolidation, HttpStatus.OK);
+    }
+
+    // Create new Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Create new Unconsolidation") // label for swagger
+    @PostMapping("/unconsolidation/create")
+    public ResponseEntity<?> postUnconsolidation(@RequestBody AddUnconsolidation addUnconsolidation,
+                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
+        Unconsolidation unconsolidation = midMileService.createUnconsolidation(addUnconsolidation, loginUserID, authToken);
+        return new ResponseEntity<>(unconsolidation, HttpStatus.OK);
+    }
+
+    // Update Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Update Unconsolidation") // label for swagger
+    @PatchMapping("/unconsolidation/update")
+    public ResponseEntity<?> patchUnconsolidation(@Valid @RequestBody UpdateUnconsolidation updateUnconsolidation,
+                                                  @RequestParam String loginUserID, @RequestParam String authToken) {
+        Unconsolidation unconsolidation = midMileService.updateUnconsolidation(updateUnconsolidation, loginUserID, authToken);
+        return new ResponseEntity<>(unconsolidation, HttpStatus.OK);
+    }
+
+    // Delete Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Delete Unconsolidations - list") // label for Swagger
+    @PostMapping("/unconsolidation/delete/list")
+    public ResponseEntity<?> deleteUnconsolidation(@RequestBody List<UnconsolidationDeleteInput> deleteInputList,
+                                                   @RequestParam String loginUserID, @RequestParam String authToken) {
+        midMileService.deleteUnconsolidations(deleteInputList, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Unconsolidations
+    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidation") // label for swagger
+    @PostMapping("/unconsolidation/find")
+    public ResponseEntity<?> findUnconsolidations(@RequestBody FindUnconsolidation findUnconsolidation,
+                                                  @RequestParam String authToken) throws Exception {
+        Unconsolidation[] unconsolidations = midMileService.findUnconsolidations(findUnconsolidation, authToken);
+        return new ResponseEntity<>(unconsolidations, HttpStatus.OK);
+    }
+
 }
