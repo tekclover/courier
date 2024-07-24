@@ -1864,6 +1864,51 @@ public class ConsoleService {
         return mobileDashboard;
     }
 
+    /**
+     * Generate Location Sheet
+     *
+     * @param locationSheetInputList
+     * @return
+     */
+    public List<LocationSheetOutput> generateLocationSheet(List<LocationSheetInput> locationSheetInputList, String loginUserID) {
+
+        List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
+        for (LocationSheetInput sheetInput : locationSheetInputList) {
+
+            log.info("given Inputs to generate locationSheet --> {}", sheetInput);
+
+            boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
+                    sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
+                    sheetInput.getConsoleId(), 0L);
+            if (!consolesPresent) {
+                throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+            }
+
+//            Long sumOfPieces = consoleList.stream().mapToLong(c -> Long.parseLong(c.getTotalQuantity())).sum();
+//            log.info("sumOfPieces --> {}", sumOfPieces);
+//
+//            Double sumOfWeights = consoleList.stream().mapToDouble(c -> Double.parseDouble(c.getNetWeight())).sum();
+//            log.info("sumOfWeights --> {}", sumOfWeights);
+
+            LocationSheetOutput sheetOutput = new LocationSheetOutput();
+            BeanUtils.copyProperties(sheetInput, sheetOutput, CommonUtils.getNullPropertyNames(sheetInput));
+
+//            sheetOutput.setTotalNoOfPieces(String.valueOf(sumOfPieces));
+//            sheetOutput.setTotalSumOfWeights(String.valueOf(sumOfWeights));
+//
+//            sheetOutput.setLanguageDescription(consoleList.get(0).getLanguageDescription());
+//            sheetOutput.setCompanyName(consoleList.get(0).getCompanyName());
+//            sheetOutput.setOrigin(consoleList.get(0).getCountryOfOrigin());
+//            sheetOutput.setConsigneeName(consoleList.get(0).getConsigneeName());
+//            sheetOutput.setMasterAirwayBill(consoleList.get(0).getMasterAirwayBill());
+            sheetOutput.setNatureOfGoods("COURIER MATERIALS");
+            sheetOutput.setLocationSheetTimeStamp(new Date());
+
+            createdLocationSheetOutputList.add(sheetOutput);
+        }
+        return createdLocationSheetOutputList;
+    }
+
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,
                                   String houseAirwayBill, String consoleId, String error) {

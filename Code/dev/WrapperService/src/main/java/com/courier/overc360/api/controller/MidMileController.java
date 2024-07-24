@@ -532,7 +532,7 @@ public class MidMileController {
 
     // Generate Location Sheet
     @ApiOperation(response = LocationSheetOutput.class, value = "Generate LocationSheet") // label for swagger
-    @PostMapping("/console/create/list")
+    @PostMapping("/console/location/sheet")
     public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
                                                @RequestParam String loginUserID, @RequestParam String authToken) {
         LocationSheetOutput[] sheetOutputs = midMileService.generateLocationSheet(sheetInputs, loginUserID, authToken);
@@ -635,7 +635,8 @@ public class MidMileController {
     // Find ConsignmentInvoice
     @ApiOperation(response = InvoiceForm[].class, value = "Find ConsignmentInvoice") //label for swagger
     @PostMapping("/consignment/findConsignmentInvoice")
-    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice,
+                                                @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
     }
 
