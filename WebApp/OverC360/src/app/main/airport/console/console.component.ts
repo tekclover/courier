@@ -406,7 +406,7 @@ export class ConsoleComponent {
             }
   
             // Add headers
-            worksheet.addRow(Object.values(cols.map(col => col.header)));
+            
   
             // New row to be added before console data
             const newRow = {
@@ -424,10 +424,11 @@ export class ConsoleComponent {
               'Customs KD': this.datePipe.transform(currentDate, 'dd-MM-yyyy'),
               'IATA KD': '',
               'HS Code': '',
-              'Console ID': consoleId // Include the console ID in the new row
             };
   
             worksheet.addRow(Object.values(newRow));
+
+            worksheet.addRow(Object.values(cols.map(col => col.header)));
   
             // Map console data and convert to rows
             consoleData.forEach((item:any) => {
