@@ -769,7 +769,7 @@ export class ConsignmentNewComponent {
       { field: 'exchangeRate', header: 'Exchange Rate', showFooter: false  },
       { field: 'iataCharge', header: 'IATA', showFooter: false  },
       { field: 'customsInsurance', header: 'Customs Insurance', showFooter: true  },
-      { field: 'duty', header: 'Duty', showFooter: true, },
+      { field: 'dutyPercentage', header: 'Duty', showFooter: true, },
       { field: 'consignmentValueLocal', header: 'Consignment Value Local', showFooter: true  },
       { field: 'addIata', header: 'Add IATA', showFooter: true  },
       { field: 'addInsurance', header: 'Add Insurance', showFooter: true  },

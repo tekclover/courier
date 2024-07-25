@@ -18,7 +18,6 @@ import { ConsoleService } from '../console.service';
 export class ConsoleBulkComponent {
   status: any[] = [];
   incoTerms: any[] = [];
-  isExempted: any[] = [];
   constructor(
     public dialogRef: MatDialogRef<ConsoleBulkComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -37,10 +36,7 @@ export class ConsoleBulkComponent {
       { value: 'DDU', label: 'DDU' },
       { value: 'DDU', label: 'DDU' }
     ];
-    this.isExempted = [
-      { value: 'DDU', label: 'DDU' },
-      { value: 'DDU', label: 'DDU' }
-    ];
+
   }
 
   // form builder initialize
@@ -152,10 +148,7 @@ export class ConsoleBulkComponent {
     updatedBy: [],
     updatedOn: [],
     volume: [],
-    isExempted: [],
-    exemptionFor: [],
-    exemptionBeneficiary: [],
-    exemptionReference: [],
+
   });
 
   languageIdList: any[] = [];
@@ -217,47 +210,42 @@ export class ConsoleBulkComponent {
     }
   }
   save() {
-    if (this.form.controls.partnerMasterAirwayBill != null) {
+    if (this.form.controls.partnerMasterAirwayBill.value != null) {
       this.Consigment.forEach((x: any) => {
         x.partnerMasterAirwayBill = this.form.controls.partnerMasterAirwayBill.value;
       });
     }
-    if (this.form.controls.countryOfOrigin != null) {
+    if (this.form.controls.countryOfOrigin.value != null) {
       this.Consigment.forEach((x: any) => {
         x.countryOfOrigin = this.form.controls.countryOfOrigin.value;
       });
     }
-    if (this.form.controls.flightNo != null) {
+    if (this.form.controls.flightNo.value != null) {
       this.Consigment.forEach((x: any) => {
         x.flightNo = this.form.controls.flightNo.value;
       });
     }
-    if (this.form.controls.shipperId != null) {
+    if (this.form.controls.shipperId.value != null) {
       this.Consigment.forEach((x: any) => {
         x.shipperId = this.form.controls.shipperId.value;
       });
     }
-    if (this.form.controls.primaryDo != null) {
+    if (this.form.controls.primaryDo.value != null) {
       this.Consigment.forEach((x: any) => {
         x.primaryDo = this.form.controls.primaryDo.value;
       });
     }
-    if (this.form.controls.secondaryDo != null) {
+    if (this.form.controls.secondaryDo.value != null) {
       this.Consigment.forEach((x: any) => {
         x.secondaryDo = this.form.controls.secondaryDo.value;
       });
     }
-    if (this.form.controls.customsCcrNo != null) {
+    if (this.form.controls.customsCcrNo.value != null) {
       this.Consigment.forEach((x: any) => {
         x.customsCcrNo = this.form.controls.customsCcrNo.value;
       });
     }
-    if (this.form.controls.hubCode != null) {
-      this.Consigment.forEach((x: any) => {
-        x.hubCode = this.form.controls.hubCode.value;
-      });
-    }
-    if (this.form.controls.consoleGroupName != null) {
+    if (this.form.controls.consoleGroupName.value != null) {
       this.Consigment.forEach((x: any) => {
         x.consoleGroupName = this.form.controls.consoleGroupName.value;
       });
@@ -306,10 +294,6 @@ export class ConsoleBulkComponent {
         },
       });
     }
-  }
-
-  isExemptedChanged(value:any){
-  console.log(value)
   }
 }
 

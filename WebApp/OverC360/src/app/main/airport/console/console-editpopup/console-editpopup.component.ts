@@ -19,6 +19,7 @@ import { ConsoleService } from '../console.service';
 export class ConsoleEditpopupComponent {
 
   status: any[] = [];
+  isExempted: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<ConsoleTransferComponent>,
@@ -34,7 +35,10 @@ export class ConsoleEditpopupComponent {
     private cas: CommonAPIService,
     private auth: AuthService,
   ) { 
-    
+    this.isExempted = [
+      { value: 'Yes', label: 'Yes' },
+      { value: 'No', label: 'No' }
+    ];
   }
 
    // form builder initialize
@@ -145,6 +149,10 @@ export class ConsoleEditpopupComponent {
     primaryDo: [],
     secondaryDo: [],
     
+    isExempted: [],
+    exemptionFor: [],
+    exemptionBeneficiary: [],
+    exemptionReference: [],
    
   });
 
@@ -216,7 +224,9 @@ save() {
     },
   });
  } 
-
+  isExemptedChanged(value:any){
+  console.log(value)
+  }
 }
 
 
