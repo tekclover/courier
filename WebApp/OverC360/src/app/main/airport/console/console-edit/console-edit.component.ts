@@ -987,7 +987,15 @@ export class ConsoleEditComponent {
       document.body.removeChild(a);
     });
   }
+
+  createLocation(){
+    this.service.updateSingle(this.selectedConsole).subscribe({
+      next: (res) => {
+        
+      }})
+  }
 }
+
 
 
 

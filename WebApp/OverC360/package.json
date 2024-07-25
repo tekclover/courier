@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "development": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration development --base-href=/overc/",
+    "development": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration development --base-href=/webportal/",
     "aot": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng serve --o"
   },
   "private": true,
