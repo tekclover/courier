@@ -124,16 +124,18 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
 
 
     // Get Mobile Dashboard Count
-    @Query(value = "Select COUNT(*) From tblconsole tc\n" +
-            "Where tc.IS_DELETED=0 And\n" +
-            "tc.LANG_ID = :languageId And\n" +
-            "tc.C_ID = :companyId And\n" +
-            "tc.HAWB_TYP_ID != :hawbTypeId And\n" +
-            "tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    @Query(value = "Select COUNT(*) From (\n" +
+            "Select COUNT(*) As consoleCount\n" +
+            "From tblconsole tc \n" +
+            "Where tc.IS_DELETED=0\n" +
+            "And tc.LANG_ID = :languageId\n" +
+            "And tc.C_ID = :companyId\n" +
+            "And tc.HAWB_TYP_ID = :hawbTypeId\n" +
+            "Group By tc.PARTNER_MASTER_AIRWAY_BILL\n" +
+            ") x", nativeQuery = true)
     long getMobileDashboardCount(@Param("languageId") String languageId,
                                  @Param("companyId") String companyId,
-                                 @Param("hawbTypeId") String hawbTypeId,
-                                 @Param("partnerMasterAB") String partnerMasterAB);
+                                 @Param("hawbTypeId") String hawbTypeId);
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
             String languageId, String companyId, String partnerMasterAirwayBill, String consoleId, Long deletionIndicator);
@@ -164,8 +166,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "tc.PARTNER_NAME As partnerName,\n" +
             "tc.PARTNER_TYPE As partnerType,\n" +
             "tc.CONSIGNEE_NAME As consigneeName,\n" +
-            "tc.COUNTRY_OF_ORIGIN As origin,\n" +
-            "tc.MASTER_AIRWAY_BILL As masterAirwayBill\n" +
+//            "tc.MASTER_AIRWAY_BILL As masterAirwayBill,\n" +
+            "tc.COUNTRY_OF_ORIGIN As origin\n" +
             "From tblconsole tc\n" +
             "Where tc.IS_DELETED=0\n" +
             "AND tc.LANG_ID = :languageId\n" +
