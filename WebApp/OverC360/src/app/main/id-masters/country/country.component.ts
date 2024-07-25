@@ -53,7 +53,7 @@ export class CountryComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'countryId', header: 'Country ID' },
+      { field: 'countryId', header: 'Country ID',format:'hyperLink' },
       { field: 'countryName', header: 'Country Name' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
@@ -123,6 +123,10 @@ export class CountryComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    
+if(linedata){
+  this.selectedCountry = linedata;
+}
     if (this.selectedCountry.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

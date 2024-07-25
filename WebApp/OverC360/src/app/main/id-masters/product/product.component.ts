@@ -52,7 +52,7 @@ export class ProductComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'productId', header: 'Product ID' },
+      { field: 'productId', header: 'Product ID' ,format:'hyperLink'},
       { field: 'productName', header: 'Product Name' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'remark', header: 'Remarks' },
@@ -126,6 +126,9 @@ export class ProductComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedProduct = linedata;
+    }
     if (this.selectedProduct.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

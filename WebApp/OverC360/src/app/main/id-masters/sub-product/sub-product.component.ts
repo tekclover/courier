@@ -51,7 +51,7 @@ export class SubProductComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'subProductId', header: 'Sub Product ID' },
+      { field: 'subProductId', header: 'Sub Product ID' ,format:'hyperLink'},
       { field: 'subProductName', header: 'Sub Product Name' },
       { field: 'remark', header: 'Remark' },
       { field: 'statusDescription', header: 'Status' },
@@ -125,6 +125,9 @@ export class SubProductComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedSubProduct = linedata;
+    }
     if (this.selectedSubProduct.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

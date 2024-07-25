@@ -167,7 +167,8 @@ export class StatusEventNewComponent {
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.typeIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.statusevent.key);
+        this.typeIdList = this.cas.forLanguageFilterWithoutKey(results[2], this.cas.dropdownlist.setup.statusevent.key);
+        this.typeIdList.push({value: 0, label: 0});
         this.spin.hide();
       },
       error: (err: any) => {

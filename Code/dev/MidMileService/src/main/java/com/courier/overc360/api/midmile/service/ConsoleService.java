@@ -1404,6 +1404,7 @@ public class ConsoleService {
                     unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
                 }
 
+                dbConsole.setReferenceField10("SCAN");
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
                 Console updatetedConsole = consoleRepository.save(dbConsole);

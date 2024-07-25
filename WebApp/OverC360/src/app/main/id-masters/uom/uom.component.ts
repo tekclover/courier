@@ -53,7 +53,7 @@ export class UomComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'uomId', header: 'UOM ID' },
+      { field: 'uomId', header: 'UOM ID' ,format:'hyperLink'},
       { field: 'uomDescription', header: 'UOM Name' },
       { field: 'uomType', header: 'UOM Type' },
       {field: 'statusDescription', header: 'Status'},
@@ -124,6 +124,9 @@ export class UomComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedUom = linedata;
+    }
     if (this.selectedUom.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
@@ -223,7 +226,7 @@ export class UomComponent {
         this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
       }
     })
-     this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
   @ViewChild('uom') overlayPanel!: OverlayPanel;

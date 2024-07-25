@@ -52,7 +52,7 @@ export class UsersComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyIdAndDescription', header: 'Company' },
-      { field: 'userRoleId', header: 'User Role' },
+      { field: 'userRoleId', header: 'User Role' ,format:'hyperLink'},
       { field: 'userName', header: 'User Name' },
       { field: 'emailId', header: 'Email Id' },
       { field: 'createdBy', header: 'Created By' },
@@ -131,6 +131,9 @@ export class UsersComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedUser = linedata;
+    }    
     if (this.selectedUser.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

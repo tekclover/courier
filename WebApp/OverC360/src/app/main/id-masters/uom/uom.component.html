@@ -33,11 +33,11 @@
                             formControlName="uomId" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
                     </div>
-                    <!-- <div class="col-3 mb-3 borderRadius12">
+                    <div class="col-3 mb-3 borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Status</p>
                         <p-multiSelect  placeholder="Select" filter="true" [options]="statusDropdown" formControlName="statusId" appendTo="body"
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                      </div> -->
+                      </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>
@@ -86,12 +86,14 @@
                         <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedUom" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
-                    <td *ngFor="let col of columns">
-                        <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
+                    <td *ngFor="let col of columns" [style]="col.style">
+                        <ng-container *ngIf="col.format !== 'date' && col.format !== 'hyperLink'; else dateTemplate">
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                            {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
+                            <span *ngIf="col.format == 'hyperLink'" (click)="openCrud('Edit', rowData)" style="cursor:pointer"
+                                class="textOrange font-weight-bold hvr-underline-from-center">{{ rowData[col.field] }}</span>
+                            <span *ngIf="col.format == 'date'">{{ rowData[col.field] | date: 'dd-MM-yyyy HH:mm'}}</span>
                         </ng-template>
                     </td>
                 </tr>

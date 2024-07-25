@@ -52,7 +52,7 @@ export class NotificationComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'notificationId', header: 'Notification ID' },
+      { field: 'notificationId', header: 'Notification ID',format:'hyperLink' },
       { field: 'notificationText', header: 'Description' },
       { field: 'productName', header: 'Product' },
       { field: 'subProductName', header: 'Sub Product' },
@@ -129,6 +129,9 @@ export class NotificationComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedNotification = linedata;
+    }
     if (this.selectedNotification.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

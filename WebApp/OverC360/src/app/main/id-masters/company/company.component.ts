@@ -51,7 +51,7 @@ export class CompanyComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'companyId', header: 'Company ID' },
+      { field: 'companyId', header: 'Company ID', format:'hyperLink'},
       { field: 'companyName', header: 'Company Name' },
       { field: 'addressLine1', header: 'Address Line 1' },
       { field: 'addressLine2', header: 'Address Line 2' },
@@ -130,7 +130,10 @@ export class CompanyComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedCompany.length === 0 && type != 'New') {
+if(linedata){
+  this.selectedCompany = linedata;
+}
+if (this.selectedCompany.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',
         summary: 'Warning',

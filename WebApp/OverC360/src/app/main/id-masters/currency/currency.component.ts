@@ -52,7 +52,7 @@ export class CurrencyComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'currencyId', header: ' Currency ID' },
+      { field: 'currencyId', header: ' Currency ID',format:'hyperLink' },
       { field: 'currencyDescription', header: 'Description' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
@@ -119,6 +119,11 @@ export class CurrencyComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    
+
+if(linedata){
+  this.selectedCurrency = linedata;
+}
     if (this.selectedCurrency.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
