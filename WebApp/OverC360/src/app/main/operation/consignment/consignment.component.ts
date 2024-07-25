@@ -55,7 +55,7 @@ export class ConsignmentComponent {
   callTableHeader() {
     this.cols = [
 
-      { field: 'houseAirwayBill', header: 'Consignment No', style: 'min-width: 5rem' },
+      { field: 'houseAirwayBill', header: 'Consignment No', format:'hyperLink', style: 'min-width: 5rem' },
       { field: 'hawbTypeDescription', header: 'Status', style: 'min-width: 5rem' },
        { field: 'hawbTimeStamp', header: 'Time', format: 'date', style: 'min-width: 5rem' },
       { field: 'partnerName', header: 'Partner', style: 'min-width: 5rem' },
@@ -150,6 +150,9 @@ export class ConsignmentComponent {
     });
 }
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedConsignment = linedata;
+    }
     if (this.selectedConsignment.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
