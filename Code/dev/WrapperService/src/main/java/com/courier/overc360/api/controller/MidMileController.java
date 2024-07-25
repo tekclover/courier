@@ -521,24 +521,6 @@ public class MidMileController {
         return midMileService.findConsolesByPagination(findConsole, pageNo, pageSize, sortBy, authToken);
     }
 
-    // GET MobileDashboard - Console count
-    @ApiOperation(response = MobileDashboard.class, value = "Get MobileDashboard") // label for swagger
-    @PostMapping("/reports/mobileDashboard/get")
-    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
-                                                @RequestParam String partnerMasterAirwayBill, @RequestParam String authToken) {
-        MobileDashboard dashboard = midMileService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill, authToken);
-        return new ResponseEntity<>(dashboard, HttpStatus.OK);
-    }
-
-    // Generate Location Sheet
-    @ApiOperation(response = LocationSheetOutput.class, value = "Generate LocationSheet") // label for swagger
-    @PostMapping("/reports/locationSheet")
-    public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
-                                               @RequestParam String loginUserID, @RequestParam String authToken) {
-        LocationSheetOutput[] sheetOutputs = midMileService.generateLocationSheet(sheetInputs, loginUserID, authToken);
-        return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
-    }
-
     // Console Create preAlertResponse
     @ApiOperation(response = Console[].class, value = "Create Console based on PreAlert Input")
     @PostMapping("/console/prealert")
@@ -768,6 +750,34 @@ public class MidMileController {
                                                   @RequestParam String authToken) throws Exception {
         Unconsolidation[] unconsolidations = midMileService.findUnconsolidations(findUnconsolidation, authToken);
         return new ResponseEntity<>(unconsolidations, HttpStatus.OK);
+    }
+
+    //=====================================================Reports=====================================================
+    // GET MobileDashboard - Console count
+    @ApiOperation(response = MobileDashboard.class, value = "Get MobileDashboard") // label for swagger
+    @PostMapping("/reports/mobileDashboard/get")
+    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
+                                                @RequestParam String partnerMasterAirwayBill, @RequestParam String authToken) {
+        MobileDashboard dashboard = midMileService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill, authToken);
+        return new ResponseEntity<>(dashboard, HttpStatus.OK);
+    }
+
+    // Generate Location Sheet
+    @ApiOperation(response = LocationSheetOutput.class, value = "Generate LocationSheet") // label for swagger
+    @PostMapping("/reports/locationSheet")
+    public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
+                                               @RequestParam String loginUserID, @RequestParam String authToken) {
+        LocationSheetOutput[] sheetOutputs = midMileService.generateLocationSheet(sheetInputs, loginUserID, authToken);
+        return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
+    }
+
+    // Generate Console Tracking Report
+    @ApiOperation(response = ConsoleTrackingReportOutput.class, value = "Generate Console Tracking Report")
+    @PostMapping("/reports/consoleTrackingReport")
+    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody List<ConsoleTrackingReportInput> reportInputList,
+                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+        ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReport(reportInputList, loginUserID, authToken);
+        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
 
 }

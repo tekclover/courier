@@ -14,6 +14,6 @@ export class PrealertService {
   }
 
   update(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/prealert/update/list', obj);
+    return this.http.patch<any>('/overc-midmile-service/prealert/update/list', obj);
   }
 }

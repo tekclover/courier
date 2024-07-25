@@ -153,9 +153,7 @@ export class PreAlertManifestComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if(linedata){
-      this.selectedPreAlertManifest = linedata;
-    }
+
     if (this.selectedPreAlertManifest.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
@@ -166,6 +164,9 @@ export class PreAlertManifestComponent {
 
 
   openEdit(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedPreAlertManifest = linedata;
+    }
     if (this.selectedPreAlertManifest.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

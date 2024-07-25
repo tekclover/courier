@@ -1082,46 +1082,6 @@ public class MidMileService {
         }
     }
 
-    // GET MobileDashboard - Console count
-    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill, String authToken) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.add("User-Agent", "ClassicWMS RestTemplate");
-            headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder
-                    .fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard/get")
-                    .queryParam("languageId", languageId)
-                    .queryParam("companyId", companyId)
-                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
-            HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, MobileDashboard.class);
-            log.info("result : " + result.getStatusCode());
-            return result.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    // Generate Location Sheet
-    public LocationSheetOutput[] generateLocationSheet(List<LocationSheetInput> sheetInputs, String loginUserID, String authToken) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.add("User-Agent", "RestTemplate");
-            headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/locationSheet")
-                    .queryParam("loginUserID", loginUserID);
-            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
-            ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
-            return result.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
 //    /**
 //     *
 //     * @param addConsignments
@@ -1697,6 +1657,65 @@ public class MidMileService {
             HttpEntity<?> entity = new HttpEntity<>(findUnconsolidation, headers);
             ResponseEntity<Unconsolidation[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Unconsolidation[].class);
             log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //=====================================================Reports=====================================================
+    // GET MobileDashboard - Console count
+    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "ClassicWMS RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder
+                    .fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard/get")
+                    .queryParam("languageId", languageId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, MobileDashboard.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Generate Location Sheet
+    public LocationSheetOutput[] generateLocationSheet(List<LocationSheetInput> sheetInputs, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/locationSheet")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+            ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Generate Console Tracking Report
+    public ConsoleTrackingReportOutput[] generateConsoleTrackingReport(List<ConsoleTrackingReportInput> sheetInputs, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/consoleTrackingReport")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+            ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
             return result.getBody();
         } catch (Exception e) {
             e.printStackTrace();

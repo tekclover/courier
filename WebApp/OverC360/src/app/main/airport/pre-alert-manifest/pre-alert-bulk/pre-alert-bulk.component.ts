@@ -47,6 +47,7 @@ export class PreAlertBulkComponent {
     actualCurrency: [],
     actualValue: [],
     bondedId: [],
+    airportOriginList: [],
     bayanHv: [],
     companyId: [],
     companyName: [],
@@ -219,49 +220,54 @@ export class PreAlertBulkComponent {
     }
   }
   save() {
-    if (this.form.controls.partnerMasterAirwayBill != null) {
+    if (this.form.controls.partnerMasterAirwayBill.value != null) {
       this.Consigment.forEach((x: any) => {
         x.partnerMasterAirwayBill = this.form.controls.partnerMasterAirwayBill.value;
       });
     }
-    if (this.form.controls.countryOfOrigin != null) {
+    if (this.form.controls.countryOfOrigin.value != null) {
       this.Consigment.forEach((x: any) => {
         x.countryOfOrigin = this.form.controls.countryOfOrigin.value;
       });
     }
-    if (this.form.controls.statusId != null) {
-      this.Consigment.forEach((x: any) => {
-        x.statusId = this.form.controls.statusId.value;
-      });
-    }
-    if (this.form.controls.eventCode != null) {
-      this.Consigment.forEach((x: any) => {
-        x.eventCode = this.form.controls.eventCode.value;
-      });
-    }
-    if (this.form.controls.flightNo != null) {
+    if (this.form.controls.flightNo.value != null) {
       this.Consigment.forEach((x: any) => {
         x.flightNo = this.form.controls.flightNo.value;
       });
     }
-    if (this.form.controls.shipperId != null) {
+    if (this.form.controls.shipperId.value != null) {
       this.Consigment.forEach((x: any) => {
         x.shipperId = this.form.controls.shipperId.value;
       });
     }
-    if (this.form.controls.hsCode != null) {
+    if (this.form.controls.hsCode.value != null) {
       this.Consigment.forEach((x: any) => {
         x.hsCode = this.form.controls.hsCode.value;
       });
     }
-    if (this.form.controls.incoTerms != null) {
+    if (this.form.controls.incoTerms.value != null) {
       this.Consigment.forEach((x: any) => {
         x.incoTerms = this.form.controls.incoTerms.value;
       });
     }
-    if (this.form.controls.hubCode != null) {
+    if (this.form.controls.bayanHv.value != null) {
       this.Consigment.forEach((x: any) => {
-        x.hubCode = this.form.controls.hubCode.value;
+        x.bayanHv = this.form.controls.bayanHv.value;
+      });
+    }
+    if (this.form.controls.currency.value != null) {
+      this.Consigment.forEach((x: any) => {
+        x.currency = this.form.controls.currency.value;
+      });
+    }
+    if (this.form.controls.origin.value != null) {
+      this.Consigment.forEach((x: any) => {
+        x.origin = this.form.controls.origin.value;
+      });
+    }
+    if (this.form.controls.airportOriginList.value != null) {
+      this.Consigment.forEach((x: any) => {
+        x.airportOriginList = this.form.controls.airportOriginList.value;
       });
     }
       this.prealertService.update(this.Consigment).subscribe({

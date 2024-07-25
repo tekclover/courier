@@ -1,5 +1,7 @@
 package com.courier.overc360.api.midmile.replica.model.console;
 
+import java.util.Date;
+
 public interface ConsoleImpl {
 
     String getTotalQuantity();
@@ -19,5 +21,9 @@ public interface ConsoleImpl {
     String getPartnerName();
 
     String getPartnerType();
+
+    String getUpdatedBy();
+
+    Date getUpdatedOn();
 
 }

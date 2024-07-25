@@ -11,15 +11,14 @@
                 <div class="row">
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
-                        <input maxlength="50" pInputText formControlName="partnerMasterAirwayBill" class="w-100"
-                            pInputText placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="partnerMasterAirwayBill"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
+                    <div class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 ">Origin Code</p>
                         <p-dropdown [options]="countryIdList" formControlName="countryOfOrigin" appendTo="body"
-                            [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}"
-                            placeholder="Select" />
-
+                        [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" placeholder="Select" />
+                        
                     </div>
 
                     <!-- <div class="col-6 marginFieldNew borderRadius12" >
@@ -32,70 +31,49 @@
                         <p-dropdown [options]="eventList" placeholder="Select" filter="true" formControlName="eventCode" appendTo="body"  (onChange)="eventChange()"
                           [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div> -->
-                    <div *ngIf="this.showHub == true" class="col-6 marginFieldNew borderRadius12">
+                    <div *ngIf="this.showHub == true" class="col-6 marginFieldNew borderRadius12" >
                         <p class="formControlLabel f600 textBlack mb-0 ">HUB</p>
-                        <p-dropdown [options]="hubList" placeholder="Select" filter="true" formControlName="hubCode"
-                            appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
+                        <p-dropdown [options]="hubList" placeholder="Select" filter="true" formControlName="hubCode" appendTo="body" 
+                          [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Flight No </p>
-                        <input maxlength="50" pInputText formControlName="flightNo" class="w-100" pInputText
-                            placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="flightNo"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Customer/Consignor</p>
                         <p-dropdown [options]="consignorIdList" formControlName="shipperId" appendTo="body"
                             [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}"
                             placeholder="Select" />
-
+                      
                     </div>
                     <div *ngIf="this.data.title =='CCR' " class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Customs CCR NO </p>
-                        <input maxlength="50" pInputText formControlName="customsCcrNo" class="w-100" pInputText
-                            placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="customsCcrNo"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Primary DO </p>
-                        <input maxlength="50" pInputText formControlName="primaryDo" class="w-100" pInputText
-                            placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="primaryDo"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Secondary DO </p>
-                        <input maxlength="50" pInputText formControlName="secondaryDo" class="w-100" pInputText
-                            placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="secondaryDo"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Console Group Name </p>
-                        <input maxlength="50" pInputText formControlName="consoleGroupName" class="w-100" pInputText
-                            placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="consoleGroupName"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
                     <div class="col-6 marginFieldNew borderRadius12">
                         <p class="formControlLabel f600 textBlack mb-0">Customs CCR No </p>
-                        <input maxlength="50" pInputText formControlName="customsCcrNo" class="w-100" pInputText
-                            placeholder="Enter" />
+                        <input maxlength="50" pInputText formControlName="customsCcrNo"
+                            class="w-100" pInputText placeholder="Enter" />
                     </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Is Exempted </p>
-                        <p-dropdown [options]="isExempted" (chnage)="isExemptedChanged($event)" placeholder="Select" filter="true"
-                            formControlName="isExempted" appendTo="body" [style]="{'width': '100%'}"
-                            [panelStyle]="{'width':'100%'}" />
-                    </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Exemption For </p>
-                        <input maxlength="50" pInputText formControlName="exemptionFor" class="w-100" pInputText
-                            placeholder="Enter" />
-                    </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Exemption Beneficiary </p>
-                        <input maxlength="50" pInputText formControlName="exemptionBeneficiary" class="w-100" pInputText
-                            placeholder="Enter" />
-                    </div>
-                    <div class="col-6 marginFieldNew borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Exemption Reference</p>
-                        <input maxlength="50" pInputText formControlName="exemptionReference" class="w-100" pInputText
-                            placeholder="Enter" />
-                    </div>
-
+                  
                 </div>
                 <div class="d-flex float-right py-2">
                     <button mat-dialog-close class="buttom1 textBlack mx-1">Cancel</button>
@@ -105,3 +83,5 @@
         </form>
     </div>
 </div>
+
+
