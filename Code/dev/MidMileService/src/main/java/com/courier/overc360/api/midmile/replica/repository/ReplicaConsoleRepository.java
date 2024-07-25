@@ -3,6 +3,7 @@ package com.courier.overc360.api.midmile.replica.repository;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.console.Console;
 import com.courier.overc360.api.midmile.primary.model.console.MobileApp;
+import com.courier.overc360.api.midmile.replica.model.console.ConsoleImpl;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -135,5 +136,46 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
 
     boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
             String languageId, String companyId, String partnerMasterAirwayBill, String consoleId, Long deletionIndicator);
+
+
+    // Get total Sum of NetWeight and TotalQuantity
+    @Query(value = "SELECT\n" +
+            "COALESCE(SUM(TRY_CONVERT(float, tc.NET_WEIGHT)), 0) AS totalWeight,\n" +
+            "COALESCE(SUM(TRY_CONVERT(int, tc.TOTAL_QUANTITY)), 0) AS totalQuantity\n" +
+            "FROM tblconsole tc\n" +
+            "WHERE tc.IS_DELETED = 0\n" +
+            "AND tc.LANG_ID = :languageId\n" +
+            "AND tc.C_ID = :companyId\n" +
+            "AND tc.PARTNER_ID = :partnerId\n" +
+            "AND tc.CONSOLE_ID = :consoleId\n" +
+            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    ConsoleImpl getSumValues(@Param("languageId") String languageId,
+                             @Param("companyId") String companyId,
+                             @Param("partnerId") String partnerId,
+                             @Param("consoleId") String consoleId,
+                             @Param("partnerMasterAB") String partnerMasterAB);
+
+
+    // Get Location Sheet values
+    @Query(value = "Select Top 1 \n" +
+            "tc.LANG_TEXT As langDesc, \n" +
+            "tc.C_NAME As companyDesc,\n" +
+            "tc.PARTNER_NAME As partnerName,\n" +
+            "tc.PARTNER_TYPE As partnerType,\n" +
+            "tc.CONSIGNEE_NAME As consigneeName,\n" +
+            "tc.COUNTRY_OF_ORIGIN As origin,\n" +
+            "tc.MASTER_AIRWAY_BILL As masterAirwayBill\n" +
+            "From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND tc.LANG_ID = :languageId\n" +
+            "AND tc.C_ID = :companyId\n" +
+            "AND tc.PARTNER_ID = :partnerId\n" +
+            "AND tc.CONSOLE_ID = :consoleId\n" +
+            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    ConsoleImpl getLocationSheetValues(@Param("languageId") String languageId,
+                                       @Param("companyId") String companyId,
+                                       @Param("partnerId") String partnerId,
+                                       @Param("consoleId") String consoleId,
+                                       @Param("partnerMasterAB") String partnerMasterAB);
 
 }

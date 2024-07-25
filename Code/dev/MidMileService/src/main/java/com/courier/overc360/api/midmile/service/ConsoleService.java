@@ -1847,68 +1847,6 @@ public class ConsoleService {
         return consoleList;
     }
 
-    /**
-     * Mobile Dashboard - Get Consoles Count
-     *
-     * @param languageId
-     * @param companyId
-     * @param partnerMasterAirwayBill
-     * @return
-     */
-    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill) {
-
-        MobileDashboard mobileDashboard = new MobileDashboard();
-        long consoleCount = replicaConsoleRepository.getMobileDashboardCount(languageId, companyId, "5", partnerMasterAirwayBill);
-        log.info("consoleCount --> {}", consoleCount);
-        mobileDashboard.setConsoleCount(consoleCount);
-        return mobileDashboard;
-    }
-
-    /**
-     * Generate Location Sheet
-     *
-     * @param locationSheetInputList
-     * @return
-     */
-    public List<LocationSheetOutput> generateLocationSheet(List<LocationSheetInput> locationSheetInputList, String loginUserID) {
-
-        List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
-        for (LocationSheetInput sheetInput : locationSheetInputList) {
-
-            log.info("given Inputs to generate locationSheet --> {}", sheetInput);
-
-            boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
-                    sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
-                    sheetInput.getConsoleId(), 0L);
-            if (!consolesPresent) {
-                throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
-            }
-
-//            Long sumOfPieces = consoleList.stream().mapToLong(c -> Long.parseLong(c.getTotalQuantity())).sum();
-//            log.info("sumOfPieces --> {}", sumOfPieces);
-//
-//            Double sumOfWeights = consoleList.stream().mapToDouble(c -> Double.parseDouble(c.getNetWeight())).sum();
-//            log.info("sumOfWeights --> {}", sumOfWeights);
-
-            LocationSheetOutput sheetOutput = new LocationSheetOutput();
-            BeanUtils.copyProperties(sheetInput, sheetOutput, CommonUtils.getNullPropertyNames(sheetInput));
-
-//            sheetOutput.setTotalNoOfPieces(String.valueOf(sumOfPieces));
-//            sheetOutput.setTotalSumOfWeights(String.valueOf(sumOfWeights));
-//
-//            sheetOutput.setLanguageDescription(consoleList.get(0).getLanguageDescription());
-//            sheetOutput.setCompanyName(consoleList.get(0).getCompanyName());
-//            sheetOutput.setOrigin(consoleList.get(0).getCountryOfOrigin());
-//            sheetOutput.setConsigneeName(consoleList.get(0).getConsigneeName());
-//            sheetOutput.setMasterAirwayBill(consoleList.get(0).getMasterAirwayBill());
-            sheetOutput.setNatureOfGoods("COURIER MATERIALS");
-            sheetOutput.setLocationSheetTimeStamp(new Date());
-
-            createdLocationSheetOutputList.add(sheetOutput);
-        }
-        return createdLocationSheetOutputList;
-    }
-
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,
                                   String houseAirwayBill, String consoleId, String error) {
@@ -1984,27 +1922,6 @@ public class ConsoleService {
             errorLog.setReferenceField1(deleteInput.getPartnerId());
             errorLog.setReferenceField2(deleteInput.getPartnerHouseAirwayBill());
             errorLog.setReferenceField3(deleteInput.getConsoleId());
-            errorLog.setErrorMessage(error);
-            errorLog.setCreatedBy("Admin");
-            errorLogRepository.save(errorLog);
-            errorLogList.add(errorLog);
-        }
-        errorLogService.writeLog(errorLogList);
-    }
-
-    private void createConsoleLog5(List<LocationSheetInput> locationSheetInputs, String error) throws IOException, CsvException {
-
-        List<ErrorLog> errorLogList = new ArrayList<>();
-        for (LocationSheetInput sheetInput : locationSheetInputs) {
-            ErrorLog errorLog = new ErrorLog();
-
-            errorLog.setLogDate(new Date());
-            errorLog.setLanguageId(sheetInput.getLanguageId());
-            errorLog.setCompanyId(sheetInput.getCompanyId());
-            errorLog.setRefDocNumber(sheetInput.getPartnerMasterAirwayBill());
-            errorLog.setMethod("Exception thrown in generateLocationSheet");
-            errorLog.setReferenceField1(sheetInput.getConsoleId());
-            errorLog.setReferenceField2(sheetInput.getLocation());
             errorLog.setErrorMessage(error);
             errorLog.setCreatedBy("Admin");
             errorLogRepository.save(errorLog);

@@ -13,14 +13,17 @@ public class LocationSheetInput {
     @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerMaster Airway Bill is mandatory")
-    private String partnerMasterAirwayBill;
+    @NotBlank(message = "PartnerId is mandatory")
+    private String partnerId;
 
-    //    private String houseAirwayBill;
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
 
     @NotBlank(message = "ConsoleID is mandatory")
     private String consoleId;
 
     private String location;
+
+    //    private String houseAirwayBill;
 
 }

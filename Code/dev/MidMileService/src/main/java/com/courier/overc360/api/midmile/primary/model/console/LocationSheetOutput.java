@@ -16,6 +16,8 @@ public class LocationSheetOutput {
 
     private String languageDescription;
     private String companyName;
+    private String partnerName;
+    private String partnerType;
 
     private String totalNoOfPieces;
     private String totalSumOfWeights;

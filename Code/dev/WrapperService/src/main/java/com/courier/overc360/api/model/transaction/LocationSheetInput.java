@@ -7,9 +7,12 @@ public class LocationSheetInput {
 
     private String languageId;
     private String companyId;
+    private String partnerId;
+
     private String partnerMasterAirwayBill;
-    //    private String houseAirwayBill;
     private String consoleId;
     private String location;
+
+    //    private String houseAirwayBill;
 
 }
