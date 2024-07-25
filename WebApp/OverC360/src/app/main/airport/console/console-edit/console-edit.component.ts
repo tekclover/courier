@@ -618,24 +618,26 @@ export class ConsoleEditComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.outScan = [];
+      if (result) {
+        this.outScan = [];
 
-      this.selectedConsole.forEach(x => {
-        for (let i = 0; i < 2; i++) {
-          // Create a new object or clone x
-          let newItem = { ...x }; // Using spread operator to clone x
-      
-          // Set properties based on i
-          newItem['hawbType'] = (i === 0) ? 'event' : 'status';
-          newItem['hawbTypeId'] = (i === 0) ? '9' : '10';
-          newItem['hubCode'] = result;
-      
-          // Push newItem into outScan
-          this.outScan.push(newItem);
-      
-        }
-      });
-      this.updateConsole('outscan');
+        this.selectedConsole.forEach(x => {
+          for (let i = 0; i < 2; i++) {
+            // Create a new object or clone x
+            let newItem = { ...x }; // Using spread operator to clone x
+
+            // Set properties based on i
+            newItem['hawbType'] = (i === 0) ? 'event' : 'status';
+            newItem['hawbTypeId'] = (i === 0) ? '10' : '9';
+            newItem['hubCode'] = result;
+
+            // Push newItem into outScan
+            this.outScan.push(newItem);
+
+          }
+        });
+        this.updateConsole('outscan');
+      }
     });
   }
 
