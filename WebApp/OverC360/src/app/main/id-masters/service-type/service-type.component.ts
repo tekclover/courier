@@ -52,7 +52,7 @@ export class ServiceTypeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'serviceTypeId', header: 'Service Type ID' },
+      { field: 'serviceTypeId', header: 'Service Type ID' ,format:'hyperLink'},
       { field: 'serviceTypeText', header: 'Service Type Name' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
@@ -123,6 +123,9 @@ export class ServiceTypeComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedServiceType = linedata;
+    }
     if (this.selectedServiceType.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

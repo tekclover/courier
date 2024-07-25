@@ -51,7 +51,7 @@ export class LanguageComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'languageId', header: 'Language ID' },
+      { field: 'languageId', header: 'Language ID' ,format:'hyperLink'},
       { field: 'languageDescription', header: 'Description' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -109,6 +109,9 @@ export class LanguageComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedLanguage = linedata;
+    }
     if (this.selectedLanguage.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

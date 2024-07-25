@@ -52,7 +52,7 @@ export class LoadTypeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'loadTypeId', header: 'Load Type ID' },
+      { field: 'loadTypeId', header: 'Load Type ID' ,format:'hyperLink' },
       { field: 'loadTypeText', header: 'Load Type Name' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
@@ -122,6 +122,9 @@ export class LoadTypeComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedLoadType = linedata;
+    }
     if (this.selectedLoadType.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

@@ -52,7 +52,7 @@ export class CityComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'cityId', header: ' City ID' },
+      { field: 'cityId', header: ' City ID' ,format:'hyperLink' },
       { field: 'cityName', header: 'City Name' },
       { field: 'countryName', header: 'Country' },
       { field: 'provinceName', header: 'Province' },
@@ -128,7 +128,11 @@ export class CityComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedCity.length === 0 && type != 'New') {
+    
+if(linedata){
+  this.selectedCity = linedata;
+}
+if (this.selectedCity.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedCity[0] : linedata, pageflow: type });

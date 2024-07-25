@@ -54,7 +54,7 @@ export class UserRoleComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyIdAndDescription', header: 'Company' },
-      { field: 'roleId', header: 'Role ID' },
+      { field: 'roleId', header: 'Role ID',format:'hyperLink' },
       { field: 'userRoleName', header: 'User Role' },
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
@@ -127,6 +127,9 @@ export class UserRoleComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedUserRole = linedata;
+    }
     if (this.selectedUserRole.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

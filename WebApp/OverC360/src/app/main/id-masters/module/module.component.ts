@@ -51,7 +51,7 @@ export class ModuleComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyIdAndDescription', header: 'Company' },
-      { field: 'moduleId', header: 'Module ID' },
+      { field: 'moduleId', header: 'Module ID' ,format:'hyperLink'},
       { field: 'moduleDescription', header: 'Description' },
       { field: 'menuName', header: 'Menu' },
       { field: 'subMenuName', header: 'Sub Menu' },
@@ -126,6 +126,9 @@ export class ModuleComponent {
 
   openCrud(type: any = 'New', linedata: any = null): void {
     console.log(3)
+    if(linedata){
+      this.selectedModule = linedata;
+    }
     if (this.selectedModule.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

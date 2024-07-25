@@ -52,7 +52,7 @@ export class ProvinceComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'countryName', header: 'Country' },
-      { field: 'provinceId', header: 'Province ID' },
+      { field: 'provinceId', header: 'Province ID',format:'hyperLink' },
       { field: 'provinceName', header: 'Province Name' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
@@ -123,6 +123,9 @@ export class ProvinceComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedProvince = linedata;
+    }
     if (this.selectedProvince.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

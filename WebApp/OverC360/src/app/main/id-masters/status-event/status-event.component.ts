@@ -53,7 +53,8 @@ export class StatusEventComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'preRequisite', header: 'Pre Requisite' },
+      { field: 'typeId', header: 'Type ID' ,format:'hyperLink'},
+      { field: 'preRequisite', header: 'Pre Requisite'},
       { field: 'type', header: 'Type' },
       { field: 'action', header: 'Action' },
       { field: 'trigger', header: 'Trigger' },
@@ -68,7 +69,6 @@ export class StatusEventComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      { field: 'typeId', header: 'Type ID' },
       {field:  'statusId', header: 'Status ID'},
       { field: 'typeText', header: 'Type Name' },
       { field: 'referenceField1', header: 'Reference Field 1' },
@@ -130,6 +130,9 @@ export class StatusEventComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedStatusEvent = linedata;
+    }
     if (this.selectedStatusEvent.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

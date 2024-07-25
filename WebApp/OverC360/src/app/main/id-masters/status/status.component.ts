@@ -52,7 +52,7 @@ export class StatusComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'statusId', header: 'Status ID' },
+      { field: 'statusId', header: 'Status ID' ,format:'hyperLink'},
       { field: 'statusDescription', header: 'Description' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
@@ -120,6 +120,9 @@ export class StatusComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedStatus = linedata;
+    }
     if (this.selectedStatus.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
