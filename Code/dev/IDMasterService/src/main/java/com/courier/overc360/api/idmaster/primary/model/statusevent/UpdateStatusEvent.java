@@ -23,6 +23,8 @@ public class UpdateStatusEvent {
 
     private Long deletionIndicator;
 
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;

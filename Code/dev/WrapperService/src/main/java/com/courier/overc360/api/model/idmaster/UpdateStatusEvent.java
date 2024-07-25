@@ -19,6 +19,8 @@ public class UpdateStatusEvent {
 
     private String conclusive;
 
+    private String statusId;
+
     private String remark;
 
     private Long deletionIndicator;

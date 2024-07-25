@@ -11,6 +11,8 @@ public class UpdateUom {
 
     private Long deletionIndicator;
 
+    private String statusId;
+
     private String referenceField1;
 
     private String referenceField2;
