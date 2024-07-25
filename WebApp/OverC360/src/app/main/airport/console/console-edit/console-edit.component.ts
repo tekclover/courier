@@ -622,13 +622,19 @@ export class ConsoleEditComponent {
 
       this.selectedConsole.forEach(x => {
         for (let i = 0; i < 2; i++) {
-          x['hawbType'] = (i == 0) ? 'event' : 'status';
-          x['hawbTypeId'] = (i == 0) ? '9' : '10';
-          x['hubCode'] = result;
-          this.outScan.push(x);
-          console.log(this.outScan)
+          // Create a new object or clone x
+          let newItem = { ...x }; // Using spread operator to clone x
+      
+          // Set properties based on i
+          newItem['hawbType'] = (i === 0) ? 'event' : 'status';
+          newItem['hawbTypeId'] = (i === 0) ? '9' : '10';
+          newItem['hubCode'] = result;
+      
+          // Push newItem into outScan
+          this.outScan.push(newItem);
+      
         }
-      })
+      });
       this.updateConsole('outscan');
     });
   }
@@ -1257,5 +1263,3 @@ export class ConsoleEditComponent {
 //     `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
 //   );
 // }
-
-
