@@ -52,7 +52,7 @@ export class DistrictComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'districtId', header: 'District ID' },
+      { field: 'districtId', header: 'District ID',format:'hyperLink'},
       { field: 'districtName', header: 'District Name' },
       { field: 'countryName', header: 'Country' },
       { field: 'provinceName', header: 'Province' },
@@ -128,6 +128,10 @@ export class DistrictComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    
+if(linedata){
+  this.selectedDistrict = linedata;
+}
     if (this.selectedDistrict.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

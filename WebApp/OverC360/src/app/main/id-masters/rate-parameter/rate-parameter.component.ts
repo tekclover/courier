@@ -52,7 +52,7 @@ export class RateParameterComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'rateParameterId', header: 'Rate Parameter ID' },
+      { field: 'rateParameterId', header: 'Rate Parameter ID',format:'hyperLink' },
       { field: 'rateParameterDescription', header: 'Rate Parameter Name' },
       { field: 'remark', header: 'Remarks' },
       { field: 'statusDescription', header: 'Status' },
@@ -123,6 +123,9 @@ export class RateParameterComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedRateParameter = linedata;
+    }
     if (this.selectedRateParameter.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

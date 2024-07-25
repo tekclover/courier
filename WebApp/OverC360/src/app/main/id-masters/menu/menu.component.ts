@@ -52,7 +52,7 @@ export class MenuComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyIdAndDescription', header: 'Company' },
-      { field: 'menuId', header: 'Menu ID' },
+      { field: 'menuId', header: 'Menu ID',format:'hyperLink' },
       { field: 'menuName', header: 'Menu Name' },
       { field: 'subMenuName', header: 'Sub Menu Name' },
       { field: 'statusDescription', header: 'Status' },
@@ -125,6 +125,9 @@ export class MenuComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedMenu = linedata;
+    }
     if (this.selectedMenu.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

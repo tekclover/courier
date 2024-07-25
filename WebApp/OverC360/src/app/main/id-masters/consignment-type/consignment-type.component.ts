@@ -52,7 +52,7 @@ export class ConsignmentTypeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'consignmentTypeId', header: 'Consignment Type ID' },
+      { field: 'consignmentTypeId', header: 'Consignment Type ID' ,format:'hyperLink' },
       { field: 'consignmentTypeText', header: 'Consignment Type Name' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'remark', header: 'Remark' },
@@ -121,7 +121,10 @@ export class ConsignmentTypeComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
-    if (this.selectedConsignmentType.length === 0 && type != 'New') {
+if(linedata){
+  this.selectedConsignmentType = linedata;
+}
+if (this.selectedConsignmentType.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsignmentType[0] : linedata, pageflow: type });

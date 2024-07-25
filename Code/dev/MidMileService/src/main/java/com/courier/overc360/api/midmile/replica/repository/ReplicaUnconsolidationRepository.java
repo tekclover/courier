@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,5 +61,25 @@ public interface ReplicaUnconsolidationRepository extends JpaRepository<ReplicaU
             @Param("partnerId") List<String> partnerId,
             @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
             @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill);
+
+
+    // Get No of Unconsolidated Shipments
+    @Query(value = "Select COUNT(*) From tblunconsolidation\n" +
+            "Where IS_DELETED=0\n" +
+            "And LANG_ID = :languageId\n" +
+            "And C_ID = :companyId\n" +
+            "And PARTNER_ID = :partnerId\n" +
+            "And PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
+//            "And PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAB\n" +
+            "And UNCONSOLIDATED = :unconsolidatedIndicator\n" +
+            "And CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
+    long getNoOfUnconsolidatedShipments(@Param("languageId") String languageId,
+                                        @Param("companyId") String companyId,
+                                        @Param("partnerId") String partnerId,
+                                        @Param("partnerMasterAB") String partnerMasterAB,
+//                                 @Param("partnerHouseAB") String partnerHouseAB,
+                                        @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
+                                        @Param("fromDate") Date fromDate,
+                                        @Param("toDate") Date toDate);
 
 }
