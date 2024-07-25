@@ -60,5 +60,9 @@ export class ConsoleService {
     formData.append('file', file);
     return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
   }
+
+  createLocation(obj: any) {
+    return this.http.patch<any>('/overc-midmile-service/reports/locationSheet', obj);
+  }
 }
 
