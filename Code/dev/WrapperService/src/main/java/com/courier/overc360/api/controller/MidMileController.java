@@ -763,7 +763,7 @@ public class MidMileController {
     }
 
     // Generate Location Sheet
-    @ApiOperation(response = LocationSheetOutput.class, value = "Generate LocationSheet") // label for swagger
+    @ApiOperation(response = LocationSheetOutput.class, value = "Generate Location Sheet") // label for swagger
     @PostMapping("/reports/locationSheet")
     public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
                                                @RequestParam String loginUserID, @RequestParam String authToken) {

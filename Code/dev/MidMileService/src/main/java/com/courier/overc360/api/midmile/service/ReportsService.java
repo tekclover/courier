@@ -23,11 +23,9 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -75,10 +73,14 @@ public class ReportsService {
      */
     public List<LocationSheetOutput> generateLocationSheet(List<LocationSheetInput> locationSheetInputList, String loginUserID) {
 
-//        List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
-//        for (LocationSheetInput sheetInput : locationSheetInputList) {
+        Set<String> processedKeys = new HashSet<>();
+        List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
 
-        List<LocationSheetOutput> createdLocationSheetOutputList = locationSheetInputList.stream().map(sheetInput -> {
+        for (LocationSheetInput sheetInput : locationSheetInputList) {
+            String uniqueKey = generateUniqueKey(sheetInput);
+            if (processedKeys.contains(uniqueKey)) {
+                continue; // Skip this sheetInput if it has already been processed
+            }
 
             boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
                     sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
@@ -110,43 +112,23 @@ public class ReportsService {
 
                 sheetOutput.setOrigin(locationSheetValues.getOrigin());
                 sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
-//                sheetOutput.setMasterAirwayBill(locationSheetValues.getMasterAirwayBill());
             }
 
             sheetOutput.setNatureOfGoods("COURIER MATERIALS");
             sheetOutput.setLocationSheetTimeStamp(new Date());
 
-//            log.info("sheetOutput --> {}", sheetOutput);
-            return sheetOutput;
-        }).filter(Objects::nonNull).collect(Collectors.toList());
+            createdLocationSheetOutputList.add(sheetOutput);
+            processedKeys.add(uniqueKey); // Mark this uniqueKey as processed
+            log.debug("uniqueKey - {}", uniqueKey);
+        }
 
-//        }
-
-//        Set<String> uniqueKeyList = new HashSet<>();
-//        List<LocationSheetOutput> filteredOutputList = new ArrayList<>();
-
-        Set<String> uniqueKeyList = ConcurrentHashMap.newKeySet();
-        List<LocationSheetOutput> filteredOutputList = createdLocationSheetOutputList
-                .stream()
-                .filter(sheetOutput -> uniqueKeyList.add(generateUniqueKey(sheetOutput)))
-                .collect(Collectors.toList());
-        log.info("uniqueKeyList --> {}", uniqueKeyList);
-
-//        for (LocationSheetOutput sheetOutput : createdLocationSheetOutputList) {
-//            String uniqueKey = generateUniqueKey(sheetOutput);
-//            if (!uniqueKeyList.contains(uniqueKey)) {
-//                uniqueKeyList.add(uniqueKey);
-//                filteredOutputList.add(sheetOutput);
-//            }
-//        }
-
-        return filteredOutputList;
+        return createdLocationSheetOutputList;
     }
 
-    private String generateUniqueKey(LocationSheetOutput sheetOutput) {
-        String uniqueKey = sheetOutput.getLanguageId() + "-" + sheetOutput.getCompanyId() + "-" + sheetOutput.getPartnerId()
-                + "-" + sheetOutput.getPartnerMasterAirwayBill() + "-" + sheetOutput.getConsoleId();
-//        log.info("uniqueKey --> {}", uniqueKey);
+    private String generateUniqueKey(LocationSheetInput sheetInput) {
+        String uniqueKey = "languageId-" + sheetInput.getLanguageId() + "-" + "companyId-" + sheetInput.getCompanyId()
+                + "-" + "partnerId-" + sheetInput.getPartnerId() + "-" + "consoleId-" + sheetInput.getConsoleId()
+                + "-" + "partnerMasterAirwayBill-" + sheetInput.getPartnerMasterAirwayBill();
         return uniqueKey;
     }
 
@@ -194,7 +176,6 @@ public class ReportsService {
 
             ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(reportInput.getLanguageId(),
                     reportInput.getCompanyId(), reportInput.getPartnerId(), reportInput.getPartnerMasterAirwayBill());
-            log.info("Scanning Officer --> {}", scanValues);
             if (scanValues != null) {
                 reportOutput.setScanningOfficer(scanValues.getUpdatedBy());
                 reportOutput.setScanningDate(scanValues.getUpdatedOn());

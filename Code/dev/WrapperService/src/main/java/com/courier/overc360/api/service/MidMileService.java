@@ -1694,6 +1694,7 @@ public class MidMileService {
                     .queryParam("loginUserID", loginUserID);
             HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
             ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
+            log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1712,6 +1713,7 @@ public class MidMileService {
                     .queryParam("loginUserID", loginUserID);
             HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
             ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
+            log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
             e.printStackTrace();
