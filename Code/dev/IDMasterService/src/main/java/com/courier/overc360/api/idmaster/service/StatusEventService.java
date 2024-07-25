@@ -15,6 +15,7 @@ import com.courier.overc360.api.idmaster.replica.model.statusevent.FindStatusEve
 import com.courier.overc360.api.idmaster.replica.model.statusevent.ReplicaStatusEvent;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusEventRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaStatusEventSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,12 @@ public class StatusEventService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private NumberRangeService numberRangeService;
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
 
     /*======================================================PRIMARY=============================================================*/
@@ -107,10 +114,21 @@ public class StatusEventService {
                 StatusEvent newStatusEvent = new StatusEvent();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addStatusEvent.getLanguageId(), addStatusEvent.getCompanyId());
                 BeanUtils.copyProperties(addStatusEvent, newStatusEvent, CommonUtils.getNullPropertyNames(addStatusEvent));
-
+                if ((addStatusEvent.getTypeId() != null &&
+                        (addStatusEvent.getReferenceField10() != null && addStatusEvent.getReferenceField10().equalsIgnoreCase("true"))) ||
+                        addStatusEvent.getTypeId() == null || addStatusEvent.getTypeId().isBlank()) {
+                    String NUM_RAN_OBJ = "STATUSEVENT";
+                    String TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                    log.info("next Value from NumberRange for STATUS/EVENT : " + TYPE_ID);
+                    newStatusEvent.setTypeId(TYPE_ID);
+                }
                 if (iKeyValuePair != null) {
                     newStatusEvent.setLanguageDescription(iKeyValuePair.getLangDesc());
                     newStatusEvent.setCompanyName(iKeyValuePair.getCompanyDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addStatusEvent.getStatusId());
+                if (statusDesc != null) {
+                    newStatusEvent.setStatusDescription(statusDesc);
                 }
                 newStatusEvent.setDeletionIndicator(0L);
                 newStatusEvent.setCreatedBy(loginUserID);

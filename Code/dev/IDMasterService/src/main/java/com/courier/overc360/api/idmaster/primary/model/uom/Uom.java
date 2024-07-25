@@ -54,6 +54,12 @@ public class Uom {
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
+
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String statusDescription;
+
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
 

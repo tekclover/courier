@@ -14,6 +14,7 @@ import com.courier.overc360.api.idmaster.replica.model.IKeyValuePair;
 import com.courier.overc360.api.idmaster.replica.model.uom.FindUom;
 import com.courier.overc360.api.idmaster.replica.model.uom.ReplicaUom;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaCompanyRepository;
+import com.courier.overc360.api.idmaster.replica.repository.ReplicaStatusRepository;
 import com.courier.overc360.api.idmaster.replica.repository.ReplicaUomRepository;
 import com.courier.overc360.api.idmaster.replica.repository.specification.ReplicaUomSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -57,6 +58,9 @@ public class UomService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private ReplicaStatusRepository replicaStatusRepository;
 
     /*======================================================PRIMARY=============================================================*/
 
@@ -109,15 +113,13 @@ public class UomService {
                 Uom newUom = new Uom();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addUom.getLanguageId(), addUom.getCompanyId());
                 BeanUtils.copyProperties(addUom, newUom, CommonUtils.getNullPropertyNames(addUom));
-                if (addUom.getUomId() == null || addUom.getUomId().isBlank()){
-                    String NUM_RAN_OBJ = "UOM";
-                    String UOM_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for UOM_ID : " + UOM_ID);
-                    newUom.setUomId(UOM_ID);
-                }
                 if (iKeyValuePair != null) {
                     newUom.setCompanyName(iKeyValuePair.getCompanyDesc());
                     newUom.setLanguageDescription(iKeyValuePair.getLangDesc());
+                }
+                String statusDesc = replicaStatusRepository.getStatusDescription(addUom.getStatusId());
+                if (statusDesc != null) {
+                    newUom.setStatusDescription(statusDesc);
                 }
                 newUom.setDeletionIndicator(0l);
                 newUom.setCreatedBy(loginUserID);
