@@ -19,6 +19,10 @@ public class Uom {
 
     private String uomType;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String uomDescription;
 
     private Long deletionIndicator;

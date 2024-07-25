@@ -7,6 +7,8 @@ public class UpdateUom {
 
     private String uomType;
 
+    private String statusId;
+
     private String uomDescription;
 
     private Long deletionIndicator;

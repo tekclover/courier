@@ -117,7 +117,8 @@
                         {{ col.header }}
                     </th>
                 </tr>
-                <!-- <tr>
+                
+                <tr>
                     <th  style="width: 5rem;" pFrozenColumn>
                         <p-tableHeaderCheckbox [disabled]="true" class="pl-3"></p-tableHeaderCheckbox>
                     </th>
@@ -127,7 +128,7 @@
                             [value]="$any(preAlertManifestTag.filters[col.field])?.value" placeholder="Search"
                             class="p-column-filter">
                     </th>
-                </tr> -->
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr [ngClass]="{'selectedRow': isSelected(rowData)}">

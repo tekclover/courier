@@ -13,7 +13,7 @@ public class AddUom {
     @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
 
-//    @NotBlank(message = "UOMId is mandatory")
+    @NotBlank(message = "UOMId is mandatory")
     private String uomId;
 
     @NotBlank(message = "UOM Type is mandatory")
@@ -21,6 +21,9 @@ public class AddUom {
 
     @NotBlank(message = "UOM Description is mandatory")
     private String uomDescription;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String referenceField1;
 

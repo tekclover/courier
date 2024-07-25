@@ -19,7 +19,7 @@
                 </div>
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100"(click)="updateBulk()" ><img
-                       src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
+                       src="./assets/common2x/update.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk Update</button>
                  </div>
                  <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel()" ><img
@@ -122,6 +122,17 @@
                     </th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                         {{ col.header }} <p-sortIcon [field]="col.field" />
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 5rem;">
+                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns">
+                        <input pInputText type="text"
+                            (input)="ccrTag.filter($any($event.target)?.value, col.field, 'contains')"
+                            [value]="$any(ccrTag.filters[col.field])?.value" placeholder="Search"
+                            class="p-column-filter">
                     </th>
                 </tr>
             </ng-template>
