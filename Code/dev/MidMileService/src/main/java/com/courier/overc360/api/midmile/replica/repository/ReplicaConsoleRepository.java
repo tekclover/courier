@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -177,5 +178,43 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
                                        @Param("partnerId") String partnerId,
                                        @Param("consoleId") String consoleId,
                                        @Param("partnerMasterAB") String partnerMasterAB);
+
+
+    // Get No of Consoles
+    @Query(value = "Select COUNT(*) From tblconsole\n" +
+            "Where IS_DELETED=0\n" +
+            "And LANG_ID = :languageId\n" +
+            "And C_ID = :companyId\n" +
+            "And PARTNER_ID = :partnerId\n" +
+            "And PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
+//            "And PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAB\n" +
+            "And UNCONSOLIDATED = :unconsolidatedIndicator\n" +
+            "And CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
+    long getNoOfConsoles(@Param("languageId") String languageId,
+                         @Param("companyId") String companyId,
+                         @Param("partnerId") String partnerId,
+                         @Param("partnerMasterAB") String partnerMasterAB,
+//                                 @Param("partnerHouseAB") String partnerHouseAB,
+                         @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
+                         @Param("fromDate") Date fromDate,
+                         @Param("toDate") Date toDate);
+
+
+    // Get Scanning Officer and Time
+    @Query(value = "Select Top 1\n" +
+            "tc.UTD_BY As updatedBy,\n" +
+            "tc.UTD_ON As updatedOn\n" +
+            "From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "And tc.LANG_ID = :languageId\n" +
+            "And tc.C_ID = :companyId\n" +
+            "And tc.PARTNER_ID = :partnerId\n" +
+            "And tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
+            "And tc.REF_FIELD_10 = 'SCAN'\n" +
+            "ORDER BY UTD_ON DESC", nativeQuery = true)
+    ConsoleImpl getScanValues(@Param("languageId") String languageId,
+                              @Param("companyId") String companyId,
+                              @Param("partnerId") String partnerId,
+                              @Param("partnerMasterAB") String partnerMasterAB);
 
 }

@@ -3,6 +3,8 @@ package com.courier.overc360.api.midmile.controller;
 import com.courier.overc360.api.midmile.primary.model.console.LocationSheetInput;
 import com.courier.overc360.api.midmile.primary.model.console.LocationSheetOutput;
 import com.courier.overc360.api.midmile.primary.model.console.MobileDashboard;
+import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportInput;
+import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportOutput;
 import com.courier.overc360.api.midmile.service.ReportsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -50,6 +53,15 @@ public class ReportsController {
                                                @RequestParam String loginUserID) {
         List<LocationSheetOutput> sheetOutputs = reportsService.generateLocationSheet(locationSheetInputs, loginUserID);
         return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
+    }
+
+    // Generate Console Tracking Report
+    @ApiOperation(response = ConsoleTrackingReportOutput.class, value = "Generate Console Tracking Report")
+    @PostMapping("/consoleTrackingReport")
+    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody List<ConsoleTrackingReportInput> reportInputList,
+                                                       @RequestParam String loginUserID) throws ParseException {
+        List<ConsoleTrackingReportOutput> reportOutputs = reportsService.generateConsoleTrackingReport(reportInputList, loginUserID);
+        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
 
 }
