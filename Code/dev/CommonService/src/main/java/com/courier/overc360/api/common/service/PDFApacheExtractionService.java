@@ -323,6 +323,9 @@ public class PDFApacheExtractionService {
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception while PDF Extraction: " + e);
         }
         log.info("UpdateCCR List : " + updateCCRList);
         Set<UpdateCCR> uniqueCcrList = updateCCRList.stream().collect(Collectors.toSet());
