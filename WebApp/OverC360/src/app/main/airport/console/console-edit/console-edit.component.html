@@ -9,12 +9,12 @@
             <p-overlayPanel [style]="{ width: '180' }" #status>
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100"
-                        (click)="updateConsole('cleared'); op.hide()"><img src="./assets/common/document.png"
+                        (click)="updateConsole('cleared'); status.hide()"><img src="./assets/common/document.png"
                             style="padding-right: 10px;width: 2rem;" srcset="">Customs Cleared</button>
                     <button style="width: 8rem;" mat-menu-item class="w-100"
-                        (click)="updateConsole('self'); op.hide()"><img src="./assets/common/document.png"
+                        (click)="updateConsole('self'); status.hide()"><img src="./assets/common/document.png"
                             style="padding-right: 10px;width: 2rem;" srcset="">Self Clearance </button>
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="callHubCode(); op.hide()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="callHubCode(); status.hide()"><img
                             src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;"
                             srcset="">Outscan </button>
                 </div>
@@ -24,16 +24,16 @@
                 style="margin: 0 17px; height: 1.5rem;">
             <p-overlayPanel [style]="{ width: '180' }" #download>
                 <div class="d-flex flex-column">
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="downloadConsole(); op.hide()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="downloadConsole(); download.hide()"><img
                             src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;"
                             srcset="">Console</button>
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel(); op.hide()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateLabel(); download.hide()"><img
                             src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Label
                     </button>
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateInvoice(); op.hide()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateInvoice(); download.hide()"><img
                             src="./assets/common2x/invoice.png" style="padding-right: 10px;width: 2rem;"
                             srcset="">Invoice </button>
-                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateMerge(); op.hide()"><img
+                    <button style="width: 8rem;" mat-menu-item class="w-100" (click)="generateMerge(); download.hide()"><img
                             src="./assets/common2x/merge.png" style="padding-right: 10px;width: 2rem;" srcset="">Invoice
                         & Label </button>
                 </div>
@@ -45,13 +45,16 @@
                 <input type="file" #fileInput1 style="display:none" (change)="onFileSelectedBayan($event)" />
                 <div class="d-flex flex-column">
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="saveCCR(); op.hide()"><img
-                        src="./assets/common/document.png" style="padding-right: 10px;width: 2rem;" srcset="">Create CCR
+                        src="./assets/common/add.png" style="padding-right: 10px;width: 2rem;" srcset="">Create CCR
                 </button>
+                <button style="width: 8rem;" mat-menu-item class="w-100" (click)="createLocation(); op.hide()"><img
+                    src="./assets/common/add.png" style="padding-right: 10px;width: 2rem;" srcset="">Location
+            </button>
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="uploadBayan()"><img
                             src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Upload
                         Bayan</button>
                     <button style="width: 8rem;" mat-menu-item class="w-100" (click)="updateBulk()"><img
-                            src="./assets/common/upload.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
+                            src="./assets/common2x/update.png" style="padding-right: 10px;width: 2rem;" srcset="">Bulk
                         Update</button>
                 </div>
             </p-overlayPanel>
