@@ -37,22 +37,16 @@
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <!-- <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Type</p>
-                                <p-dropdown [options]="type" placeholder="Select" filter="true"
-                                formControlName="type"
-                                [ngClass]="form.get('type')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                appendTo="body" [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('type')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div> -->
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">UOM ID</p>
-                                <input maxlength="50" formControlName="uomId" class=" w-100" pInputText
+                                <p class="formControlLabel f600 textBlack mb-0 required">UOM ID</p>
+                                <input pInputText formControlName="uomId" maxlength="50" class=" w-100"
+                                    [ngClass]="form.get('uomId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('uomId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">UOM Name</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">UOM Description</p>
                                 <input pInputText formControlName="uomDescription" maxlength="50" class=" w-100"
                                     [ngClass]="form.get('uomDescription')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     placeholder="Enter" />

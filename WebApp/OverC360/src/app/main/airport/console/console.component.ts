@@ -51,7 +51,7 @@ export class ConsoleComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyId', header: 'Company' },
-      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB', format:'hyperLink'},
       //  { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       //  { field: 'statusText', header: 'Status' },
      
@@ -120,6 +120,9 @@ export class ConsoleComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedConsole = linedata;
+    }
     if (this.selectedConsole.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

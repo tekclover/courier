@@ -56,6 +56,7 @@ export class UomComponent {
       { field: 'uomId', header: 'UOM ID' },
       { field: 'uomDescription', header: 'UOM Name' },
       { field: 'uomType', header: 'UOM Type' },
+      {field: 'statusDescription', header: 'Status'},
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -63,6 +64,7 @@ export class UomComponent {
       { field: 'languageId', header: 'Language ID' },
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
+      { field: 'statusId', header: 'Status ID' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
@@ -152,7 +154,7 @@ export class UomComponent {
   
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.typeId).subscribe({
+    this.service.Delete(lines.uomId).subscribe({
       next: (res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: lines.uomId + ' deleted successfully' });
         this.spin.hide();
@@ -213,7 +215,7 @@ export class UomComponent {
         this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
       }
       if (res.uomId != null) {
-        this.uomDropdown.push({ value: res.uomId, label: res.uomDescription });
+        this.uomDropdown.push({ value: res.uomId, label: res.uomId });
         this.uomDropdown = this.cs.removeDuplicatesFromArrayList(this.uomDropdown, 'value');
       }
       if (res.statusId != null) {

@@ -25,7 +25,6 @@ export class UomService {
   Delete(uomId: string) {
     return this.http.delete<any>('/overc-idmaster-service/uom/' + uomId +'?languageId='+ this.auth.languageId +'&companyId='+ this.auth.companyId);
   }
-
   search(obj: any) {
     return this.http.post<any>('/overc-idmaster-service/uom/find', obj);
   }

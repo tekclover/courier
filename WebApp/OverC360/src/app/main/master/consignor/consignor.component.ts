@@ -52,7 +52,7 @@ export class ConsignorComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'consignorId', header: 'Consignor ID' },
+      { field: 'consignorId', header: 'Consignor ID', format:'hyperLink' },
       { field: 'consignorName', header: 'Consignor Name' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'productName', header: 'Product' },
@@ -130,6 +130,9 @@ export class ConsignorComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedConsignor = linedata;
+    }
     if (this.selectedConsignor.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',
