@@ -35,6 +35,7 @@ export class ConsignmentStatusPopupComponent {
     obj.companyId = [this.auth.companyId];
     obj.languageId = [this.auth.languageId];
     obj.pieceId = [this.data.code.pieceId];
+    obj.hawbType = [this.data.code.hawbType];
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       // console.log(res);

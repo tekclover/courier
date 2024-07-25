@@ -463,7 +463,7 @@ export class ConsoleEditComponent {
     }
 
     const cols = [
-      { field: 'partnerMasterAirwayBill', header: '#' },
+      { field: 'partnerMasterAirwayBill', header: '#', format:'number' },
       { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
@@ -528,23 +528,59 @@ export class ConsoleEditComponent {
           'HS Code': '',
         };
 
-        worksheet.addRow(Object.values(newRow));
+        const headerRowFirst =  worksheet.addRow(Object.values(newRow));
 
-        worksheet.addRow(Object.values(cols.map(col => col.header)));
+        headerRowFirst.eachCell((cell, index) => {
+          cell.font = {
+            bold: true,
+            color: { argb: '0000' }, // White text color
+          };
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
+        const headerRow =  worksheet.addRow(Object.values(cols.map(col => col.header)));
 
+        headerRow.eachCell((cell, index) => {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+          };
+          cell.font = {
+            bold: true,
+            color: { argb: '0000' }, // White text color
+          };
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
         // Map console data and convert to rows
-        consoleData.forEach((item: any) => {
+        consoleData.forEach((item: any, index:any) => {
           const exportItem: any = {};
           cols.forEach(col => {
-            if (col.field === 'partnerMasterAirwayBill') {
-              exportItem[col.header] = item[col.field];
-            } else if (col.field === 'grossWeight' || col.field === 'noOfPieces') {
-              exportItem[col.header] = item[col.field];
+            if (col.format == 'number') {
+              exportItem[col.header] = index + 1;
             } else {
-              exportItem[col.header] = item[col.field] || '';
+              exportItem[col.header] = item[col.field];
             }
           });
-          worksheet.addRow(Object.values(exportItem));
+          const cellRow =   worksheet.addRow(Object.values(exportItem));
+           
+          cellRow.eachCell((cell, index) => {
+           cell.border = {
+             top: { style: 'thin' },
+             left: { style: 'thin' },
+             bottom: { style: 'thin' },
+             right: { style: 'thin' },
+           };
+         });
         });
 
         worksheetPromises.push(worksheet);
