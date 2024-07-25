@@ -12,6 +12,7 @@ import { CommonServiceService } from '../../../common-service/common-service.ser
 import { PathNameService } from '../../../common-service/path-name.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { format } from 'util';
 
 @Component({
   selector: 'app-hub',
@@ -52,7 +53,7 @@ export class HubComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'hubCode', header: 'Hub Code' },
+      { field: 'hubCode', header: 'Hub Code', format:'hyperLink' },
       { field: 'hubName', header: 'Hub Name' },
       { field: 'hubCategory', header: 'Hub Category' },
       { field: 'countryName', header: 'Country' },
@@ -136,6 +137,9 @@ export class HubComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedHub = linedata;
+    }
     if (this.selectedHub.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

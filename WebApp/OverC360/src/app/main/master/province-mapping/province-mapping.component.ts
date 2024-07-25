@@ -53,7 +53,7 @@ export class ProvinceMappingComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'provinceName', header: 'Province' },
-      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'partnerId', header: 'Partner ID', format:'hyperLink' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerProvinceName', header: 'Partner Province' },
@@ -129,6 +129,9 @@ export class ProvinceMappingComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedProvinceMapping = linedata;
+    }
     if (this.selectedProvinceMapping.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

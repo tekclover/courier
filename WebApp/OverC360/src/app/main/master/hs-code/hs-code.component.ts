@@ -52,7 +52,7 @@ export class HsCodeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'hsCode', header: 'HS Code' },
+      { field: 'hsCode', header: 'HS Code', format:'hyperLink' },
       { field: 'itemGroup', header: 'Item Group' },
       { field: 'specialApprovalText', header: 'Special Approval' },
       { field: 'statusDescription', header: 'Status' },
@@ -127,6 +127,9 @@ export class HsCodeComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedHsCode = linedata;
+    }
     if (this.selectedHsCode.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

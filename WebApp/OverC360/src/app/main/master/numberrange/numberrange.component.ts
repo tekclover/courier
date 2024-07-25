@@ -51,7 +51,7 @@ export class NumberrangeComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'numberRangeCode', header: 'ID' },
+      { field: 'numberRangeCode', header: 'ID', format:'hyperLink' },
       { field: 'numberRangeObject', header: 'Process/Master' },
       { field: 'numberRangeFrom', header: 'From Number' },
       { field: 'numberRangeTo', header: 'To Number' },
@@ -121,6 +121,9 @@ export class NumberrangeComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedNumberRange = linedata;
+    }
     if (this.selectedNumberRange.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
