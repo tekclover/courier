@@ -75,6 +75,17 @@
                         {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
+                <tr>
+                    <th style="width: 5rem;">
+                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns">
+                        <input pInputText type="text"
+                            (input)="ConsignmentTypeTag.filter($any($event.target)?.value, col.field, 'contains')"
+                            [value]="$any(ConsignmentTypeTag.filters[col.field])?.value" placeholder="Search"
+                            class="p-column-filter">
+                    </th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [class.selectedRow]="selectedConsignmentType[0] === rowData">
