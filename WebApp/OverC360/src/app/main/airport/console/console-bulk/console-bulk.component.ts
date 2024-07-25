@@ -18,6 +18,7 @@ import { ConsoleService } from '../console.service';
 export class ConsoleBulkComponent {
   status: any[] = [];
   incoTerms: any[] = [];
+  isExempted: any[] = [];
   constructor(
     public dialogRef: MatDialogRef<ConsoleBulkComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -36,7 +37,10 @@ export class ConsoleBulkComponent {
       { value: 'DDU', label: 'DDU' },
       { value: 'DDU', label: 'DDU' }
     ];
-
+    this.isExempted = [
+      { value: 'DDU', label: 'DDU' },
+      { value: 'DDU', label: 'DDU' }
+    ];
   }
 
   // form builder initialize
@@ -148,7 +152,10 @@ export class ConsoleBulkComponent {
     updatedBy: [],
     updatedOn: [],
     volume: [],
-
+    isExempted: [],
+    exemptionFor: [],
+    exemptionBeneficiary: [],
+    exemptionReference: [],
   });
 
   languageIdList: any[] = [];
@@ -299,6 +306,10 @@ export class ConsoleBulkComponent {
         },
       });
     }
+  }
+
+  isExemptedChanged(value:any){
+  console.log(value)
   }
 }
 

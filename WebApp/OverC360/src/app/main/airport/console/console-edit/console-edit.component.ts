@@ -256,7 +256,7 @@ export class ConsoleEditComponent {
       { field: 'isExempted', header: 'Is Exempted' },
       { field: 'exemptionFor', header: 'Exemption For' },
       { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
-      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'exemptionReference', header: 'Exemption Reference' },
       { field: 'ccrId', header: 'CCR ID' },
       { field: 'customsCcrNo', header: 'Custom CCR No' },
       { field: 'primaryDo', header: 'Primary DO' },
@@ -999,18 +999,19 @@ export class ConsoleEditComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.selectedConsole.forEach(x => x['location'] = result);
-
-      this.spin.show();
-      this.service.createLocation(this.selectedConsole).subscribe({
-        next: (res) => {
-          this.downloadLocation(res);
-          this.spin.hide();
-        }, error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      })
+      if (result) {
+        this.selectedConsole.forEach(x => x['location'] = result);
+        this.spin.show();
+        this.service.createLocation(this.selectedConsole).subscribe({
+          next: (res) => {
+            this.downloadLocation(res);
+            this.spin.hide();
+          }, error: (err) => {
+            this.spin.hide();
+            this.cs.commonerrorNew(err);
+          },
+        })
+      }
     });
   }
 
@@ -1042,7 +1043,7 @@ export class ConsoleEditComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Language');
+    this.cs.exportAsExcel(exportData, 'Location');
   }
 }
 
