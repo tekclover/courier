@@ -169,22 +169,4 @@ public class ConsoleController {
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
 
-    // GET MobileDashboard - Console count
-    @ApiOperation(response = MobileDashboard.class, value = "Get Mobile Dashboard Count") // label for swagger
-    @GetMapping("/mobileDashboard/get")
-    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
-                                                @RequestParam String partnerMasterAirwayBill) throws Exception {
-        MobileDashboard consolesCount = consoleService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill);
-        return new ResponseEntity<>(consolesCount, HttpStatus.OK);
-    }
-
-    // Generate Location Sheet
-    @ApiOperation(response = LocationSheetOutput.class, value = "Generate Location Sheet")
-    @PostMapping("/locationSheet")
-    public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> locationSheetInputs,
-                                               @RequestParam String loginUserID) {
-        List<LocationSheetOutput> sheetOutputs = consoleService.generateLocationSheet(locationSheetInputs, loginUserID);
-        return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
-    }
-
 }

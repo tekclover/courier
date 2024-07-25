@@ -1090,12 +1090,12 @@ public class MidMileService {
             headers.add("User-Agent", "ClassicWMS RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
             UriComponentsBuilder builder = UriComponentsBuilder
-                    .fromHttpUrl(getMidMileServiceUrl() + "console/mobileDashboard/get")
+                    .fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard/get")
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
             HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, MobileDashboard.class);
+            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, MobileDashboard.class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -1111,7 +1111,7 @@ public class MidMileService {
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/locationSheet")
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/locationSheet")
                     .queryParam("loginUserID", loginUserID);
             HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
             ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
