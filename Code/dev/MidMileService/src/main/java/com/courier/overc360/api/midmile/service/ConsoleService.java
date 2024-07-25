@@ -1397,11 +1397,13 @@ public class ConsoleService {
                     dbConsole.setPieceTimeStamp(new Date());
                 }
 
-                if (updateConsole.getUnconsolidatedFlag() == 1L) {
-                    AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
-                    BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
-                    // Create Unconsolidation record
-                    unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
+                if (updateConsole.getUnconsolidatedFlag() != null) {
+                    if (updateConsole.getUnconsolidatedFlag() == 1L) {
+                        AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
+                        BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
+                        // Create Unconsolidation record
+                        unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
+                    }
                 }
 
                 dbConsole.setReferenceField10("SCAN");
