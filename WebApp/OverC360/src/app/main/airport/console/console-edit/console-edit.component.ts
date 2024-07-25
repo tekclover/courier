@@ -463,7 +463,7 @@ export class ConsoleEditComponent {
     }
 
     const cols = [
-      { field: 'partnerMasterAirwayBill', header: '#', format:'number' },
+      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
       { field: 'partnerHouseAirwayBill', header: 'AWB' },
       { field: 'countryOfOrigin', header: 'Origin' },
       { field: 'airportOriginCode', header: 'Origin Code' },
@@ -528,7 +528,7 @@ export class ConsoleEditComponent {
           'HS Code': '',
         };
 
-        const headerRowFirst =  worksheet.addRow(Object.values(newRow));
+        const headerRowFirst = worksheet.addRow(Object.values(newRow));
 
         headerRowFirst.eachCell((cell, index) => {
           cell.font = {
@@ -542,7 +542,7 @@ export class ConsoleEditComponent {
             right: { style: 'thin' },
           };
         });
-        const headerRow =  worksheet.addRow(Object.values(cols.map(col => col.header)));
+        const headerRow = worksheet.addRow(Object.values(cols.map(col => col.header)));
 
         headerRow.eachCell((cell, index) => {
           cell.fill = {
@@ -562,7 +562,7 @@ export class ConsoleEditComponent {
           };
         });
         // Map console data and convert to rows
-        consoleData.forEach((item: any, index:any) => {
+        consoleData.forEach((item: any, index: any) => {
           const exportItem: any = {};
           cols.forEach(col => {
             if (col.format == 'number') {
@@ -571,16 +571,16 @@ export class ConsoleEditComponent {
               exportItem[col.header] = item[col.field];
             }
           });
-          const cellRow =   worksheet.addRow(Object.values(exportItem));
-           
+          const cellRow = worksheet.addRow(Object.values(exportItem));
+
           cellRow.eachCell((cell, index) => {
-           cell.border = {
-             top: { style: 'thin' },
-             left: { style: 'thin' },
-             bottom: { style: 'thin' },
-             right: { style: 'thin' },
-           };
-         });
+            cell.border = {
+              top: { style: 'thin' },
+              left: { style: 'thin' },
+              bottom: { style: 'thin' },
+              right: { style: 'thin' },
+            };
+          });
         });
 
         worksheetPromises.push(worksheet);
@@ -619,14 +619,16 @@ export class ConsoleEditComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.outScan = [];
-      for (let i = 0; i < 2; i++) {
-        this.selectedConsole.forEach(x => {
-          x['hawbType'] = i == 0 ? 'status' : 'event';
-          x['hawbTypeId'] = i == 0 ? '9' : '9';
+
+      this.selectedConsole.forEach(x => {
+        for (let i = 0; i < 2; i++) {
+          x['hawbType'] = (i == 0) ? 'event' : 'status';
+          x['hawbTypeId'] = (i == 0) ? '9' : '10';
           x['hubCode'] = result;
           this.outScan.push(x);
-        })
-      }
+          console.log(this.outScan)
+        }
+      })
       this.updateConsole('outscan');
     });
   }
@@ -1255,3 +1257,5 @@ export class ConsoleEditComponent {
 //     `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
 //   );
 // }
+
+
