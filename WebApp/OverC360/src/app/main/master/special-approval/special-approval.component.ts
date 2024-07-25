@@ -52,7 +52,7 @@ export class SpecialApprovalComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'specialApprovalId', header: 'Special Approval ID' },
+      { field: 'specialApprovalId', header: 'Special Approval ID', format:'hyperLink' },
       { field: 'specialApprovalText', header: 'Special Approval Name' },
       { field: 'remark', header: 'Remarks' },
       { field: 'statusDescription', header: 'Status' },
@@ -123,6 +123,9 @@ export class SpecialApprovalComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedSpecialApproval = linedata;
+    }
     if (this.selectedSpecialApproval.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

@@ -52,7 +52,7 @@ export class EventComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'eventCode', header: 'Event ID' },
+      { field: 'eventCode', header: 'Event ID', format:'hyperLink' },
       { field: 'eventDescription', header: 'Event Name' },
       { field: 'opStatusDescription', header: 'Op Status' },
       { field: 'remark', header: 'Remark' },
@@ -122,6 +122,9 @@ export class EventComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedEvent = linedata;
+    }
     if (this.selectedEvent.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

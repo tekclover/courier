@@ -12,6 +12,7 @@ import { CommonServiceService } from '../../../common-service/common-service.ser
 import { PathNameService } from '../../../common-service/path-name.service';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { format } from 'util';
 
 @Component({
   selector: 'app-customer',
@@ -53,7 +54,7 @@ export class CustomerComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'customerId', header: 'Customer ID' },
+      { field: 'customerId', header: 'Customer ID', format:'hyperLink' },
       { field: 'customerName', header: 'Customer Name' },
       { field: 'subProductName', header: 'Sub Product' },
       { field: 'productName', header: 'Product' },
@@ -129,6 +130,9 @@ export class CustomerComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedCustomer = linedata;
+    }
     if (this.selectedCustomer.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',

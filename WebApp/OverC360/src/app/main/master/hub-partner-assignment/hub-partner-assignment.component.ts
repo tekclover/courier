@@ -51,7 +51,7 @@ export class HubPartnerAssignmentComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'partnerId', header: 'Partner ID', format:'hyperLink' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'hubName', header: 'Hub Name' },
@@ -127,6 +127,9 @@ export class HubPartnerAssignmentComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+ if(linedata){
+  this.selectedHubPartnerAssignment = linedata;
+}
     if (this.selectedHubPartnerAssignment.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

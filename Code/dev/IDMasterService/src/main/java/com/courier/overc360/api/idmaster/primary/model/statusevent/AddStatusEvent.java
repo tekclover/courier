@@ -14,7 +14,7 @@ public class AddStatusEvent {
     @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
 
-    @NotBlank(message = "TypeId is mandatory")
+//    @NotBlank(message = "TypeId is mandatory")
     private String typeId;
 
     @NotBlank(message = "Type is mandatory")
@@ -34,6 +34,9 @@ public class AddStatusEvent {
     private String level;
 
     private String conclusive;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
 
     private String remark;
 

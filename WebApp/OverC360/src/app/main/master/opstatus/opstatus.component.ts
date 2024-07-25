@@ -52,7 +52,7 @@ export class OpstatusComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'statusCode', header: 'Op Status Code' },
+      { field: 'statusCode', header: 'Op Status Code', format:'hyperLink' },
       { field: 'opStatusDescription', header: 'Op Status Description' },
       { field: 'remark', header: 'Remarks' },
       { field: 'createdBy', header: 'Created By' },
@@ -120,6 +120,9 @@ export class OpstatusComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedOpstatus = linedata;
+    }
     if (this.selectedOpstatus.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

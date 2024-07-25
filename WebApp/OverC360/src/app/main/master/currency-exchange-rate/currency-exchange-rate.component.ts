@@ -52,7 +52,7 @@ export class CurrencyExchangeRateComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'fromCurrencyId', header: 'From Currency' },
+      { field: 'fromCurrencyId', header: 'From Currency', format:'hyperLink' },
       { field: 'toCurrencyId', header: 'To Currency' },
       { field: 'fromCurrencyValue', header: 'From Currency Value' },
       { field: 'toCurrencyValue', header: 'To Currency Value' },
@@ -128,6 +128,9 @@ export class CurrencyExchangeRateComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedCurrencyExchangeRate = linedata;
+    }
     if (this.selectedCurrencyExchangeRate.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

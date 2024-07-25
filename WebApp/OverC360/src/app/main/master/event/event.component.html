@@ -69,6 +69,17 @@
                         {{ col.header }} <p-sortIcon [field]="col.field" />
                     </th>
                 </tr>
+                <tr>
+                    <th style="width: 5rem;">
+                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns">
+                        <input pInputText type="text"
+                            (input)="EventTag.filter($any($event.target)?.value, col.field, 'contains')"
+                            [value]="$any(EventTag.filters[col.field])?.value" placeholder="Search"
+                            class="p-column-filter">
+                    </th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [class.selectedRow]="selectedEvent[0] === rowData">
@@ -76,12 +87,14 @@
                         <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedEvent" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
-                    <td *ngFor="let col of columns">
-                        <ng-container *ngIf="col.format !== 'date'; else dateTemplate">
+                    <td *ngFor="let col of columns" [style]="col.style">
+                        <ng-container *ngIf="col.format !== 'date' && col.format !== 'hyperLink'; else dateTemplate">
                             {{ rowData[col.field] }}
                         </ng-container>
                         <ng-template #dateTemplate>
-                            {{ rowData.createdOn | date: 'dd-MM-yyyy HH:mm' }}
+                            <span *ngIf="col.format == 'hyperLink'" (click)="openCrud('Edit', rowData)" style="cursor:pointer"
+                                class="textOrange font-weight-bold hvr-underline-from-center">{{ rowData[col.field] }}</span>
+                            <span *ngIf="col.format == 'date'">{{ rowData[col.field] | date: 'dd-MM-yyyy HH:mm'}}</span>
                         </ng-template>
                     </td>
                 </tr>

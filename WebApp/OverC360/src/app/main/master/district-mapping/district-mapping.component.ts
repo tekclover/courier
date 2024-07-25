@@ -53,7 +53,7 @@ export class DistrictMappingComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'districtName', header: 'District' },
-      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'partnerId', header: 'Partner ID', format:'hyperLink' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerDistrictName', header: 'Partner District' },
@@ -129,6 +129,9 @@ export class DistrictMappingComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedDistrictMapping = linedata;
+    }
     if (this.selectedDistrictMapping.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

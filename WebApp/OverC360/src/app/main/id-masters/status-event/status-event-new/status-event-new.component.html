@@ -37,14 +37,11 @@
                                 <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <!-- <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Type ID</p>
-                                <input maxlength="50" pInputText formControlName="typeId" class=" w-100"
-                                    pInputText placeholder="Enter"
-                                    [ngClass]="form.get('typeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('typeId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div> -->
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Type ID</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum" formControlName="typeId"
+                                    class="w-100" pInputText placeholder="Enter" />
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Pre Requisite</p>
                                 <p-dropdown [options]="typeIdList" placeholder="Select" filter="true"
@@ -87,7 +84,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Trigger</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Trigger</p>
                                 <input pInputText formControlName="trigger" maxlength="50" class=" w-100"
                                     [ngClass]="form.get('trigger')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     placeholder="Enter" />
@@ -95,7 +92,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Conclusive</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Conclusive</p>
                                 <p-dropdown [options]="conclusive" placeholder="Select" filter="true"
                                 formControlName="conclusive"
                                 [ngClass]="form.get('conclusive')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"

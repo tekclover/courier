@@ -53,7 +53,7 @@ export class RateComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'rateParameterDescription', header: 'Rate Parameter' },
-      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'partnerId', header: 'Partner ID',format:'hyperLink' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'rangeFrom', header: 'Range From' },
@@ -131,6 +131,9 @@ export class RateComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedRate = linedata;
+    }
     if (this.selectedRate.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',
