@@ -226,7 +226,7 @@ export class UomComponent {
         this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
       }
     })
-     this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
   @ViewChild('uom') overlayPanel!: OverlayPanel;

@@ -232,7 +232,7 @@ export class StatusEventComponent {
         this.statusDropdown = this.cs.removeDuplicatesFromArrayList(this.statusDropdown, 'value');
       }
     })
-     this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
+    //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
   @ViewChild('statusEvent') overlayPanel!: OverlayPanel;
