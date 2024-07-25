@@ -137,7 +137,7 @@
                         <p-tableCheckbox class="pl-3" [value]="rowData" />
                     </td>
                     <td *ngFor="let col of columns">
-                        <ng-container *ngIf="col.format !== 'date' && col.format !== 'date1' && col.format !== 'boolean'; else dateTemplate">
+                        <ng-container *ngIf="col.format !== 'date' && col.format !== 'date1' && col.format !== 'boolean'&& col.format !== 'hyperLink'; else dateTemplate">
                             {{ rowData[col.field] }}
                         </ng-container>
                         <!-- <ng-template #dateTemplate>
@@ -159,6 +159,8 @@
                             <span *ngIf="col.field === 'preAlertManifestIndicator'" (click)="preAlertIndicator('Indicator',rowData)"  [ngStyle]="{ 'cursor': 'pointer' }" class="badge px-2 py-0" >
                                 <img [src]="rowData[col.field] == 0 ? './assets/common/okCircle.png' : './assets/common/wrongCircle.png'" alt="{{rowData[col.field] == 0 ? 'Yes' : 'No'}}" style="height: 1.1rem;width: 1.1rem;">
                             </span>
+                            <span *ngIf="col.format == 'hyperLink'" (click)="openCrud('Edit', rowData)" style="cursor:pointer"
+                            class="textOrange font-weight-bold hvr-underline-from-center">{{ rowData[col.field] }}</span>
                             <span *ngIf="col.format === 'date'">{{rowData[col.field] | date: 'dd-MM-yyyy HH:mm'}}</span>
                             <span *ngIf="col.format === 'date1'">{{rowData[col.field] | date: 'dd-MM-yyyy'}}</span>
 

@@ -71,7 +71,7 @@ export class PreAlertManifestComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB', format:'hyperLink'},
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'flightNo', header: 'Flight No' },
       { field: 'flightName', header: 'Flight Name' },
@@ -153,6 +153,9 @@ export class PreAlertManifestComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedPreAlertManifest = linedata;
+    }
     if (this.selectedPreAlertManifest.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

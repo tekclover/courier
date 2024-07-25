@@ -42,21 +42,21 @@ export class StatusEventNewComponent {
       { value: '16', label: 'Active' }
     ];
     this.action = [
-      { value: 'automatic', label: 'Automatic' },
-      { value: 'manual', label: 'Manual' }
+      { value: 'Automatic', label: 'Automatic' },
+      { value: 'Manual', label: 'Manual' }
     ];
     this.level = [
-      { value: 'bag', label: 'Bag' },
-      { value: 'shipment', label: 'Shipment' },
-      { value: 'both', label: 'Both' }
+      { value: 'Bag', label: 'Bag' },
+      { value: 'Shipment', label: 'Shipment' },
+      { value: 'Both', label: 'Both' }
     ];
     this.conclusive = [
-      { value: '0', label: 'No' },
-      { value: '1', label: 'Yes' }
+      { value: 'No', label: 'No' },
+      { value: 'Yes', label: 'Yes' }
     ];
     this.type = [
-      { value: 'status', label: 'Status' },
-      { value: 'event', label: 'Event' }
+      { value: 'Status', label: 'Status' },
+      { value: 'Event', label: 'Event' }
     ];
   }
 
@@ -123,11 +123,33 @@ export class StatusEventNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.preRequisite.disable();
+      this.form.controls.typeId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
+    }
+    
+    else {
+      this.spin.show();
+      let obj: any = {};
+      obj.numberRangeObject = ['STATUSEVENT'];
+      this.numberRangeService.search(obj).subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+            this.form.controls.typeId.patchValue(this.nextNumber);
+            this.numCondition = 'true';
+            this.form.controls.referenceField10.patchValue(this.numCondition);
+            this.form.controls.typeId.disable();
+          }
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
     }
   }
 

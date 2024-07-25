@@ -54,7 +54,7 @@ export class CountryMappingComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'partnerId', header: 'Partner ID', format:'hyperLink' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerCountryName', header: 'Partner Country' },
@@ -129,6 +129,9 @@ export class CountryMappingComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedCountryMapping = linedata;
+    }
     if (this.selectedCountryMapping.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

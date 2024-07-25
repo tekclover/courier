@@ -69,7 +69,7 @@ export class StatusEventComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'typeId', header: 'Type ID' },
-      {field: 'statusId', header: 'Status ID'},
+      {field:  'statusId', header: 'Status ID'},
       { field: 'typeText', header: 'Type Name' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
@@ -220,8 +220,8 @@ export class StatusEventComponent {
         this.companyDropdown.push({ value: res.companyId, label: res.companyName });
         this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
       }
-      if (res.preRequisite != null) {
-        this.typeDropdown.push({ value: res.preRequisite, label: res.preRequisite });
+      if (res.typeId != null) {
+        this.typeDropdown.push({ value: res.typeId, label: res.typeId });
         this.typeDropdown = this.cs.removeDuplicatesFromArrayList(this.typeDropdown, 'value');
       }
       if (res.statusId != null) {

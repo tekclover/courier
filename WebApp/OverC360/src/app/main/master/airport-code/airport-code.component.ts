@@ -12,6 +12,7 @@ import { PathNameService } from '../../../common-service/path-name.service';
 import { AuthService } from '../../../core/core';
 import { FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { format } from 'util';
 
 @Component({
   selector: 'app-airport-code',
@@ -52,7 +53,7 @@ export class AirportCodeComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'airportCode', header: 'Airport Code' },
+      { field: 'airportCode', header: 'Airport Code',format:'hyperLink' },
       { field: 'airportText', header: 'Airport Name' },
       { field: 'countryName', header: 'Country' },
       { field: 'statusDescription', header: 'Status' },
@@ -125,6 +126,9 @@ export class AirportCodeComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedAirportCode = linedata;
+    }
     if (this.selectedAirportCode.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

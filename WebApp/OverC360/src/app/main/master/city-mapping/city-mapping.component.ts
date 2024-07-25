@@ -53,7 +53,7 @@ export class CityMappingComponent {
     this.cols = [
       { field: 'companyName', header: 'Company' },
       { field: 'cityName', header: 'City' },
-      { field: 'partnerId', header: 'Partner ID' },
+      { field: 'partnerId', header: 'Partner ID', format:'hyperLink' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'partnerName', header: 'Partner Name' },
       { field: 'partnerCityName', header: 'Partner City' },
@@ -127,6 +127,9 @@ export class CityMappingComponent {
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
+    if(linedata){
+      this.selectedCityMapping = linedata;
+    }
     if (this.selectedCityMapping.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {

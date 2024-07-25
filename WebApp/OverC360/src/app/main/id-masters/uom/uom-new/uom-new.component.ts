@@ -40,9 +40,9 @@ export class UomNewComponent {
       { value: '16', label: 'Active' }
     ];
     this.uomType = [
-      {value: 'dimension', label:'Dimension'},
-      {value: 'weight', label: 'Weight'},
-      {value: 'quantity', label:'Quantity'}
+      {value: 'Dimension', label:'Dimension'},
+      {value: 'Weight', label: 'Weight'},
+      {value: 'Quantity', label:'Quantity'}
     ]
   }
 
@@ -51,7 +51,7 @@ export class UomNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    uomId: [],
+    uomId: [, Validators.required],
     uomType: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
     languageDescription: [],
