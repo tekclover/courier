@@ -807,17 +807,17 @@ public class ConsoleService {
                     BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
 
                     Optional<String> eventDescOpt = consignmentEntityRepository.statusEventText(
-                            addConsole.getCompanyId(), addConsole.getLanguageId(), "5");
+                            addConsole.getCompanyId(), addConsole.getLanguageId(), "45");
                     if (eventDescOpt.isPresent()) {
                         String ikey = eventDescOpt.get();
 
                         newConsole.setHawbType("EVENT");
-                        newConsole.setHawbTypeId("5");
+                        newConsole.setHawbTypeId("45");
                         newConsole.setHawbTypeDescription(ikey);
                         newConsole.setHawbTimeStamp(new Date());
 
                         newConsole.setPieceType("EVENT");
-                        newConsole.setPieceTypeId("5");
+                        newConsole.setPieceTypeId("45");
                         newConsole.setPieceTypeDescription(ikey);
                         newConsole.setPieceTimeStamp(new Date());
                     }
@@ -848,7 +848,7 @@ public class ConsoleService {
                                 String ikey = eventDescOpt.get();
 
                                 newConsole.setPieceType("EVENT");
-                                newConsole.setPieceTypeId("5");
+                                newConsole.setPieceTypeId("45");
                                 newConsole.setPieceTypeDescription(ikey);
                                 newConsole.setPieceTimeStamp(new Date());
                             }
@@ -928,12 +928,12 @@ public class ConsoleService {
                                 }
 
                                 Optional<String> eventDescOpt = consignmentEntityRepository.statusEventText(
-                                        console.getCompanyId(), console.getLanguageId(), "5");
+                                        console.getCompanyId(), console.getLanguageId(), "45");
                                 if (eventDescOpt.isPresent()) {
                                     String ikey = eventDescOpt.get();
 
                                     newConsole.setHawbType("EVENT");
-                                    newConsole.setHawbTypeId("5");
+                                    newConsole.setHawbTypeId("45");
                                     newConsole.setHawbTypeDescription(ikey);
                                     newConsole.setHawbTimeStamp(new Date());
                                 }
@@ -958,7 +958,7 @@ public class ConsoleService {
                                             String ikey = eventDescOpt.get();
 
                                             newConsole.setPieceType("EVENT");
-                                            newConsole.setPieceTypeId("5");
+                                            newConsole.setPieceTypeId("45");
                                             newConsole.setPieceTypeDescription(ikey);
                                             newConsole.setPieceTimeStamp(new Date());
                                         }
@@ -1076,12 +1076,12 @@ public class ConsoleService {
                                 }
 
                                 Optional<String> eventDescOpt = consignmentEntityRepository.statusEventText(
-                                        console.getCompanyId(), console.getLanguageId(), "5");
+                                        console.getCompanyId(), console.getLanguageId(), "45");
                                 if (eventDescOpt.isPresent()) {
                                     String ikey = eventDescOpt.get();
 
                                     newConsole.setHawbType("EVENT");
-                                    newConsole.setHawbTypeId("5");
+                                    newConsole.setHawbTypeId("45");
                                     newConsole.setHawbTypeDescription(ikey);
                                     newConsole.setHawbTimeStamp(new Date());
                                 }
@@ -1108,7 +1108,7 @@ public class ConsoleService {
                                             String ikey = eventDescOpt.get();
 
                                             newConsole.setPieceType("EVENT");
-                                            newConsole.setPieceTypeId("5");
+                                            newConsole.setPieceTypeId("45");
                                             newConsole.setPieceTypeDescription(ikey);
                                             newConsole.setPieceTimeStamp(new Date());
                                         }
@@ -1212,17 +1212,17 @@ public class ConsoleService {
                     BeanUtils.copyProperties(addConsole, newConsole, CommonUtils.getNullPropertyNames(addConsole));
 
                     Optional<String> eventDescOpt = consignmentEntityRepository.statusEventText(
-                            addConsole.getCompanyId(), addConsole.getLanguageId(), "5");
+                            addConsole.getCompanyId(), addConsole.getLanguageId(), "45");
                     if (eventDescOpt.isPresent()) {
                         String ikey = eventDescOpt.get();
 
                         newConsole.setHawbType("EVENT");
-                        newConsole.setHawbTypeId("5");
+                        newConsole.setHawbTypeId("45");
                         newConsole.setHawbTypeDescription(ikey);
                         newConsole.setHawbTimeStamp(new Date());
 
                         newConsole.setPieceType("EVENT");
-                        newConsole.setPieceTypeId("5");
+                        newConsole.setPieceTypeId("45");
                         newConsole.setPieceTypeDescription(ikey);
                         newConsole.setPieceTimeStamp(new Date());
                     }
