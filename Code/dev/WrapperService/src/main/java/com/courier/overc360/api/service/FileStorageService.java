@@ -24,7 +24,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -415,7 +419,7 @@ public class FileStorageService {
     }
 
     //ProcessConsignmentOrders-V2
-    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType, String partnerId, String partnerName,
+    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType, String partnerId,
                                                      String partnerMasterAirwayBill, String flightNo, String flightName,
                                                      Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
@@ -447,7 +451,7 @@ public class FileStorageService {
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
 
-            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId, partnerName,
+            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId,
                     partnerMasterAirwayBill, flightNo, flightName, estimatedTimeOfDeparture, estimatedTimeOfTravel);
 
             // Uploading Orders
@@ -1950,7 +1954,6 @@ public class FileStorageService {
 
 
     /**
-     *
      * @param allRowList
      * @param companyId
      * @param partnerType
@@ -1962,7 +1965,7 @@ public class FileStorageService {
      * @param estimatedTimeOfTravel
      * @return
      */
-    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerName,
+    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId,
                                        String partnerMasterAirwayBill, String flightNo, String flightName, Date estimatedTimeOfDeparture,
                                        Date estimatedTimeOfTravel) {
 
@@ -1973,7 +1976,6 @@ public class FileStorageService {
 
             addPreAlert.setCompanyId(companyId);
             addPreAlert.setPartnerId(partnerId);
-            addPreAlert.setPartnerName(partnerName);
             addPreAlert.setPartnerType(partnerType);
             addPreAlert.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
             addPreAlert.setFlightNo(flightNo);
