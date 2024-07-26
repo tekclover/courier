@@ -166,7 +166,9 @@ public class CcrService {
                     Ccr createdCcr = ccrRepository.save(newCcr);
 
                     // Update CCR_ID
-                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId());
+                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId(),
+                            createdCcr.getPartnerId(), createdCcr.getCompanyId(), createdCcr.getLanguageId(),
+                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill());
 
                     createdCcrList.add(createdCcr);
                 } else {
