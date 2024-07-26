@@ -62,6 +62,10 @@ public class UpdateConsignmentStatus {
 
     private Date pieceTimeStamp;
 
+    private String hubCode;
+
+    private String hubName;
+
     private String referenceField1;
 
     private String referenceField2;

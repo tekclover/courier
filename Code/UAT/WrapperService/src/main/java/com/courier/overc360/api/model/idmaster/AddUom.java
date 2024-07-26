@@ -4,31 +4,19 @@ import lombok.Data;
 
 @Data
 
-public class AddStatusEvent {
+public class AddUom {
 
     private String companyId;
 
     private String languageId;
 
-    private String typeId;
+    private String uomId;
 
-    private String type;
+    private String uomDescription;
 
-    private String typeText;
-
-    private String action;
+    private String uomType;
 
     private String statusId;
-
-    private String trigger;
-
-    private String preRequisite;
-
-    private String level;
-
-    private String conclusive;
-
-    private String remark;
 
     private String referenceField1;
 
@@ -50,4 +38,6 @@ public class AddStatusEvent {
 
     private String referenceField10;
 }
+
+
 

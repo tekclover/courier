@@ -2,38 +2,56 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
-import java.util.Date;
-
 @Data
-public class AddConsole {
+public class AddUnconsolidation {
 
-    @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
 
-    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
     private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
     private String partnerHouseAirwayBill;
 
-    @NotBlank(message = "ConsoleId is mandatory")
-    private String consoleId;
+    private String masterAirwayBill;
 
-    private String ccrId;
+    private String houseAirwayBill;
 
     private String partnerType;
+
+    private String languageDescription;
+
+    private String companyName;
+
+    private String consoleName;
+
+    private String consoleGroupName;
+
+    private String partnerName;
+
+    private String noOfPackageMawb;
+
+    private String description;
+
+    private String pieceId;
+
+//    private String pieceItemId;
+
+//    private String statusId;
+//
+//    private String statusText;
+
+    private String bondedId;
+
+    private Long shipmentBagId;
 
     private String consignmentCurrency;
 
     private String consignmentValue;
+
+    private String noOfPieces;
 
     private String exchangeRate;
 
@@ -53,17 +71,9 @@ public class AddConsole {
 
     private String calculatedTotalDuty;
 
-    private String expectedDuty;
+    private String netWeight;
 
     private String customsCurrency;
-
-    private String partnerName;
-
-//    private String partnerMasterAirwayBill;
-
-//    private String partnerHouseAirwayBill;
-
-    private String description;
 
     private String dutyPercentage;
 
@@ -73,12 +83,6 @@ public class AddConsole {
 
     private String specialApprovalCharge;
 
-    private String netWeight;
-
-    private String primaryDo;
-
-    private String secondaryDo;
-
     private String manifestedGrossWeight;
 
     private String grossWeight;
@@ -86,6 +90,10 @@ public class AddConsole {
     private String tareWeight;
 
     private String manifestedQuantity;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String landedQuantity;
 
@@ -101,8 +109,6 @@ public class AddConsole {
 
     private String shipperId;
 
-    private String noOfPieces;
-
     private String shipperName;
 
     private String remarks;
@@ -110,12 +116,14 @@ public class AddConsole {
     private String paymentType;
 
 //    private String eventCode;
-
+//
 //    private String eventText;
-
+//
 //    private Date eventTimestamp;
-
+//
 //    private Date statusTimestamp;
+
+    private String hubName;
 
     private String isConsolidatedShipment;
 
@@ -133,31 +141,13 @@ public class AddConsole {
 
     private String customsKd;
 
-    private String noOfPackageMawb;
-
-    private String companyName;
-
-    private String pieceId;
-
-//    private String pieceItemId;
-
-    private String languageDescription;
-
-//    private String statusId;
-
-//    private String statusText;
-
-    private String bondedId;
-
-    private Long shipmentBagId;
+    private String expectedDuty;
 
     private String actualCurrency;
 
     private String actualValue;
 
     private String specialApprovalValue;
-
-    private String iataKd;
 
     private String productId;
 
@@ -185,17 +175,11 @@ public class AddConsole {
 
     private String hsCode;
 
-    private String hubName;
-
     private String goodsDescription;
 
     private String quantity;
 
     private String freightCurrency;
-
-    private String houseAirwayBill;
-
-    private String masterAirwayBill;
 
     private String freightCharges;
 
@@ -203,35 +187,9 @@ public class AddConsole {
 
     private String currency;
 
-    private String hawbType;
-
-    private String hawbTypeId;
-
-    private String hawbTypeDescription;
-
-    private Date hawbTimeStamp = new Date();
-
-    private String pieceType;
-
-    private String pieceTypeId;
-
-    private String pieceTypeDescription;
-
-    private Date pieceTimeStamp = new Date();
-
     private String isExempted;
 
     private String exemptionFor;
-
-    private String exemptionBeneficiary;
-
-    private String exemptionReference;
-
-    private String consignmentLocalId;
-
-    private String consoleName;
-
-    private String consoleGroupName;
 
     private String hubCode;
 
@@ -239,7 +197,11 @@ public class AddConsole {
 
     private String totalDuty;
 
-    private Long deletionIndicator;
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 
@@ -280,4 +242,8 @@ public class AddConsole {
     private String referenceField19;
 
     private String referenceField20;
+
+    // consolidation check
+    private Long unconsolidatedFlag;
+
 }

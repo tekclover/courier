@@ -30,6 +30,10 @@ public class AddConsignmentStatus {
 
     private String bagId;
 
+    private String hubCode;
+
+    private String hubName;
+
 //    private String pieceStatusId;
 //
 //    private String pieceStatusText;

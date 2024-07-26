@@ -2,33 +2,30 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-@Data
+import java.util.Date;
 
-public class AddStatusEvent {
+@Data
+public class Uom {
 
     private String companyId;
 
     private String languageId;
 
-    private String typeId;
+    private String uomId;
 
-    private String type;
+    private String languageDescription;
 
-    private String typeText;
+    private String companyName;
 
-    private String action;
+    private String uomType;
 
     private String statusId;
 
-    private String trigger;
+    private String statusDescription;
 
-    private String preRequisite;
+    private String uomDescription;
 
-    private String level;
-
-    private String conclusive;
-
-    private String remark;
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -49,5 +46,16 @@ public class AddStatusEvent {
     private String referenceField9;
 
     private String referenceField10;
+
+    private String createdBy;
+
+    private Date createdOn;
+
+    private String updatedBy;
+
+    private Date updatedOn;
 }
+
+
+
 

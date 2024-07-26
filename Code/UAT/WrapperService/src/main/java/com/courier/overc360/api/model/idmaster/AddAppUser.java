@@ -2,31 +2,30 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-@Data
+import javax.validation.constraints.NotBlank;
 
-public class AddStatusEvent {
+@Data
+public class AddAppUser {
 
     private String companyId;
 
     private String languageId;
 
-    private String typeId;
+    private String appUserId;
 
-    private String type;
+    private String appUserName;
 
-    private String typeText;
-
-    private String action;
+    private String appUserType;
 
     private String statusId;
 
-    private String trigger;
+    private String password;
 
-    private String preRequisite;
+    private String mobileNumber;
 
-    private String level;
+    private String vehicleRegNumber;
 
-    private String conclusive;
+    private String routeId;
 
     private String remark;
 
@@ -49,5 +48,5 @@ public class AddStatusEvent {
     private String referenceField9;
 
     private String referenceField10;
-}
 
+}

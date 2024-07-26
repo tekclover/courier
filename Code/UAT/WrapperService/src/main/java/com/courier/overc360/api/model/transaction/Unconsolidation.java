@@ -2,38 +2,40 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
-public class AddConsole {
+public class Unconsolidation {
 
-    @NotBlank(message = "LanguageId is mandatory")
+//    private String consoleId;
+
     private String languageId;
 
-    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
-    private String partnerMasterAirwayBill;
-
-    @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
     private String partnerHouseAirwayBill;
 
-    @NotBlank(message = "ConsoleId is mandatory")
-    private String consoleId;
+    private String partnerMasterAirwayBill;
 
-    private String ccrId;
+    private String pieceId;
 
-    private String partnerType;
+    private String houseAirwayBill;
+
+    private String masterAirwayBill;
+
+    private String companyName;
+
+//    private String pieceItemId;
 
     private String consignmentCurrency;
 
     private String consignmentValue;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private String exchangeRate;
 
@@ -53,31 +55,33 @@ public class AddConsole {
 
     private String calculatedTotalDuty;
 
-    private String expectedDuty;
+    private String languageDescription;
 
-    private String customsCurrency;
+    private String partnerType;
 
     private String partnerName;
 
-//    private String partnerMasterAirwayBill;
-
-//    private String partnerHouseAirwayBill;
-
-    private String description;
-
-    private String dutyPercentage;
-
-    private String iataCharge;
-
-    private String dduCharge;
-
-    private String specialApprovalCharge;
-
-    private String netWeight;
+//    private String statusId;
+//
+//    private String statusText;
 
     private String primaryDo;
 
     private String secondaryDo;
+
+    private String noOfPackageMawb;
+
+    private String noOfPieceHawb;
+
+    private String bondedId;
+
+    private String expectedDuty;
+
+    private String customsCurrency;
+
+    private String description;
+
+    private String netWeight;
 
     private String manifestedGrossWeight;
 
@@ -97,25 +101,41 @@ public class AddConsole {
 
     private String notifyParty;
 
-    private String consigneeName;
-
-    private String shipperId;
-
     private String noOfPieces;
+
+    private String paymentType;
+
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
+//    private String eventCode;
+//
+//    private String eventText;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
+
+    private Long shipmentBagId;
+
+    private String dutyPercentage;
+
+    private String iataCharge;
+
+    private String dduCharge;
+
+    private String specialApprovalCharge;
+
+    private String consigneeName;
 
     private String shipperName;
 
     private String remarks;
-
-    private String paymentType;
-
-//    private String eventCode;
-
-//    private String eventText;
-
-//    private Date eventTimestamp;
-
-//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -127,37 +147,17 @@ public class AddConsole {
 
     private String countryOfOrigin;
 
-    private String noOfPieceHawb;
-
-    private String airportOriginCode;
-
-    private String customsKd;
-
-    private String noOfPackageMawb;
-
-    private String companyName;
-
-    private String pieceId;
-
-//    private String pieceItemId;
-
-    private String languageDescription;
-
-//    private String statusId;
-
-//    private String statusText;
-
-    private String bondedId;
-
-    private Long shipmentBagId;
-
     private String actualCurrency;
 
     private String actualValue;
 
     private String specialApprovalValue;
 
-    private String iataKd;
+    private String airportOriginCode;
+
+    private String customsKd;
+
+    private String totalDuty;
 
     private String productId;
 
@@ -170,6 +170,8 @@ public class AddConsole {
     private String serviceTypeId;
 
     private String serviceTypeName;
+
+    private String shipperId;
 
     private String consigneeCivilId;
 
@@ -185,17 +187,11 @@ public class AddConsole {
 
     private String hsCode;
 
-    private String hubName;
-
     private String goodsDescription;
 
     private String quantity;
 
     private String freightCurrency;
-
-    private String houseAirwayBill;
-
-    private String masterAirwayBill;
 
     private String freightCharges;
 
@@ -203,13 +199,21 @@ public class AddConsole {
 
     private String currency;
 
+    private String hubCode;
+
+    private String hubName;
+
+    private Long deletionIndicator;
+
+    private String consignmentLocalId;
+
     private String hawbType;
 
     private String hawbTypeId;
 
     private String hawbTypeDescription;
 
-    private Date hawbTimeStamp = new Date();
+    private Date hawbTimeStamp;
 
     private String pieceType;
 
@@ -217,29 +221,9 @@ public class AddConsole {
 
     private String pieceTypeDescription;
 
-    private Date pieceTimeStamp = new Date();
-
-    private String isExempted;
-
-    private String exemptionFor;
-
-    private String exemptionBeneficiary;
-
-    private String exemptionReference;
-
-    private String consignmentLocalId;
-
-    private String consoleName;
-
-    private String consoleGroupName;
-
-    private String hubCode;
+    private Date pieceTimeStamp;
 
     private String customsCcrNo;
-
-    private String totalDuty;
-
-    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -280,4 +264,16 @@ public class AddConsole {
     private String referenceField19;
 
     private String referenceField20;
+
+    private String createdBy;
+
+    private Date createdOn;
+
+    private String updatedBy;
+
+    private Date updatedOn;
+
+    // unconsolidation
+    private Long unconsolidatedFlag;
+
 }

@@ -3,32 +3,26 @@ package com.courier.overc360.api.model.idmaster;
 import lombok.Data;
 
 @Data
+public class UpdateAppUser {
+    private String appUserName;
 
-public class AddStatusEvent {
+    private String appUserType;
 
-    private String companyId;
+    private String remark;
 
-    private String languageId;
+    private String mobileNumber;
 
-    private String typeId;
+    private String vehicleRegNumber;
 
-    private String type;
+    private String routeId;
 
-    private String typeText;
-
-    private String action;
+    private String assignedHubCode;
 
     private String statusId;
 
-    private String trigger;
+    private String password;
 
-    private String preRequisite;
-
-    private String level;
-
-    private String conclusive;
-
-    private String remark;
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -49,5 +43,5 @@ public class AddStatusEvent {
     private String referenceField9;
 
     private String referenceField10;
-}
 
+}

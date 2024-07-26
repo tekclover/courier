@@ -1,42 +1,45 @@
 package com.courier.overc360.api.model.idmaster;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 
-public class StatusEvent {
-
-    private String companyId;
+public class AppUser {
 
     private String languageId;
 
-    private String typeId;
+    private String companyId;
 
-    private String type;
+    private String appUserId;
 
     private String languageDescription;
 
     private String companyName;
 
+    private String appUserName;
+
+    private String appUserType;
+
+    private String mobileNumber;
+
+    private String vehicleRegNumber;
+
+    private String routeId;
+
+    private String assignedHubCode;
+
     private String statusId;
 
     private String statusDescription;
 
-    private String typeText;
-
-    private String action;
-
-    private String trigger;
-
-    private String preRequisite;
-
-    private String level;
-
-    private String conclusive;
-
     private String remark;
+
+    private String password;
 
     private Long deletionIndicator;
 
@@ -64,8 +67,9 @@ public class StatusEvent {
 
     private Date createdOn;
 
+    private Date updatedOn;
+
     private String updatedBy;
 
-    private Date updatedOn;
-}
 
+}
