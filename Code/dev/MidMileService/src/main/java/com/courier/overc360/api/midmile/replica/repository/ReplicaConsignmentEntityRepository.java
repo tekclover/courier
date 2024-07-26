@@ -140,22 +140,61 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
 
 
     // Get No of Shipments Scanned
-    @Query(value = "Select COUNT(*) From tblconsignment_entity\n" +
-            "Where IS_DELETED=0\n" +
-            "And LANG_ID = :languageId\n" +
-            "And C_ID = :companyId\n" +
-            "And PARTNER_ID = :partnerId\n" +
-            "And PARTNER_MASTER_AB = :partnerMasterAB\n" +
-//            "And PARTNER_HOUSE_AB = :partnerHouseAB\n" +
-            "And CONSOLE_INDICATOR = :consoleIndicator\n" +
-            "And CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
-    long getNoOfShipmentsScanned(@Param("languageId") String languageId,
-                                 @Param("companyId") String companyId,
-                                 @Param("partnerId") String partnerId,
-                                 @Param("partnerMasterAB") String partnerMasterAB,
-//                                 @Param("partnerHouseAB") String partnerHouseAB,
-                                 @Param("consoleIndicator") Long consoleIndicator,
-                                 @Param("fromDate") Date fromDate,
-                                 @Param("toDate") Date toDate);
+    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill))\n" +
+            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
+            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
+            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
+    long getNoOfShipmentsScanned(
+            @Param("languageId") List<String> languageId,
+            @Param("companyId") List<String> companyId,
+            @Param("partnerId") List<String> partnerId,
+            @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
+            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
+            @Param("consoleIndicator") Long consoleIndicator,
+            @Param("fromDate") Date fromDate,
+            @Param("toDate") Date toDate);
+
+    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND tc.LANG_ID = :languageId\n" +
+            "AND tc.C_ID = :companyId\n" +
+            "AND tc.PARTNER_ID = :partnerId\n" +
+            "AND tc.PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
+//            "AND tc.PARTNER_HOUSE_AB = :partnerHouseAirwayBill\n" +
+            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
+            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
+    long getNoOfShipmentsScanned1(
+            @Param("languageId") String languageId,
+            @Param("companyId") String companyId,
+            @Param("partnerId") String partnerId,
+            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
+//            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+            @Param("consoleIndicator") Long consoleIndicator,
+            @Param("fromDate") Date fromDate,
+            @Param("toDate") Date toDate);
+
+    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill))\n" +
+//            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
+            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
+            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
+    Long getNoOfShipmentsScanned2(
+            @Param("languageId") String languageId,
+            @Param("companyId") String companyId,
+            @Param("partnerId") String partnerId,
+            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
+//            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+            @Param("consoleIndicator") Long consoleIndicator,
+            @Param("fromDate") Date fromDate,
+            @Param("toDate") Date toDate);
 
 }

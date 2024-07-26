@@ -687,7 +687,7 @@ public class MidMileController {
     }
 
     @ApiOperation(response = ConsoleStatus[].class, value = "Console Status Update ")
-    @PostMapping("/console/status/update")
+    @PostMapping("/console/status-event/update")
     public ResponseEntity<?> updateHawbType(@Valid @RequestBody ConsoleStatus[] consoleStatuses,
                                             @RequestParam String loginUserID,
                                             @RequestParam String authToken) throws Exception {
@@ -772,9 +772,9 @@ public class MidMileController {
     }
 
     // Generate Console Tracking Report
-    @ApiOperation(response = ConsoleTrackingReportOutput.class, value = "Generate Console Tracking Report")
+    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report")
     @PostMapping("/reports/consoleTrackingReport")
-    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody List<ConsoleTrackingReportInput> reportInputList,
+    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody ConsoleTrackingReportInput reportInputList,
                                                        @RequestParam String loginUserID, @RequestParam String authToken) {
         ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReport(reportInputList, loginUserID, authToken);
         return new ResponseEntity<>(reportOutputs, HttpStatus.OK);

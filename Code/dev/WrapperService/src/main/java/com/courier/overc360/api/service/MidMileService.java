@@ -1703,7 +1703,7 @@ public class MidMileService {
     }
 
     // Generate Console Tracking Report
-    public ConsoleTrackingReportOutput[] generateConsoleTrackingReport(List<ConsoleTrackingReportInput> sheetInputs, String loginUserID, String authToken) {
+    public ConsoleTrackingReportOutput[] generateConsoleTrackingReport(ConsoleTrackingReportInput sheetInputs, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));

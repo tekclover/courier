@@ -58,9 +58,9 @@ public class ReportsController {
     // Generate Console Tracking Report
     @ApiOperation(response = ConsoleTrackingReportOutput.class, value = "Generate Console Tracking Report")
     @PostMapping("/consoleTrackingReport")
-    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody List<ConsoleTrackingReportInput> reportInputList,
+    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody ConsoleTrackingReportInput reportInputs,
                                                        @RequestParam String loginUserID) throws ParseException {
-        List<ConsoleTrackingReportOutput> reportOutputs = reportsService.generateConsoleTrackingReport(reportInputList, loginUserID);
+        List<ConsoleTrackingReportOutput> reportOutputs = reportsService.generateConsoleTrackingReport(reportInputs, loginUserID);
         return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
 
