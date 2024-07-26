@@ -82,35 +82,40 @@ public class PDFMergeService {
      * @throws IOException
      */
     public List<String> batchPdfMerge(List<PDFMerger> pdfMergerList) throws IOException {
-        List<String> fileNameWithPath = new ArrayList<>();
-        for (PDFMerger request : pdfMergerList) {
-            List<InputStream> pdfStreams = new ArrayList<>();
-            for (String path : request.getFilePaths()) {
-                try {
-                    String filePath = getQualifiedFilePath(path);
-                    pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new BadRequestException("Failed to Read the PDF" + e);
+        try {
+            List<String> fileNameWithPath = new ArrayList<>();
+            for (PDFMerger request : pdfMergerList) {
+                List<InputStream> pdfStreams = new ArrayList<>();
+                for (String path : request.getFilePaths()) {
+                    try {
+                        String filePath = getQualifiedFilePath(path);
+                        pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        throw new BadRequestException("Failed to Read the PDF" + e);
+                    }
                 }
-            }
-            String fileOuputStoragePath = getQualifiedFilePath(request.getOutputPath());
-            int location = fileOuputStoragePath.lastIndexOf("/");
-            String directoryCreate = fileOuputStoragePath.substring(0, location);
-            this.fileStorageLocation = Paths.get(directoryCreate).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)) {
-                try {
-                    Files.createDirectories(this.fileStorageLocation);
-                } catch (Exception ex) {
-                    throw new BadRequestException(
-                            "Could not create the directory where the merged files will be stored.");
+                String fileOuputStoragePath = getQualifiedFilePath(request.getOutputPath());
+                int location = fileOuputStoragePath.lastIndexOf("/");
+                String directoryCreate = fileOuputStoragePath.substring(0, location);
+                this.fileStorageLocation = Paths.get(directoryCreate).toAbsolutePath().normalize();
+                if (!Files.exists(fileStorageLocation)) {
+                    try {
+                        Files.createDirectories(this.fileStorageLocation);
+                    } catch (Exception ex) {
+                        throw new BadRequestException(
+                                "Could not create the directory where the merged files will be stored.");
+                    }
                 }
+                byte[] mergePdf = mergePdfs(pdfStreams, fileOuputStoragePath);
+                fileNameWithPath.add(fileOuputStoragePath);
+    //            copyToTempFolder(mergePdf);
             }
-            byte[] mergePdf = mergePdfs(pdfStreams, fileOuputStoragePath);
-            fileNameWithPath.add(fileOuputStoragePath);
-//            copyToTempFolder(mergePdf);
+            return fileNameWithPath;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
-        return fileNameWithPath;
     }
     /**
      *
