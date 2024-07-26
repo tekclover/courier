@@ -1,4 +1,4 @@
-package com.courier.overc360.api.midmile.primary.model.console;
+package com.courier.overc360.api.midmile.primary.model.console.unconsolidation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,22 +17,22 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 /*
- * `LANG_ID`, `C_ID`, `PARTNER_ID`, `MASTER_AIRWAY_BILL`, `HOUSE_AIRWAY_BILL`,`CONSOLE_ID`
+ * `LANG_ID`, `C_ID`, `PARTNER_ID`, `PARTNER_MASTER_AIRWAY_BILL`, `PARTNER_HOUSE_AIRWAY_BILL`, `CONSOLE_ID`
  */
-@Table(name = "tblconsole",
+@Table(name = "tblunconsolidation",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "unique_key_console",
-                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "CONSOLE_ID", "PIECE_ID"}
+                        name = "unique_key_unconsolidation",
+                        columnNames = {"LANG_ID", "C_ID", "PARTNER_ID", "PARTNER_MASTER_AIRWAY_BILL", "PARTNER_HOUSE_AIRWAY_BILL", "PIECE_ID"}
                 )
         }
 )
-@IdClass(ConsoleCompositeKey.class)
-public class Console {
+@IdClass(UnconsolidationCompositeKey.class)
+public class Unconsolidation {
 
-    @Id
-    @Column(name = "CONSOLE_ID")
-    private String consoleId;
+//    @Id
+//    @Column(name = "CONSOLE_ID")
+//    private String consoleId;
 
     @Id
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
@@ -68,9 +68,6 @@ public class Console {
 
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
-
-    @Column(name = "CCR_ID", columnDefinition = "nvarchar(50)")
-    private String ccrId;
 
 //    @Id
 //    @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
@@ -442,19 +439,8 @@ public class Console {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
-    @Column(name = "SCANNED_BY", columnDefinition = "nvarchar(50)")
-    private String scannedBy;
-
-    @Column(name = "SCANNED_ON")
-    private Date scannedOn;
-
     // unconsolidation
     @Column(name = "UNCONSOLIDATED")
-    private Long unconsolidatedFlag = 0L;
-
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "CONSOLE_HEADER_ID")
-//    private List<ConsoleLine> consoleLines;
+    private Long unconsolidatedFlag;
 
 }

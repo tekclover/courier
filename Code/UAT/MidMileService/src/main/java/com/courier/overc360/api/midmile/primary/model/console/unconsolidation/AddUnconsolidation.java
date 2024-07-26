@@ -1,14 +1,11 @@
-package com.courier.overc360.api.midmile.primary.model.console;
+package com.courier.overc360.api.midmile.primary.model.console.unconsolidation;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 @Data
-public class AddConsole {
+public class AddUnconsolidation {
 
     @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
@@ -29,9 +26,11 @@ public class AddConsole {
 
     private String houseAirwayBill;
 
-    private String ccrId;
-
     private String partnerType;
+
+    private String languageDescription;
+
+    private String companyName;
 
     private String consoleName;
 
@@ -43,13 +42,9 @@ public class AddConsole {
 
     private String description;
 
-    private String companyName;
-
     private String pieceId;
 
 //    private String pieceItemId;
-
-    private String languageDescription;
 
 //    private String statusId;
 //
@@ -82,8 +77,6 @@ public class AddConsole {
     private String customsValue;
 
     private String calculatedTotalDuty;
-
-    private Long deletionIndicator = 0L;
 
     private String netWeight;
 
@@ -257,6 +250,7 @@ public class AddConsole {
 
     private String referenceField20;
 
-
+    // consolidation check
+    private Long unconsolidatedFlag;
 
 }

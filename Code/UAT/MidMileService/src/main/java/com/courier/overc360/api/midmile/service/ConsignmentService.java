@@ -347,10 +347,10 @@ public class ConsignmentService {
             //HAWB_TYPE
             newConsignment.setHawbType("STATUS");
             newConsignment.setHawbTypeId("1");
-            Optional<IKeyValuePair> statusText = consignmentEntityRepository.getStatusText(newConsignment.getLanguageId(), "1");
+            Optional<String> statusText = consignmentEntityRepository.statusEventText(newConsignment.getCompanyId(), newConsignment.getLanguageId(), "1");
             if (statusText.isPresent()) {
-                IKeyValuePair ikey = statusText.get();
-                newConsignment.setHawbTypeDescription(ikey.getStatusText());
+                String ikey = statusText.get();
+                newConsignment.setHawbTypeDescription(ikey);
                 newConsignment.setHawbTimeStamp(new Date());
             }
 
