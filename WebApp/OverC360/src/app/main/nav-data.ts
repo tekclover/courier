@@ -193,16 +193,17 @@ export const navbarData: INavbarData[] = [
                         routerLink: '/main/master/consignor',
                         label: 'Consignor'
                     },
+                    // {
+                    //     routerId: 3103,
+                    //     routerLink: '/main/master/opstatus',
+                    //     label: 'OP Status'
+                    // },
+                    // {
+                    //     routerId: 3104,
+                    //     routerLink: '/main/master/event',
+                    //     label: 'Event'
+                    // },  
                     {
-                        routerId: 3103,
-                        routerLink: '/main/master/opstatus',
-                        label: 'OP Status'
-                    },
-                    {
-                        routerId: 3104,
-                        routerLink: '/main/master/event',
-                        label: 'Event'
-                    },  {
                         routerId: 3105,
                         routerLink: '/main/master/statusevent',
                         label: 'Status Event'

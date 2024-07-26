@@ -219,4 +219,24 @@ pCalendar(date: any): Date{
       return result;
     }, {});
   }
+
+  groupedData: any = {};
+  groupData(array: any[]) {
+    this.groupedData = array.reduce((acc, item) => {
+      const houseAirwayBill = item.houseAirwayBill;
+      const pieceId = item.pieceId;
+
+      if (!acc[houseAirwayBill]) {
+        acc[houseAirwayBill] = {};
+      }
+
+      if (!acc[houseAirwayBill][pieceId]) {
+        acc[houseAirwayBill][pieceId] = [];
+      }
+
+      acc[houseAirwayBill][pieceId].push(item);
+
+      return acc;
+    }, {});
+  }
 }

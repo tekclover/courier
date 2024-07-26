@@ -1013,7 +1013,7 @@
                     </ng-template>
                 </p-table>
 
-                <p-accordion [activeIndex]="0" class="d-none">
+                <p-accordion [activeIndex]="0" class=" d-none">
                     <p-accordionTab  *ngFor="let tab of cnTable">
                         <ng-template pTemplate="header">
                             <div class="accordion-header">
@@ -1026,7 +1026,7 @@
                             <p-accordionTab  *ngFor="let tab of groupByPieceId">
                                 <ng-template pTemplate="header">
                                     <div class="accordion-header">
-                                      <span class="header-left">{{ tab.houseAirwayBill }} - {{ tab.languageDescription }}</span>
+                                      <span class="header-left">{{ tab }} - {{ tab.languageDescription }}</span>
                                       <span class="header-right">{{ tab.languageId }}</span>
                                     </div>
                                   </ng-template>
