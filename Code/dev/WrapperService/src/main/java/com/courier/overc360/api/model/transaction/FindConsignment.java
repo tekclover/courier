@@ -17,4 +17,6 @@ public class FindConsignment {
     private List<String> pieceItemId;
     private List<String> statusId;
     private List<String> shipperId;
+    private List<String> partnerHouseAirwayBill;
+    private List<String> partnerMasterAirwayBill;
 }
