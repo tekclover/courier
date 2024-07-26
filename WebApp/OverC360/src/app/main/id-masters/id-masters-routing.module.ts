@@ -56,8 +56,8 @@ import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/r
 import { RateParameterComponent } from './rate-parameter/rate-parameter.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
-import { StatusEventComponent } from './status-event/status-event.component';
-import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
+import { StatusEventComponent } from '../master/status-event/status-event.component';
+import { StatusEventNewComponent } from '../master/status-event/status-event-new/status-event-new.component';
 import { UomComponent } from './uom/uom.component';
 import { UomNewComponent } from './uom/uom-new/uom-new.component';
 
@@ -119,10 +119,7 @@ const routes: Routes = [
 
   { path: 'userrole', component: UserRoleComponent, data: { title: 'Master', module: 'UserRole' } },
   { path: 'userrole-new/:code', component: UserRoleNewComponent, data: { title: 'Master', module: 'UserRole - Add New' } },
-  
-  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Setup', module: 'Status/Event' } },
-  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Setup', module: 'Status/Event - Add New' } },
-  
+
   { path: 'uom', component: UomComponent, data: { title: 'Setup', module: 'UOM' } },
   { path: 'uom-new/:code', component: UomNewComponent, data: { title: 'Setup', module: 'UOM - Add New' } },
 

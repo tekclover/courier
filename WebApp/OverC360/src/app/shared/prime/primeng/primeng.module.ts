@@ -26,6 +26,7 @@ import { TagModule } from 'primeng/tag';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { AccordionModule } from 'primeng/accordion';
 @NgModule({
   declarations: [],
   imports: [
@@ -55,7 +56,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     TagModule,
     InputGroupAddonModule,
     InputGroupModule,
-    TieredMenuModule
+    TieredMenuModule,
+    AccordionModule
   ], 
   exports: [
     CommonModule,
@@ -84,7 +86,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     TagModule,
     InputGroupAddonModule,
     InputGroupModule,
-    TieredMenuModule
+    TieredMenuModule,
+    AccordionModule
   ]
 })
 export class PrimengModule { }
