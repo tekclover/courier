@@ -39,7 +39,7 @@ export class ConsoleService {
   }
 
   UpdateStatusforConsole(obj: any) {
-    return this.http.post<any>('/overc-midmile-service/console/update/hawbtype', obj);
+    return this.http.post<any>('/overc-midmile-service/console/status-event/update', obj);
   }
 
   

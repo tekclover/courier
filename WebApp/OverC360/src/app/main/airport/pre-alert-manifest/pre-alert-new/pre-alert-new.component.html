@@ -48,14 +48,14 @@
                                 <mat-error *ngIf="errorHandling('partnerId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
-                            <div class="col-6 marginFieldNew borderRadius12"  id="partnerName">
+                            <!-- <div class="col-6 marginFieldNew borderRadius12"  id="partnerName">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner Name</p>
                                 <input maxlength="100" pInputText formControlName="partnerName" class=" w-100" pInputText
                                 placeholder="Enter"
                                 [ngClass]="form.get('partnerName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('partnerName')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
-                            </div>
+                            </div> -->
                             <div class="col-6 marginFieldNew borderRadius12"  id="partnerMasterAirwayBill">
                                 <p class="formControlLabel f600 textBlack mb-0">Partner MAWB</p>
                                 <input maxlength="100" pInputText formControlName="partnerMasterAirwayBill" class=" w-100" pInputText
