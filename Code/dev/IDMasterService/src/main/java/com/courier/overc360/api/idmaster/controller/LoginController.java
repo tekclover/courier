@@ -44,9 +44,9 @@ public class LoginController {
     // Validate User Login
     @ApiOperation(response = AppUser.class, value = "Validate Login AppUser") // label for swagger
     @GetMapping("/mobile")
-    public ResponseEntity<?> validateAppUser(@RequestParam String appUserID, @RequestParam String password, @RequestParam String version) {
-        log.info("appUserID :" + appUserID + " - Password : " + password + " - Version : " + version);
-        AppUser validatedUser = appUserService.validateAppUser(appUserID, password, version);
+    public ResponseEntity<?> validateAppUser(@RequestParam String appUserId, @RequestParam String password, @RequestParam String version) {
+        log.info("appUserId :" + appUserId + " - Password : " + password + " - Version : " + version);
+        AppUser validatedUser = appUserService.validateAppUser(appUserId, password, version);
         log.info("Login : " + validatedUser);
         return new ResponseEntity<>(validatedUser, HttpStatus.OK);
     }

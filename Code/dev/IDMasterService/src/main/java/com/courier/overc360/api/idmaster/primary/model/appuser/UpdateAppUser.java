@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UpdateAppUser {
+
     private String appUserName;
 
     private String appUserType;
