@@ -690,7 +690,40 @@ export class ConsoleEditComponent {
       },
     });
   }
+updateGateway(data:any){
+  if (data.length == 0) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      key: 'br',
+      detail: 'Kindly select any row',
+    });
+    return;
+  }
 
+  
+  this.spin.show();
+  this.service.UpdateGatewayScan(data).subscribe({
+    next: (res) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Updated',
+        key: 'br',
+        detail: res[0].consoleId + ' has been updated successfully',
+      });
+      this.spin.hide();
+      setTimeout(() => {
+        this.fill(this.pageToken.line);
+        this.selectedConsole = [];
+      }, 2000);
+    },
+    error: (err) => {
+      this.spin.hide();
+      this.cs.commonerrorNew(err);
+    },
+  });
+
+}
 
   generateLabel() {
     this.uniquePieceId = [];
