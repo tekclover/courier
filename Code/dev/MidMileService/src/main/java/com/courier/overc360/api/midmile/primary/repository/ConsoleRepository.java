@@ -281,4 +281,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                              @Param("languageId") String languageId,
                              @Param("hubCode") String hubCode);
 
+    @Modifying
+    @Query(value = "update tblconsole set ccr_id = :ccrId where console_id = :consoleId", nativeQuery = true)
+     void updateCCRID(String consoleId, String ccrId);
 }

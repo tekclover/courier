@@ -57,6 +57,12 @@ public class ReplicaConsignmentStatus {
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
+    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String hubCode;
+
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
 //    @Id
 //    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
 //    private String statusId;
