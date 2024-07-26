@@ -1406,7 +1406,10 @@ public class ConsoleService {
                     }
                 }
 
-                dbConsole.setReferenceField10("SCAN");
+//                dbConsole.setReferenceField10("SCAN");
+                dbConsole.setScannedBy(loginUserID);
+                dbConsole.setScannedOn(new Date());
+
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
                 Console updatetedConsole = consoleRepository.save(dbConsole);

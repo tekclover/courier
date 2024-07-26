@@ -147,30 +147,47 @@ public class ReportsService {
         }
         log.info("given Inputs to generate ConsoleTrackingReport --> {}", reportInput);
 
-        List<String> langIdList = new ArrayList<>();
-        List<String> cIdList = new ArrayList<>();
-        List<String> pIdList = new ArrayList<>();
-        List<String> pMawbList = new ArrayList<>();
+//        List<String> langIdList = new ArrayList<>();
+//        List<String> cIdList = new ArrayList<>();
+//        List<String> pIdList = new ArrayList<>();
+//        List<String> pMawbList = new ArrayList<>();
 //        List<String> pHawbList = new ArrayList<>();
+
+        List<String> langIdList = reportInput.getLanguageId() != null ? reportInput.getLanguageId() : Collections.emptyList();
+        List<String> cIdList = reportInput.getCompanyId() != null ? reportInput.getCompanyId() : Collections.emptyList();
+        List<String> pIdList = reportInput.getPartnerId() != null ? reportInput.getPartnerId() : Collections.emptyList();
+        List<String> pMawbList = reportInput.getPartnerMasterAirwayBill() != null ? reportInput.getPartnerMasterAirwayBill() : Collections.emptyList();
         List<String> pHawbList = reportInput.getPartnerHouseAirwayBill() != null ? reportInput.getPartnerHouseAirwayBill() : Collections.emptyList();
 
+        if (langIdList.isEmpty()) {
+            langIdList = Arrays.asList((String) null);
+        }
+        if (cIdList.isEmpty()) {
+            cIdList = Arrays.asList((String) null);
+        }
+        if (pIdList.isEmpty()) {
+            pIdList = Arrays.asList((String) null);
+        }
+        if (pMawbList.isEmpty()) {
+            pMawbList = Arrays.asList((String) null);
+        }
         if (pHawbList.isEmpty()) {
             pHawbList = Arrays.asList((String) null);
         }
 
 
-        if (reportInput.getLanguageId() != null || !reportInput.getLanguageId().isEmpty()) {
-            langIdList = reportInput.getLanguageId();
-        }
-        if (reportInput.getCompanyId() != null || !reportInput.getCompanyId().isEmpty()) {
-            cIdList = reportInput.getCompanyId();
-        }
-        if (reportInput.getPartnerId() != null || !reportInput.getPartnerId().isEmpty()) {
-            pIdList = reportInput.getPartnerId();
-        }
-        if (reportInput.getPartnerMasterAirwayBill() != null || !reportInput.getPartnerMasterAirwayBill().isEmpty()) {
-            pMawbList = reportInput.getPartnerMasterAirwayBill();
-        }
+//        if (reportInput.getLanguageId() != null || !reportInput.getLanguageId().isEmpty()) {
+//            langIdList = reportInput.getLanguageId();
+//        }
+//        if (reportInput.getCompanyId() != null || !reportInput.getCompanyId().isEmpty()) {
+//            cIdList = reportInput.getCompanyId();
+//        }
+//        if (reportInput.getPartnerId() != null || !reportInput.getPartnerId().isEmpty()) {
+//            pIdList = reportInput.getPartnerId();
+//        }
+//        if (reportInput.getPartnerMasterAirwayBill() != null || !reportInput.getPartnerMasterAirwayBill().isEmpty()) {
+//            pMawbList = reportInput.getPartnerMasterAirwayBill();
+//        }
 //        if (reportInput.getPartnerHouseAirwayBill() != null || !reportInput.getPartnerHouseAirwayBill().isEmpty()) {
 //            pHawbList = reportInput.getPartnerHouseAirwayBill();
 //        } else {
@@ -200,11 +217,21 @@ public class ReportsService {
                                     1L, reportInput.getFromDate(), reportInput.getToDate());
                             log.info("No Of Unconsolidated Shipments --> {}", noOfUnconsolidatedShipments);
 
-                            if (noOfShipments != 0 || noOfConsoles != 0) {
+                            ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(langId, cId, pId, pMawb);
+
+                            if (noOfShipments != 0 || noOfConsoles != 0 || noOfUnconsolidatedShipments != 0) {
+
                                 ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
 
                                 reportOutput.setNoOfShipmentsScanned(noOfShipments);
                                 reportOutput.setNoOfConsoles(noOfConsoles);
+                                reportOutput.setNoOfUnconsolidatedShipments(noOfUnconsolidatedShipments);
+
+                                if (scanValues != null) {
+                                    reportOutput.setScanningOfficer(scanValues.getScannedBy());
+                                    reportOutput.setScanningDate(scanValues.getScannedOn());
+                                }
+
                                 createdConsoleTrackingReportOutputList.add(reportOutput);
                             }
                         }
