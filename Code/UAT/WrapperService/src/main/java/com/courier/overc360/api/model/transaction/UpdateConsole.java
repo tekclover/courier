@@ -30,6 +30,8 @@ public class UpdateConsole {
     @NotBlank(message = "PieceId is mandatory")
     private String pieceId;
 
+    private String ccrId;
+
 //    @NotBlank(message = "PieceItemId is mandatory")
 //    private String pieceItemId;
 
@@ -276,5 +278,8 @@ public class UpdateConsole {
     private String referenceField19;
 
     private String referenceField20;
+
+    // consolidation check
+    private Long unconsolidatedFlag;
 
 }

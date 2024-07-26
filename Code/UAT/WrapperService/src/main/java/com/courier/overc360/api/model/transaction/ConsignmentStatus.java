@@ -32,6 +32,10 @@ public class ConsignmentStatus {
 
     private String companyName;
 
+    private String hubCode;
+
+    private String hubName;
+
 //    private String statusText;
 //
 //    private String pieceStatusId;
