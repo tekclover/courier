@@ -147,9 +147,6 @@ public class ReplicaPreAlert {
     @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
     private String partnerType;
 
-    @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(50)")
-    private String partnerName;
-
     @Column(name = "INCO_TERM", columnDefinition = "nvarchar(50)")
     private String incoTerm;
 
