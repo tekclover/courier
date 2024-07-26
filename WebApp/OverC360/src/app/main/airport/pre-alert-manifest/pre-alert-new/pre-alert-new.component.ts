@@ -241,7 +241,7 @@ export class PreAlertNewComponent {
       this.spin.show();
       this.customerService.search(obj).subscribe({
         next: (result) => {
-          this.customerIdList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' });
+          this.customerIdList = this.cas.foreachlist(result, { key: 'customerId', value: 'customerName' , value2: 'customerName'});
           this.customerIdList =  this.cs.removeDuplicatesFromArrayList( this.customerIdList, 'value');
           this.spin.hide();
         }, error: (err) => {
@@ -258,7 +258,7 @@ export class PreAlertNewComponent {
       this.spin.show();
       this.consignorService.search(obj).subscribe({
         next: (result) => {
-          this.customerIdList = this.cas.foreachlist(result, { key: 'consignorId', value: 'consignorName' });
+          this.customerIdList = this.cas.foreachlist(result, { key: 'consignorId', value: 'consignorName', value2: 'consignorName' });
           this.customerIdList =  this.cs.removeDuplicatesFromArrayList( this.customerIdList, 'value');
           this.spin.hide();
         }, error: (err) => {
@@ -307,4 +307,9 @@ export class PreAlertNewComponent {
     input.value = '';
   }
 
+  partnerIdChanged(){
+    const selectedPartner = this.customerIdList.find(value => value.value === this.form.controls.partnerId.value);
+    console.log(selectedPartner)
+    this.form.controls.partnerName.patchValue(selectedPartner.value2);
+  }
 }

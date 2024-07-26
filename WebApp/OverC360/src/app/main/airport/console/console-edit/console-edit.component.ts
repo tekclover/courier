@@ -573,7 +573,7 @@ export class ConsoleEditComponent {
           });
           const cellRow = worksheet.addRow(Object.values(exportItem));
 
-          cellRow.eachCell((cell, index) => {
+          cellRow.eachCell({ includeEmpty: true },(cell, index) => {
             cell.border = {
               top: { style: 'thin' },
               left: { style: 'thin' },
@@ -961,11 +961,39 @@ export class ConsoleEditComponent {
           iata: '',
           hsCode: '',
         };
-        worksheetConsole.addRow(Object.values(newRow));
+        const headerRowFirst =  worksheetConsole.addRow(Object.values(newRow));
+        headerRowFirst.eachCell((cell, index) => {
+          cell.font = {
+            bold: true,
+            color: { argb: '0000' }, // White text color
+          };
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
 
-        worksheetConsole.addRow(Object.values(consoleManifestColumns.map(col => col.header)));
+        const headerRow = worksheetConsole.addRow(Object.values(consoleManifestColumns.map(col => col.header)));
 
-
+        headerRow.eachCell((cell, index) => {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+          };
+          cell.font = {
+            bold: true,
+            color: { argb: '0000' }, // White text color
+          };
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
 
         // Add console data rows
         consoleData.forEach((item: any, index: number) => {
@@ -977,7 +1005,15 @@ export class ConsoleEditComponent {
               exportItem[col.header] = item[col.field];
             }
           });
-          worksheetConsole.addRow(Object.values(exportItem));
+          const cellRow =   worksheetConsole.addRow(Object.values(exportItem));
+          cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+            cell.border = {
+              top: { style: 'thin' },
+              left: { style: 'thin' },
+              bottom: { style: 'thin' },
+              right: { style: 'thin' },
+            };
+          });
         });
 
         const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
@@ -987,7 +1023,27 @@ export class ConsoleEditComponent {
             const ccrData = groupedByCcrId[ccrId];
 
             const worksheetInvoices = workbook.addWorksheet(`INVOICES-${index + 1}`);
-            worksheetInvoices.columns = invoicesColumns;
+           
+
+            const headerRow = worksheetInvoices.addRow(Object.values(invoicesColumns.map(col => col.header)));
+
+            headerRow.eachCell((cell, index) => {
+              cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+              };
+              cell.font = {
+                bold: true,
+                color: { argb: '0000' }, // White text color
+              };
+              cell.border = {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' },
+              };
+            });
 
             ccrData.forEach((item: any) => {
               const exportItem: any = {};
@@ -995,18 +1051,53 @@ export class ConsoleEditComponent {
                 exportItem[col.header] = item[col.field];
               });
 
-              worksheetInvoices.addRow(Object.values(exportItem));
+              const cellRow =  worksheetInvoices.addRow(Object.values(exportItem));
+              cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+                cell.border = {
+                  top: { style: 'thin' },
+                  left: { style: 'thin' },
+                  bottom: { style: 'thin' },
+                  right: { style: 'thin' },
+                };
+              });
             });
 
             const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${index + 1}`);
-            worksheetInvoiceItems.columns = invoiceItemsColumns;
+
+            const headerRow1 = worksheetInvoiceItems.addRow(Object.values(invoiceItemsColumns.map(col => col.header)));
+
+            headerRow1.eachCell((cell, index) => {
+              cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+              };
+              cell.font = {
+                bold: true,
+                color: { argb: '0000' }, // White text color
+              };
+              cell.border = {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' },
+              };
+            });
 
             ccrData.forEach((item: any) => {
               const exportItem: any = {};
               invoiceItemsColumns.forEach(col => {
                 exportItem[col.header] = item[col.field];
               });
-              worksheetInvoiceItems.addRow(Object.values(exportItem));
+              const cellRow =  worksheetInvoiceItems.addRow(Object.values(exportItem));
+              cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+                cell.border = {
+                  top: { style: 'thin' },
+                  left: { style: 'thin' },
+                  bottom: { style: 'thin' },
+                  right: { style: 'thin' },
+                };
+              });
             });
           }
         }
@@ -1076,7 +1167,59 @@ export class ConsoleEditComponent {
       { header: 'LOCATION ', field: 'location' }
     ];
 
-    const exportData = res.map((item: any, index: any) => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(`LOCATION`);
+    const currentDate = new Date();
+    const worksheetPromises = [];
+    const newRow = {
+      'Origin Code': '',
+      'Shipper': 'Operator',
+      'WT KG': 'IW EXPRESS',
+      'PCS': '',
+      'Description': '',
+      'Consignee Name': '',
+      'Currency': 'Date',
+      'Value': this.datePipe.transform(currentDate, 'dd-MM-yyyy'),
+      'Customs KD': '',
+    };
+
+    const headerRowFirst =  worksheet.addRow(Object.values(newRow));
+
+    headerRowFirst.eachCell((cell, index) => {
+      cell.font = {
+        bold: true,
+        color: { argb: '0000' }, // White text color
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    
+   
+   const headerRow =  worksheet.addRow(Object.values(locationColumns.map(col => col.header)));
+
+   headerRow.eachCell((cell, index) => {
+     cell.fill = {
+       type: 'pattern',
+       pattern: 'solid',
+       fgColor: { argb: 'ff0000' }, // Replace with your desired background color
+     };
+     cell.font = {
+       bold: true,
+       color: { argb: '0000' }, // White text color
+     };
+     cell.border = {
+       top: { style: 'thin' },
+       left: { style: 'thin' },
+       bottom: { style: 'thin' },
+       right: { style: 'thin' },
+     };
+   });
+
+     res.forEach((item: any, index: any) => {
       const exportItem: any = {};
       locationColumns.forEach(col => {
         if (col.format == 'number') {
@@ -1085,11 +1228,38 @@ export class ConsoleEditComponent {
           exportItem[col.header] = item[col.field];
         }
       });
-      return exportItem;
+      const cellRow =   worksheet.addRow(Object.values(exportItem));
+      cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+       cell.border = {
+         top: { style: 'thin' },
+         left: { style: 'thin' },
+         bottom: { style: 'thin' },
+         right: { style: 'thin' },
+       };
+     });
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Location');
+    worksheetPromises.push(worksheet);
+
+    workbook.xlsx.writeBuffer().then((data) => {
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Create a temporary anchor element
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `LOCATION_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+      document.body.appendChild(a);
+
+      // Simulate click to trigger download
+      a.click();
+
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    });
   }
 }
 
