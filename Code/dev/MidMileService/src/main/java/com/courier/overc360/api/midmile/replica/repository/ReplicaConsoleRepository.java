@@ -189,14 +189,14 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "And C_ID = :companyId\n" +
             "And PARTNER_ID = :partnerId\n" +
             "And PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
-//            "And PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAB\n" +
+            "And PARTNER_HOUSE_AIRWAY_BILL = :partnerHouseAB\n" +
             "And UNCONSOLIDATED = :unconsolidatedIndicator\n" +
             "And CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
-    long getNoOfConsoles(@Param("languageId") String languageId,
-                         @Param("companyId") String companyId,
-                         @Param("partnerId") String partnerId,
-                         @Param("partnerMasterAB") String partnerMasterAB,
-//                                 @Param("partnerHouseAB") String partnerHouseAB,
+    long getNoOfConsoles(@Param("languageId") List<String> languageId,
+                         @Param("companyId") List<String> companyId,
+                         @Param("partnerId") List<String> partnerId,
+                         @Param("partnerMasterAB") List<String> partnerMasterAB,
+                         @Param("partnerHouseAB") List<String> partnerHouseAB,
                          @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
                          @Param("fromDate") Date fromDate,
                          @Param("toDate") Date toDate);

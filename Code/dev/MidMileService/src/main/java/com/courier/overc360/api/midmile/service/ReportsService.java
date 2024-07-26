@@ -184,15 +184,27 @@ public class ReportsService {
                         for (String pHawb : pHawbList) {
 
                             Long noOfShipments = replicaConsignmentEntityRepository.getNoOfShipmentsScanned1(
-                                    langId, cId, pId, pMawb,
-//                                    pHawb,
+                                    langId, cId, pId, pMawb, pHawb,
                                     1L, reportInput.getFromDate(), reportInput.getToDate());
                             log.info("No Of Shipments Scanned --> {}", noOfShipments);
 
-                            if (noOfShipments != 0) {
+                            long noOfConsoles = replicaConsoleRepository.getNoOfConsoles(
+                                    reportInput.getLanguageId(), reportInput.getCompanyId(), reportInput.getPartnerId(),
+                                    reportInput.getPartnerMasterAirwayBill(), reportInput.getPartnerHouseAirwayBill(),
+                                    0L, reportInput.getFromDate(), reportInput.getToDate());
+                            log.info("No Of Consoles --> {}", noOfConsoles);
+
+                            long noOfUnconsolidatedShipments = replicaUnconsolidationRepository.getNoOfUnconsolidatedShipments(
+                                    reportInput.getLanguageId(), reportInput.getCompanyId(), reportInput.getPartnerId(),
+                                    reportInput.getPartnerMasterAirwayBill(), reportInput.getPartnerHouseAirwayBill(),
+                                    1L, reportInput.getFromDate(), reportInput.getToDate());
+                            log.info("No Of Unconsolidated Shipments --> {}", noOfUnconsolidatedShipments);
+
+                            if (noOfShipments != 0 || noOfConsoles != 0) {
                                 ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
 
                                 reportOutput.setNoOfShipmentsScanned(noOfShipments);
+                                reportOutput.setNoOfConsoles(noOfConsoles);
                                 createdConsoleTrackingReportOutputList.add(reportOutput);
                             }
                         }
