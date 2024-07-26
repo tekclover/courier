@@ -2380,4 +2380,84 @@ public class IDMasterServiceController {
         Uom[] uomList = idmasterService.findUom(findUom, authToken);
         return new ResponseEntity<>(uomList, HttpStatus.OK);
     }
+
+
+    //==============================================AppUser====================================================
+    // Get All AppUser Details
+    @ApiOperation(response = AppUser[].class, value = "Get all AppUser details") // label for swagger
+    @GetMapping("/appUser")
+    public ResponseEntity<?> getAppUsers(@RequestParam String authToken) {
+        AppUser[] userAppUser = idmasterService.getAppUsers(authToken);
+        return new ResponseEntity<>(userAppUser, HttpStatus.OK);
+    }
+
+    // Get AppUser
+    @ApiOperation(response = AppUser.class, value = "Get AppUser") // label for swagger
+    @GetMapping("/appUser/{appUserId}")
+    public ResponseEntity<?> getAppUser(@PathVariable String appUserId, @RequestParam String languageId,
+                                                @RequestParam String companyId, @RequestParam String authToken) {
+        AppUser dbAppUser = idmasterService.getAppUser(companyId, languageId, appUserId, authToken);
+        return new ResponseEntity<>(dbAppUser, HttpStatus.OK);
+    }
+
+    // Create new AppUser
+    @ApiOperation(response = AppUser.class, value = "Create new AppUser") // label for swagger
+    @PostMapping("/appUser")
+    public ResponseEntity<?> postAppUser(@RequestBody AddAppUser newAppUser,
+                                                 @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        AppUser createAppUser = idmasterService.createAppUser(newAppUser, loginUserID, authToken);
+        return new ResponseEntity<>(createAppUser, HttpStatus.OK);
+    }
+
+    // Update AppUser
+    @ApiOperation(response = AppUser.class, value = "Update AppUser") // label for swagger
+    @RequestMapping(value = "/appUser/{appUserId}", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateAppUser(@PathVariable String appUserId, @RequestParam String languageId,
+                                                   @RequestParam String companyId, @RequestParam String loginUserID,
+                                                   @RequestBody UpdateAppUser updateAppUser, @RequestParam String authToken) {
+        AppUser UpdateAppUser =
+                idmasterService.updateAppUser(companyId, languageId, appUserId, loginUserID, updateAppUser, authToken);
+        return new ResponseEntity<>(UpdateAppUser, HttpStatus.OK);
+    }
+
+    // Delete AppUser
+    @ApiOperation(response = AppUser.class, value = "Delete AppUser") // label for swagger
+    @DeleteMapping("/appUser/{appUserId}")
+    public ResponseEntity<?> deleteAppUser(@PathVariable String appUserId, @RequestParam String languageId, @RequestParam String companyId,
+                                                   @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteAppUser(companyId, languageId, appUserId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find AppUser
+    @ApiOperation(response = AppUser[].class, value = "Find AppUser")//label for swagger
+    @PostMapping("/appUser/find")
+    public AppUser[] findAppUser(@RequestBody FindAppUser findAppUser,
+                                                 @RequestParam String authToken) throws Exception {
+        return idmasterService.findAppUser(findAppUser, authToken);
+    }
+
+    /* --------------------------------User Management-------------------------------------------------------------------------------------*/
+    // Login - Validate User
+    @ApiOperation(response = Optional.class, value = "Login Mobile AppUser") // label for swagger
+    @RequestMapping(value = "/login/mobile", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> loginMobileAppUser(@RequestParam String appUserId, @RequestParam String password,
+                                       @RequestParam String authToken, @RequestParam(required = false) String version) {
+        try {
+            AppUser loggedUser = idmasterService.validateMobileUserID(appUserId, password, authToken, version);
+            log.info("LoginUser::: " + loggedUser);
+            log.info("version::: " + version);
+            return new ResponseEntity<>(loggedUser, HttpStatus.OK);
+        } catch (BadRequestException e) {
+            log.error("Invalid user");
+            String errMsg = "Either UserId is invalid or Password does not match.";
+            CustomErrorResponse error = new CustomErrorResponse();
+            error.setTimestamp(LocalDateTime.now());
+            error.setError(errMsg);
+            error.setStatus(HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 }

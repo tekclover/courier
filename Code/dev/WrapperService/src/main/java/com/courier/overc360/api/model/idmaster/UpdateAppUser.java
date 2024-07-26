@@ -1,4 +1,4 @@
-package com.courier.overc360.api.idmaster.primary.model.appuser;
+package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
@@ -16,11 +16,11 @@ public class UpdateAppUser {
 
     private String routeId;
 
-    private String password;
-
     private String assignedHubCode;
 
     private String statusId;
+
+    private String password;
 
     private Long deletionIndicator;
 

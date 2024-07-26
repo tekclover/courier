@@ -1,14 +1,29 @@
-package com.courier.overc360.api.idmaster.primary.model.appuser;
+package com.courier.overc360.api.model.idmaster;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
-public class UpdateAppUser {
+
+public class AppUser {
+
+    private String languageId;
+
+    private String companyId;
+
+    private String appUserId;
+
+    private String languageDescription;
+
+    private String companyName;
+
     private String appUserName;
 
     private String appUserType;
-
-    private String remark;
 
     private String mobileNumber;
 
@@ -16,11 +31,15 @@ public class UpdateAppUser {
 
     private String routeId;
 
-    private String password;
-
     private String assignedHubCode;
 
     private String statusId;
+
+    private String statusDescription;
+
+    private String remark;
+
+    private String password;
 
     private Long deletionIndicator;
 
@@ -43,5 +62,14 @@ public class UpdateAppUser {
     private String referenceField9;
 
     private String referenceField10;
+
+    private String createdBy;
+
+    private Date createdOn;
+
+    private Date updatedOn;
+
+    private String updatedBy;
+
 
 }
