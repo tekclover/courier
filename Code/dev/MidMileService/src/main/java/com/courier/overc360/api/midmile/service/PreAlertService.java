@@ -220,9 +220,7 @@ public class PreAlertService {
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
                 newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
-
                 partnerNm.ifPresent(newPreAlert::setPartnerName);
-
                 newPreAlert.setCreatedBy(loginUserID);
                 newPreAlert.setUpdatedBy(null);
                 newPreAlert.setCreatedOn(new Date());
