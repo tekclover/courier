@@ -99,10 +99,10 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "INNER JOIN ( " +
             "    SELECT PARTNER_MASTER_AIRWAY_BILL, MAX(CTD_ON) AS max_date " +
             "    FROM tblconsole " +
-            "    WHERE HAWB_TYP_ID != 5 AND is_deleted = 0 " +
+            "    WHERE HAWB_TYP_ID = 5 AND HAWB_TYP = 'EVENT' AND is_deleted = 0 " +
             "    GROUP BY PARTNER_MASTER_AIRWAY_BILL " +
             ") sub ON t.PARTNER_MASTER_AIRWAY_BILL = sub.PARTNER_MASTER_AIRWAY_BILL AND t.CTD_ON = sub.max_date " +
-            "WHERE t.HAWB_TYP_ID != 5 AND t.is_deleted = 0",
+            "WHERE t.HAWB_TYP_ID = 5 AND HAWB_TYP = 'EVENT' AND t.is_deleted = 0",
             nativeQuery = true)
     List<MobileApp> getMobileApp();
 
