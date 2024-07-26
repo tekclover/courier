@@ -905,10 +905,10 @@ export class ConsoleEditComponent {
       { header: 'GoodsDescription', field: 'goodsDescription' },
       { header: 'Country Of Origin', field: 'countryOfOrigin' },
       { header: 'Manufacturer', field: 'manufacturer' },
-      { header: 'No Of Packages', field: 'noOfPieceHawb' },
+      { header: 'No Of Packages', field: 'noOfPieces' },
       { header: 'Item Total Price', field: 'consignmentValue' },
       { header: 'Package Type', field: 'packageType' },
-      { header: 'Quantity', field: 'quantity' },
+      { header: 'Quantity', field: 'totalQuantity' },
       { header: 'Net Weight', field: 'netWeight' },
       { header: 'Gross Weight', field: 'grossWeight' },
       { header: 'Is Exempted', field: 'isExempted' },
@@ -1066,13 +1066,13 @@ export class ConsoleEditComponent {
 
     const locationColumns = [
       { header: 'S No', field: 'partnerMasterAirwayBill', format: 'number' },
-      { header: 'AWB No', field: 'partnerMasterAirwayBill' },
+      { header: 'Console ID', field: 'consoleId' },
       { header: 'NO OF PCS', field: 'totalNoOfPieces' },
       { header: 'NATURE OF GOODS', field: 'natureOfGoods' },
       { header: 'ORIGIN', field: 'origin' },
       { header: 'CONSIGNEE NAME', field: 'consigneeName' },
       { header: 'GROSS WT.', field: 'totalSumOfWeights' },
-      { header: 'MAWB', field: 'masterAirwayBill' },
+      { header: 'MAWB', field: 'partnerMasterAirwayBill' },
       { header: 'LOCATION ', field: 'location' }
     ];
 

@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -28,6 +29,8 @@ public class UpdateConsole {
 
     @NotBlank(message = "PieceId is mandatory")
     private String pieceId;
+
+    private String ccrId;
 
 //    @NotBlank(message = "PieceItemId is mandatory")
 //    private String pieceItemId;

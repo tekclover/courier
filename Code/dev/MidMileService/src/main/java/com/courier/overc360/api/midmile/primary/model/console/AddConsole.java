@@ -29,6 +29,8 @@ public class AddConsole {
 
     private String houseAirwayBill;
 
+    private String ccrId;
+
     private String partnerType;
 
     private String consoleName;

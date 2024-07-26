@@ -69,6 +69,9 @@ public class Console {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
+    @Column(name = "CCR_ID", columnDefinition = "nvarchar(50)")
+    private String ccrId;
+
 //    @Id
 //    @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
 //    private String pieceItemId;

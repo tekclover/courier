@@ -735,6 +735,8 @@ export class ConsignmentNewComponent {
     return this.cols.length + 2; // +1 for the expanded content column
   }
 
+
+  groupByPieceId:any;
   callCNTable(){
     let obj: any = {};
     obj.companyId = [this.auth.companyId];
@@ -743,6 +745,9 @@ export class ConsignmentNewComponent {
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       this.cnTable =  res;
+      const groupBy = this.cs.groupBy(res, 'pieceId');
+     // const groupedByConsoleId = this.cs.groupBy(result, 'consoleId');
+    //  console.log(groupedByConsoleId);
     },error: err => {
       this.spin.hide();
       this.cs.commonerrorNew(err);

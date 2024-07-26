@@ -1013,6 +1013,32 @@
                     </ng-template>
                 </p-table>
 
+                <p-accordion [activeIndex]="0" class="d-none">
+                    <p-accordionTab  *ngFor="let tab of cnTable">
+                        <ng-template pTemplate="header">
+                            <div class="accordion-header">
+                              <span class="header-left">{{ tab.houseAirwayBill }} - {{ tab.languageDescription }}</span>
+                              <span class="header-right">{{ tab.languageId }}</span>
+                            </div>
+                          </ng-template>
+                          
+                          <p-accordion [activeIndex]="0">
+                            <p-accordionTab  *ngFor="let tab of groupByPieceId">
+                                <ng-template pTemplate="header">
+                                    <div class="accordion-header">
+                                      <span class="header-left">{{ tab.houseAirwayBill }} - {{ tab.languageDescription }}</span>
+                                      <span class="header-right">{{ tab.languageId }}</span>
+                                    </div>
+                                  </ng-template>
+                                <p class="m-0">
+                                    {{ tab.partnerHouseAirwayBill }}
+                                </p>
+                            </p-accordionTab>
+                        </p-accordion>
+
+                    </p-accordionTab>
+                </p-accordion>
+
                 <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 3.5%; bottom: 7%;">
 
                     <button class="buttom1 textBlack mx-1" (click)="activeIndex = activeIndex - 1">Back</button>

@@ -80,6 +80,7 @@ export class PreAlertNewComponent {
     airportDestinationCode: [],
     hsCode: [],
     partnerType: ['',],
+    partnerName: ['',],
     countryOfOrigin: [],
     countryOfDestination: [],
     estimatedTimeOfArrival: ['',],
