@@ -34,6 +34,8 @@ import { SpecialApprovalNewComponent } from './special-approval/special-approval
 import { SpecialApprovalComponent } from './special-approval/special-approval.component';
 import { AirportCodeComponent } from './airport-code/airport-code.component';
 import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
+import { StatusEventComponent } from './status-event/status-event.component';
+import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
 
 const routes: Routes = [
 
@@ -89,6 +91,9 @@ const routes: Routes = [
   
   { path: 'airportCode', component: AirportCodeComponent, data: { title: 'Master', module: 'AirportCode' } },
   { path: 'airportCode-new/:code', component: AirportCodeNewComponent, data: { title: 'Master', module: 'AirportCode - Add New' } },
+    
+  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Setup', module: 'Status/Event' } },
+  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Setup', module: 'Status/Event - Add New' } },
 
 ];
 

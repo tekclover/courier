@@ -73,7 +73,11 @@ export const navbarData: INavbarData[] = [
                         routerLink: '/main/idMaster/appUser',
                         label: 'App User'
                     },
-
+                    {
+                        routerId: 2110,
+                        routerLink: '/main/idMaster/uom',
+                        label: 'UOM'
+                    },
                 ],
             },
             {
@@ -198,6 +202,10 @@ export const navbarData: INavbarData[] = [
                         routerId: 3104,
                         routerLink: '/main/master/event',
                         label: 'Event'
+                    },  {
+                        routerId: 3105,
+                        routerLink: '/main/master/statusevent',
+                        label: 'Status Event'
                     },
                     // {
                     //     routerId: 3105,

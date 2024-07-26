@@ -61,8 +61,8 @@ import { RateParameterNewComponent } from './rate-parameter/rate-parameter-new/r
 import { UserRoleNewComponent } from './user-role/user-role-new/user-role-new.component';
 import { SubProductsValuesComponent } from './sub-product/sub-products-values/sub-products-values.component';
 import { ProductValueComponent } from './product/product-value/product-value.component';
-import { StatusEventComponent } from './status-event/status-event.component';
-import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
+import { StatusEventComponent } from '../master/status-event/status-event.component';
+import { StatusEventNewComponent } from '../master/status-event/status-event-new/status-event-new.component';
 import { UomComponent } from './uom/uom.component';
 import { UomNewComponent } from './uom/uom-new/uom-new.component';
 
