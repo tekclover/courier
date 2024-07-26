@@ -745,8 +745,9 @@ export class ConsignmentNewComponent {
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       this.cnTable =  res;
-      this.groupByPieceId = this.cs.groupBy(res, 'pieceId');
-      console.log(this.groupByPieceId);
+      const groupBy = this.cs.groupBy(res, 'pieceId');
+     // const groupedByConsoleId = this.cs.groupBy(result, 'consoleId');
+    //  console.log(groupedByConsoleId);
     },error: err => {
       this.spin.hide();
       this.cs.commonerrorNew(err);
