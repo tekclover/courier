@@ -687,7 +687,7 @@ public class MidMileController {
     }
 
     @ApiOperation(response = ConsoleStatus[].class, value = "Console Status Update ")
-    @PostMapping("/console/status/update")
+    @PostMapping("/console/status-event/update")
     public ResponseEntity<?> updateHawbType(@Valid @RequestBody ConsoleStatus[] consoleStatuses,
                                             @RequestParam String loginUserID,
                                             @RequestParam String authToken) throws Exception {
