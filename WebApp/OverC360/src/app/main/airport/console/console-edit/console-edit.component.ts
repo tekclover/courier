@@ -1066,13 +1066,13 @@ export class ConsoleEditComponent {
 
     const locationColumns = [
       { header: 'S No', field: 'partnerMasterAirwayBill', format: 'number' },
-      { header: 'AWB No', field: 'partnerMasterAirwayBill' },
+      { header: 'Console ID', field: 'consoleId' },
       { header: 'NO OF PCS', field: 'totalNoOfPieces' },
       { header: 'NATURE OF GOODS', field: 'natureOfGoods' },
       { header: 'ORIGIN', field: 'origin' },
       { header: 'CONSIGNEE NAME', field: 'consigneeName' },
       { header: 'GROSS WT.', field: 'totalSumOfWeights' },
-      { header: 'MAWB', field: 'masterAirwayBill' },
+      { header: 'MAWB', field: 'partnerMasterAirwayBill' },
       { header: 'LOCATION ', field: 'location' }
     ];
 
