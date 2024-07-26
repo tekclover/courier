@@ -7,7 +7,7 @@ import { AuthService } from '../../../core/Auth/auth.service';
 })
 export class ConsignmentService {
 
-  constructor(private http : HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   Get(languageId: string) {
     return this.http.get<any>('/overc-midmile-service/consignment/' + languageId);
@@ -33,21 +33,21 @@ export class ConsignmentService {
   }
 
   DeletePreAlertManifest(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
-      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId);
+    return this.http.delete<any>('/overc-midmile-service/consignment' + '?languageId=' + this.auth.languageId + '&companyId=' + this.auth.companyId
+      + '&masterAirwayBill=' + obj.masterAirwayBill + '&houseAirwayBill=' + obj.houseAirwayBill + '&partnerId=' + obj.partnerId);
   }
 
   DeletePiece(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
-      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId + '&pieceId='+obj.pieceId);
+    return this.http.delete<any>('/overc-midmile-service/consignment' + '?languageId=' + this.auth.languageId + '&companyId=' + this.auth.companyId
+      + '&masterAirwayBill=' + obj.masterAirwayBill + '&houseAirwayBill=' + obj.houseAirwayBill + '&partnerId=' + obj.partnerId + '&pieceId=' + obj.pieceId);
   }
   DeleteItem(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
-      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId + '&pieceItemId='+obj.pieceItemId);
+    return this.http.delete<any>('/overc-midmile-service/consignment' + '?languageId=' + this.auth.languageId + '&companyId=' + this.auth.companyId
+      + '&masterAirwayBill=' + obj.masterAirwayBill + '&houseAirwayBill=' + obj.houseAirwayBill + '&partnerId=' + obj.partnerId + '&pieceItemId=' + obj.pieceItemId);
   }
   DeleteImage(obj: any) {
-    return this.http.delete<any>('/overc-midmile-service/consignment'  +'?languageId='+ this.auth.languageId  +'&companyId='+ this.auth.companyId
-      + '&masterAirwayBill='+ obj.masterAirwayBill + '&houseAirwayBill='+ obj.houseAirwayBill +'&partnerId='+obj.partnerId + '&imageRefId='+obj.imageRefId);
+    return this.http.delete<any>('/overc-midmile-service/consignment' + '?languageId=' + this.auth.languageId + '&companyId=' + this.auth.companyId
+      + '&masterAirwayBill=' + obj.masterAirwayBill + '&houseAirwayBill=' + obj.houseAirwayBill + '&partnerId=' + obj.partnerId + '&imageRefId=' + obj.imageRefId);
   }
 
   search(obj: any) {
@@ -76,17 +76,17 @@ export class ConsignmentService {
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i], files[i].name);
     }
-    return this.http.post<any>('/doc-storage/multiUpload'+'?location='+ location , formData);
+    return this.http.post<any>('/doc-storage/multiUpload' + '?location=' + location, formData);
   }
 
-  
-  public uploadsinglefile(file: File, location:any) {
+
+  public uploadsinglefile(file: File, location: any) {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post('/document/Upload' + '?filePath=' + location, formData);
   }
 
-  uploadBayan(file: File, filePath:any) {
+  uploadBayan(file: File, filePath: any) {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<any>('/pdf/extract' + '?filePath=' + filePath, formData);
@@ -98,37 +98,37 @@ export class ConsignmentService {
     return this.http.post<any>(`/consignment/upload/v2?companyId=${this.auth.companyId}&loginUserID=${this.auth.userID}`, formData);
   }
 
-  download(obj:any): Promise<File> {
+  download(obj: any): Promise<File> {
     console.log(obj)
-  return this.http
-  .get<any>(`/doc-storage/download?fileName=${obj.imageRefId}&location=${obj.referenceImageUrl}`, {
-    responseType: 'blob' as 'json',
-  })
-  .toPromise();
- }
+    return this.http
+      .get<any>(`/doc-storage/download?fileName=${obj.imageRefId}&location=${obj.referenceImageUrl}`, {
+        responseType: 'blob' as 'json',
+      })
+      .toPromise();
+  }
 
- findConsignmentPreAlertIndicator(obj: any) {
-  return this.http.post<any>(`/overc-midmile-service/consignment/find/v2`, obj);
- }
+  findConsignmentPreAlertIndicator(obj: any) {
+    return this.http.post<any>(`/overc-midmile-service/consignment/find/v2`, obj);
+  }
 
-//  pdfMerge(obj: any) {
-//   return this.http.post<any>(`/pdf/merge`, obj);
-//  }
+  //  pdfMerge(obj: any) {
+  //   return this.http.post<any>(`/pdf/merge`, obj);
+  //  }
 
- pdfMerge(obj:any): Promise<File> {
-  return this.http
-  .post<any>(`/pdf/merge`, obj, {
-    responseType: 'blob' as 'json',
-  })
-  .toPromise();
- }
+  pdfMerge(obj: any): Promise<File> {
+    return this.http
+      .post<any>(`/pdf/merge`, obj, {
+        responseType: 'blob' as 'json',
+      })
+      .toPromise();
+  }
 
- // Upload Pre-Alert Manifest
- uploadPreAlertFiles(file: File, obj: any) {
-  const formData = new FormData();
+  // Upload Pre-Alert Manifest
+  uploadPreAlertFiles(file: File, obj: any) {
+    const formData = new FormData();
     formData.append('file', file);
-  return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.estimatedTimeOfArrival}&estimatedTimeOfDeparture=${obj.estimatedDepartureTime}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}&loginUserID=${this.auth.userID}`, formData);
-}
+    return this.http.post<any>(`/preAlert/upload?companyId=${obj.companyId}&estimatedTimeOfArrival=${obj.estimatedTimeOfArrival}&estimatedTimeOfDeparture=${obj.estimatedDepartureTime}&flightName=${obj.flightName}&flightNo=${obj.flightNo}&partnerId=${obj.partnerId}&partnerMasterAirwayBill=${obj.partnerMasterAirwayBill}&partnerType=${obj.partnerType}}&partnerName=${obj.partnerName}&loginUserID=${this.auth.userID}`, formData);
+  }
 }
 
 
