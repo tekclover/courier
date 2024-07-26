@@ -60,11 +60,11 @@
                                 <mat-error *ngIf="errorHandling('type')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
-                            <!-- <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 ">Type Text</p>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Type Description</p>
                                 <input maxlength="50" formControlName="typeText" class=" w-100" pInputText
                                     placeholder="Enter" />
-                            </div> -->
+                            </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Action</p>
                                 <p-dropdown [options]="action" placeholder="Select" filter="true"
