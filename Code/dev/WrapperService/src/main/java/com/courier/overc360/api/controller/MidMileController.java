@@ -756,14 +756,14 @@ public class MidMileController {
     // GET MobileDashboard - Console count
     @ApiOperation(response = MobileDashboard.class, value = "Get MobileDashboard") // label for swagger
     @PostMapping("/reports/mobileDashboard/get")
-    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
-                                                @RequestParam String partnerMasterAirwayBill, @RequestParam String authToken) {
-        MobileDashboard dashboard = midMileService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill, authToken);
+    public ResponseEntity<?> postMobileDashboard(@Valid @RequestBody MobileDashboardRequest mobileDashboardRequest,
+                                                 @RequestParam String authToken) {
+        MobileDashboard dashboard = midMileService.getMobileDashboard(mobileDashboardRequest, authToken);
         return new ResponseEntity<>(dashboard, HttpStatus.OK);
     }
 
     // Generate Location Sheet
-    @ApiOperation(response = LocationSheetOutput.class, value = "Generate LocationSheet") // label for swagger
+    @ApiOperation(response = LocationSheetOutput.class, value = "Generate Location Sheet") // label for swagger
     @PostMapping("/reports/locationSheet")
     public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
                                                @RequestParam String loginUserID, @RequestParam String authToken) {

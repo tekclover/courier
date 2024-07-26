@@ -1,12 +1,13 @@
 package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
-import com.courier.overc360.api.midmile.primary.model.console.LocationSheetInput;
-import com.courier.overc360.api.midmile.primary.model.console.LocationSheetOutput;
-import com.courier.overc360.api.midmile.primary.model.console.MobileDashboard;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportInput;
 import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportOutput;
+import com.courier.overc360.api.midmile.primary.model.reports.LocationSheetInput;
+import com.courier.overc360.api.midmile.primary.model.reports.LocationSheetOutput;
+import com.courier.overc360.api.midmile.primary.model.reports.MobileDashboard;
+import com.courier.overc360.api.midmile.primary.model.reports.MobileDashboardRequest;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.primary.util.DateUtils;
@@ -22,7 +23,9 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -46,17 +49,16 @@ public class ReportsService {
     /*---------------------------------------------------------------------------------------------------------------*/
 
     /**
-     * Mobile Dashboard - Get Consoles Count
+     * Get Mobile Dashboard
      *
-     * @param languageId
-     * @param companyId
-     * @param partnerMasterAirwayBill
+     * @param mobileDashboardRequest
      * @return
      */
-    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill) {
+    public MobileDashboard getMobileDashboard(MobileDashboardRequest mobileDashboardRequest) {
 
         MobileDashboard mobileDashboard = new MobileDashboard();
-        long consoleCount = replicaConsoleRepository.getMobileDashboardCount(languageId, companyId, "5", partnerMasterAirwayBill);
+        long consoleCount = replicaConsoleRepository.getMobileDashboardCount(
+                mobileDashboardRequest.getLanguageId(), mobileDashboardRequest.getCompanyId(), "5");
         log.info("consoleCount --> {}", consoleCount);
         mobileDashboard.setConsoleCount(consoleCount);
         return mobileDashboard;
@@ -70,58 +72,64 @@ public class ReportsService {
      * @return
      */
     public List<LocationSheetOutput> generateLocationSheet(List<LocationSheetInput> locationSheetInputList, String loginUserID) {
-        try {
-            List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
-            for (LocationSheetInput sheetInput : locationSheetInputList) {
 
-                boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
-                        sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
-                        sheetInput.getConsoleId(), 0L);
-                if (!consolesPresent) {
-                    throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
-                }
-                log.info("given Inputs to generate locationSheet --> {}", sheetInput);
+        Set<String> processedKeys = new HashSet<>();
+        List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
 
-                // Get total Sum of NetWeight and TotalQuantity
-                ConsoleImpl sumValues = replicaConsoleRepository.getSumValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
-                        sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
-
-                // Get Location Sheet values
-                ConsoleImpl locationSheetValues = replicaConsoleRepository.getLocationSheetValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
-                        sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
-
-                LocationSheetOutput sheetOutput = new LocationSheetOutput();
-                BeanUtils.copyProperties(sheetInput, sheetOutput, CommonUtils.getNullPropertyNames(sheetInput));
-
-                if (sumValues != null) {
-                    sheetOutput.setTotalNoOfPieces(sumValues.getTotalQuantity());
-                    sheetOutput.setTotalSumOfWeights(sumValues.getTotalWeight());
-                }
-
-                if (locationSheetValues != null) {
-                    sheetOutput.setLanguageDescription(locationSheetValues.getLangDesc());
-                    sheetOutput.setCompanyName(locationSheetValues.getCompanyDesc());
-                    sheetOutput.setPartnerName(locationSheetValues.getPartnerName());
-                    sheetOutput.setPartnerType(locationSheetValues.getPartnerType());
-
-                    sheetOutput.setOrigin(locationSheetValues.getOrigin());
-                    sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
-                    sheetOutput.setMasterAirwayBill(locationSheetValues.getMasterAirwayBill());
-                }
-
-                sheetOutput.setNatureOfGoods("COURIER MATERIALS");
-                sheetOutput.setLocationSheetTimeStamp(new Date());
-
-                log.info("sheetOutput --> {}", sheetOutput);
-                createdLocationSheetOutputList.add(sheetOutput);
+        for (LocationSheetInput sheetInput : locationSheetInputList) {
+            String uniqueKey = generateUniqueKey(sheetInput);
+            if (processedKeys.contains(uniqueKey)) {
+                continue; // Skip this sheetInput if it has already been processed
             }
-            return createdLocationSheetOutputList;
-        } catch (Exception e) {
-            // Error Log
-            createReportLog(locationSheetInputList, e.toString());
-            e.printStackTrace();
-            throw new RuntimeException(e);
+
+            boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
+                    sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
+                    sheetInput.getConsoleId(), 0L);
+            if (!consolesPresent) {
+                throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+            }
+            log.info("given Inputs to generate locationSheet --> {}", sheetInput);
+
+            LocationSheetOutput sheetOutput = new LocationSheetOutput();
+            BeanUtils.copyProperties(sheetInput, sheetOutput, CommonUtils.getNullPropertyNames(sheetInput));
+
+            // Get total Sum of NetWeight and TotalQuantity
+            ConsoleImpl sumValues = replicaConsoleRepository.getSumValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
+                    sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
+            if (sumValues != null) {
+                sheetOutput.setTotalNoOfPieces(sumValues.getTotalQuantity());
+                sheetOutput.setTotalSumOfWeights(sumValues.getTotalWeight());
+            }
+
+            // Get Location Sheet values
+            ConsoleImpl locationSheetValues = replicaConsoleRepository.getLocationSheetValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
+                    sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
+            if (locationSheetValues != null) {
+                sheetOutput.setLanguageDescription(locationSheetValues.getLangDesc());
+                sheetOutput.setCompanyName(locationSheetValues.getCompanyDesc());
+                sheetOutput.setPartnerName(locationSheetValues.getPartnerName());
+                sheetOutput.setPartnerType(locationSheetValues.getPartnerType());
+
+                sheetOutput.setOrigin(locationSheetValues.getOrigin());
+                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
+            }
+
+            sheetOutput.setNatureOfGoods("COURIER MATERIALS");
+            sheetOutput.setLocationSheetTimeStamp(new Date());
+
+            createdLocationSheetOutputList.add(sheetOutput);
+            processedKeys.add(uniqueKey); // Mark this uniqueKey as processed
+            log.debug("uniqueKey - {}", uniqueKey);
         }
+
+        return createdLocationSheetOutputList;
+    }
+
+    private String generateUniqueKey(LocationSheetInput sheetInput) {
+        String uniqueKey = "languageId-" + sheetInput.getLanguageId() + "-" + "companyId-" + sheetInput.getCompanyId()
+                + "-" + "partnerId-" + sheetInput.getPartnerId() + "-" + "consoleId-" + sheetInput.getConsoleId()
+                + "-" + "partnerMasterAirwayBill-" + sheetInput.getPartnerMasterAirwayBill();
+        return uniqueKey;
     }
 
     /**
@@ -168,7 +176,6 @@ public class ReportsService {
 
             ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(reportInput.getLanguageId(),
                     reportInput.getCompanyId(), reportInput.getPartnerId(), reportInput.getPartnerMasterAirwayBill());
-            log.info("Scanning Officer --> {}", scanValues);
             if (scanValues != null) {
                 reportOutput.setScanningOfficer(scanValues.getUpdatedBy());
                 reportOutput.setScanningDate(scanValues.getUpdatedOn());

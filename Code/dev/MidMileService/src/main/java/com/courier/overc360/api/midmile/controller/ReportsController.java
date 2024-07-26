@@ -1,10 +1,11 @@
 package com.courier.overc360.api.midmile.controller;
 
-import com.courier.overc360.api.midmile.primary.model.console.LocationSheetInput;
-import com.courier.overc360.api.midmile.primary.model.console.LocationSheetOutput;
-import com.courier.overc360.api.midmile.primary.model.console.MobileDashboard;
 import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportInput;
 import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportOutput;
+import com.courier.overc360.api.midmile.primary.model.reports.LocationSheetInput;
+import com.courier.overc360.api.midmile.primary.model.reports.LocationSheetOutput;
+import com.courier.overc360.api.midmile.primary.model.reports.MobileDashboard;
+import com.courier.overc360.api.midmile.primary.model.reports.MobileDashboardRequest;
 import com.courier.overc360.api.midmile.service.ReportsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,13 +38,12 @@ public class ReportsController {
     ReportsService reportsService;
 
 
-    // GET MobileDashboard
+    // Get MobileDashboard
     @ApiOperation(response = MobileDashboard.class, value = "Get Mobile Dashboard Count") // label for swagger
-    @PostMapping("/mobileDashboard/get")
-    public ResponseEntity<?> getMobileDashboard(@RequestParam String languageId, @RequestParam String companyId,
-                                                @RequestParam String partnerMasterAirwayBill) throws Exception {
-        MobileDashboard consolesCount = reportsService.getMobileDashboard(languageId, companyId, partnerMasterAirwayBill);
-        return new ResponseEntity<>(consolesCount, HttpStatus.OK);
+    @PostMapping("/mobileDashboard")
+    public ResponseEntity<?> postMobileDashboard(@Valid @RequestBody MobileDashboardRequest mobileDashboardRequest) {
+        MobileDashboard mobileDashboard = reportsService.getMobileDashboard(mobileDashboardRequest);
+        return new ResponseEntity<>(mobileDashboard, HttpStatus.OK);
     }
 
     // Generate Location Sheet

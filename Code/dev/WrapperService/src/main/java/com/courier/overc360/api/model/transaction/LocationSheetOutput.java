@@ -10,15 +10,15 @@ public class LocationSheetOutput {
     private String languageId;
     private String companyId;
     private String partnerMasterAirwayBill;
-    //    private String houseAirwayBill;
     private String consoleId;
-    private String location;
 
     private String languageDescription;
     private String companyName;
+    private String partnerId;
     private String partnerName;
     private String partnerType;
 
+    private String location;
     private String totalNoOfPieces;
     private String totalSumOfWeights;
     private String origin;

@@ -1665,19 +1665,15 @@ public class MidMileService {
     }
 
     //=====================================================Reports=====================================================
-    // GET MobileDashboard - Console count
-    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill, String authToken) {
+    // Get MobileDashboard - Console count
+    public MobileDashboard getMobileDashboard(MobileDashboardRequest mobileDashboardRequest, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "ClassicWMS RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder
-                    .fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard/get")
-                    .queryParam("languageId", languageId)
-                    .queryParam("companyId", companyId)
-                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
-            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard");
+            HttpEntity<?> entity = new HttpEntity<>(mobileDashboardRequest, headers);
             ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, MobileDashboard.class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
@@ -1698,6 +1694,7 @@ public class MidMileService {
                     .queryParam("loginUserID", loginUserID);
             HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
             ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
+            log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1716,6 +1713,7 @@ public class MidMileService {
                     .queryParam("loginUserID", loginUserID);
             HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
             ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
+            log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
             e.printStackTrace();
