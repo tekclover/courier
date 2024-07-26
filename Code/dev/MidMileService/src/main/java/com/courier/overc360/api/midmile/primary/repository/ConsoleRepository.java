@@ -283,5 +283,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
 
     @Modifying
     @Query(value = "update tblconsole set ccr_id = :ccrId where console_id = :consoleId", nativeQuery = true)
-     void updateCCRID(String consoleId, String ccrId);
+    void updateCCRID(@Param("consoleId") String consoleId,
+                     @Param("ccrId") String ccrId);
+
 }
