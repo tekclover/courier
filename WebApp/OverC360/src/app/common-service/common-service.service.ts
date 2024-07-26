@@ -207,25 +207,16 @@ pCalendar(date: any): Date{
     }
     return invalid;
   }
-
-
-  async getBase64Image(imgSrc: string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0);
-        const dataURL = canvas.toDataURL('image/png');
-        resolve(dataURL.split(',')[1]); // Extract base64 part from dataURL
-      };
-      img.onerror = function(error) {
-        reject(error);
-      };
-      img.src = imgSrc;
-    });
-  }
   
+
+  groupBy(array: any[], key: string) {
+    return array.reduce((result: { [x: string]: any[]; }, currentValue: { [x: string]: any; }) => {
+      const groupKey = currentValue[key];
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(currentValue);
+      return result;
+    }, {});
+  }
 }

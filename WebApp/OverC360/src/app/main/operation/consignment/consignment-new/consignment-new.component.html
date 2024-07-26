@@ -969,7 +969,7 @@
             </p-tabPanel>
 
             <p-tabPanel header="CN Tracking" *ngIf="this.pageToken.pageflow != 'New'">
-                <p-table #consignmentStatusTag [columns]="cnCols" [value]="cnTable" class="custom-table d-none"
+                <p-table #consignmentStatusTag [columns]="cnCols" [value]="cnTable" class="custom-table"
                     [scrollable]="true" selectionMode="multiple" [(selection)]="selectedCNTable"
                     scrollHeight="calc(100vh - 22.8rem)" sortField="hawbTimeStamp" [sortOrder]="-1"
                     [tableStyle]="{'width': '84rem'}" styleClass="p-datatable-sm">
@@ -1013,7 +1013,7 @@
                     </ng-template>
                 </p-table>
 
-                <p-accordion [activeIndex]="0">
+                <p-accordion [activeIndex]="0" class="d-none">
                     <p-accordionTab  *ngFor="let tab of cnTable">
                         <ng-template pTemplate="header">
                             <div class="accordion-header">

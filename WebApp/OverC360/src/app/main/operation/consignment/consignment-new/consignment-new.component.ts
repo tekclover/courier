@@ -745,7 +745,8 @@ export class ConsignmentNewComponent {
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       this.cnTable =  res;
-      this.groupByPieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId')
+      this.groupByPieceId = this.cs.groupBy(res, 'pieceId');
+      console.log(this.groupByPieceId);
     },error: err => {
       this.spin.hide();
       this.cs.commonerrorNew(err);
