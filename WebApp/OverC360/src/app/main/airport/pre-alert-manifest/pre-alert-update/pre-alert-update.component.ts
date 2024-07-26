@@ -151,7 +151,7 @@ export class PreAlertUpdateComponent {
   downloadExcel() {
 
     const preAlertColumn = [
-      { field: 'partnerHouseAirwayBill', header: 'MAWB' },
+      { field: 'partnerMasterAirwayBill', header: 'MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'HAWB' },
       { field: 'totalWeight', header: 'Weight' },
       { field: 'noOfPieces', header: 'PCS' },

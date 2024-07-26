@@ -735,6 +735,8 @@ export class ConsignmentNewComponent {
     return this.cols.length + 2; // +1 for the expanded content column
   }
 
+
+  groupByPieceId:any;
   callCNTable(){
     let obj: any = {};
     obj.companyId = [this.auth.companyId];
@@ -743,6 +745,7 @@ export class ConsignmentNewComponent {
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       this.cnTable =  res;
+      this.groupByPieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId')
     },error: err => {
       this.spin.hide();
       this.cs.commonerrorNew(err);
