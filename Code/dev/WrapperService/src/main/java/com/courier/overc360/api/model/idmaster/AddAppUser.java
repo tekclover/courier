@@ -1,27 +1,22 @@
-package com.courier.overc360.api.idmaster.primary.model.appuser;
+package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddAppUser {
 
-    @NotBlank(message = "companyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "languageId is mandatory")
     private String languageId;
 
     private String appUserId;
 
-    @NotBlank(message = "appUserName is mandatory")
     private String appUserName;
 
     private String appUserType;
 
-    @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 
     private String mobileNumber;

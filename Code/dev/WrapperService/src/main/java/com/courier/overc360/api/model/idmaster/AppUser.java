@@ -1,28 +1,29 @@
-package com.courier.overc360.api.idmaster.primary.model.appuser;
+package com.courier.overc360.api.model.idmaster;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
-public class AddAppUser {
 
-    @NotBlank(message = "companyId is mandatory")
-    private String companyId;
+public class AppUser {
 
-    @NotBlank(message = "languageId is mandatory")
     private String languageId;
+
+    private String companyId;
 
     private String appUserId;
 
-    @NotBlank(message = "appUserName is mandatory")
+    private String languageDescription;
+
+    private String companyName;
+
     private String appUserName;
 
     private String appUserType;
-
-    @NotBlank(message = "StatusId is mandatory")
-    private String statusId;
 
     private String mobileNumber;
 
@@ -30,7 +31,15 @@ public class AddAppUser {
 
     private String routeId;
 
+    private String assignedHubCode;
+
+    private String statusId;
+
+    private String statusDescription;
+
     private String remark;
+
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -51,5 +60,14 @@ public class AddAppUser {
     private String referenceField9;
 
     private String referenceField10;
+
+    private String createdBy;
+
+    private Date createdOn;
+
+    private Date updatedOn;
+
+    private String updatedBy;
+
 
 }
