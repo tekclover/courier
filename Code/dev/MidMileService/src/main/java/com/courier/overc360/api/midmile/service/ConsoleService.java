@@ -1541,12 +1541,13 @@ public class ConsoleService {
 
             if (updatedConsole != null) {
                 // Update ConsignmentEntity Table
-                consoleRepository.updateConsignmentOnConsoleCreate(
-                        updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
-                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
-                        updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
-                        updatedConsole.getHubCode());
-
+                if(updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                    consoleRepository.updateConsignmentOnConsoleCreate(
+                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
+                            updatedConsole.getHubCode());
+                }
                 // Update PreAlert Table
                 consoleRepository.updatePreAlertOnConsoleCreate(
                         updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
