@@ -1659,7 +1659,7 @@ public class ConsoleService {
                         .anyMatch(status -> status.getHawbTypeId() != null && status.getHawbTypeId()
                                 .equalsIgnoreCase("5"));
                 if (!hawbTypeIdFound) {
-                    throw new BadRequestException("No Record Found with HawbTypeId 5");
+                    throw new BadRequestException("No Record Found with TypeId 5 And TypeText " + dbConsole.getHawbType());
                 }
             }
 
