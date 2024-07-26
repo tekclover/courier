@@ -415,8 +415,8 @@ public class FileStorageService {
     }
 
     //ProcessConsignmentOrders-V2
-    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType,
-                                                     String partnerId, String partnerMasterAirwayBill, String flightNo, String flightName,
+    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType, String partnerId, String partnerName,
+                                                     String partnerMasterAirwayBill, String flightNo, String flightName,
                                                      Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
@@ -447,8 +447,8 @@ public class FileStorageService {
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
 
-            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId, partnerMasterAirwayBill, flightNo, flightName,
-                    estimatedTimeOfDeparture, estimatedTimeOfTravel);
+            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId, partnerName,
+                    partnerMasterAirwayBill, flightNo, flightName, estimatedTimeOfDeparture, estimatedTimeOfTravel);
 
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
@@ -1962,8 +1962,9 @@ public class FileStorageService {
      * @param estimatedTimeOfTravel
      * @return
      */
-    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerMasterAirwayBill,
-                                       String flightNo, String flightName, Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel) {
+    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerName,
+                                       String partnerMasterAirwayBill, String flightNo, String flightName, Date estimatedTimeOfDeparture,
+                                       Date estimatedTimeOfTravel) {
 
         List<PreAlert> preAlertMap = new ArrayList<>();
 
@@ -1972,6 +1973,7 @@ public class FileStorageService {
 
             addPreAlert.setCompanyId(companyId);
             addPreAlert.setPartnerId(partnerId);
+            addPreAlert.setPartnerName(partnerName);
             addPreAlert.setPartnerType(partnerType);
             addPreAlert.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
             addPreAlert.setFlightNo(flightNo);

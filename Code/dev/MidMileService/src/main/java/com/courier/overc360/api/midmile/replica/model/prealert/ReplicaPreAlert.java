@@ -49,6 +49,9 @@ public class ReplicaPreAlert {
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
+    @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(100)")
+    private String partnerName;
+
     @Column(name = "TOTAL_WEIGHT", columnDefinition = "nvarchar(50)")
     private String totalWeight;
 
