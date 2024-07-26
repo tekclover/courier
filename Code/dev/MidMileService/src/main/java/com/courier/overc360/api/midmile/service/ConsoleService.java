@@ -1541,7 +1541,7 @@ public class ConsoleService {
 
             if (updatedConsole != null) {
                 // Update ConsignmentEntity Table
-                if(updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
                     consoleRepository.updateConsignmentOnConsoleCreate(
                             updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                             updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),

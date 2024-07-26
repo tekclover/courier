@@ -12,10 +12,13 @@ import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepo
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.PreAlertRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
-import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import com.courier.overc360.api.midmile.replica.model.prealert.FindPreAlert;
 import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
-import com.courier.overc360.api.midmile.replica.repository.*;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaConsignmentEntityRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaPreAlertRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.PreAlertSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -199,12 +202,16 @@ public class PreAlertService {
                 //HAWB_TYPE
                 dbPreAlert.setHawbType("EVENT");
                 dbPreAlert.setHawbTypeId("3");
-                Optional<String> statusText = consignmentEntityRepository.statusEventText(dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(),  "44");
+                Optional<String> statusText = consignmentEntityRepository.statusEventText(dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), "44");
                 if (statusText.isPresent()) {
                     String ikey = statusText.get();
                     dbPreAlert.setHawbTypeDescription(ikey);
                     dbPreAlert.setHawbTimeStamp(new Date());
                 }
+
+                // Get Partner Name from Consignment table
+                Optional<String> partnerNm = replicaPreAlertRepository.getPartnerName(dbPreAlert.getLanguageId(), dbPreAlert.getCompanyId(),
+                        dbPreAlert.getPartnerId(), dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill());
 
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
@@ -213,6 +220,9 @@ public class PreAlertService {
                 newPreAlert.setLanguageId(iKeyValuePair.getLangId());
                 newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
+
+                partnerNm.ifPresent(newPreAlert::setPartnerName);
+
                 newPreAlert.setCreatedBy(loginUserID);
                 newPreAlert.setUpdatedBy(null);
                 newPreAlert.setCreatedOn(new Date());
@@ -241,7 +251,7 @@ public class PreAlertService {
                                     savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getMasterAirwayBill(),
                                     savedPreAlert.getHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
                                     savedPreAlert.getHawbTimeStamp(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
-                                    savedPreAlert.getHawbTimeStamp(), loginUserID,  savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
+                                    savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
                         }
                     }
                 }
