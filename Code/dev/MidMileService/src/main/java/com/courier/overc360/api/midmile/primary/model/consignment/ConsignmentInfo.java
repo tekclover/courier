@@ -135,8 +135,8 @@ public class ConsignmentInfo {
     @Column(name = "PRODUCT_CODE", columnDefinition = "nvarchar(50)")
     private String productCode;
 
-    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
-    private String customsValue;
+//    @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
+//    private String customsValue;
 
     @Column(name = "AMOUNT", columnDefinition = "nvarchar(50)")
     private String amount;
