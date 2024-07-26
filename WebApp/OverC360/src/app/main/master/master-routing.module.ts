@@ -92,8 +92,8 @@ const routes: Routes = [
   { path: 'airportCode', component: AirportCodeComponent, data: { title: 'Master', module: 'AirportCode' } },
   { path: 'airportCode-new/:code', component: AirportCodeNewComponent, data: { title: 'Master', module: 'AirportCode - Add New' } },
     
-  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Setup', module: 'Status/Event' } },
-  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Setup', module: 'Status/Event - Add New' } },
+  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status/Event' } },
+  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status/Event - Add New' } },
 
 ];
 

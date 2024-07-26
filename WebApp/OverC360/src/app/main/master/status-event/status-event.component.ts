@@ -43,7 +43,7 @@ export class StatusEventComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Setup', 'Status/Event'];
+    const dataToSend = ['Master', 'Status/Event'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -137,7 +137,7 @@ export class StatusEventComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
     } else {
       let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedStatusEvent[0] : linedata, pageflow: type });
-      this.router.navigate(['/main/idMaster/statusevent-new/' + paramdata]);
+      this.router.navigate(['/main/master/statusevent-new/' + paramdata]);
     }
   }
 

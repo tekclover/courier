@@ -113,7 +113,7 @@ export class StatusEventNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'Status/Event', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Status/Event', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -197,7 +197,7 @@ export class StatusEventNewComponent {
       this.service.Update(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Updated', key: 'br', detail: res.typeId + ' has been updated successfully' });
-          this.router.navigate(['/main/idMaster/statusevent']);
+          this.router.navigate(['/main/master/statusevent']);
           this.spin.hide();
         }, error: (err) => {
           this.spin.hide();
@@ -210,7 +210,7 @@ export class StatusEventNewComponent {
         next: (res) => {
           if (res) {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: res.typeId + ' has been created successfully' });
-            this.router.navigate(['/main/idMaster/statusevent']);
+            this.router.navigate(['/main/master/statusevent']);
             this.spin.hide();
           }
         }, error: (err) => {
