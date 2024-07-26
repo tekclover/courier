@@ -65,6 +65,12 @@ public class ConsignmentStatus {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 
+    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String hubCode;
+
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
 //    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
 //    private String statusText;
 

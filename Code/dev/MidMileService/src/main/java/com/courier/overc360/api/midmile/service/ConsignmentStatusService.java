@@ -156,7 +156,8 @@ public class ConsignmentStatusService {
                                               String pieceId, String masterAirwayBill, String houseAirwayBill,
                                               String hawbType, String hawbTypeId, String hawbTypeDescription, Date hawbTimeStamp,
                                               String pieceType, String pieceTypeId, String pieceTypeDescription, Date pieceTimeStamp,
-                                              String loginUserID, String partnerHouseAirwayBill, String partnerMasterAirwayBill, Long bagId) {
+                                              String loginUserID, String partnerHouseAirwayBill, String partnerMasterAirwayBill, Long bagId,
+                                              String hubCode, String hubName) {
         try {
             if (languageId != null && companyId != null && pieceId != null && houseAirwayBill != null) {
                 ConsignmentStatus newConsignmentStatus = new ConsignmentStatus();
@@ -190,6 +191,8 @@ public class ConsignmentStatusService {
                 newConsignmentStatus.setPieceTypeDescription(pieceTypeDescription);
                 newConsignmentStatus.setPieceTimeStamp(pieceTimeStamp);
                 newConsignmentStatus.setBagId(String.valueOf(bagId));
+                newConsignmentStatus.setHubCode(hubCode);
+                newConsignmentStatus.setHubName(hubName);
 
                 newConsignmentStatus.setDeletionIndicator(0L);
                 newConsignmentStatus.setCreatedBy(loginUserID);

@@ -184,7 +184,7 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
             "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
             "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill))\n" +
-//            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
+            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
             "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
             "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
     Long getNoOfShipmentsScanned2(
@@ -192,7 +192,7 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
             @Param("companyId") String companyId,
             @Param("partnerId") String partnerId,
             @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
-//            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
             @Param("consoleIndicator") Long consoleIndicator,
             @Param("fromDate") Date fromDate,
             @Param("toDate") Date toDate);

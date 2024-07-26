@@ -22,8 +22,8 @@ public interface ConsoleImpl {
 
     String getPartnerType();
 
-    String getUpdatedBy();
+    String getScannedBy();
 
-    Date getUpdatedOn();
+    Date getScannedOn();
 
 }

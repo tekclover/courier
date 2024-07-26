@@ -35,6 +35,10 @@ public class UpdateConsignmentStatus {
 
     private String masterAirwayBill;
 
+    private String hubCode;
+
+    private String hubName;
+
 //    private String statusText;
 
     private String bagId;

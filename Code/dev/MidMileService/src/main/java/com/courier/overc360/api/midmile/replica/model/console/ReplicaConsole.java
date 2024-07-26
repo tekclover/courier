@@ -442,6 +442,12 @@ public class ReplicaConsole {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
+    @Column(name = "SCANNED_BY", columnDefinition = "nvarchar(50)")
+    private String scannedBy;
+
+    @Column(name = "SCANNED_ON")
+    private Date scannedOn;
+
     // unconsolidation
     @Column(name = "UNCONSOLIDATED")
     private Long unconsolidatedFlag;
