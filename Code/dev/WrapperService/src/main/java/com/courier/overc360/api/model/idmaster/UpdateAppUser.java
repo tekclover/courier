@@ -20,6 +20,8 @@ public class UpdateAppUser {
 
     private String statusId;
 
+    private String password;
+
     private Long deletionIndicator;
 
     private String referenceField1;

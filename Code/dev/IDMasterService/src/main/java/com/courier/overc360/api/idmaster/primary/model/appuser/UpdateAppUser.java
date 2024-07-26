@@ -16,6 +16,8 @@ public class UpdateAppUser {
 
     private String routeId;
 
+    private String password;
+
     private String assignedHubCode;
 
     private String statusId;

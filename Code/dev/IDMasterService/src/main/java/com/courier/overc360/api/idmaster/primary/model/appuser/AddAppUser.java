@@ -21,6 +21,9 @@ public class AddAppUser {
 
     private String appUserType;
 
+    @NotBlank(message = "Password is mandatory")
+    private String password;
+
     @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 

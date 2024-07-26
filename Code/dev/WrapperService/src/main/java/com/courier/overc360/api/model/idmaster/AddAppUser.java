@@ -19,6 +19,8 @@ public class AddAppUser {
 
     private String statusId;
 
+    private String password;
+
     private String mobileNumber;
 
     private String vehicleRegNumber;

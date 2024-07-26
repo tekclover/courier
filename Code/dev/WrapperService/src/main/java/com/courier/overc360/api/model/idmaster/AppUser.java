@@ -39,6 +39,8 @@ public class AppUser {
 
     private String remark;
 
+    private String password;
+
     private Long deletionIndicator;
 
     private String referenceField1;
