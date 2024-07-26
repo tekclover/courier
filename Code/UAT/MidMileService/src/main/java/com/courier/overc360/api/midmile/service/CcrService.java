@@ -157,8 +157,6 @@ public class CcrService {
                         newCcr.setIsExempted("No");
                     }
                     newCcr.setCcrId(CCR_ID);
-
-
                     newCcr.setDeletionIndicator(0L);
                     newCcr.setCreatedBy(loginUserID);
                     newCcr.setCreatedOn(new Date());
@@ -166,6 +164,9 @@ public class CcrService {
                     newCcr.setUpdatedOn(new Date());
 
                     Ccr createdCcr = ccrRepository.save(newCcr);
+
+                    // Update CCR_ID
+                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId());
 
                     createdCcrList.add(createdCcr);
                 } else {

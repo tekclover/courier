@@ -2,8 +2,6 @@ package com.courier.overc360.api.midmile.primary.model.prealert;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -26,6 +24,8 @@ public class UpdatePreAlert {
 
     @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
+
+    private String partnerName;
 
     private String houseAirwayBill;
 

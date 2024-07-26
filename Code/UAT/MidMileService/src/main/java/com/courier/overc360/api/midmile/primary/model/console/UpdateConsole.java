@@ -27,6 +27,8 @@ public class UpdateConsole {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    private String ccrId;
+
     private String masterAirwayBill;
 
     private String houseAirwayBill;
@@ -273,6 +275,7 @@ public class UpdateConsole {
 
     private String referenceField20;
 
-
+    // consolidation check
+    private Long unconsolidatedFlag;
 
 }

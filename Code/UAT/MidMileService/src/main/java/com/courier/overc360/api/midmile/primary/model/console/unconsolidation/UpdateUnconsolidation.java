@@ -1,14 +1,12 @@
-package com.courier.overc360.api.midmile.primary.model.console;
+package com.courier.overc360.api.midmile.primary.model.console.unconsolidation;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
-public class AddConsole {
+public class UpdateUnconsolidation {
 
     @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
@@ -29,41 +27,15 @@ public class AddConsole {
 
     private String houseAirwayBill;
 
-    private String ccrId;
-
     private String partnerType;
+
+    private String consignmentCurrency;
 
     private String consoleName;
 
     private String consoleGroupName;
 
-    private String partnerName;
-
-    private String noOfPackageMawb;
-
-    private String description;
-
-    private String companyName;
-
-    private String pieceId;
-
-//    private String pieceItemId;
-
-    private String languageDescription;
-
-//    private String statusId;
-//
-//    private String statusText;
-
-    private String bondedId;
-
-    private Long shipmentBagId;
-
-    private String consignmentCurrency;
-
     private String consignmentValue;
-
-    private String noOfPieces;
 
     private String exchangeRate;
 
@@ -83,19 +55,29 @@ public class AddConsole {
 
     private String calculatedTotalDuty;
 
-    private Long deletionIndicator = 0L;
-
-    private String netWeight;
+    private String expectedDuty;
 
     private String customsCurrency;
+
+    private String partnerName;
+
+    private String description;
 
     private String dutyPercentage;
 
     private String iataCharge;
 
+    private String noOfPieces;
+
     private String dduCharge;
 
     private String specialApprovalCharge;
+
+    private String netWeight;
+
+    private String primaryDo;
+
+    private String secondaryDo;
 
     private String manifestedGrossWeight;
 
@@ -104,10 +86,6 @@ public class AddConsole {
     private String tareWeight;
 
     private String manifestedQuantity;
-
-    private String primaryDo;
-
-    private String secondaryDo;
 
     private String landedQuantity;
 
@@ -137,13 +115,29 @@ public class AddConsole {
 //
 //    private Date statusTimestamp;
 
-    private String hubName;
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
 
     private String isConsolidatedShipment;
 
     private String isSplitBillOfLading;
 
     private String isPendingShipment;
+
+    private String totalDuty;
 
     private String goodsType;
 
@@ -155,7 +149,19 @@ public class AddConsole {
 
     private String customsKd;
 
-    private String expectedDuty;
+    private String noOfPackageMawb;
+
+    private String pieceId;
+
+//    private String pieceItemId;
+
+//    private String statusId;
+//
+//    private String statusText;
+
+    private String bondedId;
+
+    private Long shipmentBagId;
 
     private String actualCurrency;
 
@@ -201,21 +207,23 @@ public class AddConsole {
 
     private String currency;
 
+    private String consignmentLocalId;
+
     private String isExempted;
 
     private String exemptionFor;
 
     private String hubCode;
 
-    private String customsCcrNo;
-
-    private String totalDuty;
-
     private String exemptionBeneficiary;
+
+    private String customsCcrNo;
 
     private String exemptionReference;
 
-    private String consignmentLocalId;
+    private String hubName;
+
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -257,6 +265,7 @@ public class AddConsole {
 
     private String referenceField20;
 
-
+    // consolidation check
+//    private Long unconsolidatedFlag;
 
 }

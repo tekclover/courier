@@ -1,4 +1,4 @@
-package com.courier.overc360.api.midmile.primary.model.console;
+package com.courier.overc360.api.midmile.primary.model.reports;
 
 import lombok.Data;
 

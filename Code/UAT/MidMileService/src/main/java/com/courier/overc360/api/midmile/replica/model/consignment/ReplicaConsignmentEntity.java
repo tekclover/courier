@@ -1,6 +1,5 @@
 package com.courier.overc360.api.midmile.replica.model.consignment;
 
-import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -373,5 +372,9 @@ public class ReplicaConsignmentEntity {
     //Nullvalidation column
     @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
     private Long preAlertValidationIndicator;
+
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag;
 
 }

@@ -6,12 +6,12 @@ import java.util.Date;
 
 public interface MobileApp {
 
-    public String getPartnerMasterAirwayBill();
+     String getPartnerMasterAirwayBill();
 
-    public String getPartnerId();
+     String getPartnerId();
 
-    public String getPartnerName();
+     String getPartnerName();
 
-    public Date getCreatedOn();
+     Date getCreatedOn();
 
 }
