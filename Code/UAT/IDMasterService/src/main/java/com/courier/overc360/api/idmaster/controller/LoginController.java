@@ -1,6 +1,8 @@
 package com.courier.overc360.api.idmaster.controller;
 
+import com.courier.overc360.api.idmaster.primary.model.appuser.AppUser;
 import com.courier.overc360.api.idmaster.primary.model.user.UserManagement;
+import com.courier.overc360.api.idmaster.service.AppUserService;
 import com.courier.overc360.api.idmaster.service.UserManagementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,12 +28,25 @@ public class LoginController {
     @Autowired
     UserManagementService userManagementService;
 
+    @Autowired
+    AppUserService appUserService;
+
     // Validate User Login
     @ApiOperation(response = UserManagement.class, value = "Validate Login User") // label for swagger
     @GetMapping("")
     public ResponseEntity<?> validateUserID(@RequestParam String userID, @RequestParam String password, @RequestParam String version) {
         log.info("UserID :" + userID + " - Password : " + password + " - Version : " + version);
         UserManagement validatedUser = userManagementService.validateUser(userID, password, version);
+        log.info("Login : " + validatedUser);
+        return new ResponseEntity<>(validatedUser, HttpStatus.OK);
+    }
+
+    // Validate User Login
+    @ApiOperation(response = AppUser.class, value = "Validate Login AppUser") // label for swagger
+    @GetMapping("/mobile")
+    public ResponseEntity<?> validateAppUser(@RequestParam String appUserId, @RequestParam String password, @RequestParam String version) {
+        log.info("appUserId :" + appUserId + " - Password : " + password + " - Version : " + version);
+        AppUser validatedUser = appUserService.validateAppUser(appUserId, password, version);
         log.info("Login : " + validatedUser);
         return new ResponseEntity<>(validatedUser, HttpStatus.OK);
     }
