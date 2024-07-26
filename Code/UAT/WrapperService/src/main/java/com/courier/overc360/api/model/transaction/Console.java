@@ -21,6 +21,8 @@ public class Console {
 
     private String consoleId;
 
+    private String ccrId;
+
     private String partnerType;
 
     private String expectedDuty;

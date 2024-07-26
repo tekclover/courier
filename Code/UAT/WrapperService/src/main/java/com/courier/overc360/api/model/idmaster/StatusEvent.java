@@ -20,6 +20,10 @@ public class StatusEvent {
 
     private String companyName;
 
+    private String statusId;
+
+    private String statusDescription;
+
     private String typeText;
 
     private String action;

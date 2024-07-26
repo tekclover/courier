@@ -1,17 +1,17 @@
 package com.courier.overc360.api.model.transaction;
 
-
+import lombok.Data;
 import java.util.Date;
 
+@Data
+public class MobileApp {
 
-public interface MobileApp {
+     private String partnerMasterAirwayBill;
 
-    public String getPartnerMasterAirwayBill();
+     private String partnerId;
 
-    public String getPartnerId();
+     private String partnerName;
 
-    public String getPartnerName();
-
-    public Date getCreatedOn();
+     private Date createdOn;
 
 }

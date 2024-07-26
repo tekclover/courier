@@ -372,4 +372,9 @@ public class ConsignmentEntity {
     //Nullvalidation column
     @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
     private Long preAlertValidationIndicator;
+
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag;
+
 }

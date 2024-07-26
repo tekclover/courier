@@ -22,6 +22,8 @@ public class PreAlert {
 
     private String partnerMasterAirwayBill;
 
+    private String partnerName;
+
     private String totalWeight;
 
     private String flightNo;

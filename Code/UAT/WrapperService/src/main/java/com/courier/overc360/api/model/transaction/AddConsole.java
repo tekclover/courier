@@ -27,6 +27,8 @@ public class AddConsole {
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
+    private String ccrId;
+
     private String partnerType;
 
     private String consignmentCurrency;

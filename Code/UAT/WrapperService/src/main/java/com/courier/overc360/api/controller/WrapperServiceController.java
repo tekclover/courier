@@ -196,6 +196,7 @@ public class WrapperServiceController {
         try {
             log.info("Upload Initiated");
             Map<String, String> response = fileStorageService.storeSingleFile(file, filePath);
+            Thread.sleep(1000);                 //return after a one second delay
             return new ResponseEntity <> (response, HttpStatus.OK) ;
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Failed to Upload" + e.getMessage());

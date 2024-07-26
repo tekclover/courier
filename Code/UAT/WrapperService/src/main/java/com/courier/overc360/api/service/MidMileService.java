@@ -1082,28 +1082,6 @@ public class MidMileService {
         }
     }
 
-    // GET MobileDashboard - Console count
-    public MobileDashboard getMobileDashboard(String languageId, String companyId, String partnerMasterAirwayBill, String authToken) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.add("User-Agent", "ClassicWMS RestTemplate");
-            headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder
-                    .fromHttpUrl(getMidMileServiceUrl() + "console/mobileDashboard/get")
-                    .queryParam("languageId", languageId)
-                    .queryParam("companyId", companyId)
-                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
-            HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, MobileDashboard.class);
-            log.info("result : " + result.getStatusCode());
-            return result.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
 //    /**
 //     *
 //     * @param addConsignments
@@ -1557,6 +1535,184 @@ public class MidMileService {
                     .queryParam("loginUserID", loginUserID);
             HttpEntity<?> entity = new HttpEntity<>(consoleStatus, headers);
             ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //===============================================Unconsolidation===================================================
+    // Get All Unconsolidation Details
+    public Unconsolidation[] getAllUnconsolidations(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Unconsolidation[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Unconsolidation[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get Unconsolidation
+    public Unconsolidation getUnconsolidation(String languageId, String companyId, String partnerId, String partnerHouseAirwayBill,
+                                              String partnerMasterAirwayBill, String pieceId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/get")
+                    .queryParam("languageId", languageId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("partnerId", partnerId)
+                    .queryParam("pieceId", pieceId)
+                    .queryParam("partnerHouseAirwayBill", partnerHouseAirwayBill)
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Unconsolidation> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Unconsolidation.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create Unconsolidation
+    public Unconsolidation createUnconsolidation(AddUnconsolidation addUnconsolidation, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", " Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/create")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addUnconsolidation, headers);
+            ResponseEntity<Unconsolidation> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Unconsolidation.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Update Unconsolidation
+    public Unconsolidation updateUnconsolidation(UpdateUnconsolidation updateUnconsolidation, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Classic WMS's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateUnconsolidation, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/update")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Unconsolidation> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Unconsolidation.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete Unconsolidations - list
+    public boolean deleteUnconsolidations(List<UnconsolidationDeleteInput> deleteInputList, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(deleteInputList, headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/delete/list")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Unconsolidations
+    public Unconsolidation[] findUnconsolidations(FindUnconsolidation findUnconsolidation, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/find");
+            HttpEntity<?> entity = new HttpEntity<>(findUnconsolidation, headers);
+            ResponseEntity<Unconsolidation[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Unconsolidation[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //=====================================================Reports=====================================================
+    // Get MobileDashboard - Console count
+    public MobileDashboard getMobileDashboard(MobileDashboardRequest mobileDashboardRequest, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "ClassicWMS RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard");
+            HttpEntity<?> entity = new HttpEntity<>(mobileDashboardRequest, headers);
+            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, MobileDashboard.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Generate Location Sheet
+    public LocationSheetOutput[] generateLocationSheet(List<LocationSheetInput> sheetInputs, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/locationSheet")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+            ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Generate Console Tracking Report
+    public ConsoleTrackingReportOutput[] generateConsoleTrackingReport(ConsoleTrackingReportInput sheetInputs, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/consoleTrackingReport")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+            ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
