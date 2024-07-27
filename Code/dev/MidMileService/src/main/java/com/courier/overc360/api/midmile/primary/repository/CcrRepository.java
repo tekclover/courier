@@ -80,7 +80,8 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
                                                @Param("statusId") String statusId,
                                                @Param("statusText") String statusText);
 
-    Ccr findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
-            String companyId, String languageId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String pieceId, Long deletionIndicator);
+    Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndConsoleIdAndDeletionIndicator(
+            String companyId, String languageId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String pieceId,
+            String consoleId, Long deletionIndicator);
 }
 

@@ -282,6 +282,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                              @Param("hubCode") String hubCode);
 
     @Modifying
+    @Transactional
     @Query(value = "update tblconsole set ccr_id = :ccrId where " +
             " console_id = :consoleId " +
             " and c_id = :companyId " +
@@ -289,6 +290,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             " and partner_id = :partnerId " +
             " and partner_house_airway_bill = :partnerHouseAB " +
             " and partner_master_airway_bill = :partnerMasterAB " +
+            " and piece_id = :pieceId " +
             " and is_deleted = 0 ", nativeQuery = true)
     void updateCCRID(@Param("consoleId") String consoleId,
                      @Param("ccrId") String ccrId,
@@ -296,6 +298,8 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                      @Param("companyId") String companyId,
                      @Param("languageId") String languageId,
                      @Param("partnerHouseAB") String partnerHouseAB,
-                     @Param("partnerMasterAB") String partnerMasterAB);
+                     @Param("partnerMasterAB") String partnerMasterAB,
+                     @Param("pieceId") String pieceId);
+
 
 }

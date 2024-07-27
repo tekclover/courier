@@ -123,7 +123,6 @@ public class CcrService {
         return dbCcr.get();
     }
 
-
     //Create ConsoleCcr
     @Transactional
     public List<Ccr> createConsoleCcr(List<Console> addCcrList, String loginUserID)
@@ -137,25 +136,13 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Ccr duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndDeletionIndicator(
-                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(), addCcr.getPieceId(), 0L);
-                if (duplicateConsole == null) {
+                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndConsoleIdAndDeletionIndicator(
+                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(),
+                        addCcr.getPieceId(), addCcr.getConsoleId(), 0L);
 
-                    Double customsValue = null;
-                    if (addCcr.getCustomsValue() != null) {
-                        customsValue = Double.valueOf(addCcr.getCustomsValue());
-                    }
+                if (duplicateConsole.isEmpty()) {
                     Ccr newCcr = new Ccr();
                     BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
-
-                    if (customsValue != null && customsValue < 100) {
-                        newCcr.setIsExempted("yes");
-                        newCcr.setExemptionFor("Regulation 94-2020");
-                        newCcr.setExemptionBeneficiary("others");
-                        newCcr.setExemptionReference("99");
-                    } else {
-                        newCcr.setIsExempted("No");
-                    }
                     newCcr.setCcrId(CCR_ID);
                     newCcr.setDeletionIndicator(0L);
                     newCcr.setCreatedBy(loginUserID);
@@ -168,14 +155,10 @@ public class CcrService {
                     // Update CCR_ID
                     consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId(),
                             createdCcr.getPartnerId(), createdCcr.getCompanyId(), createdCcr.getLanguageId(),
-                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill());
+                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill(),
+                            createdCcr.getPieceId());
 
                     createdCcrList.add(createdCcr);
-                } else {
-                    createdCcrList.add(duplicateConsole);
-                    log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
-                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
-                            " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
                 }
             }
             return createdCcrList;
@@ -186,6 +169,73 @@ public class CcrService {
             throw new RuntimeException(e);
         }
     }
+
+//    //Create ConsoleCcr
+//    @Transactional
+//    public List<Ccr> createConsoleCcr(List<Console> addCcrList, String loginUserID)
+//            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+//        try {
+//            List<Ccr> createdCcrList = new ArrayList<>();
+//
+//            String NUM_RAN_OBJ = "CCRID";
+//            String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+//            log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
+//
+//            for (Console addCcr : addCcrList) {
+//
+//                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndConsoleIdAndDeletionIndicator(
+//                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(),
+//                        addCcr.getPieceId(), addCcr.getConsoleId(), 0L);
+//
+//                if (duplicateConsole.isEmpty()) {
+//
+//                    Double customsValue = null;
+//                    if (addCcr.getCustomsValue() != null) {
+//                        customsValue = Double.valueOf(addCcr.getCustomsValue());
+//                    }
+//                    Ccr newCcr = new Ccr();
+//                    BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
+//
+//                    if (customsValue != null && customsValue < 100) {
+//                        newCcr.setIsExempted("yes");
+//                        newCcr.setExemptionFor("Regulation 94-2020");
+//                        newCcr.setExemptionBeneficiary("others");
+//                        newCcr.setExemptionReference("99");
+//                    } else {
+//                        newCcr.setIsExempted("No");
+//                    }
+//                    newCcr.setCcrId(CCR_ID);
+//                    newCcr.setDeletionIndicator(0L);
+//                    newCcr.setCreatedBy(loginUserID);
+//                    newCcr.setCreatedOn(new Date());
+//                    newCcr.setUpdatedBy(loginUserID);
+//                    newCcr.setUpdatedOn(new Date());
+//
+//                    Ccr createdCcr = ccrRepository.save(newCcr);
+//
+//                    // Update CCR_ID
+//                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId(),
+//                            createdCcr.getPartnerId(), createdCcr.getCompanyId(), createdCcr.getLanguageId(),
+//                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill());
+//
+////                    log.info("CCR Created -------------> " + createdCcr );
+//                    createdCcrList.add(createdCcr);
+//                }
+////                else {
+////                    createdCcrList.add(duplicateConsole);
+////                    log.info("Record is getting Duplicated with given value CompanyId " + addCcr.getCompanyId() +
+////                            " LanguageId " + addCcr.getLanguageId() + " PartnerId " + addCcr.getPartnerId() + " MasterAirwayBill " + addCcr.getPartnerMasterAirwayBill() +
+////                            " HouseAirwayBill " + addCcr.getPartnerHouseAirwayBill());
+////                }
+//            }
+//            return createdCcrList;
+//        } catch (Exception e) {
+//            // Error Log
+//            createCcrLog5(addCcrList, e.toString());
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     /**
