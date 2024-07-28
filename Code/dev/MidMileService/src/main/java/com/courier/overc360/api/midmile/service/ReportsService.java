@@ -12,6 +12,7 @@ import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.primary.util.DateUtils;
 import com.courier.overc360.api.midmile.replica.model.console.ConsoleImpl;
+import com.courier.overc360.api.midmile.replica.model.dto.ConsignmentImpl;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaConsoleRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaUnconsolidationRepository;
@@ -200,22 +201,17 @@ public class ReportsService {
                     for (String pMawb : pMawbList) {
                         for (String pHawb : pHawbList) {
 
-                            Long noOfShipments = replicaConsignmentEntityRepository.getNoOfShipmentsScanned1(
-                                    langId, cId, pId, pMawb, pHawb,
-                                    1L, reportInput.getFromDate(), reportInput.getToDate());
-                            log.info("No Of Shipments Scanned --> {}", noOfShipments);
+                            long noOfShipments = replicaConsignmentEntityRepository.getNoOfShipmentsScanned(
+                                    langId, cId, pId, pMawb, pHawb, 1L,
+                                    reportInput.getFromDate(), reportInput.getToDate());
 
                             long noOfConsoles = replicaConsoleRepository.getNoOfConsoles(
-                                    reportInput.getLanguageId(), reportInput.getCompanyId(), reportInput.getPartnerId(),
-                                    reportInput.getPartnerMasterAirwayBill(), reportInput.getPartnerHouseAirwayBill(),
-                                    0L, reportInput.getFromDate(), reportInput.getToDate());
-                            log.info("No Of Consoles --> {}", noOfConsoles);
+                                    langId, cId, pId, pMawb, pHawb, 0L,
+                                    reportInput.getFromDate(), reportInput.getToDate());
 
                             long noOfUnconsolidatedShipments = replicaUnconsolidationRepository.getNoOfUnconsolidatedShipments(
-                                    reportInput.getLanguageId(), reportInput.getCompanyId(), reportInput.getPartnerId(),
-                                    reportInput.getPartnerMasterAirwayBill(), reportInput.getPartnerHouseAirwayBill(),
-                                    1L, reportInput.getFromDate(), reportInput.getToDate());
-                            log.info("No Of Unconsolidated Shipments --> {}", noOfUnconsolidatedShipments);
+                                    langId, cId, pId, pMawb, pHawb, 1L,
+                                    reportInput.getFromDate(), reportInput.getToDate());
 
                             ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(langId, cId, pId, pMawb);
 
@@ -223,8 +219,19 @@ public class ReportsService {
 
                                 ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
 
+                                reportOutput.setLanguageId(langId);
+                                reportOutput.setCompanyId(cId);
+                                reportOutput.setPartnerId(pId);
+                                reportOutput.setPartnerMasterAirwayBill(pMawb);
+                                reportOutput.setPartnerHouseAirwayBill(pHawb);
+
+                                log.info("No Of Shipments Scanned --> {}", noOfShipments);
                                 reportOutput.setNoOfShipmentsScanned(noOfShipments);
+
+                                log.info("No Of Consoles --> {}", noOfConsoles);
                                 reportOutput.setNoOfConsoles(noOfConsoles);
+
+                                log.info("No Of Unconsolidated Shipments --> {}", noOfUnconsolidatedShipments);
                                 reportOutput.setNoOfUnconsolidatedShipments(noOfUnconsolidatedShipments);
 
                                 if (scanValues != null) {
@@ -269,6 +276,116 @@ public class ReportsService {
 //        }
 
 //        createdConsoleTrackingReportOutputList.add(reportOutput);
+
+        return createdConsoleTrackingReportOutputList;
+    }
+
+    public List<ConsoleTrackingReportOutput> postConsoleTrackingReportListPage(ConsoleTrackingReportInput reportInput,
+                                                                               String loginUserID) throws ParseException {
+
+        List<ConsoleTrackingReportOutput> createdConsoleTrackingReportOutputList = new ArrayList<>();
+
+        if (reportInput.getFromDate() != null && reportInput.getToDate() != null) {
+            Date[] dates = DateUtils.addTimeToDatesForSearch(reportInput.getFromDate(), reportInput.getToDate());
+            reportInput.setFromDate(dates[0]);
+            reportInput.setToDate(dates[1]);
+        }
+        log.info("given Inputs to generate ConsoleTrackingReport list page --> {}", reportInput);
+
+        List<String> langIdList = reportInput.getLanguageId() != null ? reportInput.getLanguageId() : Collections.emptyList();
+        List<String> cIdList = reportInput.getCompanyId() != null ? reportInput.getCompanyId() : Collections.emptyList();
+        List<String> pIdList = reportInput.getPartnerId() != null ? reportInput.getPartnerId() : Collections.emptyList();
+        List<String> pMawbList = reportInput.getPartnerMasterAirwayBill() != null ? reportInput.getPartnerMasterAirwayBill() : Collections.emptyList();
+        List<String> pHawbList = reportInput.getPartnerHouseAirwayBill() != null ? reportInput.getPartnerHouseAirwayBill() : Collections.emptyList();
+
+        if (langIdList.isEmpty()) {
+            langIdList = Arrays.asList((String) null);
+        }
+        if (cIdList.isEmpty()) {
+            cIdList = Arrays.asList((String) null);
+        }
+        if (pIdList.isEmpty()) {
+            pIdList = Arrays.asList((String) null);
+        }
+        if (pMawbList.isEmpty()) {
+            pMawbList = Arrays.asList((String) null);
+        }
+        if (pHawbList.isEmpty()) {
+            pHawbList = Arrays.asList((String) null);
+        }
+
+        for (String langId : langIdList) {
+            for (String cId : cIdList) {
+
+                List<ConsignmentImpl> pMawbValuesList = replicaConsignmentEntityRepository.getAllPMawbCount(langId, cId);
+                if (pMawbValuesList != null || !pMawbValuesList.isEmpty()) {
+                    for (ConsignmentImpl pMawbValues : pMawbValuesList) {
+
+                        ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
+
+                        reportOutput.setLanguageId(langId);
+                        reportOutput.setCompanyId(cId);
+
+                        reportOutput.setPartnerMasterAirwayBill(pMawbValues.getPartnerMasterAirwayBill());
+                        reportOutput.setNoOfShipmentsScanned(pMawbValues.getPMawbCount());
+
+                        createdConsoleTrackingReportOutputList.add(reportOutput);
+                    }
+                }
+            }
+        }
+
+//        for (String langId : langIdList) {
+//            for (String cId : cIdList) {
+//                for (String pId : pIdList) {
+//                    for (String pMawb : pMawbList) {
+//                        for (String pHawb : pHawbList) {
+//
+//                            long noOfShipments = replicaConsignmentEntityRepository.getNoOfShipmentsScanned(
+//                                    langId, cId, pId, pMawb, pHawb, 1L,
+//                                    reportInput.getFromDate(), reportInput.getToDate());
+//
+//                            long noOfConsoles = replicaConsoleRepository.getNoOfConsoles(
+//                                    langId, cId, pId, pMawb, pHawb, 0L,
+//                                    reportInput.getFromDate(), reportInput.getToDate());
+//
+//                            long noOfUnconsolidatedShipments = replicaUnconsolidationRepository.getNoOfUnconsolidatedShipments(
+//                                    langId, cId, pId, pMawb, pHawb, 1L,
+//                                    reportInput.getFromDate(), reportInput.getToDate());
+//
+//                            ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(langId, cId, pId, pMawb);
+//
+//                            if (noOfShipments != 0 || noOfConsoles != 0 || noOfUnconsolidatedShipments != 0) {
+//
+//                                ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
+//
+//                                reportOutput.setLanguageId(langId);
+//                                reportOutput.setCompanyId(cId);
+//                                reportOutput.setPartnerId(pId);
+//                                reportOutput.setPartnerMasterAirwayBill(pMawb);
+//                                reportOutput.setPartnerHouseAirwayBill(pHawb);
+//
+//                                log.info("No Of Shipments Scanned --> {}", noOfShipments);
+//                                reportOutput.setNoOfShipmentsScanned(noOfShipments);
+//
+//                                log.info("No Of Consoles --> {}", noOfConsoles);
+//                                reportOutput.setNoOfConsoles(noOfConsoles);
+//
+//                                log.info("No Of Unconsolidated Shipments --> {}", noOfUnconsolidatedShipments);
+//                                reportOutput.setNoOfUnconsolidatedShipments(noOfUnconsolidatedShipments);
+//
+//                                if (scanValues != null) {
+//                                    reportOutput.setScanningOfficer(scanValues.getScannedBy());
+//                                    reportOutput.setScanningDate(scanValues.getScannedOn());
+//                                }
+//
+//                                createdConsoleTrackingReportOutputList.add(reportOutput);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         return createdConsoleTrackingReportOutputList;
     }

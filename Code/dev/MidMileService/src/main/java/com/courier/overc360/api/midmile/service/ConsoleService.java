@@ -1833,11 +1833,11 @@ public class ConsoleService {
      */
     public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
 
-        log.info("given Params for find by Pagination -- > {}", findConsole);
+        log.info("given Params to fetch Consoles by Pagination -- > {}", findConsole);
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         ConsoleSpecification spec = new ConsoleSpecification(findConsole);
         Page<ReplicaConsole> results = replicaConsoleRepository.findAll(spec, paging);
-        log.info("no of Consoles fetched --> {}", results.getSize());
+//        log.info("no of Consoles fetched --> {}", results.getSize());
         return results;
     }
 
@@ -1850,12 +1850,19 @@ public class ConsoleService {
      */
     public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
 
-        log.info("given Params for find -- > {}", findConsole);
+        log.info("given Params to fetch Consoles -- > {}", findConsole);
         List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
                 findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
                 findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
         return consoleList;
     }
+//    public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
+//
+//        log.info("given Params to fetch Consoles -- > {}", findConsole);
+//        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+//        List<ReplicaConsole> consoleList = replicaConsoleRepository.findAll(spec);
+//        return consoleList;
+//    }
 
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,

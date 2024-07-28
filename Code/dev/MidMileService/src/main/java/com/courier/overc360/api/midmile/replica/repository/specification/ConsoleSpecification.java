@@ -1,12 +1,15 @@
 package com.courier.overc360.api.midmile.replica.repository.specification;
 
-
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +54,5 @@ public class ConsoleSpecification implements Specification<ReplicaConsole> {
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }
-    }
 
-
-
+}

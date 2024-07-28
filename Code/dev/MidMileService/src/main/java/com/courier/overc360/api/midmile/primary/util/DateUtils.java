@@ -146,13 +146,13 @@ public class DateUtils {
     public static Date[] addTimeToDatesForSearch(Date startDate, Date endDate) throws ParseException {
         LocalDate sLocalDate = LocalDate.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
         LocalDate eLocalDate = LocalDate.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
-//        log.info("LocalDate1------->  {}", sLocalDate.atTime(0, 0, 0));
-//        log.info("LocalDate2------->  {}", eLocalDate.atTime(23, 59, 0));
+//        log.info("startDate------->  {}", sLocalDate.atTime(0, 0, 0));
+//        log.info("endDate------->  {}", eLocalDate.atTime(23, 59, 0));
 
         LocalDateTime sLocalDateTime = sLocalDate.atTime(0, 0, 0);
         LocalDateTime eLocalDateTime = eLocalDate.atTime(23, 59, 59);
-        log.info("LocalDate1---##----> {}", sLocalDateTime);
-        log.info("LocalDate2---##----> {}", eLocalDateTime);
+        log.info("startDate--##--> {}", sLocalDateTime);
+        log.info("endDate--##--> {}", eLocalDateTime);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
