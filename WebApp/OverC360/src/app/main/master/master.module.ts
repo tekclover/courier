@@ -39,6 +39,12 @@ import { CustomerValueComponent } from './customer/customer-value/customer-value
 import { AirportCodeComponent } from './airport-code/airport-code.component';
 import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
 import { ConsignorValueComponent } from './consignor/consignor-value/consignor-value.component';
+import { VehicleComponent } from './vehicle/vehicle.component';
+import { VehicleNewComponent } from './vehicle/vehicle-new/vehicle-new.component';
+import { RouteComponent } from './route/route.component';
+import { RouteNewComponent } from './route/route-new/route-new.component';
+import { BillModeComponent } from './bill-mode/bill-mode.component';
+import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.component';
 
 
 @NgModule({
@@ -79,6 +85,12 @@ import { ConsignorValueComponent } from './consignor/consignor-value/consignor-v
     AirportCodeComponent,
     AirportCodeNewComponent,
     ConsignorValueComponent,
+    RouteComponent,
+    RouteNewComponent,
+    BillModeComponent,
+    BillModeNewComponent,
+    VehicleComponent,
+    VehicleNewComponent,
 
   ],
   imports: [
