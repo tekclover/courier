@@ -22,6 +22,8 @@ import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest-indicat
 import * as XLSX from 'xlsx';
 import { PrealertService } from './prealert.service';
 import { PreAlertBulkComponent } from './pre-alert-bulk/pre-alert-bulk.component';
+import * as ExcelJS from 'exceljs';
+
 @Component({
   selector: 'app-pre-alert-manifest',
   templateUrl: './pre-alert-manifest.component.html',
@@ -71,15 +73,15 @@ export class PreAlertManifestComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB', format:'hyperLink'},
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB', format: 'hyperLink' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'flightNo', header: 'Flight No' },
       { field: 'flightName', header: 'Flight Name' },
       { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date1' },
       { field: 'estimatedTimeOfArrival', header: 'Arrival Time', format: 'date1' },
-     // { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
-     // { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
-     // { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
+      // { field: 'consoleIndicator', header: 'Console', format: 'boolean' },
+      // { field: 'manifestIndicator', header: 'Bonded Manifest', format: 'boolean' },
+      // { field: 'preAlertManifestIndicator', header: 'Pre-Alert Manifest', format: 'boolean' },
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -164,7 +166,7 @@ export class PreAlertManifestComponent {
 
 
   openEdit(type: any = 'New', linedata: any = null): void {
-    if(linedata){
+    if (linedata) {
       this.selectedPreAlertManifest = linedata;
     }
     if (this.selectedPreAlertManifest.length === 0) {
@@ -205,7 +207,7 @@ export class PreAlertManifestComponent {
     this.prealertService.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Deleted', key: 'br', detail: 'Prealert has been deleted successfully' });
-       this.initialCall();
+        this.initialCall();
         this.spin.hide();
       }, error: (err) => {
         this.spin.hide();
@@ -304,7 +306,7 @@ export class PreAlertManifestComponent {
     //   next: (res) => {
     //     this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
     //     this.spin.hide();
-    //     this.downloadExcelByColsAndTarget(res);
+    //     this.downloadBondedManifest(res);
     //     this.initialCall()
     //   }, error: (err) => {
     //     this.spin.hide();
@@ -319,7 +321,7 @@ export class PreAlertManifestComponent {
             this.messageService.add({ severity: 'success', summary: 'Created', key: 'br', detail: 'Manifest has been created successfully' });
             this.spin.hide();
             this.initialCall();
-            this.downloadExcelByColsAndTarget(res);
+            this.downloadBondedManifest1(res);
           }, error: (err) => {
             this.spin.hide();
             this.cs.commonerrorNew(err);
@@ -473,15 +475,15 @@ export class PreAlertManifestComponent {
   bols: any[] = [];
   items: any[] = [];
 
-  downloadExcelByColsAndTarget(res: any) {
+  downloadBondedManifest(res: any) {
 
     this.bols = [
-      { field: 'bondedId', header: 'Temporary Manifest Number' },
+      { field: '', header: 'Temporary Manifest Number' },
       { field: 'partnerHouseAirwayBill', header: 'Bill of Lading No' },
       { field: 'estimatedTimeOfArrival', header: 'Bill of Lading Date', format: 'date' },
       { field: 'description', header: 'Description' },
       { field: 'billOfLadingFor', header: 'Bill of Lading For' },
-      { field: 'netWeight', header: 'Net Weight (kgs)' },
+      { field: '', header: 'Net Weight (kgs)' },
       { field: 'manifestedGrossWeight', header: 'Manifested Gross Weight (Kgs)' },
       { field: 'grossWeight', header: 'Gross Weight (kgs)' },
       { field: 'tareWeight', header: 'Tare Weight (kgs)' },
@@ -491,8 +493,8 @@ export class PreAlertManifestComponent {
       { field: 'volume', header: 'Volume (cbm)' },
       { field: 'countryOfOrigin', header: 'Port Of Shipping' },
       { field: 'finalDestination', header: 'Final Destination' },
-      { field: 'consigneeName', header: 'Consignee (Registered)' },
-      { field: 'consigneeName', header: 'Notify' },
+      { field: '', header: 'Consignee (Registered)' },
+      { field: '', header: 'Notify' },
       { field: 'consigneeName', header: 'Consignee (Free text)' },
       { field: 'shipperName', header: 'Shipper' },
       { field: 'remarks', header: 'Remarks' },
@@ -504,35 +506,35 @@ export class PreAlertManifestComponent {
     ];
 
     this.items = [
-      { field: 'partnerHouseAirwayBill', header: 'Bill of Lading No' },
-      { field: 'kind', header: 'Kind' },
-      { field: 'goodsType', header: 'Goods Type' },
-      { field: 'fclLcl', header: 'FCL/LCL' },
-      { field: 'containerNo', header: 'Container No' },
-      { field: 'containerType', header: 'Container Type' },
-      { field: 'containerSize', header: 'Container Size' },
-      { field: 'quantity', header: 'Quantity' },
-      { field: 'description', header: 'Description' },
-      { field: 'grossWeight', header: 'Gross Weight (kgs)' },
-      { field: 'netWeight', header: 'Net Weight (kgs)' },
-      { field: 'tareWeight', header: 'Tare Weight (kgs)' },
-      { field: 'volume', header: 'Volume' },
-      { field: 'markId', header: 'Mark ID' },
-      { field: 'markType', header: 'Mark Type' },
-      { field: 'sealNo', header: 'Seal No' },
-      { field: 'vehicleModel', header: 'Vehicle Model (Year)' },
-      { field: 'vehicleType', header: 'Vehicle Type' },
-      { field: 'chasisNo', header: 'Chasis No' },
-      { field: 'engineNo', header: 'Engine No ' },
-      { field: 'yearOfManufacture', header: 'Year of Manufacture' },
-      { field: 'vehicleBodyColor', header: 'Vehicle Body Color' },
-      { field: 'vehicleBrand', header: 'Vehicle Brand' },
-      { field: 'vehicleNationality', header: 'Vehicle Nationality' },
-      { field: 'load', header: 'Load' },
-      { field: 'passenger', header: 'Passenger' },
-      { field: 'enginePower', header: 'Engine Power' },
-      { field: 'numberOfCylinders', header: 'No Of Cylinders' },
-      { field: 'countryOfOrigin', header: 'Country Of Origin' },
+      { field: '', header: 'Bill of Lading No' },
+      { field: '', header: 'Kind' },
+      { field: '', header: 'Goods Type' },
+      { field: '', header: 'FCL/LCL' },
+      { field: '', header: 'Container No' },
+      { field: '', header: 'Container Type' },
+      { field: '', header: 'Container Size' },
+      { field: '', header: 'Quantity' },
+      { field: '', header: 'Description' },
+      { field: '', header: 'Gross Weight (kgs)' },
+      { field: '', header: 'Net Weight (kgs)' },
+      { field: '', header: 'Tare Weight (kgs)' },
+      { field: '', header: 'Volume' },
+      { field: '', header: 'Mark ID' },
+      { field: '', header: 'Mark Type' },
+      { field: '', header: 'Seal No' },
+      { field: '', header: 'Vehicle Model (Year)' },
+      { field: '', header: 'Vehicle Type' },
+      { field: '', header: 'Chasis No' },
+      { field: '', header: 'Engine No ' },
+      { field: '', header: 'Year of Manufacture' },
+      { field: '', header: 'Vehicle Body Color' },
+      { field: '', header: 'Vehicle Brand' },
+      { field: '', header: 'Vehicle Nationality' },
+      { field: '', header: 'Load' },
+      { field: '', header: 'Passenger' },
+      { field: '', header: 'Engine Power' },
+      { field: '', header: 'No Of Cylinders' },
+      { field: '', header: 'Country Of Origin' },
     ];
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -571,5 +573,180 @@ export class PreAlertManifestComponent {
       wb,
       `Bonded-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
     );
+  }
+
+  async downloadBondedManifest1(res: any) {
+    // Define your columns
+    const bols = [
+      { field: '', header: 'Temporary Manifest Number' },
+      { field: 'partnerHouseAirwayBill', header: 'Bill of Lading No' },
+      { field: 'estimatedTimeOfArrival', header: 'Bill of Lading Date', format: 'date' },
+      { field: 'description', header: 'Description' },
+      { field: 'billOfLadingFor', header: 'Bill of Lading For' },
+      { field: '', header: 'Net Weight (kgs)' },
+      { field: 'manifestedGrossWeight', header: 'Manifested Gross Weight (Kgs)' },
+      { field: 'grossWeight', header: 'Gross Weight (kgs)' },
+      { field: 'tareWeight', header: 'Tare Weight (kgs)' },
+      { field: 'manifestedQuantity', header: 'Manifested Quantity' },
+      { field: 'landedQuantity', header: 'Landed Quantity' },
+      { field: 'totalQuantity', header: 'Total Quantity' },
+      { field: 'volume', header: 'Volume (cbm)' },
+      { field: 'countryOfOrigin', header: 'Port Of Shipping' },
+      { field: 'finalDestination', header: 'Final Destination' },
+      { field: '', header: 'Consignee (Registered)' },
+      { field: '', header: 'Notify' },
+      { field: 'consigneeName', header: 'Consignee (Free text)' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'remarks', header: 'Remarks' },
+      { field: 'isConsolidatedShipment', header: 'Is Consolidated Shipment' },
+      { field: 'isSplitBillOfLading', header: 'Is Split Bill of Lading' },
+      { field: 'consolidatedBillNo', header: 'Consolidate Bill Number' },
+      { field: 'isPendingShipment', header: 'Is Pending shipment' },
+      { field: 'bwhInvestor', header: 'BWHInvestor' },
+    ];
+
+    const items = [
+      { field: '', header: 'Bill of Lading No' },
+      { field: '', header: 'Kind' },
+      { field: '', header: 'Goods Type' },
+      { field: '', header: 'FCL/LCL' },
+      { field: '', header: 'Container No' },
+      { field: '', header: 'Container Type' },
+      { field: '', header: 'Container Size' },
+      { field: '', header: 'Quantity' },
+      { field: '', header: 'Description' },
+      { field: '', header: 'Gross Weight (kgs)' },
+      { field: '', header: 'Net Weight (kgs)' },
+      { field: '', header: 'Tare Weight (kgs)' },
+      { field: '', header: 'Volume' },
+      { field: '', header: 'Mark ID' },
+      { field: '', header: 'Mark Type' },
+      { field: '', header: 'Seal No' },
+      { field: '', header: 'Vehicle Model (Year)' },
+      { field: '', header: 'Vehicle Type' },
+      { field: '', header: 'Chasis No' },
+      { field: '', header: 'Engine No ' },
+      { field: '', header: 'Year of Manufacture' },
+      { field: '', header: 'Vehicle Body Color' },
+      { field: '', header: 'Vehicle Brand' },
+      { field: '', header: 'Vehicle Nationality' },
+      { field: '', header: 'Load' },
+      { field: '', header: 'Passenger' },
+      { field: '', header: 'Engine Power' },
+      { field: '', header: 'No Of Cylinders' },
+      { field: '', header: 'Country Of Origin' },
+    ];
+
+    // Create a new workbook
+    const workbook = new ExcelJS.Workbook();
+    const currentDate = new Date();
+    // Add the BOLs sheet
+    const worksheet = workbook.addWorksheet('BOLs');
+
+    // Add headers
+    const headerRow =  worksheet.addRow(bols.map(col => col.header));
+
+    headerRow.eachCell((cell, index) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+      };
+      cell.font = {
+        bold: true,
+        color: { argb: '0000' }, // White text color
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    res.forEach((item: any, index: any) => {
+      const exportItem: any = {};
+      bols.forEach(col => {
+        if (col.format == 'number') {
+          exportItem[col.header] = index + 1;
+        } else {
+          exportItem[col.header] = item[col.field];
+        }
+      });
+      const cellRow = worksheet.addRow(Object.values(exportItem));
+
+      cellRow.eachCell({ includeEmpty: true }, (cell, index) => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+
+
+    // Add the Items sheet
+    const itemsSheet = workbook.addWorksheet('Items');
+
+    // Add headers
+   const headerRow1 = itemsSheet.addRow(items.map(col => col.header));
+
+    headerRow1.eachCell((cell, index) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'C0C0C0' }, // Replace with your desired background color
+      };
+      cell.font = {
+        bold: true,
+        color: { argb: '0000' }, // White text color
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    // Add data rows
+    res.forEach((item: any, index: any) => {
+      const exportItem: any = {};
+      items.forEach(col => {
+        exportItem[col.header] = item[col.field];
+      });
+      const cellRow = worksheet.addRow(Object.values(exportItem));
+
+      cellRow.eachCell({ includeEmpty: true }, (cell, index) => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+    // Save the workbook to a file
+    workbook.xlsx.writeBuffer().then((data) => {
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Create a temporary anchor element
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `Prealert_Manifest_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+      document.body.appendChild(a);
+
+      // Simulate click to trigger download
+      a.click();
+
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    });
   }
 }

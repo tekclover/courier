@@ -237,9 +237,7 @@ export class ConsignmentComponent {
   selectedFiles: File | null = null;
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    console.log(event.target.files)
     this.selectedFiles = file;
-    console.log( this.selectedFiles)
     this.spin.show();
     this.service.uploadConsignment(this.selectedFiles).subscribe({
       next: (result) => {

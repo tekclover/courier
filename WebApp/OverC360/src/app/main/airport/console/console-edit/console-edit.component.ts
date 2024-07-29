@@ -698,19 +698,19 @@ export class ConsoleEditComponent {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any row' });
       return
     }
-    let obj: any = {};
-    obj.consoleId = this.selectedConsole.map(item => item.consoleId);
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
-        const pieceId = this.uniquePieceId.map(item => item.pieceId);
-        this.label.getResultLabel(pieceId)
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+    const pieceId = this.selectedConsole.map(item => item.pieceId);
+    this.label.getResultLabel(pieceId)
+    // this.service.search(obj).subscribe({
+    //   next: (res: any) => {
+    //     this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+    //     const pieceId = this.uniquePieceId.map(item => item.pieceId);
+    //     this.label.getResultLabel(pieceId)
+    //   },
+    //   error: (err) => {
+    //     this.spin.hide();
+    //     this.cs.commonerrorNew(err);
+    //   },
+    // });
   }
   houseAirwayBill: any;
 
@@ -721,20 +721,21 @@ export class ConsoleEditComponent {
       return
     }
     let obj: any = {};
-    obj.consoleId = this.selectedConsole.map(item => item.consoleId);
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
-          const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
-          this.label.getResultInvoice(houseAirwayBill)
-        }
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+  const houseAirwayBill = this.selectedConsole.map(item => item.houseAirwayBill);
+    this.label.getResultInvoice(houseAirwayBill)
+    // this.service.search(obj).subscribe({
+    //   next: (res: any) => {
+    //     if (res) {
+    //       this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+    //       const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
+    //       this.label.getResultInvoice(houseAirwayBill)
+    //     }
+    //   },
+    //   error: (err) => {
+    //     this.spin.hide();
+    //     this.cs.commonerrorNew(err);
+    //   },
+    // });
   }
 
 
@@ -748,20 +749,22 @@ export class ConsoleEditComponent {
       return
     }
     let obj: any = {};
-    obj.consoleId = this.selectedConsole.map(item => item.consoleId);
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
-        this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
-        const pieceId = this.uniquePieceId.map(item => item.pieceId);
-        const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
-        this.label.generateMutiple(pieceId, houseAirwayBill)
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
+   const pieceId = this.selectedConsole.map(item => item.pieceId);
+   const houseAirwayBill = this.selectedConsole.map(item => item.houseAirwayBill);
+    this.label.generateMutiple(pieceId, houseAirwayBill)
+    // this.service.search(obj).subscribe({
+    //   next: (res: any) => {
+    //     this.uniquePieceId = this.cs.removeDuplicatesFromArrayList(res, 'pieceId');
+    //     this.uniqueHouseAirwayBill = this.cs.removeDuplicatesFromArrayList(res, 'houseAirwayBill');
+    //     const pieceId = this.uniquePieceId.map(item => item.pieceId);
+    //     const houseAirwayBill = this.uniqueHouseAirwayBill.map(item => item.houseAirwayBill);
+    //     this.label.generateMutiple(pieceId, houseAirwayBill)
+    //   },
+    //   error: (err) => {
+    //     this.spin.hide();
+    //     this.cs.commonerrorNew(err);
+    //   },
+    // });
 
   }
 
@@ -1023,7 +1026,7 @@ export class ConsoleEditComponent {
             const ccrData = groupedByCcrId[ccrId];
 
             const worksheetInvoices = workbook.addWorksheet(`INVOICES-${index + 1}`);
-           
+
 
             const headerRow = worksheetInvoices.addRow(Object.values(invoicesColumns.map(col => col.header)));
 
@@ -1197,8 +1200,8 @@ export class ConsoleEditComponent {
         right: { style: 'thin' },
       };
     });
-    
-   
+
+
    const headerRow =  worksheet.addRow(Object.values(locationColumns.map(col => col.header)));
 
    headerRow.eachCell((cell, index) => {
