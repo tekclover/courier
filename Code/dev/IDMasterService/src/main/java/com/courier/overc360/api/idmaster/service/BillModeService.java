@@ -118,7 +118,9 @@ public class BillModeService {
             BillMode newBillMode = new BillMode();
                 IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addBillMode.getLanguageId(), addBillMode.getCompanyId());
                 BeanUtils.copyProperties(addBillMode, newBillMode, CommonUtils.getNullPropertyNames(addBillMode));
-            if (addBillMode.getBillModeId() == null || addBillMode.getBillModeId().isBlank()){
+            if ((addBillMode.getBillMode() != null &&
+                    (addBillMode.getReferenceField10() != null && addBillMode.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addBillMode.getBillMode() == null || addBillMode.getBillMode().isBlank()) {
                 String BILL_MODE_ID = numberRangeService.getNextNumberRange("BILLMODEID");
                 log.info("next Value from NumberRange for BILL_MODE_ID : " + BILL_MODE_ID);
                 newBillMode.setBillModeId(BILL_MODE_ID);
