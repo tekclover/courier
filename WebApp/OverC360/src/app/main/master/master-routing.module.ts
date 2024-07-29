@@ -36,10 +36,14 @@ import { AirportCodeComponent } from './airport-code/airport-code.component';
 import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
 import { StatusEventComponent } from './status-event/status-event.component';
 import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
-import { RouteComponent } from './route/route.component';
-import { RouteNewComponent } from './route/route-new/route-new.component';
-import { BillModeComponent } from './bill-mode/bill-mode.component';
+import { VehicleComponent } from './vehicle/vehicle.component';
+import { VehicleNewComponent } from './vehicle/vehicle-new/vehicle-new.component';
 import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.component';
+import { BillModeComponent } from './bill-mode/bill-mode.component';
+import { RouteNewComponent } from './route/route-new/route-new.component';
+import { RouteComponent } from './route/route.component';
+import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
+import { AppUserComponent } from './app-user/app-user.component';
 
 const routes: Routes = [
 
@@ -83,6 +87,8 @@ const routes: Routes = [
   { path: 'specialApproval', component: SpecialApprovalComponent, data: { title: 'Setup', module: 'Special Approval' } },
   { path: 'specialApproval-new/:code', component: SpecialApprovalNewComponent, data: { title: 'Setup', module: 'Special Approval - Add New' } },
 
+  { path: 'vehicle', component: VehicleComponent, data: { title: 'Master', module: 'Vehicle' } },
+  { path: 'vehicle-new/:code', component: VehicleNewComponent, data: { title: 'Master', module: 'Vehicle - Add New' } },
 
   { path: 'event', component: EventComponent, data: { title: 'Master', module: 'Event' } },
   { path: 'event-new/:code', component: EventNewComponent, data: { title: 'Master', module: 'Event - Add New' } },
@@ -95,15 +101,9 @@ const routes: Routes = [
   
   { path: 'airportCode', component: AirportCodeComponent, data: { title: 'Master', module: 'AirportCode' } },
   { path: 'airportCode-new/:code', component: AirportCodeNewComponent, data: { title: 'Master', module: 'AirportCode - Add New' } },
-    
-  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status/Event' } },
-  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status/Event - Add New' } },
-  
-  { path: 'route', component: RouteComponent, data: { title: 'Master', module: 'Route' } },
-  { path: 'route-new/:code', component: RouteNewComponent, data: { title: 'Master', module: 'Route - Add New' } },
-  
-  { path: 'billMode', component: BillModeComponent, data: { title: 'Master', module: 'Bill Mode' } },
-  { path: 'billMode-new/:code', component: BillModeNewComponent, data: { title: 'Master', module: 'Bill Mode - Add New' } },
+ 
+  { path: 'appUser', component: AppUserComponent, data: { title: 'Master', module: 'AppUser' } },
+  { path: 'appUser-new/:code', component: AppUserNewComponent, data: { title: 'Master', module: 'AppUser - Add New' } },
 
 ];
 
