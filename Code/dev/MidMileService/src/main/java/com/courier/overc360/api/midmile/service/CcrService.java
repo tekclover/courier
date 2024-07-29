@@ -123,6 +123,7 @@ public class CcrService {
         return dbCcr.get();
     }
 
+
     //Create ConsoleCcr
     @Transactional
     public List<Ccr> createConsoleCcr(List<Console> addCcrList, String loginUserID)
