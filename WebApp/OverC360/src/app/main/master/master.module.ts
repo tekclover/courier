@@ -45,6 +45,8 @@ import { RouteComponent } from './route/route.component';
 import { RouteNewComponent } from './route/route-new/route-new.component';
 import { BillModeComponent } from './bill-mode/bill-mode.component';
 import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.component';
+import { AppUserComponent } from './app-user/app-user.component';
+import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
 
 
 @NgModule({
@@ -91,6 +93,9 @@ import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.co
     BillModeNewComponent,
     VehicleComponent,
     VehicleNewComponent,
+    AppUserComponent,
+    AppUserNewComponent,
+
 
   ],
   imports: [
