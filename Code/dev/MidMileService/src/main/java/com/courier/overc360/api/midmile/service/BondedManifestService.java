@@ -168,9 +168,9 @@ public class BondedManifestService {
             BeanUtils.copyProperties(preAlertInput, addBondedManifest, CommonUtils.getNullPropertyNames(preAlertInput));
 
             addBondedManifest.setGrossWeight(preAlertInput.getTotalWeight());
-            addBondedManifest.setNetWeight(preAlertInput.getTotalWeight());
+//            addBondedManifest.setNetWeight(preAlertInput.getTotalWeight());
             addBondedManifest.setManifestedGrossWeight(preAlertInput.getTotalWeight());
-            addBondedManifest.setTareWeight(preAlertInput.getTotalWeight());
+//            addBondedManifest.setTareWeight(preAlertInput.getTotalWeight());
 
             addBondedManifest.setManifestedQuantity(preAlertInput.getNoOfPieces());
             addBondedManifest.setLandedQuantity(preAlertInput.getNoOfPieces());
@@ -241,6 +241,9 @@ public class BondedManifestService {
                     }
                     newBondedManifest.setBondedId(BONDED_ID);
                     newBondedManifest.setBillOfLadingFor("I");
+                    newBondedManifest.setIsConsolidatedShipment("F");
+                    newBondedManifest.setFinalDestination("KWI");
+                    newBondedManifest.setIsSplitBillOfLading("T");
                     newBondedManifest.setDeletionIndicator(0L);
                     newBondedManifest.setCreatedBy(loginUserID);
                     newBondedManifest.setCreatedOn(new Date());
