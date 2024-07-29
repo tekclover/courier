@@ -183,13 +183,13 @@ public class ConsignmentController {
 //        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
 //    }
 
-    @ApiOperation(value = "PushNotification")
-    @PostMapping("notification")
-    public ResponseEntity<?> pushNotification(@RequestParam List<String> tokens) {
-    String title = "PUSH_NOTIFICATION";
-    String message = "TEST CHECKING";
-    pushNotificationService.sendPushNotification(tokens, title, message);
-    return new ResponseEntity<>("Success", HttpStatus.OK);
-
-    }
+//    @ApiOperation(value = "PushNotification")
+//    @PostMapping("notification")
+//    public ResponseEntity<?> pushNotification(@RequestParam List<String> tokens) {
+//    String title = "PUSH_NOTIFICATION";
+//    String message = "TEST CHECKING";
+//    pushNotificationService.sendPushNotification(tokens, title, message);
+//    return new ResponseEntity<>("Success", HttpStatus.OK);
+//
+//    }
 }
