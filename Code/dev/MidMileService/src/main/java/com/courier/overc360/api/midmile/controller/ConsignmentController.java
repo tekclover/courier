@@ -54,8 +54,8 @@ public class ConsignmentController {
     @Autowired
     PreAlertService preAlertService;
 
-    @Autowired
-    PushNotificationService pushNotificationService;
+//    @Autowired
+//    PushNotificationService pushNotificationService;
 
     /*=====================================================================================================================*/
 
