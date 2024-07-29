@@ -85,6 +85,8 @@ const routes: Routes = [
   { path: 'specialApproval', component: SpecialApprovalComponent, data: { title: 'Setup', module: 'Special Approval' } },
   { path: 'specialApproval-new/:code', component: SpecialApprovalNewComponent, data: { title: 'Setup', module: 'Special Approval - Add New' } },
 
+  { path: 'vehicle', component: VehicleComponent, data: { title: 'Master', module: 'Vehicle' } },
+  { path: 'vehicle-new/:code', component: VehicleNewComponent, data: { title: 'Master', module: 'Vehicle - Add New' } },
 
   { path: 'event', component: EventComponent, data: { title: 'Master', module: 'Event' } },
   { path: 'event-new/:code', component: EventNewComponent, data: { title: 'Master', module: 'Event - Add New' } },
