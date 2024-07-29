@@ -54,7 +54,6 @@ public class PreAlert {
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
-
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 

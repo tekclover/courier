@@ -2460,4 +2460,24 @@ public class IDMasterServiceController {
         }
     }
 
+    // CreateHHtNotification
+    @ApiOperation(response = HhtNotification.class, value = "Create HhtNotification") // label for swagger
+    @PostMapping("/hhtnotification/createnotification")
+    public ResponseEntity<?> createHhtNotification(@Valid @RequestBody HhtNotification newHhtNotification, @RequestParam String loginUserID,
+                                                   @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
+        HhtNotification createHhtNotification = idmasterService.createHhtNotification(newHhtNotification, loginUserID, authToken);
+        return new ResponseEntity<>(createHhtNotification, HttpStatus.OK);
+    }
+
+    // GetHHtNotification
+    @ApiOperation(response = HhtNotification.class, value = "Get a HhtNotification") // label for swagger
+    @GetMapping("/hhtnotification/getnotification")
+    public ResponseEntity<?> getHhtNotification(@RequestParam String companyId, @RequestParam String languageId, @RequestParam String deviceId,
+                                                @RequestParam String userId, @RequestParam String tokenId, @RequestParam String authToken) {
+        HhtNotification dbHhtNotification = idmasterService.getHhtNotification(companyId,  languageId, deviceId,userId, tokenId, authToken);
+
+        log.info("HhtNotification : " + dbHhtNotification);
+        return new ResponseEntity<>(dbHhtNotification, HttpStatus.OK);
+    }
+
 }

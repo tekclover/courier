@@ -233,6 +233,10 @@ public class UpdateConsole {
 
     private String hubName;
 
+    private String flightName;
+
+    private String flightNo;
+
     private Long deletionIndicator;
 
     private String referenceField1;

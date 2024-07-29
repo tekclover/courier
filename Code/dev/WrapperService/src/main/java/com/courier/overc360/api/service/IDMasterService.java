@@ -5344,5 +5344,67 @@ public class IDMasterService {
         }
     }
 
+    /**
+     *
+     * @param newHhtNotification
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public HhtNotification createHhtNotification (HhtNotification newHhtNotification, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(newHhtNotification, headers);
+            ResponseEntity<HhtNotification> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, HhtNotification.class);
+//			log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    /**
+     *
+     * @param warehouseId
+     * @param companyCodeId
+     * @param languageId
+     * @param plantId
+     * @param deviceId
+     * @param userId
+     * @param tokenId
+     * @param authToken
+     * @return
+     */
+    public HhtNotification getHhtNotification (String companyId,  String languageId,
+                                              String deviceId, String userId, String tokenId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification")
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("deviceId", deviceId)
+                    .queryParam("userId", userId)
+                    .queryParam("tokenId", tokenId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<HhtNotification> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, HhtNotification.class);
+//			log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }
 
