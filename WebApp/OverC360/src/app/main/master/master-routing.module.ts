@@ -36,6 +36,10 @@ import { AirportCodeComponent } from './airport-code/airport-code.component';
 import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
 import { StatusEventComponent } from './status-event/status-event.component';
 import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
+import { RouteComponent } from './route/route.component';
+import { RouteNewComponent } from './route/route-new/route-new.component';
+import { BillModeComponent } from './bill-mode/bill-mode.component';
+import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.component';
 
 const routes: Routes = [
 
@@ -94,6 +98,12 @@ const routes: Routes = [
     
   { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status/Event' } },
   { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status/Event - Add New' } },
+  
+  { path: 'route', component: RouteComponent, data: { title: 'Master', module: 'Route' } },
+  { path: 'route-new/:code', component: RouteNewComponent, data: { title: 'Master', module: 'Route - Add New' } },
+  
+  { path: 'billMode', component: BillModeComponent, data: { title: 'Master', module: 'Bill Mode' } },
+  { path: 'billMode-new/:code', component: BillModeNewComponent, data: { title: 'Master', module: 'Bill Mode - Add New' } },
 
 ];
 
