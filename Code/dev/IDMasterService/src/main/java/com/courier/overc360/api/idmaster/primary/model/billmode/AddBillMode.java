@@ -1,35 +1,28 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.billmode;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class AddAppUser {
 
+public class AddBillMode {
+
+    @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
+    @NotBlank(message = "LanguageId is mandatory")
     private String languageId;
 
-    private String appUserId;
+    private String billModeId;
 
-    private String appUserName;
+    @NotBlank(message = "Bill Mode is mandatory")
+    private String billMode;
 
-    private String appUserType;
-
+    @NotBlank(message = "StatusId is mandatory")
     private String statusId;
 
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
-
-    private String routeId;
-
     private String remark;
-
-    private String assignedHubCode;
 
     private String referenceField1;
 
@@ -50,5 +43,4 @@ public class AddAppUser {
     private String referenceField9;
 
     private String referenceField10;
-
 }

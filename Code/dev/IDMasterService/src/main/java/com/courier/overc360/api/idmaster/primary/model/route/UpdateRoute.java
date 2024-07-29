@@ -1,35 +1,22 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.route;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 @Data
-public class AddAppUser {
+public class UpdateRoute {
 
-    private String companyId;
 
-    private String languageId;
+    private String routeName;
 
-    private String appUserId;
+    private String legName;
 
-    private String appUserName;
-
-    private String appUserType;
+    private String sequenceNo;
 
     private String statusId;
 
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
-
-    private String routeId;
-
     private String remark;
 
-    private String assignedHubCode;
+    private Long deletionIndicator;
 
     private String referenceField1;
 
@@ -50,5 +37,6 @@ public class AddAppUser {
     private String referenceField9;
 
     private String referenceField10;
-
 }
+
+

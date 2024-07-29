@@ -5,31 +5,25 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class AddAppUser {
-
-    private String companyId;
+public class AddRoute {
 
     private String languageId;
 
-    private String appUserId;
-
-    private String appUserName;
-
-    private String appUserType;
-
-    private String statusId;
-
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
+    private String companyId;
 
     private String routeId;
 
-    private String remark;
+    private String legId;
 
-    private String assignedHubCode;
+    private String routeName;
+
+    private String legName;
+
+    private String sequenceNo;
+
+    private String statusId;
+
+    private String remark;
 
     private String referenceField1;
 
@@ -50,5 +44,5 @@ public class AddAppUser {
     private String referenceField9;
 
     private String referenceField10;
-
 }
+

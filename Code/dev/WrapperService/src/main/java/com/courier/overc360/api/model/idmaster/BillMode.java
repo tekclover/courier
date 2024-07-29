@@ -2,34 +2,30 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Data
-public class AddAppUser {
+public class BillMode {
 
     private String companyId;
 
     private String languageId;
 
-    private String appUserId;
+    private String billModeId;
 
-    private String appUserName;
+    private String languageDescription;
 
-    private String appUserType;
+    private String companyName;
+
+    private String billMode;
+
+    private Long deletionIndicator;
 
     private String statusId;
 
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
-
-    private String routeId;
+    private String statusDescription;
 
     private String remark;
-
-    private String assignedHubCode;
 
     private String referenceField1;
 
@@ -51,4 +47,15 @@ public class AddAppUser {
 
     private String referenceField10;
 
+    private String createdBy;
+
+    private Date createdOn;
+
+    private String updatedBy;
+
+    private Date updatedOn;
 }
+
+
+
+

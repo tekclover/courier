@@ -2,34 +2,16 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 @Data
-public class AddAppUser {
+public class UpdateBillMode {
 
-    private String companyId;
-
-    private String languageId;
-
-    private String appUserId;
-
-    private String appUserName;
-
-    private String appUserType;
-
-    private String statusId;
-
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
-
-    private String routeId;
+    private String billMode;
 
     private String remark;
 
-    private String assignedHubCode;
+    private Long deletionIndicator;
+
+    private String statusId;
 
     private String referenceField1;
 

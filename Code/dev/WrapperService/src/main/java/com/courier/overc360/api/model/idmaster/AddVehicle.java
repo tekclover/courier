@@ -5,31 +5,26 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class AddAppUser {
+
+public class AddVehicle {
 
     private String companyId;
 
     private String languageId;
 
-    private String appUserId;
+    private String vehicleRegNumber;
 
-    private String appUserName;
+    private String vehicleName;
 
-    private String appUserType;
+    private String vehicleType;
 
     private String statusId;
 
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
+    private String assignedHubCode;
 
     private String routeId;
 
     private String remark;
-
-    private String assignedHubCode;
 
     private String referenceField1;
 

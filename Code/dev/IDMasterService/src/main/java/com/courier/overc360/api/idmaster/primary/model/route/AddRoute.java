@@ -1,35 +1,33 @@
-package com.courier.overc360.api.model.idmaster;
+package com.courier.overc360.api.idmaster.primary.model.route;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class AddAppUser {
+public class AddRoute {
 
-    private String companyId;
-
+    @NotBlank(message = "Language Id is mandatory")
     private String languageId;
 
-    private String appUserId;
-
-    private String appUserName;
-
-    private String appUserType;
-
-    private String statusId;
-
-    private String password;
-
-    private String mobileNumber;
-
-    private String vehicleRegNumber;
+    @NotBlank(message = "CompanyId is mandatory")
+    private String companyId;
 
     private String routeId;
 
-    private String remark;
+    private String legId;
 
-    private String assignedHubCode;
+    @NotBlank(message = "Route Name is mandatory")
+    private String routeName;
+
+    private String legName;
+
+    private String sequenceNo;
+
+    @NotBlank(message = "StatusId is mandatory")
+    private String statusId;
+
+    private String remark;
 
     private String referenceField1;
 
@@ -50,5 +48,4 @@ public class AddAppUser {
     private String referenceField9;
 
     private String referenceField10;
-
 }
