@@ -36,6 +36,8 @@ import { AirportCodeComponent } from './airport-code/airport-code.component';
 import { AirportCodeNewComponent } from './airport-code/airport-code-new/airport-code-new.component';
 import { StatusEventComponent } from './status-event/status-event.component';
 import { StatusEventNewComponent } from './status-event/status-event-new/status-event-new.component';
+import { VehicleComponent } from './vehicle/vehicle.component';
+import { VehicleNewComponent } from './vehicle/vehicle-new/vehicle-new.component';
 
 const routes: Routes = [
 
@@ -91,7 +93,10 @@ const routes: Routes = [
   
   { path: 'airportCode', component: AirportCodeComponent, data: { title: 'Master', module: 'AirportCode' } },
   { path: 'airportCode-new/:code', component: AirportCodeNewComponent, data: { title: 'Master', module: 'AirportCode - Add New' } },
-    
+  
+  { path: 'vehicle', component: VehicleComponent, data: { title: 'Master', module: 'Vehicle' } },
+  { path: 'vehicle-new/:code', component: VehicleNewComponent, data: { title: 'Master', module: 'Vehicle - Add New' } },
+ 
   { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status/Event' } },
   { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status/Event - Add New' } },
 
