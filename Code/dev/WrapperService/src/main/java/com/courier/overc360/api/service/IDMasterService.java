@@ -5406,5 +5406,253 @@ public class IDMasterService {
         }
     }
 
+
+    //==================================================Route===================================================
+    //Get All Route
+    public Route[] getAllRoute(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Route[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Route[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get Route
+    public Route getRoute(String companyId, String languageId, String routeId, String legId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/" + routeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("legId", legId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Route> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Route.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create Route
+    public Route createRoute(AddRoute addRoute, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addRoute, headers);
+            ResponseEntity<Route> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Route.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update Route
+    public Route updateRoute(String companyId, String languageId, String routeId, String legId,
+                             UpdateRoute updateRoute, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateRoute, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/" + routeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("legId", legId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Route> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Route.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete Route
+    public boolean deleteRoute(String companyId, String languageId, String routeId, String legId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/" + routeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("legId", legId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Route
+    public Route[] findRoute(FindRoute findRoute, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/find");
+            HttpEntity<?> entity = new HttpEntity<>(findRoute, headers);
+            ResponseEntity<Route[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Route[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //==================================================BillMode===================================================
+    //Get All BillMode
+    public BillMode[] getAllBillMode(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<BillMode[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BillMode[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get BillMode
+    public BillMode getBillMode(String companyId, String languageId, String billModeId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/" + billModeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<BillMode> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BillMode.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create BillMode
+    public BillMode createBillMode(AddBillMode addBillMode, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addBillMode, headers);
+            ResponseEntity<BillMode> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BillMode.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update BillMode
+    public BillMode updateBillMode(String companyId, String languageId, String billModeId,
+                                   UpdateBillMode  updateBillMode, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateBillMode, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/" + billModeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<BillMode> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, BillMode.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete BillMode
+    public boolean deleteBillMode(String companyId, String languageId, String billModeId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/" + billModeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find BillMode
+    public BillMode[] findBillMode(FindBillMode findBillMode, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/find");
+            HttpEntity<?> entity = new HttpEntity<>(findBillMode, headers);
+            ResponseEntity<BillMode[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BillMode[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 }
 

@@ -2480,4 +2480,118 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(dbHhtNotification, HttpStatus.OK);
     }
 
+
+
+    //==================================================Route===================================================
+    // Get All Route Details
+    @ApiOperation(response = Route[].class, value = "Get all Route details")
+    @GetMapping("/route")
+    public ResponseEntity<?> getAllRoute(@RequestParam String authToken) {
+        Route[] route = idmasterService.getAllRoute(authToken);
+        return new ResponseEntity<>(route, HttpStatus.OK);
+    }
+
+    // Get Route
+    @ApiOperation(response = Route.class, value = "Get Route") // label for swagger
+    @GetMapping("/route/{routeId}")
+    public ResponseEntity<?> getRoute(@PathVariable String routeId, @RequestParam String companyId,
+                                      @RequestParam String languageId, @RequestParam String legId, @RequestParam String authToken) {
+        Route dbRoute = idmasterService.getRoute(companyId, languageId, routeId, legId,authToken);
+        return new ResponseEntity<>(dbRoute, HttpStatus.OK);
+    }
+
+    // Create Route
+    @ApiOperation(response = Route.class, value = "Create new Route") // label for swagger
+    @PostMapping("/route")
+    public ResponseEntity<?> postRoute(@RequestBody AddRoute addRoute, @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Route createdRoute= idmasterService.createRoute(addRoute, loginUserID, authToken);
+        return new ResponseEntity<>(createdRoute, HttpStatus.OK);
+    }
+
+    // Update Route
+    @ApiOperation(response = Route.class, value = "Update Route") // label for swagger
+    @PatchMapping("/route/{routeId}")
+    public ResponseEntity<?> patchRoute(@PathVariable String routeId,  @RequestParam String companyId,@RequestParam String languageId,
+                                        @RequestParam String legId, @RequestBody UpdateRoute updateRoute, @RequestParam String loginUserID,
+                                        @RequestParam String authToken) {
+        Route updatedRoute = idmasterService.updateRoute(companyId, languageId,routeId,legId,updateRoute, loginUserID, authToken);
+        return new ResponseEntity<>(updatedRoute, HttpStatus.OK);
+    }
+
+    // Delete Route
+    @ApiOperation(response = Route.class, value = "Delete Route") // label for swagger
+    @DeleteMapping("/route/{routeId}")
+    public ResponseEntity<?> deleteRoute(@PathVariable String routeId, @RequestParam String companyId,
+                                         @RequestParam String languageId,   @RequestParam String legId, @RequestParam String loginUserID,
+                                         @RequestParam String authToken) {
+        idmasterService.deleteRoute(companyId,languageId,routeId,legId,loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Route
+    @ApiOperation(response = Route[].class, value = "Find Route")
+    @PostMapping("/route/find")
+    public ResponseEntity<?> findRoute(@Valid @RequestBody FindRoute findRoute,
+                                       @RequestParam String authToken) throws Exception {
+        Route[] routeList = idmasterService.findRoute(findRoute, authToken);
+        return new ResponseEntity<>(routeList, HttpStatus.OK);
+    }
+
+    //==================================================BillMode===================================================
+    // Get All BillMode Details
+    @ApiOperation(response = BillMode[].class, value = "Get all BillMode details")
+    @GetMapping("/billmode")
+    public ResponseEntity<?> getAllBillMode(@RequestParam String authToken) {
+        BillMode[] billMode = idmasterService.getAllBillMode(authToken);
+        return new ResponseEntity<>(billMode, HttpStatus.OK);
+    }
+
+    // Get BillMode
+    @ApiOperation(response = BillMode.class, value = "Get BillMode") // label for swagger
+    @GetMapping("/billmode/{billModeId}")
+    public ResponseEntity<?> getBillMode(@PathVariable String billModeId, @RequestParam String companyId,
+                                         @RequestParam String languageId,@RequestParam String authToken) {
+        BillMode dbBillMode = idmasterService.getBillMode(companyId, languageId, billModeId, authToken);
+        return new ResponseEntity<>(dbBillMode, HttpStatus.OK);
+    }
+
+    // Create BillMode
+    @ApiOperation(response = BillMode.class, value = "Create new BillMode") // label for swagger
+    @PostMapping("/billmode")
+    public ResponseEntity<?> postBillMode(@RequestBody AddBillMode addBillMode, @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        BillMode createdBillMode = idmasterService.createBillMode(addBillMode, loginUserID, authToken);
+        return new ResponseEntity<>(createdBillMode, HttpStatus.OK);
+    }
+
+    // Update BillMode
+    @ApiOperation(response = BillMode.class, value = "Update BillMode") // label for swagger
+    @PatchMapping("/billmode/{billModeId}")
+    public ResponseEntity<?> patchBillMode(@PathVariable String billModeId,  @RequestParam String companyId,@RequestParam String languageId,
+                                           @RequestBody UpdateBillMode updateBillMode, @RequestParam String loginUserID,
+                                           @RequestParam String authToken) {
+        BillMode updatedBillMode = idmasterService.updateBillMode(companyId, languageId,billModeId, updateBillMode, loginUserID, authToken);
+        return new ResponseEntity<>(updatedBillMode, HttpStatus.OK);
+    }
+
+    // Delete BillMode
+    @ApiOperation(response = BillMode.class, value = "Delete BillMode") // label for swagger
+    @DeleteMapping("/billmode/{billModeId}")
+    public ResponseEntity<?> deleteBillMode(@PathVariable String billModeId, @RequestParam String companyId,
+                                            @RequestParam String languageId, @RequestParam String loginUserID,
+                                            @RequestParam String authToken) {
+        idmasterService.deleteBillMode(companyId,languageId,  billModeId, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find BillMode
+    @ApiOperation(response = BillMode[].class, value = "Find BillMode")
+    @PostMapping("/billmode/find")
+    public ResponseEntity<?> findBillMode(@Valid @RequestBody FindBillMode findBillMode,
+                                          @RequestParam String authToken) throws Exception {
+        BillMode[] billModeList = idmasterService.findBillMode(findBillMode, authToken);
+        return new ResponseEntity<>(billModeList, HttpStatus.OK);
+    }
+
 }
