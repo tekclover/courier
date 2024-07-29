@@ -18,6 +18,8 @@ public class AddStatusEvent {
 
     private String action;
 
+    private String statusId;
+
     private String trigger;
 
     private String preRequisite;

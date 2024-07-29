@@ -370,6 +370,12 @@ public class Console {
     @Column(name = "CUSTOMS_CCR_NO", columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
 
+    @Column(name = "FLIGHT_NAME", columnDefinition = "nvarchar(50)")
+    private String flightName;
+
+    @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
+    private String flightNo;
+
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
 
@@ -441,6 +447,12 @@ public class Console {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
+
+    @Column(name = "SCANNED_BY", columnDefinition = "nvarchar(50)")
+    private String scannedBy;
+
+    @Column(name = "SCANNED_ON")
+    private Date scannedOn;
 
     // unconsolidation
     @Column(name = "UNCONSOLIDATED")

@@ -229,6 +229,10 @@ public class Console {
 
     private String hubName;
 
+    private String flightName;
+
+    private String flightNo;
+
     private String referenceField1;
 
     private String referenceField2;

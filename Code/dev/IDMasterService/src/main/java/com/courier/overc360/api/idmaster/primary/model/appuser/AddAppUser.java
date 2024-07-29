@@ -33,6 +33,8 @@ public class AddAppUser {
 
     private String routeId;
 
+    private String assignedHubCode;
+
     private String remark;
 
     private String referenceField1;

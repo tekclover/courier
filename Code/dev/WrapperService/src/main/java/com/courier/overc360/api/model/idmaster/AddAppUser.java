@@ -29,6 +29,8 @@ public class AddAppUser {
 
     private String remark;
 
+    private String assignedHubCode;
+
     private String referenceField1;
 
     private String referenceField2;

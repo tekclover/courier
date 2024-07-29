@@ -14,9 +14,6 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/*
- * `LANG_ID`,`C_ID`, `PLANT_ID`, `WH_ID`,`DEVICE_ID`,USR_ID`,`TOKEN_ID`
- */
 @Table(name = "tblhhtnotification")
 public class HhtNotification {
 
@@ -30,12 +27,6 @@ public class HhtNotification {
 	@Column(name = "C_ID",columnDefinition = "nvarchar(50)")
 	private String companyId;
 
-	@Column(name = "PLANT_ID",columnDefinition = "nvarchar(50)")
-	private String plantId;
-
-	@Column(name = "WH_ID",columnDefinition = "nvarchar(50)")
-	private String warehouseId;
-
 	@Column(name = "DEVICE_ID",columnDefinition = "nvarchar(500)")
 	private String deviceId;
 
@@ -44,9 +35,6 @@ public class HhtNotification {
 
 	@Column(name = "TOKEN_ID",columnDefinition = "nvarchar(500)")
 	private String tokenId;
-
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "notificationHeaderId", fetch = FetchType.EAGER)
-//	private List<HhtNotificationToken> hhtNotificationTokens;
 
 	@Column(name = "IS_LOGGED_IN")
 	private Boolean isLoggedIn;

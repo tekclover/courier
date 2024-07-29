@@ -28,5 +28,7 @@ public class ConsoleStatus {
     private String consoleId;
 
     private String hubCode;
+    private Long bagId;
+
 
 }

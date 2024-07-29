@@ -1406,7 +1406,10 @@ public class ConsoleService {
                     }
                 }
 
-                dbConsole.setReferenceField10("SCAN");
+//                dbConsole.setReferenceField10("SCAN");
+                dbConsole.setScannedBy(loginUserID);
+                dbConsole.setScannedOn(new Date());
+
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
                 Console updatetedConsole = consoleRepository.save(dbConsole);
@@ -1434,7 +1437,8 @@ public class ConsoleService {
                                 updatetedConsole.getMasterAirwayBill(), updatetedConsole.getHouseAirwayBill(), updatetedConsole.getHawbType(),
                                 "4", ikey, updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(),
                                 "4", ikey, updatetedConsole.getPieceTimeStamp(), loginUserID,
-                                updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), BAG_ID);
+                                updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), BAG_ID,
+                                updateConsole.getHubCode(), updateConsole.getHubName());
                     }
 
                     // Create Consignment Status Table record with StatusID - 5
@@ -1444,7 +1448,8 @@ public class ConsoleService {
                             updatetedConsole.getHawbTypeId(), updatetedConsole.getHawbTypeDescription(),
                             updatetedConsole.getHawbTimeStamp(), updatetedConsole.getPieceType(), updatetedConsole.getPieceTypeId(),
                             updatetedConsole.getPieceTypeDescription(), updatetedConsole.getPieceTimeStamp(), loginUserID,
-                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), BAG_ID);
+                            updatetedConsole.getPartnerHouseAirwayBill(), updatetedConsole.getPartnerMasterAirwayBill(), BAG_ID,
+                            updateConsole.getHubCode(), updateConsole.getHubName());
 
                     // Update ConsignmentEntity Table
                     consoleRepository.updateConsignmentOnConsoleCreate(
@@ -1541,7 +1546,7 @@ public class ConsoleService {
 
             if (updatedConsole != null) {
                 // Update ConsignmentEntity Table
-                if(updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
                     consoleRepository.updateConsignmentOnConsoleCreate(
                             updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                             updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
@@ -1659,7 +1664,7 @@ public class ConsoleService {
                         .anyMatch(status -> status.getHawbTypeId() != null && status.getHawbTypeId()
                                 .equalsIgnoreCase("5"));
                 if (!hawbTypeIdFound) {
-                    throw new BadRequestException("No Record Found with HawbTypeId 5");
+                    throw new BadRequestException("No Record Found with TypeId 5 And TypeText " + dbConsole.getHawbType());
                 }
             }
 
@@ -1695,7 +1700,8 @@ public class ConsoleService {
                         updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
                         updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
                         updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
-                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), updateConsole.getBagId());
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), updateConsole.getBagId(),
+                        updateConsole.getHubCode(), updatedConsole.getHubName());
 
                 consoleList.add(updatedConsole);
             }
@@ -1827,11 +1833,11 @@ public class ConsoleService {
      */
     public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
 
-        log.info("given Params for find by Pagination -- > {}", findConsole);
+        log.info("given Params to fetch Consoles by Pagination --> {}", findConsole);
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         ConsoleSpecification spec = new ConsoleSpecification(findConsole);
         Page<ReplicaConsole> results = replicaConsoleRepository.findAll(spec, paging);
-        log.info("no of Consoles fetched --> {}", results.getSize());
+//        log.info("no of Consoles fetched --> {}", results.getSize());
         return results;
     }
 
@@ -1844,12 +1850,19 @@ public class ConsoleService {
      */
     public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
 
-        log.info("given Params for find -- > {}", findConsole);
+        log.info("given Params to fetch Consoles -- > {}", findConsole);
         List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
                 findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
                 findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
         return consoleList;
     }
+//    public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
+//
+//        log.info("given Params to fetch Consoles -- > {}", findConsole);
+//        ConsoleSpecification spec = new ConsoleSpecification(findConsole);
+//        List<ReplicaConsole> consoleList = replicaConsoleRepository.findAll(spec);
+//        return consoleList;
+//    }
 
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,

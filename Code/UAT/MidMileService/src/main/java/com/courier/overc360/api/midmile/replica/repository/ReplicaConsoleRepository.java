@@ -3,12 +3,14 @@ package com.courier.overc360.api.midmile.replica.repository;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.console.Console;
 import com.courier.overc360.api.midmile.primary.model.console.MobileApp;
+import com.courier.overc360.api.midmile.replica.model.console.ConsoleImpl;
 import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,10 +99,10 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "INNER JOIN ( " +
             "    SELECT PARTNER_MASTER_AIRWAY_BILL, MAX(CTD_ON) AS max_date " +
             "    FROM tblconsole " +
-            "    WHERE HAWB_TYP_ID != 5 AND is_deleted = 0 " +
+            "    WHERE HAWB_TYP_ID = 45 AND HAWB_TYP = 'EVENT' AND is_deleted = 0 " +
             "    GROUP BY PARTNER_MASTER_AIRWAY_BILL " +
             ") sub ON t.PARTNER_MASTER_AIRWAY_BILL = sub.PARTNER_MASTER_AIRWAY_BILL AND t.CTD_ON = sub.max_date " +
-            "WHERE t.HAWB_TYP_ID != 5 AND t.is_deleted = 0",
+            "WHERE t.HAWB_TYP_ID = 45 AND HAWB_TYP = 'EVENT' AND t.is_deleted = 0",
             nativeQuery = true)
     List<MobileApp> getMobileApp();
 
@@ -122,15 +124,99 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
 
 
     // Get Mobile Dashboard Count
-    @Query(value = "Select COUNT(*) From tblconsole tc\n" +
-            "Where tc.IS_DELETED=0 And\n" +
-            "tc.LANG_ID = :languageId And\n" +
-            "tc.C_ID = :companyId And\n" +
-            "tc.HAWB_TYP_ID != :hawbTypeId And\n" +
-            "tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    @Query(value = "Select COUNT(*) From (\n" +
+            "Select COUNT(*) As consoleCount\n" +
+            "From tblconsole tc \n" +
+            "Where tc.IS_DELETED=0\n" +
+            "And tc.LANG_ID = :languageId\n" +
+            "And tc.C_ID = :companyId\n" +
+            "And tc.HAWB_TYP_ID = :hawbTypeId\n" +
+            "Group By tc.PARTNER_MASTER_AIRWAY_BILL\n" +
+            ") x", nativeQuery = true)
     long getMobileDashboardCount(@Param("languageId") String languageId,
                                  @Param("companyId") String companyId,
-                                 @Param("hawbTypeId") String hawbTypeId,
-                                 @Param("partnerMasterAB") String partnerMasterAB);
+                                 @Param("hawbTypeId") String hawbTypeId);
+
+    boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerMasterAirwayBill, String consoleId, Long deletionIndicator);
+
+
+    // Get total Sum of NetWeight and TotalQuantity
+    @Query(value = "SELECT\n" +
+            "COALESCE(SUM(TRY_CONVERT(float, tc.NET_WEIGHT)), 0) AS totalWeight,\n" +
+            "COALESCE(SUM(TRY_CONVERT(int, tc.TOTAL_QUANTITY)), 0) AS totalQuantity\n" +
+            "FROM tblconsole tc\n" +
+            "WHERE tc.IS_DELETED = 0\n" +
+            "AND tc.LANG_ID = :languageId\n" +
+            "AND tc.C_ID = :companyId\n" +
+            "AND tc.PARTNER_ID = :partnerId\n" +
+            "AND tc.CONSOLE_ID = :consoleId\n" +
+            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    ConsoleImpl getSumValues(@Param("languageId") String languageId,
+                             @Param("companyId") String companyId,
+                             @Param("partnerId") String partnerId,
+                             @Param("consoleId") String consoleId,
+                             @Param("partnerMasterAB") String partnerMasterAB);
+
+
+    // Get Location Sheet values
+    @Query(value = "Select Top 1 \n" +
+            "tc.LANG_TEXT As langDesc, \n" +
+            "tc.C_NAME As companyDesc,\n" +
+            "tc.PARTNER_NAME As partnerName,\n" +
+            "tc.PARTNER_TYPE As partnerType,\n" +
+            "tc.CONSIGNEE_NAME As consigneeName,\n" +
+//            "tc.MASTER_AIRWAY_BILL As masterAirwayBill,\n" +
+            "tc.COUNTRY_OF_ORIGIN As origin\n" +
+            "From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND tc.LANG_ID = :languageId\n" +
+            "AND tc.C_ID = :companyId\n" +
+            "AND tc.PARTNER_ID = :partnerId\n" +
+            "AND tc.CONSOLE_ID = :consoleId\n" +
+            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+    ConsoleImpl getLocationSheetValues(@Param("languageId") String languageId,
+                                       @Param("companyId") String companyId,
+                                       @Param("partnerId") String partnerId,
+                                       @Param("consoleId") String consoleId,
+                                       @Param("partnerMasterAB") String partnerMasterAB);
+
+
+    // Get No of Consoles
+    @Query(value = "Select COUNT(*) From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))\n" +
+            "AND (COALESCE(:partnerHouseAB, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAB))\n" +
+            "And tc.UNCONSOLIDATED = :unconsolidatedIndicator\n" +
+            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
+    long getNoOfConsoles(@Param("languageId") List<String> languageId,
+                         @Param("companyId") List<String> companyId,
+                         @Param("partnerId") List<String> partnerId,
+                         @Param("partnerMasterAB") List<String> partnerMasterAB,
+                         @Param("partnerHouseAB") List<String> partnerHouseAB,
+                         @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
+                         @Param("fromDate") Date fromDate,
+                         @Param("toDate") Date toDate);
+
+
+    // Get Scanning Officer and Time
+    @Query(value = "Select Top 1\n" +
+            "tc.SCANNED_BY As scannedBy,\n" +
+            "tc.SCANNED_ON As scannedOn\n" +
+            "From tblconsole tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "And tc.LANG_ID = :languageId\n" +
+            "And tc.C_ID = :companyId\n" +
+            "And tc.PARTNER_ID = :partnerId\n" +
+            "And tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
+//            "And tc.REF_FIELD_10 = 'SCAN'\n" +
+            "ORDER BY tc.SCANNED_ON DESC", nativeQuery = true)
+    ConsoleImpl getScanValues(@Param("languageId") String languageId,
+                              @Param("companyId") String companyId,
+                              @Param("partnerId") String partnerId,
+                              @Param("partnerMasterAB") String partnerMasterAB);
 
 }

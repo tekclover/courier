@@ -239,6 +239,10 @@ public class UpdateConsole {
 
     private String consoleGroupName;
 
+    private String flightName;
+
+    private String flightNo;
+
     private String referenceField1;
 
     private String referenceField2;
