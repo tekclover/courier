@@ -1833,7 +1833,7 @@ public class ConsoleService {
      */
     public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
 
-        log.info("given Params to fetch Consoles by Pagination -- > {}", findConsole);
+        log.info("given Params to fetch Consoles by Pagination --> {}", findConsole);
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         ConsoleSpecification spec = new ConsoleSpecification(findConsole);
         Page<ReplicaConsole> results = replicaConsoleRepository.findAll(spec, paging);
