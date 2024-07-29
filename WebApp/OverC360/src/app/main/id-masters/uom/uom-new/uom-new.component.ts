@@ -42,6 +42,7 @@ export class UomNewComponent {
     this.uomType = [
       {value: 'Dimension', label:'Dimension'},
       {value: 'Weight', label: 'Weight'},
+      {value: 'Volume', label:'Volume'},
       {value: 'Quantity', label:'Quantity'}
     ]
   }
