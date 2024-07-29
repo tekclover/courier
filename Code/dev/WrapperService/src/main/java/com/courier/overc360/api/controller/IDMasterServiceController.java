@@ -2594,4 +2594,60 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(billModeList, HttpStatus.OK);
     }
 
+    //==================================================Vehicle====================================================
+    // Get All Vehicle Details
+    @ApiOperation(response = Vehicle[].class, value = "Get all Vehicle details") // label for swagger
+    @GetMapping("/vehicle")
+    public ResponseEntity<?> getAllVehicles(@RequestParam String authToken) {
+        Vehicle[] userVehicle = idmasterService.getAllVehicles(authToken);
+        return new ResponseEntity<>(userVehicle, HttpStatus.OK);
+    }
+
+    // Get Vehicle
+    @ApiOperation(response = Vehicle.class, value = "Get Vehicle") // label for swagger
+    @GetMapping("/vehicle/{vehicleRegNumber}")
+    public ResponseEntity<?> getVehicle(@PathVariable String vehicleRegNumber, @RequestParam String languageId,
+                                        @RequestParam String companyId, @RequestParam String authToken) {
+        Vehicle dbVehicle = idmasterService.getVehicle(companyId, languageId, vehicleRegNumber, authToken);
+        return new ResponseEntity<>(dbVehicle, HttpStatus.OK);
+    }
+
+
+    // Create new Vehicle
+    @ApiOperation(response = Vehicle.class, value = "Create new Vehicle") // label for swagger
+    @PostMapping("/vehicle")
+    public ResponseEntity<?> postVehicle(@RequestBody AddVehicle newVehicle,
+                                         @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        Vehicle createVehicle = idmasterService.createVehicle(newVehicle, loginUserID, authToken);
+        return new ResponseEntity<>(createVehicle, HttpStatus.OK);
+    }
+
+    // Update Vehicle
+    @ApiOperation(response = Vehicle.class, value = "Update Vehicle") // label for swagger
+    @PatchMapping("/vehicle/{vehicleRegNumber}")
+    public ResponseEntity<?> updateVehicle(@PathVariable String vehicleRegNumber, @RequestParam String languageId,
+                                           @RequestParam String companyId, @RequestParam String loginUserID,
+                                           @RequestBody UpdateVehicle updateVehicle, @RequestParam String authToken) {
+        Vehicle updatedVehicle = idmasterService.updateVehicle(companyId, languageId, vehicleRegNumber, loginUserID, updateVehicle, authToken);
+        return new ResponseEntity<>(updatedVehicle, HttpStatus.OK);
+    }
+
+    // Delete Vehicle
+    @ApiOperation(response = Vehicle.class, value = "Delete Vehicle") // label for swagger
+    @DeleteMapping("/vehicle/{vehicleRegNumber}")
+    public ResponseEntity<?> deleteVehicle(@PathVariable String vehicleRegNumber, @RequestParam String languageId, @RequestParam String companyId,
+                                           @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteVehicle(companyId, languageId, vehicleRegNumber, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Vehicle
+    @ApiOperation(response = Vehicle[].class, value = "Find Vehicle")//label for swagger
+    @PostMapping("/vehicle/find")
+    public Vehicle[] findVehicle(@RequestBody FindVehicle findVehicle,
+                                 @RequestParam String authToken) throws Exception {
+        return idmasterService.findVehicle(findVehicle, authToken);
+    }
+
 }

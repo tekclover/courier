@@ -16,6 +16,7 @@ import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.service.CommonService;
 import com.courier.overc360.api.midmile.service.ConsignmentService;
 import com.courier.overc360.api.midmile.service.PreAlertService;
+import com.courier.overc360.api.midmile.service.PushNotificationService;
 import com.opencsv.exceptions.CsvException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.Notification;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -51,6 +53,9 @@ public class ConsignmentController {
 
     @Autowired
     PreAlertService preAlertService;
+
+    @Autowired
+    PushNotificationService pushNotificationService;
 
     /*=====================================================================================================================*/
 
@@ -177,4 +182,14 @@ public class ConsignmentController {
 //        List<ReplicaPreAlert> dbPreAlert = preAlertService.findPreAlert(findPreAlert);
 //        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
 //    }
+
+    @ApiOperation(value = "PushNotification")
+    @PostMapping("notification")
+    public ResponseEntity<?> pushNotification(@RequestParam List<String> tokens) {
+    String title = "PUSH_NOTIFICATION";
+    String message = "TEST CHECKING";
+    pushNotificationService.sendPushNotification(tokens, title, message);
+    return new ResponseEntity<>("Success", HttpStatus.OK);
+
+    }
 }
