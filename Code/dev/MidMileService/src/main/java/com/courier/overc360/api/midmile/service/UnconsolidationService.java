@@ -265,18 +265,18 @@ public class UnconsolidationService {
 //    }
 
     /**
-     * Find Unconsolidations with Qry
+     * Find Unconsolidated Shipments with Qry
      *
      * @param findUnconsolidation
      * @return
      */
-    public List<ReplicaUnconsolidation> findUnconsolidations(FindUnconsolidation findUnconsolidation) throws Exception {
+    public List<ReplicaUnconsolidation> findUnconsolidatedShipments(FindUnconsolidation findUnconsolidation) throws Exception {
 
-        log.info("given params to find Unconsolidations with Qry --> {}", findUnconsolidation);
-        List<ReplicaUnconsolidation> results = replicaUnconsolidationRepository.findUnconsolidationsWithQry(
+        log.info("given params to fetch Unconsolidated Shipments with Qry --> {}", findUnconsolidation);
+        List<ReplicaUnconsolidation> results = replicaUnconsolidationRepository.findUnconsolidatedShipmentsWithQry(
                 findUnconsolidation.getLanguageId(), findUnconsolidation.getCompanyId(), findUnconsolidation.getPartnerId(),
-                findUnconsolidation.getPartnerMasterAirwayBill(), findUnconsolidation.getPartnerHouseAirwayBill());
-        log.info("No of Unconsolidations --> {}", results.size());
+                findUnconsolidation.getPartnerMasterAirwayBill(), findUnconsolidation.getPartnerHouseAirwayBill(), findUnconsolidation.getUnconsolidatedFlag());
+//        log.info("No of Unconsolidated Shipments --> {}", results.size());
         return results;
     }
 

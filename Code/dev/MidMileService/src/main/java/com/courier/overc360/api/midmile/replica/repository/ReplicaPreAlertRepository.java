@@ -61,7 +61,7 @@ public interface ReplicaPreAlertRepository extends JpaRepository<ReplicaPreAlert
     // Get All PARTNER_MASTER_AIRWAY_BILL count
     @Query(value = "SELECT tp.PARTNER_MASTER_AIRWAY_BILL As partnerMasterAirwayBill, COUNT(*) AS pMawbCount\n" +
             "FROM tblprealert tp\n" +
-            "WHERE tp.IS_DELETED=0\n" +
+            "WHERE tp.IS_DELETED = 0\n" +
             "And tp.HAWB_TYP_ID != 9\n" +
             "AND (COALESCE(:languageId, NULL) IS NULL OR tp.LANG_ID IN (:languageId))\n" +
             "AND (COALESCE(:companyId, NULL) IS NULL OR tp.C_ID IN (:companyId))\n" +

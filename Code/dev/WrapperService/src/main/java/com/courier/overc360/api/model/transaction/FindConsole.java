@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 import lombok.Data;
 
 import java.util.List;
+
 @Data
 public class FindConsole {
 
@@ -12,5 +13,6 @@ public class FindConsole {
     private List<String> partnerMasterAirwayBill;
     private List<String> partnerHouseAirwayBill;
     private List<String> consoleId;
+    private List<Long> unconsolidatedFlag;
 
 }

@@ -16,10 +16,10 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class ConsoleSpecification implements Specification<ReplicaConsole> {
 
-    FindConsole findConsoleHeader;
+    FindConsole findConsole;
 
     public ConsoleSpecification(FindConsole inputSearchParams) {
-        this.findConsoleHeader = inputSearchParams;
+        this.findConsole = inputSearchParams;
     }
 
     @Override
@@ -27,29 +27,33 @@ public class ConsoleSpecification implements Specification<ReplicaConsole> {
 
         List<Predicate> predicates = new ArrayList<Predicate>();
 
-        if (findConsoleHeader.getLanguageId() != null && !findConsoleHeader.getLanguageId().isEmpty()) {
+        if (findConsole.getLanguageId() != null && !findConsole.getLanguageId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("languageId");
-            predicates.add(group.in(findConsoleHeader.getLanguageId()));
+            predicates.add(group.in(findConsole.getLanguageId()));
         }
-        if (findConsoleHeader.getCompanyId() != null && !findConsoleHeader.getCompanyId().isEmpty()) {
+        if (findConsole.getCompanyId() != null && !findConsole.getCompanyId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("companyId");
-            predicates.add(group.in(findConsoleHeader.getCompanyId()));
+            predicates.add(group.in(findConsole.getCompanyId()));
         }
-        if (findConsoleHeader.getPartnerId() != null && !findConsoleHeader.getPartnerId().isEmpty()) {
+        if (findConsole.getPartnerId() != null && !findConsole.getPartnerId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerId");
-            predicates.add(group.in(findConsoleHeader.getPartnerId()));
+            predicates.add(group.in(findConsole.getPartnerId()));
         }
-        if (findConsoleHeader.getPartnerMasterAirwayBill() != null && !findConsoleHeader.getPartnerMasterAirwayBill().isEmpty()) {
+        if (findConsole.getPartnerMasterAirwayBill() != null && !findConsole.getPartnerMasterAirwayBill().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerMasterAirwayBill");
-            predicates.add(group.in(findConsoleHeader.getPartnerMasterAirwayBill()));
+            predicates.add(group.in(findConsole.getPartnerMasterAirwayBill()));
         }
-        if (findConsoleHeader.getPartnerHouseAirwayBill() != null && !findConsoleHeader.getPartnerHouseAirwayBill().isEmpty()) {
+        if (findConsole.getPartnerHouseAirwayBill() != null && !findConsole.getPartnerHouseAirwayBill().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
-            predicates.add(group.in(findConsoleHeader.getPartnerHouseAirwayBill()));
+            predicates.add(group.in(findConsole.getPartnerHouseAirwayBill()));
         }
-        if (findConsoleHeader.getConsoleId() != null && !findConsoleHeader.getConsoleId().isEmpty()) {
+        if (findConsole.getConsoleId() != null && !findConsole.getConsoleId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("consoleId");
-            predicates.add(group.in(findConsoleHeader.getConsoleId()));
+            predicates.add(group.in(findConsole.getConsoleId()));
+        }
+        if (findConsole.getUnconsolidatedFlag() != null && !findConsole.getUnconsolidatedFlag().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("unconsolidatedFlag");
+            predicates.add(group.in(findConsole.getUnconsolidatedFlag()));
         }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));

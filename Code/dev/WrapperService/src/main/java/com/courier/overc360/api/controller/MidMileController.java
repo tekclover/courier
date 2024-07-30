@@ -743,8 +743,8 @@ public class MidMileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find Unconsolidations
-    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidation") // label for swagger
+    // Find Unconsolidated Shipments
+    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidated Shipments") // label for swagger
     @PostMapping("/unconsolidation/find")
     public ResponseEntity<?> findUnconsolidations(@RequestBody FindUnconsolidation findUnconsolidation,
                                                   @RequestParam String authToken) throws Exception {

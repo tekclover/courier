@@ -47,6 +47,10 @@ public class UnconsolidationSpecification implements Specification<ReplicaUncons
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("partnerHouseAirwayBill");
             predicates.add(group.in(findUnconsolidation.getPartnerHouseAirwayBill()));
         }
+        if (findUnconsolidation.getUnconsolidatedFlag() != null && !findUnconsolidation.getUnconsolidatedFlag().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("unconsolidatedFlag");
+            predicates.add(group.in(findUnconsolidation.getUnconsolidatedFlag()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }

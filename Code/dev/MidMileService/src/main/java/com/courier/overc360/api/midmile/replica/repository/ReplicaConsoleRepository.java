@@ -58,14 +58,16 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
             "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
-            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))\n" +
+            "AND (COALESCE(:unconsolidatedIndicator, NULL) IS NULL OR tc.UNCONSOLIDATED IN (:unconsolidatedIndicator))", nativeQuery = true)
     List<ReplicaConsole> findConsolesWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
             @Param("partnerId") List<String> partnerId,
             @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
             @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
-            @Param("consoleId") List<String> consoleId);
+            @Param("consoleId") List<String> consoleId,
+            @Param("unconsolidatedIndicator") List<Long> unconsolidatedIndicator);
 
 
     @Query(value = "SELECT t.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, " +
@@ -197,6 +199,9 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
 //                              @Param("partnerId") String partnerId,
                               @Param("partnerMasterAB") String partnerMasterAB,
                               @Param("partnerHouseAB") String partnerHouseAB);
+
+    boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, Long deletionIndicator);
 
 
     // Get Consoles Count by P-MAWB

@@ -47,20 +47,22 @@ public interface ReplicaUnconsolidationRepository extends JpaRepository<ReplicaU
     List<ReplicaUnconsolidation> getAllNonDeletedUnconsolidations();
 
 
-    // Find Unconsolidations with given Params Only
+    // Find Unconsolidated Shipments with given Params Only
     @Query(value = "SELECT * FROM tblunconsolidation tc\n" +
             "WHERE tc.IS_DELETED=0\n" +
             "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
             "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
             "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
             "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))", nativeQuery = true)
-    List<ReplicaUnconsolidation> findUnconsolidationsWithQry(
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:unconsolidatedIndicator, NULL) IS NULL OR tc.UNCONSOLIDATED IN (:unconsolidatedIndicator))", nativeQuery = true)
+    List<ReplicaUnconsolidation> findUnconsolidatedShipmentsWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
             @Param("partnerId") List<String> partnerId,
             @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
-            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill);
+            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
+            @Param("unconsolidatedIndicator") List<Long> unconsolidatedIndicator);
 
 
     // Get No of Unconsolidated Shipments
