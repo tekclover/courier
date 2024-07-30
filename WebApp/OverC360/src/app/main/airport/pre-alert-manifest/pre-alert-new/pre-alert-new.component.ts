@@ -86,7 +86,7 @@ export class PreAlertNewComponent {
     estimatedTimeOfArrival: ['',],
     estimatedTimeOfArrivalFE: [],
     estimatedDepartureTime: ['',],
-    estimatedDepartureTimeFE: [new Date,],
+    estimatedDepartureTimeFE: ['',],
     noOfPackageMawb: [],
     noOfCrt: [],
     upload:[],
@@ -171,9 +171,6 @@ export class PreAlertNewComponent {
           this.form.patchValue(res[0]);
           this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
           this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
-          if (this.form.controls.estimatedDepartureTime.value) {
-            this.form.controls.estimatedDepartureTimeFE.patchValue(this.cs.pCalendar(this.form.controls.estimatedDepartureTime.value));
-          }
           this.partnerTypeChanged();
         }
       }, error: err => {

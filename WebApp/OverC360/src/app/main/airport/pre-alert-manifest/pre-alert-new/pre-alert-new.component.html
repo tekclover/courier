@@ -121,7 +121,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0 ">Estimated Time Of Departure</p>
                                 <p-calendar formControlName="estimatedDepartureTimeFE" appendTo="body"
                                 [ngClass]="form.get('estimatedDepartureTimeFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
+                                class=" w-100 small-calendar" placeholder="Select Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
 
                                 <mat-error *ngIf="errorHandling('estimatedDepartureTimeFE')" class="text-danger"><small>{{
@@ -132,7 +132,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0 ">Estimated Time Of Arrival</p>
                                 <p-calendar formControlName="estimatedTimeOfArrivalFE" appendTo="body"
                                 [ngClass]="form.get('estimatedTimeOfArrivalFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
+                                class=" w-100 small-calendar" placeholder="Select Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
 
                                 <mat-error *ngIf="errorHandling('estimatedTimeOfArrivalFE')" class="text-danger"><small>{{
