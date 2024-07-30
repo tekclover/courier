@@ -81,7 +81,7 @@ public class RouteService {
             String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId + ", routeId - " + routeId +
                     " and legId - " + legId + " doesn't exists";
             // Error Log
-            createRouteLog1(companyId,languageId, routeId, legId, errMsg);
+            createRouteLog1(companyId, languageId, routeId, legId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbRoute.get();
@@ -99,7 +99,7 @@ public class RouteService {
      * @throws CsvException
      */
     @Transactional
-    public Route createRoute(AddRoute addRoute,String  loginUserID)
+    public Route createRoute(AddRoute addRoute, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
 //            Optional<Route> duplicateRoute= routeRepository.findByCompanyIdAndLanguageIdAndRouteIdAndLegIdAndDeletionIndicator(
@@ -109,45 +109,49 @@ public class RouteService {
 //            }
 
             routeRepository.findByCompanyIdAndLanguageIdAndRouteIdAndLegIdAndDeletionIndicator
-                    (addRoute.getCompanyId(), addRoute.getLanguageId(),  addRoute.getRouteId(), addRoute.getLegId(),0L)
+                            (addRoute.getCompanyId(), addRoute.getLanguageId(), addRoute.getRouteId(), addRoute.getLegId(), 0L)
                     .ifPresent(duplicate -> {
                         throw new BadRequestException("Record is getting duplicated with the given values : routeId - " + addRoute.getRouteId());
                     });
 
             Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator
-                    (addRoute.getCompanyId(), addRoute.getLanguageId(),0L);
+                    (addRoute.getCompanyId(), addRoute.getLanguageId(), 0L);
             if (dbCompany.isEmpty()) {
                 throw new BadRequestException("The given values : CompanyId - " + addRoute.getCompanyId()
                         + " and LanguageId - " + addRoute.getLanguageId() + "  doesn't exists");
             }
-                log.info("new Route --> {}", addRoute);
-                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addRoute.getLanguageId(),addRoute.getCompanyId());
-                Route newRoute= new Route();
-                BeanUtils.copyProperties(addRoute, newRoute, CommonUtils.getNullPropertyNames(addRoute));
-                if (addRoute.getRouteId() == null || addRoute.getRouteId().isBlank()){
-                    String ROUTE_ID = numberRangeService.getNextNumberRange("ROUTEID");
-                    log.info("next Value from NumberRange for ROUTE_ID : " + ROUTE_ID);
-                    newRoute.setRouteId(ROUTE_ID);
-                }
-                if (addRoute.getLegId() == null || addRoute.getLegId().isBlank()){
-                    String LEG_ID = numberRangeService.getNextNumberRange("LEGID");
-                    log.info("next Value from NumberRange for LEG_ID : " + LEG_ID);
-                    newRoute.setLegId(LEG_ID);
-                }
-                if (iKeyValuePair != null) {
-                    newRoute.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newRoute.setCompanyName(iKeyValuePair.getCompanyDesc());
-                }
-                String statusDesc = replicaStatusRepository.getStatusDescription(addRoute.getStatusId());
-                if (statusDesc != null) {
-                    newRoute.setStatusDescription(statusDesc);
-                }
-                newRoute.setDeletionIndicator(0L);
-                newRoute.setCreatedBy(loginUserID);
-                newRoute.setUpdatedBy(loginUserID);
-                newRoute.setCreatedOn(new Date());
-                newRoute.setUpdatedOn(new Date());
-                return routeRepository.save(newRoute);
+            log.info("new Route --> {}", addRoute);
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addRoute.getLanguageId(), addRoute.getCompanyId());
+            Route newRoute = new Route();
+            BeanUtils.copyProperties(addRoute, newRoute, CommonUtils.getNullPropertyNames(addRoute));
+            if ((addRoute.getRouteId() != null &&
+                    (addRoute.getReferenceField10() != null && addRoute.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addRoute.getRouteId() == null || addRoute.getRouteId().isBlank()) {
+                String ROUTE_ID = numberRangeService.getNextNumberRange("ROUTEID");
+                log.info("next Value from NumberRange for ROUTE_ID : " + ROUTE_ID);
+                newRoute.setRouteId(ROUTE_ID);
+            }
+            if ((addRoute.getLegId() != null &&
+                    (addRoute.getReferenceField10() != null && addRoute.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addRoute.getLegId() == null || addRoute.getLegId().isBlank()) {
+                String LEG_ID = numberRangeService.getNextNumberRange("LEGID");
+                log.info("next Value from NumberRange for LEG_ID : " + LEG_ID);
+                newRoute.setLegId(LEG_ID);
+            }
+            if (iKeyValuePair != null) {
+                newRoute.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newRoute.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addRoute.getStatusId());
+            if (statusDesc != null) {
+                newRoute.setStatusDescription(statusDesc);
+            }
+            newRoute.setDeletionIndicator(0L);
+            newRoute.setCreatedBy(loginUserID);
+            newRoute.setUpdatedBy(loginUserID);
+            newRoute.setCreatedOn(new Date());
+            newRoute.setUpdatedOn(new Date());
+            return routeRepository.save(newRoute);
 
         } catch (Exception e) {
             // Error Log
@@ -173,11 +177,11 @@ public class RouteService {
      * @throws CsvException
      */
     @Transactional
-    public Route updateRoute(String  companyId, String languageId, String routeId, String legId,
+    public Route updateRoute(String companyId, String languageId, String routeId, String legId,
                              UpdateRoute updateRoute, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        try{
-            Route dbRoute = getRoute(companyId,languageId,routeId,legId);
+        try {
+            Route dbRoute = getRoute(companyId, languageId, routeId, legId);
             BeanUtils.copyProperties(updateRoute, dbRoute, CommonUtils.getNullPropertyNames(updateRoute));
 
             if (updateRoute.getStatusId() != null && !updateRoute.getStatusId().isEmpty()) {
@@ -191,7 +195,7 @@ public class RouteService {
             return routeRepository.save(dbRoute);
         } catch (Exception e) {
             // Error Log
-            createRouteLog(companyId,languageId, routeId, legId, e.toString());
+            createRouteLog(companyId, languageId, routeId, legId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -215,7 +219,7 @@ public class RouteService {
             routeRepository.save(dbRoute);
         } else {
             // Error Log
-            createRouteLog1( companyId,languageId, routeId, legId, "Error in deleting RouteId - " + routeId);
+            createRouteLog1(companyId, languageId, routeId, legId, "Error in deleting RouteId - " + routeId);
             throw new EntityNotFoundException("Error in deleting RouteId - " + routeId);
         }
     }
@@ -224,11 +228,12 @@ public class RouteService {
 
     /**
      * Get All
+     *
      * @return
      */
-    public List<ReplicaRoute> getAll(){
+    public List<ReplicaRoute> getAll() {
         List<ReplicaRoute> routeList = replicaRouteRepository.findAll();
-        routeList = routeList.stream().filter(n ->n.getDeletionIndicator()==0).collect(Collectors.toList());
+        routeList = routeList.stream().filter(n -> n.getDeletionIndicator() == 0).collect(Collectors.toList());
         return routeList;
     }
 
@@ -248,7 +253,7 @@ public class RouteService {
             String errMsg = "The given values : companyId - " + companyId + ", languageId - " + languageId + ", routeId - " + routeId +
                     " and legId - " + legId + " doesn't exists";
             // Error Log
-            createRouteLog1(companyId,languageId, routeId, legId, errMsg);
+            createRouteLog1(companyId, languageId, routeId, legId, errMsg);
             throw new BadRequestException(errMsg);
         }
         return dbRoute.get();
@@ -256,10 +261,11 @@ public class RouteService {
 
     /**
      * Find
+     *
      * @param findRoute
      * @return
      */
-    public List<ReplicaRoute> findRoute(FindRoute findRoute){
+    public List<ReplicaRoute> findRoute(FindRoute findRoute) {
         ReplicaRouteSpecification spec = new ReplicaRouteSpecification(findRoute);
         List<ReplicaRoute> results = replicaRouteRepository.findAll(spec);
         log.info("found Route --> {}", results);
@@ -267,7 +273,7 @@ public class RouteService {
     }
 
     //=========================================Route_ErrorLog====================================================
-    private void createRouteLog(String companyId,String languageId,  String routeId, String legId, String error) throws IOException, CsvException {
+    private void createRouteLog(String companyId, String languageId, String routeId, String legId, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();
@@ -284,7 +290,7 @@ public class RouteService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createRouteLog1(String companyId,String languageId,  String routeId, String legId, String error) {
+    private void createRouteLog1(String companyId, String languageId, String routeId, String legId, String error) {
 
         ErrorLog errorLog = new ErrorLog();
         errorLog.setLogDate(new Date());

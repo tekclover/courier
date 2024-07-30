@@ -324,7 +324,11 @@ export class ConsignmentLabelComponent {
   getResultLabel(labelResult:any){
     this.ccrService.genearateLabel({ pieceId: labelResult }).subscribe({
       next: (res: any) => {
-        this.generateSingleLabel(res);
+        if(res.length > 0){
+          this.generateSingleLabel(res);
+        }else{
+          this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'No data found' });
+        }
       }, error: (err: any) => {
         this.cs.commonerrorNew(err);
       }

@@ -4,15 +4,14 @@ package com.courier.overc360.api.midmile.controller;
 import com.courier.overc360.api.midmile.primary.model.UploadResponse;
 import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
-import com.courier.overc360.api.midmile.replica.model.consignment.*;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentInvoice;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddConsignment;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.IConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestConsignment;
-import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
-import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
-import com.courier.overc360.api.midmile.replica.model.prealert.FindPreAlert;
-import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.service.CommonService;
 import com.courier.overc360.api.midmile.service.ConsignmentService;
 import com.courier.overc360.api.midmile.service.PreAlertService;
@@ -51,6 +50,9 @@ public class ConsignmentController {
 
     @Autowired
     PreAlertService preAlertService;
+
+//    @Autowired
+//    PushNotificationService pushNotificationService;
 
     /*=====================================================================================================================*/
 
@@ -176,5 +178,15 @@ public class ConsignmentController {
 //    public ResponseEntity<?> postPreAlert(@Valid @RequestBody FindPreAlert findPreAlert) {
 //        List<ReplicaPreAlert> dbPreAlert = preAlertService.findPreAlert(findPreAlert);
 //        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
+//    }
+
+//    @ApiOperation(value = "PushNotification")
+//    @PostMapping("notification")
+//    public ResponseEntity<?> pushNotification(@RequestParam List<String> tokens) {
+//    String title = "PUSH_NOTIFICATION";
+//    String message = "TEST CHECKING";
+//    pushNotificationService.sendPushNotification(tokens, title, message);
+//    return new ResponseEntity<>("Success", HttpStatus.OK);
+//
 //    }
 }
