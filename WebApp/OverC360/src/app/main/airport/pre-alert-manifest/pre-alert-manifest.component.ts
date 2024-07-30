@@ -586,7 +586,7 @@ export class PreAlertManifestComponent {
       { field: '', header: 'Net Weight (kgs)' },
       { field: 'manifestedGrossWeight', header: 'Manifested Gross Weight (Kgs)' },
       { field: 'grossWeight', header: 'Gross Weight (kgs)' },
-      { field: 'tareWeight', header: 'Tare Weight (kgs)' },
+      { field: '', header: 'Tare Weight (kgs)' },
       { field: 'manifestedQuantity', header: 'Manifested Quantity' },
       { field: 'landedQuantity', header: 'Landed Quantity' },
       { field: 'totalQuantity', header: 'Total Quantity' },
@@ -644,14 +644,45 @@ export class PreAlertManifestComponent {
     const worksheet = workbook.addWorksheet('BOLs');
 
     // Add headers
-    const headerRow =  worksheet.addRow(bols.map(col => col.header));
+    const headerRow = worksheet.addRow(bols.map(col => col.header));
+
+    const highlightConfigurations = [
+      { index: 2, color: 'FFFF00' }, 
+      { index: 3, color: 'FFFF00' }, 
+      { index: 4, color: 'FFFF00' }, 
+      { index: 7, color: 'FFFF00' }, 
+      { index: 8, color: 'FFFF00' }, 
+      { index: 10, color: 'FFFF00' }, 
+      { index: 11, color: 'FFFF00' }, 
+      { index: 12, color: 'FFFF00' },
+      { index: 14, color: 'FFFF00' }, 
+      { index: 18, color: 'FFFF00' },  
+      { index: 19, color: 'FFFF00' },  
+      { index: 23, color: 'FFFF00' },   
+      // Add more configurations as needed
+    ];
+
 
     headerRow.eachCell((cell, index) => {
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
-      };
+      // Check if the cell index matches any of the highlight configurations
+      const highlightConfig = highlightConfigurations.find(config => config.index === index);
+
+      if (highlightConfig) {
+        // Set the background color according to the highlight configuration
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: highlightConfig.color }, // Use the color from the configuration
+        };
+      } else {
+        // Set the background color for non-highlighted cells
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'C0C0C0' }, // Default color
+        };
+      }
+
       cell.font = {
         bold: true,
         color: { argb: '0000' }, // White text color
@@ -669,7 +700,11 @@ export class PreAlertManifestComponent {
       bols.forEach(col => {
         if (col.format == 'number') {
           exportItem[col.header] = index + 1;
-        } else {
+        } 
+        if (col.format == 'date') {
+          exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
+        }
+        else {
           exportItem[col.header] = item[col.field];
         }
       });
@@ -691,7 +726,7 @@ export class PreAlertManifestComponent {
     const itemsSheet = workbook.addWorksheet('Items');
 
     // Add headers
-   const headerRow1 = itemsSheet.addRow(items.map(col => col.header));
+    const headerRow1 = itemsSheet.addRow(items.map(col => col.header));
 
     headerRow1.eachCell((cell, index) => {
       cell.fill = {
@@ -738,7 +773,7 @@ export class PreAlertManifestComponent {
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
-      a.download = `Prealert_Manifest_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+      a.download = `Bonded_Manifest_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
       document.body.appendChild(a);
 
       // Simulate click to trigger download
