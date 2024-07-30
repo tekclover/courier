@@ -58,7 +58,7 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Password</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Password</p>
                                 <input type = "password" maxlength="100" pInputText formControlName="password"
                                     [ngClass]="form.get('password')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />

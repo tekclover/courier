@@ -600,7 +600,7 @@ export class PreAlertManifestComponent {
       { field: 'remarks', header: 'Remarks' },
       { field: 'isConsolidatedShipment', header: 'Is Consolidated Shipment' },
       { field: 'isSplitBillOfLading', header: 'Is Split Bill of Lading' },
-      { field: 'consolidatedBillNo', header: 'Consolidate Bill Number' },
+      { field: 'partnerMasterAirwayBill', header: 'Consolidate Bill Number' },
       { field: 'isPendingShipment', header: 'Is Pending shipment' },
       { field: 'bwhInvestor', header: 'BWHInvestor' },
     ];
