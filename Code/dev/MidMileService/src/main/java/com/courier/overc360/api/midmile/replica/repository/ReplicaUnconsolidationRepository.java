@@ -68,18 +68,30 @@ public interface ReplicaUnconsolidationRepository extends JpaRepository<ReplicaU
             "Where tc.IS_DELETED=0\n" +
             "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
             "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+//            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))\n" +
             "AND (COALESCE(:partnerHouseAB, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAB))\n" +
             "And tc.UNCONSOLIDATED = :unconsolidatedIndicator\n" +
             "And (COALESCE(:fromDate, NULL) IS NULL OR tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL))", nativeQuery = true)
     long getNoOfUnconsolidatedShipments(@Param("languageId") String languageId,
                                         @Param("companyId") String companyId,
-                                        @Param("partnerId") String partnerId,
+//                                        @Param("partnerId") String partnerId,
                                         @Param("partnerMasterAB") String partnerMasterAB,
                                         @Param("partnerHouseAB") String partnerHouseAB,
                                         @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
                                         @Param("fromDate") Date fromDate,
                                         @Param("toDate") Date toDate);
+
+
+    // Get Unconsolidated Shipments Count by P-MAWB
+    @Query(value = "SELECT COUNT(*) FROM tblunconsolidation tc\n" +
+            "WHERE tc.IS_DELETED=0\n" +
+            "And tc.UNCONSOLIDATED = 1\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))", nativeQuery = true)
+    long getUnconsolidatedCountByPMawb(@Param("languageId") String languageId,
+                                       @Param("companyId") String companyId,
+                                       @Param("partnerMasterAB") String partnerMasterAB);
 
 }

@@ -139,43 +139,4 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
     ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);
 
 
-    // Get No of Shipments Scanned
-    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
-            "Where tc.IS_DELETED=0\n" +
-            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
-            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
-            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill))\n" +
-            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
-            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
-            "And (COALESCE(:fromDate, NULL) IS NULL OR tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL))", nativeQuery = true)
-    long getNoOfShipmentsScanned(
-            @Param("languageId") String languageId,
-            @Param("companyId") String companyId,
-            @Param("partnerId") String partnerId,
-            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
-            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
-            @Param("consoleIndicator") Long consoleIndicator,
-            @Param("fromDate") Date fromDate,
-            @Param("toDate") Date toDate);
-
-
-    //    @Query(value = "SELECT tc.PARTNER_MASTER_AB As partnerMasterAirwayBill, COUNT(*) AS pMawbCount\n" +
-//            "FROM tblconsignment_entity tc\n" +
-//            "WHERE tc.IS_DELETED=0\n" +
-//            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
-//            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-//            "GROUP BY tc.PARTNER_MASTER_AB", nativeQuery = true)
-//    List<ConsignmentImpl> getAllPMawbCount(@Param("languageId") List<String> languageId,
-//                                           @Param("companyId") List<String> companyId);
-    @Query(value = "SELECT tc.PARTNER_MASTER_AB As partnerMasterAirwayBill, COUNT(*) AS pMawbCount\n" +
-            "FROM tblconsignment_entity tc\n" +
-            "WHERE tc.IS_DELETED=0\n" +
-            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
-            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-            "GROUP BY tc.PARTNER_MASTER_AB", nativeQuery = true)
-    List<ConsignmentImpl> getAllPMawbCount(@Param("languageId") String languageId,
-                                           @Param("companyId") String companyId);
-
-
 }
