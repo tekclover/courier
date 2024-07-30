@@ -12,6 +12,7 @@ import { ConsoleEditComponent } from './console/console-edit/console-edit.compon
 import { CcrEditComponent } from './ccr/ccr-edit/ccr-edit.component';
 import { PreAlertManifestIndicatorComponent } from './pre-alert-manifest/pre-alert-manifest-indicator/pre-alert-manifest-indicator.component';
 import { PreAlertUpdateComponent } from './pre-alert-manifest/pre-alert-update/pre-alert-update.component';
+import { InventoryScanningReportComponent } from './inventory-scanning-report/inventory-scanning-report.component';
 
 const routes: Routes = [
   {path:'preAlertManifest',component: PreAlertManifestComponent, data: { title: 'Mid-Mile', module: 'Pre-Alert Manifest' } },
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path:'ccr-new/:code',component: CcrNewComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
   {path:'ccr-edit/:code',component: CcrEditComponent, data: { title: 'Mid-Mile', module: 'CCR New' } },
 
+  {path:'inventory-scanning-report',component: InventoryScanningReportComponent, data: { title: 'Mid-Mile', module: 'Inventory Scanning Report' } },
 
 ];
 

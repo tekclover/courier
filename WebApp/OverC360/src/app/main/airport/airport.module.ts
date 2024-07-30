@@ -22,6 +22,7 @@ import { PreAlertUpdateComponent } from './pre-alert-manifest/pre-alert-update/p
 import { PreAlertEditpopupComponent } from './pre-alert-manifest/pre-alert-editpopup/pre-alert-editpopup.component';
 import { DynamicFieldSelectionComponent } from './console/console-edit/dynamic-field-selection/dynamic-field-selection.component';
 import { PreAlertBulkComponent } from './pre-alert-manifest/pre-alert-bulk/pre-alert-bulk.component';
+import { InventoryScanningReportComponent } from './inventory-scanning-report/inventory-scanning-report.component';
 
 
 @NgModule({
@@ -33,7 +34,7 @@ import { PreAlertBulkComponent } from './pre-alert-manifest/pre-alert-bulk/pre-a
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, DynamicFieldSelectionComponent, PreAlertBulkComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, DynamicFieldSelectionComponent, PreAlertBulkComponent, InventoryScanningReportComponent
 
 
   ],
