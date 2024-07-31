@@ -3,27 +3,15 @@ package com.courier.overc360.api.model.idmaster;
 import lombok.Data;
 
 @Data
-public class AddCustomer {
+public class UpdateDriverRouteAssignment {
 
-    private String companyId;
+    private String courierType;
 
-    private String languageId;
-
-    private String subProductId;
-
-    private String subProductValue;
-
-    private String productId;
-
-    private String customerId;
-
-    private String customerName;
-
-    private String agingCount;
+    private String remark;
 
     private String statusId;
 
-    private String remark;
+    private Long deletionIndicator;
 
     private String referenceField1;
 

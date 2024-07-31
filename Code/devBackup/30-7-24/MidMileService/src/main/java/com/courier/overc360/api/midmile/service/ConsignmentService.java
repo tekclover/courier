@@ -8,10 +8,7 @@ import com.courier.overc360.api.midmile.primary.model.imagereference.ImageRefere
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
-import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
-import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
-import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
-import com.courier.overc360.api.midmile.primary.repository.PieceDetailsRepository;
+import com.courier.overc360.api.midmile.primary.repository.*;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
@@ -69,6 +66,14 @@ public class ConsignmentService {
     @Autowired
     PieceDetailsRepository pieceDetailsRepository;
 
+    @Autowired
+    ItemDetailsRepository itemDetailsRepository;
+
+    @Autowired
+    ItemDetailsService itemDetailsService;
+
+    /*===================================================================================================================================================*/
+
 
     //GetALl
     public List<ConsignmentEntity> findAll() {
@@ -112,7 +117,7 @@ public class ConsignmentService {
             String weightUnit = consignmentEntity.getWeightUnit();
             String volume = consignmentEntity.getVolume();
             String codAmount = consignmentEntity.getCodAmount();
-            
+
             // Fetching the product ID for the shipper
             IKeyValuePair shipperData = bondedManifestRepository.getProductId(
                     consignmentEntity.getPartnerId(),
@@ -427,28 +432,79 @@ public class ConsignmentService {
                     image.setReferenceField2(downloadDocument);
                     image.setUpdatedBy(loginUserID);
                     image.setUpdatedOn(new Date());
-//                    referenceImageLists.add(imageReferenceRepository.save(image));
+                    referenceImageLists.add(imageReferenceRepository.save(image));
                     referenceImageLists.add(image);
                 }
                 dbConsignment.setReferenceImageList(referenceImageLists);
             }
 
-            consignmentEntityRepository.save(dbConsignment);
-
             //PieceDetails Update
             if (dbConsignment.getPieceDetails() != null && !dbConsignment.getPieceDetails().isEmpty()) {
                 if (dbConsignmentEntity.getPieceDetails() != null && !dbConsignmentEntity.getPieceDetails().isEmpty()) {
-                    List<PieceDetails> savedPieceDetails = pieceDetailsService.updatePieceDetails(
-                            dbConsignmentEntity.getPieceDetails(), dbConsignment.getPieceDetails(), loginUserID);
-                    dbConsignment.setPieceDetails(savedPieceDetails);
-                }
-            }
-            addConsignmentList.add(dbConsignment);
-        }
+//                    List<PieceDetails> savedPieceDetails = pieceDetailsService.updatePieceDetails(
+//                            dbConsignmentEntity.getPieceDetails(), dbConsignment.getPieceDetails(), loginUserID);
+                    List<PieceDetails> pieceDetailsList = new ArrayList<>();
 
+                    for (PieceDetails pieceDetails : dbConsignment.getPieceDetails()) {
+                        for (PieceDetails dbPiece : dbConsignmentEntity.getPieceDetails()) {
+                            if (Objects.equals(pieceDetails.getPieceId(), dbPiece.getPieceId())) {
+
+                                BeanUtils.copyProperties(pieceDetails, dbPiece, CommonUtils.getNullPropertyNames(pieceDetails));
+
+                                //Update ReferenceImage
+                                Set<ImageReference> pieceImage = new HashSet<>();
+                                if (pieceDetails.getReferenceImageList() != null && !pieceDetails.getReferenceImageList().isEmpty()) {
+                                    for (ImageReference image : pieceDetails.getReferenceImageList()) {
+
+                                        String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
+                                        ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
+                                        if (imageReferenceRecord == null) {
+                                            log.info("ImageReference doesn't exist" + image.getImageRefId());
+                                        }
+                                        imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
+                                        imageReferenceRecord.setReferenceField2(downloadDocument);
+                                        imageReferenceRecord.setDeletionIndicator(0L);
+                                        imageReferenceRecord.setUpdatedBy(loginUserID);
+                                        imageReferenceRecord.setUpdatedOn(new Date());
+                                        ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
+                                        pieceImage.add(imageRef);
+                                    }
+                                }
+                                dbPiece.setReferenceImageList(referenceImageLists);
+
+                                // UpdateItemDetails
+                                if (pieceDetails.getItemDetails() != null && !pieceDetails.getItemDetails().isEmpty()) {
+
+                                    List<ItemDetails> itemDetailsList = new ArrayList<>();
+                                    for (ItemDetails itemDetails : pieceDetails.getItemDetails()) {
+                                        for (ItemDetails dbItem : dbPiece.getItemDetails()) {
+                                            if (Objects.equals(itemDetails.getPieceItemId(), dbItem.getPieceItemId())) {
+                                                BeanUtils.copyProperties(itemDetails, dbItem, CommonUtils.getNullPropertyNames(itemDetails));
+                                                dbItem.setUpdatedBy(loginUserID);
+                                                dbItem.setUpdatedOn(new Date());
+                                                itemDetailsList.add(itemDetailsRepository.save(dbItem));
+                                            }
+                                        }
+                                    }
+                                    dbPiece.setItemDetails(itemDetailsList);
+                                }
+                                dbPiece.setDeletionIndicator(0L);
+                                dbPiece.setUpdatedBy(loginUserID);
+                                dbPiece.setUpdatedOn(new Date());
+                                pieceDetailsList.add(pieceDetailsRepository.save(dbPiece));
+                            }
+                        }
+
+                        dbConsignment.setPieceDetails(pieceDetailsList);
+                    }
+                }
+                consignmentEntityRepository.save(dbConsignment);
+                addConsignmentList.add(dbConsignment);
+            }
+
+        }
         return addConsignmentList;
     }
-
 
     /**
      * Find Consignment
@@ -463,6 +519,55 @@ public class ConsignmentService {
         ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
         List<ReplicaConsignmentEntity> consignmentEntities = replicaConsignmentEntityRepository.findAll();
         return consignmentEntities;
+    }
+
+
+    //MultipleConsignment Delete
+
+    /**
+     * @param consignmentDeletes
+     * @param loginUserID
+     */
+    public void deleteConsignmentEntity(List<ConsignmentDelete> consignmentDeletes, String loginUserID) {
+
+        for (ConsignmentDelete con : consignmentDeletes) {
+            String pieceId = con.getPieceId();
+            String pieceItemId = con.getPieceItemId();
+            String companyId = con.getCompanyId();
+            String languageId = con.getLanguageId();
+            String partnerId = con.getPartnerId();
+            String imageRefId = con.getImageRefId();
+            String houseAirwayBill = con.getHouseAirwayBill();
+            String masterAirwayBill = con.getMasterAirwayBill();
+
+            if (pieceId == null && pieceItemId == null && imageRefId == null) {
+                ConsignmentEntity dbConsignmentEntity = consignmentEntityRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                        companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
+
+                if (dbConsignmentEntity == null) {
+                    throw new BadRequestException(" Given values doesn't exits CompanyId - " + companyId + " LanguageId " + languageId + " PartnerId " + partnerId +
+                            " MasterAirwayBill " + masterAirwayBill + " HouseAirwayBill " + houseAirwayBill);
+                } else {
+                    dbConsignmentEntity.setDeletionIndicator(1L);
+                    dbConsignmentEntity.setUpdatedBy(loginUserID);
+                    dbConsignmentEntity.setUpdatedOn(new Date());
+                    //MultipleImageDelete
+                    imageReferenceService.deleteImageReference(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                    //MultiplePiece
+                    pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+                    consignmentEntityRepository.save(dbConsignmentEntity);
+                }
+            }
+            if (pieceId != null && pieceItemId == null) {
+                pieceDetailsService.deletePieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);
+            }
+            if (pieceItemId != null && pieceId != null) {
+                itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, loginUserID);
+            }
+            if (imageRefId != null) {
+                imageReferenceService.deleteImageReference(imageRefId, loginUserID);
+            }
+        }
     }
 
 }

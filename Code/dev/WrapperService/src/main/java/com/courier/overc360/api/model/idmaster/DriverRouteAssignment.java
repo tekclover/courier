@@ -1,41 +1,34 @@
 package com.courier.overc360.api.model.idmaster;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
-public class Consignor {
+public class DriverRouteAssignment {
 
-    private String consignorId;
-
-    private String customerId;
-
-    private String productId;
-
-    private String subProductId;
+    private String languageId;
 
     private String companyId;
 
-    private String languageId;
+    private String courierId;
+
+    private String vehicleRegNumber;
+
+    private String routeId;
+
+    private String assignedHubCode;
 
     private String languageDescription;
 
     private String companyName;
 
-    private String subProductName;
-
-    private String subProductValue;
-
-    private String productName;
-
-    private String customerName;
-
-    private String consignorName;
+    private String courierType;
 
     private String statusId;
-
-    private String agingCount;
 
     private String statusDescription;
 
@@ -67,8 +60,9 @@ public class Consignor {
 
     private Date createdOn;
 
+    private Date updatedOn;
+
     private String updatedBy;
 
-    private Date updatedOn;
 
 }

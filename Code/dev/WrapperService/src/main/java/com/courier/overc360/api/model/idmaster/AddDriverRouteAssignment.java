@@ -2,24 +2,23 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 @Data
-public class AddCustomer {
+public class AddDriverRouteAssignment {
 
     private String companyId;
 
     private String languageId;
 
-    private String subProductId;
+    private String routeId;
 
-    private String subProductValue;
+    private String assignedHubCode;
 
-    private String productId;
+    private String vehicleRegNumber;
 
-    private String customerId;
+    private String courierId;
 
-    private String customerName;
-
-    private String agingCount;
+    private String courierType;
 
     private String statusId;
 

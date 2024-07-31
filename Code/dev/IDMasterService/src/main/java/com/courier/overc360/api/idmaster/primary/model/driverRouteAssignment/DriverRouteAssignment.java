@@ -1,55 +1,49 @@
-package com.courier.overc360.api.idmaster.primary.model.customer;
+package com.courier.overc360.api.idmaster.primary.model.driverRouteAssignment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/*
- * `LANG_ID`, `C_ID`, `SUB_PRODUCT_ID`, `PRODUCT_ID`, `CUSTOMER_ID`, `SUB_PRODUCT_VALUE`
- */
-@Table(
-        name = "tblcustomer",
+@Table(name = "tbldriverrouteassignment",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "unique_key_customer",
-                        columnNames = {"LANG_ID", "C_ID", "SUB_PRODUCT_ID", "PRODUCT_ID", "CUSTOMER_ID", "SUB_PRODUCT_VALUE"}
-                )
+                        name = "unique_key_driverrouteassignment",
+                        columnNames = {"C_ID", "LANG_ID", "COURIER_ID", "ROUTE_ID", "VEHICLE_REG_NUMBER", "ASSIGNED_HUB_CODE"})
         }
 )
-@IdClass(CustomerCompositeKey.class)
-public class Customer {
+@IdClass(DriverRouteAssignmentCompositeKey.class)
+public class DriverRouteAssignment {
 
     @Id
-    @Column(name = "CUSTOMER_ID", columnDefinition = "nvarchar(50)")
-    private String customerId;
-
-    @Id
-    @Column(name = "PRODUCT_ID", columnDefinition = "nvarchar(50)")
-    private String productId;
-
-    @Id
-    @Column(name = "SUB_PRODUCT_ID", columnDefinition = "nvarchar(50)")
-    private String subProductId;
+    @Column(name = "Lang_ID", columnDefinition = "nvarchar(50)")
+    private String languageId;
 
     @Id
     @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
     private String companyId;
 
     @Id
-    @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
-    private String languageId;
+    @Column(name = "COURIER_ID", columnDefinition = "nvarchar(50)")
+    private String courierId;
+
+    @Id
+    @Column(name = "VEHICLE_REG_NUMBER", columnDefinition = "nvarchar(50)")
+    private String vehicleRegNumber;
+
+    @Id
+    @Column(name = "ROUTE_ID", columnDefinition = "nvarchar(50)")
+    private String routeId;
+
+    @Id
+    @Column(name = "ASSIGNED_HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String assignedHubCode;
 
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
@@ -57,29 +51,14 @@ public class Customer {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
-    @Column(name = "SUB_PRODUCT_NAME", columnDefinition = "nvarchar(100)")
-    private String subProductName;
-
     @Id
-    @Column(name = "SUB_PRODUCT_VALUE", columnDefinition = "nvarchar(50)")
-    private String subProductValue;
-
-    @Column(name = "PRODUCT_NAME", columnDefinition = "nvarchar(100)")
-    private String productName;
-
-    @Column(name = "PRODUCT_TEXT", columnDefinition = "nvarchar(100)")
-    private String productText;
-
-    @Column(name = "CUSTOMER_NAME", columnDefinition = "nvarchar(100)")
-    private String customerName;
+    @Column(name = "COURIER_TYPE", columnDefinition = "nvarchar(50)")
+    private String courierType;
 
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
-    @Column(name = "AGING_COUNT", columnDefinition = "nvarchar(50)")
-    private String agingCount;
-
-    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(50)")
     private String statusDescription;
 
     @Column(name = "REMARK", columnDefinition = "nvarchar(2000)")
@@ -124,10 +103,11 @@ public class Customer {
     @Column(name = "CTD_ON")
     private Date createdOn = new Date();
 
-    @Column(name = "UTD_BY", columnDefinition = "nvarchar(50)")
-    private String updatedBy;
-
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
+
+    @Column(name = "UTD_BY", columnDefinition = "nvarchar(500)")
+    private String updatedBy;
+
 
 }
