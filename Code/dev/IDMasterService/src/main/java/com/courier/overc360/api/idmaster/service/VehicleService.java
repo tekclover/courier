@@ -109,14 +109,6 @@ public class VehicleService {
             IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addVehicle.getLanguageId(), addVehicle.getCompanyId());
             Vehicle newVehicle = new Vehicle();
             BeanUtils.copyProperties(addVehicle, newVehicle, CommonUtils.getNullPropertyNames(addVehicle));
-            if ((addVehicle.getVehicleRegNumber() != null &&
-                    (addVehicle.getReferenceField10() != null && addVehicle.getReferenceField10().equalsIgnoreCase("true"))) ||
-                    addVehicle.getVehicleRegNumber() == null || addVehicle.getVehicleRegNumber().isBlank()) {
-                String NUM_RAN_OBJ = "VEHICLEREGNUMBER";
-                String VEHICLE_REG_NUMBER = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                log.info("next Value from NumberRange for VEHICLE_REG_NUMBER : " + VEHICLE_REG_NUMBER);
-                newVehicle.setVehicleRegNumber(VEHICLE_REG_NUMBER);
-            }
             if (iKeyValuePair != null) {
                 newVehicle.setLanguageDescription(iKeyValuePair.getLangDesc());
                 newVehicle.setCompanyName(iKeyValuePair.getCompanyDesc());

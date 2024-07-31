@@ -2650,4 +2650,60 @@ public class IDMasterServiceController {
         return idmasterService.findVehicle(findVehicle, authToken);
     }
 
+    //==================================================DriverRouteAssignment====================================================
+    // Get All DriverRouteAssignment Details
+    @ApiOperation(response = DriverRouteAssignment[].class, value = "Get all DriverRouteAssignment details") // label for swagger
+    @GetMapping("/driverRouteAssignment")
+    public ResponseEntity<?> getAllDriverRouteAssignments(@RequestParam String authToken) {
+        DriverRouteAssignment[] driverRouteAssignment = idmasterService.getAllDriverRouteAssignments(authToken);
+        return new ResponseEntity<>(driverRouteAssignment, HttpStatus.OK);
+    }
+
+    // Get DriverRouteAssignment
+    @ApiOperation(response = DriverRouteAssignment.class, value = "Get DriverRouteAssignment") // label for swagger
+    @GetMapping("/driverRouteAssignment/{courierId}")
+    public ResponseEntity<?> getDriverRouteAssignment(@PathVariable String courierId, @RequestParam String companyId,
+                                                      @RequestParam String languageId,  @RequestParam String routeId,  @RequestParam String vehicleRegNumber, @RequestParam String assignedHubCode, @RequestParam String authToken) {
+        DriverRouteAssignment dbDriverRouteAssignment = idmasterService.getDriverRouteAssignment(companyId, languageId, courierId, routeId, vehicleRegNumber, assignedHubCode, authToken);
+        return new ResponseEntity<>(dbDriverRouteAssignment, HttpStatus.OK);
+    }
+
+
+    // Create new DriverRouteAssignment
+    @ApiOperation(response = DriverRouteAssignment.class, value = "Create new DriverRouteAssignment") // label for swagger
+    @PostMapping("/driverRouteAssignment")
+    public ResponseEntity<?> postDriverRouteAssignment(@Valid @RequestBody AddDriverRouteAssignment newDriverRouteAssignment,
+                                         @RequestParam String loginUserID, String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        DriverRouteAssignment createDriverRouteAssignment = idmasterService.createDriverRouteAssignment(newDriverRouteAssignment, loginUserID, authToken);
+        return new ResponseEntity<>(createDriverRouteAssignment, HttpStatus.OK);
+    }
+
+    // Update DriverRouteAssignment
+    @ApiOperation(response = DriverRouteAssignment.class, value = "Update DriverRouteAssignment") // label for swagger
+    @PatchMapping("/driverRouteAssignment/{courierId}")
+    public ResponseEntity<?> updateDriverRouteAssignment(@PathVariable String courierId, @RequestParam String languageId,
+                                           @RequestParam String companyId,  @RequestParam String routeId,  @RequestParam String vehicleRegNumber,  @RequestParam String assignedHubCode,@RequestParam String loginUserID,
+                                           @RequestBody UpdateDriverRouteAssignment updateDriverRouteAssignment, @RequestParam String authToken) {
+        DriverRouteAssignment updatedDriverRouteAssignment = idmasterService.updateDriverRouteAssignment(companyId, languageId, courierId, routeId, vehicleRegNumber, assignedHubCode, loginUserID, updateDriverRouteAssignment, authToken);
+        return new ResponseEntity<>(updatedDriverRouteAssignment, HttpStatus.OK);
+    }
+
+    // Delete DriverRouteAssignment
+    @ApiOperation(response = DriverRouteAssignment.class, value = "Delete DriverRouteAssignment") // label for swagger
+    @DeleteMapping("/driverRouteAssignment/{courierId}")
+    public ResponseEntity<?> deleteDriverRouteAssignment(@PathVariable String courierId, @RequestParam String languageId, @RequestParam String companyId,
+                                                         @RequestParam String routeId,  @RequestParam String vehicleRegNumber,  @RequestParam String assignedHubCode,  @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteDriverRouteAssignment(companyId, languageId, courierId, routeId, vehicleRegNumber, assignedHubCode, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find DriverRouteAssignment
+    @ApiOperation(response = DriverRouteAssignment[].class, value = "Find DriverRouteAssignment")//label for swagger
+    @PostMapping("/driverRouteAssignment/find")
+    public DriverRouteAssignment[] findDriverRouteAssignment(@RequestBody FindDriverRouteAssignment findDriverRouteAssignment,
+                                 @RequestParam String authToken) throws Exception {
+        return idmasterService.findDriverRouteAssignment(findDriverRouteAssignment, authToken);
+    }
+
 }
