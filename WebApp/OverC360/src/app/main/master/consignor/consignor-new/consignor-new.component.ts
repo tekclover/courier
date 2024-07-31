@@ -67,6 +67,7 @@ export class ConsignorNewComponent {
     consignorId: [],
     consignorName: [, Validators.required],
     remark: [],
+    agingCount: [],
     statusId: ["16",],
     statusDescription: [],
     referenceField1: [],

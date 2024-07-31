@@ -109,27 +109,27 @@ export class AppUserNewComponent {
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
-    else {
-      this.spin.show();
-      let obj: any = {};
-      obj.numberRangeObject = ['APPUSER'];
-      this.numberRangeService.search(obj).subscribe({
-        next: (res: any) => {
-          if (res.length > 0) {
-            this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
-            this.form.controls.appUserId.patchValue(this.nextNumber);
-            this.numCondition = 'true';
-            this.form.controls.referenceField10.patchValue(this.numCondition);
-            this.form.controls.appUserId.disable();
-          }
-          this.spin.hide();
-        },
-        error: (err) => {
-          this.spin.hide();
-          this.cs.commonerrorNew(err);
-        },
-      });
-    }
+    // else {
+    //   this.spin.show();
+    //   let obj: any = {};
+    //   obj.numberRangeObject = ['APPUSER'];
+    //   this.numberRangeService.search(obj).subscribe({
+    //     next: (res: any) => {
+    //       if (res.length > 0) {
+    //         this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
+    //         this.form.controls.appUserId.patchValue(this.nextNumber);
+    //         this.numCondition = 'true';
+    //         this.form.controls.referenceField10.patchValue(this.numCondition);
+    //         this.form.controls.appUserId.disable();
+    //       }
+    //       this.spin.hide();
+    //     },
+    //     error: (err) => {
+    //       this.spin.hide();
+    //       this.cs.commonerrorNew(err);
+    //     },
+    //   });
+    // }
   }
 
   languageIdList: any[] = [];
