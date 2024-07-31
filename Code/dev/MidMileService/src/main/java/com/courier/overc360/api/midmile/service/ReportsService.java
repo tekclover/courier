@@ -23,12 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -125,7 +123,7 @@ public class ReportsService {
 
             createdLocationSheetOutputList.add(sheetOutput);
             processedKeys.add(uniqueKey); // Mark this uniqueKey as processed
-            log.debug("uniqueKey - {}", uniqueKey);
+            log.info("uniqueKey - {}", uniqueKey);
         }
 
         return createdLocationSheetOutputList;
@@ -151,8 +149,8 @@ public class ReportsService {
      */
     public List<ConsoleTrackingReportOutput> generateConsoleTracking(ConsoleTrackingReportInput reportInput,
                                                                      String loginUserID) throws ParseException {
-
-        List<ConsoleTrackingReportOutput> createdConsoleTrackingReportOutputList = new ArrayList<>();
+        Instant startTime = Instant.now();
+        List<ConsoleTrackingReportOutput> createdConsoleTrackingOutputList = new ArrayList<>();
 
         if (reportInput.getLanguageId() == null || reportInput.getCompanyId() == null) {
             throw new BadRequestException("LanguageId or companyId cannot be null");
@@ -175,7 +173,7 @@ public class ReportsService {
         if ((reportInput.getLanguageId() != null && reportInput.getCompanyId() != null) &&
                 (reportInput.getPartnerMasterAirwayBill() == null && reportInput.getPartnerHouseAirwayBill() == null)) {
 
-            createdConsoleTrackingReportOutputList = postConsoleTrackingListPage(langIdList, cIdList, loginUserID);
+            createdConsoleTrackingOutputList = postConsoleTrackingListPage(langIdList, cIdList, loginUserID);
 
         } else {
 
@@ -223,7 +221,7 @@ public class ReportsService {
                                     reportOutput.setScanningDate(scanValues.getScannedOn());
                                 }
 
-                                createdConsoleTrackingReportOutputList.add(reportOutput);
+                                createdConsoleTrackingOutputList.add(reportOutput);
                             }
                         }
                     }
@@ -231,47 +229,66 @@ public class ReportsService {
                 }
             }
         }
-        return createdConsoleTrackingReportOutputList;
+        Instant endTime = Instant.now();
+        log.info("Time to load ConsoleTracking --> {}ms", Duration.between(startTime, endTime).toMillis());
+        return createdConsoleTrackingOutputList;
     }
 
     public List<ConsoleTrackingReportOutput> postConsoleTrackingListPage(List<String> languageIdList, List<String> companyIdList,
                                                                          String loginUserID) throws ParseException {
+        List<ConsoleTrackingReportOutput> createdConsoleTrackingOutputList = new ArrayList<>();
 
-        List<ConsoleTrackingReportOutput> createdConsoleTrackingReportOutputList = new ArrayList<>();
+        List<ConsignmentImpl> allPMawbValuesList = replicaPreAlertRepository.getAllPMawbCount(languageIdList, companyIdList);
+        if (allPMawbValuesList != null && !allPMawbValuesList.isEmpty()) {
 
-        for (String langId : languageIdList) {
-            for (String cId : companyIdList) {
-                List<ConsignmentImpl> pMawbValuesList = replicaPreAlertRepository.getAllPMawbCount(langId, cId);
+            Map<String, Long> consoleCountMap = replicaConsoleRepository.getConsoleCountByPMawb(languageIdList, companyIdList);
+            Map<String, Long> unconsolidatedCountMap = replicaUnconsolidationRepository.getUnconsolidatedCountByPMawb(languageIdList, companyIdList);
 
-                if (pMawbValuesList != null) {
-                    for (ConsignmentImpl pMawbValues : pMawbValuesList) {
+//            for (ConsignmentImpl pMawbValues : allPMawbValuesList) {
+////                boolean isLAndCPresent = replicaPreAlertRepository.existsByLanguageIdAndCompanyIdAndDeletionIndicator(
+////                        pMawbValues.getLanguageId(), pMawbValues.getCompanyId(), 0L);
+////                if (isLAndCPresent) {
+//                String pMawb = pMawbValues.getPartnerMasterAirwayBill();
+//                String key = pMawb + "_" + pMawbValues.getLanguageId() + "_" + pMawbValues.getCompanyId();
+//
+//                long consolesCount = consoleCountMap.getOrDefault(key, 0L);
+//                long unconsolidatedCount = unconsolidatedCountMap.getOrDefault(key, 0L);
+//
+//                ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
+//                reportOutput.setLanguageId(pMawbValues.getLanguageId());
+//                reportOutput.setCompanyId(pMawbValues.getCompanyId());
+//                reportOutput.setPartnerMasterAirwayBill(pMawb);
+//                reportOutput.setNoOfShipmentsScanned(pMawbValues.getPMawbCount());
+//                reportOutput.setNoOfConsoles(consolesCount);
+//                reportOutput.setNoOfUnconsolidatedShipments(unconsolidatedCount);
+//
+//                createdConsoleTrackingOutputList.add(reportOutput);
+////                }
+//            }
+//        }
+            createdConsoleTrackingOutputList = allPMawbValuesList
+                    .stream()
+                    .map(pMawbValues -> {
                         String pMawb = pMawbValues.getPartnerMasterAirwayBill();
-
-                        log.info("No Of Shipments Scanned for partnerMasterAirwayBill : {} --> {}", pMawb, pMawbValues.getPMawbCount());
-
-                        long consolesCount = replicaConsoleRepository.getConsoleCountByPMawb(langId, cId, pMawb);
-                        log.info("No Of Consoles for partnerMasterAirwayBill : {} --> {}", pMawb, consolesCount);
-
-                        long unconsolidatedCount = replicaUnconsolidationRepository.getUnconsolidatedCountByPMawb(langId, cId, pMawb);
-                        log.info("No Of Unconsolidated Shipments for partnerMasterAirwayBill : {} --> {}", pMawb, unconsolidatedCount);
+                        String key = pMawb + "_" + pMawbValues.getLanguageId() + "_" + pMawbValues.getCompanyId();
+                        long consolesCount = consoleCountMap.getOrDefault(key, 0L);
+                        long unconsolidatedCount = unconsolidatedCountMap.getOrDefault(key, 0L);
 
                         ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
-
-                        reportOutput.setLanguageId(langId);
-                        reportOutput.setCompanyId(cId);
-
+                        reportOutput.setLanguageId(pMawbValues.getLanguageId());
+                        reportOutput.setCompanyId(pMawbValues.getCompanyId());
                         reportOutput.setPartnerMasterAirwayBill(pMawb);
                         reportOutput.setNoOfShipmentsScanned(pMawbValues.getPMawbCount());
                         reportOutput.setNoOfConsoles(consolesCount);
                         reportOutput.setNoOfUnconsolidatedShipments(unconsolidatedCount);
 
-                        createdConsoleTrackingReportOutputList.add(reportOutput);
-                    }
-                }
-            }
+                        return reportOutput;
+                    })
+                    .collect(Collectors.toList());
         }
-        return createdConsoleTrackingReportOutputList;
+        return createdConsoleTrackingOutputList;
     }
+
 
     //============================================Reports_ErrorLog=====================================================
     private void createReportLog(List<LocationSheetInput> locationSheetInputs, String error) {

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -95,5 +96,15 @@ public interface ReplicaUnconsolidationRepository extends JpaRepository<ReplicaU
     long getUnconsolidatedCountByPMawb(@Param("languageId") String languageId,
                                        @Param("companyId") String companyId,
                                        @Param("partnerMasterAB") String partnerMasterAB);
+
+    @Query(value = "SELECT tc.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, tc.LANG_ID AS languageId, tc.C_ID AS companyId, COUNT(*) AS count " +
+            "FROM tblunconsolidation tc " +
+            "WHERE tc.IS_DELETED = 0 " +
+            "AND tc.UNCONSOLIDATED = 1 " +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId)) " +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId)) " +
+            "GROUP BY tc.PARTNER_MASTER_AIRWAY_BILL, tc.LANG_ID, tc.C_ID", nativeQuery = true)
+    Map<String, Long> getUnconsolidatedCountByPMawb(@Param("languageId") List<String> languageId,
+                                                    @Param("companyId") List<String> companyId);
 
 }
