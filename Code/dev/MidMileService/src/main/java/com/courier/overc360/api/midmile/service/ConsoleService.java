@@ -1850,10 +1850,10 @@ public class ConsoleService {
      */
     public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
 
-        log.info("given Params to fetch Consoles -- > {}", findConsole);
+        log.info("given Params to fetch Consoles with Qry -- > {}", findConsole);
         List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
-                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(),
-                findConsole.getPartnerMasterAirwayBill(), findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId());
+                findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(), findConsole.getPartnerMasterAirwayBill(),
+                findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId(), findConsole.getUnconsolidatedFlag());
         return consoleList;
     }
 //    public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {

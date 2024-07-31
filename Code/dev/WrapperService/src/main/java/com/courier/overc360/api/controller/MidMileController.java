@@ -743,8 +743,8 @@ public class MidMileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find Unconsolidations
-    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidation") // label for swagger
+    // Find Unconsolidated Shipments
+    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidated Shipments") // label for swagger
     @PostMapping("/unconsolidation/find")
     public ResponseEntity<?> findUnconsolidations(@RequestBody FindUnconsolidation findUnconsolidation,
                                                   @RequestParam String authToken) throws Exception {
@@ -780,13 +780,13 @@ public class MidMileController {
         return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
 
-    // Generate Console Tracking Report - list Screen
-    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report - list Screen")
-    @PostMapping("/reports/consoleTrackingReport/listScreen")
-    public ResponseEntity<?> postConsoleTrackingReportListScreen(@Valid @RequestBody ConsoleTrackingReportInput reportInputList,
-                                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
-        ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReportListPage(reportInputList, loginUserID, authToken);
-        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
-    }
+//    // Generate Console Tracking Report - list Screen
+//    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report - list Screen")
+//    @PostMapping("/reports/consoleTrackingReport/listScreen")
+//    public ResponseEntity<?> postConsoleTrackingReportListScreen(@Valid @RequestBody ConsoleTrackingReportInput reportInputList,
+//                                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
+//        ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReportListPage(reportInputList, loginUserID, authToken);
+//        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
+//    }
 
 }

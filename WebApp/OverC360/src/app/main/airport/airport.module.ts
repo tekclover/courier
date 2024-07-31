@@ -22,6 +22,7 @@ import { PreAlertUpdateComponent } from './pre-alert-manifest/pre-alert-update/p
 import { PreAlertEditpopupComponent } from './pre-alert-manifest/pre-alert-editpopup/pre-alert-editpopup.component';
 import { DynamicFieldSelectionComponent } from './console/console-edit/dynamic-field-selection/dynamic-field-selection.component';
 import { PreAlertBulkComponent } from './pre-alert-manifest/pre-alert-bulk/pre-alert-bulk.component';
+import { ConsoleTrackingReportComponent } from './console/console-tracking-report/console-tracking-report.component';
 import { InventoryScanningReportComponent } from './inventory-scanning-report/inventory-scanning-report.component';
 
 
@@ -34,7 +35,7 @@ import { InventoryScanningReportComponent } from './inventory-scanning-report/in
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, DynamicFieldSelectionComponent, PreAlertBulkComponent, InventoryScanningReportComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, DynamicFieldSelectionComponent, PreAlertBulkComponent, ConsoleTrackingReportComponent
 
 
   ],

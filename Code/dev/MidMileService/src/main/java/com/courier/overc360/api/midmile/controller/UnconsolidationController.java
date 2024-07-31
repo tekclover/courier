@@ -91,11 +91,11 @@ public class UnconsolidationController {
     }
 
 
-    // Find Unconsolidations
-    @ApiOperation(response = ReplicaUnconsolidation.class, value = "Find Unconsolidations") // label for swagger
+    // Find Unconsolidated Shipments
+    @ApiOperation(response = ReplicaUnconsolidation.class, value = "Find Unconsolidated Shipments") // label for swagger
     @PostMapping("/find")
-    public ResponseEntity<?> fetchUnconsolidations(@Valid @RequestBody FindUnconsolidation findConsole) throws Exception {
-        List<ReplicaUnconsolidation> unconsolidationList = unconsolidationService.findUnconsolidations(findConsole);
+    public ResponseEntity<?> fetchUnconsolidated(@Valid @RequestBody FindUnconsolidation findConsole) throws Exception {
+        List<ReplicaUnconsolidation> unconsolidationList = unconsolidationService.findUnconsolidatedShipments(findConsole);
         return new ResponseEntity<>(unconsolidationList, HttpStatus.OK);
     }
 

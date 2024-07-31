@@ -5,7 +5,7 @@ export interface INavbarData {
     srcDark?: string;
     label: string;
     expanded?: boolean;
-    items?: INavbarData[]; 
+    items?: INavbarData[];
 }
 
 export const navbarData: INavbarData[] = [
@@ -149,7 +149,7 @@ export const navbarData: INavbarData[] = [
                     },
                 ]
             },
-           
+
         ]
     },
     {
@@ -174,7 +174,7 @@ export const navbarData: INavbarData[] = [
                         routerLink: '/main/master/numberrange',
                         label: 'Number Series'
                     },
-                   
+
                 ]
             },
             {
@@ -182,7 +182,7 @@ export const navbarData: INavbarData[] = [
                 // routerLink: 'setup/list',
                 label: 'Operations',
                 items: [
-                    
+
                     {
                         routerId: 3101,
                         routerLink: '/main/master/customer',
@@ -243,10 +243,10 @@ export const navbarData: INavbarData[] = [
                     //     routerLink: '/main/master/hubPartnerAssignment',
                     //     label: 'Hub Partner Assignment'
                     // },
-                    
+
                 ]
             },
-          
+
             {
                 routerId: 3003,
                 // routerLink: 'setup/list',
@@ -267,7 +267,7 @@ export const navbarData: INavbarData[] = [
                         routerLink: '/main/master/hsCode',
                         label: 'HS Code'
                     },
-                   
+
                 ]
             },
             {
@@ -326,7 +326,7 @@ export const navbarData: INavbarData[] = [
         srcDark: './assets/sidebar/airport/Airport HubDark.png',
         label: 'Mid-Mile',
         items: [
-            
+
             {
                 routerId: 5101,
                 routerLink: '/main/airport/preAlertManifest',
@@ -342,11 +342,17 @@ export const navbarData: INavbarData[] = [
                 routerLink: '/main/airport/console',
                 label: 'Console'
             },
-            {
+             {
+
                 routerId: 5103,
-                // routerLink: '/main/airport/inventory-scanning-report',
                 label: 'Report',
                 items: [
+                    {
+                        routerId: 5105,
+                        routerLink: '/main/airport/consoleTrackingReport',
+                        label: 'Console Tracking'
+                    },
+
                     {
                         routerId: 5103,
                         routerLink: '/main/airport/inventory-scanning-report',
@@ -354,6 +360,12 @@ export const navbarData: INavbarData[] = [
                     },
                 ]
             },
+
+            // {
+            //     routerId: 5103,
+            //     routerLink: '/main/airport/consolidatedManifest',
+            //     label: 'Consolidated Manifest'
+            // },
             // {
             //     routerId: 5104,
             //     routerLink: '/main/airport/ccr',

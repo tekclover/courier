@@ -105,6 +105,9 @@ const routes: Routes = [
   { path: 'appUser', component: AppUserComponent, data: { title: 'Master', module: 'AppUser' } },
   { path: 'appUser-new/:code', component: AppUserNewComponent, data: { title: 'Master', module: 'AppUser - Add New' } },
 
+  { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status Event' } },
+  { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status Event - Add New' } },
+
 ];
 
 @NgModule({

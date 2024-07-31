@@ -466,7 +466,7 @@
                             <p class="formControlLabel f600 textBlack mb-0">Flight ETA</p>
                             <p-calendar formControlName="flightArrivalTime" appendTo="body"
                                 [ngClass]="consignment.get('flightArrivalTime')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
+                                class=" w-100 small-calendar" placeholder="Select Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
 
                             <mat-error *ngIf="errorHandlingConsignment('flightArrivalTime')"
@@ -584,7 +584,7 @@
                             <p class="formControlLabel f600 textBlack mb-0">Invoice Date</p>
                             <p-calendar formControlName="invoiceDateFE" appendTo="body"
                                 [ngClass]="consignment.get('invoiceDateFE')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                class=" w-100 small-calendar" placeholder="Filter by Date" [iconDisplay]="'input'"
+                                class=" w-100 small-calendar" placeholder="Select Date" [iconDisplay]="'input'"
                                 [showIcon]="true" />
                             <mat-error *ngIf="errorHandlingConsignment('invoiceDateFE')"
                                 class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>

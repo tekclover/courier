@@ -66,6 +66,7 @@ export class AppUserComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
+      { field: 'password', header: 'Password' },
       { field: 'mobileNumber', header: 'Mobile Number' },
       { field: 'vehicleRegNumber', header: 'Vehicle Reg No' },
       { field: 'routeId', header: 'Route ID' },
