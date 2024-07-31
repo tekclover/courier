@@ -81,7 +81,7 @@ public class PdfController {
     }
 
     @PostMapping("/merge")
-    public ResponseEntity<byte[]> mergePdfs(@RequestBody PDFMerger request) throws IOException {
+    public ResponseEntity<byte[]> mergePdfs(@RequestBody PDFMerger request) throws IOException, InterruptedException {
         System.out.println("Received filePaths: " + request.getFilePaths());
         System.out.println("Received outputPath: " + request.getOutputPath());
 
@@ -119,7 +119,7 @@ public class PdfController {
     }
 
     @PostMapping("/merge/v2")
-    public ResponseEntity<byte[]> pdfMerge(@RequestBody PDFMerger request) throws IOException {
+    public ResponseEntity<byte[]> pdfMerge(@RequestBody PDFMerger request) throws IOException, InterruptedException {
 
         byte[] mergePdf = pdfMergeService.pdfMerge(request);
 
@@ -136,6 +136,8 @@ public class PdfController {
             return new ResponseEntity <> (fileNameWithPath, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity <> ("Exception: Merge Failed", HttpStatus.OK);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
