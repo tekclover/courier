@@ -9,7 +9,7 @@ const routes: Routes = [{
   { path: 'master', loadChildren: () => import('../main/master/master.module').then(m => m.MasterModule) },
   { path: 'airport', loadChildren: () => import('../main/airport/airport.module').then(m => m.AirportModule) },
   { path: 'operation', loadChildren: () => import('../main/operation/operation.module').then(m => m.OperationModule) },
-
+  { path: 'reports', loadChildren: () => import('../main/reports/reports.module').then(m => m.ReportsModule) },
   ]
  }];
 

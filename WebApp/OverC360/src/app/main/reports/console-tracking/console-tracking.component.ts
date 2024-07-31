@@ -1,25 +1,23 @@
-import { Component, ViewChild } from '@angular/core';
-import { ConsoleTrackingReportService } from './console-tracking-report.service';
 import { DatePipe } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
-import { CustomTableComponent } from '../../../../common-dialog/custom-table/custom-table.component';
-import { DeleteComponent } from '../../../../common-dialog/delete/delete.component';
-import { CommonServiceService } from '../../../../common-service/common-service.service';
-import { PathNameService } from '../../../../common-service/path-name.service';
-import { AuthService } from '../../../../core/core';
+import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
+import { CommonServiceService } from '../../../common-service/common-service.service';
+import { PathNameService } from '../../../common-service/path-name.service';
+import { AuthService } from '../../../core/core';
+import { ReportService } from '../report.service';
 
 @Component({
-  selector: 'app-console-tracking-report',
-  templateUrl: './console-tracking-report.component.html',
-  styleUrl: './console-tracking-report.component.scss'
+  selector: 'app-console-tracking',
+  templateUrl: './console-tracking.component.html',
+  styleUrl: './console-tracking.component.scss'
 })
-export class ConsoleTrackingReportComponent {
-
+export class ConsoleTrackingComponent {
   consoleTrackingReportTable: any[] = [];
   selectedConsoleTracking: any[] = [];
   cols: any[] = [];
@@ -30,7 +28,7 @@ export class ConsoleTrackingReportComponent {
     private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
-    private reportsService: ConsoleTrackingReportService,
+    private service: ReportService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
@@ -42,7 +40,7 @@ export class ConsoleTrackingReportComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport', 'Console Tracking Report'];
+    const dataToSend = ['Airport', 'Report', 'Console Tracking'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -70,9 +68,8 @@ export class ConsoleTrackingReportComponent {
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
-    this.reportsService.search(obj).subscribe({
+    this.service.search(obj).subscribe({
       next: (res: any[] = []) => {
-        // console.log(res);
         this.consoleTrackingReportTable = res;
         this.getSearchDropdown();
         this.spin.hide();
@@ -105,7 +102,6 @@ export class ConsoleTrackingReportComponent {
       const exportItem: any = {};
       this.cols.forEach(col => {
         if (col.format == 'date') {
-          console.log(3)
           exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
         } else {
           exportItem[col.header] = item[col.field];
@@ -171,7 +167,7 @@ export class ConsoleTrackingReportComponent {
       .map(key => this.fieldDisplayNames[key] || key);
 
     this.spin.show();
-    this.reportsService.search(this.searchform.getRawValue()).subscribe({
+    this.service.search(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
         this.consoleTrackingReportTable = res;
         this.spin.hide();
@@ -222,7 +218,7 @@ export class ConsoleTrackingReportComponent {
     if (this.selectedConsoleTracking.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsoleTracking[0] : linedata, pageflow: type, report: true });
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsoleTracking[0] : linedata, pageflow: type, report: true, module: 'consolidated'  });
       this.router.navigate(['/main/airport/console-edit/' + paramdata]);
     }
   }
@@ -234,9 +230,10 @@ export class ConsoleTrackingReportComponent {
     if (this.selectedConsoleTracking.length === 0 && type != 'New') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', key: 'br', detail: 'Kindly select any Row' });
     } else {
-      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsoleTracking[0] : linedata, pageflow: type, report: true });
+      let paramdata = this.cs.encrypt({ line: linedata == null ? this.selectedConsoleTracking[0] : linedata, pageflow: type, report: true, module: 'unconsolidated' });
       this.router.navigate(['/main/airport/console-edit/' + paramdata]);
     }
   }
 
 }
+

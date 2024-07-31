@@ -1,25 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
-import { DeleteComponent } from '../../../common-dialog/delete/delete.component';
 import { DatePipe } from '@angular/common';
-import { AuthService } from '../../../core/core';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
-import { CustomTableComponent } from '../../../common-dialog/custom-table/custom-table.component';
+import { OverlayPanel } from 'primeng/overlaypanel';
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
+import { AuthService } from '../../../core/core';
 import { ConsignmentService } from '../../operation/consignment/consignment.service';
-import { FormBuilder } from '@angular/forms';
-import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
-  selector: 'app-inventory-scanning-report',
-  templateUrl: './inventory-scanning-report.component.html',
-  styleUrl: './inventory-scanning-report.component.scss'
+  selector: 'app-inventory-scanning',
+  templateUrl: './inventory-scanning.component.html',
+  styleUrl: './inventory-scanning.component.scss'
 })
-export class InventoryScanningReportComponent {
-
+export class InventoryScanningComponent {
   inventoryScanningTable: any[] = [];
   selectedInventoryScanning: any[] = [];
   cols: any[] = [];
@@ -41,7 +38,7 @@ export class InventoryScanningReportComponent {
   fullData: any;
   today: any;
   ngOnInit(): void {
-    const dataToSend = ['Mid-Mile', 'Inventory Scanning Report'];
+    const dataToSend = ['Airport', 'Report', 'Inventory Scanning'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -240,3 +237,4 @@ export class InventoryScanningReportComponent {
   }
 
 }
+
