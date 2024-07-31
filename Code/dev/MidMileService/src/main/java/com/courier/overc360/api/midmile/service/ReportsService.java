@@ -183,6 +183,15 @@ public class ReportsService {
                     for (String pMawb : pMawbList) {
                         for (String pHawb : pHawbList) {
 
+                            if (pMawbList != null && pHawbList != null) {
+                                boolean isPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+                                        langId, cId, pMawb, pHawb, 0L);
+                                if (!isPresent) {
+                                    log.info("No data found for given partnerMasterAirwayBill : {}, partnerHouseAirwayBill : {}", pMawb, pHawb);
+                                    continue;
+                                }
+                            }
+
                             long noOfShipments = replicaPreAlertRepository.getNoOfShipmentsScanned(
                                     langId, cId, pMawb, pHawb,
                                     reportInput.getFromDate(), reportInput.getToDate());
@@ -241,8 +250,11 @@ public class ReportsService {
         List<ConsignmentImpl> allPMawbValuesList = replicaPreAlertRepository.getAllPMawbCount(languageIdList, companyIdList);
         if (allPMawbValuesList != null && !allPMawbValuesList.isEmpty()) {
 
-            Map<String, Long> consoleCountMap = replicaConsoleRepository.getConsoleCountByPMawb(languageIdList, companyIdList);
-            Map<String, Long> unconsolidatedCountMap = replicaUnconsolidationRepository.getUnconsolidatedCountByPMawb(languageIdList, companyIdList);
+            List<Object[]> consoleCountResults = replicaConsoleRepository.getConsoleCountByPMawb(languageIdList, companyIdList);
+            List<Object[]> unconsolidatedCountResults = replicaUnconsolidationRepository.getUnconsolidatedCountByPMawb(languageIdList, companyIdList);
+
+            Map<String, Long> consoleCountMap = convertToMap(consoleCountResults);
+            Map<String, Long> unconsolidatedCountMap = convertToMap(unconsolidatedCountResults);
 
 //            for (ConsignmentImpl pMawbValues : allPMawbValuesList) {
 ////                boolean isLAndCPresent = replicaPreAlertRepository.existsByLanguageIdAndCompanyIdAndDeletionIndicator(
@@ -289,6 +301,14 @@ public class ReportsService {
         return createdConsoleTrackingOutputList;
     }
 
+    private Map<String, Long> convertToMap(List<Object[]> results) {
+        return results
+                .stream()
+                .collect(Collectors.toMap(
+                        result -> result[0] + "_" + result[1] + "_" + result[2],
+                        result -> ((Number) result[3]).longValue()
+                ));
+    }
 
     //============================================Reports_ErrorLog=====================================================
     private void createReportLog(List<LocationSheetInput> locationSheetInputs, String error) {
