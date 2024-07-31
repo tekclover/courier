@@ -126,7 +126,6 @@ public class ItemDetailsService {
         }
     }
 
-
     /**
      * Delete ItemDetails
      *
@@ -155,6 +154,7 @@ public class ItemDetailsService {
             throw new BadRequestException("Error in deleting PieceItemId - " + pieceItemId);
         }
     }
+
 
     /**
      * Delete ItemDetails
@@ -189,6 +189,40 @@ public class ItemDetailsService {
         }
     }
 
+
+    /**
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param loginUserID
+     */
+    public void deleteItemDetails(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String loginUserID) {
+
+        List<ItemDetails> itemDetails = itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
+
+        if (itemDetails != null && !itemDetails.isEmpty()) {
+            for (ItemDetails dbItemDetails : itemDetails) {
+                if (dbItemDetails != null) {
+                    dbItemDetails.setDeletionIndicator(1L);
+                    dbItemDetails.setUpdatedBy(loginUserID);
+                    dbItemDetails.setUpdatedOn(new Date());
+                    //MultipleImage
+                    imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, loginUserID);
+                    itemDetailsRepository.save(dbItemDetails);
+                }
+            }
+        } else {
+            for (ItemDetails details : itemDetails) {
+                createItemDetailsLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill,
+                        details.getPieceId(), details.getPieceItemId(), "Error deleting ItemId ");
+            }
+        }
+
+
+    }
 
     //=============================================ItemDetails_ErrorLog=======================================================
     private void createItemDetailsLog(String languageId, String companyId, String partnerId, String
