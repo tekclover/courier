@@ -342,11 +342,25 @@ export const navbarData: INavbarData[] = [
                 routerLink: '/main/airport/console',
                 label: 'Console'
             },
-            {
-                routerId: 5105,
-                routerLink: '/main/airport/consoleTrackingReport',
-                label: 'Console Tracking'
+             {
+
+                routerId: 5103,
+                label: 'Report',
+                items: [
+                    {
+                        routerId: 5105,
+                        routerLink: '/main/airport/consoleTrackingReport',
+                        label: 'Console Tracking'
+                    },
+
+                    {
+                        routerId: 5103,
+                        routerLink: '/main/airport/inventory-scanning-report',
+                        label: 'Inventory Scanning Report'
+                    },
+                ]
             },
+
             // {
             //     routerId: 5103,
             //     routerLink: '/main/airport/consolidatedManifest',

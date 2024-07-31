@@ -70,6 +70,7 @@ export class CustomerComponent {
       { field: 'subProductId', header: 'Sub Product ID' },
       { field: 'productId', header: 'Product ID' },
       { field: 'statusId', header: 'Status ID' },
+      { field: 'agingCount', header: 'Aging Count' },
       { field: 'referenceField1', header: 'Reference Field 1' },
       { field: 'referenceField2', header: 'Reference Field 2' },
       { field: 'referenceField3', header: 'Reference Field 3' },
