@@ -5,9 +5,14 @@ import lombok.Data;
 import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class ItemDetails {
+
+    private Long itemDetailsId;
+
+    private Set<ImageReference> referenceImageList;
 
     private String languageId;
 
@@ -15,31 +20,47 @@ public class ItemDetails {
 
     private String partnerId;
 
+    private String pieceId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
+    private String pieceItemId;
+
+    private String imageRefId;
+
     private String quantity;
 
     private String unitValue;
 
     private String currency;
 
-    private String masterAirwayBill;
+    private String languageDescription;
 
-    private String houseAirwayBill;
+    private String companyName;
 
-    private String pieceId;
+    private String partnerType;
 
-    private String pieceItemId;
+    private String partnerName;
 
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
-    private String partnerType;
+    private String description;
 
     private String consignmentCurrency;
 
     private String consignmentValue;
 
     private String exchangeRate;
+
+    private String iata;
+
+    private String customsInsurance;
+
+    private String duty;
 
     private String consignmentValueLocal;
 
@@ -51,16 +72,6 @@ public class ItemDetails {
 
     private String calculatedTotalDuty;
 
-    private String iata;
-
-    private String customsInsurance;
-
-    private String duty;
-
-    private String length;
-
-    private String partnerName;
-
     private String itemCode;
 
     private String hsCode;
@@ -68,6 +79,8 @@ public class ItemDetails {
     private String declaredValue;
 
     private String codAmount;
+
+    private String length;
 
     private String dimensionUnit;
 
@@ -83,11 +96,7 @@ public class ItemDetails {
 
     private String volumeUnit;
 
-    private List<ReferenceImageList> referenceImageList;
-
-    private String imageReferenceId;
-
-    private String description;
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -109,24 +118,12 @@ public class ItemDetails {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String createdBy;
 
-    private String referenceField12;
+    private Date createdOn = new Date();
 
-    private String referenceField13;
+    private String updatedBy;
 
-    private String referenceField14;
-
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
+    private Date updatedOn = new Date();
 
 }

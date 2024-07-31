@@ -138,7 +138,6 @@ public class ImageReferenceService {
      * @param masterAirwayBillNo
      * @param partnerHouseAirwayBill
      * @param partnerMasterAirwayBill
-     * @param consignmentId
      * @param pieceId
      * @param pieceItemId
      * @param url

@@ -211,7 +211,7 @@ public class PreAlertService {
 
                 // Get Partner Name from Consignment table
                 Optional<String> partnerNm = replicaPreAlertRepository.getPartnerName(iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(),
-                        dbPreAlert.getPartnerId(), dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill());
+                        dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
 
                 PreAlert newPreAlert = new PreAlert();
                 BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));

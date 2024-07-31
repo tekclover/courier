@@ -70,6 +70,9 @@ public class ReplicaPieceDetails implements Serializable {
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
+    @Column(name = "CONSIGNMENT_ID")
+    private Long consignmentId;
+
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 

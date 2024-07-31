@@ -1,6 +1,7 @@
 package com.courier.overc360.api.midmile.primary.model.piecedetails;
 
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+import com.courier.overc360.api.midmile.primary.model.imagereference.UpdateImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import lombok.Data;
 
@@ -13,13 +14,41 @@ import java.util.Set;
 @Data
 public class UpdatePieceDetails { ;
 
+        private Long pieceDetailsId;
+
+        private List<UpdateItemDetails> itemDetails;
+
+        private Set<UpdateImageReference> referenceImageList;
+
+        private String languageId;
+
+        private String companyId;
+
+        private String partnerId;
+
+        private String masterAirwayBill;
+
+        private String houseAirwayBill;
+
         private String pieceId;
 
-        private String partnerType;
+        private String pieceType;
+
+        private String pieceTypeId;
+
+        private String pieceTypeDescription;
+
+        private Date pieceTimeStamp = new Date();
 
         private String partnerMasterAirwayBill;
 
         private String partnerHouseAirwayBill;
+
+        private String languageDescription;
+
+        private String companyName;
+
+        private String partnerType;
 
         private String partnerName;
 
@@ -31,23 +60,11 @@ public class UpdatePieceDetails { ;
 
         private String codAmount;
 
-        private String consignmentValueLocal;
-
-        private String addIata;
-
-        private String addInsurance;
-
-        private String customsValue;
-
-        private String calculatedTotalDuty;
-
         private String length;
 
-        private String pieceValue;
-
-        private String pieceCurrency;
-
         private String dimensionUnit;
+
+        private String hsCode;
 
         private String width;
 
@@ -61,19 +78,37 @@ public class UpdatePieceDetails { ;
 
         private String volumeUnit;
 
-        private String pieceStatusId;
+        private String consignmentValueLocal;
 
-        private Date pieceStatusTimestamp;
+        private String addIata;
 
-        private String hsCode;
+        private String addInsurance;
 
-        private Set<ImageReference> referenceImageList;
+        private String customsValue;
+
+        private String calculatedTotalDuty;
 
         private String packReferenceNumber;
 
         private String tags;
 
-        private Long deletionIndicator;
+        private String pieceStatusId;
+
+        private Date pieceStatusTimestamp;
+
+        private String pieceStatusText;
+
+        private String pieceEventCode;
+
+        private String pieceEventText;
+
+        private Date pieceEventTimestamp;
+
+        private String pieceValue;
+
+        private String pieceCurrency;
+
+        private Long deletionIndicator = 0L;
 
         private String referenceField1;
 
@@ -95,27 +130,14 @@ public class UpdatePieceDetails { ;
 
         private String referenceField10;
 
-        private String referenceField11;
+        private String createdBy;
 
-        private String referenceField12;
+        private Date createdOn = new Date();
 
-        private String referenceField13;
+        private String updatedBy;
 
-        private String referenceField14;
+        private Date updatedOn = new Date();
 
-        private String referenceField15;
-
-        private String referenceField16;
-
-        private String referenceField17;
-
-        private String referenceField18;
-
-        private String referenceField19;
-
-        private String referenceField20;
-
-        private List<UpdateItemDetails> itemDetails = new ArrayList<>();
 }
 
 

@@ -1,13 +1,19 @@
 package com.courier.overc360.api.midmile.primary.model.itemdetails;
 
+import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Data
 public class AddItemDetails {
+
+    private Long itemDetailsId;
+
+    private Set<AddImageReference> referenceImageList;
 
     private String languageId;
 
@@ -15,21 +21,13 @@ public class AddItemDetails {
 
     private String partnerId;
 
-    private String masterAirwayBill;
-
-//    @NotBlank(message = "HouseAirwayBill is mandatory")
-    private String houseAirwayBill;
-
-//    @NotBlank(message = "Piece Id is mandatory")
     private String pieceId;
 
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String pieceItemId;
-
-    //    @NotBlank(message = " PartnerMasterAirwayBill  is mandatory")
-    private String partnerMasterAirwayBill;
-
-    //    @NotBlank(message = " PartnerHouseAirwayBill  is mandatory")
-    private String partnerHouseAirwayBill;
 
     private String imageRefId;
 
@@ -39,9 +37,41 @@ public class AddItemDetails {
 
     private String currency;
 
+    private String languageDescription;
+
+    private String companyName;
+
     private String partnerType;
 
     private String partnerName;
+
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
+
+    private String description;
+
+    private String consignmentCurrency;
+
+    private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String iata;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String consignmentValueLocal;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
 
     private String itemCode;
 
@@ -67,33 +97,7 @@ public class AddItemDetails {
 
     private String volumeUnit;
 
-    private String consignmentCurrency;
-
-    private String consignmentValue;
-
-    private String consignmentValueLocal;
-
-    private String exchangeRate;
-
-    private String iata;
-
-    private String customsInsurance;
-
-    private String duty;
-
-    private String addIata;
-
-    private String addInsurance;
-
-    private String customsValue;
-
-    private String calculatedTotalDuty;
-
-    private Set<ImageReference> referenceImageList;
-
-    private String imageReferenceId;
-
-    private String description;
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -115,25 +119,14 @@ public class AddItemDetails {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String createdBy;
 
-    private String referenceField12;
+    private Date createdOn = new Date();
 
-    private String referenceField13;
+    private String updatedBy;
 
-    private String referenceField14;
+    private Date updatedOn = new Date();
 
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
 
 
 

@@ -135,11 +135,19 @@ public class ConsoleController {
     }
 
 
-    // Find Console - normal
-    @ApiOperation(response = ReplicaConsole.class, value = "Find Console") // label for swagger
+    // Find Consoles - normal
+    @ApiOperation(response = ReplicaConsole.class, value = "Find Consoles") // label for swagger
     @PostMapping("/findConsole")
     public ResponseEntity<?> fetchConsoles(@Valid @RequestBody FindConsole findConsole) throws Exception {
         List<ReplicaConsole> consoleList = consoleService.findConsoles(findConsole);
+        return new ResponseEntity<>(consoleList, HttpStatus.OK);
+    }
+
+    // Find Consoles - MobileApp
+    @ApiOperation(response = ReplicaConsole.class, value = "Find Consoles - MobileApp") // label for swagger
+    @PostMapping("/findConsole/mobileApp")
+    public ResponseEntity<?> findConsoleMobileApp(@Valid @RequestBody FindConsole findConsole) throws Exception {
+        List<ReplicaConsole> consoleList = consoleService.findConsolesMobileApp(findConsole);
         return new ResponseEntity<>(consoleList, HttpStatus.OK);
     }
 

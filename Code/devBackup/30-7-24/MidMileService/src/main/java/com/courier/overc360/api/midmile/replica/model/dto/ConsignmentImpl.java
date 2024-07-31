@@ -63,4 +63,8 @@ public interface ConsignmentImpl {
 
     Long getPMawbCount();
 
+    String getLanguageId();
+
+    String getCompanyId();
+
 }

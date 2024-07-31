@@ -111,6 +111,24 @@ public class MidMileService {
         }
     }
 
+    // Find Consignments - MobileApp
+    public ConsignmentEntity[] findConsignmentMobileApp(FindConsignment findConsignment, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/mobileApp");
+            HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
+            ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     // Find IConsignmentEntity - preAlertValidationIndicator
     public IConsignment[] findIConsignmentEntity(FindIConsignment findConsignment, String authToken) throws Exception {
         try {
@@ -1048,6 +1066,24 @@ public class MidMileService {
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole");
+            HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Consoles - MobileApp
+    public Console[] findConsoleMobileApp(FindConsole findConsole, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole/mobileApp");
             HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
             ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
             log.info("result : " + result.getStatusCode());
