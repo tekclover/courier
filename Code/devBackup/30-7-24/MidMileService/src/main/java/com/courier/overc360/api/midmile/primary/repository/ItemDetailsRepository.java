@@ -66,4 +66,7 @@ public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String
                             @Param("totalWeight") String totalWeight,
                             @Param("totalVolume") String totalVolume);
 
+    List<ItemDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
+
 }

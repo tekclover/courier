@@ -76,7 +76,33 @@ export class PreAlertUpdateComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      // { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'partnerType', header: 'Partner Type' },
+      { field: 'flightNo', header: 'Flight No' },
+      { field: 'flightName', header: 'Flight Name' },
+      { field: 'estimatedTimeOfDeparture', header: 'Departure Time', format: 'date' },
+      { field: 'estimatedTimeOfArrival', header: 'Arrival Time', format: 'date' },
+      { field: 'bayanHv', header: 'Bayan HV' },
+      { field: 'shipper', header: 'Shipper Name' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'incoTerm', header: 'Inco Terms' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'origin', header: 'Origin Port' },
+      { field: 'description', header: 'Description' },
+      { field: 'iata', header: 'IATA' },
+      { field: 'noOfPieces', header: 'Number of pieces' },
+      { field: 'totalWeight', header: 'Total Shipment Weight' },
+      { field: 'consignmentValue', header: 'Total Value' },
+      { field: 'consignmentValueLocal', header: 'ConsignmentValueLocal' },
+      { field: 'currency', header: 'Currency' },
+      { field: 'hawbTypeDescription', header: 'Event' },
+      { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
+      { field: 'createdBy', header: 'Created By' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
+    ];
+  }
+  reportTableHeader() {
+    this.cols = [
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'partnerType', header: 'Partner Type' },
       { field: 'flightNo', header: 'Flight No' },
@@ -104,13 +130,17 @@ export class PreAlertUpdateComponent {
   }
 
 
-
   preAlertManifestTableArray: any[] = [];
   selectedPreAlertManifest: any[] = [];
 
   fill(line: any) {
     this.form.patchValue(line);
-    this.callTableHeader();
+
+    if (this.pageToken.report == true) {
+      this.reportTableHeader();
+    } else {
+      this.callTableHeader();
+    }
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];

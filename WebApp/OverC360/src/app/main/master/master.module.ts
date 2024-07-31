@@ -47,6 +47,8 @@ import { BillModeComponent } from './bill-mode/bill-mode.component';
 import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.component';
 import { AppUserComponent } from './app-user/app-user.component';
 import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
+import { DriverRouteAssignmentComponent } from './driver-route-assignment/driver-route-assignment.component';
+import { DriverRouteAssignmentNewComponent } from './driver-route-assignment/driver-route-assignment-new/driver-route-assignment-new.component';
 
 
 @NgModule({
@@ -95,6 +97,8 @@ import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.compon
     VehicleNewComponent,
     AppUserComponent,
     AppUserNewComponent,
+    DriverRouteAssignmentComponent,
+    DriverRouteAssignmentNewComponent,
 
 
   ],

@@ -372,7 +372,7 @@ public class PieceDetailsService {
         } catch (Exception e) {
             for (PieceDetails addPieceDetails : addPieceDetailsList) {
                 // Error Log
-                createPieceDetailsLog2(addPieceDetails, e.toString());
+//                createPieceDetailsLog2(addPieceDetails, e.toString());
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
@@ -447,8 +447,132 @@ public class PieceDetailsService {
         return pieceDetailsList;
     }
 
+    /**
+     * Delete
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @param loginUserID
+     */
+    public void deletePieceDetails(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill,
+                                   String pieceId, String loginUserID) {
+        PieceDetails dbPieceDetails = getPieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId);
+        if (dbPieceDetails != null) {
+            dbPieceDetails.setDeletionIndicator(1L);
+            dbPieceDetails.setUpdatedBy(loginUserID);
+            dbPieceDetails.setUpdatedOn(new Date());
 
-    private void createPieceDetailsLog2(PieceDetails addPieceDetails, String error) throws IOException, CsvException {
+            //Multiple ImageDelete
+            imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, pieceId, loginUserID);
+
+            //Delete ItemDetails
+            itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, loginUserID);
+            pieceDetailsRepository.save(dbPieceDetails);
+
+        } else {
+            // Error Log
+            createPieceDetailsLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, "Error in deleting PieceId - " + pieceId);
+            throw new BadRequestException("Error in deleting PartnerId - " + partnerId);
+        }
+    }
+
+    /**
+     * Delete
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param loginUserID
+     */
+    public void deletePieceDetails(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String loginUserID) {
+        List<PieceDetails> pieceDetails = pieceDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
+
+        if (!pieceDetails.isEmpty() && pieceDetails != null) {
+            for (PieceDetails dbPieceDetails : pieceDetails) {
+                if (dbPieceDetails != null) {
+                    dbPieceDetails.setDeletionIndicator(1L);
+                    dbPieceDetails.setUpdatedBy(loginUserID);
+                    dbPieceDetails.setUpdatedOn(new Date());
+
+                    //MultipleItem Delete
+                    itemDetailsService.deleteItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, loginUserID);
+
+                    //MultipleImage Delete
+                    imageReferenceRepository.updateImageTable(companyId, languageId, partnerId, houseAirwayBill, masterAirwayBill, loginUserID);
+
+                    pieceDetailsRepository.save(dbPieceDetails);
+
+                } else {
+                    // Error Log
+                    createPieceDetailsLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, dbPieceDetails.getPieceId(), "Error in deleting PieceId - " + dbPieceDetails.getPieceId());
+                    throw new BadRequestException("Error in deleting PartnerId - " + partnerId);
+                }
+            }
+        } else {
+            log.info("PieceDetails Doesn't exists");
+        }
+    }
+
+
+    //========================================PieceDetails_ErrorLog=================================================
+    private void createPieceDetailsLog(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                       String houseAirwayBill, String pieceId, String error) throws IOException, CsvException {
+
+        List<ErrorLog> errorLogList = new ArrayList<>();
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(pieceId);
+        errorLog.setReferenceField1(partnerId);
+        errorLog.setReferenceField2(masterAirwayBill);
+        errorLog.setReferenceField3(houseAirwayBill);
+        errorLog.setMethod("Exception thrown in updatePieceDetails");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+        errorLogList.add(errorLog);
+        errorLogService.writeLog(errorLogList);
+    }
+
+    private void createPieceDetailsLog1(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                        String houseAirwayBill, String pieceId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(pieceId);
+        errorLog.setReferenceField1(partnerId);
+        errorLog.setReferenceField2(masterAirwayBill);
+        errorLog.setReferenceField3(houseAirwayBill);
+        errorLog.setMethod("Exception thrown in getPieceDetails");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createPieceDetailsLog(String languageId, String companyId, String pieceId, String error) {
+
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.setLogDate(new Date());
+        errorLog.setLanguageId(languageId);
+        errorLog.setCompanyId(companyId);
+        errorLog.setRefDocNumber(pieceId);
+        errorLog.setMethod("Exception thrown in getPieceDetails");
+        errorLog.setErrorMessage(error);
+        errorLog.setCreatedBy("Admin");
+        errorLogRepository.save(errorLog);
+    }
+
+    private void createPieceDetailsLog2(AddPieceDetails addPieceDetails, String error) throws IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         ErrorLog errorLog = new ErrorLog();

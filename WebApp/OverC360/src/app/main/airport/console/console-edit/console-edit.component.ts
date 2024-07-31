@@ -211,7 +211,13 @@ export class ConsoleEditComponent {
     this.path.setData(dataToSend);
 
     this.dropdownlist();
-    this.callTableHeader();
+
+    if (this.pageToken.report == true) {
+      this.reportTableHeader();
+    } else {
+      this.callTableHeader();
+    }
+
     this.form.controls.languageId.disable();
     this.form.controls.companyId.disable();
     this.form.controls.partnerMasterAirwayBill.disable();
@@ -232,6 +238,42 @@ export class ConsoleEditComponent {
 
   cols: any[] = [];
   target: any[] = [];
+  reportTableHeader() {
+    this.cols = [
+      { field: 'consoleId', header: 'Console No' },
+      { field: 'consoleName', header: 'Console Name' },
+      { field: 'consoleGroupName', header: 'Console Group' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'hawbTypeDescription', header: 'Event' },
+      { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
+      { field: 'description', header: 'Commodity' },
+      { field: 'noOfPieces', header: 'No of Piece' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'grossWeight', header: 'Weight' },
+      { field: 'airportOriginCode', header: 'Airport Origin Code' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentValue', header: 'Consignment Value' },
+      { field: 'currency', header: 'Consignment Currency' },
+      { field: 'customsValue', header: 'Customs Value' },
+      { field: 'iata', header: 'IATA Charges' },
+      { field: 'isExempted', header: 'Is Exempted' },
+      { field: 'exemptionFor', header: 'Exemption For' },
+      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'exemptionReference', header: 'Exemption Reference' },
+      { field: 'ccrId', header: 'CCR ID' },
+      { field: 'customsCcrNo', header: 'Custom CCR No' },
+      { field: 'primaryDo', header: 'Primary DO' },
+      { field: 'secondaryDo', header: 'Secondary DO' },
+      { field: 'totalDuty', header: 'Duty from Bayan' },
+      { field: 'customsKd', header: 'Customs from Bayan' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
+    ];
+    this.target = [
+    ];
+  }
   callTableHeader() {
     this.cols = [
       { field: 'consoleId', header: 'Console No' },
@@ -305,22 +347,35 @@ export class ConsoleEditComponent {
   fill(line: any) {
     this.form.patchValue(line);
     this.spin.show();
-    let obj: any = {};
+    let obj: any = {};  
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.partnerMasterAirwayBill = [line.partnerMasterAirwayBill];
-    this.service.search(obj).subscribe({
-      next: (res: any) => {
-        this.subProductArray = res;
-        this.spin.hide();
-      },
-      error: (err) => {
-        this.spin.hide();
-        this.cs.commonerrorNew(err);
-      },
-    });
-    // this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
-    // this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
+    obj.unconsolidatedFlag = this.pageToken.module == 'consolidated' ? [0] : this.pageToken.module == 'unconsolidated' ? [1] : null;
+
+    if(this.pageToken.report == true && this.pageToken.module == 'unconsolidated'){
+      this.service.searchUnconsole(obj).subscribe({
+        next: (res: any) => {
+          this.subProductArray = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }else{
+      this.service.search(obj).subscribe({
+        next: (res: any) => {
+          this.subProductArray = res;
+          this.spin.hide();
+        },
+        error: (err) => {
+          this.spin.hide();
+          this.cs.commonerrorNew(err);
+        },
+      });
+    }
   }
   lineSentforFill: any;
   save() {

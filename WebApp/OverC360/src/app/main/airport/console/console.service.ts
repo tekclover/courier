@@ -57,6 +57,9 @@ export class ConsoleService {
   search(obj: any) {
     return this.http.post<any>('/overc-midmile-service/console/findConsole', obj);
   }
+  searchUnconsole(obj: any) {
+    return this.http.post<any>('/overc-midmile-service/unconsolidation/find', obj);
+  }
 
   uploadBayan(file: File, filePath:any) {
     const formData = new FormData();

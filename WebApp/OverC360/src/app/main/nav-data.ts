@@ -349,14 +349,14 @@ export const navbarData: INavbarData[] = [
                 items: [
                     {
                         routerId: 5105,
-                        routerLink: '/main/airport/consoleTrackingReport',
+                        routerLink: '/main/reports/consoleTracking',
                         label: 'Console Tracking'
                     },
 
                     {
                         routerId: 5103,
-                        routerLink: '/main/airport/inventory-scanning-report',
-                        label: 'Inventory Scanning Report'
+                        routerLink: '/main/reports/inventoryScanning',
+                        label: 'Inventory Scanning'
                     },
                 ]
             },
