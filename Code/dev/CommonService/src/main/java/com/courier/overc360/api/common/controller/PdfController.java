@@ -137,7 +137,7 @@ public class PdfController {
         } catch (IOException e) {
             return new ResponseEntity <> ("Exception: Merge Failed", HttpStatus.OK);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException("Exception : " + e);
         }
     }
 
