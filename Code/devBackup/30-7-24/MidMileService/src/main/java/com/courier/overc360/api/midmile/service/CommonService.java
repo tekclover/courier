@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.config.PropertiesConfig;
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.auth.AuthToken;
 import com.courier.overc360.api.midmile.primary.model.consignment.AddConsignment;
+import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

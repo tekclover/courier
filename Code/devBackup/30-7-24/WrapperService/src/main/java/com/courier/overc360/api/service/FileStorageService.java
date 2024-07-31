@@ -5,6 +5,7 @@ import com.courier.overc360.api.exception.BadRequestException;
 import com.courier.overc360.api.model.auth.AuthToken;
 import com.courier.overc360.api.model.transaction.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.analysis.function.Add;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -514,10 +515,10 @@ public class FileStorageService {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                addConsignment.setConsigneeCivilId(listUploadedData.get(18));
-                addConsignment.setInvoiceSupplierName(listUploadedData.get(19));
-                addConsignment.setFreightCurrency(listUploadedData.get(20));
-                addConsignment.setFreightCharges(listUploadedData.get(21));
+//                addConsignment.setConsigneeCivilId(listUploadedData.get(18));
+//                addConsignment.setInvoiceSupplierName(listUploadedData.get(19));
+//                addConsignment.setFreightCurrency(listUploadedData.get(20));
+//                addConsignment.setFreightCharges(listUploadedData.get(21));
                 addConsignment.setCountryOfSupply(listUploadedData.get(22));
                 addConsignment.setRemark(listUploadedData.get(23));
                 addConsignment.setInvoiceAmount(listUploadedData.get(24));
@@ -532,24 +533,24 @@ public class FileStorageService {
                 addConsignment.setCountryOfOrigin(listUploadedData.get(33));
                 addConsignment.setManufacturer(listUploadedData.get(34));
                 addConsignment.setNoOfPackages(listUploadedData.get(35));
-                addConsignment.setItemTotalPrice(listUploadedData.get(36));
-                addConsignment.setPackageType(listUploadedData.get(37));
+//                addConsignment.setItemTotalPrice(listUploadedData.get(36));
+//                addConsignment.setPackageType(listUploadedData.get(37));
                 addConsignment.setQuantity(listUploadedData.get(38));
                 addConsignment.setNetWeight(listUploadedData.get(39));
                 addConsignment.setGrossWeight(listUploadedData.get(40));
-                addConsignment.setNotifyParty(listUploadedData.get(41));
+//                addConsignment.setNotifyParty(listUploadedData.get(41));
                 addConsignment.setIsExempted(listUploadedData.get(42));
                 addConsignment.setExemptionFor(listUploadedData.get(43));
                 addConsignment.setExemptionBeneficiary(listUploadedData.get(44));
                 addConsignment.setExemptionReference(listUploadedData.get(45));
                 addConsignment.setAirportOriginCode(listUploadedData.get(46));
-                addConsignment.setReferenceNumber(listUploadedData.get(47));
+//                addConsignment.setReferenceNumber(listUploadedData.get(47));
                 addConsignment.setCustomerCode(listUploadedData.get(48));
                 addConsignment.setCustomerReferenceNumber(listUploadedData.get(49));
                 addConsignment.setActionType(listUploadedData.get(50));
                 addConsignment.setMovementType(listUploadedData.get(51));
                 addConsignment.setForwardReferenceNumber(listUploadedData.get(52));
-                addConsignment.setWorkerCode(listUploadedData.get(53));
+//                addConsignment.setWorkerCode(listUploadedData.get(53));
                 addConsignment.setLoadTypeId(listUploadedData.get(54));
                 addConsignment.setDescription(listUploadedData.get(55));
                 addConsignment.setNotes(listUploadedData.get(56));
@@ -560,7 +561,7 @@ public class FileStorageService {
                 addConsignment.setConsignmentCurrency(listUploadedData.get(61));
                 addConsignment.setActualCurrency(listUploadedData.get(62));
                 addConsignment.setTotalDuty(listUploadedData.get(63));
-                addConsignment.setSpecialApprovalValue(listUploadedData.get(64));
+//                addConsignment.setSpecialApprovalValue(listUploadedData.get(64));
                 addConsignment.setDeclaredValueWithoutTax(listUploadedData.get(65));
                 addConsignment.setLength(listUploadedData.get(66));
                 addConsignment.setDimensionUnit(listUploadedData.get(67));
@@ -570,10 +571,10 @@ public class FileStorageService {
                 addConsignment.setWeightUnit(listUploadedData.get(71));
                 addConsignment.setVolume(listUploadedData.get(72));
                 addConsignment.setVolumeUnit(listUploadedData.get(73));
-                addConsignment.setUpstreamCreationTime(listUploadedData.get(74));
-                addConsignment.setUpstreamCreationSource(listUploadedData.get(75));
-                addConsignment.setAllocationTime(listUploadedData.get(76));
-                addConsignment.setAutoAllocate(listUploadedData.get(77));
+//                addConsignment.setUpstreamCreationTime(listUploadedData.get(74));
+//                addConsignment.setUpstreamCreationSource(listUploadedData.get(75));
+//                addConsignment.setAllocationTime(listUploadedData.get(76));
+//                addConsignment.setAutoAllocate(listUploadedData.get(77));
                 addConsignment.setPriority(listUploadedData.get(78));
                 addConsignment.setCourierPartner(listUploadedData.get(79));
                 addConsignment.setCourierAccount(listUploadedData.get(80));
@@ -587,12 +588,12 @@ public class FileStorageService {
                 addConsignment.setDeliveryServiceTime(listUploadedData.get(88));
                 addConsignment.setPickupTimeSlotStart(listUploadedData.get(89));
                 addConsignment.setPickupTimeSlotEnd(listUploadedData.get(90));
-                addConsignment.setDeliveryTimeSlotStart(listUploadedData.get(91));
-                addConsignment.setDeliveryTimeSlotEnd(listUploadedData.get(92));
+//                addConsignment.setDeliveryTimeSlotStart(listUploadedData.get(91));
+//                addConsignment.setDeliveryTimeSlotEnd(listUploadedData.get(92));
                 addConsignment.setScheduledAt(listUploadedData.get(93));
-                addConsignment.setWorkerTipAmount(listUploadedData.get(94));
-                addConsignment.setWorkerEligiblePayout(listUploadedData.get(95));
-                addConsignment.setConstraintTags(listUploadedData.get(96));
+//                addConsignment.setWorkerTipAmount(listUploadedData.get(94));
+//                addConsignment.setWorkerEligiblePayout(listUploadedData.get(95));
+//                addConsignment.setConstraintTags(listUploadedData.get(96));
                 addConsignment.setEwayBill(listUploadedData.get(97));
                 addConsignment.setProductCode(listUploadedData.get(98));
                 addConsignment.setCustomsValue(listUploadedData.get(99));
@@ -667,9 +668,9 @@ public class FileStorageService {
 
                 String imageReferences = listUploadedData.get(156);
                 String[] imageUrls = imageReferences.split(",");
-                Set<ImageReference> referenceImageLists = new HashSet<>();
+                Set<AddImageReference> referenceImageLists = new HashSet<>();
                 for (String imageUrl : imageUrls) {
-                    ImageReference imageReference = new ImageReference();
+                    AddImageReference imageReference = new AddImageReference();
                     imageReference.setReferenceImageUrl(imageUrl.trim());
                     referenceImageLists.add(imageReference);
                 }
@@ -697,9 +698,9 @@ public class FileStorageService {
 
             String pieceImageRef = listUploadedData.get(171);
             String[] pieceImageUrls = pieceImageRef.split(",");
-            Set<ImageReference> imageReference = new HashSet<>();
+            Set<AddImageReference> imageReference = new HashSet<>();
             for (String imageUrl : pieceImageUrls) {
-                ImageReference referenceImageList = new ImageReference();
+                AddImageReference referenceImageList = new AddImageReference();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReference.add(referenceImageList);
             }
@@ -720,12 +721,12 @@ public class FileStorageService {
             itemDetails.setWeightUnit(listUploadedData.get(182));
             itemDetails.setVolume(listUploadedData.get(183));
             itemDetails.setVolumeUnit(listUploadedData.get(184));
-            Set<ImageReference> imageReferenceList = new HashSet<>();
+            Set<AddImageReference> imageReferenceList = new HashSet<>();
 
             String itemImageRef = listUploadedData.get(185);
             String[] itemImageUrl = itemImageRef.split(",");
             for (String imageUrl : itemImageUrl) {
-                ImageReference referenceImageList = new ImageReference();
+                AddImageReference referenceImageList = new AddImageReference();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
@@ -1437,9 +1438,9 @@ public class FileStorageService {
 
                 String imageReferences = getValue(listUploadedData, 84);
                 String[] imageUrls = imageReferences.split(",");
-                Set<ImageReference> referenceImageLists = new HashSet<>();
+                Set<AddImageReference> referenceImageLists = new HashSet<>();
                 for (String imageUrl : imageUrls) {
-                    ImageReference imageReference = new ImageReference();
+                    AddImageReference imageReference = new AddImageReference();
                     imageReference.setReferenceImageUrl(imageUrl.trim());
                     referenceImageLists.add(imageReference);
                 }
@@ -1467,9 +1468,9 @@ public class FileStorageService {
 
             String pieceImageRef = getValue(listUploadedData, 99);
             String[] pieceImageUrls = pieceImageRef.split(",");
-            Set<ImageReference> imageReference = new HashSet<>();
+            Set<AddImageReference> imageReference = new HashSet<>();
             for (String pieceImageUrl : pieceImageUrls) {
-                ImageReference imageList = new ImageReference();
+                AddImageReference imageList = new AddImageReference();
                 imageList.setReferenceImageUrl(pieceImageUrl.trim());
                 imageReference.add(imageList);
             }
@@ -1493,12 +1494,12 @@ public class FileStorageService {
             itemDetails.setQuantity(getValue(listUploadedData, 113));
             itemDetails.setUnitValue(getValue(listUploadedData, 114));
             itemDetails.setCurrency(getValue(listUploadedData, 115));
-            Set<ImageReference> imageReferenceList = new HashSet<>();
+            Set<AddImageReference> imageReferenceList = new HashSet<>();
 
             String itemImageRef = getValue(listUploadedData, 116);
             String[] itemImageUrl = itemImageRef.split(",");
             for (String imageUrl : itemImageUrl) {
-                ImageReference referenceImageList = new ImageReference();
+                AddImageReference referenceImageList = new AddImageReference();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
@@ -1659,9 +1660,9 @@ public class FileStorageService {
 
                 String imageReferences = getValue(listUploadedData, 73);
                 String[] imageUrls = imageReferences.split(",");
-                Set<ImageReference> referenceImageLists = new HashSet<>();
+                Set<AddImageReference> referenceImageLists = new HashSet<>();
                 for (String imageUrl : imageUrls) {
-                    ImageReference imageReference = new ImageReference();
+                    AddImageReference imageReference = new AddImageReference();
                     imageReference.setReferenceImageUrl(imageUrl.trim());
                     referenceImageLists.add(imageReference);
                 }
@@ -1684,9 +1685,9 @@ public class FileStorageService {
             pieceDetails.setWeight_unit(getValue(listUploadedData, 83));
             String pieceImageRef = getValue(listUploadedData, 84);
             String[] pieceImageUrls = pieceImageRef.split(",");
-            Set<ImageReference> imageReference = new HashSet<>();
+            Set<AddImageReference> imageReference = new HashSet<>();
             for (String pieceImageUrl : pieceImageUrls) {
-                ImageReference imageList = new ImageReference();
+                AddImageReference imageList = new AddImageReference();
                 imageList.setReferenceImageUrl(pieceImageUrl.trim());
                 imageReference.add(imageList);
             }
@@ -1705,12 +1706,12 @@ public class FileStorageService {
             itemDetails.setQuantity(getValue(listUploadedData, 93));
             itemDetails.setUnitValue(getValue(listUploadedData, 94));
             itemDetails.setCurrency(getValue(listUploadedData, 95));
-            Set<ImageReference> imageReferenceList = new HashSet<>();
+            Set<AddImageReference> imageReferenceList = new HashSet<>();
 
             String itemImageRef = getValue(listUploadedData, 96);
             String[] itemImageUrl = itemImageRef.split(",");
             for (String imageUrl : itemImageUrl) {
-                ImageReference referenceImageList = new ImageReference();
+                AddImageReference referenceImageList = new AddImageReference();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }
@@ -1870,9 +1871,9 @@ public class FileStorageService {
 
                 String imageReferences = getValue(listUploadedData, 60);
                 String[] imageUrls = imageReferences.split(",");
-                Set<ImageReference> referenceImageLists = new HashSet<>();
+                Set<AddImageReference> referenceImageLists = new HashSet<>();
                 for (String imageUrl : imageUrls) {
-                    ImageReference imageReference = new ImageReference();
+                    AddImageReference imageReference = new AddImageReference();
                     imageReference.setReferenceImageUrl(imageUrl.trim());
                     referenceImageLists.add(imageReference);
                 }
@@ -1895,9 +1896,9 @@ public class FileStorageService {
             pieceDetails.setWeight_unit(getValue(listUploadedData, 69));
             String pieceImageRef = getValue(listUploadedData, 70);
             String[] pieceImageUrls = pieceImageRef.split(",");
-            Set<ImageReference> imageReference = new HashSet<>();
+            Set<AddImageReference> imageReference = new HashSet<>();
             for (String pieceImageUrl : pieceImageUrls) {
-                ImageReference imageList = new ImageReference();
+                AddImageReference imageList = new AddImageReference();
                 imageList.setReferenceImageUrl(pieceImageUrl.trim());
                 imageReference.add(imageList);
             }
@@ -1916,12 +1917,12 @@ public class FileStorageService {
             itemDetails.setQuantity(getValue(listUploadedData, 77));
 //            itemDetails.setUnitValue(getValue(listUploadedData,94));
 //            itemDetails.setCurrency(getValue(listUploadedData,95));
-            Set<ImageReference> imageReferenceList = new HashSet<>();
+            Set<AddImageReference> imageReferenceList = new HashSet<>();
 
             String itemImageRef = getValue(listUploadedData, 78);
             String[] itemImageUrl = itemImageRef.split(",");
             for (String imageUrl : itemImageUrl) {
-                ImageReference referenceImageList = new ImageReference();
+                AddImageReference referenceImageList = new AddImageReference();
                 referenceImageList.setReferenceImageUrl(imageUrl);
                 imageReferenceList.add(referenceImageList);
             }

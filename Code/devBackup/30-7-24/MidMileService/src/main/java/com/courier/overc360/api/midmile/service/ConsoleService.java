@@ -1318,10 +1318,11 @@ public class ConsoleService {
 
                 if (ikey.isPresent()) {
                     IKeyValuePair invoice = ikey.get();
-                    dbConsole.setInvoiceType(invoice.getInvoiceType());
                     dbConsole.setInvoiceNumber(invoice.getInvoiceNumber());
                     dbConsole.setInvoiceDate(invoice.getInvoiceDate());
                 }
+                dbConsole.setInvoiceType("FOB");
+                dbConsole.setFreightCurrency("KWD");
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
 
@@ -1863,6 +1864,44 @@ public class ConsoleService {
 //        List<ReplicaConsole> consoleList = replicaConsoleRepository.findAll(spec);
 //        return consoleList;
 //    }
+
+    /**
+     * Find Consoles - MobileApp
+     *
+     * @param findConsole
+     * @return
+     * @throws Exception
+     */
+    public List<ReplicaConsole> findConsolesMobileApp(FindConsole findConsole) throws Exception {
+
+        if (findConsole.getShippingLabelNo() == null) {
+            throw new BadRequestException("ShippingLabelNo cannot be null");
+        }
+        log.info("given Params to fetch Consoles for Mobile App with Qry -- > {}", findConsole);
+
+        List<String> languageId = findConsole.getLanguageId();
+        List<String> companyId = findConsole.getCompanyId();
+        List<String> partnerId = findConsole.getPartnerId();
+        List<String> partnerMasterAirwayBill = findConsole.getPartnerMasterAirwayBill();
+        List<String> partnerHouseAirwayBill = findConsole.getPartnerHouseAirwayBill();
+        List<String> shippingLabelNo = findConsole.getShippingLabelNo();
+        List<String> consoleId = findConsole.getConsoleId();
+        List<Long> unconsolidatedFlag = findConsole.getUnconsolidatedFlag();
+
+        // Initially pass shippingLabelNo to partnerHouseAirwayBill
+        List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
+                languageId, companyId, partnerId, partnerMasterAirwayBill, shippingLabelNo, consoleId, unconsolidatedFlag);
+
+        if (consoleList == null || consoleList.isEmpty()) {
+            // Else pass shippingLabelNo to consoleId
+            consoleList = replicaConsoleRepository.findConsolesWithQry(
+                    languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, shippingLabelNo, unconsolidatedFlag);
+            if (consoleList == null || consoleList.isEmpty()) {
+                throw new BadRequestException("No console Data found for given params : shippingLabelNo - " + findConsole.getShippingLabelNo());
+            }
+        }
+        return consoleList;
+    }
 
     //==========================================Console_ErrorLog================================================
     private void createConsoleLog(String languageId, String companyId, String partnerId, String masterAirwayBill,

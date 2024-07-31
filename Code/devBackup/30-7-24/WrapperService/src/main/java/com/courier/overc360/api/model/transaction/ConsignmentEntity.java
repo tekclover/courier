@@ -2,7 +2,9 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Data
 public class ConsignmentEntity {
@@ -293,7 +295,7 @@ public class ConsignmentEntity {
 
     private String storageLocation;
 
-    private Set<ImageReference> imageReferenceList = new HashSet<>();
+    private List<ReferenceImageList> referenceImageList;
 
     private String isExchange;
 

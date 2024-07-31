@@ -68,6 +68,7 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "is_deleted = 0", nativeQuery = true)
     List<PieceDetailsImpl> getPieceDetailsImpl(@Param(value = "consignmentId") Long consignmentId);
 
+    List<ReplicaPieceDetails> findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator(String languageId, String companyId, Long consignmentId, Long deletionIndicator);
 
     @Query(value = " \n" +
             "CREATE TABLE #LFO \n" +

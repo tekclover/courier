@@ -2,7 +2,9 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
@@ -13,6 +15,9 @@ import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
 import com.courier.overc360.api.midmile.primary.repository.PieceDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
+import com.courier.overc360.api.midmile.replica.model.dto.LabelFormInput;
+import com.courier.overc360.api.midmile.replica.model.dto.LabelFormOutput;
+import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
@@ -163,7 +168,7 @@ public class PieceDetailsService {
     @Transactional
     public List<PieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
                                                      String companyName, String languageName, String partnerName, String partnerHawBill,
-                                                     String partnerMawBill, List<PieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
+                                                     String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
                                                      String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
                                                      String eventText, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
@@ -172,9 +177,9 @@ public class PieceDetailsService {
             Long pieceCounter = 1L;
             Double totalWeight = 0.0;
             if (addPieceDetailsList != null && !addPieceDetailsList.isEmpty()) {
-                for (PieceDetails addPieceDetails : addPieceDetailsList) {
+                for (AddPieceDetails addPieceDetails : addPieceDetailsList) {
 
-                    List<ItemDetails> itemDetailsList = addPieceDetails.getItemDetails();
+                    List<AddItemDetails> itemDetailsList = addPieceDetails.getItemDetails();
                     int itemCount = itemDetailsList != null ? itemDetailsList.size() : 0; // Count the item details
 
                     Optional<PieceDetails> duplicatePieceDetails =
@@ -224,7 +229,7 @@ public class PieceDetailsService {
                         //ReferenceImage Create
                         Set<ImageReference> imageReferenceSet = new HashSet<>();
                         if (addPieceDetails.getReferenceImageList() != null) {
-                            for (ImageReference refImage : addPieceDetails.getReferenceImageList()) {
+                            for (AddImageReference refImage : addPieceDetails.getReferenceImageList()) {
                                 //CommonService GetFileName
                                 String downloadDocument = commonService.downLoadDocument(refImage.getReferenceImageUrl(), "document", "image");
                                 if (downloadDocument != null) {
@@ -370,7 +375,7 @@ public class PieceDetailsService {
             }
 
         } catch (Exception e) {
-            for (PieceDetails addPieceDetails : addPieceDetailsList) {
+            for (AddPieceDetails addPieceDetails : addPieceDetailsList) {
                 // Error Log
 //                createPieceDetailsLog2(addPieceDetails, e.toString());
                 e.printStackTrace();
@@ -519,6 +524,46 @@ public class PieceDetailsService {
             log.info("PieceDetails Doesn't exists");
         }
     }
+
+    /**
+     *
+     * @param labelFormInput
+     * @return
+     */
+    public List<LabelFormOutput> getLabelFormOutput(LabelFormInput labelFormInput) {
+
+        log.info("labelFormInput : " + labelFormInput);
+        List<LabelFormOutput> labelFormOutputList = replicaPieceDetailsRepository.getLabelPdfOutput(
+                labelFormInput.getLanguageId(),
+                labelFormInput.getCompanyId(),
+                labelFormInput.getPieceId(),
+                labelFormInput.getHouseAirwayBill(),
+                new Date());
+        log.info("labelForm output: " + labelFormOutputList.size());
+        return labelFormOutputList;
+    }
+
+    /**
+     * for PreAlertManifest
+     * @param languageId
+     * @param companyId
+     * @param consignmentId
+     * @return
+     */
+    public List<ReplicaPieceDetails> getReplicaPieceDetailsForPreAlertManifest(String languageId, String companyId, Long consignmentId) {
+
+        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator
+                (languageId, companyId, consignmentId, 0l);
+
+        if (dbPieceDetails == null || dbPieceDetails.isEmpty()) {
+            createPieceDetailsLog(languageId, companyId, String.valueOf(consignmentId), "The given values : languageId - " + languageId +
+                    ", companyId - " + companyId + " and PieceId: " + consignmentId + "  doesn't exists");
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + " and consignmentId: " + consignmentId + "  doesn't exists");
+        }
+
+        return dbPieceDetails;
+    }
+
 
 
     //========================================PieceDetails_ErrorLog=================================================

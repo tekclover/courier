@@ -22,20 +22,19 @@ public interface ReplicaPreAlertRepository extends JpaRepository<ReplicaPreAlert
 
 
     // Get Partner Name
-    @Query(value = "Select\n" +
-            "tc.PARTNER_NAME\n" +
+    @Query(value = "Select Top 1 tc.PARTNER_NAME\n" +
             "From tblconsignment_entity tc\n" +
             "Where tc.IS_DELETED=0\n" +
             "AND tc.LANG_ID = :languageId\n" +
             "AND tc.C_ID = :companyId\n" +
             "AND tc.PARTNER_ID = :partnerId\n" +
-            "AND tc.PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
+//            "AND tc.PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
             "AND tc.PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
     Optional<String> getPartnerName(
             @Param("languageId") String languageId,
             @Param("companyId") String companyId,
             @Param("partnerId") String partnerId,
-            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
+//            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
             @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill);
 
 
@@ -68,5 +67,19 @@ public interface ReplicaPreAlertRepository extends JpaRepository<ReplicaPreAlert
             "GROUP BY tp.PARTNER_MASTER_AIRWAY_BILL", nativeQuery = true)
     List<ConsignmentImpl> getAllPMawbCount(@Param("languageId") String languageId,
                                            @Param("companyId") String companyId);
+
+    @Query(value = "SELECT tp.PARTNER_MASTER_AIRWAY_BILL As partnerMasterAirwayBill, tp.LANG_ID AS languageId, tp.C_ID AS companyId, COUNT(*) AS pMawbCount\n" +
+            "FROM tblprealert tp\n" +
+            "WHERE tp.IS_DELETED = 0\n" +
+            "AND tp.HAWB_TYP_ID != 9\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tp.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tp.C_ID IN (:companyId))\n" +
+            "GROUP BY tp.PARTNER_MASTER_AIRWAY_BILL, tp.LANG_ID, tp.C_ID", nativeQuery = true)
+    List<ConsignmentImpl> getAllPMawbCount(@Param("languageId") List<String> languageId,
+                                           @Param("companyId") List<String> companyId);
+
+
+    boolean existsByLanguageIdAndCompanyIdAndDeletionIndicator(
+            String languageId, String companyId, Long deletionIndicator);
 
 }

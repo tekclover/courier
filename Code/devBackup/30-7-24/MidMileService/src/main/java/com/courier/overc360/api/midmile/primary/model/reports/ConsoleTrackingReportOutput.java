@@ -9,7 +9,7 @@ public class ConsoleTrackingReportOutput {
 
     private String languageId;
     private String companyId;
-    private String partnerId;
+    //    private String partnerId;
     private String partnerMasterAirwayBill;
     private String partnerHouseAirwayBill;
 

@@ -1318,10 +1318,11 @@ public class ConsoleService {
 
                 if (ikey.isPresent()) {
                     IKeyValuePair invoice = ikey.get();
-                    dbConsole.setInvoiceType(invoice.getInvoiceType());
                     dbConsole.setInvoiceNumber(invoice.getInvoiceNumber());
                     dbConsole.setInvoiceDate(invoice.getInvoiceDate());
                 }
+                dbConsole.setInvoiceType("FOB");
+                dbConsole.setFreightCurrency("KWD");
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
 
@@ -1419,10 +1420,12 @@ public class ConsoleService {
                 ConsignmentEntity dbConsignment = consignmentEntityRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                         updatetedConsole.getCompanyId(), updatetedConsole.getLanguageId(), updatetedConsole.getPartnerId(), updatetedConsole.getMasterAirwayBill(), updatetedConsole.getHouseAirwayBill(), 0L);
 
-                if (dbConsignment.getConsignmentBagId() == null) {
-                    BAG_ID = Long.valueOf(numberRangeService.getNextNumberRange("BAGID"));
-                } else {
-                    BAG_ID = dbConsignment.getConsignmentBagId();
+                if(dbConsignment != null) {
+                    if (dbConsignment.getConsignmentBagId() == null) {
+                        BAG_ID = Long.valueOf(numberRangeService.getNextNumberRange("BAGID"));
+                    } else {
+                        BAG_ID = dbConsignment.getConsignmentBagId();
+                    }
                 }
 
                 if (updatetedConsole != null) {

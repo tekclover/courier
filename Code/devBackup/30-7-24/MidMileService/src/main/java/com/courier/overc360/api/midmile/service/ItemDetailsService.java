@@ -2,16 +2,24 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
+import com.courier.overc360.api.midmile.primary.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
 import com.courier.overc360.api.midmile.primary.repository.ItemDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
+import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
+import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestImpl;
+import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 //import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaItemDetailsSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -44,7 +52,7 @@ public class ItemDetailsService {
     private ImageReferenceService imageReferenceService;
 
     @Autowired
-    private ImageReferenceRepository imageReferenceRepository;
+    ImageReferenceRepository imageReferenceRepository;
 
     @Autowired
     CommonService commonService;
@@ -55,6 +63,8 @@ public class ItemDetailsService {
     @Autowired
     ReplicaCcrRepository replicaCcrRepository;
 
+    @Autowired
+    ReplicaItemDetailsRepository replicaItemDetailsRepository;
 
     //Decimal Format
     DecimalFormat decimalFormat = new DecimalFormat("#.###");
@@ -344,7 +354,7 @@ public class ItemDetailsService {
     @Transactional
     public List<ItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName, String partnerName,
                                                    String houseAirwayBill, String masterAirwayBill, String pieceId, String partnerId,
-                                                   List<ItemDetails> addItemDetailsList, String partnerHawBill, String hsCode,
+                                                   List<AddItemDetails> addItemDetailsList, String partnerHawBill, String hsCode,
                                                    String partnerMawBill, String length, String width, String height, String weightUnit, String volume,
                                                    String codAmount, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
@@ -356,7 +366,7 @@ public class ItemDetailsService {
             Double totalHeight = 0.0;
             Double totalVolume = 0.0;
             if (addItemDetailsList != null && !addItemDetailsList.isEmpty()) {
-                for (ItemDetails addItemDetails : addItemDetailsList) {
+                for (AddItemDetails addItemDetails : addItemDetailsList) {
                     Optional<ItemDetails> duplicateItemDetails =
                             itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
                                     languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, addItemDetails.getPieceItemId(), 0L);
@@ -499,7 +509,7 @@ public class ItemDetailsService {
                         //ImageReference Created
                         Set<ImageReference> imageReferenceList = new HashSet<>();
                         if (addItemDetails.getReferenceImageList() != null) {
-                            for (ImageReference imageReference : addItemDetails.getReferenceImageList()) {
+                            for (AddImageReference imageReference : addItemDetails.getReferenceImageList()) {
                                 //CommonService
                                 String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
                                 if (downloadDocument != null) {
@@ -565,7 +575,7 @@ public class ItemDetailsService {
             itemDetailsRepository.updatePiece(companyId, languageId, pieceId, houseAirwayBill, masterAirwayBill, String.valueOf(totalLength), String.valueOf(totalHeight), String.valueOf(totalWeight), String.valueOf(totalVolume));
         } catch (Exception e) {
             // Error Log
-            for (ItemDetails itemDetails : addItemDetailsList) {
+            for (AddItemDetails itemDetails : addItemDetailsList) {
 //                createItemDetailsLog2(itemDetails, e.toString());
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -573,6 +583,124 @@ public class ItemDetailsService {
         }
         return itemDetailsList;
     }
+
+
+    /**
+     * Get Item Details
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @param pieceItemId
+     * @return
+     */
+    public ReplicaItemDetails replicaGetItemDetails(String languageId, String companyId, String partnerId, String
+            masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId) {
+        Optional<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, 0L);
+        if (dbItemDetails.isEmpty()) {
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PartnerId: "
+                    + partnerId + ", MasterAirwayBill: " + masterAirwayBill + ", HouseAirwayBill: " + houseAirwayBill + ", PieceId: " + pieceId + "and PieceItemId: " + pieceItemId + " doesn't exists");
+        }
+        return dbItemDetails.get();
+    }
+
+    /**
+     * for PreAlertManifest
+     *
+     * @param languageId
+     * @param companyId
+     * @param pieceId
+     * @return
+     */
+    public List<ReplicaItemDetails> replicaGetItemDetails(String languageId, String companyId, String pieceId) {
+        List<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
+                languageId, companyId, pieceId, 0L);
+        if (dbItemDetails.isEmpty()) {
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PieceId: " + pieceId + " doesn't exists");
+        }
+        return dbItemDetails;
+    }
+
+    /**
+     * Find ItemDetails
+     *
+     * @param findItemDetails
+     * @return
+     */
+    public List<ReplicaItemDetails> findItemDetails(FindConsignment findItemDetails) {
+
+        ReplicaItemDetailsSpecification spec = new ReplicaItemDetailsSpecification(findItemDetails);
+        List<ReplicaItemDetails> results = replicaItemDetailsRepository.findAll(spec);
+        log.info("found Cities --> " + results);
+        return results;
+    }
+
+    /**
+     * @param findPreAlertManifest
+     * @return
+     */
+    public List<PreAlertManifestImpl> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
+        if (findPreAlertManifest.getConsignmentId() != null && findPreAlertManifest.getConsignmentId().isEmpty()) {
+            findPreAlertManifest.setConsignmentId(null);
+        }
+        if (findPreAlertManifest.getLanguageId() != null && findPreAlertManifest.getLanguageId().isEmpty()) {
+            findPreAlertManifest.setLanguageId(null);
+        }
+        if (findPreAlertManifest.getCompanyId() != null && findPreAlertManifest.getCompanyId().isEmpty()) {
+            findPreAlertManifest.setCompanyId(null);
+        }
+        if (findPreAlertManifest.getPartnerId() != null && findPreAlertManifest.getPartnerId().isEmpty()) {
+            findPreAlertManifest.setPartnerId(null);
+        }
+        if (findPreAlertManifest.getStatusId() != null && findPreAlertManifest.getStatusId().isEmpty()) {
+            findPreAlertManifest.setStatusId(null);
+        }
+        if (findPreAlertManifest.getConsoleIndicator() != null && findPreAlertManifest.getConsoleIndicator().isEmpty()) {
+            findPreAlertManifest.setConsoleIndicator(null);
+        }
+        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getManifestIndicator().isEmpty()) {
+            findPreAlertManifest.setManifestIndicator(null);
+        }
+        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
+        List<PreAlertManifestImpl> results = null;
+        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() == null) {
+            results = replicaItemDetailsRepository.getPreAlertManifest(
+                    findPreAlertManifest.getConsignmentId(),
+                    findPreAlertManifest.getLanguageId(),
+                    findPreAlertManifest.getCompanyId(),
+                    findPreAlertManifest.getPartnerId(),
+                    findPreAlertManifest.getStatusId());
+            log.info("PreAlert Manifest result: " + results.size());
+            return results;
+        }
+
+        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() != null && !findPreAlertManifest.getConsoleIndicator().isEmpty()) {
+            findPreAlertManifest.setManifestIndicator(Collections.singletonList(0L));
+        }
+        if (findPreAlertManifest.getConsoleIndicator() == null && findPreAlertManifest.getManifestIndicator() != null && !findPreAlertManifest.getManifestIndicator().isEmpty()) {
+            findPreAlertManifest.setConsoleIndicator(Collections.singletonList(0L));
+        }
+
+        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
+        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getConsoleIndicator() != null) {
+            results = replicaItemDetailsRepository.getPreAlertManifest(
+                    findPreAlertManifest.getConsignmentId(),
+                    findPreAlertManifest.getLanguageId(),
+                    findPreAlertManifest.getCompanyId(),
+                    findPreAlertManifest.getPartnerId(),
+                    findPreAlertManifest.getStatusId(),
+                    findPreAlertManifest.getConsoleIndicator(),
+                    findPreAlertManifest.getManifestIndicator());
+            log.info("PreAlert Manifest Output : " + results.size());
+            return results;
+        }
+        return null;
+    }
+
 
 }
 

@@ -31,6 +31,8 @@ public class Customer {
 
     private String statusId;
 
+    private String agingCount;
+
     private String statusDescription;
 
     private String remark;

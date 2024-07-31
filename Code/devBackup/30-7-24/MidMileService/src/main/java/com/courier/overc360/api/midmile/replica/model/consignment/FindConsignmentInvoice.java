@@ -1,16 +1,14 @@
-package com.courier.overc360.api.model.transaction;
+package com.courier.overc360.api.midmile.replica.model.consignment;
 
 import lombok.Data;
 
 import java.util.List;
-@Data
-public class FindConsole {
 
-    private List<String> languageId;
+@Data
+public class FindConsignmentInvoice {
+
     private List<String> companyId;
-    private List<String> partnerId;
+    private List<String> houseAirwayBill;
     private List<String> partnerMasterAirwayBill;
     private List<String> partnerHouseAirwayBill;
-    private List<String> consoleId;
-
 }

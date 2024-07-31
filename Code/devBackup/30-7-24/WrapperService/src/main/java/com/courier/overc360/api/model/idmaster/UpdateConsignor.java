@@ -23,6 +23,8 @@ public class UpdateConsignor {
 
     private String statusId;
 
+    private String agingCount;
+
     private String remark;
 
     private Long deletionIndicator;
