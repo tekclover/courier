@@ -183,14 +183,14 @@ public class ReportsService {
                     for (String pMawb : pMawbList) {
                         for (String pHawb : pHawbList) {
 
-                            if (pMawbList != null && pHawbList != null) {
-                                boolean isPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
-                                        langId, cId, pMawb, pHawb, 0L);
-                                if (!isPresent) {
-                                    log.info("No data found for given partnerMasterAirwayBill : {}, partnerHouseAirwayBill : {}", pMawb, pHawb);
-                                    continue;
-                                }
-                            }
+//                            if (pMawbList != null && pHawbList != null) {
+//                                boolean isPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+//                                        langId, cId, pMawb, pHawb, 0L);
+//                                if (!isPresent) {
+//                                    log.info("No data found for given partnerMasterAirwayBill : {}, partnerHouseAirwayBill : {}", pMawb, pHawb);
+//                                    continue;
+//                                }
+//                            }
 
                             long noOfShipments = replicaPreAlertRepository.getNoOfShipmentsScanned(
                                     langId, cId, pMawb, pHawb,
