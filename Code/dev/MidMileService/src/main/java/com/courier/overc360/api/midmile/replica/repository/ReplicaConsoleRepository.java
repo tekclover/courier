@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, String>,
@@ -214,5 +215,15 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
     long getConsoleCountByPMawb(@Param("languageId") String languageId,
                                 @Param("companyId") String companyId,
                                 @Param("partnerMasterAB") String partnerMasterAB);
+
+    @Query(value = "SELECT tc.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, tc.LANG_ID AS languageId, tc.C_ID AS companyId, COUNT(*) AS count " +
+            "FROM tblconsole tc " +
+            "WHERE tc.IS_DELETED = 0 " +
+            "AND tc.UNCONSOLIDATED = 0 " +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId)) " +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId)) " +
+            "GROUP BY tc.PARTNER_MASTER_AIRWAY_BILL, tc.LANG_ID, tc.C_ID", nativeQuery = true)
+    Map<String, Long> getConsoleCountByPMawb(@Param("languageId") List<String> languageId,
+                                             @Param("companyId") List<String> companyId);
 
 }

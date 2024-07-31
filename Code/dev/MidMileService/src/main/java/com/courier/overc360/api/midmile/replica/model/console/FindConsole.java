@@ -15,4 +15,7 @@ public class FindConsole {
     private List<String> consoleId;
     private List<Long> unconsolidatedFlag;
 
+    // for mobile App
+    private List<String> shippingLabelNo;
+
 }
