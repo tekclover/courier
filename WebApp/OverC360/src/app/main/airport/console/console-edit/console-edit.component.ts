@@ -956,42 +956,23 @@ updateGateway(data:any){
   }
 
   downloadCCR(res: any) {
-
-
-    const consoleManifestColumns = [
-      { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
-      { field: 'partnerHouseAirwayBill', header: 'AWB' },
-      { field: 'countryOfOrigin', header: 'Origin' },
-      { field: 'airportOriginCode', header: 'Origin Code' },
-      { field: 'shipperName', header: 'Shipper' },
-      { field: 'grossWeight', header: 'WT KG' },
-      { field: 'noOfPieces', header: 'PCS' },
-      { field: 'description', header: 'Description' },
-      { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'currency', header: 'Currency' },
-      { field: 'consignmentValue', header: 'Value' },
-      { field: 'customsValue', header: 'Customs KD' },
-      { field: 'iata', header: 'IATA KD' },
-      { field: 'hsCode', header: 'HS Code' },
-    ];
-
     const invoicesColumns = [
       { header: 'Airway Bill No', field: 'partnerHouseAirwayBill' },
       { header: 'Consignee Name', field: 'consigneeName' },
       { header: 'Consignee Civil ID', field: 'consigneeCivilId' },
-      { header: 'Invoice Number', field: 'invoiceNumber' },
+      { header: 'Invoice Number', field: '' },
       { header: 'Invoice Date', field: 'invoiceDate' },
       { header: 'Invoice Type', field: 'invoiceType' },
       { header: 'Currency', field: 'currency' },
-      { header: 'Invoice Supplier Name', field: 'invoiceSupplierName' },
+      { header: 'Invoice Supplier Name', field: 'shipperName' },
       { header: 'Freight Currency', field: 'consignmentLocalId' },
-      { header: 'Freight Charges', field: 'freightCharges' },
+      { header: 'Freight Charges', field: 'iata' },
       { header: 'Country Of Supply', field: 'countryOfOrigin' }
     ];
-
+  
     const invoiceItemsColumns = [
       { header: 'BillNumber', field: 'partnerHouseAirwayBill' },
-      { header: 'InvoiceNumber', field: 'invoiceNumber' },
+      { header: 'Invoice Number', field: '' },
       { header: 'HSCode', field: 'hsCode' },
       { header: 'GoodsDescription', field: 'goodsDescription' },
       { header: 'Country Of Origin', field: 'countryOfOrigin' },
@@ -1007,214 +988,118 @@ updateGateway(data:any){
       { header: 'Exemption Beneficiary', field: 'exemptionBeneficiary' },
       { header: 'Exemption Reference', field: 'exemptionReference' }
     ];
-
-    let index = 0;
-    const workbook = new ExcelJS.Workbook();
-    const currentDate = new Date();
-
+  
     const groupedByConsoleId = this.groupBy(res, 'consoleId');
-    for (const consoleId in groupedByConsoleId) {
-      if (groupedByConsoleId.hasOwnProperty(consoleId)) {
-        const consoleData = groupedByConsoleId[consoleId];
-
-        const worksheetConsole = workbook.addWorksheet(`CONSOLE-${index + 1}`);
-
-        // Add image to worksheet (assuming iwExpressLogo.headerLogo is your base64 image)
-        const base64Image1 = iwExpressLogo.headerLogo;
-        const logoId = workbook.addImage({
-          base64: base64Image1,
-          extension: 'png',
-        });
-        worksheetConsole.addImage(logoId, {
-          tl: { col: 4, row: 0 }, // Top-left position
-          ext: { width: 350, height: 100 }, // Width and height
-        });
-
-        // Skip 5 rows before adding headers and data
-        for (let i = 0; i < 4; i++) {
-          worksheetConsole.addRow([]); // Add empty rows to skip
-        }
-
-        // Add new row
-        const newRow = {
-          index: '',
-          partnerHouseAirwayBill: consoleData[0].consoleGroupName || '',
-          airportOriginCode: consoleData[0].consoleName || '',
-          countryOfOrigin: '',
-          shipperName: '',
-          grossWeight: '',
-          noOfPieces: '',
-          description: consoleId,
-          consigneeName: consoleData[0].partnerMasterAirwayBill,
-          currency: '',
-          consignmentValue: 'Date',
-          consignmentValueLocal: this.datePipe.transform(currentDate, 'dd-MM-yyyy'),
-          iata: '',
-          hsCode: '',
+    const currentDate = new Date();
+  
+    Object.keys(groupedByConsoleId).forEach(consoleId => {
+      const consoleData = groupedByConsoleId[consoleId];
+      const workbook = new ExcelJS.Workbook();
+  
+      // Add Invoices Sheet
+      const worksheetInvoices = workbook.addWorksheet(`INVOICES-${1}`);
+      const headerRow = worksheetInvoices.addRow(Object.values(invoicesColumns.map(col => col.header)));
+      
+      // Style Header Row
+      headerRow.eachCell((cell, colNumber) => {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '8EA9DB' } // Light Ice Blue color
         };
-        const headerRowFirst =  worksheetConsole.addRow(Object.values(newRow));
-        headerRowFirst.eachCell((cell, index) => {
-          cell.font = {
-            bold: true,
-            color: { argb: '0000' }, // White text color
-          };
+        cell.font = {
+          bold: true,
+          color: { argb: 'FFFFFF' } // Black text color
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+  
+      // Add data rows
+      consoleData.forEach((item:any) => {
+        const row = worksheetInvoices.addRow(invoicesColumns.map(col => item[col.field] || ''));
+        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
           cell.border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
             bottom: { style: 'thin' },
             right: { style: 'thin' },
           };
-        });
-
-        const headerRow = worksheetConsole.addRow(Object.values(consoleManifestColumns.map(col => col.header)));
-
-        headerRow.eachCell((cell, index) => {
-          cell.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
-          };
-          cell.font = {
-            bold: true,
-            color: { argb: '0000' }, // White text color
-          };
-          cell.border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' },
-          };
-        });
-
-        // Add console data rows
-        consoleData.forEach((item: any, index: number) => {
-          const exportItem: any = {};
-          consoleManifestColumns.forEach(col => {
-            if (col.format == 'number') {
-              exportItem[col.header] = index + 1;
-            } else {
-              exportItem[col.header] = item[col.field];
-            }
-          });
-          const cellRow =   worksheetConsole.addRow(Object.values(exportItem));
-          cellRow.eachCell({ includeEmpty: true },(cell, index) => {
-            cell.border = {
-              top: { style: 'thin' },
-              left: { style: 'thin' },
-              bottom: { style: 'thin' },
-              right: { style: 'thin' },
+          // Optional: add alternate row coloring
+          if (row.number % 2 === 0) {
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'DCE6F1' } // Light Gray for alternate rows
             };
-          });
-        });
-
-        const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
-
-        for (const ccrId in groupedByCcrId) {
-          if (groupedByCcrId.hasOwnProperty(ccrId)) {
-            const ccrData = groupedByCcrId[ccrId];
-
-            const worksheetInvoices = workbook.addWorksheet(`INVOICES-${index + 1}`);
-
-
-            const headerRow = worksheetInvoices.addRow(Object.values(invoicesColumns.map(col => col.header)));
-
-            headerRow.eachCell((cell, index) => {
-              cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
-              };
-              cell.font = {
-                bold: true,
-                color: { argb: '0000' }, // White text color
-              };
-              cell.border = {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' },
-              };
-            });
-
-            ccrData.forEach((item: any) => {
-              const exportItem: any = {};
-              invoicesColumns.forEach(col => {
-                exportItem[col.header] = item[col.field];
-              });
-
-              const cellRow =  worksheetInvoices.addRow(Object.values(exportItem));
-              cellRow.eachCell({ includeEmpty: true },(cell, index) => {
-                cell.border = {
-                  top: { style: 'thin' },
-                  left: { style: 'thin' },
-                  bottom: { style: 'thin' },
-                  right: { style: 'thin' },
-                };
-              });
-            });
-
-            const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${index + 1}`);
-
-            const headerRow1 = worksheetInvoiceItems.addRow(Object.values(invoiceItemsColumns.map(col => col.header)));
-
-            headerRow1.eachCell((cell, index) => {
-              cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
-              };
-              cell.font = {
-                bold: true,
-                color: { argb: '0000' }, // White text color
-              };
-              cell.border = {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' },
-              };
-            });
-
-            ccrData.forEach((item: any) => {
-              const exportItem: any = {};
-              invoiceItemsColumns.forEach(col => {
-                exportItem[col.header] = item[col.field];
-              });
-              const cellRow =  worksheetInvoiceItems.addRow(Object.values(exportItem));
-              cellRow.eachCell({ includeEmpty: true },(cell, index) => {
-                cell.border = {
-                  top: { style: 'thin' },
-                  left: { style: 'thin' },
-                  bottom: { style: 'thin' },
-                  right: { style: 'thin' },
-                };
-              });
-            });
           }
-        }
-      }
-      index++;
-    }
-
-    workbook.xlsx.writeBuffer().then((data) => {
-      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-      // Create a temporary anchor element
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `CCR_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
-      document.body.appendChild(a);
-
-      // Simulate click to trigger download
-      a.click();
-
-      // Clean up
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+        });
+      });
+  
+      // Add Invoice Items Sheet
+      const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${1}`);
+      const headerRow1 = worksheetInvoiceItems.addRow(Object.values(invoiceItemsColumns.map(col => col.header)));
+  
+      // Style Header Row
+      headerRow1.eachCell((cell, colNumber) => {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '8EA9DB' } // Light Ice Blue color
+        };
+        cell.font = {
+          bold: true,
+          color: { argb: 'FFFFFF' } // Black text color
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+  
+      // Add data rows
+      consoleData.forEach((item:any) => {
+        const row = worksheetInvoiceItems.addRow(invoiceItemsColumns.map(col => item[col.field] || ''));
+        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+          // Optional: add alternate row coloring
+          if (row.number % 2 === 0) {
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'DCE6F1' } // Light Gray for alternate rows
+            };
+          }
+        });
+      });
+  
+      // Write to buffer and trigger download
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `CCR_${consoleId}_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
     });
   }
+  
 
   createLocation() {
 
@@ -1373,115 +1258,157 @@ updateGateway(data:any){
 
 
 
+// downloadCCR(res: any) {
 
 
-
-// downloadExcelWB(res:any) {
-//   this.consoleManifest = [
+//   const consoleManifestColumns = [
+//     { field: 'partnerMasterAirwayBill', header: '#', format: 'number' },
 //     { field: 'partnerHouseAirwayBill', header: 'AWB' },
-//     { field: 'airportOriginCode', header: 'Origin' },
-//     { field: 'countryOfOrigin', header: 'Origin Code' },
+//     { field: 'countryOfOrigin', header: 'Origin' },
+//     { field: 'airportOriginCode', header: 'Origin Code' },
 //     { field: 'shipperName', header: 'Shipper' },
 //     { field: 'grossWeight', header: 'WT KG' },
 //     { field: 'noOfPieces', header: 'PCS' },
 //     { field: 'description', header: 'Description' },
 //     { field: 'consigneeName', header: 'Consignee Name' },
-//     { field: 'currency  ', header: 'Currency' },
+//     { field: 'currency', header: 'Currency' },
 //     { field: 'consignmentValue', header: 'Value' },
-//     { field: 'consignmentValueLocal', header: 'Customs KD' },
-//     { field: 'iata', header: 'Iata KD' },
+//     { field: 'customsValue', header: 'Customs KD' },
+//     { field: 'iata', header: 'IATA KD' },
 //     { field: 'hsCode', header: 'HS Code' },
 //   ];
 
-//   this.invoices = [
-//     { field: 'partnerHouseAirwayBill', header: 'Airway Bill No' },
-//     { field: 'consigneeName', header: 'Consignee Name' },
-//     { field: 'consigneeCivilId', header: 'Consignee Civil ID' },
-//     { field: 'invoiceNumber', header: 'Invoice Number' },
-//     { field: 'invoiceDate', header: 'Invoice Date' },
-//     { field: 'invoiceType', header: 'Invoice Type' },
-//     { field: 'currency', header: 'Currency' },
-//     { field: 'invoiceSupplierName', header: 'Invoice Supplier Name' },
-//     { field: 'consignmentLocalId', header: 'Freight Currency' },
-//     { field: 'freightCharges', header: 'Freight Charges' },
-//     { field: 'countryOfOrigin', header: 'Country Of Supply' },
+//   const invoicesColumns = [
+//     { header: 'Airway Bill No', field: 'partnerHouseAirwayBill' },
+//     { header: 'Consignee Name', field: 'consigneeName' },
+//     { header: 'Consignee Civil ID', field: 'consigneeCivilId' },
+//     { header: 'Invoice Number', field: 'invoiceNumber' },
+//     { header: 'Invoice Date', field: 'invoiceDate' },
+//     { header: 'Invoice Type', field: 'invoiceType' },
+//     { header: 'Currency', field: 'currency' },
+//     { header: 'Invoice Supplier Name', field: 'invoiceSupplierName' },
+//     { header: 'Freight Currency', field: 'consignmentLocalId' },
+//     { header: 'Freight Charges', field: 'freightCharges' },
+//     { header: 'Country Of Supply', field: 'countryOfOrigin' }
 //   ];
 
-//   this.invoiceItems = [
-//     { field: 'partnerHouseAirwayBill', header: 'BillNumber' },
-//     { field: 'invoiceNumber', header: 'InvoiceNumber' },
-//     { field: 'hsCode', header: 'HSCode' },
-//     { field: 'goodsDescription', header: 'GoodsDescription' },
-//     { field: 'countryOfOrigin', header: 'Country Of Origin' },
-//     { field: 'manufacturer', header: 'Manufacturer' },
-//     { field: 'noOfPieceHawb', header: 'No Of Packages' },
-//     { field: 'consignmentValue', header: 'Item Total Price' },
-//     { field: 'packageType', header: 'Package Type' },
-//     { field: 'quantity', header: 'Quantity' },
-//     { field: 'netWeight', header: 'Net Weight' },
-//     { field: 'grossWeight', header: 'Gross Weight' },
-//     { field: 'isExempted', header: 'Is Exempted' },
-//     { field: 'exemptionFor', header: 'Exemption For' },
-//     { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
-//     { field: 'exemptionReference', header: 'Exemption Reference' },
+//   const invoiceItemsColumns = [
+//     { header: 'BillNumber', field: 'partnerHouseAirwayBill' },
+//     { header: 'InvoiceNumber', field: 'invoiceNumber' },
+//     { header: 'HSCode', field: 'hsCode' },
+//     { header: 'GoodsDescription', field: 'goodsDescription' },
+//     { header: 'Country Of Origin', field: 'countryOfOrigin' },
+//     { header: 'Manufacturer', field: 'manufacturer' },
+//     { header: 'No Of Packages', field: 'noOfPieces' },
+//     { header: 'Item Total Price', field: 'consignmentValue' },
+//     { header: 'Package Type', field: 'packageType' },
+//     { header: 'Quantity', field: 'totalQuantity' },
+//     { header: 'Net Weight', field: 'netWeight' },
+//     { header: 'Gross Weight', field: 'grossWeight' },
+//     { header: 'Is Exempted', field: 'isExempted' },
+//     { header: 'Exemption For', field: 'exemptionFor' },
+//     { header: 'Exemption Beneficiary', field: 'exemptionBeneficiary' },
+//     { header: 'Exemption Reference', field: 'exemptionReference' }
 //   ];
+
+//   let index = 0;
+//   const workbook = new ExcelJS.Workbook();
+//   const currentDate = new Date();
 
 //   const groupedByConsoleId = this.groupBy(res, 'consoleId');
-//   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-//   let index = 0;
 //   for (const consoleId in groupedByConsoleId) {
 //     if (groupedByConsoleId.hasOwnProperty(consoleId)) {
 //       const consoleData = groupedByConsoleId[consoleId];
-//       // New row to be added before console data
+
+//       const worksheetConsole = workbook.addWorksheet(`CONSOLE-${index + 1}`);
+
+//       // Add image to worksheet (assuming iwExpressLogo.headerLogo is your base64 image)
+//       const base64Image1 = iwExpressLogo.headerLogo;
+//       const logoId = workbook.addImage({
+//         base64: base64Image1,
+//         extension: 'png',
+//       });
+//       worksheetConsole.addImage(logoId, {
+//         tl: { col: 4, row: 0 }, // Top-left position
+//         ext: { width: 350, height: 100 }, // Width and height
+//       });
+
+//       // Skip 5 rows before adding headers and data
+//       for (let i = 0; i < 4; i++) {
+//         worksheetConsole.addRow([]); // Add empty rows to skip
+//       }
+
+//       // Add new row
 //       const newRow = {
-//         '#': '',
-//         'AWB': consoleData[0].consoleGroupName != null ? consoleData[0].consoleGroupName : '',
-//         'Origin': consoleData[0].consoleName != null ? consoleData[0].consoleName : '',
-//         'Origin Code': '',
-//         'Shipper': '',
-//         'WT KG': '',
-//         'PCS': '',
-//         'Description': consoleId,
-//         'Consignee Name': consoleData[0].partnerMasterAirwayBill,
-//         'Currency': '',
-//         'Value': 'Date',
-//         'Customs KD': this.datePipe.transform(new Date, 'dd-MM-yyyy'),
-//         'IATA KD': '',
-//         'HS Code': '',
-//         'Console ID': '' // Include the console ID in the new row
+//         index: '',
+//         partnerHouseAirwayBill: consoleData[0].consoleGroupName || '',
+//         airportOriginCode: consoleData[0].consoleName || '',
+//         countryOfOrigin: '',
+//         shipperName: '',
+//         grossWeight: '',
+//         noOfPieces: '',
+//         description: consoleId,
+//         consigneeName: consoleData[0].partnerMasterAirwayBill,
+//         currency: '',
+//         consignmentValue: 'Date',
+//         consignmentValueLocal: this.datePipe.transform(currentDate, 'dd-MM-yyyy'),
+//         iata: '',
+//         hsCode: '',
 //       };
+//       const headerRowFirst =  worksheetConsole.addRow(Object.values(newRow));
+//       headerRowFirst.eachCell((cell, index) => {
+//         cell.font = {
+//           bold: true,
+//           color: { argb: '0000' }, // White text color
+//         };
+//         cell.border = {
+//           top: { style: 'thin' },
+//           left: { style: 'thin' },
+//           bottom: { style: 'thin' },
+//           right: { style: 'thin' },
+//         };
+//       });
 
-//       const consoleSheetData: any[] = [];
+//       const headerRow = worksheetConsole.addRow(Object.values(consoleManifestColumns.map(col => col.header)));
 
-//       // Add new row (newRow) as the first row
-//       consoleSheetData.push(Object.values(newRow).map(String));
+//       headerRow.eachCell((cell, index) => {
+//         cell.fill = {
+//           type: 'pattern',
+//           pattern: 'solid',
+//           fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+//         };
+//         cell.font = {
+//           bold: true,
+//           color: { argb: '0000' }, // White text color
+//         };
+//         cell.border = {
+//           top: { style: 'thin' },
+//           left: { style: 'thin' },
+//           bottom: { style: 'thin' },
+//           right: { style: 'thin' },
+//         };
+//       });
 
-//       // Add headers from cols as the second row
-//       consoleSheetData.push(this.consoleManifest.map(col => col.header));
-
-//       // Map console data and convert to array of values
-//       const consoleRows = Object.values(consoleData).map((item:any, index:any) => {
+//       // Add console data rows
+//       consoleData.forEach((item: any, index: number) => {
 //         const exportItem: any = {};
-//         this.consoleManifest.forEach(col => {
-//           // if (col.format == 'date') {
-//           //   exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-//           // } else {
-//           //   exportItem[col.header] = item[col.field];
-//           // }
+//         consoleManifestColumns.forEach(col => {
 //           if (col.format == 'number') {
 //             exportItem[col.header] = index + 1;
 //           } else {
 //             exportItem[col.header] = item[col.field];
 //           }
 //         });
-//         return Object.values(exportItem).map(String);
+//         const cellRow =   worksheetConsole.addRow(Object.values(exportItem));
+//         cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+//           cell.border = {
+//             top: { style: 'thin' },
+//             left: { style: 'thin' },
+//             bottom: { style: 'thin' },
+//             right: { style: 'thin' },
+//           };
+//         });
 //       });
-
-//       // Add console data rows after headers
-//       consoleSheetData.push(...consoleRows);
-
-//       const consoleSheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(consoleSheetData);
-//       XLSX.utils.book_append_sheet(wb, consoleSheet, `CONSOLE-${index + 1}`);
 
 //       const groupedByCcrId = this.groupBy(consoleData, 'ccrId');
 
@@ -1489,40 +1416,105 @@ updateGateway(data:any){
 //         if (groupedByCcrId.hasOwnProperty(ccrId)) {
 //           const ccrData = groupedByCcrId[ccrId];
 
-//           const invoicesData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
-//             const exportItem: any = {};
-//             this.invoices.forEach(col => {
-//               if (col.format == 'date') {
-//                 exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-//               } else {
-//                 exportItem[col.header] = item[col.field];
-//               }
-//             });
-//             return exportItem;
-//           });
-//           const invoiceSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoicesData);
-//           XLSX.utils.book_append_sheet(wb, invoiceSheet, `INVOICES-${index + 1}`);
+//           const worksheetInvoices = workbook.addWorksheet(`INVOICES-${index + 1}`);
 
-//           const invoiceItemsData = (Object.values(ccrData) as { [x: string]: any }[]).map(item => {
-//             const exportItem: any = {};
-//             this.invoiceItems.forEach(col => {
-//               if (col.format && col.format == 'date') {
-//                 exportItem[col.header] = this.datePipe.transform(item[col.field], 'dd-MM-yyyy');
-//               } else {
-//                 exportItem[col.header] = item[col.field];
-//               }
-//             });
-//             return exportItem;
+
+//           const headerRow = worksheetInvoices.addRow(Object.values(invoicesColumns.map(col => col.header)));
+
+//           headerRow.eachCell((cell, index) => {
+//             cell.fill = {
+//               type: 'pattern',
+//               pattern: 'solid',
+//               fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+//             };
+//             cell.font = {
+//               bold: true,
+//               color: { argb: '0000' }, // White text color
+//             };
+//             cell.border = {
+//               top: { style: 'thin' },
+//               left: { style: 'thin' },
+//               bottom: { style: 'thin' },
+//               right: { style: 'thin' },
+//             };
 //           });
-//           const invoiceItemSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(invoiceItemsData);
-//           XLSX.utils.book_append_sheet(wb, invoiceItemSheet, `INVOICEITEM-${index + 1}`);
+
+//           ccrData.forEach((item: any) => {
+//             const exportItem: any = {};
+//             invoicesColumns.forEach(col => {
+//               exportItem[col.header] = item[col.field];
+//             });
+
+//             const cellRow =  worksheetInvoices.addRow(Object.values(exportItem));
+//             cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+//               cell.border = {
+//                 top: { style: 'thin' },
+//                 left: { style: 'thin' },
+//                 bottom: { style: 'thin' },
+//                 right: { style: 'thin' },
+//               };
+//             });
+//           });
+
+//           const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${index + 1}`);
+
+//           const headerRow1 = worksheetInvoiceItems.addRow(Object.values(invoiceItemsColumns.map(col => col.header)));
+
+//           headerRow1.eachCell((cell, index) => {
+//             cell.fill = {
+//               type: 'pattern',
+//               pattern: 'solid',
+//               fgColor: { argb: '8EA9DB' }, // Replace with your desired background color
+//             };
+//             cell.font = {
+//               bold: true,
+//               color: { argb: '0000' }, // White text color
+//             };
+//             cell.border = {
+//               top: { style: 'thin' },
+//               left: { style: 'thin' },
+//               bottom: { style: 'thin' },
+//               right: { style: 'thin' },
+//             };
+//           });
+
+//           ccrData.forEach((item: any) => {
+//             const exportItem: any = {};
+//             invoiceItemsColumns.forEach(col => {
+//               exportItem[col.header] = item[col.field];
+//             });
+//             const cellRow =  worksheetInvoiceItems.addRow(Object.values(exportItem));
+//             cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+//               cell.border = {
+//                 top: { style: 'thin' },
+//                 left: { style: 'thin' },
+//                 bottom: { style: 'thin' },
+//                 right: { style: 'thin' },
+//               };
+//             });
+//           });
 //         }
 //       }
 //     }
 //     index++;
 //   }
-//   XLSX.writeFile(
-//     wb,
-//     `CCR-Manifest_${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}.xlsx`
-//   );
+
+//   workbook.xlsx.writeBuffer().then((data) => {
+//     const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+//     // Create a temporary anchor element
+//     const url = window.URL.createObjectURL(blob);
+//     const a = document.createElement('a');
+//     a.style.display = 'none';
+//     a.href = url;
+//     a.download = `CCR_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
+//     document.body.appendChild(a);
+
+//     // Simulate click to trigger download
+//     a.click();
+
+//     // Clean up
+//     window.URL.revokeObjectURL(url);
+//     document.body.removeChild(a);
+//   });
 // }

@@ -73,15 +73,9 @@
 
             <p-chips (onRemove)="chipClear($event)" [(ngModel)]="fieldsWithValue" class="inputborderLess" />
         </div>
-        <div class="d-flex justify-content-end align-items-center">
-            <button type="button" class="btn ml-3 pt-1 px-2 pb-0 addNewbuttom hoverButton" (click)="showTileScreen()" [ngClass]="showList ? 'bgBlack' : ''"><i
-                    class="bi bi-columns-gap" style="font-size: 19px;"></i></button>
-                    <button type="button" class="btn ml-3 pt-1 px-2 pb-0 addNewbuttom hoverButton" (click)="showListScreen()" [ngClass]="showList ? 'bgBlack' : ''"><i
-                        class="bi bi-list" style="font-size: 19px;"></i></button>
-        </div>
     </div>
 
-    <div class="tableProperties" *ngIf="showList">
+    <div class="tableProperties">
         <p-table #customerTag [columns]="cols" [value]="customerTable" class="custom-table" [scrollable]="true"
             selectionMode="single" scrollHeight="calc(100vh - 20.8rem)" [paginator]="true" [rows]="100"
             [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1" [tableStyle]="{'width': '100rem'}"
@@ -134,20 +128,5 @@
                 </tr>
             </ng-template>
         </p-table>
-    </div>
-
-    <div class="tableProperties">
-            <div class="col-2 cardBox" style="width: 18rem;">
-              <div class="w-100 text-center">
-                <div class="status" style="position: absolute; right: 10px; top: 10px;"></div>
-                <img src="../../../../assets/customer/logo.png" class="logoImage" alt="...">
-              </div>
-                <div class="card-body text-center">
-                  <h5 class="titleFont w-100">Binford Ltd</h5>
-                  <p class="card-text text-muted">DHL LTD</p>
-                  <a href="#" class="card-link text-muted">View Details</a>   
-                </div>
-              </div>
-  
     </div>
 </div>
