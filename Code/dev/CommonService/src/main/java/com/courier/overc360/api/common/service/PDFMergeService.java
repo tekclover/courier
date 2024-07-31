@@ -28,7 +28,9 @@ public class PDFMergeService {
 
     private Path fileStorageLocation = null;
 
-    public byte[] mergePdfs(List<InputStream> pdfs, String outputPath) throws IOException {
+    private static final String GHOSTSCRIPT_PATH = "C:/Program Files/gs/gs10.03.1/bin/gswin64c.exe";  // Update with your Ghostscript path
+
+    public byte[] mergePdfs(List<InputStream> pdfs, String outputPath) throws IOException, InterruptedException {
         PDFMergerUtility mergerUtility = new PDFMergerUtility();
         for (InputStream pdf : pdfs) {
             mergerUtility.addSource(pdf);
@@ -41,14 +43,23 @@ public class PDFMergeService {
             try (FileOutputStream fos = new FileOutputStream(outputPath)) {
                 fos.write(mergedBytes);
             }
-            return mergedBytes;
+
+            // Compress the merged PDF
+            String compressedOutputPath = outputPath.replace(".pdf", "_compressed.pdf");
+            compressPdf(outputPath, compressedOutputPath);
+
+            // Read the compressed file back into a byte array
+            byte[] compressedBytes = Files.readAllBytes(Paths.get(compressedOutputPath));
+
+            // Return the compressed PDF bytes
+            return compressedBytes;
         }
     }
     /**
      * @param request
      * @return
      */
-    public byte[] pdfMerge(PDFMerger request) throws IOException {
+    public byte[] pdfMerge(PDFMerger request) throws IOException, InterruptedException {
         System.out.println("Received filePaths: " + request.getFilePaths());
         System.out.println("Received outputPath: " + request.getOutputPath());
         List<InputStream> pdfStreams = new ArrayList<>();
@@ -81,7 +92,7 @@ public class PDFMergeService {
      * @param pdfMergerList
      * @throws IOException
      */
-    public List<String> batchPdfMerge(List<PDFMerger> pdfMergerList) throws IOException {
+    public List<String> batchPdfMerge(List<PDFMerger> pdfMergerList) throws IOException, InterruptedException {
         try {
             List<String> fileNameWithPath = new ArrayList<>();
             for (PDFMerger request : pdfMergerList) {
@@ -155,5 +166,32 @@ public class PDFMergeService {
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(pdfDocument);
         }
+    }
+
+    /**
+     * Compress Pdfs
+     *
+     * @param inputPath
+     * @param outputPath
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void compressPdf(String inputPath, String outputPath) throws IOException, InterruptedException {
+        Process process = new ProcessBuilder(
+                GHOSTSCRIPT_PATH,
+                "-sDEVICE=pdfwrite",
+                "-dCompatibilityLevel=1.4",
+                "-dPDFSETTINGS=/screen",
+                "-dDownsampleColorImages=true",
+                "-dDownsampleGrayImages=true",
+                "-dDownsampleMonoImages=true",
+                "-dColorImageResolution=360",  // Adjusted resolution for color images
+                "-dGrayImageResolution=360",   // Adjusted resolution for grayscale images
+                "-dMonoImageResolution=300",   // Adjusted resolution for monochrome images
+                "-dNOPAUSE",
+                "-dQUIET",
+                "-dBATCH",
+                "-sOutputFile=" + outputPath, inputPath).start();
+        process.waitFor();
     }
 }
