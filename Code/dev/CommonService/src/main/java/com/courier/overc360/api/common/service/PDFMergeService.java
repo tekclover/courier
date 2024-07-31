@@ -28,7 +28,7 @@ public class PDFMergeService {
 
     private Path fileStorageLocation = null;
 
-    private static final String GHOSTSCRIPT_PATH = "C:/Program Files/gs/gs10.03.1/bin/gswin64c.exe";  // Update with your Ghostscript path
+    private static final String GHOSTSCRIPT_PATH = "/snap/bin/gs";  // Update with your Ghostscript path
 
     public byte[] mergePdfs(List<InputStream> pdfs, String outputPath) throws IOException, InterruptedException {
         PDFMergerUtility mergerUtility = new PDFMergerUtility();
