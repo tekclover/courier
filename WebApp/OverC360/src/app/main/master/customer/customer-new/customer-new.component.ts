@@ -63,6 +63,7 @@ export class CustomerNewComponent {
     customerName: [, Validators.required],
     statusId: ["16",],
     statusDescription: [],
+    agingCount: [],
     remark: [],
     referenceField1: [],
     referenceField10: [],
