@@ -4,7 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef4127e2-f703-4ffc-b25d-99a694fd6887" name="Changes" comment="" />
+    <list default="true" id="ef4127e2-f703-4ffc-b25d-99a694fd6887" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/primary/model/imagereference/AddImageReference.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/primary/model/imagereference/AddImageReference.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/primary/repository/PieceDetailsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/primary/repository/PieceDetailsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/consignment/ReplicaConsignmentEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/consignment/ReplicaConsignmentEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/imagereference/ReplicaImageReference.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/imagereference/ReplicaImageReference.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/itemdetails/ReplicaItemDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/itemdetails/ReplicaItemDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/piecedetails/ReplicaPieceDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/model/piecedetails/ReplicaPieceDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/repository/ReplicaPieceDetailsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/replica/repository/ReplicaPieceDetailsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/service/ConsignmentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/service/ConsignmentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/service/ItemDetailsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/service/ItemDetailsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/service/PieceDetailsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/courier/overc360/api/midmile/service/PieceDetailsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.gradle/7.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WrapperService/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WrapperService/.idea/modules.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +44,9 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -23,13 +55,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "E:/PROJECT/OverC360/8-07-24/WrapperService"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/GIT/courier/Code/devBackup/30-7-24/MidMileService&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\PROJECT\OverC360\8-07-24\MidMileService\src\main\java\com\courier\overc360\api\midmile\replica\model" />
