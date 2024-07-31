@@ -35,7 +35,7 @@ import { InventoryScanningReportComponent } from './inventory-scanning-report/in
     PreAlertNewComponent,
     BondedManifestNewComponent,
     CcrNewComponent,    
-    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, DynamicFieldSelectionComponent, PreAlertBulkComponent, ConsoleTrackingReportComponent
+    ConsoleNewComponent, ConsoleEditComponent, ConsoleTransferComponent, ConsoleEditpopupComponent, ConsoleBulkComponent, CcrEditComponent, CcrEditpopupComponent, PreAlertManifestIndicatorComponent, PreAlertUpdateComponent, PreAlertEditpopupComponent, DynamicFieldSelectionComponent, PreAlertBulkComponent, ConsoleTrackingReportComponent, InventoryScanningReportComponent
 
 
   ],
