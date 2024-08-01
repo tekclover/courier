@@ -42,7 +42,7 @@ export class CustomerComponent {
 
   fullDate: any;
   today: any;
-  showList = false;
+  showList = true;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
     const dataToSend = ['Master', 'Customer'];
@@ -101,7 +101,6 @@ export class CustomerComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
           res = this.cs.removeDuplicatesFromArrayList(res, 'customerId');
           this.customerTable = res;
           this.getSearchDropdown();
@@ -319,6 +318,7 @@ export class CustomerComponent {
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
+        res = this.cs.removeDuplicatesFromArrayList(res, 'customerId');
         this.customerTable = res;
         this.spin.hide();
         this.overlayPanel.hide();
