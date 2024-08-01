@@ -44,6 +44,8 @@ import { RouteNewComponent } from './route/route-new/route-new.component';
 import { RouteComponent } from './route/route.component';
 import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
 import { AppUserComponent } from './app-user/app-user.component';
+import { ZoneMasterComponent } from './zone-master/zone-master.component';
+import { ZoneMasterNewComponent } from './zone-master/zone-master-new/zone-master-new.component';
 
 const routes: Routes = [
 
@@ -114,8 +116,9 @@ const routes: Routes = [
   { path: 'route', component: RouteComponent, data: { title: 'Master', module: 'Route' } },
   { path: 'route-new/:code', component: RouteNewComponent, data: { title: 'Master', module: 'Route - Add New' } },
 
- 
-  
+  { path: 'zoneMaster', component: ZoneMasterComponent, data: { title: 'Master', module: 'Zone Master' } },
+  { path: 'zoneMaster-new/:code', component: ZoneMasterNewComponent, data: { title: 'Master', module: 'Zone Master - Add New' } },
+
 ];
 
 @NgModule({
