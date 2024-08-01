@@ -369,7 +369,7 @@ public class ConsignmentService {
             List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     saveConsignment.getCompanyName(), saveConsignment.getLanguageDescription(), saveConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
                     consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserID);
+                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbType(), country, loginUserID);
 
             //Volume
             Double totalPieceVolume = pieceDetails.stream().map(PieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
