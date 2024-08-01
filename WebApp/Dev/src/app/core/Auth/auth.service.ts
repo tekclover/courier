@@ -152,16 +152,14 @@ ngOnDestroy(){
 
   saveTokenToTable(currentToken:any, result:any) {
     let obj: any = {};
-    obj.companyId = result.companyCode;
-    obj.plantId = result.plantId;
-    obj.warehouseId = result.warehouseId;
+    obj.companyId = result.companyId;
     obj.isLoggedIn = true;
     obj.languageId = result.languageId;
     obj.tokenId = currentToken;
     obj.userId = result.userId;
     obj.deviceId = currentToken;
 
-    this.http.post<any>(`/wms-idmaster-service/hhtnotification/createnotification`, obj).subscribe(res => {
+    this.http.post<any>(`/overc-idmaster-service/hhtnotification/createnotification`, obj).subscribe(res => {
     },(err) => {
       this.cs.commonerrorNew(err);
     })
