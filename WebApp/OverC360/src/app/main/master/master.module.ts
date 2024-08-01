@@ -49,7 +49,10 @@ import { AppUserComponent } from './app-user/app-user.component';
 import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
 import { DriverRouteAssignmentComponent } from './driver-route-assignment/driver-route-assignment.component';
 import { DriverRouteAssignmentNewComponent } from './driver-route-assignment/driver-route-assignment-new/driver-route-assignment-new.component';
-
+import { ServiceProviderComponent } from './service-provider/service-provider.component';
+import { ServiceProviderNewComponent } from './service-provider/service-provider-new/service-provider-new.component';
+import { ZoneMasterComponent } from './zone-master/zone-master.component';
+import { ZoneMasterNewComponent } from './zone-master/zone-master-new/zone-master-new.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +102,10 @@ import { DriverRouteAssignmentNewComponent } from './driver-route-assignment/dri
     AppUserNewComponent,
     DriverRouteAssignmentComponent,
     DriverRouteAssignmentNewComponent,
-
+    ServiceProviderComponent,
+    ServiceProviderNewComponent,
+    ZoneMasterComponent,
+    ZoneMasterNewComponent,
 
   ],
   imports: [

@@ -44,6 +44,12 @@ import { RouteNewComponent } from './route/route-new/route-new.component';
 import { RouteComponent } from './route/route.component';
 import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
 import { AppUserComponent } from './app-user/app-user.component';
+import { DriverRouteAssignmentComponent } from './driver-route-assignment/driver-route-assignment.component';
+import { ServiceProviderComponent } from './service-provider/service-provider.component';
+import { ServiceProviderNewComponent } from './service-provider/service-provider-new/service-provider-new.component';
+import { DriverRouteAssignmentNewComponent } from './driver-route-assignment/driver-route-assignment-new/driver-route-assignment-new.component';
+import { ZoneMasterComponent } from './zone-master/zone-master.component';
+import { ZoneMasterNewComponent } from './zone-master/zone-master-new/zone-master-new.component';
 
 const routes: Routes = [
 
@@ -114,8 +120,15 @@ const routes: Routes = [
   { path: 'route', component: RouteComponent, data: { title: 'Master', module: 'Route' } },
   { path: 'route-new/:code', component: RouteNewComponent, data: { title: 'Master', module: 'Route - Add New' } },
 
- 
-  
+  { path: 'driverRouteAssignment', component: DriverRouteAssignmentComponent, data: { title: 'Master', module: 'DriverRouteAssignment' } },
+  { path: 'driverRouteAssignment-new/:code', component: DriverRouteAssignmentNewComponent, data: { title: 'Master', module: 'DriverRouteAssignment - Add New' } },
+
+  { path: 'serviceProvider', component: ServiceProviderComponent, data: { title: 'Master', module: 'ServiceProvider' } },
+  { path: 'serviceProvider-new/:code', component: ServiceProviderNewComponent, data: { title: 'Master', module: 'ServiceProvider - Add New' } },
+
+  { path: 'zoneMaster', component: ZoneMasterComponent, data: { title: 'Master', module: 'Zone Master' } },
+  { path: 'zoneMaster-new/:code', component: ZoneMasterNewComponent, data: { title: 'Master', module: 'Zone Master - Add New' } },
+
 ];
 
 @NgModule({

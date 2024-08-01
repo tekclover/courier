@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Driver Route Assignment </p>
+        <p class="componentHeader f600 mb-0">Service Provider </p>
         <div class="d-flex justify-content-between align-items-center">
             <img type="button" (click)="openCrud('Edit')" src="./assets/common/edit.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
@@ -18,19 +18,19 @@
     <div class="d-flex justify-content-start align-items-center"
         style="margin-bottom: 1.1rem !important;margin-top: 0.8rem;">
         <p-iconField iconPosition="right" class="mr-2">
-            <p-inputIcon type="button" (click)="driverRouteAssignment.toggle($event)" styleClass="pi pi-filter" />
+            <p-inputIcon type="button" (click)="serviceProvider.toggle($event)" styleClass="pi pi-filter" />
             <input type="text" id="toolInput1" pInputText placeholder="Advance filter"
-                (input)="driverRouteAssignmentTag.filterGlobal($any($event.target).value, 'contains')" />
+                (input)="serviceProviderTag.filterGlobal($any($event.target).value, 'contains')" />
         </p-iconField>
 
         <p-overlayPanel [dismissable]="false" appendTo="body" [style]="{ width: '80vw'}"
-            [styleClass]="'custom-overlay-panel'" #driverRouteAssignment>
+            [styleClass]="'custom-overlay-panel'" #serviceProvider>
             <form [formGroup]="searchform" style="padding: 2rem;">
                 <div class="row">
                     <div class="col-3 mb-3 borderRadius12">
-                        <p class="formControlLabel f600 textBlack mb-0">Courier ID</p>
-                        <p-multiSelect placeholder="Select" filter="true" [options]="courierIdDropdown"
-                            formControlName="courierId" appendTo="body" [style]="{'width': '100%'}"
+                        <p class="formControlLabel f600 textBlack mb-0">Service Providers ID</p>
+                        <p-multiSelect placeholder="Select" filter="true" [options]="serviceProvidersDropdown"
+                            formControlName="serviceProviderId" appendTo="body" [style]="{'width': '100%'}"
                             [panelStyle]="{'width':'100%'}" />
                     </div>
                     <div class="col-3 mb-3 borderRadius12">
@@ -56,7 +56,7 @@
     </div>
 
     <div class="tableProperties">
-        <p-table #driverRouteAssignmentTag [columns]="cols" [value]="driverRouteAssignmentTable" class="custom-table"
+        <p-table #serviceProviderTag [columns]="cols" [value]="serviceProviderTable" class="custom-table"
             [scrollable]="true" selectionMode="single" scrollHeight="calc(100vh - 20.8rem)" [paginator]="true"
             [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
             [tableStyle]="{'width': '100rem'}"
@@ -76,16 +76,16 @@
                     </th>
                     <th *ngFor="let col of columns">
                         <input pInputText type="text"
-                            (input)="driverRouteAssignmentTag.filter($any($event.target)?.value, col.field, 'contains')"
-                            [value]="$any(driverRouteAssignmentTag.filters[col.field])?.value" placeholder="Search"
+                            (input)="serviceProviderTag.filter($any($event.target)?.value, col.field, 'contains')"
+                            [value]="$any(serviceProviderTag.filters[col.field])?.value" placeholder="Search"
                             class="p-column-filter">
                     </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [class.selectedRow]="selectedDriverRouteAssignment[0] === rowData">
+                <tr [class.selectedRow]="selectedServiceProvider[0] === rowData">
                     <td style="width: 5rem; justify-content: center;">
-                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedDriverRouteAssignment" class="pl-3"
+                        <p-checkbox (onChange)="onChange()" [(ngModel)]="selectedServiceProvider" class="pl-3"
                             [value]="rowData"></p-checkbox>
                     </td>
                     <td *ngFor="let col of columns" [style]="col.style">

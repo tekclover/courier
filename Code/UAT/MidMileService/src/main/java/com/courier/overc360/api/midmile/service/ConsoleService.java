@@ -1318,10 +1318,11 @@ public class ConsoleService {
 
                 if (ikey.isPresent()) {
                     IKeyValuePair invoice = ikey.get();
-                    dbConsole.setInvoiceType(invoice.getInvoiceType());
                     dbConsole.setInvoiceNumber(invoice.getInvoiceNumber());
                     dbConsole.setInvoiceDate(invoice.getInvoiceDate());
                 }
+                dbConsole.setInvoiceType("FOB");
+                dbConsole.setFreightCurrency("KWD");
                 dbConsole.setUpdatedBy(loginUserID);
                 dbConsole.setUpdatedOn(new Date());
 

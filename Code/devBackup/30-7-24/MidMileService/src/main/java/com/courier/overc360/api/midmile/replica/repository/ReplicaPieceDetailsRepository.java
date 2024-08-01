@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPieceDetails,String >, JpaSpecificationExecutor<ReplicaPieceDetails> {
+public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPieceDetails, String>, JpaSpecificationExecutor<ReplicaPieceDetails> {
 
     Optional<ReplicaPieceDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator
             (String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
@@ -29,10 +29,10 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             " PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB and " +
             " is_deleted = 0 ", nativeQuery = true)
     List<String> getPieceId(@Param(value = "languageId") String languageId,
-                             @Param(value = "companyId") String companyId,
-                             @Param(value = "partnerId") String partnerId,
-                             @Param(value = "partnerHouseAB") String partnerHouseAB,
-                             @Param(value = "partnerMasterAB") String partnerMasterAB);
+                            @Param(value = "companyId") String companyId,
+                            @Param(value = "partnerId") String partnerId,
+                            @Param(value = "partnerHouseAB") String partnerHouseAB,
+                            @Param(value = "partnerMasterAB") String partnerMasterAB);
 
     @Query(value = "Select PIECE_ID as pieceId from tblpiecedetails where " +
             "lang_id = :languageId and c_id = :companyId and partner_id = :partnerId and " +
@@ -68,7 +68,17 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
             "is_deleted = 0", nativeQuery = true)
     List<PieceDetailsImpl> getPieceDetailsImpl(@Param(value = "consignmentId") Long consignmentId);
 
-    List<ReplicaPieceDetails> findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator(String languageId, String companyId, Long consignmentId, Long deletionIndicator);
+//    List<ReplicaPieceDetails> findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator(
+//            String languageId, String companyId, Long consignmentId, Long deletionIndicator);
+
+    @Query(value = "Select * From tblpiecedetails tp\n" +
+            "Where tp.IS_DELETED=0\n" +
+            "And tp.LANG_ID = :languageId\n" +
+            "And tp.C_ID = :companyId\n" +
+            "And tp.CONSIGNMENT_ID = :consignmentId", nativeQuery = true)
+    List<ReplicaPieceDetails> getAllPieceDetails(@Param(value = "languageId") String languageId,
+                                                 @Param(value = "companyId") String companyId,
+                                                 @Param(value = "consignmentId") Long consignmentId);
 
     @Query(value = " \n" +
             "CREATE TABLE #LFO \n" +
@@ -194,5 +204,19 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
                                             @Param(value = "piecesId") List<String> piecesId,
                                             @Param(value = "houseAirwayBill") List<String> houseAirwayBill,
                                             @Param(value = "date") Date date);
-}
 
+
+    Optional<ReplicaPieceDetails> findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
+            String languageId, String companyId, String pieceId, Long deletionIndicator);
+
+    @Query(value = "Select Top 1 tp.CONSIGNMENT_ID\n" +
+            "From tblpiecedetails tp\n" +
+            "Where tp.IS_DELETED=0\n" +
+            "And tp.LANG_ID = :languageId\n" +
+            "And tp.C_ID = :companyId\n" +
+            "And tp.PIECE_ID = :pieceId", nativeQuery = true)
+    Long getConsignmentId(@Param(value = "languageId") String languageId,
+                          @Param(value = "companyId") String companyId,
+                          @Param(value = "pieceId") String pieceId);
+
+}

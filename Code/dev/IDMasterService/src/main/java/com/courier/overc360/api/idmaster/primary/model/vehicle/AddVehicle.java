@@ -14,6 +14,7 @@ public class AddVehicle {
     @NotBlank(message = "languageId is mandatory")
     private String languageId;
 
+    @NotBlank(message = "VehicleRegNumber is mandatory")
     private String vehicleRegNumber;
 
     @NotBlank(message = "Vehicle Name is mandatory")
