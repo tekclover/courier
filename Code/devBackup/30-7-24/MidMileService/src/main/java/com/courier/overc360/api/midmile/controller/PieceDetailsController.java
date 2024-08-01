@@ -48,59 +48,59 @@ public class PieceDetailsController {
     }
 
     //Update
-//    @ApiOperation(response = PieceDetails.class, value = "Update PieceDetails")
-//    @PatchMapping("/{pieceId}")
-//    public ResponseEntity<?> patchPieceDetails(@PathVariable String pieceId, @RequestParam String languageId, @RequestParam String companyId,
-//                                               @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
-//                                               @RequestBody PieceDetails pieceDetails, @RequestParam String loginUserID)
-//            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-//        PieceDetails updatedPieceDetails= pieceDetailsService.updatePieceDetails(languageId, companyId, partnerId,
-//                masterAirwayBill, houseAirwayBill, pieceId,pieceDetails, loginUserID);
-//        return new ResponseEntity<>(updatedPieceDetails, HttpStatus.OK);
-//    }
+    @ApiOperation(response = PieceDetails.class, value = "Update PieceDetails")
+    @PatchMapping("/{pieceId}")
+    public ResponseEntity<?> patchPieceDetails(@PathVariable String pieceId, @RequestParam String languageId, @RequestParam String companyId,
+                                               @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                               @RequestBody UpdatePieceDetails updatePieceDetails, @RequestParam String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        PieceDetails updatedPieceDetails= pieceDetailsService.updatePieceDetails(languageId, companyId, partnerId,
+                masterAirwayBill, houseAirwayBill, pieceId,updatePieceDetails, loginUserID);
+        return new ResponseEntity<>(updatedPieceDetails, HttpStatus.OK);
+    }
 
     //Delete
-//    @ApiOperation(response = PieceDetails.class, value = "Delete PieceDetails")
-//    @DeleteMapping("/{pieceId}")
-//    public  ResponseEntity<?> deletePieceDetails(@PathVariable String pieceId, @RequestParam String languageId, @RequestParam String companyId,
-//                                                 @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
-//                                                 @RequestParam String loginUserID){
-//        pieceDetailsService.deletePieceDetails( languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill,pieceId, loginUserID);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//    /*========================================REPLICA==================================================================*/
-//
-//    //Get All
-//    @ApiOperation(response = ReplicaPieceDetails.class, value = "Get All PieceDetails")
-//    @GetMapping("")
-//    public ResponseEntity<?> getAllPieceDetails(){
-//        List<ReplicaPieceDetails> pieceDetailsList=pieceDetailsService.getAllPieceDetails();
-//        return new ResponseEntity<>(pieceDetailsList, HttpStatus.OK);
-//    }
-//
-//    //Get
-//    @ApiOperation(response = ReplicaPieceDetails.class, value = "Get PieceDetails")
-//    @GetMapping("/{pieceId}")
-//    public ResponseEntity<?> getPieceDetails(@PathVariable String pieceId, @RequestParam String languageId, @RequestParam String companyId,
-//                                             @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill){
-//        ReplicaPieceDetails dbPieceDetails = pieceDetailsService.getReplicaPieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill,pieceId);
-//        return new ResponseEntity<>(dbPieceDetails,HttpStatus.OK);
-//    }
-//
-//    //Find
-//    @ApiOperation(response = ReplicaPieceDetails.class, value = "Find PieceDetails")
-//    @PostMapping("/find")
-//    public ResponseEntity<?> findPieceDetails(@Valid @RequestBody FindPieceDetails findPieceDetails) throws Exception {
-//        List<ReplicaPieceDetails> pieceDetailsList = pieceDetailsService.findPieceDetails(findPieceDetails);
-//        return new ResponseEntity<>(pieceDetailsList, HttpStatus.OK);
-//    }
-//
-//    //getLabelFormOutput
-//    @ApiOperation(response = LabelFormOutput.class, value = "get pdf LabelFormOutput")
-//    @PostMapping("/pdfLabel")
-//    public ResponseEntity<?> findLabelFormOutput(@Valid @RequestBody LabelFormInput labelFormInput) throws Exception {
-//        List<LabelFormOutput> labelFormOutputList = pieceDetailsService.getLabelFormOutput(labelFormInput);
-//        return new ResponseEntity<>(labelFormOutputList, HttpStatus.OK);
-//    }
+    @ApiOperation(response = PieceDetails.class, value = "Delete PieceDetails")
+    @DeleteMapping("/{pieceId}")
+    public  ResponseEntity<?> deletePieceDetails(@PathVariable String pieceId, @RequestParam String languageId, @RequestParam String companyId,
+                                                 @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                                 @RequestParam String loginUserID){
+        pieceDetailsService.deletePieceDetails( languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill,pieceId, loginUserID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    /*========================================REPLICA==================================================================*/
+
+    //Get All
+    @ApiOperation(response = ReplicaPieceDetails.class, value = "Get All PieceDetails")
+    @GetMapping("")
+    public ResponseEntity<?> getAllPieceDetails(){
+        List<ReplicaPieceDetails> pieceDetailsList=pieceDetailsService.getAllPieceDetails();
+        return new ResponseEntity<>(pieceDetailsList, HttpStatus.OK);
+    }
+
+    //Get
+    @ApiOperation(response = ReplicaPieceDetails.class, value = "Get PieceDetails")
+    @GetMapping("/{pieceId}")
+    public ResponseEntity<?> getPieceDetails(@PathVariable String pieceId, @RequestParam String languageId, @RequestParam String companyId,
+                                             @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill){
+        ReplicaPieceDetails dbPieceDetails = pieceDetailsService.getReplicaPieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill,pieceId);
+        return new ResponseEntity<>(dbPieceDetails,HttpStatus.OK);
+    }
+
+    //Find
+    @ApiOperation(response = ReplicaPieceDetails.class, value = "Find PieceDetails")
+    @PostMapping("/find")
+    public ResponseEntity<?> findPieceDetails(@Valid @RequestBody FindPieceDetails findPieceDetails) throws Exception {
+        List<ReplicaPieceDetails> pieceDetailsList = pieceDetailsService.findPieceDetails(findPieceDetails);
+        return new ResponseEntity<>(pieceDetailsList, HttpStatus.OK);
+    }
+
+    //getLabelFormOutput
+    @ApiOperation(response = LabelFormOutput.class, value = "get pdf LabelFormOutput")
+    @PostMapping("/pdfLabel")
+    public ResponseEntity<?> findLabelFormOutput(@Valid @RequestBody LabelFormInput labelFormInput) throws Exception {
+        List<LabelFormOutput> labelFormOutputList = pieceDetailsService.getLabelFormOutput(labelFormInput);
+        return new ResponseEntity<>(labelFormOutputList, HttpStatus.OK);
+    }
 
 }
