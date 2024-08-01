@@ -194,7 +194,13 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
-            // Set LoadType
+            //PieceDetails Count
+            List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
+            int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
+            int totalItemCount = 0;
+            String currency = null;
+
+            // Set LoadType Text
             if (consignmentEntity.getLoadTypeId() != null) {
                 String getLoadType = replicaBondedManifestRepository.getLoadTypeText(
                         languageId, companyId, consignmentEntity.getLoadTypeId());
@@ -203,7 +209,7 @@ public class ConsignmentService {
                 }
             }
 
-            // Set ServiceType
+            // Set ServiceType Text
             if (consignmentEntity.getServiceTypeId() != null) {
                 String getServiceType = replicaBondedManifestRepository.getServiceTypeText(
                         languageId, companyId, consignmentEntity.getServiceTypeId());
@@ -212,12 +218,6 @@ public class ConsignmentService {
                 }
             }
 
-            //PieceDetails Count
-            List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
-            int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
-
-            int totalItemCount = 0;
-            String currency = null;
             for (AddPieceDetails pieceDetails : consignmentEntity.getPieceDetails()) {
                 List<AddItemDetails> addItemDetails = pieceDetails.getItemDetails();
 
@@ -238,7 +238,6 @@ public class ConsignmentService {
                 }
             }
 
-            //ServiceType Text and LoadTypeId Test
             BeanUtils.copyProperties(consignmentEntity, newConsignment, CommonUtils.getNullPropertyNames(consignmentEntity));
 
             if (iKeyValuePair != null) {
@@ -373,7 +372,6 @@ public class ConsignmentService {
             consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
                     saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
                     String.valueOf(totalPieceVolume));
-
 
             consignmentEntities.add(saveConsignment);
         }
@@ -544,6 +542,7 @@ public class ConsignmentService {
 
 
     //MultipleConsignment Delete
+
     /**
      * @param consignmentDeletes
      * @param loginUserID
@@ -601,7 +600,7 @@ public class ConsignmentService {
 
         log.info("given Params to fetch Consoles -- > {}", findConsignment);
         ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
-        return  replicaConsignmentEntityRepository.findAll(spec);
+        return replicaConsignmentEntityRepository.findAll(spec);
     }
 
 
