@@ -48,6 +48,8 @@ import { DriverRouteAssignmentComponent } from './driver-route-assignment/driver
 import { ServiceProviderComponent } from './service-provider/service-provider.component';
 import { ServiceProviderNewComponent } from './service-provider/service-provider-new/service-provider-new.component';
 import { DriverRouteAssignmentNewComponent } from './driver-route-assignment/driver-route-assignment-new/driver-route-assignment-new.component';
+import { ZoneMasterComponent } from './zone-master/zone-master.component';
+import { ZoneMasterNewComponent } from './zone-master/zone-master-new/zone-master-new.component';
 
 const routes: Routes = [
 
@@ -123,6 +125,9 @@ const routes: Routes = [
 
   { path: 'serviceProvider', component: ServiceProviderComponent, data: { title: 'Master', module: 'ServiceProvider' } },
   { path: 'serviceProvider-new/:code', component: ServiceProviderNewComponent, data: { title: 'Master', module: 'ServiceProvider - Add New' } },
+
+  { path: 'zoneMaster', component: ZoneMasterComponent, data: { title: 'Master', module: 'Zone Master' } },
+  { path: 'zoneMaster-new/:code', component: ZoneMasterNewComponent, data: { title: 'Master', module: 'Zone Master - Add New' } },
 
 ];
 

@@ -126,30 +126,28 @@ public class ConsignmentStatusService {
 
 
     /**
-     * Create ConsignmentStatus using params
      *
-     * @param companyId
      * @param languageId
+     * @param languageDesc
+     * @param companyId
+     * @param companyName
      * @param pieceId
-     * @param statusId
      * @param masterAirwayBill
      * @param houseAirwayBill
-     * @param statusText
-     * @param pieceStatusId
-     * @param pieceStatusText
-     * @param eventCode
-     * @param eventText
-     * @param pieceEventCode
-     * @param pieceEventText
-     * @param pieceEventTimestamp
-     * @param eventTimestamp
-     * @param statusTimestamp
+     * @param hawbType
+     * @param hawbTypeId
+     * @param hawbTypeDescription
+     * @param hawbTimeStamp
+     * @param pieceType
+     * @param pieceTypeId
+     * @param pieceTypeDescription
+     * @param pieceTimeStamp
      * @param loginUserID
-     * @return
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws IOException
-     * @throws CsvException
+     * @param partnerHouseAirwayBill
+     * @param partnerMasterAirwayBill
+     * @param bagId
+     * @param hubCode
+     * @param hubName
      */
     @Transactional
     public void insertConsignmentStatusRecord(String languageId, String languageDesc, String companyId, String companyName,
