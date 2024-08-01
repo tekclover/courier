@@ -1,1 +1,0 @@
-import{g as e,n as o}from"./chunk-OEJ43FKK.js";var n=(()=>{let t=class t{constructor(){this.dataArraySubject=new e([]),this.dataArray$=this.dataArraySubject.asObservable()}setData(a){this.dataArraySubject.next(a)}};t.\u0275fac=function(i){return new(i||t)},t.\u0275prov=o({token:t,factory:t.\u0275fac,providedIn:"root"});let r=t;return r})();export{n as a};
