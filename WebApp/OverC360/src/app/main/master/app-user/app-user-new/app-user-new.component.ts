@@ -134,12 +134,16 @@ export class AppUserNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  routeIdList: any[] = [];
+  hubCodeList: any[] = [];
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
-      this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.company.url,    
+      this.cas.dropdownlist.setup.route.url,
+      this.cas.dropdownlist.setup.hub.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);

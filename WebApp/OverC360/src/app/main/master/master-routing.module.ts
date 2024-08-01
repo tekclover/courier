@@ -107,7 +107,15 @@ const routes: Routes = [
 
   { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status Event' } },
   { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status Event - Add New' } },
+  
+  { path: 'billMode', component: BillModeComponent, data: { title: 'Master', module: 'Bill Mode' } },
+  { path: 'billMode-new/:code', component: BillModeNewComponent, data: { title: 'Master', module: 'Bill Mode - Add New' } },
 
+  { path: 'route', component: RouteComponent, data: { title: 'Master', module: 'Route' } },
+  { path: 'route-new/:code', component: RouteNewComponent, data: { title: 'Master', module: 'Route - Add New' } },
+
+ 
+  
 ];
 
 @NgModule({
