@@ -386,11 +386,6 @@ public class PieceDetailsService {
                 newPieceDetails.setUpdatedBy(null);
                 newPieceDetails.setUpdatedOn(null);
 
-
-                //ReferenceImage Create
-                Set<ImageReference> referenceImageList = new HashSet<>();
-
-
                 //ItemDetails Create
                 List<ItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
                         companyName, languageName, partnerName, houseAirwayBill, masterAirwayBill,

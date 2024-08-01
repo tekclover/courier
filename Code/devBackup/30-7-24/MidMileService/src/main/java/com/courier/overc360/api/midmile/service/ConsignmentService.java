@@ -358,7 +358,6 @@ public class ConsignmentService {
             }
             String country = consignmentEntity.getOriginDetails().getCountry();
 
-//            newConsignment.setPieceDetails(pieceDetails);
             ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
 
             // PieceDetails Save
@@ -366,6 +365,15 @@ public class ConsignmentService {
                     saveConsignment.getCompanyName(), saveConsignment.getLanguageDescription(), saveConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
                     consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
                     saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserID);
+
+            //Volume
+            Double totalPieceVolume = pieceDetails.stream().map(PieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
+
+            //Consignment_entity Set
+            consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
+                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
+                    String.valueOf(totalPieceVolume));
+
 
             consignmentEntities.add(saveConsignment);
         }
