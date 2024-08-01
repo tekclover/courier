@@ -16,6 +16,8 @@ public class UpdateZoneMaster {
 
     private String statusId;
 
+    private String remark;
+
     private String referenceField1;
 
     private String referenceField2;
