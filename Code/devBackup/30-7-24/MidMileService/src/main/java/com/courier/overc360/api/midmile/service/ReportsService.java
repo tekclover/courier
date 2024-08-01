@@ -62,7 +62,7 @@ public class ReportsService {
 
         MobileDashboard mobileDashboard = new MobileDashboard();
         long consoleCount = replicaConsoleRepository.getMobileDashboardCount(
-                mobileDashboardRequest.getLanguageId(), mobileDashboardRequest.getCompanyId(), "5");
+                mobileDashboardRequest.getLanguageId(), mobileDashboardRequest.getCompanyId(), "45");
         log.info("consoleCount --> {}", consoleCount);
         mobileDashboard.setConsoleCount(consoleCount);
         return mobileDashboard;
