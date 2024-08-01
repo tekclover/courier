@@ -37,9 +37,12 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">App User ID</p>
-                                <input maxlength="50" pInputText pKeyFilter="alphanum"
-                                    formControlName="appUserId" class="w-100" pInputText placeholder="Enter" />
+                                <p class="formControlLabel f600 textBlack mb-0 required">App User ID</p>
+                                <input maxlength="100" pInputText formControlName="appUserId"
+                                    [ngClass]="form.get('appUserId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    class="w-100" pInputText placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('appUserId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">App User Name</p>
@@ -74,12 +77,13 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Vehicle Reg No</p>
-                                <input maxlength="100" pInputText formControlName="vehicleRegNumber"
-                                    [ngClass]="form.get('vehicleRegNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('vehicleRegNumber')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Vehicle Reg No</p>
+                                <p-dropdown [options]="vehcileRegNoList" placeholder="Select" filter="true"
+                                    formControlName="vehicleRegNumber" appendTo="body" [style]="{'width': '100%'}"
+                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
+                                    [ngClass]="form.get('vehicleRegNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('vehicleRegNumber')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Route ID</p>

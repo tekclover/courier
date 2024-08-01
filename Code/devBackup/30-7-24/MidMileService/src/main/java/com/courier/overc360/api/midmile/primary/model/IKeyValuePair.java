@@ -50,5 +50,8 @@ public interface IKeyValuePair {
 
     String getInvoiceDate();
 
+    String getType();
+
+    String getTypeText();
 
 }

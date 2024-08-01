@@ -48,7 +48,7 @@ export class AppUserNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    appUserId: [],
+    appUserId: [, Validators.required],
     appUserName: [, Validators.required],
     appUserType: [],
     vehicleRegNumber: [],
@@ -59,6 +59,7 @@ export class AppUserNewComponent {
     statusId: ["16",],
     statusDescription: [],
     remark: [],
+    mobileNumber: [],
     referenceField1: [],
     referenceField10: [],
     referenceField2: [],
@@ -136,6 +137,7 @@ export class AppUserNewComponent {
   companyIdList: any[] = [];
   routeIdList: any[] = [];
   hubCodeList: any[] = [];
+  vehcileRegNoList: any[] = [];
 
   dropdownlist() {
     this.spin.show();
@@ -144,10 +146,16 @@ export class AppUserNewComponent {
       this.cas.dropdownlist.setup.company.url,    
       this.cas.dropdownlist.setup.route.url,
       this.cas.dropdownlist.setup.hub.url,
+      this.cas.dropdownlist.setup.vehicle.url,
+
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.routeIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.route.key);
+        this.hubCodeList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.hub.key);
+        this.vehcileRegNoList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.vehicle.key);
+
         this.spin.hide();
       },
       error: (err: any) => {
