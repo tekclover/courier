@@ -136,6 +136,9 @@ public class ConsignmentEntity implements Serializable {
     @Column(name = "CONS_BAG_ID")
     private Long consignmentBagId;
 
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
     @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
     private String consignmentValueLocal;
 

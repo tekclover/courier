@@ -162,6 +162,9 @@ public class ReplicaConsignmentEntity implements Serializable {
     @Column(name = "COUNTRY_OF_DESTINATION", columnDefinition = "nvarchar(50)")
     private String countryOfDestination;
 
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
     @Column(name = "ESTIMATED_DEPARTURE_TIME")
     private Date estimatedDepartureTime;
 
