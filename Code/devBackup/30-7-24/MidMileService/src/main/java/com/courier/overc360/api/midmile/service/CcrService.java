@@ -147,21 +147,21 @@ public class CcrService {
 
             for (Console addCcr : addCcrList) {
 
-                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndConsoleIdAndDeletionIndicator(
-                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(),
-                        addCcr.getPieceId(), addCcr.getConsoleId(), 0L);
+//                Optional<Ccr> duplicateConsole = ccrRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndConsoleIdAndDeletionIndicator(
+//                        addCcr.getCompanyId(), addCcr.getLanguageId(), addCcr.getPartnerId(), addCcr.getPartnerMasterAirwayBill(), addCcr.getPartnerHouseAirwayBill(),
+//                        addCcr.getPieceId(), addCcr.getConsoleId(), 0L);
+//
+//                if (duplicateConsole.isEmpty()) {
+                Ccr newCcr = new Ccr();
+                BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
+                newCcr.setCcrId(CCR_ID);
+                newCcr.setDeletionIndicator(0L);
+                newCcr.setCreatedBy(loginUserID);
+                newCcr.setCreatedOn(new Date());
+                newCcr.setUpdatedBy(loginUserID);
+                newCcr.setUpdatedOn(new Date());
 
-                if (duplicateConsole.isEmpty()) {
-                    Ccr newCcr = new Ccr();
-                    BeanUtils.copyProperties(addCcr, newCcr, CommonUtils.getNullPropertyNames(addCcr));
-                    newCcr.setCcrId(CCR_ID);
-                    newCcr.setDeletionIndicator(0L);
-                    newCcr.setCreatedBy(loginUserID);
-                    newCcr.setCreatedOn(new Date());
-                    newCcr.setUpdatedBy(loginUserID);
-                    newCcr.setUpdatedOn(new Date());
-
-                    Ccr createdCcr = ccrRepository.save(newCcr);
+                Ccr createdCcr = ccrRepository.save(newCcr);
 
 //                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId(),
 //                            createdCcr.getPartnerId(), createdCcr.getCompanyId(), createdCcr.getLanguageId(),
@@ -169,24 +169,24 @@ public class CcrService {
 //                            createdCcr.getPieceId());
 
 //                    // Update CCR_ID in Console Table - equivalent records
-//                    try {
-//                        int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(createdCcr.getConsoleId(),
-//                                createdCcr.getCcrId(), createdCcr.getLanguageId(), createdCcr.getCompanyId());
-//                        log.info("No of Consoles with consoleId - {} updated with ccrId - {} --> {}", createdCcr.getConsoleId(), createdCcr.getCcrId(), noOfRecordsUpdated);
-//                    } catch (Exception e) {
-//                        log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", createdCcr.getCcrId(), createdCcr.getConsoleId(), e.getMessage());
-//                    }
-
-                    createdCcrList.add(createdCcr);
-                }
-                // Update CCR_ID in Console Table - equivalent records
                 try {
-                    int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(addCcr.getConsoleId(),
-                            addCcr.getCcrId(), addCcr.getLanguageId(), addCcr.getCompanyId());
-                    log.info("No of Consoles with consoleId - {} updated with ccrId - {} --> {}", addCcr.getConsoleId(), addCcr.getCcrId(), noOfRecordsUpdated);
+                    int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(createdCcr.getConsoleId(),
+                            createdCcr.getCcrId(), createdCcr.getLanguageId(), createdCcr.getCompanyId());
+                    log.info("No of Consoles with consoleId - {} updated with ccrId - {} --> {}", createdCcr.getConsoleId(), createdCcr.getCcrId(), noOfRecordsUpdated);
                 } catch (Exception e) {
-                    log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", addCcr.getCcrId(), addCcr.getConsoleId(), e.getMessage());
+                    log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", createdCcr.getCcrId(), createdCcr.getConsoleId(), e.getMessage());
                 }
+
+                createdCcrList.add(createdCcr);
+//                }
+//                // Update CCR_ID in Console Table - equivalent records
+//                try {
+//                    int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(addCcr.getConsoleId(),
+//                            addCcr.getCcrId(), addCcr.getLanguageId(), addCcr.getCompanyId());
+//                    log.info("No of Consoles with consoleId - {} updated with ccrId - {} --> {}", addCcr.getConsoleId(), addCcr.getCcrId(), noOfRecordsUpdated);
+//                } catch (Exception e) {
+//                    log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", addCcr.getCcrId(), addCcr.getConsoleId(), e.getMessage());
+//                }
             }
             return createdCcrList;
         } catch (Exception e) {
