@@ -49,7 +49,7 @@ export class VehicleNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    vehicleRegNumber: [],
+    vehicleRegNumber: [, Validators.required],
     vehicleName: [, Validators.required],
     vehicleType: [],
     routeId: [],
@@ -132,16 +132,24 @@ export class VehicleNewComponent {
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  routeIdList: any[] = [];
+  hubCodeList: any[] = [];
 
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.route.url,
+      this.cas.dropdownlist.setup.hub.url,
+
+
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
+        this.routeIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.route.key);
+        this.hubCodeList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.hub.key);
         this.spin.hide();
       },
       error: (err: any) => {

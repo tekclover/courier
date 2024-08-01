@@ -8,6 +8,7 @@ import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageRef
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
 import com.courier.overc360.api.midmile.primary.repository.ItemDetailsRepository;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -137,6 +139,41 @@ public class ItemDetailsService {
     }
 
     /**
+     * Update ItemDetails
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @param pieceItemId
+     * @param loginUserID
+     * @param updateItemDetails
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    @Transactional
+    public ItemDetails updateItemDetails(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                         String houseAirwayBill, String pieceId, String pieceItemId,
+                                         String loginUserID, UpdateItemDetails updateItemDetails)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        try {
+            ItemDetails dbItemDetails = getItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId);
+            BeanUtils.copyProperties(updateItemDetails, dbItemDetails, CommonUtils.getNullPropertyNames(updateItemDetails));
+            dbItemDetails.setUpdatedBy(loginUserID);
+            dbItemDetails.setUpdatedOn(new Date());
+            return itemDetailsRepository.save(dbItemDetails);
+        } catch (Exception e) {
+            // Error Log
+            createItemDetailsLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Delete ItemDetails
      *
      * @param languageId
@@ -232,6 +269,17 @@ public class ItemDetailsService {
         }
 
 
+    }
+
+    /**
+     * Get All ItemDetails
+     *
+     * @return
+     */
+    public List<ReplicaItemDetails> getAllItemDetails() {
+        List<ReplicaItemDetails> itemDetailsList = replicaItemDetailsRepository.findAll();
+        itemDetailsList = itemDetailsList.stream().filter(i -> i.getDeletionIndicator() == 0).collect(Collectors.toList());
+        return itemDetailsList;
     }
 
     //=============================================ItemDetails_ErrorLog=======================================================

@@ -194,7 +194,13 @@ public class ConsignmentService {
                 throw new BadRequestException("Given value Getting Duplicate");
             }
 
-            // Set LoadType
+            //PieceDetails Count
+            List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
+            int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
+            int totalItemCount = 0;
+            String currency = null;
+
+            // Set LoadType Text
             if (consignmentEntity.getLoadTypeId() != null) {
                 String getLoadType = replicaBondedManifestRepository.getLoadTypeText(
                         languageId, companyId, consignmentEntity.getLoadTypeId());
@@ -203,7 +209,7 @@ public class ConsignmentService {
                 }
             }
 
-            // Set ServiceType
+            // Set ServiceType Text
             if (consignmentEntity.getServiceTypeId() != null) {
                 String getServiceType = replicaBondedManifestRepository.getServiceTypeText(
                         languageId, companyId, consignmentEntity.getServiceTypeId());
@@ -212,12 +218,6 @@ public class ConsignmentService {
                 }
             }
 
-            //PieceDetails Count
-            List<AddPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
-            int pieceCount = pieceDetailsList != null ? pieceDetailsList.size() : 0;
-
-            int totalItemCount = 0;
-            String currency = null;
             for (AddPieceDetails pieceDetails : consignmentEntity.getPieceDetails()) {
                 List<AddItemDetails> addItemDetails = pieceDetails.getItemDetails();
 
@@ -238,7 +238,6 @@ public class ConsignmentService {
                 }
             }
 
-            //ServiceType Text and LoadTypeId Test
             BeanUtils.copyProperties(consignmentEntity, newConsignment, CommonUtils.getNullPropertyNames(consignmentEntity));
 
             if (iKeyValuePair != null) {
@@ -259,7 +258,6 @@ public class ConsignmentService {
                 newConsignment.setSubProductId(getProductIdFromCustomer.getSubProductId());
                 newConsignment.setSubProductName(getProductIdFromCustomer.getSubProductName());
             }
-
 
             if (pieceCount == 0) {
                 newConsignment.setNoOfPackageHawb("1");
@@ -359,14 +357,22 @@ public class ConsignmentService {
             }
             String country = consignmentEntity.getOriginDetails().getCountry();
 
+            ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
+
             // PieceDetails Save
             List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
-                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
-                    consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    newConsignment.getStatusId(), newConsignment.getEventCode(), newConsignment.getStatusDescription(), newConsignment.getEventText(), country, loginUserID);
+                    saveConsignment.getCompanyName(), saveConsignment.getLanguageDescription(), saveConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
+                    consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+                    saveConsignment.getStatusId(), saveConsignment.getEventCode(), saveConsignment.getStatusDescription(), saveConsignment.getEventText(), country, loginUserID);
 
-            newConsignment.setPieceDetails(pieceDetails);
-            ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
+            //Volume
+            Double totalPieceVolume = pieceDetails.stream().map(PieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
+
+            //Consignment_entity Set
+            consignmentEntityRepository.updateConsignment(saveConsignment.getCompanyId(), saveConsignment.getLanguageId(),
+                    saveConsignment.getPartnerId(), saveConsignment.getHouseAirwayBill(), saveConsignment.getMasterAirwayBill(),
+                    String.valueOf(totalPieceVolume));
+
             consignmentEntities.add(saveConsignment);
         }
 
@@ -400,6 +406,9 @@ public class ConsignmentService {
                 throw new BadRequestException("Given Values Doesn't exist CompanyId " + consignment.getCompanyId() + " LanguageId " + consignment.getLanguageId() +
                         " PartnerId " + consignment.getPartnerId() + " MasterAirwayBillNo " + consignment.getMasterAirwayBill() + " HouseAirwayBillNo " + consignment.getHouseAirwayBill());
             }
+
+            //Null validation code
+            consignment = updateConsignmentNullValidation(consignment);
 
             // Update Consignment fields
             BeanUtils.copyProperties(consignment, existingConsignmentEntity, CommonUtils.getNullPropertyNames(consignment));
@@ -533,6 +542,7 @@ public class ConsignmentService {
 
 
     //MultipleConsignment Delete
+
     /**
      * @param consignmentDeletes
      * @param loginUserID
@@ -590,7 +600,7 @@ public class ConsignmentService {
 
         log.info("given Params to fetch Consoles -- > {}", findConsignment);
         ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
-        return  replicaConsignmentEntityRepository.findAll(spec);
+        return replicaConsignmentEntityRepository.findAll(spec);
     }
 
 
