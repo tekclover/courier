@@ -9,6 +9,8 @@ import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
 import { ServiceProviderService } from '../service-provider.service';
+import { ProvinceService } from '../../../id-masters/province/province.service';
+import { DistrictService } from '../../../id-masters/district/district.service';
 
 @Component({
   selector: 'app-service-provider-new',
@@ -27,6 +29,8 @@ export class ServiceProviderNewComponent {
     private router: Router,
     private path: PathNameService,
     private fb: FormBuilder,
+    private provinceService: ProvinceService,
+    private districtService: DistrictService,
     private service: ServiceProviderService,
     private numberRangeService: NumberrangeService,
     private messageService: MessageService,
@@ -92,7 +96,7 @@ export class ServiceProviderNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Master', 'ServiceProvider', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Service Provider', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -116,6 +120,7 @@ export class ServiceProviderNewComponent {
   provinceIdList: any[] = [];
   districtIdList: any[] = [];
   routeIdList: any[] = [];
+  hubCodeList: any[] = [];
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
@@ -125,6 +130,7 @@ export class ServiceProviderNewComponent {
       this.cas.dropdownlist.setup.province.url,
       this.cas.dropdownlist.setup.district.url,
       this.cas.dropdownlist.setup.route.url,
+      this.cas.dropdownlist.setup.hub.url,
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
@@ -133,6 +139,7 @@ export class ServiceProviderNewComponent {
         this.provinceIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.province.key);
         this.districtIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.district.key);
         this.routeIdList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.route.key);
+        this.hubCodeList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.hub.key);
         this.spin.hide();
       },
       error: (err: any) => {
@@ -200,6 +207,44 @@ export class ServiceProviderNewComponent {
       });
     }
   }
+  districtChanged() {
 
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.cityId = [this.form.controls.cityId.value]
+
+    this.districtIdList = [];
+    this.spin.show();
+    this.districtService.search(obj).subscribe({
+      next: (result : any) => {
+        this.districtIdList = this.cas.foreachlist(result, { key: 'districtId', value: 'districtName' });
+        this.spin.hide();
+      }, error: (err : any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
+  }
+  provinceChanged() {
+
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.cityId = [this.form.controls.cityId.value];
+
+
+    this.provinceIdList = [];
+    this.spin.show();
+    this.provinceService.search(obj).subscribe({
+      next: (result : any) => {
+        this.provinceIdList = this.cas.foreachlist(result, { key: 'provinceId', value: 'provinceName' });
+        this.spin.hide();
+      }, error: (err : any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
+  }
 
 }

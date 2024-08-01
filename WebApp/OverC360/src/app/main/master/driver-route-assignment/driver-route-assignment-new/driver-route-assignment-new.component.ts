@@ -57,7 +57,7 @@ export class DriverRouteAssignmentNewComponent {
 
   //form builder initialize
   form = this.fb.group({
-    courierId: [],
+    courierId: [, Validators.required],
     courierType: [],
     routeId: [, Validators.required],
     languageId: [this.auth.languageId, Validators.required],
@@ -104,7 +104,7 @@ export class DriverRouteAssignmentNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Setup', 'DriverRouteAssignment', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Driver Route Assignment', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -129,8 +129,9 @@ export class DriverRouteAssignmentNewComponent {
   companyIdList: any[] = [];
   courierTypeList: any[] = []; 
   hubCodeList: any[] = [];
-  vehicleRegNumberList: any[] = []; 
   routeIdList: any[] = [];
+  vehicleRegNumberList: any[] = []; 
+  
 
 
   dropdownlist() {
@@ -139,8 +140,9 @@ export class DriverRouteAssignmentNewComponent {
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
       this.cas.dropdownlist.setup.hub.url,
-      this.cas.dropdownlist.setup.vehicle.url,
       this.cas.dropdownlist.setup.route.url,
+      this.cas.dropdownlist.setup.vehicle.url,
+     
 
     ]).subscribe({
       next: (results: any) => {
@@ -161,6 +163,7 @@ export class DriverRouteAssignmentNewComponent {
   }
   fill(line: any) {
     this.form.patchValue(line);
+    this.courierTypeChanged();
     this.form.controls.updatedOn.patchValue(this.cs.dateExcel(this.form.controls.updatedOn.value));
     this.form.controls.createdOn.patchValue(this.cs.dateExcel(this.form.controls.createdOn.value));
   }

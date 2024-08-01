@@ -39,34 +39,37 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Courier Type</p>
                                 <p-dropdown [options]="courierType" formControlName="courierType" appendTo="body"placeholder="Select"
-                                    [style]="{'width': '100%'}" (onChange)="courierTypeChanged()" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                    [style]="{'width': '100%'}" (onChange)="courierTypeChanged()"[panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('courierType')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Courier Id</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Courier ID</p>
                                 <p-dropdown [options]="courierTypeList" formControlName="courierId" appendTo="body"placeholder="Select"
-                                [ngClass]="form.get('vehicleName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                [ngClass]="form.get('courierId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}"  [panelStyle]="{'width':'100%'}" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Route ID</p>
-                                <p-dropdown [options]="routeIdList" formControlName="routeId" appendTo="body"placeholder="Select"
-                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                <p-dropdown [options]="routeIdList" placeholder="Select" filter="true"
+                                formControlName="routeId"
+                                [ngClass]="form.get('routeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}"
+                                [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('routeId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Vehicle Reg No</p>
                                 <p-dropdown [options]="vehicleRegNumberList" formControlName="vehicleRegNumber" appendTo="body"placeholder="Select"
-                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                [style]="{'width': '100%'}"  [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('vehicleRegNumber')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Assigned Hub Code</p>
                                 <p-dropdown [options]="hubCodeList" formControlName="assignedHubCode" appendTo="body"placeholder="Select"
-                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('assignedHubCode')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
