@@ -365,11 +365,16 @@ public class ConsignmentService {
 
             ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
 
-            // PieceDetails Save
+//             PieceDetails Save
+//            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+//                    saveConsignment.getCompanyName(), saveConsignment.getLanguageDescription(), saveConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
+//                    consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+//                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbType(), country, loginUserID);
+
             List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
-                    saveConsignment.getCompanyName(), saveConsignment.getLanguageDescription(), saveConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
-                    consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbType(), country, loginUserID);
+                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbTypeDescription(), country, loginUserID);
 
             //Volume
             Double totalPieceVolume = pieceDetails.stream().map(PieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();

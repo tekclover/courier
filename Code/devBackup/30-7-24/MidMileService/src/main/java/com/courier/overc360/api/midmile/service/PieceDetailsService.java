@@ -201,10 +201,10 @@ public class PieceDetailsService {
      */
     @Transactional
     public List<PieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
-                                                     String companyName, String languageName, String partnerName, String partnerHawBill,
-                                                     String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
-                                                     String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
-                                                     String eventText, String country, String loginUserID)
+                                                        String companyName, String languageName, String partnerName, String partnerHawBill,
+                                                        String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
+                                                        String volume, String weightUnit, String codAmount, String hawbTypeId, String hawbType, String hawbDescription,
+                                                        String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<PieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -244,14 +244,13 @@ public class PieceDetailsService {
                         newPieceDetails.setCompanyName(companyName);
                         newPieceDetails.setLanguageDescription(languageName);
                         newPieceDetails.setPartnerName(partnerName);
-                        newPieceDetails.setPieceStatusId(statusId);
-                        newPieceDetails.setPieceEventCode(eventCode);
-                        newPieceDetails.setPieceStatusText(statusText);
-                        newPieceDetails.setPieceEventText(eventText);
-                        newPieceDetails.setPieceStatusTimestamp(new Date());
-                        newPieceDetails.setPieceEventTimestamp(new Date());
+                        //HawbPieceStatus
+                        newPieceDetails.setPieceTypeId(hawbTypeId);
+                        newPieceDetails.setPieceType(hawbType);
+                        newPieceDetails.setPieceTypeDescription(hawbDescription);
+                        newPieceDetails.setPieceTimeStamp(new Date());
                         newPieceDetails.setTags(String.valueOf(itemCount));
-                        if (hsCode != null) {
+                        if(hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
                         }
                         newPieceDetails.setDeletionIndicator(0L);
@@ -334,7 +333,7 @@ public class PieceDetailsService {
                                 savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
                                 savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill());
+                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill() );
 
                         pieceDetailsList.add(savePieceDetails);
                     }
@@ -372,18 +371,17 @@ public class PieceDetailsService {
                         newPieceDetails.setVolume(String.valueOf(itemVolumeCalculation));
                     }
                 }
-                newPieceDetails.setCodAmount(codAmount);
-                newPieceDetails.setPieceStatusId(statusId);
-                newPieceDetails.setPieceEventCode(eventCode);
-                newPieceDetails.setPieceStatusText(statusText);
-                newPieceDetails.setPieceEventText(eventText);
-                newPieceDetails.setPieceStatusTimestamp(new Date());
-                newPieceDetails.setPieceEventTimestamp(new Date());
+
+                newPieceDetails.setPieceTypeId(hawbTypeId);
+                newPieceDetails.setPieceType(hawbType);
+                newPieceDetails.setPieceTypeDescription(hawbDescription);
+                newPieceDetails.setPieceTimeStamp(new Date());
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
                 newPieceDetails.setUpdatedBy(null);
                 newPieceDetails.setUpdatedOn(null);
+                newPieceDetails.setCodAmount(codAmount);
 
                 //ItemDetails Create
                 List<ItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
