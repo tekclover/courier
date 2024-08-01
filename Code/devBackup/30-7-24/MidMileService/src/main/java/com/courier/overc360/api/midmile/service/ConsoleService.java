@@ -1507,42 +1507,60 @@ public class ConsoleService {
             dbConsole.setUpdatedBy(loginUserID);
             dbConsole.setUpdatedOn(new Date());
 
-            // Get Status Desc
-            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-                Optional<String> getStatusOpt =
-                        consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
+            Optional<IKeyValuePair> getStatusOpt =
+                    consignmentEntityRepository.statusText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
 
-                if (getStatusOpt.isPresent()) {
-                    String ikey = getStatusOpt.get();
+            if (getStatusOpt.isPresent()) {
+                IKeyValuePair ikey = getStatusOpt.get();
 
-                    dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
-                    dbConsole.setHawbTypeDescription(ikey);
-                    dbConsole.setHawbTimeStamp(new Date());
+                dbConsole.setHawbType(ikey.getType());
+                dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                dbConsole.setHawbTypeDescription(ikey.getTypeText());
+                dbConsole.setHawbTimeStamp(new Date());
 
-                    dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
-                    dbConsole.setPieceTypeDescription(ikey);
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
-            } else if (updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
-                Optional<String> getEventStats =
-                        consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
-
-                if (getEventStats.isPresent()) {
-                    String ikey = getEventStats.get();
-
-                    dbConsole.setHawbType("EVENT");
-                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
-                    dbConsole.setHawbTypeDescription(ikey);
-                    dbConsole.setHawbTimeStamp(new Date());
-
-                    dbConsole.setPieceType("EVENT");
-                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
-                    dbConsole.setPieceTypeDescription(ikey);
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
+                dbConsole.setPieceType(ikey.getType());
+                dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                dbConsole.setPieceTypeDescription(ikey.getTypeText());
+                dbConsole.setPieceTimeStamp(new Date());
             }
+
+
+//            // Get Status Desc
+//            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+//                Optional<String> getStatusOpt =
+//                        consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
+//
+//                if (getStatusOpt.isPresent()) {
+//                    String ikey = getStatusOpt.get();
+//
+//                    dbConsole.setHawbType("STATUS");
+//                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+//                    dbConsole.setHawbTypeDescription(ikey);
+//                    dbConsole.setHawbTimeStamp(new Date());
+//
+//                    dbConsole.setPieceType("STATUS");
+//                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+//                    dbConsole.setPieceTypeDescription(ikey);
+//                    dbConsole.setPieceTimeStamp(new Date());
+//                }
+//            } else if (updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
+//                Optional<String> getEventStats =
+//                        consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
+//
+//                if (getEventStats.isPresent()) {
+//                    String ikey = getEventStats.get();
+//
+//                    dbConsole.setHawbType("EVENT");
+//                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+//                    dbConsole.setHawbTypeDescription(ikey);
+//                    dbConsole.setHawbTimeStamp(new Date());
+//
+//                    dbConsole.setPieceType("EVENT");
+//                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+//                    dbConsole.setPieceTypeDescription(ikey);
+//                    dbConsole.setPieceTimeStamp(new Date());
+//                }
+//            }
             Console updatedConsole = consoleRepository.save(dbConsole);
 
             if (updatedConsole != null) {
@@ -1607,42 +1625,59 @@ public class ConsoleService {
             }
             BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
 
-            // Get Status Desc
-            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-                Optional<String> getStatusOpt =
-                        consignmentEntityRepository.statusEventText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
+            Optional<IKeyValuePair> getStatusOpt =
+                    consignmentEntityRepository.statusText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
 
-                if (getStatusOpt.isPresent()) {
-                    String ikey = getStatusOpt.get();
+            if (getStatusOpt.isPresent()) {
+                IKeyValuePair ikey = getStatusOpt.get();
 
-                    dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
-                    dbConsole.setHawbTypeDescription(ikey);
-                    dbConsole.setHawbTimeStamp(new Date());
+                dbConsole.setHawbType(ikey.getType());
+                dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                dbConsole.setHawbTypeDescription(ikey.getTypeText());
+                dbConsole.setHawbTimeStamp(new Date());
 
-                    dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
-                    dbConsole.setPieceTypeDescription(ikey);
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
-            } else if (dbConsole.getHawbType().equalsIgnoreCase("EVENT")) {
-                Optional<String> getEventStats =
-                        consignmentEntityRepository.statusEventText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
-
-                if (getEventStats.isPresent()) {
-                    String ikey = getEventStats.get();
-
-                    dbConsole.setHawbType("EVENT");
-                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
-                    dbConsole.setHawbTypeDescription(ikey);
-                    dbConsole.setHawbTimeStamp(new Date());
-
-                    dbConsole.setPieceType("EVENT");
-                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
-                    dbConsole.setPieceTypeDescription(ikey);
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
+                dbConsole.setPieceType(ikey.getType());
+                dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                dbConsole.setPieceTypeDescription(ikey.getTypeText());
+                dbConsole.setPieceTimeStamp(new Date());
             }
+
+//            // Get Status Desc
+//            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+//                Optional<String> getStatusOpt =
+//                        consignmentEntityRepository.statusEventText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
+//
+//                if (getStatusOpt.isPresent()) {
+//                    String ikey = getStatusOpt.get();
+//
+//                    dbConsole.setHawbType("STATUS");
+//                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
+//                    dbConsole.setHawbTypeDescription(ikey);
+//                    dbConsole.setHawbTimeStamp(new Date());
+//
+//                    dbConsole.setPieceType("STATUS");
+//                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
+//                    dbConsole.setPieceTypeDescription(ikey);
+//                    dbConsole.setPieceTimeStamp(new Date());
+//                }
+//            } else if (dbConsole.getHawbType().equalsIgnoreCase("EVENT")) {
+//                Optional<String> getEventStats =
+//                        consignmentEntityRepository.statusEventText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
+//
+//                if (getEventStats.isPresent()) {
+//                    String ikey = getEventStats.get();
+//
+//                    dbConsole.setHawbType("EVENT");
+//                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
+//                    dbConsole.setHawbTypeDescription(ikey);
+//                    dbConsole.setHawbTimeStamp(new Date());
+//
+//                    dbConsole.setPieceType("EVENT");
+//                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
+//                    dbConsole.setPieceTypeDescription(ikey);
+//                    dbConsole.setPieceTimeStamp(new Date());
+//                }
+//            }
 
             // HubName
             if (dbConsole.getHubCode() != null) {
@@ -1877,7 +1912,7 @@ public class ConsoleService {
         if (findConsole.getShippingLabelNo() == null) {
             throw new BadRequestException("ShippingLabelNo cannot be null");
         }
-        log.info("given Params to fetch Consoles for Mobile App with Qry -- > {}", findConsole);
+        log.info("given Params to fetch Consoles for Mobile App with Qry --> {}", findConsole);
 
         List<String> languageId = findConsole.getLanguageId();
         List<String> companyId = findConsole.getCompanyId();

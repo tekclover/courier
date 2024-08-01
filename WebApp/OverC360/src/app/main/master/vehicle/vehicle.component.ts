@@ -11,7 +11,6 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { AuthService } from '../../../core/core';
-import { SpecialApprovalService } from '../special-approval/special-approval.service';
 import { VehicleService } from './vehicle.service';
 
 @Component({

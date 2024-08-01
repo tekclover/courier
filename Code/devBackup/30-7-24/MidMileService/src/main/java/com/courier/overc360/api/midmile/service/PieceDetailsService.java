@@ -6,7 +6,6 @@ import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageRef
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
-import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
@@ -202,10 +201,10 @@ public class PieceDetailsService {
      */
     @Transactional
     public List<PieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
-                                                     String companyName, String languageName, String partnerName, String partnerHawBill,
-                                                     String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
-                                                     String volume, String weightUnit, String codAmount, String statusId, String eventCode, String statusText,
-                                                     String eventText, String country, String loginUserID)
+                                                        String companyName, String languageName, String partnerName, String partnerHawBill,
+                                                        String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
+                                                        String volume, String weightUnit, String codAmount, String hawbTypeId, String hawbType, String hawbDescription,
+                                                        String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<PieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -245,14 +244,13 @@ public class PieceDetailsService {
                         newPieceDetails.setCompanyName(companyName);
                         newPieceDetails.setLanguageDescription(languageName);
                         newPieceDetails.setPartnerName(partnerName);
-                        newPieceDetails.setPieceStatusId(statusId);
-                        newPieceDetails.setPieceEventCode(eventCode);
-                        newPieceDetails.setPieceStatusText(statusText);
-                        newPieceDetails.setPieceEventText(eventText);
-                        newPieceDetails.setPieceStatusTimestamp(new Date());
-                        newPieceDetails.setPieceEventTimestamp(new Date());
+                        //HawbPieceStatus
+                        newPieceDetails.setPieceTypeId(hawbTypeId);
+                        newPieceDetails.setPieceType(hawbType);
+                        newPieceDetails.setPieceTypeDescription(hawbDescription);
+                        newPieceDetails.setPieceTimeStamp(new Date());
                         newPieceDetails.setTags(String.valueOf(itemCount));
-                        if (hsCode != null) {
+                        if(hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
                         }
                         newPieceDetails.setDeletionIndicator(0L);
@@ -335,7 +333,7 @@ public class PieceDetailsService {
                                 savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
                                 savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill());
+                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill() );
 
                         pieceDetailsList.add(savePieceDetails);
                     }
@@ -373,18 +371,17 @@ public class PieceDetailsService {
                         newPieceDetails.setVolume(String.valueOf(itemVolumeCalculation));
                     }
                 }
-                newPieceDetails.setCodAmount(codAmount);
-                newPieceDetails.setPieceStatusId(statusId);
-                newPieceDetails.setPieceEventCode(eventCode);
-                newPieceDetails.setPieceStatusText(statusText);
-                newPieceDetails.setPieceEventText(eventText);
-                newPieceDetails.setPieceStatusTimestamp(new Date());
-                newPieceDetails.setPieceEventTimestamp(new Date());
+
+                newPieceDetails.setPieceTypeId(hawbTypeId);
+                newPieceDetails.setPieceType(hawbType);
+                newPieceDetails.setPieceTypeDescription(hawbDescription);
+                newPieceDetails.setPieceTimeStamp(new Date());
                 newPieceDetails.setDeletionIndicator(0L);
                 newPieceDetails.setCreatedBy(loginUserID);
                 newPieceDetails.setCreatedOn(new Date());
                 newPieceDetails.setUpdatedBy(null);
                 newPieceDetails.setUpdatedOn(null);
+                newPieceDetails.setCodAmount(codAmount);
 
                 //ItemDetails Create
                 List<ItemDetails> itemDetails = itemDetailsService.createItemDetailsList(companyId, languageId,
@@ -556,7 +553,6 @@ public class PieceDetailsService {
     }
 
     /**
-     *
      * @param labelFormInput
      * @return
      */
@@ -575,6 +571,7 @@ public class PieceDetailsService {
 
     /**
      * for PreAlertManifest
+     *
      * @param languageId
      * @param companyId
      * @param consignmentId
@@ -582,8 +579,7 @@ public class PieceDetailsService {
      */
     public List<ReplicaPieceDetails> getReplicaPieceDetailsForPreAlertManifest(String languageId, String companyId, Long consignmentId) {
 
-        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator
-                (languageId, companyId, consignmentId, 0l);
+        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.getAllPieceDetails(languageId, companyId, consignmentId);
 
         if (dbPieceDetails == null || dbPieceDetails.isEmpty()) {
             createPieceDetailsLog(languageId, companyId, String.valueOf(consignmentId), "The given values : languageId - " + languageId +

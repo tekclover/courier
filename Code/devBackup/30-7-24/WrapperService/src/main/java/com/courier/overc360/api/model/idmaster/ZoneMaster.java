@@ -27,6 +27,8 @@ public class ZoneMaster {
 
     private String statusId;
 
+    private String remark;
+
     private String statusDescription;
 
     private Long deletionIndicator;

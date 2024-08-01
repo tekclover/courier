@@ -5,8 +5,8 @@ import com.courier.overc360.api.midmile.primary.model.UploadResponse;
 import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentInvoice;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentMobileApp;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
-import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.IConsignment;
@@ -100,6 +100,14 @@ public class ConsignmentEntityController {
         return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
     }
 
+    // Find Consignment - MobileApp
+    @ApiOperation(response = ReplicaConsignmentEntity.class, value = "Find Consignment - MobileApp")
+    @PostMapping("/find/mobileApp")
+    public ResponseEntity<?> findConsignmentMobileApp(@Valid @RequestBody List<FindConsignmentMobileApp> findConsignments) throws Exception {
+        List<ReplicaConsignmentEntity> consignmentEntityList = consignmentService.findConsignmentMobileApp(findConsignments);
+        return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
+    }
+
     //DeleteConsignment
     @ApiOperation(response = ConsignmentEntity.class, value = "Delete ConsignmentEntity")
     @PostMapping("/delete/list")
@@ -114,7 +122,6 @@ public class ConsignmentEntityController {
         String filePathWithName = commonService.downLoadDocument(sourceUrl, destinationDir, documentName);
         return new ResponseEntity<>(filePathWithName, HttpStatus.OK);
     }
-
 
     //========================================================null validation column==================================================//
     // Find

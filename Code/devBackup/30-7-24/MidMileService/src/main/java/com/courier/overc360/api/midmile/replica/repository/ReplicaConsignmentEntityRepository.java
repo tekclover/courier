@@ -1,6 +1,5 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
-
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentInvoice;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
@@ -12,8 +11,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -137,6 +136,9 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
 
 
     ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);
+
+    ReplicaConsignmentEntity findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerHouseAirwayBill, Long deletionIndicator);
 
 
 }
