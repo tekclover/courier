@@ -59,6 +59,12 @@ public interface ConsignmentEntityRepository extends JpaRepository<ConsignmentEn
 //                                     @Param("eventCode") String eventCode);
 
 
+    @Query(value = "select type as type, type_text as typeText from tblstatusevent where c_id = :companyId and \n" +
+            "lang_id = :languageId and type_id = :typeId and is_deleted = 0", nativeQuery = true)
+    Optional<IKeyValuePair> statusText(@Param("companyId") String companyId,
+                                     @Param("languageId") String languageId,
+                                     @Param("typeId") String typeId);
+
     @Query(value = "select type_text as typeText from tblstatusevent where c_id = :companyId and \n" +
             "lang_id = :languageId and type_id = :typeId and is_deleted = 0", nativeQuery = true)
      Optional<String> statusEventText(@Param("companyId") String companyId,
