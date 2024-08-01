@@ -17,8 +17,10 @@ import com.courier.overc360.api.midmile.primary.repository.PieceDetailsRepositor
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.dto.LabelFormInput;
 import com.courier.overc360.api.midmile.replica.model.dto.LabelFormOutput;
+import com.courier.overc360.api.midmile.replica.model.piecedetails.FindPieceDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaPieceDetailsSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -149,6 +153,37 @@ public class PieceDetailsService {
         } catch (Exception e) {
             // Error Log
 //            createPieceDetailsLog2(addPieceDetails, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Update
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @param updatePieceDetails
+     * @param loginUserID
+     * @return
+     */
+    public PieceDetails updatePieceDetails(String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill,
+                                           String pieceId, UpdatePieceDetails updatePieceDetails, String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        try {
+            PieceDetails dbPieceDetails = getPieceDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId);
+            BeanUtils.copyProperties(updatePieceDetails, dbPieceDetails, CommonUtils.getNullPropertyNames(updatePieceDetails));
+            dbPieceDetails.setUpdatedBy(loginUserID);
+            dbPieceDetails.setUpdatedOn(new Date());
+            return pieceDetailsRepository.save(dbPieceDetails);
+        } catch (Exception e) {
+            // Error Log
+            createPieceDetailsLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -564,6 +599,58 @@ public class PieceDetailsService {
         return dbPieceDetails;
     }
 
+    /*=================================================REPLICA=============================================================*/
+
+    /**
+     * Get all
+     *
+     * @return
+     */
+    public List<ReplicaPieceDetails> getAllPieceDetails() {
+        List<ReplicaPieceDetails> pieceDetailsList = replicaPieceDetailsRepository.findAll();
+        pieceDetailsList = pieceDetailsList.stream().filter(n -> n.getDeletionIndicator() == 0).collect(Collectors.toList());
+        return pieceDetailsList;
+    }
+
+    /**
+     * Get
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @return
+     */
+    public ReplicaPieceDetails getReplicaPieceDetails(String languageId, String companyId, String partnerId, String masterAirwayBill,
+                                                      String houseAirwayBill, String pieceId) {
+
+        Optional<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator
+                (languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, 0l);
+
+        if (dbPieceDetails.isEmpty()) {
+            createPieceDetailsLog1(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, "The given values : languageId - " + languageId +
+                    ", companyId - " + companyId + " , partnerId - " + partnerId + ", MasterAirwayBill: " + masterAirwayBill +
+                    ", HouseAirwayBill: " + houseAirwayBill + " and PieceId: " + pieceId + "  doesn't exists");
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PartnerId: "
+                    + partnerId + ", MasterAirwayBill: " + masterAirwayBill + ", HouseAirwayBill: " + houseAirwayBill + " and PieceId: " + pieceId + "  doesn't exists");
+        }
+        return dbPieceDetails.get();
+    }
+
+    /**
+     * Find
+     *
+     * @param findPieceDetails
+     * @return
+     */
+    public List<ReplicaPieceDetails> findPieceDetails(FindPieceDetails findPieceDetails) throws ParseException {
+        ReplicaPieceDetailsSpecification spec = new ReplicaPieceDetailsSpecification(findPieceDetails);
+        List<ReplicaPieceDetails> results = replicaPieceDetailsRepository.findAll(spec);
+        log.info("found Piecedetails--> " + results);
+        return results;
+    }
 
 
     //========================================PieceDetails_ErrorLog=================================================
