@@ -260,7 +260,6 @@ public class ConsignmentService {
                 newConsignment.setSubProductName(getProductIdFromCustomer.getSubProductName());
             }
 
-
             if (pieceCount == 0) {
                 newConsignment.setNoOfPackageHawb("1");
             } else {
@@ -359,14 +358,15 @@ public class ConsignmentService {
             }
             String country = consignmentEntity.getOriginDetails().getCountry();
 
+//            newConsignment.setPieceDetails(pieceDetails);
+            ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
+
             // PieceDetails Save
             List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(), partnerHawBill, partnerMawBill,
                     consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
                     newConsignment.getStatusId(), newConsignment.getEventCode(), newConsignment.getStatusDescription(), newConsignment.getEventText(), country, loginUserID);
 
-            newConsignment.setPieceDetails(pieceDetails);
-            ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
             consignmentEntities.add(saveConsignment);
         }
 
@@ -400,6 +400,9 @@ public class ConsignmentService {
                 throw new BadRequestException("Given Values Doesn't exist CompanyId " + consignment.getCompanyId() + " LanguageId " + consignment.getLanguageId() +
                         " PartnerId " + consignment.getPartnerId() + " MasterAirwayBillNo " + consignment.getMasterAirwayBill() + " HouseAirwayBillNo " + consignment.getHouseAirwayBill());
             }
+
+            //Null validation code
+            consignment = updateConsignmentNullValidation(consignment);
 
             // Update Consignment fields
             BeanUtils.copyProperties(consignment, existingConsignmentEntity, CommonUtils.getNullPropertyNames(consignment));
