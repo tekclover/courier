@@ -1912,7 +1912,7 @@ public class ConsoleService {
         if (findConsole.getShippingLabelNo() == null) {
             throw new BadRequestException("ShippingLabelNo cannot be null");
         }
-        log.info("given Params to fetch Consoles for Mobile App with Qry -- > {}", findConsole);
+        log.info("given Params to fetch Consoles for Mobile App with Qry --> {}", findConsole);
 
         List<String> languageId = findConsole.getLanguageId();
         List<String> companyId = findConsole.getCompanyId();

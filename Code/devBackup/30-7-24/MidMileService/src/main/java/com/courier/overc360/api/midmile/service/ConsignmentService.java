@@ -13,16 +13,24 @@ import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDeta
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
-import com.courier.overc360.api.midmile.primary.repository.*;
+import com.courier.overc360.api.midmile.primary.repository.BondedManifestRepository;
+import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
+import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
+import com.courier.overc360.api.midmile.primary.repository.ItemDetailsRepository;
+import com.courier.overc360.api.midmile.primary.repository.PieceDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
 import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentInvoice;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentMobileApp;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
-import com.courier.overc360.api.midmile.replica.model.console.FindConsole;
-import com.courier.overc360.api.midmile.replica.model.console.ReplicaConsole;
 import com.courier.overc360.api.midmile.replica.model.dto.*;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
-import com.courier.overc360.api.midmile.replica.repository.*;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaConsignmentEntityRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaDestinationDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaImageReferenceRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaOriginDetailsRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.PreAlertManifestConsignmentSpecification;
 import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaConsignmentSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -33,9 +41,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -598,7 +604,7 @@ public class ConsignmentService {
      */
     public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
 
-        log.info("given Params to fetch Consoles -- > {}", findConsignment);
+        log.info("given params to fetch Consignments -- > {}", findConsignment);
         ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
         return replicaConsignmentEntityRepository.findAll(spec);
     }
@@ -867,4 +873,42 @@ public class ConsignmentService {
         }
         return consignmentList;
     }
+
+    /**
+     * Find Consignment - MobileApp
+     *
+     * @param findConsignmentList
+     * @return
+     */
+    public List<ReplicaConsignmentEntity> findConsignmentMobileApp(List<FindConsignmentMobileApp> findConsignmentList) {
+
+        List<ReplicaConsignmentEntity> fetchedConsignmentList = new ArrayList<>();
+        if (findConsignmentList != null && !findConsignmentList.isEmpty()) {
+            for (FindConsignmentMobileApp findConsignment : findConsignmentList) {
+
+                if (findConsignment.getShippingLabelNo() == null) {
+                    throw new BadRequestException("ShippingLabelNo cannot be null");
+                }
+                log.info("given Params to fetch Consignments for Mobile App --> {}", findConsignment);
+
+                // Initially pass shippingLabelNo to partnerHouseAirwayBill
+                ReplicaConsignmentEntity consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+                        findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), 0L);
+
+                if (consignment == null) {
+                    Long consignmentId = replicaPieceDetailsRepository.getConsignmentId(findConsignment.getLanguageId(),
+                            findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
+                    if (consignmentId != null) {
+                        consignment = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
+                        if (consignment == null) {
+                            throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
+                        }
+                    }
+                }
+                fetchedConsignmentList.add(consignment);
+            }
+        }
+        return fetchedConsignmentList;
+    }
+
 }

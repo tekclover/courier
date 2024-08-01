@@ -6,7 +6,6 @@ import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageRef
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
-import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
@@ -556,7 +555,6 @@ public class PieceDetailsService {
     }
 
     /**
-     *
      * @param labelFormInput
      * @return
      */
@@ -575,6 +573,7 @@ public class PieceDetailsService {
 
     /**
      * for PreAlertManifest
+     *
      * @param languageId
      * @param companyId
      * @param consignmentId
@@ -582,8 +581,7 @@ public class PieceDetailsService {
      */
     public List<ReplicaPieceDetails> getReplicaPieceDetailsForPreAlertManifest(String languageId, String companyId, Long consignmentId) {
 
-        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.findByLanguageIdAndCompanyIdAndConsignmentIdAndDeletionIndicator
-                (languageId, companyId, consignmentId, 0l);
+        List<ReplicaPieceDetails> dbPieceDetails = replicaPieceDetailsRepository.getAllPieceDetails(languageId, companyId, consignmentId);
 
         if (dbPieceDetails == null || dbPieceDetails.isEmpty()) {
             createPieceDetailsLog(languageId, companyId, String.valueOf(consignmentId), "The given values : languageId - " + languageId +
