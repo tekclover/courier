@@ -61,14 +61,18 @@
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Vehicle Reg No</p>
-                                <p-dropdown [options]="vehicleRegNumberList" formControlName="vehicleRegNumber" appendTo="body"placeholder="Select"
+                                <p-dropdown [options]="vehicleRegNumberList" formControlName="vehicleRegNumber"
+                                [ngClass]="form.get('vehicleRegNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                 appendTo="body"placeholder="Select"
                                 [style]="{'width': '100%'}"  [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('vehicleRegNumber')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 required">Assigned Hub Code</p>
-                                <p-dropdown [options]="hubCodeList" formControlName="assignedHubCode" appendTo="body"placeholder="Select"
+                                <p-dropdown [options]="hubCodeList" formControlName="assignedHubCode" 
+                                [ngClass]="form.get('assignedHubCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                 appendTo="body"placeholder="Select"
                                 [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('assignedHubCode')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
