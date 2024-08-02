@@ -52,7 +52,7 @@ export class ServiceProviderNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    serviceProvidersId: [],
+    serviceProvidersId: [, Validators.required],
     serviceProvidersText: [],
     cityId: [],
     provinceId: [],
