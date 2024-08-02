@@ -1,10 +1,5 @@
 package com.courier.overc360.api.midmile.replica.model.consignment;
 
-import com.courier.overc360.api.midmile.primary.model.consignment.DestinationDetails;
-import com.courier.overc360.api.midmile.primary.model.consignment.OriginDetails;
-import com.courier.overc360.api.midmile.primary.model.consignment.ReturnDetails;
-import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
-import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import lombok.AllArgsConstructor;
@@ -468,16 +463,20 @@ public class ReplicaConsignmentEntity implements Serializable {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag = 0L;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaDestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaOriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaReturnDetails returnDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -485,7 +484,7 @@ public class ReplicaConsignmentEntity implements Serializable {
     private List<ReplicaPieceDetails> pieceDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private Set<ReplicaImageReference> referenceImageList = new HashSet<>();
 
 }

@@ -4,14 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table( name = "tblimagereference")
+@Table(name = "tblimagereference")
 public class ReplicaImageReference {
 
     @Id
@@ -19,52 +24,52 @@ public class ReplicaImageReference {
     @Column(name = "IMAGE_ID")
     private Long imageId;
 
-    @Column(name="IMAGE_REF_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "IMAGE_REF_ID", columnDefinition = "nvarchar(50)")
     private String imageRefId;
 
-    @Column(name = "LANG_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
     private String languageId;
 
-    @Column(name = "C_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
     private String companyId;
 
-    @Column(name = "PARTNER_ID" , columnDefinition = "nvarchar(100)")
+    @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(100)")
     private String partnerId;
 
-    @Column(name = "MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
-    @Column(name = "HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-    @Column(name = "CONSIGNMENT_ID")
-    private Long consignmentId;
+//    @Column(name = "CONSIGNMENT_ID")
+//    private Long consignmentId;
 
-    @Column(name = "PIECE_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
-    @Column(name = "PIECE_ITEM_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "PIECE_ITEM_ID", columnDefinition = "nvarchar(50)")
     private String pieceItemId;
 
-    @Column(name = "LANG_TEXT" , columnDefinition = "nvarchar(100)")
+    @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
 
-    @Column(name = "C_NAME" , columnDefinition = "nvarchar(100)")
+    @Column(name = "C_NAME", columnDefinition = "nvarchar(100)")
     private String companyName;
 
-    @Column(name = "PARTNER_TYPE" , columnDefinition = "nvarchar(50)")
+    @Column(name = "PARTNER_TYPE", columnDefinition = "nvarchar(50)")
     private String partnerType;
 
-    @Column(name = "PARTNER_NAME" , columnDefinition = "nvarchar(100)")
+    @Column(name = "PARTNER_NAME", columnDefinition = "nvarchar(100)")
     private String partnerName;
 
-    @Column(name = "IMAGE_REF" , columnDefinition = "nvarchar(500)")
+    @Column(name = "IMAGE_REF", columnDefinition = "nvarchar(500)")
     private String imageRef;
 
-    @Column(name = "PARTNER_MASTER_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
-    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL" , columnDefinition = "nvarchar(50)")
+    @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
 
     @Column(name = "REF_IMAGE_URL", columnDefinition = "nvarchar(200)")
@@ -114,4 +119,5 @@ public class ReplicaImageReference {
 
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
+
 }

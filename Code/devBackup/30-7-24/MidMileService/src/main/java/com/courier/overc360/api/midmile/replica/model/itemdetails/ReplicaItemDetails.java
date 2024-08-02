@@ -1,6 +1,5 @@
 package com.courier.overc360.api.midmile.replica.model.itemdetails;
 
-import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class ReplicaItemDetails implements Serializable {
     private Long itemDetailsId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ITEM_DETAILS_ID")
+    @JoinColumn(name = "ITEM_DETAILS_ID", referencedColumnName = "ITEM_DETAILS_ID")
     private Set<ReplicaImageReference> referenceImageList = new HashSet<>();
 
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
@@ -37,7 +36,7 @@ public class ReplicaItemDetails implements Serializable {
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
-    @Column(name = "PIECE_ID" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
     @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
@@ -52,7 +51,7 @@ public class ReplicaItemDetails implements Serializable {
     @Column(name = "IMAGE_REF_ID", columnDefinition = "nvarchar(50)")
     private String imageRefId;
 
-    @Column(name = "QUANTITY" , columnDefinition = "nvarchar(50)")
+    @Column(name = "QUANTITY", columnDefinition = "nvarchar(50)")
     private String quantity;
 
     @Column(name = "UNITVALUE", columnDefinition = "nvarchar(50)")

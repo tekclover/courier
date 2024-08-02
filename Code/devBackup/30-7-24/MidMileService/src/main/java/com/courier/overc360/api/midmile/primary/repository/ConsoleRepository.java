@@ -281,15 +281,15 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
 
     @Modifying
     @Transactional
-    @Query(value = "update tblconsole set ccr_id = :ccrId where " +
-            " console_id = :consoleId " +
-            " and c_id = :companyId " +
-            " and lang_id = :languageId " +
-            " and partner_id = :partnerId " +
-            " and partner_house_airway_bill = :partnerHouseAB " +
-            " and partner_master_airway_bill = :partnerMasterAB " +
-            " and piece_id = :pieceId " +
-            " and is_deleted = 0 ", nativeQuery = true)
+    @Query(value = "UPDATE tblconsole SET ccr_id = :ccrId WHERE\n" +
+            " console_id = :consoleId\n" +
+            " and c_id = :companyId\n" +
+            " and lang_id = :languageId\n" +
+            " and partner_id = :partnerId\n" +
+            " and partner_house_airway_bill = :partnerHouseAB\n" +
+            " and partner_master_airway_bill = :partnerMasterAB\n" +
+            " and piece_id = :pieceId\n" +
+            " and is_deleted=0", nativeQuery = true)
     void updateCCRID(@Param("consoleId") String consoleId,
                      @Param("ccrId") String ccrId,
                      @Param("partnerId") String partnerId,
@@ -298,6 +298,19 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                      @Param("partnerHouseAB") String partnerHouseAB,
                      @Param("partnerMasterAB") String partnerMasterAB,
                      @Param("pieceId") String pieceId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE tblconsole\n" +
+            "SET CCR_ID = :ccrId\n" +
+            "WHERE IS_DELETED=0\n" +
+            "And LANG_ID = :languageId\n" +
+            "And C_ID = :companyId\n" +
+            "And CONSOLE_ID = :consoleId", nativeQuery = true)
+    int updateCCRIdInConsoleTbl(@Param("consoleId") String consoleId,
+                                @Param("ccrId") String ccrId,
+                                @Param("languageId") String languageId,
+                                @Param("companyId") String companyId);
 
 
 }

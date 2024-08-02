@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -460,16 +463,20 @@ public class ConsignmentEntity implements Serializable {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag = 0L;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private DestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private OriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReturnDetails returnDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -477,7 +484,7 @@ public class ConsignmentEntity implements Serializable {
     private List<PieceDetails> pieceDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private Set<ImageReference> referenceImageList = new HashSet<>();
 
 }

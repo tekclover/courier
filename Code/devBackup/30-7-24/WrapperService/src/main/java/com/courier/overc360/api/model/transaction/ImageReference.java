@@ -21,7 +21,7 @@ public class ImageReference {
 
     private String houseAirwayBill;
 
-    private Long consignmentId;
+//    private Long consignmentId;
 
     private String pieceId;
 
@@ -68,4 +68,5 @@ public class ImageReference {
     private String createdBy;
 
     private Date createdOn = new Date();
+
 }

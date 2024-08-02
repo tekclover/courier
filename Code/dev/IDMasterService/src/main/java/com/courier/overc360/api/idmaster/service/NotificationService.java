@@ -264,8 +264,8 @@ public class NotificationService {
      */
     public ReplicaNotification getReplicaNotification(String languageId, String companyId, String notificationId) {
 
-        Optional<ReplicaNotification> dbNotification = replicaNotificationRepository.findByLanguageIdAndCompanyIdAndNotificationIdAndDeletionIndicator
-                (languageId, companyId, notificationId, 0L);
+        Optional<ReplicaNotification> dbNotification = replicaNotificationRepository.findByLanguageIdAndCompanyIdAndNotificationIdAndDeletionIndicator(
+                languageId, companyId, notificationId, 0L);
 
         if (dbNotification.isEmpty()) {
             createNotificationLog1(languageId, companyId, notificationId, "The given values : languageId - " + languageId +
@@ -286,7 +286,7 @@ public class NotificationService {
 
         ReplicaNotificationSpecification spec = new ReplicaNotificationSpecification(findNotification);
         List<ReplicaNotification> results = replicaNotificationRepository.findAll(spec);
-        log.info("found Notification --> " + results);
+//        log.info("found Notifications --> {}", results);
         return results;
     }
 

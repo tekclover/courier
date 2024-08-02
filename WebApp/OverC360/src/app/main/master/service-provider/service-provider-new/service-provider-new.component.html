@@ -37,14 +37,14 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Service Provider ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Service Provider ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum"
+                                [ngClass]="form.get('serviceProvidersId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     formControlName="serviceProvidersId" class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Service Provider Text</p>
                                 <input maxlength="100" pInputText formControlName="serviceProvidersText"
-                                    [ngClass]="form.get('serviceProvidersText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('serviceProvidersText')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>

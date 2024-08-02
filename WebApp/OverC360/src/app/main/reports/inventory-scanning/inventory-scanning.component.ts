@@ -51,7 +51,7 @@ export class InventoryScanningComponent {
       { field: 'hawbTypeId', header: 'HAWB Type ID' },
       { field: 'hawbType', header: 'HAWB Type' },
       { field: 'hawbTypeDescription', header: 'HAWB Type Description' },
-      { field: 'hawbTimeStamp', header: 'Time Stamp', format: 'date' },
+      { field: 'hawbTimeStamp', header: 'Scanned Time', format: 'date' },
       { field: 'houseAirwayBill', header: 'Consignment No' },
       { field: 'masterAirwayBill', header: 'Master Airway Bill' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
@@ -59,10 +59,10 @@ export class InventoryScanningComponent {
       { field: 'pieceTypeId', header: 'Piece Type ID' },
       { field: 'pieceType', header: 'Piece Type' },
       { field: 'pieceTypeDescription', header: 'Piece Type Description' },
-      { field: 'pieceTimeStamp', header: 'Time Stamp', format: 'date' },
+      { field: 'pieceTimeStamp', header: 'Scanned Time', format: 'date' },
       
-      { field: 'createdBy', header: 'Created By' },
-      { field: 'createdOn', header: 'Created On', format: 'date' },
+      { field: 'updatedBy', header: 'Scanned Officer' },
+      // { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     
     this.target = [
@@ -81,6 +81,7 @@ export class InventoryScanningComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
+      obj.hawbTypeId = ["6", "47"];
       this.service.searchStatus(obj).subscribe({
         next: (res: any) => {
           this.inventoryScanningTable = res;

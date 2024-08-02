@@ -27,29 +27,29 @@ public class PieceDetails implements Serializable {
     private Long pieceDetailsId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PIECE_DETAILS_ID")
+    @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
     private List<ItemDetails> itemDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PIECE_DETAILS_ID")
+    @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
     private Set<ImageReference> referenceImageList = new HashSet<>();
 
-    @Column(name = "LANG_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
     private String languageId;
 
-    @Column(name = "C_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
     private String companyId;
 
-    @Column(name = "PARTNER_ID" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
-    @Column(name = "MASTER_AIRWAY_BILL" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
-    @Column(name = "HOUSE_AIRWAY_BILL" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-    @Column(name = "PIECE_ID" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
 
     @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
@@ -215,21 +215,3 @@ public class PieceDetails implements Serializable {
     private Date updatedOn = new Date();
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

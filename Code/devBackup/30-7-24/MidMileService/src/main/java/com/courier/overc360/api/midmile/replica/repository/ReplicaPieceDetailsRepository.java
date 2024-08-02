@@ -209,14 +209,14 @@ public interface ReplicaPieceDetailsRepository extends JpaRepository<ReplicaPiec
     Optional<ReplicaPieceDetails> findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
             String languageId, String companyId, String pieceId, Long deletionIndicator);
 
-    @Query(value = "Select Top 1 tp.CONSIGNMENT_ID\n" +
+    @Query(value = "Select Top 1 tp.HOUSE_AIRWAY_BILL\n" +
             "From tblpiecedetails tp\n" +
             "Where tp.IS_DELETED=0\n" +
             "And tp.LANG_ID = :languageId\n" +
             "And tp.C_ID = :companyId\n" +
             "And tp.PIECE_ID = :pieceId", nativeQuery = true)
-    Long getConsignmentId(@Param(value = "languageId") String languageId,
-                          @Param(value = "companyId") String companyId,
-                          @Param(value = "pieceId") String pieceId);
+    String getHawbWithPieceId(@Param(value = "languageId") String languageId,
+                              @Param(value = "companyId") String companyId,
+                              @Param(value = "pieceId") String pieceId);
 
 }

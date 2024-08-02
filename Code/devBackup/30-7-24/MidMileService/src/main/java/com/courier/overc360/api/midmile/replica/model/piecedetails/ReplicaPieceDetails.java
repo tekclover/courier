@@ -27,11 +27,11 @@ public class ReplicaPieceDetails implements Serializable {
     private Long pieceDetailsId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PIECE_DETAILS_ID")
+    @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
     private List<ReplicaItemDetails> itemDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PIECE_DETAILS_ID")
+    @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
     private Set<ReplicaImageReference> referenceImageList = new HashSet<>();
 
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
@@ -215,21 +215,3 @@ public class ReplicaPieceDetails implements Serializable {
     private Date updatedOn = new Date();
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

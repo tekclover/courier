@@ -363,6 +363,13 @@ public class ConsignmentService {
             }
             String country = consignmentEntity.getOriginDetails().getCountry();
 
+            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+                    newConsignment.getHawbTypeId(), newConsignment.getHawbType(), newConsignment.getHawbTypeDescription(), country, loginUserID);
+
+            newConsignment.setPieceDetails(pieceDetails);
+
             ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
 
 //             PieceDetails Save
@@ -371,10 +378,10 @@ public class ConsignmentService {
 //                    consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
 //                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbType(), country, loginUserID);
 
-            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
-                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbTypeDescription(), country, loginUserID);
+//            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+//                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
+//                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+//                    newConsignment.getHawbTypeId(), newConsignment.getHawbType(), newConsignment.getHawbTypeDescription(), country, loginUserID);
 
             //Volume
             Double totalPieceVolume = pieceDetails.stream().map(PieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
@@ -611,8 +618,21 @@ public class ConsignmentService {
 
         log.info("given params to fetch Consignments -- > {}", findConsignment);
         ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
-        return replicaConsignmentEntityRepository.findAll(spec);
+        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.findAll(spec);
+        return consignments;
     }
+//    public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
+//
+//        Instant startTime = Instant.now();
+//        log.info("given params to fetch Consignments with Qry --> {}", findConsignment);
+//        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.fetchConsignmentsWithQry(
+//                findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getPartnerId(),
+//                findConsignment.getMasterAirwayBill(), findConsignment.getHouseAirwayBill());
+//        log.info("No of Consignments --> {}", consignments.size());
+//        Instant endTime = Instant.now();
+//        log.info("Time to fetch Consignments with Qry : {}ms", Duration.between(startTime, endTime).toMillis());
+//        return consignments;
+//    }
 
 
     /**
@@ -901,13 +921,14 @@ public class ConsignmentService {
                         findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), 0L);
 
                 if (consignment == null) {
-                    Long consignmentId = replicaPieceDetailsRepository.getConsignmentId(findConsignment.getLanguageId(),
+                    String hawb = replicaPieceDetailsRepository.getHawbWithPieceId(findConsignment.getLanguageId(),
                             findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
-                    if (consignmentId != null) {
-                        consignment = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
-                        if (consignment == null) {
-                            throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
-                        }
+                    if (hawb != null) {
+                        consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+                                findConsignment.getLanguageId(), findConsignment.getCompanyId(), hawb, 0L);
+                    }
+                    if (consignment == null) {
+                        throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
                     }
                 }
                 fetchedConsignmentList.add(consignment);
