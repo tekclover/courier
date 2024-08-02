@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/main/master/driver-route-assignment/driver-route-assignment.component.scss"],
+  "sourcesContent": ["::ng-deep.customClass{\r\nborder-radius:12px!important;\r\nbox-shadow:00.5rem1remrgba(0,0,0,0.15)!important;\r\n}\r\n\r\n.custom-height{\r\nheight:calc(100vh - 19.3rem)!important;\r\noverflow-y:scroll!important;\r\n}\r\n"],
+  "mappings": ";AAAA,UAAA,CAAA;AACA,iBAAA;AACA;IAAA,eAAA,CAAA;IAAA,CAAA;IAAA,CAAA;IAAA;;AAGA,CAAA;AACA,UAAA,KAAA,MAAA,EAAA;AACA,cAAA;;",
+  "names": []
+}

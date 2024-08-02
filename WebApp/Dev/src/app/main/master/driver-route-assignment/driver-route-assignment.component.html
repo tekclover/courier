@@ -1,112 +1,114 @@
-<div class="componentBody">
-<divclass="d-flexjustify-content-betweenalign-items-center">
-<pclass="componentHeaderf600mb-0">DriverRouteAssignment</p>
-<divclass="d-flexjustify-content-betweenalign-items-center">
-<imgtype="button"(click)="openCrud('Edit')"src="./assets/common/edit.png"alt=""srcset=""
-style="margin:017px;height:1.5rem;">
-<imgtype="button"(click)="downloadExcel()"src="./assets/common/download.png"alt=""srcset=""
-style="margin:017px;height:1.5rem;">
-<imgtype="button"(click)="deleteDialog()"src="./assets/common/deletetool.png"alt=""srcset=""
-style="margin:017px;height:1.5rem;">
-<imgtype="button"(click)="customTable()"src="./assets/common/settings.png"alt=""srcset=""
-style="margin-left:19px;margin-right:28px;height:1.5rem;">
-<buttontype="button"class="btnml-2addNewbuttombgBlacktext-white"(click)="openCrud('New')"><i
-class="bibi-plus-squarepr-2"></i>AddNew</button>
-</div>
-</div>
+<!-- <div class="componentBody">
+    <div class="d-flexjustify-content-betweenalign-items-center">
+        <p class="componentHeaderf600mb-0">DriverRouteAssignment</p>
+        <div class="d-flexjustify-content-betweenalign-items-center">
+            <imgtype="button"(click)="openCrud('Edit')"src=". /assets/common/edit.png"alt="" srcset=""
+                style="margin:017px;height:1.5rem;">
+                <imgtype="button"(click)="downloadExcel()"src=". /assets/common/download.png"alt="" srcset=""
+                    style="margin:017px;height:1.5rem;">
+                    <imgtype="button"(click)="deleteDialog()"src=". /assets/common/deletetool.png"alt="" srcset=""
+                        style="margin:017px;height:1.5rem;">
+                        <imgtype="button"(click)="customTable()"src=". /assets/common/settings.png"alt="" srcset=""
+                            style="margin-left:19px;margin-right:28px;height:1.5rem;">
+                            <buttontype="button" class="btnml-2addNewbuttombgBlacktext-white" (click)="openCrud('New')">
+                                <i class="bibi-plus-squarepr-2"></i>AddNew</button>
+        </div>
+    </div>
 
-<divclass="d-flexjustify-content-startalign-items-center"
-style="margin-bottom:1.1rem!important;margin-top:0.8rem;">
-<p-iconFieldiconPosition="right"class="mr-2">
-<p-inputIcontype="button"(click)="driverRouteAssignment.toggle($event)"styleClass="pipi-filter"/>
-<inputtype="text"id="toolInput1"pInputTextplaceholder="Advancefilter"
-(input)="driverRouteAssignmentTag.filterGlobal($any($event.target).value,'contains')"/>
-</p-iconField>
+    <div class="d-flexjustify-content-startalign-items-center"
+        style="margin-bottom:1.1rem!important;margin-top:0.8rem;">
+        <p-iconFieldiconPosition="right" class="mr-2">
+            <p-inputIcontype="button"(click)="driverRouteAssignment.toggle($event)"style class="pipi-filter" />
+            <inputtype="text"id="toolInput1"pInputTextplaceholder="Advancefilter"
+                (input)="driverRouteAssignmentTag.filterGlobal($any($event.target).value,'contains')" />
+            </p-iconField>
 
-<p-overlayPanel[dismissable]="false"appendTo="body"[style]="{width:'80vw'}"
-[styleClass]="'custom-overlay-panel'"#driverRouteAssignment>
-<form[formGroup]="searchform"style="padding:2rem;">
-<divclass="row">
-<divclass="col-3mb-3borderRadius12">
-<pclass="formControlLabelf600textBlackmb-0">CourierID</p>
-<p-multiSelectplaceholder="Select"filter="true"[options]="courierIdDropdown"
-formControlName="courierId"appendTo="body"[style]="{'width':'100%'}"
-[panelStyle]="{'width':'100%'}"/>
-</div>
-<divclass="col-3mb-3borderRadius12">
-<pclass="formControlLabelf600textBlackmb-0">Status</p>
-<p-multiSelectplaceholder="Select"filter="true"[options]="statusDropdown"
-formControlName="statusId"appendTo="body"[style]="{'width':'100%'}"
-[panelStyle]="{'width':'100%'}"/>
-</div>
-</div>
-<divclass="d-flexjustify-content-between">
-<div>
-<imgtype="button"(click)="reset()"src="./assets/common/reset.png"alt=""srcset="">
-</div>
-<div>
-<buttonclass="buttom1textBlackmx-1"(click)="closeOverLay()">Cancel</button>
-<buttonclass="buttom1bgBlacktext-whitemx-1"(click)="search()">Apply</button>
-</div>
-</div>
-</form>
-</p-overlayPanel>
+            <p-overlayPanel[dismissable]="false"appendTo="body"[style]="{width:'80vw'}"
+                [styleClass]="'custom-overlay-panel'" #driverRouteAssignment>
+                <form[formGroup]="searchform"style="padding:2rem;">
+                    <div class="row">
+                        <div class="col-3mb-3borderRadius12">
+                            <p class="formControlLabelf600textBlackmb-0">CourierID</p>
+                            <p-multiSelectplaceholder="Select"filter="true"[options]="courierIdDropdown"
+                                formControlName="courierId" appendTo="body" [style]="{'width':'100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
+                        <div class="col-3mb-3borderRadius12">
+                            <p class="formControlLabelf600textBlackmb-0">Status</p>
+                            <p-multiSelectplaceholder="Select"filter="true"[options]="statusDropdown"
+                                formControlName="statusId" appendTo="body" [style]="{'width':'100%'}"
+                                [panelStyle]="{'width':'100%'}" />
+                        </div>
+                    </div>
+                    <div class="d-flexjustify-content-between">
+                        <div>
+                            <img type="button"(click)="reset()" src="./assets/common/reset.png" alt="" srcset="">
+                        </div>
+                        <div>
+                            <button class="buttom1textBlackmx-1" (click)="closeOverLay()">Cancel</button>
+                            <button class="buttom1bgBlacktext-whitemx-1" (click)="search()">Apply</button>
+                        </div>
+                    </div>
+                    </form>
+                    </p-overlayPanel>
 
-<p-chips(onRemove)="chipClear($event)"[(ngModel)]="fieldsWithValue"class="inputborderLess"/>
-</div>
+                    <p-chips(onRemove)="chipClear($event)"[(ngModel)]="fieldsWithValue" class="inputborderLess" />
+    </div>
 
-<divclass="tableProperties">
-<p-table#driverRouteAssignmentTag[columns]="cols"[value]="driverRouteAssignmentTable"class="custom-table"
-[scrollable]="true"selectionMode="single"scrollHeight="calc(100vh-20.8rem)"[paginator]="true"
-[rows]="100"[showCurrentPageReport]="true"sortField="createdOn"[sortOrder]="-1"
-[tableStyle]="{'width':'100rem'}"
-currentPageReportTemplate="Showing{first}to{last}of{totalRecords}entries"styleClass="p-datatable-sm">
-<ng-templatepTemplate="header"let-columns>
-<tr>
-<thstyle="width:5rem;">
-<p-tableHeaderCheckboxclass="pl-3"[disabled]="true"></p-tableHeaderCheckbox>
-</th>
-<th*ngFor="letcolofcolumns"[pSortableColumn]="col.field">
-{{col.header}}<p-sortIcon[field]="col.field"/>
-</th>
-</tr>
-<tr>
-<thstyle="width:5rem;">
-<p-tableHeaderCheckboxclass="pl-3"[disabled]="true"></p-tableHeaderCheckbox>
-</th>
-<th*ngFor="letcolofcolumns">
-<inputpInputTexttype="text"
-(input)="driverRouteAssignmentTag.filter($any($event.target)?.value,col.field,'contains')"
-[value]="$any(driverRouteAssignmentTag.filters[col.field])?.value"placeholder="Search"
-class="p-column-filter">
-</th>
-</tr>
-</ng-template>
-<ng-templatepTemplate="body"let-rowDatalet-columns="columns">
-<tr[class.selectedRow]="selectedDriverRouteAssignment[0]===rowData">
-<tdstyle="width:5rem;justify-content:center;">
-<p-checkbox(onChange)="onChange()"[(ngModel)]="selectedDriverRouteAssignment"class="pl-3"
-[value]="rowData"></p-checkbox>
-</td>
-<td*ngFor="letcolofcolumns"[style]="col.style">
-<ng-container*ngIf="col.format!=='date'&&col.format!=='hyperLink';elsedateTemplate">
-{{rowData[col.field]}}
-</ng-container>
-<ng-template#dateTemplate>
-<span*ngIf="col.format=='hyperLink'"(click)="openCrud('Edit',rowData)"style="cursor:pointer"
-class="textOrangefont-weight-boldhvr-underline-from-center">{{rowData[col.field]}}</span>
-<span*ngIf="col.format=='date'">{{rowData[col.field]|date:'dd-MM-yyyyHH:mm'}}</span>
-</ng-template>
-</td>
-</tr>
-</ng-template>
-<ng-templatepTemplate="emptymessage">
-<tr>
-<td[attr.colspan]="4">
-<pclass="my-2w-100pl-3">Norecordsfound</p>
-</td>
-</tr>
-</ng-template>
-</p-table>
-</div>
-</div>
+    <div class="tableProperties">
+        <p-table#driverRouteAssignmentTag[columns]="cols"[value]="driverRouteAssignmentTable" class="custom-table"
+            [scrollable]="true" selectionMode="single" scrollHeight="calc(100vh-20.8rem)" [paginator]="true"
+            [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
+            [tableStyle]="{'width':'100rem'}" currentPageReportTemplate="Showing{first}to{last}of{totalRecords}entries"
+            style class="p-datatable-sm">
+            <ng-templatepTemplate="header"let-columns>
+                <tr>
+                    <thstyle="width:5rem;">
+                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                        </th>
+                        <th*ngFor="letcolofcolumns"[pSortableColumn]="col.field">
+                            {{col.header}}<p-sortIcon[field]="col.field" />
+                            </th>
+                </tr>
+                <tr>
+                    <thstyle="width:5rem;">
+                        <p-tableHeaderCheckbox class="pl-3" [disabled]="true"></p-tableHeaderCheckbox>
+                        </th>
+                        <th*ngFor="letcolofcolumns">
+                            <inputpInputTexttype="text"
+                                (input)="driverRouteAssignmentTag.filter($any($event.target)?.value,col.field,'contains')"
+                                [value]="$any(driverRouteAssignmentTag.filters[col.field])?.value" placeholder="Search"
+                                class="p-column-filter">
+                                </th>
+                </tr>
+                </ng-template>
+                <ng-templatepTemplate="body"let-rowDatalet-columns="columns">
+                    <tr[class.selectedRow]="selectedDriverRouteAssignment[0]===rowData">
+                        <tdstyle="width:5rem;justify-content:center;">
+                            <p-checkbox(onChange)="onChange()"[(ngModel)]="selectedDriverRouteAssignment" class="pl-3"
+                                [value]="rowData"></p-checkbox>
+                                </td>
+                                <td*ngFor="letcolofcolumns"[style]="col.style">
+                                    <ng-container*ngIf="col.format!=='date'&&col.format!=='hyperLink';elsedateTemplate">
+                                        {{rowData[col.field]}}
+                                        </ng-container>
+                                        <ng-template#dateTemplate>
+                                            <span*ngIf="col.format=='hyperLink'"(click)="openCrud('Edit',rowData)"style="cursor:pointer"
+                                                class="textOrangefont-weight-boldhvr-underline-from-center">
+                                                {{rowData[col.field]}}</span>
+                                                <span*ngIf="col.format=='date'">
+                                                    {{rowData[col.field]|date:'dd-MM-yyyyHH:mm'}}</span>
+                                                    </ng-template>
+                                                    </td>
+                                                    </tr>
+                                                    </ng-template>
+                                                    <ng-templatepTemplate="emptymessage">
+                                                        <tr>
+                                                            <td[attr.colspan]="4">
+                                                                <p class="my-2w-100pl-3">Norecordsfound</p>
+                                                                </td>
+                                                        </tr>
+                                                        </ng-template>
+                                                        </p-table>
+    </div>
+</div> -->
