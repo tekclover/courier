@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">App User- {{this.pageToken.pageflow}}</p>
+        <p class="componentHeader f600 mb-0">Zone Master - {{this.pageToken.pageflow}}</p>
         <div class="d-flex justify-content-between align-items-center">
             <button type="button" class="invisible buttom1 bgBlack text-white ml-2">Transfer</button>
         </div>
@@ -26,104 +26,77 @@
                                 <p class="formControlLabel f600 textBlack mb-0">Language</p>
                                 <p-dropdown [options]="languageIdList" formControlName="languageId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('languageId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <mat-error *ngIf="errorHandling('languageId')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Company</p>
                                 <p-dropdown [options]="companyIdList" formControlName="companyId" appendTo="body"
                                     [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('companyId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">App User ID</p>
-                                <input maxlength="100" pInputText formControlName="appUserId"
-                                    [ngClass]="form.get('appUserId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('appUserId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">App User Name</p>
-                                <input maxlength="100" pInputText formControlName="appUserName"
-                                    [ngClass]="form.get('appUserName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('appUserName')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">App User Type</p>
-                                <input maxlength="100" pInputText formControlName="appUserType"
-                                    [ngClass]="form.get('appUserType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('appUserType')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Password</p>
-                                <input type = "password" maxlength="100" pInputText formControlName="password"
-                                    [ngClass]="form.get('password')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('password')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Mobile Number</p>
-                                <input maxlength="100" pInputText formControlName="mobileNumber"
-                                    [ngClass]="form.get('mobileNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('mobileNumber')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Vehicle Reg No</p>
-                                <p-dropdown [options]="vehcileRegNoList" placeholder="Select" filter="true"
-                                    formControlName="vehicleRegNumber" appendTo="body" [style]="{'width': '100%'}"
-                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
-                                    [ngClass]="form.get('vehicleRegNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('vehicleRegNumber')" class="text-danger"><small>{{
+                                <mat-error *ngIf="errorHandling('companyId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Route ID</p>
-                                <p-dropdown [options]="routeIdList" placeholder="Select" filter="true"
-                                    formControlName="routeId" appendTo="body" [style]="{'width': '100%'}"
+                                <p class="formControlLabel f600 textBlack mb-0 required">Zone ID</p>
+                                <input pInputText formControlName="zoneId" maxlength="50" class=" w-100"
+                                    [ngClass]="form.get('zoneId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    placeholder="Enter" />
+                                <mat-error *ngIf="errorHandling('zoneId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Zone</p>
+                                <input maxlength="50" formControlName="zoneText" class=" w-100" pInputText
+                                    placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">City</p>
+                                <p-dropdown [options]="cityIdList" placeholder="Select" filter="true" 
+                                    formControlName="cityId" appendTo="body" [style]="{'width': '100%'}" 
                                     [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
-                                    [ngClass]="form.get('routeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('routeId')" class="text-danger"><small>{{
+                                    [ngClass]="form.get('cityId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('cityId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Assigned Hub Code</p>
-                                <p-dropdown [options]="hubCodeList" placeholder="Select" filter="true"
-                                    formControlName="assignedHubCode" appendTo="body" [style]="{'width': '100%'}"
-                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
-                                    [ngClass]="form.get('assignedHubCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('assignedHubCode')" class="text-danger"><small>{{
+                                <p class="formControlLabel f600 textBlack mb-0 ">District</p>
+                                <p-dropdown [options]="districtIdList" formControlName="districtId" appendTo="body"
+                                    [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" filter="true"
+                                    [panelStyle]="{'width':'100%'}"
+                                    [ngClass]="form.get('districtId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
+                                <mat-error *ngIf="errorHandling('districtId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Status</p>
-                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
-                                    formControlName="statusId" placeholder="Select" filter="true" />
+                                <p class="formControlLabel f600 textBlack mb-0 ">Province</p>
+                                <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
+                                    formControlName="provinceId" appendTo="body"
+                                    [ngClass]="form.get('provinceId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('provinceId')" class="text-danger"><small>{{
+                                        getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Remark</p>
+                                <p class="formControlLabel f600 textBlack mb-0 ">Remark</p>
                                 <input maxlength="2000" formControlName="remark" class=" w-100" pInputText
                                     placeholder="Enter" />
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0 ">Status</p>
+                                <p-dropdown [options]="status" [style]="{'width': '100%'}" appendTo="body"
+                                    formControlName="statusId" placeholder="Select" filter="true" />
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 3.5%; bottom: 7%;">
                             <button class="buttom1 textBlack mx-1"
-                                routerLink="/main/master/appUser">Cancel</button>
+                                routerLink="/main/master/zoneMaster">Cancel</button>
                             <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
-                                !=
-                                'New' ? 'Update': 'Save'}}</button>
+                                != 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
                 <p-stepperPanel *ngIf="this.pageToken.pageflow != 'New'">
+                    <!--*ngIf="this.pageToken.pageflow != 'New'"-->
                     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                         <div class="d-flex flex-column align-items-center" (click)="onClick.emit()">
                             <div class="d-flex justify-content-center align-items-center">
@@ -162,8 +135,7 @@
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 3.5%; bottom: 7%;">
                             <button class="buttom1 textBlack mx-1" (click)="prevCallback.emit()">Back</button>
                             <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
-                                !=
-                                'New' ? 'Update': 'Save'}}</button>
+                                != 'New' ? 'Update': 'Save'}}</button>
                         </div>
                     </ng-template>
                 </p-stepperPanel>
@@ -171,3 +143,5 @@
         </form>
     </div>
 </div>
+
+

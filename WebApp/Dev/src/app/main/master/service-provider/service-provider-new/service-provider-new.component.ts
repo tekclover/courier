@@ -8,15 +8,16 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
-import { VehicleService } from '../vehicle.service';
+import { ServiceProviderService } from '../service-provider.service';
+import { ProvinceService } from '../../../id-masters/province/province.service';
+import { DistrictService } from '../../../id-masters/district/district.service';
 
 @Component({
-  selector: 'app-vehicle-new',
-  templateUrl: './vehicle-new.component.html',
-  styleUrl: './vehicle-new.component.scss'
+  selector: 'app-service-provider-new',
+  templateUrl: './service-provider-new.component.html',
+  styleUrl: './service-provider-new.component.scss'
 })
-export class VehicleNewComponent {
-  
+export class ServiceProviderNewComponent {
 
   active: number | undefined = 0;
   status: any[] = []
@@ -28,7 +29,9 @@ export class VehicleNewComponent {
     private router: Router,
     private path: PathNameService,
     private fb: FormBuilder,
-    private service: VehicleService,
+    private provinceService: ProvinceService,
+    private districtService: DistrictService,
+    private service: ServiceProviderService,
     private numberRangeService: NumberrangeService,
     private messageService: MessageService,
     private cas: CommonAPIService,
@@ -49,9 +52,11 @@ export class VehicleNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    vehicleRegNumber: [, Validators.required],
-    vehicleName: [, Validators.required],
-    vehicleType: [],
+    serviceProvidersId: [],
+    serviceProvidersText: [],
+    cityId: [],
+    provinceId: [],
+    districtId: [],
     routeId: [],
     assignedHubCode: [],
     statusId: ["16",],
@@ -91,7 +96,7 @@ export class VehicleNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Master', 'Vehicle', this.pageToken.pageflow];
+    const dataToSend = ['Master', 'Service Provider', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -101,55 +106,40 @@ export class VehicleNewComponent {
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
-      this.form.controls.vehicleRegNumber.disable();
+      this.form.controls.serviceProvidersId.disable();
       this.form.controls.updatedBy.disable();
       this.form.controls.createdBy.disable();
       this.form.controls.updatedOn.disable();
       this.form.controls.createdOn.disable();
     }
-    // else {
-    //   this.spin.show();
-    //   let obj: any = {};
-    //   obj.numberRangeObject = ['VEHICLE'];
-    //   this.numberRangeService.search(obj).subscribe({
-    //     next: (res: any) => {
-    //       if (res.length > 0) {
-    //         this.nextNumber = Number(res[0].numberRangeCurrent) + 1;
-    //         this.form.controls.vehicleRegNumber.patchValue(this.nextNumber);
-    //         this.numCondition = 'true';
-    //         this.form.controls.referenceField10.patchValue(this.numCondition);
-    //         this.form.controls.vehicleRegNumber.disable();
-    //       }
-    //       this.spin.hide();
-    //     },
-    //     error: (err) => {
-    //       this.spin.hide();
-    //       this.cs.commonerrorNew(err);
-    //     },
-    //   });
-    // }
   }
 
   languageIdList: any[] = [];
   companyIdList: any[] = [];
+  cityIdList: any[] = [];
+  provinceIdList: any[] = [];
+  districtIdList: any[] = [];
   routeIdList: any[] = [];
   hubCodeList: any[] = [];
-
   dropdownlist() {
     this.spin.show();
     this.cas.getalldropdownlist([
       this.cas.dropdownlist.setup.language.url,
       this.cas.dropdownlist.setup.company.url,
+      this.cas.dropdownlist.setup.city.url,
+      this.cas.dropdownlist.setup.province.url,
+      this.cas.dropdownlist.setup.district.url,
       this.cas.dropdownlist.setup.route.url,
       this.cas.dropdownlist.setup.hub.url,
-
-
     ]).subscribe({
       next: (results: any) => {
         this.languageIdList = this.cas.foreachlist(results[0], this.cas.dropdownlist.setup.language.key);
         this.companyIdList = this.cas.foreachlist(results[1], this.cas.dropdownlist.setup.company.key);
-        this.routeIdList = this.cas.foreachlist(results[2], this.cas.dropdownlist.setup.route.key);
-        this.hubCodeList = this.cas.foreachlist(results[3], this.cas.dropdownlist.setup.hub.key);
+        this.cityIdList = this.cas.forLanguageFilter(results[2], this.cas.dropdownlist.setup.city.key);
+        this.provinceIdList = this.cas.forLanguageFilter(results[3], this.cas.dropdownlist.setup.province.key);
+        this.districtIdList = this.cas.forLanguageFilter(results[4], this.cas.dropdownlist.setup.district.key);
+        this.routeIdList = this.cas.forLanguageFilter(results[5], this.cas.dropdownlist.setup.route.key);
+        this.hubCodeList = this.cas.forLanguageFilter(results[6], this.cas.dropdownlist.setup.hub.key);
         this.spin.hide();
       },
       error: (err: any) => {
@@ -185,9 +175,9 @@ export class VehicleNewComponent {
             severity: 'success',
             summary: 'Updated',
             key: 'br',
-            detail: res.vehicleRegNumber + ' has been updated successfully',
+            detail: res.serviceProvidersId + ' has been updated successfully',
           });
-          this.router.navigate(['/main/master/vehicle']);
+          this.router.navigate(['/main/master/serviceProvider']);
           this.spin.hide();
         },
         error: (err) => {
@@ -204,9 +194,9 @@ export class VehicleNewComponent {
               severity: 'success',
               summary: 'Created',
               key: 'br',
-              detail: res.vehicleRegNumber + ' has been created successfully',
+              detail: res.serviceProvidersId + ' has been created successfully',
             });
-            this.router.navigate(['/main/master/vehicle']);
+            this.router.navigate(['/main/master/serviceProvider']);
             this.spin.hide();
           }
         },
@@ -217,6 +207,44 @@ export class VehicleNewComponent {
       });
     }
   }
+  districtChanged() {
 
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.cityId = [this.form.controls.cityId.value]
+
+    this.districtIdList = [];
+    this.spin.show();
+    this.districtService.search(obj).subscribe({
+      next: (result : any) => {
+        this.districtIdList = this.cas.foreachlist(result, { key: 'districtId', value: 'districtName' });
+        this.spin.hide();
+      }, error: (err : any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
+  }
+  provinceChanged() {
+
+    let obj: any = {};
+    obj.languageId = [this.auth.languageId];
+    obj.companyId = [this.auth.companyId];
+    obj.cityId = [this.form.controls.cityId.value];
+
+
+    this.provinceIdList = [];
+    this.spin.show();
+    this.provinceService.search(obj).subscribe({
+      next: (result : any) => {
+        this.provinceIdList = this.cas.foreachlist(result, { key: 'provinceId', value: 'provinceName' });
+        this.spin.hide();
+      }, error: (err : any) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      }
+    })
+  }
 
 }

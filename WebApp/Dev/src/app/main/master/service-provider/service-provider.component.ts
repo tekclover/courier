@@ -11,19 +11,18 @@ import { DeleteComponent } from '../../../common-dialog/delete/delete.component'
 import { CommonServiceService } from '../../../common-service/common-service.service';
 import { PathNameService } from '../../../common-service/path-name.service';
 import { AuthService } from '../../../core/core';
-import { SpecialApprovalService } from '../special-approval/special-approval.service';
-import { VehicleService } from './vehicle.service';
+import { ServiceProviderService } from './service-provider.service';
 
 @Component({
-  selector: 'app-vehicle',
-  templateUrl: './vehicle.component.html',
-  styleUrl: './vehicle.component.scss'
+  selector: 'app-service-provider',
+  templateUrl: './service-provider.component.html',
+  styleUrl: './service-provider.component.scss'
 })
-export class VehicleComponent {
+export class ServiceProviderComponent {
   
-
-  vehicleTable: any[] = [];
-  selectedVehicle: any[] = [];
+  
+  serviceProviderTable: any[] = [];
+  selectedServiceProvider: any[] = [];
   cols: any[] = [];
   target: any[] = [];
 
@@ -32,7 +31,7 @@ export class VehicleComponent {
     private cs: CommonServiceService,
     private router: Router,
     private path: PathNameService,
-    private service: VehicleService,
+    private service: ServiceProviderService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
     private auth: AuthService,
@@ -44,7 +43,7 @@ export class VehicleComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Vehicle'];
+    const dataToSend = ['Master', 'ServiceProvider'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -54,9 +53,8 @@ export class VehicleComponent {
   callTableHeader() {
     this.cols = [
       { field: 'companyName', header: 'Company' },
-      { field: 'vehicleRegNumber', header: 'Vehicle Reg No', format:'hyperLink' },
-      { field: 'vehicleName', header: 'Vehicle Name' },
-      { field: 'vehicleType', header: 'Vehicle Type' },
+      { field: 'serviceProvidersId', header: 'Service Providers ID', format:'hyperLink' },
+      { field: 'serviceProvidersText', header: 'Service Providers Text' },
       { field: 'remark', header: 'Remarks' },
       { field: 'statusDescription', header: 'Status' },
       { field: 'createdBy', header: 'Created By' },
@@ -67,6 +65,10 @@ export class VehicleComponent {
       { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
       { field: 'statusId', header: 'Status ID' },
+      { field: 'cityId', header: 'City ID' },
+      { field: 'provinceId', header: 'Province ID' },
+      { field: 'districtId', header: 'District ID' },
+      { field: 'vehicleRegNumber', header: 'Vehicle Reg No' },
       { field: 'routeId', header: 'Route ID' },
       { field: 'assignedHubCode', header: 'Assigned Hub Code' },
       { field: 'referenceField1', header: 'Reference Field 1' },
@@ -93,11 +95,11 @@ export class VehicleComponent {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           console.log(res);
-          this.vehicleTable = res;
+          this.serviceProviderTable = res;
           this.getSearchDropdown();
           this.spin.hide();
         },
-        error: (err) => {
+        error: (err : any) => {
           this.spin.hide();
           this.cs.commonerrorNew(err);
         },
@@ -106,9 +108,9 @@ export class VehicleComponent {
   }
 
   onChange() {
-    const choosen = this.selectedVehicle[this.selectedVehicle.length - 1];
-    this.selectedVehicle.length = 0;
-    this.selectedVehicle.push(choosen);
+    const choosen = this.selectedServiceProvider[this.selectedServiceProvider.length - 1];
+    this.selectedServiceProvider.length = 0;
+    this.selectedServiceProvider.push(choosen);
   }
 
   customTable() {
@@ -122,16 +124,16 @@ export class VehicleComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedVehicle[0]);
+        this.deleterecord(this.selectedServiceProvider[0]);
       }
     });
   }
 
   openCrud(type: any = 'New', linedata: any = null): void {
     if(linedata){
-      this.selectedVehicle = linedata;
+      this.selectedServiceProvider = linedata;
     }
-    if (this.selectedVehicle.length === 0 && type != 'New') {
+    if (this.selectedServiceProvider.length === 0 && type != 'New') {
       this.messageService.add({
         severity: 'warn',
         summary: 'Warning',
@@ -140,15 +142,15 @@ export class VehicleComponent {
       });
     } else {
       let paramdata = this.cs.encrypt({
-        line: linedata == null ? this.selectedVehicle[0] : linedata,
+        line: linedata == null ? this.selectedServiceProvider[0] : linedata,
         pageflow: type,
       });
-      this.router.navigate(['/main/master/vehicle-new/' + paramdata]);
+      this.router.navigate(['/main/master/serviceProvider-new/' + paramdata]);
     }
   }
 
   deleteDialog() {
-    if (this.selectedVehicle.length === 0) {
+    if (this.selectedServiceProvider.length === 0) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Warning',
@@ -163,33 +165,33 @@ export class VehicleComponent {
       maxWidth: '82%',
       position: { top: '6.5%', left: '30%' },
       data: {
-        line: this.selectedVehicle,
-        module: 'Vehicle',
+        line: this.selectedServiceProvider,
+        module: 'ServiceProvider',
         body: 'This action cannot be undone. All values associated with this field will be lost.',
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleterecord(this.selectedVehicle[0]);
+        this.deleterecord(this.selectedServiceProvider[0]);
       }
     });
   }
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.vehicleRegNumber).subscribe({
-      next: (res) => {
+    this.service.Delete(lines.serviceProvidersId).subscribe({
+      next: (res : any) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.vehicleRegNumber + ' Deleted successfully',
+          detail: lines.serviceProvidersId + ' Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
       },
-      error: (err) => {
+      error: (err : any) => {
         this.cs.commonerrorNew(err);
         this.spin.hide();
       },
@@ -197,7 +199,7 @@ export class VehicleComponent {
   }
 
   downloadExcel() {
-    const exportData = this.vehicleTable.map((item) => {
+    const exportData = this.serviceProviderTable.map((item) => {
       const exportItem: any = {};
       this.cols.forEach((col) => {
         if (col.format == 'date') {
@@ -214,29 +216,29 @@ export class VehicleComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Vehicle');
+    this.cs.exportAsExcel(exportData, 'ServiceProvider');
   }
 
   searchform = this.fb.group({
-    vehicleRegNumber: [],
+    serviceProvidersId: [],
     statusId: [],
     companyId: [[this.auth.companyId],],
     languageId: [[this.auth.languageId],]
   })
 
   readonly fieldDisplayNames: Record<string, string> = {
-    vehicleRegNumber: 'Vehicle',
+    serviceProvidersId: 'ServiceProvider',
     statusId: 'Status'
   };
 
   languageDropdown: any = [];
   companyDropdown: any = [];
-  vehicleDropdown: any = [];
+  serviceProvidersDropdown: any = [];
   statusDropdown: any = [];
 
   getSearchDropdown() {
 
-    this.vehicleTable.forEach(res => {
+    this.serviceProviderTable.forEach(res => {
 
       if (res.languageId != null) {
         this.languageDropdown.push({ value: res.languageId, label: res.languageDescription });
@@ -246,9 +248,9 @@ export class VehicleComponent {
         this.companyDropdown.push({ value: res.companyId, label: res.companyName });
         this.companyDropdown = this.cs.removeDuplicatesFromArrayList(this.companyDropdown, 'value');
       }
-      if (res.vehicleRegNumber != null) {
-        this.vehicleDropdown.push({ value: res.vehicleRegNumber, label: res.vehicleName });
-        this.vehicleDropdown = this.cs.removeDuplicatesFromArrayList(this.vehicleDropdown, 'value');
+      if (res.serviceProvidersId != null) {
+        this.serviceProvidersDropdown.push({ value: res.serviceProvidersId, label: res.serviceProvidersText });
+        this.serviceProvidersDropdown = this.cs.removeDuplicatesFromArrayList(this.serviceProvidersDropdown, 'value');
       }
       if (res.statusId != null) {
         this.statusDropdown.push({ value: res.statusId, label: res.statusDescription });
@@ -258,7 +260,7 @@ export class VehicleComponent {
     //  this.statusDropdown = [{ value: '17', label: 'Inactive' }, { value: '16', label: 'Active' }];
   }
 
-  @ViewChild('vehicle') overlayPanel!: OverlayPanel;
+  @ViewChild('serviceProvider') overlayPanel!: OverlayPanel;
   closeOverLay() {
     this.overlayPanel.hide();
   }
@@ -274,11 +276,11 @@ export class VehicleComponent {
     this.spin.show();
     this.service.search(this.searchform.getRawValue()).subscribe({
       next: (res: any) => {
-        this.vehicleTable = res;
+        this.serviceProviderTable = res;
         this.spin.hide();
         this.overlayPanel.hide();
       },
-      error: (err) => {
+      error: (err : any) => {
         this.spin.hide();
         this.cs.commonerrorNew(err);
       },
@@ -288,7 +290,7 @@ export class VehicleComponent {
   reset() {
     this.searchform.reset();
     this.searchform = this.fb.group({
-      vehicleRegNumber: [],
+      serviceProvidersId: [],
       statusId: [],
       companyId: [[this.auth.companyId],],
       languageId: [[this.auth.languageId],]
@@ -303,6 +305,7 @@ export class VehicleComponent {
       this.search();
     }
   }
+
 
 
 }

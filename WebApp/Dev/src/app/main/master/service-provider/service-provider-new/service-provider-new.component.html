@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">App User- {{this.pageToken.pageflow}}</p>
+        <p class="componentHeader f600 mb-0">Service Provider- {{this.pageToken.pageflow}}</p>
         <div class="d-flex justify-content-between align-items-center">
             <button type="button" class="invisible buttom1 bgBlack text-white ml-2">Transfer</button>
         </div>
@@ -37,71 +37,62 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">App User ID</p>
-                                <input maxlength="100" pInputText formControlName="appUserId"
-                                    [ngClass]="form.get('appUserId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('appUserId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                                <p class="formControlLabel f600 textBlack mb-0">Service Provider ID</p>
+                                <input maxlength="50" pInputText pKeyFilter="alphanum"
+                                    formControlName="serviceProvidersId" class="w-100" pInputText placeholder="Enter" />
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">App User Name</p>
-                                <input maxlength="100" pInputText formControlName="appUserName"
-                                    [ngClass]="form.get('appUserName')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                <p class="formControlLabel f600 textBlack mb-0 ">Service Provider Text</p>
+                                <input maxlength="100" pInputText formControlName="serviceProvidersText"
+                                    [ngClass]="form.get('serviceProvidersText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('appUserName')"
+                                <mat-error *ngIf="errorHandling('serviceProvidersText')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">App User Type</p>
-                                <input maxlength="100" pInputText formControlName="appUserType"
-                                    [ngClass]="form.get('appUserType')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('appUserType')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0 required">Password</p>
-                                <input type = "password" maxlength="100" pInputText formControlName="password"
-                                    [ngClass]="form.get('password')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('password')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Mobile Number</p>
-                                <input maxlength="100" pInputText formControlName="mobileNumber"
-                                    [ngClass]="form.get('mobileNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    class="w-100" pInputText placeholder="Enter" />
-                                <mat-error *ngIf="errorHandling('mobileNumber')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Vehicle Reg No</p>
-                                <p-dropdown [options]="vehcileRegNoList" placeholder="Select" filter="true"
-                                    formControlName="vehicleRegNumber" appendTo="body" [style]="{'width': '100%'}"
-                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
-                                    [ngClass]="form.get('vehicleRegNumber')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('vehicleRegNumber')" class="text-danger"><small>{{
-                                        getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Route ID</p>
                                 <p-dropdown [options]="routeIdList" placeholder="Select" filter="true"
-                                    formControlName="routeId" appendTo="body" [style]="{'width': '100%'}"
-                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
-                                    [ngClass]="form.get('routeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('routeId')" class="text-danger"><small>{{
-                                        getErrorMessage()}}</small></mat-error>
+                                formControlName="routeId"
+                                [ngClass]="form.get('routeId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" [disabled]="true"
+                                [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('routeId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Assigned Hub Code</p>
-                                <p-dropdown [options]="hubCodeList" placeholder="Select" filter="true"
-                                    formControlName="assignedHubCode" appendTo="body" [style]="{'width': '100%'}"
-                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
-                                    [ngClass]="form.get('assignedHubCode')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
-                                <mat-error *ngIf="errorHandling('assignedHubCode')" class="text-danger"><small>{{
-                                        getErrorMessage()}}</small></mat-error>
+                                <p-dropdown [options]="hubCodeList" formControlName="assignedHubCode" appendTo="body"placeholder="Select"
+                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('assignedHubCode')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">City ID</p>
+                                <p-dropdown [options]="cityIdList" placeholder="Select" filter="true"
+                                formControlName="cityId"
+                                [ngClass]="form.get('cityId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                appendTo="body" [style]="{'width': '100%'}" (onChange)="provinceChanged()"[disabled]="true"
+                                [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('cityId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Province ID</p>
+                                <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
+                                    formControlName="provinceId"
+                                    [ngClass]="form.get('provinceId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    appendTo="body" [style]="{'width': '100%'}" (onChange)="districtChanged()" [disabled]="true"
+                                    [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('provinceId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">District ID</p>
+                                <p-dropdown [options]="districtIdList" placeholder="Select" filter="true"
+                                formControlName="districtId" appendTo="body"
+                                [ngClass]="form.get('districtId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />                                <mat-error *ngIf="errorHandling('districtId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0">Status</p>
@@ -116,7 +107,7 @@
                         </div>
                         <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 3.5%; bottom: 7%;">
                             <button class="buttom1 textBlack mx-1"
-                                routerLink="/main/master/appUser">Cancel</button>
+                                routerLink="/main/master/serviceProvider">Cancel</button>
                             <button class="buttom1 bgBlack text-white mx-1" (click)="save()">{{this.pageToken.pageflow
                                 !=
                                 'New' ? 'Update': 'Save'}}</button>
@@ -171,3 +162,4 @@
         </form>
     </div>
 </div>
+
