@@ -2,9 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Data

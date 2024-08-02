@@ -32,7 +32,6 @@ import com.courier.overc360.api.midmile.replica.repository.ReplicaImageReference
 import com.courier.overc360.api.midmile.replica.repository.ReplicaOriginDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.PreAlertManifestConsignmentSpecification;
-import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaConsignmentSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -41,6 +40,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -607,11 +608,24 @@ public class ConsignmentService {
      * @return
      * @throws Exception
      */
+//    public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
+//
+//        log.info("given params to fetch Consignments -- > {}", findConsignment);
+//        ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
+//        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.findAll(spec);
+//        return consignments;
+//    }
     public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
 
-        log.info("given params to fetch Consignments -- > {}", findConsignment);
-        ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
-        return replicaConsignmentEntityRepository.findAll(spec);
+        Instant startTime = Instant.now();
+        log.info("given params to fetch Consignments with Qry --> {}", findConsignment);
+        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.fetchConsignmentsWithQry(
+                findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getPartnerId(),
+                findConsignment.getMasterAirwayBill(), findConsignment.getHouseAirwayBill());
+        log.info("No of Consignments --> {}", consignments.size());
+        Instant endTime = Instant.now();
+        log.info("Time to fetch Consignments with Qry : {}ms", Duration.between(startTime, endTime).toMillis());
+        return consignments;
     }
 
 
@@ -773,7 +787,7 @@ public class ConsignmentService {
      */
     public List<ConsignmentInvoice> findConsignmentInvoice(FindConsignmentInvoice findConsignmentInvoice) {
         List<ConsignmentInvoice> results = replicaConsignmentEntityRepository.getConsignmentInvoice(findConsignmentInvoice.getHouseAirwayBill(), findConsignmentInvoice.getPartnerHouseAirwayBill(), findConsignmentInvoice.getPartnerMasterAirwayBill(), findConsignmentInvoice.getCompanyId());
-        log.info("found Consignments -->" + results);
+//        log.info("found Consignments --> " + results);
         return results;
     }
 
@@ -792,7 +806,7 @@ public class ConsignmentService {
                 invoiceFormList.add(dbInvoiceHeader);
             });
         }
-        log.info("found Consignments -->" + results.size());
+        log.info("found Consignments --> {}", results.size());
         return invoiceFormList;
     }
 
@@ -905,9 +919,9 @@ public class ConsignmentService {
                             findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
                     if (consignmentId != null) {
                         consignment = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
-                        if (consignment == null) {
-                            throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
-                        }
+                    }
+                    if (consignment == null) {
+                        throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
                     }
                 }
                 fetchedConsignmentList.add(consignment);

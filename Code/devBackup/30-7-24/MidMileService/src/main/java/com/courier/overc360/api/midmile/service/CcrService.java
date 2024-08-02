@@ -168,22 +168,13 @@ public class CcrService {
 //                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill(),
 //                            createdCcr.getPieceId());
 
-//                    // Update CCR_ID in Console Table - equivalent records
-//                    try {
-//                        int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(createdCcr.getConsoleId(),
-//                                createdCcr.getCcrId(), createdCcr.getLanguageId(), createdCcr.getCompanyId());
-//                        log.info("No of Consoles with consoleId - {} updated with ccrId - {} --> {}", createdCcr.getConsoleId(), createdCcr.getCcrId(), noOfRecordsUpdated);
-//                    } catch (Exception e) {
-//                        log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", createdCcr.getCcrId(), createdCcr.getConsoleId(), e.getMessage());
-//                    }
-
                     createdCcrList.add(createdCcr);
                 }
                 // Update CCR_ID in Console Table - equivalent records
                 try {
                     int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(addCcr.getConsoleId(),
                             CCR_ID, addCcr.getLanguageId(), addCcr.getCompanyId());
-                    log.info("No of Consoles with consoleId - {} updated with ccrId - {} --> {}", addCcr.getConsoleId(), CCR_ID, noOfRecordsUpdated);
+                    log.info("Consoles -- consoleId-{} updated with ccrId-{} : count --> {}", addCcr.getConsoleId(), CCR_ID, noOfRecordsUpdated);
                 } catch (Exception e) {
                     log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", CCR_ID, addCcr.getConsoleId(), e.getMessage());
                 }

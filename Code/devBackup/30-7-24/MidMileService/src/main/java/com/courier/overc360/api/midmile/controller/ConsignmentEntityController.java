@@ -95,7 +95,7 @@ public class ConsignmentEntityController {
     // Find Consignment
     @ApiOperation(response = ReplicaConsignmentEntity.class, value = "Find ConsignmentEntity") // label for swagger
     @PostMapping("/find")
-    public ResponseEntity<?> findImageReference(@RequestBody FindConsignment findConsignment) throws Exception {
+    public ResponseEntity<?> findImageReference(@Valid @RequestBody FindConsignment findConsignment) throws Exception {
         List<ReplicaConsignmentEntity> consignmentEntityList = consignmentService.findConsignmentEntity(findConsignment);
         return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
     }

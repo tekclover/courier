@@ -201,10 +201,10 @@ public class PieceDetailsService {
      */
     @Transactional
     public List<PieceDetails> createPieceDetailsList(String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill,
-                                                        String companyName, String languageName, String partnerName, String partnerHawBill,
-                                                        String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
-                                                        String volume, String weightUnit, String codAmount, String hawbTypeId, String hawbType, String hawbDescription,
-                                                        String country, String loginUserID)
+                                                     String companyName, String languageName, String partnerName, String partnerHawBill,
+                                                     String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
+                                                     String volume, String weightUnit, String codAmount, String hawbTypeId, String hawbType, String hawbDescription,
+                                                     String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<PieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -250,7 +250,7 @@ public class PieceDetailsService {
                         newPieceDetails.setPieceTypeDescription(hawbDescription);
                         newPieceDetails.setPieceTimeStamp(new Date());
                         newPieceDetails.setTags(String.valueOf(itemCount));
-                        if(hsCode != null) {
+                        if (hsCode != null) {
                             newPieceDetails.setHsCode(hsCode);
                         }
                         newPieceDetails.setDeletionIndicator(0L);
@@ -333,7 +333,7 @@ public class PieceDetailsService {
                                 savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
                                 savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill() );
+                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill());
 
                         pieceDetailsList.add(savePieceDetails);
                     }
@@ -526,7 +526,7 @@ public class PieceDetailsService {
         List<PieceDetails> pieceDetails = pieceDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
                 languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, 0L);
 
-        if (!pieceDetails.isEmpty() && pieceDetails != null) {
+        if (pieceDetails != null && !pieceDetails.isEmpty()) {
             for (PieceDetails dbPieceDetails : pieceDetails) {
                 if (dbPieceDetails != null) {
                     dbPieceDetails.setDeletionIndicator(1L);
@@ -558,14 +558,14 @@ public class PieceDetailsService {
      */
     public List<LabelFormOutput> getLabelFormOutput(LabelFormInput labelFormInput) {
 
-        log.info("labelFormInput : " + labelFormInput);
+        log.info("labelFormInput : {}", labelFormInput);
         List<LabelFormOutput> labelFormOutputList = replicaPieceDetailsRepository.getLabelPdfOutput(
                 labelFormInput.getLanguageId(),
                 labelFormInput.getCompanyId(),
                 labelFormInput.getPieceId(),
                 labelFormInput.getHouseAirwayBill(),
                 new Date());
-        log.info("labelForm output: " + labelFormOutputList.size());
+        log.info("labelForm output: {}", labelFormOutputList.size());
         return labelFormOutputList;
     }
 
