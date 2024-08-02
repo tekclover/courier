@@ -468,23 +468,23 @@ public class ReplicaConsignmentEntity implements Serializable {
     private Long unconsolidatedFlag = 0L;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaDestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaOriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReplicaReturnDetails returnDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private List<ReplicaPieceDetails> pieceDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private Set<ReplicaImageReference> referenceImageList = new HashSet<>();
 
 }

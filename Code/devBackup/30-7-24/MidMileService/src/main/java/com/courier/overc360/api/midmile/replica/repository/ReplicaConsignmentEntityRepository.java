@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Transactional
@@ -139,6 +138,21 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
 
     ReplicaConsignmentEntity findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerHouseAirwayBill, Long deletionIndicator);
+
+
+    // Fetch Consignments with given Params Only
+    @Query(value = "Select * From tblconsignment_entity tc\n" +
+            "Where tc.IS_DELETED=0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:masterAirwayBill, NULL) IS NULL OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill))\n" +
+            "AND (COALESCE(:houseAirwayBill, NULL) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill))", nativeQuery = true)
+    List<ReplicaConsignmentEntity> fetchConsignmentsWithQry(@Param(value = "languageId") List<String> languageId,
+                                                            @Param(value = "companyId") List<String> companyId,
+                                                            @Param(value = "partnerId") List<String> partnerId,
+                                                            @Param(value = "masterAirwayBill") List<String> masterAirwayBill,
+                                                            @Param(value = "houseAirwayBill") List<String> houseAirwayBill);
 
 
 }

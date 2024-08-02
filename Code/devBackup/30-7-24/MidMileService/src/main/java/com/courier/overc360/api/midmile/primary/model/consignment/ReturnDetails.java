@@ -1,6 +1,5 @@
 package com.courier.overc360.api.midmile.primary.model.consignment;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

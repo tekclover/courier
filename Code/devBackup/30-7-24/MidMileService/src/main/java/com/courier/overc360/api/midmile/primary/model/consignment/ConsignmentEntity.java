@@ -468,23 +468,23 @@ public class ConsignmentEntity implements Serializable {
     private Long unconsolidatedFlag = 0L;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private DestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private OriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReturnDetails returnDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private List<PieceDetails> pieceDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private Set<ImageReference> referenceImageList = new HashSet<>();
 
 }
