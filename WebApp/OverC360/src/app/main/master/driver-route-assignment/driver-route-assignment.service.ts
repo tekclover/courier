@@ -24,9 +24,9 @@ export class DriverRouteAssignmentService {
       '/overc-idmaster-service/driverRouteAssignment/' + obj.courierId + '?companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId +'&routeId=' + obj.routeId + '&vehicleRegNumber=' + obj.vehicleRegNumber +'&assignedHubCode=' +obj.assignedHubCode, obj);
   }
 
-  Delete(courierId: string) {
+  Delete(obj: any) {
     return this.http.delete<any>(
-      '/overc-idmaster-service/driverRouteAssignment/' + courierId + '?companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
+      '/overc-idmaster-service/driverRouteAssignment/' + obj.courierId + '?companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId +'&routeId=' + obj.routeId + '&vehicleRegNumber=' + obj.vehicleRegNumber +'&assignedHubCode=' +obj.assignedHubCode);
   }
 
   search(obj: any) {
