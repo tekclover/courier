@@ -1,4 +1,4 @@
-package com.courier.overc360.api.idmaster.primary.model.hhtnotification;
+package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 

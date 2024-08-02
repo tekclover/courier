@@ -2480,6 +2480,32 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(dbHhtNotification, HttpStatus.OK);
     }
 
+    // Update HHtNotification
+    @ApiOperation(response = HhtNotification.class, value = "Update HhtNotification") // label for swagger
+    @PatchMapping("/hhtnotification/update")
+    public ResponseEntity<?> patchHhtNotification(@Valid @RequestBody HhtNotification updateHhtNotification, @RequestParam String loginUserID,
+                                                  @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
+        HhtNotification updatedHhtNotification = idmasterService.updateHhtNotification(updateHhtNotification, loginUserID, authToken);
+        return new ResponseEntity<>(updatedHhtNotification, HttpStatus.OK);
+    }
+
+    // Find HHtNotifications
+    @ApiOperation(response = HhtNotification[].class, value = "Find HhtNotifications") // label for swagger
+    @PostMapping("/hhtnotification/find")
+    public ResponseEntity<?> findHhtNotification(@Valid @RequestBody FindHhtNotification findHhtNotification, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        HhtNotification[] hhtNotifications = idmasterService.findHhtNotifications(findHhtNotification, authToken);
+        return new ResponseEntity<>(hhtNotifications, HttpStatus.OK);
+    }
+
+    // Get All HHtNotifications
+    @ApiOperation(response = HhtNotification[].class, value = "Get All HhtNotifications") // label for swagger
+    @PostMapping("/hhtnotification/getAll")
+    public ResponseEntity<?> getAllHhtNotifications(@RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        HhtNotification[] hhtNotifications = idmasterService.getAllHhtNotifications(authToken);
+        return new ResponseEntity<>(hhtNotifications, HttpStatus.OK);
+    }
 
     //==================================================Route===================================================
     // Get All Route Details
