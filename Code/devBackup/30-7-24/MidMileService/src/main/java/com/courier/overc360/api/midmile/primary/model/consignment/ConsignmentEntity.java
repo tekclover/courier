@@ -480,11 +480,8 @@ public class ConsignmentEntity implements Serializable {
     private ReturnDetails returnDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID")
     private List<PieceDetails> pieceDetails;
-
-//    @OneToMany(mappedBy = "consignment", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PieceDetails> pieceDetails;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")

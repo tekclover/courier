@@ -26,10 +26,6 @@ public class PieceDetails implements Serializable {
     @Column(name = "PIECE_DETAILS_ID")
     private Long pieceDetailsId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "CONSIGNMENT_ID")
-//    private ConsignmentEntity consignment;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
     private List<ItemDetails> itemDetails;

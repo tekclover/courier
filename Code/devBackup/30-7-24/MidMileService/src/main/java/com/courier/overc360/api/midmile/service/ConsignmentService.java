@@ -32,6 +32,7 @@ import com.courier.overc360.api.midmile.replica.repository.ReplicaImageReference
 import com.courier.overc360.api.midmile.replica.repository.ReplicaOriginDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaPieceDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.PreAlertManifestConsignmentSpecification;
+import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaConsignmentSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -40,8 +41,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -364,6 +363,13 @@ public class ConsignmentService {
             }
             String country = consignmentEntity.getOriginDetails().getCountry();
 
+            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
+                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+                    newConsignment.getHawbTypeId(), newConsignment.getHawbType(), newConsignment.getHawbTypeDescription(), country, loginUserID);
+
+            newConsignment.setPieceDetails(pieceDetails);
+
             ConsignmentEntity saveConsignment = consignmentEntityRepository.save(newConsignment);
 
 //             PieceDetails Save
@@ -372,10 +378,10 @@ public class ConsignmentService {
 //                    consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
 //                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbType(), country, loginUserID);
 
-            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
-                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
-                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), saveConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    saveConsignment.getHawbTypeId(), saveConsignment.getHawbType(), saveConsignment.getHawbTypeDescription(), country, loginUserID);
+//            List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
+//                    newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
+//                    partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
+//                    newConsignment.getHawbTypeId(), newConsignment.getHawbType(), newConsignment.getHawbTypeDescription(), country, loginUserID);
 
             //Volume
             Double totalPieceVolume = pieceDetails.stream().map(PieceDetails::getVolume).filter(n -> n != null && !n.isBlank()).mapToDouble(a -> Double.valueOf(a)).sum();
@@ -608,25 +614,25 @@ public class ConsignmentService {
      * @return
      * @throws Exception
      */
-//    public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
-//
-//        log.info("given params to fetch Consignments -- > {}", findConsignment);
-//        ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
-//        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.findAll(spec);
-//        return consignments;
-//    }
     public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
 
-        Instant startTime = Instant.now();
-        log.info("given params to fetch Consignments with Qry --> {}", findConsignment);
-        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.fetchConsignmentsWithQry(
-                findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getPartnerId(),
-                findConsignment.getMasterAirwayBill(), findConsignment.getHouseAirwayBill());
-        log.info("No of Consignments --> {}", consignments.size());
-        Instant endTime = Instant.now();
-        log.info("Time to fetch Consignments with Qry : {}ms", Duration.between(startTime, endTime).toMillis());
+        log.info("given params to fetch Consignments -- > {}", findConsignment);
+        ReplicaConsignmentSpecification spec = new ReplicaConsignmentSpecification(findConsignment);
+        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.findAll(spec);
         return consignments;
     }
+//    public List<ReplicaConsignmentEntity> findConsignmentEntity(FindConsignment findConsignment) throws Exception {
+//
+//        Instant startTime = Instant.now();
+//        log.info("given params to fetch Consignments with Qry --> {}", findConsignment);
+//        List<ReplicaConsignmentEntity> consignments = replicaConsignmentEntityRepository.fetchConsignmentsWithQry(
+//                findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getPartnerId(),
+//                findConsignment.getMasterAirwayBill(), findConsignment.getHouseAirwayBill());
+//        log.info("No of Consignments --> {}", consignments.size());
+//        Instant endTime = Instant.now();
+//        log.info("Time to fetch Consignments with Qry : {}ms", Duration.between(startTime, endTime).toMillis());
+//        return consignments;
+//    }
 
 
     /**
