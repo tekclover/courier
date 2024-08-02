@@ -483,6 +483,9 @@ public class ConsignmentEntity implements Serializable {
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private List<PieceDetails> pieceDetails;
 
+//    @OneToMany(mappedBy = "consignment", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PieceDetails> pieceDetails;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private Set<ImageReference> referenceImageList = new HashSet<>();

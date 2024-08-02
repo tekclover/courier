@@ -787,7 +787,7 @@ public class ConsignmentService {
      */
     public List<ConsignmentInvoice> findConsignmentInvoice(FindConsignmentInvoice findConsignmentInvoice) {
         List<ConsignmentInvoice> results = replicaConsignmentEntityRepository.getConsignmentInvoice(findConsignmentInvoice.getHouseAirwayBill(), findConsignmentInvoice.getPartnerHouseAirwayBill(), findConsignmentInvoice.getPartnerMasterAirwayBill(), findConsignmentInvoice.getCompanyId());
-//        log.info("found Consignments --> " + results);
+        log.info("found Consignments -->" + results);
         return results;
     }
 
@@ -806,7 +806,7 @@ public class ConsignmentService {
                 invoiceFormList.add(dbInvoiceHeader);
             });
         }
-        log.info("found Consignments --> {}", results.size());
+        log.info("found Consignments -->" + results.size());
         return invoiceFormList;
     }
 
@@ -915,10 +915,11 @@ public class ConsignmentService {
                         findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), 0L);
 
                 if (consignment == null) {
-                    Long consignmentId = replicaPieceDetailsRepository.getConsignmentId(findConsignment.getLanguageId(),
+                    String hawb = replicaPieceDetailsRepository.getHawbWithPieceId(findConsignment.getLanguageId(),
                             findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
-                    if (consignmentId != null) {
-                        consignment = replicaConsignmentEntityRepository.findByConsignmentIdAndDeletionIndicator(consignmentId, 0L);
+                    if (hawb != null) {
+                        consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+                                findConsignment.getLanguageId(), findConsignment.getCompanyId(), hawb, 0L);
                     }
                     if (consignment == null) {
                         throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());

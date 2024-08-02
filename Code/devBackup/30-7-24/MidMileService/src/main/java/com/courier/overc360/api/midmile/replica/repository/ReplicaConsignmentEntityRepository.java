@@ -17,7 +17,6 @@ import java.util.List;
 @Transactional
 public interface ReplicaConsignmentEntityRepository extends JpaRepository<ReplicaConsignmentEntity, Long>, JpaSpecificationExecutor<ReplicaConsignmentEntity> {
 
-
     @Query(value = "Select \n" +
             "tc.lang_id langId, \n" +
             "tc.lang_text langDesc, \n" +
@@ -134,7 +133,8 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                       @Param("partnerHouseAB") String partnerHouseAB);
 
 
-    ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);
+    ReplicaConsignmentEntity findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String houseAirwayBill, Long deletionIndicator);
 
     ReplicaConsignmentEntity findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerHouseAirwayBill, Long deletionIndicator);
@@ -148,11 +148,12 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
             "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:masterAirwayBill, NULL) IS NULL OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill))\n" +
             "AND (COALESCE(:houseAirwayBill, NULL) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill))", nativeQuery = true)
-    List<ReplicaConsignmentEntity> fetchConsignmentsWithQry(@Param(value = "languageId") List<String> languageId,
-                                                            @Param(value = "companyId") List<String> companyId,
-                                                            @Param(value = "partnerId") List<String> partnerId,
-                                                            @Param(value = "masterAirwayBill") List<String> masterAirwayBill,
-                                                            @Param(value = "houseAirwayBill") List<String> houseAirwayBill);
+    List<ReplicaConsignmentEntity> fetchConsignmentsWithQry(
+            @Param(value = "languageId") List<String> languageId,
+            @Param(value = "companyId") List<String> companyId,
+            @Param(value = "partnerId") List<String> partnerId,
+            @Param(value = "masterAirwayBill") List<String> masterAirwayBill,
+            @Param(value = "houseAirwayBill") List<String> houseAirwayBill);
 
 
 }
