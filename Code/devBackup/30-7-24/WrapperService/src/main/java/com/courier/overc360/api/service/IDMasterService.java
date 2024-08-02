@@ -5401,6 +5401,63 @@ public class IDMasterService {
         }
     }
 
+    // Update HhtNotification
+    public HhtNotification updateHhtNotification(HhtNotification newHhtNotification, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(newHhtNotification, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification/update")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<HhtNotification> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, HhtNotification.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find HhtNotifications
+    public HhtNotification[] findHhtNotifications(FindHhtNotification findHhtNotification, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification/find");
+            HttpEntity<?> entity = new HttpEntity<>(findHhtNotification, headers);
+            ResponseEntity<HhtNotification[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, HhtNotification[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    // Get All HhtNotifications
+    public HhtNotification[] getAllHhtNotifications(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification/getAll");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<HhtNotification[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, HhtNotification[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 
     //==================================================Route===================================================
     //Get All Route
