@@ -60,7 +60,7 @@ public class PushNotificationService {
             }
         }
         List<NotificationMessage> existingMessage =
-                notificationMessageRepository.findByCompanyIdAndLanguageIdAndConsoleIdAndHoseAirwayBillAndDeletionIndicator(
+                notificationMessageRepository.findByCompanyIdAndLanguageIdAndConsoleIdAndHouseAirwayBillAndDeletionIndicator(
                         companyId, languageId, consoleId, houseAirwayBill, 0L);
 
         if (existingMessage.isEmpty()) {
