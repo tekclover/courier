@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -76,6 +77,8 @@ public class AddConsignment {
     private String customerCode;
     private String customerReferenceNumber;
     private String hubCode;
+    private String hubName;
+    private String pieceId;
     private String consignmentType;
     private String actionType;
     private String movementType;

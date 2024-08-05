@@ -137,7 +137,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             "AND PARTNER_ID = :partnerId \n" +
             "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
             "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
-    void updateConsignmentOnConsoleCreate(@Param("languageId") String languageId,
+    void updateConsignmentOnConsoleUpdate(@Param("languageId") String languageId,
                                           @Param("companyId") String companyId,
                                           @Param("partnerId") String partnerId,
                                           @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
@@ -146,6 +146,33 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                           @Param("hawbTypeId") String hawbTypeId,
                                           @Param("hawbType") String hawbType,
                                           @Param("hubCode") String hubCode);
+
+    @Transactional
+    @Modifying
+    @Query(value = "Update tblconsignment_entity\n" +
+            "Set \n" +
+            "HAWB_TYP = :hawbType, \n" +
+            "HAWB_TYP_ID = :hawbTypeId, \n" +
+            "HAWB_TYP_TXT = :hawbTypeDescription, \n" +
+            "HAWB_TIMESTAMP = GETDATE(), \n" +
+            "HUB_CODE = :hubCode, \n " +
+            "HUB_NAME = :hubName \n " +
+            "Where IS_DELETED = 0 \n" +
+            "AND LANG_ID = :languageId \n" +
+            "And C_ID = :companyId \n" +
+            "AND PARTNER_ID = :partnerId \n" +
+            "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
+            "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
+    void updateConsignmentOnConsoleUpdate(@Param("languageId") String languageId,
+                                          @Param("companyId") String companyId,
+                                          @Param("partnerId") String partnerId,
+                                          @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+                                          @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
+                                          @Param("hawbTypeDescription") String hawbTypeDescription,
+                                          @Param("hawbTypeId") String hawbTypeId,
+                                          @Param("hawbType") String hawbType,
+                                          @Param("hubCode") String hubCode,
+                                          @Param("hubName") String hubName);
 
     // Update Consignment Table On Console Create
     @Transactional

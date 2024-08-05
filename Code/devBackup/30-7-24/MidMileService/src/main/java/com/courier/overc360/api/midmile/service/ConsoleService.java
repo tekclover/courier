@@ -1524,49 +1524,12 @@ public class ConsoleService {
                 dbConsole.setPieceTimeStamp(new Date());
             }
 
-
-//            // Get Status Desc
-//            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-//                Optional<String> getStatusOpt =
-//                        consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
-//
-//                if (getStatusOpt.isPresent()) {
-//                    String ikey = getStatusOpt.get();
-//
-//                    dbConsole.setHawbType("STATUS");
-//                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
-//                    dbConsole.setHawbTypeDescription(ikey);
-//                    dbConsole.setHawbTimeStamp(new Date());
-//
-//                    dbConsole.setPieceType("STATUS");
-//                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
-//                    dbConsole.setPieceTypeDescription(ikey);
-//                    dbConsole.setPieceTimeStamp(new Date());
-//                }
-//            } else if (updateConsole.getHawbType().equalsIgnoreCase("EVENT")) {
-//                Optional<String> getEventStats =
-//                        consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), updateConsole.getHawbTypeId());
-//
-//                if (getEventStats.isPresent()) {
-//                    String ikey = getEventStats.get();
-//
-//                    dbConsole.setHawbType("EVENT");
-//                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
-//                    dbConsole.setHawbTypeDescription(ikey);
-//                    dbConsole.setHawbTimeStamp(new Date());
-//
-//                    dbConsole.setPieceType("EVENT");
-//                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
-//                    dbConsole.setPieceTypeDescription(ikey);
-//                    dbConsole.setPieceTimeStamp(new Date());
-//                }
-//            }
             Console updatedConsole = consoleRepository.save(dbConsole);
 
             if (updatedConsole != null) {
                 // Update ConsignmentEntity Table
                 if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-                    consoleRepository.updateConsignmentOnConsoleCreate(
+                    consoleRepository.updateConsignmentOnConsoleUpdate(
                             updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                             updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
                             updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
@@ -1709,11 +1672,11 @@ public class ConsoleService {
             if (updatedConsole != null) {
                 // Update ConsignmentEntity Table
                 if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-                    consoleRepository.updateConsignmentOnConsoleCreate(
+                    consoleRepository.updateConsignmentOnConsoleUpdate(
                             updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                             updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
                             updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
-                            updatedConsole.getHubCode());
+                            updatedConsole.getHubCode(), updatedConsole.getHubName());
                 }
 
                 // Update PreAlert Table
