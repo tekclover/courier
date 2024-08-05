@@ -140,6 +140,11 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
     List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
             String languageId, String companyId, String partnerHouseAirwayBill, String hawbTypeId, Long deletionIndicator);
 
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String houseAirwayBill, Long deletionIndicator);
+
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerHouseAirwayBill, Long deletionIndicator);
 
     // Fetch Consignments with given Params Only
     @Query(value = "Select * From tblconsignment_entity tc\n" +
