@@ -1,4 +1,4 @@
-package com.mnrclara.api.management.model.hhtnotification;
+package com.courier.overc360.api.idmaster.replica.model.hhtnotification;
 
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tblnotificationmessage")
-public class NotificationMessage {
+public class ReplicaNotificationMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

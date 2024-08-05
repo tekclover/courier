@@ -1,4 +1,4 @@
-package com.mnrclara.api.management.model.hhtnotification;
+package com.courier.overc360.api.idmaster.primary.model.hhtnotification;
 
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tblnotificationmessage")
-public class ReplicaNotificationMessage {
+public class NotificationMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ public class ReplicaNotificationMessage {
     @Column(name = "CLIENT_USR_ID", columnDefinition = "nvarchar(100)")
     private String clientUserId;
 
-    @Column(name = "TITLE", columnDefinition = "nvarchar(50)")
+    @Column(name = "TITLE",columnDefinition = "nvarchar(50)")
     private String title;
 
-    @Column(name = "MSG", columnDefinition = "nvarchar(200)")
+    @Column(name = "MSG",columnDefinition = "nvarchar(200)")
     private String message;
 
     @Column(name = "MENU")
@@ -58,7 +58,7 @@ public class ReplicaNotificationMessage {
     @Column(name = "IS_DELETED")
     private Long deletionIndicator;
 
-    @Column(name = "CTD_BY", columnDefinition = "nvarchar(50)")
+    @Column(name = "CTD_BY",columnDefinition = "nvarchar(50)")
     private String createdBy;
 
     @Column(name = "CTD_ON")
