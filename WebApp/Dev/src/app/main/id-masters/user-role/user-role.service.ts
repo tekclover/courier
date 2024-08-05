@@ -12,13 +12,10 @@ export class UserRoleService {
     private auth: AuthService,
   ) { }
 
-  Get (obj: any) {
-    return this.http.get<any>('/overc-idmaster-service/roleAccess/' + obj + '?companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId + '&menuId=' + obj.menuId + '&subMenuId=' + obj.subMenuId);
+  Get (roleId: any) {
+    return this.http.get<any>('/overc-idmaster-service/roleAccess/' + roleId + '?companyId=' + this.auth.companyId + '&languageId=' + this.auth.languageId);
   }
 
-  GetNew(code: any, companyId: any, languageId: any, menuId: any, subMenuId: any) {
-    return this.http.get<any>('/overc-idmaster-service/roleAccess/' + code + '?companyId=' + companyId + '&languageId=' + languageId + '&menuId=' + menuId + '&subMenuId=' + subMenuId);
-  }
 
   Create (obj: any) {
     return this.http.post<any>('/overc-idmaster-service/roleAccess', obj);

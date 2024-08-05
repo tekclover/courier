@@ -153,27 +153,8 @@ export class UserRoleNewComponent {
       }
 
       this.spin.show();
-      console.log(data)
       this.moduleService.search({languageId: [this.auth.languageId], companyId: [this.auth.companyId]}).subscribe(moduleRes => {
-        // this.sub.add(this.service.Get(data.roleId + this.auth.languageId + this.auth.companyId).subscribe(res => {
-        //   this.form.patchValue(res[0]);
-        //   let combined = this.cs.removeDuplicateObj(res, moduleRes);
-        //   this.form.controls.statusDescription.patchValue(this.form.controls.statusDescription.value ? 'Active' : 'Inactive');
-        //   this.menuList = [];
-        //   this.menuList.push({
-        //     mainMenu: "Setup",
-        //     Menu: combined.filter((x: any) => x.moduleId == 2000)
-        //   });
-        //   this.menuList.push({
-        //     mainMenu: "Masters",
-        //     Menu: combined.filter((x: any) => x.moduleId == 3000)
-        //   })
-        //   this.spin.hide();
-        // }, err => {
-        //   this.cs.commonerrorNew(err);
-        //   this.spin.hide();
-        // }));
-        this.sub.add(this.service.GetNew(data.roleId, this.auth.companyId, this.auth.languageId, data.menuId, data.subMenuId).subscribe(res => {
+        this.sub.add(this.service.Get(data.roleId).subscribe(res => {
           console.log(res)
           this.form.patchValue(res[0]);
           let combined = this.cs.removeDuplicateObj(res, moduleRes);
