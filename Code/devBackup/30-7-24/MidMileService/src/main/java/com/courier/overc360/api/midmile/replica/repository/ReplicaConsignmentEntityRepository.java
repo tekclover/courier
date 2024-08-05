@@ -137,7 +137,7 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
     List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
             String languageId, String companyId, String houseAirwayBill, String hawbTypeId, Long deletionIndicator);
 
-    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdDeletionIndicator(
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
             String languageId, String companyId, String partnerHouseAirwayBill, String hawbTypeId, Long deletionIndicator);
 
 
