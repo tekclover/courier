@@ -7,7 +7,7 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
-import { NumberrangeService } from '../../numberrange/numberrange.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 import { AppUserService } from '../app-user.service';
 
 @Component({
