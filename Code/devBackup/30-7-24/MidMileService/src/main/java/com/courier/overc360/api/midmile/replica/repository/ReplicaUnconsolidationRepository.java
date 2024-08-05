@@ -73,14 +73,14 @@ public interface ReplicaUnconsolidationRepository extends JpaRepository<ReplicaU
 //            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))\n" +
             "AND (COALESCE(:partnerHouseAB, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAB))\n" +
-            "And tc.UNCONSOLIDATED = :unconsolidatedIndicator\n" +
+            "And tc.UNCONSOLIDATED = 1\n" +
             "And (COALESCE(CONVERT(VARCHAR(255), :fromDate), NULL) IS NULL OR (tc.CTD_ON between COALESCE(CONVERT(VARCHAR(255), :fromDate), NULL) And COALESCE(CONVERT(VARCHAR(255), :toDate), NULL)))", nativeQuery = true)
     long getNoOfUnconsolidatedShipments(@Param("languageId") String languageId,
                                         @Param("companyId") String companyId,
 //                                        @Param("partnerId") String partnerId,
                                         @Param("partnerMasterAB") String partnerMasterAB,
                                         @Param("partnerHouseAB") String partnerHouseAB,
-                                        @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
+//                                        @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
                                         @Param("fromDate") Date fromDate,
                                         @Param("toDate") Date toDate);
 
