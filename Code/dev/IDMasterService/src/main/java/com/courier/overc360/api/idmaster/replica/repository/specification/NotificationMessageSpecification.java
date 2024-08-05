@@ -27,13 +27,17 @@ public class NotificationMessageSpecification implements Specification<ReplicaNo
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("notificationId");
             predicates.add(group.in(findNotificationMessage.getNotificationId()));
         }
-        if (findNotificationMessage.getClientId() != null && !findNotificationMessage.getClientId().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("clientId");
-            predicates.add(group.in(findNotificationMessage.getClientId()));
+        if (findNotificationMessage.getCompanyId() != null && !findNotificationMessage.getCompanyId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("companyId");
+            predicates.add(group.in(findNotificationMessage.getCompanyId()));
         }
-        if (findNotificationMessage.getClassId() != null && !findNotificationMessage.getClassId().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("classId");
-            predicates.add(group.in(findNotificationMessage.getClassId()));
+        if (findNotificationMessage.getLanguageId() != null && !findNotificationMessage.getLanguageId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("languageId");
+            predicates.add(group.in(findNotificationMessage.getLanguageId()));
+        }
+        if (findNotificationMessage.getHouseAirwayBill() != null && !findNotificationMessage.getHouseAirwayBill().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("houseAirwayBill");
+            predicates.add(group.in(findNotificationMessage.getHouseAirwayBill()));
         }
         if (findNotificationMessage.getClientUserId() != null && !findNotificationMessage.getClientUserId().isEmpty()) {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group> get("clientUserId");

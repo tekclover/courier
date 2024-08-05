@@ -14,28 +14,12 @@ import java.util.List;
 public interface NotificationMessageRepository extends JpaRepository<NotificationMessage, Long>, JpaSpecificationExecutor<NotificationMessage> {
 
 
-    List<NotificationMessage> findByClassIdAndClientIdAndDeletionIndicator(String classId, String clientId, Long deletionIndicator);
 
     List<NotificationMessage> findByNotificationIdAndDeletionIndicator(Long notificationId, Long deletionIndicator);
 
     NotificationMessage findByNotificationId(Long notificationId);
 
-    Long countByClientIdAndOrderType(String clientId, String orderType);
-    Long countByClientIdAndOrderTypeAndTab(String clientId, String orderType, Boolean tab);
-    Long countByClientIdAndMenu(String clientId, Boolean menu);
-    Long countByClientUserIdAndMenu(String clientUserId, Boolean menu);
-    Long countByClientUserIdAndOrderTypeAndMenu(String clientUserId, String orderType, Boolean menu);
 
-    List<NotificationMessage> findByClassIdAndClientIdAndMessageAndOrderTypeAndMenu(
-            String classId, String clientId, String message, String orderType, Boolean menu);
-
-
- List<NotificationMessage> findByClassIdAndClientIdAndMessageAndOrderTypeAndReceiptNo(
-            String classId, String clientId, String message, String orderType, String receiptNo);
-
-    List<NotificationMessage> findByDocumentIdAndClassIdAndClientIdAndMessageAndOrderType(
-            Long documentId, String classId, String clientId, String message, String orderType);
-
-    List<NotificationMessage> findByClassIdAndClientIdAndMessageAndOrderTypeAndQuotationNo(
-            String classId, String clientId, String message, String orderType, String quotationHeaderNo);
+    List<NotificationMessage> findByCompanyIdAndLanguageIdAndHouseAirwayBillAndDeletionIndicator(
+            String companyId, String languageId, String houseAirwayBill, Long deletionIndicator);
 }

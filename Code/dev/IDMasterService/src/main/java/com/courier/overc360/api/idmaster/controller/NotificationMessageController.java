@@ -56,9 +56,10 @@ public class NotificationMessageController {
     // Delete
     @ApiOperation(response = NotificationMessage.class, value = "Delete Notification Message")
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteNotification(@RequestParam(required = false) Long notificationId, @RequestParam(required = false) String clientId,
-                                                @RequestParam(required = false) String classId, @RequestParam String loginUserID) {
-        notificationMessageService.deleteNotificationMessage(notificationId, clientId, classId, loginUserID);
+    public ResponseEntity<?> deleteNotification(@RequestParam(required = false) Long notificationId, @RequestParam(required = false) String companyId,
+                                                @RequestParam(required = false) String languageId, @RequestParam(required = false) String houseAirwayBill,
+                                                @RequestParam String loginUserID) {
+        notificationMessageService.deleteNotificationMessage(notificationId, companyId, languageId, houseAirwayBill, loginUserID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

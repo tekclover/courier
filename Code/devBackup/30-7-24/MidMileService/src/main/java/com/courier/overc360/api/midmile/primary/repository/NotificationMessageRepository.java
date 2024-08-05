@@ -14,4 +14,6 @@ import java.util.List;
 public interface NotificationMessageRepository extends JpaRepository<NotificationMessage, Long>, JpaSpecificationExecutor<NotificationMessage> {
 
 
+    List<NotificationMessage> findByCompanyIdAndLanguageIdAndConsoleIdAndHoseAirBillAndDeletionIndicator(
+            String companyId, String languageId, String consoleId, String houseAirwayBill, Long deletionIndicator);
 }

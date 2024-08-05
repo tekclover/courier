@@ -10,8 +10,9 @@ import java.util.List;
 public class FindNotificationMessage {
 
     private List<Long> notificationId;
-    private List<String> classId;
-    private List<String> clientId;
+    private List<String> companyId;
+    private List<String> languageId;
+    private List<String> houseAirwayBill;
     private List<String> clientUserId;
     private List<String> orderType;
 

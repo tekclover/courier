@@ -6273,17 +6273,19 @@ public class IDMasterService {
 
 
     // DeleteNotificationMessage
+
     /**
      *
      * @param notificationId
-     * @param classId
-     * @param clientId
+     * @param companyId
+     * @param languageId
+     * @param houseAirwayBill
      * @param loginUserID
      * @param authToken
      * @return
      */
-    public NotificationMessage deleteNotificationMessage(Long notificationId, String classId, String clientId,
-                                                         String loginUserID, String authToken) {
+    public NotificationMessage deleteNotificationMessage(Long notificationId, String companyId, String languageId,
+                                                         String houseAirwayBill, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -6298,8 +6300,9 @@ public class IDMasterService {
             UriComponentsBuilder builder = UriComponentsBuilder
                     .fromHttpUrl(getIDMasterServiceApiUrl() + "notificationmessage/delete")
                     .queryParam("notificationId", notificationId)
-                    .queryParam("clientId", clientId)
-                    .queryParam("classId", classId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("houseAirwayBill", houseAirwayBill)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<NotificationMessage> result = restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE,
                     entity, NotificationMessage.class);

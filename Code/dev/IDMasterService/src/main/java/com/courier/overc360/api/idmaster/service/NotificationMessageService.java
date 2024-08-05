@@ -95,20 +95,25 @@ public class NotificationMessageService {
     // Delete NotificationMessage
 
     /**
+     *
      * @param notificationId
-     * @param clientId
-     * @param classId
+     * @param companyId
+     * @param languageId
+     * @param houseAirwayBill
      * @param loginUserID
      */
-    public void deleteNotificationMessage(Long notificationId, String clientId, String classId, String loginUserID) {
+    public void deleteNotificationMessage(Long notificationId, String companyId, String languageId, String houseAirwayBill, String loginUserID) {
 
         List<NotificationMessage> notificationMessages;
-        if (clientId != null && classId != null && !clientId.isEmpty() && !classId.isEmpty()) {
-            notificationMessages = notificationMessageRepository.findByClassIdAndClientIdAndDeletionIndicator(classId, clientId, 0L);
+        if (companyId != null && languageId != null && houseAirwayBill != null &&
+                !companyId.isEmpty() && !languageId.isEmpty() && !houseAirwayBill.isEmpty()) {
+            notificationMessages = notificationMessageRepository.findByCompanyIdAndLanguageIdAndHouseAirwayBillAndDeletionIndicator(
+                    companyId, languageId, houseAirwayBill, 0L);
+
         } else if (notificationId != null) {
             notificationMessages = notificationMessageRepository.findByNotificationIdAndDeletionIndicator(notificationId, 0L);
         } else {
-            throw new IllegalArgumentException("At least one of clientId or clientUserId must be provided");
+            throw new IllegalArgumentException("At least one of the HouseAirwayBillNo and CompanyId And LanguageId must be provided");
         }
 
         if (notificationMessages != null && !notificationMessages.isEmpty()) {

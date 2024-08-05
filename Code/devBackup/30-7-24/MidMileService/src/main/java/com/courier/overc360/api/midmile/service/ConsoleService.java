@@ -2474,7 +2474,7 @@ public class ConsoleService {
 
 
     // Send Notification
-    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId) {
+    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill) {
 
         try {
             // Get NotificationId
@@ -2489,19 +2489,17 @@ public class ConsoleService {
                 if (!deviceToken.isEmpty() && deviceToken != null) {
                     String title = "Console Create";
                     String message = notifyId.getNotificationText();
-                    String response = pushNotificationService.sendPushNotification(deviceToken, title, message);
+                    String response = pushNotificationService.sendPushNotification(
+                            deviceToken, title, message, companyId, languageId, houseAirwayBill, consoleId);
                     log.info("status update successfully");
                     if (response.equals("OK")) {
                         ccrRepository.updateNotificationInConsoleTable(companyId, languageId, consoleId);
                     }
                 }
             }
-
         } catch (Exception e) {
-
+        log.info("Throw exception for send notification when Console Create");
         }
-
-
     }
 }
 

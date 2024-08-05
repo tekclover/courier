@@ -2873,10 +2873,10 @@ public class IDMasterServiceController {
     //Delete NotificationMessage
     @ApiOperation(response = NotificationMessage.class, value = "Delete Notification Message")
     @DeleteMapping("/notificationMessage/delete")
-    public ResponseEntity<?> deleteNotificationMessage(@RequestParam(required = false)  Long notificationId, @RequestParam(required = false)  String classId,
-                                                       @RequestParam String loginUserID, @RequestParam(required = false)  String clientId,
-                                                       @RequestParam String authToken) {
-        idmasterService.deleteNotificationMessage(notificationId, classId, clientId, loginUserID, authToken);
+    public ResponseEntity<?> deleteNotificationMessage(@RequestParam(required = false) Long notificationId, @RequestParam(required = false) String companyId,
+                                                       @RequestParam(required = false) String languageId, @RequestParam(required = false) String houseAirwayBill,
+                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteNotificationMessage(notificationId, companyId, languageId, houseAirwayBill, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

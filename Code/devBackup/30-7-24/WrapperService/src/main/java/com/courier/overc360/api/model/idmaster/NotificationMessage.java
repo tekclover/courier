@@ -3,6 +3,7 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 @Data
@@ -10,11 +11,13 @@ public class NotificationMessage {
 
     private Long notificationId;
 
-    private String classId;
+    private String consoleId;
 
-    private String clientId;
+    private String companyId;
 
-    private String clientUserId;
+    private String languageId;
+
+    private String houseAirwayBill;
 
     private String title;
 
@@ -38,4 +41,3 @@ public class NotificationMessage {
 
     private Date updatedOn = new Date();
 }
-

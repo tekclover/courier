@@ -35,7 +35,8 @@ public class PushNotificationService {
      * @return
      * @throws FirebaseMessagingException
      */
-    public String sendPushNotification(List<String> tokens, String title, String message) {
+    public String sendPushNotification(List<String> tokens, String title, String message, String companyId,
+                                       String languageId, String houseAirwayBill, String consoleId ) {
 
         Iterator<String> iterator = tokens.iterator();
         while (iterator.hasNext()) {
@@ -58,49 +59,49 @@ public class PushNotificationService {
                 e.printStackTrace();
             }
         }
-//        List<NotificationMessage> existingMessage = notificationMessageRepository.findByConsoleIdAnd(
-//                String.valueOf(classId), clientId, message, orderType, receiptNo);
+        List<NotificationMessage> existingMessage =
+                notificationMessageRepository.findByCompanyIdAndLanguageIdAndConsoleIdAndHoseAirBillAndDeletionIndicator(
+                        companyId, languageId, consoleId, houseAirwayBill, 0L);
 
-//        if (existingMessage.isEmpty()) {
-//            saveNotificationMessage(classId, clientId, title, message, null, orderType, null, receiptNo);
-//        }
+        if (existingMessage.isEmpty()) {
+            saveNotificationMessage(companyId, languageId, consoleId, houseAirwayBill, title, message);
+        }
         return "OK";
     }
 
 
-//    // Save Notification Message
-//    /**
-//     *
-//     * @param classId
-//     * @param clientId
-//     * @param title
-//     * @param message
-//     * @param orderType
-//     */
-//    public void saveNotificationMessage(Long classId, String clientId, String title, String message,
-//                                        String clientUserId, String orderType, String quotationHeaderNo, String receiptNo) {
-//        log.info("SaveNotification process start");
-//
-////        Boolean menu = false;
-////        List<NotificationMessage> existingMessage = notificationMessageRepository.findByClassIdAndClientIdAndMessageAndOrderTypeAndMenu(
-////                String.valueOf(classId), clientId, message, orderType, menu);
-//
-////        if (existingMessage.isEmpty()) {
-//        NotificationMessage notificationMessage = new NotificationMessage();
-//        notificationMessage.setClientUserId(clientUserId);
-//        notificationMessage.setClassId(String.valueOf(classId));
-//        notificationMessage.setClientId(clientId);
-//        notificationMessage.setTitle(title);
-//        notificationMessage.setQuotationNo(quotationHeaderNo);
-//        notificationMessage.setMessage(message);
-//        notificationMessage.setReceiptNo(receiptNo);
-//        notificationMessage.setOrderType(orderType);
-//        notificationMessage.setDeletionIndicator(0L);
-//        notificationMessage.setCreatedOn(new Date());
-//        notificationMessageRepository.save(notificationMessage);
-//        log.info(orderType + " Notification Message saved successfully ");
-////        } else {
-////            log.info("Similar notification message already exists, skipping saving...");
-////        }
-//    }
+    // Save Notification Message
+
+    /**
+     *
+     * @param companyId
+     * @param languageId
+     * @param consoleId
+     * @param houseAirwayBill
+     * @param title
+     * @param message
+     */
+    public void saveNotificationMessage(String companyId, String languageId, String consoleId, String houseAirwayBill, String title, String message) {
+        log.info("SaveNotification process start");
+
+//        Boolean menu = false;
+//        List<NotificationMessage> existingMessage = notificationMessageRepository.findByClassIdAndClientIdAndMessageAndOrderTypeAndMenu(
+//                String.valueOf(classId), clientId, message, orderType, menu);
+
+//        if (existingMessage.isEmpty()) {
+        NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessage.setCompanyId(companyId);
+        notificationMessage.setLanguageId(languageId);
+        notificationMessage.setHouseAirwayBill(houseAirwayBill);
+        notificationMessage.setConsoleId(consoleId);
+        notificationMessage.setTitle(title);
+        notificationMessage.setMessage(message);
+        notificationMessage.setDeletionIndicator(0L);
+        notificationMessage.setCreatedOn(new Date());
+        notificationMessageRepository.save(notificationMessage);
+        log.info(consoleId + " Notification Message saved successfully ");
+//        } else {
+//            log.info("Similar notification message already exists, skipping saving...");
+//        }
+    }
 }

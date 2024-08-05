@@ -28,8 +28,8 @@ public class NotificationMessage {
     @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
     private String languageId;
 
-    @Column(name = "CLIENT_USR_ID", columnDefinition = "nvarchar(100)")
-    private String clientUserId;
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String houseAirwayBill;
 
     @Column(name = "TITLE",columnDefinition = "nvarchar(50)")
     private String title;
