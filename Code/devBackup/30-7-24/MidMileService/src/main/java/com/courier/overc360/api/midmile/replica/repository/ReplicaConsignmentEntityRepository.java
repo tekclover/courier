@@ -134,10 +134,10 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                       @Param("partnerHouseAB") String partnerHouseAB);
 
 
-    ReplicaConsignmentEntity findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String houseAirwayBill, Long deletionIndicator);
 
-    ReplicaConsignmentEntity findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
             String languageId, String companyId, String partnerHouseAirwayBill, Long deletionIndicator);
 
 
