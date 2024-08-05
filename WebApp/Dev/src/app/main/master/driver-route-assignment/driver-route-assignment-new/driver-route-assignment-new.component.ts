@@ -115,6 +115,7 @@ export class DriverRouteAssignmentNewComponent {
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.courierId.disable();
+      this.form.controls.courierType.disable();
       this.form.controls.routeId.disable();
       this.form.controls.vehicleRegNumber.disable();
       this.form.controls.assignedHubCode.disable();

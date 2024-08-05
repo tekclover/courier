@@ -52,7 +52,7 @@ export class ServiceProviderNewComponent {
     languageDescription: [],
     companyId: [this.auth.companyId],
     companyName: [],
-    serviceProvidersId: [],
+    serviceProvidersId: [, Validators.required],
     serviceProvidersText: [],
     cityId: [],
     provinceId: [],
@@ -207,7 +207,7 @@ export class ServiceProviderNewComponent {
       });
     }
   }
-  districtChanged() {
+  cityChanged() {
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
@@ -226,12 +226,13 @@ export class ServiceProviderNewComponent {
       }
     })
   }
-  provinceChanged() {
+  districtChanged() {
 
     let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.cityId = [this.form.controls.cityId.value];
+    obj.districtId = [this.form.controls.districtId.value];
 
 
     this.provinceIdList = [];

@@ -43,7 +43,7 @@ export class ServiceProviderComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'ServiceProvider'];
+    const dataToSend = ['Master', 'Service Provider'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -166,7 +166,7 @@ export class ServiceProviderComponent {
       position: { top: '6.5%', left: '30%' },
       data: {
         line: this.selectedServiceProvider,
-        module: 'ServiceProvider',
+        module: 'Service Provider',
         body: 'This action cannot be undone. All values associated with this field will be lost.',
       },
     });
