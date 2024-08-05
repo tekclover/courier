@@ -222,6 +222,8 @@ public class PreAlertService {
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
                 partnerNm.ifPresent(newPreAlert::setPartnerName);
                 newPreAlert.setCreatedBy(loginUserID);
+                newPreAlert.setHubCode("2");
+                newPreAlert.setHubName("Airport");
                 newPreAlert.setUpdatedBy(null);
                 newPreAlert.setCreatedOn(new Date());
                 newPreAlert.setUpdatedOn(null);
