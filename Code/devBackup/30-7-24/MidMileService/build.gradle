@@ -71,6 +71,7 @@ dependencies {
 //	runtimeOnly 'mysql:mysql-connector-java'
 	implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '8.1.0.jre8-preview'
 
+	implementation 'com.google.firebase:firebase-admin:7.2.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
