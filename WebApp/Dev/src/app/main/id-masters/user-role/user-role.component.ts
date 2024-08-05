@@ -92,7 +92,7 @@ export class UserRoleComponent {
       obj.companyId = [this.auth.companyId];
       this.service.search(obj).subscribe({
         next: (res: any) => {
-          console.log(res);
+          res = this.cs.removeDuplicatesFromArrayList(res, 'roleId')
           this.userRoleTable = res;
           this.getSearchDropdown();
           this.spin.hide();

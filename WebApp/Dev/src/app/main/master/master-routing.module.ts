@@ -42,8 +42,6 @@ import { BillModeNewComponent } from './bill-mode/bill-mode-new/bill-mode-new.co
 import { BillModeComponent } from './bill-mode/bill-mode.component';
 import { RouteNewComponent } from './route/route-new/route-new.component';
 import { RouteComponent } from './route/route.component';
-import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
-import { AppUserComponent } from './app-user/app-user.component';
 import { DriverRouteAssignmentComponent } from './driver-route-assignment/driver-route-assignment.component';
 import { ServiceProviderComponent } from './service-provider/service-provider.component';
 import { ServiceProviderNewComponent } from './service-provider/service-provider-new/service-provider-new.component';
@@ -108,8 +106,6 @@ const routes: Routes = [
   { path: 'airportCode', component: AirportCodeComponent, data: { title: 'Master', module: 'AirportCode' } },
   { path: 'airportCode-new/:code', component: AirportCodeNewComponent, data: { title: 'Master', module: 'AirportCode - Add New' } },
  
-  { path: 'appUser', component: AppUserComponent, data: { title: 'Master', module: 'AppUser' } },
-  { path: 'appUser-new/:code', component: AppUserNewComponent, data: { title: 'Master', module: 'AppUser - Add New' } },
 
   { path: 'statusevent', component: StatusEventComponent, data: { title: 'Master', module: 'Status Event' } },
   { path: 'statusevent-new/:code', component: StatusEventNewComponent, data: { title: 'Master', module: 'Status Event - Add New' } },

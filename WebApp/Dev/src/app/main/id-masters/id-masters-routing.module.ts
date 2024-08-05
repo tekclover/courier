@@ -60,6 +60,8 @@ import { StatusEventComponent } from '../master/status-event/status-event.compon
 import { StatusEventNewComponent } from '../master/status-event/status-event-new/status-event-new.component';
 import { UomComponent } from './uom/uom.component';
 import { UomNewComponent } from './uom/uom-new/uom-new.component';
+import { AppUserComponent } from './app-user/app-user.component';
+import { AppUserNewComponent } from './app-user/app-user-new/app-user-new.component';
 
 const routes: Routes = [
 
@@ -122,6 +124,9 @@ const routes: Routes = [
 
   { path: 'uom', component: UomComponent, data: { title: 'Setup', module: 'UOM' } },
   { path: 'uom-new/:code', component: UomNewComponent, data: { title: 'Setup', module: 'UOM - Add New' } },
+
+  { path: 'appUser', component: AppUserComponent, data: { title: 'Master', module: 'AppUser' } },
+  { path: 'appUser-new/:code', component: AppUserNewComponent, data: { title: 'Master', module: 'AppUser - Add New' } },
 
 ];
 

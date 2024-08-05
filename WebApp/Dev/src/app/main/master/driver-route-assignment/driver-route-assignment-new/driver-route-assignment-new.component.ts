@@ -11,7 +11,7 @@ import { DistrictService } from '../../../id-masters/district/district.service';
 import { ProvinceService } from '../../../id-masters/province/province.service';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
 import { DriverRouteAssignmentService } from '../driver-route-assignment.service';
-import { AppUserService } from '../../app-user/app-user.service';
+import { AppUserService } from '../../../id-masters/app-user/app-user.service';
 import { ServiceProviderService } from '../../service-provider/service-provider.service';
 
 @Component({
