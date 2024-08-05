@@ -53,7 +53,7 @@
                                 <p class="formControlLabel f600 textBlack mb-0">City</p>
                                 <p-dropdown [options]="cityIdList" placeholder="Select" filter="true" 
                                     formControlName="cityId" appendTo="body" [style]="{'width': '100%'}" 
-                                    [disabled]="true" placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}"
+                                   placeholder="Select" filter="true" [panelStyle]="{'width':'100%'}" 
                                     [ngClass]="form.get('cityId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('cityId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
@@ -61,8 +61,8 @@
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">District</p>
                                 <p-dropdown [options]="districtIdList" formControlName="districtId" appendTo="body"
-                                    [style]="{'width': '100%'}" [disabled]="true" placeholder="Select" filter="true"
-                                    [panelStyle]="{'width':'100%'}"
+                                    [style]="{'width': '100%'}"  placeholder="Select" filter="true"
+                                    [panelStyle]="{'width':'100%'}" 
                                     [ngClass]="form.get('districtId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''" />
                                 <mat-error *ngIf="errorHandling('districtId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
@@ -72,7 +72,7 @@
                                 <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
                                     formControlName="provinceId" appendTo="body"
                                     [ngClass]="form.get('provinceId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />
+                                    [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('provinceId')" class="text-danger"><small>{{
                                         getErrorMessage()}}</small></mat-error>
                             </div>

@@ -44,7 +44,7 @@ export class DriverRouteAssignmentComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'DriverRouteAssignment'];
+    const dataToSend = ['Master', 'Driver Route Assignment'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -164,7 +164,7 @@ export class DriverRouteAssignmentComponent {
       position: { top: '6.5%', left: '30%' },
       data: {
         line: this.selectedDriverRouteAssignment,
-        module: 'DriverRouteAssignment',
+        module: 'Driver Route Assignment',
         body: 'This action cannot be undone. All values associated with this field will be lost.',
       },
     });
@@ -178,13 +178,13 @@ export class DriverRouteAssignmentComponent {
 
   deleterecord(lines: any) {
     this.spin.show();
-    this.service.Delete(lines.driverRouteAssignmentRegNumber).subscribe({
+    this.service.Delete(lines).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Deleted',
           key: 'br',
-          detail: lines.driverRouteAssignmentRegNumber + ' Deleted successfully',
+          detail: lines.courierId + ' Deleted successfully',
         });
         this.spin.hide();
         this.initialCall();
