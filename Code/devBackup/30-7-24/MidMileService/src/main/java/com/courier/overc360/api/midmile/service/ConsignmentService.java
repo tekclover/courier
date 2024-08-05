@@ -273,6 +273,8 @@ public class ConsignmentService {
             if (currency != null) {
                 newConsignment.setConsignmentCurrency(currency);
             }
+            newConsignment.setHubCode("2");
+            newConsignment.setHubName("Airport");
             newConsignment.setHouseAirwayBill(houseAirwayBill);
             newConsignment.setMasterAirwayBill(masterAirwayBill);
             newConsignment.setCreatedBy(loginUserID);
