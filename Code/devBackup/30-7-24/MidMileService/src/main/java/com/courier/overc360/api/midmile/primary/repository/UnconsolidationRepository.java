@@ -31,10 +31,11 @@ public interface UnconsolidationRepository extends JpaRepository<Unconsolidation
             "AND PARTNER_ID = :partnerId\n" +
             "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
             "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
-    void updateUnconsolidatedFlag(@Param("languageId") String languageId,
-                                  @Param("companyId") String companyId,
-                                  @Param("partnerId") String partnerId,
-                                  @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
-                                  @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill);
+    void updateUnconsolidatedFlagInConsignmentTbl(
+            @Param("languageId") String languageId,
+            @Param("companyId") String companyId,
+            @Param("partnerId") String partnerId,
+            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill);
 
 }

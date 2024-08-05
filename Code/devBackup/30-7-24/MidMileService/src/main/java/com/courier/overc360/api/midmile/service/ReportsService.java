@@ -167,7 +167,6 @@ public class ReportsService {
             reportInput.setFromDate(dates[0]);
             reportInput.setToDate(dates[1]);
         }
-
         log.info("given Inputs to generate ConsoleTracking --> {}", reportInput);
 
         if ((reportInput.getLanguageId() != null && reportInput.getCompanyId() != null) &&
@@ -183,15 +182,6 @@ public class ReportsService {
                     for (String pMawb : pMawbList) {
                         for (String pHawb : pHawbList) {
 
-//                            if (pMawbList != null && pHawbList != null) {
-//                                boolean isPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
-//                                        langId, cId, pMawb, pHawb, 0L);
-//                                if (!isPresent) {
-//                                    log.info("No data found for given partnerMasterAirwayBill : {}, partnerHouseAirwayBill : {}", pMawb, pHawb);
-//                                    continue;
-//                                }
-//                            }
-
                             long noOfShipments = replicaPreAlertRepository.getNoOfShipmentsScanned(
                                     langId, cId, pMawb, pHawb,
                                     reportInput.getFromDate(), reportInput.getToDate());
@@ -201,7 +191,7 @@ public class ReportsService {
                                     reportInput.getFromDate(), reportInput.getToDate());
 
                             long noOfUnconsolidatedShipments = replicaUnconsolidationRepository.getNoOfUnconsolidatedShipments(
-                                    langId, cId, pMawb, pHawb, 1L,
+                                    langId, cId, pMawb, pHawb,
                                     reportInput.getFromDate(), reportInput.getToDate());
 
                             ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(langId, cId, pMawb, pHawb);
@@ -256,28 +246,6 @@ public class ReportsService {
             Map<String, Long> consoleCountMap = convertToMap(consoleCountResults);
             Map<String, Long> unconsolidatedCountMap = convertToMap(unconsolidatedCountResults);
 
-//            for (ConsignmentImpl pMawbValues : allPMawbValuesList) {
-////                boolean isLAndCPresent = replicaPreAlertRepository.existsByLanguageIdAndCompanyIdAndDeletionIndicator(
-////                        pMawbValues.getLanguageId(), pMawbValues.getCompanyId(), 0L);
-////                if (isLAndCPresent) {
-//                String pMawb = pMawbValues.getPartnerMasterAirwayBill();
-//                String key = pMawb + "_" + pMawbValues.getLanguageId() + "_" + pMawbValues.getCompanyId();
-//
-//                long consolesCount = consoleCountMap.getOrDefault(key, 0L);
-//                long unconsolidatedCount = unconsolidatedCountMap.getOrDefault(key, 0L);
-//
-//                ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
-//                reportOutput.setLanguageId(pMawbValues.getLanguageId());
-//                reportOutput.setCompanyId(pMawbValues.getCompanyId());
-//                reportOutput.setPartnerMasterAirwayBill(pMawb);
-//                reportOutput.setNoOfShipmentsScanned(pMawbValues.getPMawbCount());
-//                reportOutput.setNoOfConsoles(consolesCount);
-//                reportOutput.setNoOfUnconsolidatedShipments(unconsolidatedCount);
-//
-//                createdConsoleTrackingOutputList.add(reportOutput);
-////                }
-//            }
-//        }
             createdConsoleTrackingOutputList = allPMawbValuesList
                     .stream()
                     .map(pMawbValues -> {
@@ -305,9 +273,10 @@ public class ReportsService {
         return results
                 .stream()
                 .collect(Collectors.toMap(
-                        result -> result[0] + "_" + result[1] + "_" + result[2],
-                        result -> ((Number) result[3]).longValue()
-                ));
+                                result -> result[0] + "_" + result[1] + "_" + result[2],
+                                result -> ((Number) result[3]).longValue()
+                        )
+                );
     }
 
     //============================================Reports_ErrorLog=====================================================

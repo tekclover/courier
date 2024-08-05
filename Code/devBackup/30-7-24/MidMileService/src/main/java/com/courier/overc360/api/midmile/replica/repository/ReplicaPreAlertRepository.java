@@ -46,7 +46,7 @@ public interface ReplicaPreAlertRepository extends JpaRepository<ReplicaPreAlert
 //            "AND (COALESCE(:partnerId, NULL) IS NULL OR tp.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tp.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
             "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tp.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
-            "And (COALESCE(:fromDate, NULL) IS NULL OR tp.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL))", nativeQuery = true)
+            "And (COALESCE(CONVERT(VARCHAR(255), :fromDate), NULL) IS NULL OR (tp.CTD_ON between COALESCE(CONVERT(VARCHAR(255), :fromDate), NULL) And COALESCE(CONVERT(VARCHAR(255), :toDate), NULL)))", nativeQuery = true)
     long getNoOfShipmentsScanned(
             @Param("languageId") String languageId,
             @Param("companyId") String companyId,
