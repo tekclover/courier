@@ -43,7 +43,7 @@ export class AppUserComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'AppUser'];
+    const dataToSend = ['Setup', 'App User'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -145,7 +145,7 @@ export class AppUserComponent {
         line: linedata == null ? this.selectedAppUser[0] : linedata,
         pageflow: type,
       });
-      this.router.navigate(['/main/master/appUser-new/' + paramdata]);
+      this.router.navigate(['/main/idMaster/appUser-new/' + paramdata]);
     }
   }
 
@@ -166,7 +166,7 @@ export class AppUserComponent {
       position: { top: '6.5%', left: '30%' },
       data: {
         line: this.selectedAppUser,
-        module: 'AppUser',
+        module: 'App User',
         body: 'This action cannot be undone. All values associated with this field will be lost.',
       },
     });
@@ -216,7 +216,7 @@ export class AppUserComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'AppUser');
+    this.cs.exportAsExcel(exportData, 'App User');
   }
 
   searchform = this.fb.group({
@@ -227,7 +227,7 @@ export class AppUserComponent {
   })
 
   readonly fieldDisplayNames: Record<string, string> = {
-    appUserId: 'AppUser',
+    appUserId: 'App User',
     statusId: 'Status'
   };
 
