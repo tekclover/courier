@@ -926,7 +926,7 @@ public class ConsignmentService {
                 }
                 log.info("given Params to fetch Consignments for Mobile App --> {}", findConsignment);
 
-                if(!findConsignment.getHawbTypeId().isEmpty() && findConsignment.getHawbTypeId() != null) {
+                if(findConsignment.getHawbTypeId() != null && !findConsignment.getHawbTypeId().isEmpty() ) {
                     // Initially pass shippingLabelNo to partnerHouseAirwayBill
                     consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
                             findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), findConsignment.getHawbTypeId(), 0L);
