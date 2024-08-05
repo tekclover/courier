@@ -94,4 +94,26 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
             @Param("consoleId") List<String> consoleId);
 
 
+        @Query(value = "select token_id as tokenId from tblhhtnotification where " +
+                " company_id = :companyId and usr_id = :userId and is_deleted = 0 ", nativeQuery = true)
+    public List<String> getToken(@Param("companyId") String companyId,
+                                 @Param("userId") List<String> userId);
+
+        @Query(value = "select notification_text notificationText, USER_ROLE userRole from tblnotification where " +
+                "c_id = :companyId and lang_id = :languageId and notification_id = :notificationId and is_deleted = 0 ", nativeQuery = true)
+        public IKeyValuePair getNotificationId(@Param("companyId") String companyId,
+                                               @Param("languageId") String languageId,
+                                               @Param("notificationId") String notificationId);
+
+        @Query(value = "update tblconsole set noti_status = 1 where console_id = :consoleId and " +
+                " c_id = :companyId and lang_id = :languageId and is_deleted =0 ", nativeQuery = true)
+        public void updateNotificationInConsoleTable(@Param("companyId") String companyId,
+                                                     @Param("languageId") String languageId,
+                                                     @Param("consoleId") String consoleId);
+
+        @Query(value = "select user_id userId from tblusermanagement where user_role_id = :roleId " +
+                " and company_id = :companyId and lang_id = :languageId and is_deleted = 0", nativeQuery = true)
+        public List<String> getUserId(@Param("companyId") String companyId,
+                                      @Param("languageId") String languageId,
+                                      @Param("roleId") String roleId);
 }
