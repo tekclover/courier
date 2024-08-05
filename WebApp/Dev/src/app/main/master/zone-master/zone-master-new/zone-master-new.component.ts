@@ -9,7 +9,6 @@ import { CommonServiceService } from '../../../../common-service/common-service.
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
-import { CityService } from '../../../id-masters/city/city.service';
 
 @Component({
   selector: 'app-zone-master-new',
@@ -29,8 +28,6 @@ export class ZoneMasterNewComponent {
     private path: PathNameService,
     private fb: FormBuilder,
     private service: ZoneMasterService,
-    private cityService: CityService,
-    private districtService: CityService,
     private messageService: MessageService,
     private numberRangeService: NumberrangeService,
     private auth: AuthService,
@@ -187,4 +184,5 @@ export class ZoneMasterNewComponent {
       })
     }
   }
+
 }
