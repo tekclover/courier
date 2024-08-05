@@ -230,19 +230,19 @@ export const navbarData: INavbarData[] = [
                     // },
                     // {
                     //     routerId: 3109,
-                    //     routerLink: '/main/master/route',
-                    //     label: 'Route'
-                    // },
-                    // {
-                    //     routerId: 3110,
-                    //     routerLink: '/main/master/vehicle',
-                    //     label: 'Vehicle'
-                    // },
-                    // {
-                    //     routerId: 3111,
                     //     routerLink: '/main/master/hubPartnerAssignment',
                     //     label: 'Hub Partner Assignment'
                     // },
+                    {
+                        routerId: 3110,
+                        routerLink: '/main/master/serviceProvider',
+                        label: 'Service Provider'
+                    },
+                    {
+                        routerId: 3111,
+                        routerLink: '/main/master/zoneMaster',
+                        label: 'Zone Master'
+                    },
 
                 ]
             },
@@ -267,6 +267,21 @@ export const navbarData: INavbarData[] = [
                         routerLink: '/main/master/hsCode',
                         label: 'HS Code'
                     },
+                    {
+                        routerId: 3304,
+                        routerLink: '/main/master/route',
+                        label: 'Route'
+                    },
+                    {
+                        routerId: 3305,
+                        routerLink: '/main/master/vehicle',
+                        label: 'Vehicle'
+                    },
+                    {
+                        routerId: 3306,
+                        routerLink: '/main/master/driverRouteAssignment',
+                        label: 'Driver Route Assignment'
+                    },
 
                 ]
             },
@@ -289,6 +304,11 @@ export const navbarData: INavbarData[] = [
                         routerId: 3401,
                         routerLink: '/main/master/currencyExchangeRate',
                         label: 'Exchange Rate'
+                    },
+                    {
+                        routerId: 3402,
+                        routerLink: '/main/master/billMode',
+                        label: 'Bill Mode'
                     },
                 ]
             },
@@ -395,6 +415,11 @@ export const navbarData: INavbarData[] = [
             //     routerLink: '/main/operation/consignmentUploadProgram',
             //     label: 'Consignment Upload Program'
             // }
+            {
+                routerId: 6101,
+                routerLink: '/main/operation/assignment',
+                label: 'Assignment'
+            }
 
         ]
     },
