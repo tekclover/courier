@@ -87,6 +87,8 @@ public class ConsoleService {
     @Autowired
     private UnconsolidationService unconsolidationService;
 
+    @Autowired
+    PushNotificationService pushNotificationService;
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -1149,6 +1151,9 @@ public class ConsoleService {
 
                 Console createdConsole = consoleRepository.save(console);
 
+                // Send Notification
+//                sendNotificationForConsoleCreate(createdConsole.getCompanyId(), createdConsole.getLanguageId(), createdConsole.getConsoleId());
+
                 if (createdConsole != null) {
                     // Save ConsignmentStatus
                     consignmentStatusService.insertConsignmentStatusRecord(createdConsole.getLanguageId(), createdConsole.getLanguageDescription(),
@@ -1852,7 +1857,7 @@ public class ConsoleService {
         log.info("given Params to fetch Consoles with Qry -- > {}", findConsole);
         List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
                 findConsole.getLanguageId(), findConsole.getCompanyId(), findConsole.getPartnerId(), findConsole.getPartnerMasterAirwayBill(),
-                findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId(), findConsole.getUnconsolidatedFlag());
+                findConsole.getPartnerHouseAirwayBill(), findConsole.getConsoleId(), findConsole.getUnconsolidatedFlag(), findConsole.getHawbTypeId());
         return consoleList;
     }
 //    public List<ReplicaConsole> findConsoles(FindConsole findConsole) throws Exception {
@@ -1885,15 +1890,16 @@ public class ConsoleService {
         List<String> shippingLabelNo = findConsole.getShippingLabelNo();
         List<String> consoleId = findConsole.getConsoleId();
         List<Long> unconsolidatedFlag = findConsole.getUnconsolidatedFlag();
+        List<String> hawbTypeId = findConsole.getHawbTypeId();
 
         // Initially pass shippingLabelNo to partnerHouseAirwayBill
         List<ReplicaConsole> consoleList = replicaConsoleRepository.findConsolesWithQry(
-                languageId, companyId, partnerId, partnerMasterAirwayBill, shippingLabelNo, consoleId, unconsolidatedFlag);
+                languageId, companyId, partnerId, partnerMasterAirwayBill, shippingLabelNo, consoleId, unconsolidatedFlag, hawbTypeId);
 
         if (consoleList == null || consoleList.isEmpty()) {
             // Else pass shippingLabelNo to consoleId
             consoleList = replicaConsoleRepository.findConsolesWithQry(
-                    languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, shippingLabelNo, unconsolidatedFlag);
+                    languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, shippingLabelNo, unconsolidatedFlag, hawbTypeId);
             if (consoleList == null || consoleList.isEmpty()) {
                 throw new BadRequestException("No console Data found for given params : shippingLabelNo - " + findConsole.getShippingLabelNo());
             }
@@ -2466,6 +2472,37 @@ public class ConsoleService {
     //        }
     //    }
 
+
+    // Send Notification
+    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId) {
+
+        try {
+            // Get NotificationId
+            IKeyValuePair notifyId = replicaCcrRepository.getNotificationId(companyId, languageId, "2");
+
+            if (notifyId != null && notifyId.getUserRole() != null) {
+
+                List<String> getUser = replicaCcrRepository.getUserId(companyId, languageId, notifyId.getUserRole());
+
+                List<String> deviceToken = replicaCcrRepository.getToken(companyId, getUser);
+
+                if (!deviceToken.isEmpty() && deviceToken != null) {
+                    String title = "Console Create";
+                    String message = notifyId.getNotificationText();
+                    String response = pushNotificationService.sendPushNotification(deviceToken, title, message);
+                    log.info("status update successfully");
+                    if (response.equals("OK")) {
+                        ccrRepository.updateNotificationInConsoleTable(companyId, languageId, consoleId);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+
+        }
+
+
+    }
 }
 
 

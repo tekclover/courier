@@ -19,11 +19,14 @@ public class NotificationMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
 
-    @Column(name = "CLASS_ID", columnDefinition = "nvarchar(100)")
-    private String classId;
+    @Column(name = "CONSOLE_ID", columnDefinition = "nvarchar(50)")
+    private String consoleId;
 
-    @Column(name = "CLIENT_ID", columnDefinition = "nvarchar(100)")
-    private String clientId;
+    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
+    private String companyId;
+
+    @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
+    private String languageId;
 
     @Column(name = "CLIENT_USR_ID", columnDefinition = "nvarchar(100)")
     private String clientUserId;
@@ -45,15 +48,6 @@ public class NotificationMessage {
 
     @Column(name = "DOC_ID")
     private Long documentId = 0L;
-
-    @Column(name = "QUOTATION_NO")
-    private String quotationNo;
-
-    @Column(name = "PAYMENT_PLAN_NO")
-    private String paymentPlanNo;
-
-    @Column(name = "RECEIPT_NO")
-    private String receiptNo;
 
     @Column(name = "IS_DELETED")
     private Long deletionIndicator;

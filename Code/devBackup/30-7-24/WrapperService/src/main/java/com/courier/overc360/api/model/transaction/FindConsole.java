@@ -14,6 +14,7 @@ public class FindConsole {
     private List<String> partnerHouseAirwayBill;
     private List<String> consoleId;
     private List<Long> unconsolidatedFlag;
+    private List<String> hawbTypeId;
 
     // for mobile App
     private List<String> shippingLabelNo;

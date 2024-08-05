@@ -14,17 +14,4 @@ import java.util.List;
 public interface NotificationMessageRepository extends JpaRepository<NotificationMessage, Long>, JpaSpecificationExecutor<NotificationMessage> {
 
 
-    List<NotificationMessage> findByClassIdAndClientIdAndMessageAndOrderTypeAndMenu(
-            String classId, String clientId, String message, String orderType, Boolean menu);
-
-
-    List<NotificationMessage> findByClassIdAndClientIdAndMessageAndOrderTypeAndReceiptNo(
-            String classId, String clientId, String message, String orderType, String receiptNo);
-
-    List<NotificationMessage> findByDocumentIdAndClassIdAndClientIdAndMessageAndOrderType(
-            Long documentId, String classId, String clientId, String message, String orderType);
-
-    List<NotificationMessage> findByClassIdAndClientIdAndMessageAndOrderTypeAndQuotationNo(
-            String classId, String clientId, String message, String orderType, String quotationHeaderNo);
-
 }
