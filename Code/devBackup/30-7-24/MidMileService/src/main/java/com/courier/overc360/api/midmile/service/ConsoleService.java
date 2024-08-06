@@ -1162,8 +1162,8 @@ public class ConsoleService {
                             createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(), createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
                             createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
                             createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
-                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill()
-                    );
+                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(), null,
+                            createdConsole.getHubCode(), createdConsole.getHubName());
 
                     // Update ConsignmentEntity Table
                     consoleRepository.updateConsignmentOnConsoleCreate(
@@ -1260,7 +1260,8 @@ public class ConsoleService {
                                 createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
                                 createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
                                 createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
-                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(), null,
+                                createdConsole.getHubCode(), createdConsole.getHubName());
 
                         // Update ConsignmentEntity Table
                         consoleRepository.updateConsignmentOnConsoleCreate(
@@ -1562,8 +1563,8 @@ public class ConsoleService {
                         updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
                         updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
                         updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
-                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill());
-
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), null,
+                        updatedConsole.getHubCode(), updatedConsole.getHubName() );
 
                 consoleList.add(updatedConsole);
             }
