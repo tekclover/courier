@@ -115,6 +115,9 @@ public class DriverRouteAssignmentService {
             if (statusDesc != null) {
                 newDriverRouteAssignment.setStatusDescription(statusDesc);
             }
+            //Save without spacing
+            newDriverRouteAssignment.setCourierId(newDriverRouteAssignment.getCourierId().replaceAll("\\s+",""));
+
             newDriverRouteAssignment.setDeletionIndicator(0L);
             newDriverRouteAssignment.setCreatedBy(loginUserID);
             newDriverRouteAssignment.setCreatedOn(new Date());

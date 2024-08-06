@@ -120,6 +120,9 @@ public class ZoneMasterService {
             if (statusDesc != null) {
                 newZoneMaster.setStatusDescription(statusDesc);
             }
+            //Save without spacing
+            newZoneMaster.setZoneId(newZoneMaster.getZoneId().replaceAll("\\s+",""));
+
             newZoneMaster.setDeletionIndicator(0L);
             newZoneMaster.setCreatedBy(loginUserID);
             newZoneMaster.setUpdatedBy(loginUserID);
