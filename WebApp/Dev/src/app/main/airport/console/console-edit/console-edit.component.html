@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Console - {{this.pageToken.pageflow}}</p>
+        <p class="componentHeader f600 mb-0">{{pageFlow}}</p>
         <div class="d-flex justify-content-between align-items-center">
             <img type="button" (click)="deleteDialog()" src="./assets/common/deletetool.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
@@ -176,7 +176,7 @@
                 </div>
             </div>
             <div class="d-flex mt-1 justify-content-end" style="position: absolute; right: 50%; bottom: 7%;">
-                <button class="buttom1 textBlack mx-1" routerLink="/main/airport/console">Cancel</button>
+                <button class="buttom1 textBlack mx-1" (click)="back()">Cancel</button>
                 <!-- <button class="buttom1 bgBlack text-white mx-1" (click)="saveCCR()">CCR</button> -->
             </div>
         </form>
