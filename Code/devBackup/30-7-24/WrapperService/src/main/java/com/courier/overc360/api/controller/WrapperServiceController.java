@@ -96,7 +96,7 @@ public class WrapperServiceController {
     }
 
     @ApiOperation(response = Optional.class, value = "PDF Merge") // label for swagger
-    @PostMapping("/pdf/merge")
+    @PostMapping("/pdf/merge/2")
     public ResponseEntity<?> mergePdf(@RequestBody PDFMerger pdfMerger) throws Exception {
 
         try {
@@ -270,7 +270,7 @@ public class WrapperServiceController {
     }
 
     @ApiOperation(response = Optional.class, value = "PDF Merge") // label for swagger
-    @PostMapping("/pdf/merge/v2")
+    @PostMapping("/pdf/merge")
     public void mergePdf(HttpServletResponse response, @RequestBody List<PDFMerger> pdfMergerList) throws Exception {
         try {
             if (pdfMergerList == null || pdfMergerList.isEmpty()) {
