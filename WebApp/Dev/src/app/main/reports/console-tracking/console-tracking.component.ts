@@ -50,15 +50,13 @@ export class ConsoleTrackingComponent {
   callTableHeader() {
     this.cols = [
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'noOfShipmentsScanned', header: 'Shipments', format: 'hyperLink' },
-      { field: 'noOfConsoles', header: 'Consoles', format: 'hyperLink' },
+      { field: 'noOfShipmentsScanned', header: 'Total Shipments', format: 'hyperLink' },
+      { field: 'noOfConsoles', header: 'Consolidated Shipments', format: 'hyperLink' },
       { field: 'noOfUnconsolidatedShipments', header: 'Unconsolidated Shipments', format: 'hyperLink' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
-      // { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      // { field: 'companyName', header: 'Company' },
     ];
   }
 
