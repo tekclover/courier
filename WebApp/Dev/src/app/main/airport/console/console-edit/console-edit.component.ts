@@ -13,7 +13,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 import { ConsoleService } from '../console.service';
 import { ConsoleEditpopupComponent } from '../console-editpopup/console-editpopup.component';
 import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ConsoleBulkComponent } from '../console-bulk/console-bulk.component';
 import { DynamicFieldSelectionComponent } from './dynamic-field-selection/dynamic-field-selection.component';
@@ -46,7 +46,8 @@ export class ConsoleEditComponent {
     private auth: AuthService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
-    private label: ConsignmentLabelComponent
+    private label: ConsignmentLabelComponent,
+    private location: Location
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -887,6 +888,12 @@ updateGateway(data:any){
       }
     });
   }
+
+  panelOpenState = false;
+  back() {
+    this.location.back();
+  }
+
 
   updateBulk() {
     if (this.selectedConsole.length == 0) {
