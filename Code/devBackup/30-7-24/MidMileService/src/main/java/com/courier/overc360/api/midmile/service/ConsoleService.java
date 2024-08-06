@@ -1590,7 +1590,7 @@ public class ConsoleService {
 
         // Separate consoles based on hawbTypeId
         for (UpdateConsole updateConsole : updateConsoleList) {
-            log.info("HAWB_TYPE" + updateConsole.getHawbTypeId());
+            log.info(" HAWB_TYPE " + updateConsole.getHawbTypeId());
             if ("45".equals(updateConsole.getHawbTypeId()) || updateConsole.getHawbTypeId() == null) {
                 mobileAppUpdateList.add(updateConsole);
             } else {
@@ -1606,7 +1606,7 @@ public class ConsoleService {
         List<ConsoleStatus> consoleStatuses = new ArrayList<>();
         // Call updateConsoleStatus for other consoles
         if (!statusUpdateList.isEmpty()) {
-            BeanUtils.copyProperties(consoleStatuses, statusUpdateList);
+            BeanUtils.copyProperties(statusUpdateList, consoleStatuses);
             result.addAll(updateConsoleStatus(consoleStatuses, loginUserID));
         }
 
