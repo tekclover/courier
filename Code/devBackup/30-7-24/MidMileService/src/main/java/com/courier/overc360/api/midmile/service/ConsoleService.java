@@ -1600,16 +1600,29 @@ public class ConsoleService {
 
         // Call updateConsoleForMobileApp for consoles with hawbTypeId 45 or null
         if (!mobileAppUpdateList.isEmpty()) {
-            result.addAll(updateConsoleForMobileApp(mobileAppUpdateList, loginUserID));
+            updateConsoleForMobileApp(mobileAppUpdateList, loginUserID);
         }
 
+        // Manually map UpdateConsole to ConsoleStatus
         List<ConsoleStatus> consoleStatuses = new ArrayList<>();
+        for (UpdateConsole updateConsole : statusUpdateList) {
+            ConsoleStatus consoleStatus = new ConsoleStatus();
+            consoleStatus.setLanguageId(updateConsole.getLanguageId());
+            consoleStatus.setCompanyId(updateConsole.getCompanyId());
+            consoleStatus.setPartnerId(updateConsole.getPartnerId());
+            consoleStatus.setPartnerMasterAirwayBill(updateConsole.getPartnerMasterAirwayBill());
+            consoleStatus.setPartnerHouseAirwayBill(updateConsole.getPartnerHouseAirwayBill());
+            consoleStatus.setConsoleId(updateConsole.getConsoleId());
+            consoleStatus.setPieceId(updateConsole.getPieceId());
+            consoleStatus.setHawbTypeId(updateConsole.getHawbTypeId());
+            consoleStatus.setHubCode(updateConsole.getHubCode());
+            consoleStatuses.add(consoleStatus);
+        }
+
         // Call updateConsoleStatus for other consoles
-        if (!statusUpdateList.isEmpty()) {
-            BeanUtils.copyProperties(statusUpdateList, consoleStatuses);
+        if (!consoleStatuses.isEmpty()) {
             result.addAll(updateConsoleStatus(consoleStatuses, loginUserID));
         }
-
         return result;
     }
 
@@ -2480,11 +2493,9 @@ public class ConsoleService {
     //    }
 
 
-
-
     // Send Notification
+
     /**
-     *
      * @param companyId
      * @param languageId
      * @param consoleId
