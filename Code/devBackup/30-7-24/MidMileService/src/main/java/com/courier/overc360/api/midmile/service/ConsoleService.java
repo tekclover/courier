@@ -1590,6 +1590,7 @@ public class ConsoleService {
 
         // Separate consoles based on hawbTypeId
         for (UpdateConsole updateConsole : updateConsoleList) {
+            log.info("HAWB_TYPE" + updateConsole.getHawbTypeId());
             if ("45".equals(updateConsole.getHawbTypeId()) || updateConsole.getHawbTypeId() == null) {
                 mobileAppUpdateList.add(updateConsole);
             } else {
