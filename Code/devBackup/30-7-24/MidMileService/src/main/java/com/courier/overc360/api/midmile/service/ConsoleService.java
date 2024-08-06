@@ -1152,7 +1152,8 @@ public class ConsoleService {
 
                 // Send Notification
                 sendNotificationForConsoleCreate(createdConsole.getCompanyId(), createdConsole.getLanguageId(),
-                        createdConsole.getConsoleId(), createdConsole.getHouseAirwayBill());
+                        createdConsole.getConsoleId(), createdConsole.getHouseAirwayBill(), createdConsole.getConsoleGroupName(),
+                        createdConsole.getConsoleName());
 
                 if (createdConsole != null) {
                     // Save ConsignmentStatus
@@ -2501,7 +2502,8 @@ public class ConsoleService {
      * @param consoleId
      * @param houseAirwayBill
      */
-    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill) {
+    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill,
+                                                 String consoleGroupName, String consoleName) {
 
         // Check if consoleId has already been processed
         if (processedConsoleCreate.contains(consoleId)) {
@@ -2531,7 +2533,7 @@ public class ConsoleService {
             }
 
             String title = "Console";
-            String message = notifyId.getNotificationText() + " Console Id - " + consoleId;
+            String message = notifyId.getNotificationText() + "(Console Id / " + consoleId + " Console GroupName / " + consoleGroupName + " Console Name / " + consoleName + " )";
             String response = pushNotificationService.sendPushNotification(
                     deviceToken, title, message, companyId, languageId, houseAirwayBill, consoleId);
 
