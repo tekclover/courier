@@ -69,7 +69,7 @@ public class PushNotificationService {
                 }
             } catch (FirebaseMessagingException e) {
                 iterator.remove();
-                ccrRepository.deleteNotAccessToken(token);
+//                ccrRepository.deleteNotAccessToken(token);
                 e.printStackTrace();
             }
         }
