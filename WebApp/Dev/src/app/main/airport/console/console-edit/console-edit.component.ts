@@ -203,18 +203,24 @@ export class ConsoleEditComponent {
     this.selectedConsole.push(choosen);
   }
   nextNumber: any;
+  pageFlow: any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
-    this.path.setData(dataToSend);
+
 
     this.dropdownlist();
 
     if (this.pageToken.report == true) {
+      this.pageFlow = 'Unconsole Tracking';
+      const dataToSend = ['Mid-Mile', 'UnConsole Tracking'];
+      this.path.setData(dataToSend);
       this.reportTableHeader();
     } else {
+      this.pageFlow = 'Console ' + this.pageFlow.pageFlow
+      const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
+      this.path.setData(dataToSend);
       this.callTableHeader();
     }
 
@@ -240,36 +246,16 @@ export class ConsoleEditComponent {
   target: any[] = [];
   reportTableHeader() {
     this.cols = [
-      { field: 'consoleId', header: 'Console No' },
-      { field: 'consoleName', header: 'Console Name' },
-      { field: 'consoleGroupName', header: 'Console Group' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
-      { field: 'hawbTypeDescription', header: 'Event' },
-      { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
-      { field: 'description', header: 'Commodity' },
-      { field: 'noOfPieces', header: 'No of Piece' },
+      { field: 'houseAirwayBill', header: 'Consignment ID' },
+      { field: 'pieceId', header: 'Piece ID' },
       { field: 'shipperName', header: 'Shipper' },
-      { field: 'countryOfOrigin', header: 'Origin' },
-      { field: 'grossWeight', header: 'Weight' },
-      { field: 'airportOriginCode', header: 'Airport Origin Code' },
-      { field: 'hsCode', header: 'HS Code' },
       { field: 'consigneeName', header: 'Consignee Name' },
-      { field: 'consignmentValue', header: 'Consignment Value' },
-      { field: 'currency', header: 'Consignment Currency' },
-      { field: 'customsValue', header: 'Customs Value' },
-      { field: 'iata', header: 'IATA Charges' },
-      { field: 'isExempted', header: 'Is Exempted' },
-      { field: 'exemptionFor', header: 'Exemption For' },
-      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
-      { field: 'exemptionReference', header: 'Exemption Reference' },
-      { field: 'ccrId', header: 'CCR ID' },
-      { field: 'customsCcrNo', header: 'Custom CCR No' },
-      { field: 'primaryDo', header: 'Primary DO' },
-      { field: 'secondaryDo', header: 'Secondary DO' },
-      { field: 'totalDuty', header: 'Duty from Bayan' },
-      { field: 'customsKd', header: 'Customs from Bayan' },
-      { field: 'createdOn', header: 'Created On', format: 'date' },
+      { field: 'hawbTypeId', header: 'Action' },
+      { field: 'hawbTypeDescription', header: 'Action Name' },
+      { field: 'hawbTimeStamp', header: 'Scanned On', format: 'date' },
+      { field: 'createdBy', header: 'Scanned Officer' },
     ];
     this.target = [
     ];
@@ -347,13 +333,13 @@ export class ConsoleEditComponent {
   fill(line: any) {
     this.form.patchValue(line);
     this.spin.show();
-    let obj: any = {};  
+    let obj: any = {};
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.partnerMasterAirwayBill = [line.partnerMasterAirwayBill];
     obj.unconsolidatedFlag = this.pageToken.module == 'consolidated' ? [0] : this.pageToken.module == 'unconsolidated' ? [1] : null;
 
-    if(this.pageToken.report == true && this.pageToken.module == 'unconsolidated'){
+    if (this.pageToken.report == true && this.pageToken.module == 'unconsolidated') {
       this.service.searchUnconsole(obj).subscribe({
         next: (res: any) => {
           this.subProductArray = res;
@@ -364,7 +350,7 @@ export class ConsoleEditComponent {
           this.cs.commonerrorNew(err);
         },
       });
-    }else{
+    } else {
       this.service.search(obj).subscribe({
         next: (res: any) => {
           this.subProductArray = res;
@@ -628,7 +614,7 @@ export class ConsoleEditComponent {
           });
           const cellRow = worksheet.addRow(Object.values(exportItem));
 
-          cellRow.eachCell({ includeEmpty: true },(cell, index) => {
+          cellRow.eachCell({ includeEmpty: true }, (cell, index) => {
             cell.border = {
               top: { style: 'thin' },
               left: { style: 'thin' },
@@ -745,40 +731,40 @@ export class ConsoleEditComponent {
       },
     });
   }
-updateGateway(data:any){
-  if (data.length == 0) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      key: 'br',
-      detail: 'Kindly select any row',
-    });
-    return;
-  }
-
-  
-  this.spin.show();
-  this.service.UpdateGatewayScan(data).subscribe({
-    next: (res) => {
+  updateGateway(data: any) {
+    if (data.length == 0) {
       this.messageService.add({
-        severity: 'success',
-        summary: 'Updated',
+        severity: 'error',
+        summary: 'Error',
         key: 'br',
-        detail: res[0].consoleId + ' has been updated successfully',
+        detail: 'Kindly select any row',
       });
-      this.spin.hide();
-      setTimeout(() => {
-        this.fill(this.pageToken.line);
-        this.selectedConsole = [];
-      }, 2000);
-    },
-    error: (err) => {
-      this.spin.hide();
-      this.cs.commonerrorNew(err);
-    },
-  });
+      return;
+    }
 
-}
+
+    this.spin.show();
+    this.service.UpdateGatewayScan(data).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          key: 'br',
+          detail: res[0].consoleId + ' has been updated successfully',
+        });
+        this.spin.hide();
+        setTimeout(() => {
+          this.fill(this.pageToken.line);
+          this.selectedConsole = [];
+        }, 2000);
+      },
+      error: (err) => {
+        this.spin.hide();
+        this.cs.commonerrorNew(err);
+      },
+    });
+
+  }
 
   generateLabel() {
     this.uniquePieceId = [];
@@ -809,7 +795,7 @@ updateGateway(data:any){
       return
     }
     let obj: any = {};
-  const houseAirwayBill = this.selectedConsole.map(item => item.houseAirwayBill);
+    const houseAirwayBill = this.selectedConsole.map(item => item.houseAirwayBill);
     this.label.getResultInvoice(houseAirwayBill)
     // this.service.search(obj).subscribe({
     //   next: (res: any) => {
@@ -837,8 +823,8 @@ updateGateway(data:any){
       return
     }
     let obj: any = {};
-   const pieceId = this.selectedConsole.map(item => item.pieceId);
-   const houseAirwayBill = this.selectedConsole.map(item => item.houseAirwayBill);
+    const pieceId = this.selectedConsole.map(item => item.pieceId);
+    const houseAirwayBill = this.selectedConsole.map(item => item.houseAirwayBill);
     this.label.generateMutiple(pieceId, houseAirwayBill)
     // this.service.search(obj).subscribe({
     //   next: (res: any) => {
@@ -993,7 +979,7 @@ updateGateway(data:any){
     const currentDate = new Date();
 
     Object.keys(groupedByConsoleId).forEach(consoleId => {
-        const consoleData = groupedByConsoleId[consoleId];
+      const consoleData = groupedByConsoleId[consoleId];
       const workbook = new ExcelJS.Workbook();
 
       // Add Invoices Sheet
@@ -1002,77 +988,33 @@ updateGateway(data:any){
 
       // Style Header Row
       headerRow.eachCell((cell, colNumber) => {
-          cell.fill = {
-            type: 'pattern',
-            pattern: 'solid',
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
           fgColor: { argb: '8EA9DB' } // Light Ice Blue color
-          };
-          cell.font = {
-            bold: true,
+        };
+        cell.font = {
+          bold: true,
           color: { argb: 'FFFFFF' } // Black text color
-          };
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+
+      // Add data rows
+      consoleData.forEach((item: any) => {
+        const row = worksheetInvoices.addRow(invoicesColumns.map(col => item[col.field] || ''));
+        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
           cell.border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
             bottom: { style: 'thin' },
             right: { style: 'thin' },
           };
-        });
-
-      // Add data rows
-      consoleData.forEach((item:any) => {
-        const row = worksheetInvoices.addRow(invoicesColumns.map(col => item[col.field] || ''));
-        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
-            cell.border = {
-              top: { style: 'thin' },
-              left: { style: 'thin' },
-              bottom: { style: 'thin' },
-              right: { style: 'thin' },
-            };
-          // Optional: add alternate row coloring
-          if (row.number % 2 === 0) {
-              cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-              fgColor: { argb: 'DCE6F1' } // Light Gray for alternate rows
-                };
-          }
-              });
-            });
-
-      // Add Invoice Items Sheet
-      const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${1}`);
-            const headerRow1 = worksheetInvoiceItems.addRow(Object.values(invoiceItemsColumns.map(col => col.header)));
-
-      // Style Header Row
-      headerRow1.eachCell((cell, colNumber) => {
-              cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-          fgColor: { argb: '8EA9DB' } // Light Ice Blue color
-              };
-              cell.font = {
-                bold: true,
-          color: { argb: 'FFFFFF' } // Black text color
-              };
-              cell.border = {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' },
-              };
-            });
-
-      // Add data rows
-      consoleData.forEach((item:any) => {
-        const row = worksheetInvoiceItems.addRow(invoiceItemsColumns.map(col => item[col.field] || ''));
-        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
-                cell.border = {
-                  top: { style: 'thin' },
-                  left: { style: 'thin' },
-                  bottom: { style: 'thin' },
-                  right: { style: 'thin' },
-                };
           // Optional: add alternate row coloring
           if (row.number % 2 === 0) {
             cell.fill = {
@@ -1081,22 +1023,66 @@ updateGateway(data:any){
               fgColor: { argb: 'DCE6F1' } // Light Gray for alternate rows
             };
           }
-              });
-            });
+        });
+      });
+
+      // Add Invoice Items Sheet
+      const worksheetInvoiceItems = workbook.addWorksheet(`INVOICEITEM-${1}`);
+      const headerRow1 = worksheetInvoiceItems.addRow(Object.values(invoiceItemsColumns.map(col => col.header)));
+
+      // Style Header Row
+      headerRow1.eachCell((cell, colNumber) => {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '8EA9DB' } // Light Ice Blue color
+        };
+        cell.font = {
+          bold: true,
+          color: { argb: 'FFFFFF' } // Black text color
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+
+      // Add data rows
+      consoleData.forEach((item: any) => {
+        const row = worksheetInvoiceItems.addRow(invoiceItemsColumns.map(col => item[col.field] || ''));
+        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+          // Optional: add alternate row coloring
+          if (row.number % 2 === 0) {
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'DCE6F1' } // Light Gray for alternate rows
+            };
+          }
+        });
+      });
 
       // Write to buffer and trigger download
-    workbook.xlsx.writeBuffer().then((data) => {
-      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
         a.download = `CCR_${consoleId}_${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}.xlsx`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    });
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
     });
   }
 
@@ -1159,7 +1145,7 @@ updateGateway(data:any){
       'Customs KD': '',
     };
 
-    const headerRowFirst =  worksheet.addRow(Object.values(newRow));
+    const headerRowFirst = worksheet.addRow(Object.values(newRow));
 
     headerRowFirst.eachCell((cell, index) => {
       cell.font = {
@@ -1175,27 +1161,27 @@ updateGateway(data:any){
     });
 
 
-   const headerRow =  worksheet.addRow(Object.values(locationColumns.map(col => col.header)));
+    const headerRow = worksheet.addRow(Object.values(locationColumns.map(col => col.header)));
 
-   headerRow.eachCell((cell, index) => {
-     cell.fill = {
-       type: 'pattern',
-       pattern: 'solid',
-       fgColor: { argb: 'ff0000' }, // Replace with your desired background color
-     };
-     cell.font = {
-       bold: true,
-       color: { argb: '0000' }, // White text color
-     };
-     cell.border = {
-       top: { style: 'thin' },
-       left: { style: 'thin' },
-       bottom: { style: 'thin' },
-       right: { style: 'thin' },
-     };
-   });
+    headerRow.eachCell((cell, index) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'ff0000' }, // Replace with your desired background color
+      };
+      cell.font = {
+        bold: true,
+        color: { argb: '0000' }, // White text color
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
 
-     res.forEach((item: any, index: any) => {
+    res.forEach((item: any, index: any) => {
       const exportItem: any = {};
       locationColumns.forEach(col => {
         if (col.format == 'number') {
@@ -1204,15 +1190,15 @@ updateGateway(data:any){
           exportItem[col.header] = item[col.field];
         }
       });
-      const cellRow =   worksheet.addRow(Object.values(exportItem));
-      cellRow.eachCell({ includeEmpty: true },(cell, index) => {
-       cell.border = {
-         top: { style: 'thin' },
-         left: { style: 'thin' },
-         bottom: { style: 'thin' },
-         right: { style: 'thin' },
-       };
-     });
+      const cellRow = worksheet.addRow(Object.values(exportItem));
+      cellRow.eachCell({ includeEmpty: true }, (cell, index) => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
     });
 
     // Call ExcelService to export data to Excel
