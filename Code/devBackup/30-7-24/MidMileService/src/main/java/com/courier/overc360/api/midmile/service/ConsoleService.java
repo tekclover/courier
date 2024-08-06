@@ -1572,6 +1572,47 @@ public class ConsoleService {
 
 
     /**
+     * Update Mobile App & Status Event Update Mobile App Join API
+     *
+     * @param updateConsoleList
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws IOException
+     * @throws CsvException
+     */
+    public List<Console> updateConsoleStatusOrForMobileApp(List<UpdateConsole> updateConsoleList, String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        List<Console> result = new ArrayList<>();
+        List<UpdateConsole> statusUpdateList = new ArrayList<>();
+        List<UpdateConsole> mobileAppUpdateList = new ArrayList<>();
+
+        // Separate consoles based on hawbTypeId
+        for (UpdateConsole updateConsole : updateConsoleList) {
+            if ("45".equals(updateConsole.getHawbTypeId()) || updateConsole.getHawbTypeId() == null) {
+                mobileAppUpdateList.add(updateConsole);
+            } else {
+                statusUpdateList.add(updateConsole);
+            }
+        }
+
+        // Call updateConsoleForMobileApp for consoles with hawbTypeId 45 or null
+        if (!mobileAppUpdateList.isEmpty()) {
+            result.addAll(updateConsoleForMobileApp(mobileAppUpdateList, loginUserID));
+        }
+
+        List<ConsoleStatus> consoleStatuses = new ArrayList<>();
+        // Call updateConsoleStatus for other consoles
+        if (!statusUpdateList.isEmpty()) {
+            BeanUtils.copyProperties(consoleStatuses, statusUpdateList);
+            result.addAll(updateConsoleStatus(consoleStatuses, loginUserID));
+        }
+
+        return result;
+    }
+
+    /**
      * UpdateConsole
      *
      * @param updateConsoleList
@@ -1611,43 +1652,6 @@ public class ConsoleService {
                 dbConsole.setPieceTypeDescription(ikey.getTypeText());
                 dbConsole.setPieceTimeStamp(new Date());
             }
-
-//            // Get Status Desc
-//            if (updateConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-//                Optional<String> getStatusOpt =
-//                        consignmentEntityRepository.statusEventText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
-//
-//                if (getStatusOpt.isPresent()) {
-//                    String ikey = getStatusOpt.get();
-//
-//                    dbConsole.setHawbType("STATUS");
-//                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
-//                    dbConsole.setHawbTypeDescription(ikey);
-//                    dbConsole.setHawbTimeStamp(new Date());
-//
-//                    dbConsole.setPieceType("STATUS");
-//                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
-//                    dbConsole.setPieceTypeDescription(ikey);
-//                    dbConsole.setPieceTimeStamp(new Date());
-//                }
-//            } else if (dbConsole.getHawbType().equalsIgnoreCase("EVENT")) {
-//                Optional<String> getEventStats =
-//                        consignmentEntityRepository.statusEventText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
-//
-//                if (getEventStats.isPresent()) {
-//                    String ikey = getEventStats.get();
-//
-//                    dbConsole.setHawbType("EVENT");
-//                    dbConsole.setHawbTypeId(dbConsole.getHawbTypeId());
-//                    dbConsole.setHawbTypeDescription(ikey);
-//                    dbConsole.setHawbTimeStamp(new Date());
-//
-//                    dbConsole.setPieceType("EVENT");
-//                    dbConsole.setPieceTypeId(dbConsole.getHawbTypeId());
-//                    dbConsole.setPieceTypeDescription(ikey);
-//                    dbConsole.setPieceTimeStamp(new Date());
-//                }
-//            }
 
             // HubName
             if (dbConsole.getHubCode() != null) {
@@ -2473,6 +2477,8 @@ public class ConsoleService {
     //            throw new RuntimeException(e);
     //        }
     //    }
+
+
 
 
     // Send Notification
