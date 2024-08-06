@@ -214,10 +214,18 @@ export class ConsoleEditComponent {
     this.dropdownlist();
 
     if (this.pageToken.report == true) {
-      this.pageFlow = 'Unconsole Tracking';
-      const dataToSend = ['Mid-Mile', 'UnConsole Tracking'];
-      this.path.setData(dataToSend);
-      this.reportTableHeader();
+      if (this.pageToken.module == 'unconsolidated') {
+        this.pageFlow = 'Unconsolidated';
+        const dataToSend = ['Mid-Mile', 'UnConsolidated Tracking'];
+        this.path.setData(dataToSend);
+        this.unconsolidatedReportTableHeader();
+      }
+      if (this.pageToken.module == 'consolidated') {
+        this.pageFlow = 'Consolidated';
+        const dataToSend = ['Mid-Mile', 'Consolidated Tracking'];
+        this.path.setData(dataToSend);
+        this.consolidatedReportTableHeader();
+      }
     } else {
       this.pageFlow = 'Console ' + this.pageFlow.pageFlow
       const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
@@ -245,7 +253,7 @@ export class ConsoleEditComponent {
 
   cols: any[] = [];
   target: any[] = [];
-  reportTableHeader() {
+  unconsolidatedReportTableHeader() {
     this.cols = [
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
@@ -257,6 +265,42 @@ export class ConsoleEditComponent {
       { field: 'hawbTypeDescription', header: 'Action Name' },
       { field: 'hawbTimeStamp', header: 'Scanned On', format: 'date' },
       { field: 'createdBy', header: 'Scanned Officer' },
+    ];
+    this.target = [
+    ];
+  }
+  consolidatedReportTableHeader() {
+    this.cols = [
+      { field: 'consoleId', header: 'Console No' },
+      { field: 'consoleName', header: 'Console Name' },
+      { field: 'consoleGroupName', header: 'Console Group' },
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'hawbTypeDescription', header: 'Event' },
+      { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
+      { field: 'description', header: 'Commodity' },
+      { field: 'noOfPieces', header: 'No of Piece' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'countryOfOrigin', header: 'Origin' },
+      { field: 'grossWeight', header: 'Weight' },
+      { field: 'airportOriginCode', header: 'Airport Origin Code' },
+      { field: 'hsCode', header: 'HS Code' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'consignmentValue', header: 'Consignment Value' },
+      { field: 'currency', header: 'Consignment Currency' },
+      { field: 'customsValue', header: 'Customs Value' },
+      { field: 'iata', header: 'IATA Charges' },
+      { field: 'isExempted', header: 'Is Exempted' },
+      { field: 'exemptionFor', header: 'Exemption For' },
+      { field: 'exemptionBeneficiary', header: 'Exemption Beneficiary' },
+      { field: 'exemptionReference', header: 'Exemption Reference' },
+      { field: 'ccrId', header: 'CCR ID' },
+      { field: 'customsCcrNo', header: 'Custom CCR No' },
+      { field: 'primaryDo', header: 'Primary DO' },
+      { field: 'secondaryDo', header: 'Secondary DO' },
+      { field: 'totalDuty', header: 'Duty from Bayan' },
+      { field: 'customsKd', header: 'Customs from Bayan' },
+      { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
     this.target = [
     ];
