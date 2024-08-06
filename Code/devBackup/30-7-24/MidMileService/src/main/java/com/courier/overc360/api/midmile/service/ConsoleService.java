@@ -1600,7 +1600,7 @@ public class ConsoleService {
 
         // Call updateConsoleForMobileApp for consoles with hawbTypeId 45 or null
         if (!mobileAppUpdateList.isEmpty()) {
-            updateConsoleForMobileApp(mobileAppUpdateList, loginUserID);
+            result.addAll(updateConsoleForMobileApp(mobileAppUpdateList, loginUserID));
         }
 
         // Manually map UpdateConsole to ConsoleStatus
