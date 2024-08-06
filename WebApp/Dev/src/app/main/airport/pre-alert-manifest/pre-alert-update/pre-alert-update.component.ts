@@ -12,7 +12,7 @@ import { ConsignorService } from '../../../master/consignor/consignor.service';
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
 import { PreAlertEditpopupComponent } from '../pre-alert-editpopup/pre-alert-editpopup.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { PreAlertBulkComponent } from '../pre-alert-bulk/pre-alert-bulk.component';
 
 @Component({
@@ -40,6 +40,7 @@ export class PreAlertUpdateComponent {
     private el: ElementRef,
     public dialog: MatDialog,
     private datePipe: DatePipe,
+    private location: Location,
   ) {
   }
 
@@ -156,6 +157,11 @@ export class PreAlertUpdateComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }
+
+  panelOpenState = false;
+  back() {
+    this.location.back();
   }
 
 
