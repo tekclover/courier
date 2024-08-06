@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -121,12 +122,65 @@ public class PdfController {
     @PostMapping("/merge/v2")
     public ResponseEntity<byte[]> pdfMerge(@RequestBody PDFMerger request) throws IOException, InterruptedException {
 
-        byte[] mergePdf = pdfMergeService.pdfMerge(request);
+        byte[] mergePdf = pdfMergeService.pdfMerger(request);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"merged.pdf\"")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(mergePdf);
+    }
+
+    @PostMapping("/merge/v3")
+    public ResponseEntity<String> pdfMergeV2(@RequestBody PDFMerger request) throws IOException, InterruptedException {
+
+        System.out.println("Received filePaths: " + request.getFilePaths());
+        System.out.println("Received outputPath: " + request.getOutputPath());
+
+        List<InputStream> pdfStreams = new ArrayList<>();
+        for (String path : request.getFilePaths()) {
+            try {
+                String filePath = propertiesConfig.getDocStorageBasePath() + path;
+                pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new BadRequestException("Failed to Read the PDF: " + e);
+            }
+        }
+
+        String fileOutputStoragePath = propertiesConfig.getDocStorageBasePath() + request.getOutputPath();
+        int location = fileOutputStoragePath.lastIndexOf("/");
+        String directoryCreate = fileOutputStoragePath.substring(0, location);
+        this.fileStorageLocation = Paths.get(directoryCreate).toAbsolutePath().normalize();
+        if (!Files.exists(fileStorageLocation)) {
+            try {
+                Files.createDirectories(this.fileStorageLocation);
+            } catch (Exception ex) {
+                throw new BadRequestException("Could not create the directory where the merged files will be stored.");
+            }
+        }
+
+        // Assuming the service returns a list of byte arrays, each representing a merged PDF batch
+        List<byte[]> mergedPdfs = pdfMergeService.pdfMerge(request);
+
+        if (mergedPdfs == null || mergedPdfs.isEmpty()) {
+            throw new BadRequestException("No PDFs were merged.");
+        }
+
+        // Save each batch to a separate file
+        List<String> batchOutputPaths = new ArrayList<>();
+        for (int i = 0; i < mergedPdfs.size(); i++) {
+            String batchFilePath = fileOutputStoragePath.replace(".pdf", "_batch" + (i + 1) + ".pdf");
+            try (OutputStream out = Files.newOutputStream(Paths.get(batchFilePath))) {
+                out.write(mergedPdfs.get(i));
+                batchOutputPaths.add(batchFilePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new BadRequestException("Failed to write the merged PDF batch: " + e);
+            }
+        }
+
+        // Return the file paths of all created batches
+        return ResponseEntity.ok(String.join(",", batchOutputPaths));
     }
 
     @PostMapping("/merge/batch")
