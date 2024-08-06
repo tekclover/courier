@@ -7,6 +7,7 @@ import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.primary.model.piecedetails.UpdatePieceDetails;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -80,6 +81,8 @@ public class UpdateConsignment {
     private String customerCode;
     private String customerReferenceNumber;
     private String hubCode;
+    private String hubName;
+    private String pieceId;
     private String consignmentType;
     private String actionType;
     private String movementType;

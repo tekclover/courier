@@ -10,6 +10,7 @@ import { ImageUploadComponent } from './consignment/consignment-new/image-upload
 import { ConsignmentUpdatebulkComponent } from './consignment/consignment-updatebulk/consignment-updatebulk.component';
 import { ConsignmentStatusPopupComponent } from './consignment/consignment-new/consignment-status-popup/consignment-status-popup.component';
 import { DownloadTemplateComponent } from './consignment/download-template/download-template.component';
+import { AssignmentComponent } from './assignment/assignment.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { DownloadTemplateComponent } from './consignment/download-template/downl
     ImageUploadComponent,
     ConsignmentUpdatebulkComponent,
     ConsignmentStatusPopupComponent,
-    DownloadTemplateComponent
+    DownloadTemplateComponent,
+    AssignmentComponent
   ],
   imports: [
     CommonModule,

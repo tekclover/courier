@@ -282,5 +282,8 @@ public class Console {
     // consolidation check
     private Long unconsolidatedFlag;
 
+    // Notification
+    private Long notificationStatus = 0L;
+
 
 }

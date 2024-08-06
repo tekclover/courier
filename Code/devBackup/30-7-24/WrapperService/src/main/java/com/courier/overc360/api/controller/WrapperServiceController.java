@@ -268,4 +268,47 @@ public class WrapperServiceController {
                 partnerId, partnerMasterAirwayBill, flightNo, flightName, estimatedTimeOfDeparture, estimatedTimeOfArrival, loginUserID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @ApiOperation(response = Optional.class, value = "PDF Merge") // label for swagger
+    @PostMapping("/pdf/merge/v2")
+    public void mergePdf(HttpServletResponse response, @RequestBody List<PDFMerger> pdfMergerList) throws Exception {
+        try {
+            if (pdfMergerList == null || pdfMergerList.isEmpty()) {
+                throw new BadRequestException("PDF Merger list cannot be null or empty");
+            }
+
+            // Ensure each PDFMerger has a valid output path
+            for (PDFMerger pdfMerger : pdfMergerList) {
+                String outputPath = pdfMerger.getOutputPath();
+                if (outputPath == null) {
+                    throw new BadRequestException("Output Path should be specified");
+                }
+                if (outputPath.length() == 0) {
+                    throw new BadRequestException("Invalid Output Path");
+                }
+                if (outputPath.endsWith("/")) {
+                    throw new BadRequestException("Output Path specified without fileName and extension");
+                }
+                if (!outputPath.contains(".")) {
+                    throw new BadRequestException("Output fileName not mentioned with extension");
+                }
+            }
+
+            // Call the service to merge the PDFs
+            byte[] mergedZipBytes = commonService.mergePdfs(pdfMergerList);
+
+            if (mergedZipBytes != null && mergedZipBytes.length > 0) {
+                response.setContentType("application/zip");
+                response.setHeader("Content-Disposition", "attachment;filename=mergedFiles.zip");
+                response.setStatus(HttpServletResponse.SC_OK);
+
+                response.getOutputStream().write(mergedZipBytes);
+            } else {
+                throw new BadRequestException("No files were merged.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception: " + e.getMessage());
+        }
+    }
 }

@@ -54,4 +54,10 @@ public interface IKeyValuePair {
 
     String getTypeText();
 
+    String getNotificationText();
+
+    String getUserName();
+
+    String getUserRole();
+
 }

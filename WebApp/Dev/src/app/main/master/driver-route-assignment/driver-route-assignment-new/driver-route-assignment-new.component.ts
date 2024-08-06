@@ -11,7 +11,7 @@ import { DistrictService } from '../../../id-masters/district/district.service';
 import { ProvinceService } from '../../../id-masters/province/province.service';
 import { NumberrangeService } from '../../numberrange/numberrange.service';
 import { DriverRouteAssignmentService } from '../driver-route-assignment.service';
-import { AppUserService } from '../../app-user/app-user.service';
+import { AppUserService } from '../../../id-masters/app-user/app-user.service';
 import { ServiceProviderService } from '../../service-provider/service-provider.service';
 
 @Component({
@@ -115,6 +115,7 @@ export class DriverRouteAssignmentNewComponent {
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
       this.form.controls.courierId.disable();
+      this.form.controls.courierType.disable();
       this.form.controls.routeId.disable();
       this.form.controls.vehicleRegNumber.disable();
       this.form.controls.assignedHubCode.disable();

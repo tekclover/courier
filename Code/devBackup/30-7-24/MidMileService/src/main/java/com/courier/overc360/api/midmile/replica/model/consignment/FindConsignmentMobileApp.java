@@ -18,6 +18,7 @@ public class FindConsignmentMobileApp {
 //    private List<String> partnerHouseAirwayBill;
 //    private List<String> partnerMasterAirwayBill;
 
+    private String hawbTypeId;
     // for mobile App
     private String shippingLabelNo;
 

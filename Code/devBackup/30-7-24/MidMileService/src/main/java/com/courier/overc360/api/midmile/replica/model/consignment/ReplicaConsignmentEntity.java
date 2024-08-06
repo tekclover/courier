@@ -223,6 +223,12 @@ public class ReplicaConsignmentEntity implements Serializable {
     @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
     private String hubCode;
 
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
+    private String pieceId;
+
     @Column(name = "CONSIGNMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String consignmentType;
 

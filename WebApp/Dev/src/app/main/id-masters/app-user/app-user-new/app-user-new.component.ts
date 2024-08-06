@@ -7,7 +7,7 @@ import { CommonAPIService } from '../../../../common-service/common-api.service'
 import { CommonServiceService } from '../../../../common-service/common-service.service';
 import { PathNameService } from '../../../../common-service/path-name.service';
 import { AuthService } from '../../../../core/core';
-import { NumberrangeService } from '../../numberrange/numberrange.service';
+import { NumberrangeService } from '../../../master/numberrange/numberrange.service';
 import { AppUserService } from '../app-user.service';
 
 @Component({
@@ -93,7 +93,7 @@ export class AppUserNewComponent {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Master', 'App User', this.pageToken.pageflow];
+    const dataToSend = ['Setup', 'App User', this.pageToken.pageflow];
     this.path.setData(dataToSend);
 
     this.dropdownlist();
@@ -192,7 +192,7 @@ export class AppUserNewComponent {
             key: 'br',
             detail: res.appUserId + ' has been updated successfully',
           });
-          this.router.navigate(['/main/master/appUser']);
+          this.router.navigate(['/main/idMaster/appUser']);
           this.spin.hide();
         },
         error: (err) => {
@@ -211,7 +211,7 @@ export class AppUserNewComponent {
               key: 'br',
               detail: res.appUserId + ' has been created successfully',
             });
-            this.router.navigate(['/main/master/appUser']);
+            this.router.navigate(['/main/idMaster/appUser']);
             this.spin.hide();
           }
         },

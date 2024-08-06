@@ -119,6 +119,9 @@ public class ServiceProviderService {
             if (statusDesc != null) {
                 newServiceProvider.setStatusDescription(statusDesc);
             }
+            //Save without spacing
+            newServiceProvider.setServiceProvidersId(newServiceProvider.getServiceProvidersId().replaceAll("\\s+",""));
+
             newServiceProvider.setDeletionIndicator(0l);
             newServiceProvider.setCreatedBy(loginUserID);
             newServiceProvider.setCreatedOn(new Date());

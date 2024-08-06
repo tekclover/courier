@@ -117,6 +117,9 @@ public class VehicleService {
             if (statusDesc != null) {
                 newVehicle.setStatusDescription(statusDesc);
             }
+            //Save without spacing
+            newVehicle.setVehicleRegNumber(newVehicle.getVehicleRegNumber().replaceAll("\\s+",""));
+
             newVehicle.setDeletionIndicator(0L);
             newVehicle.setCreatedBy(loginUserID);
             newVehicle.setCreatedOn(new Date());

@@ -2844,4 +2844,41 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(serviceProvidersList, HttpStatus.OK);
     }
 
+    // GetAll NotificationMessage
+    @ApiOperation(response = NotificationMessage.class, value = "Get all NotificationMessage details")
+    // label for swagger
+    @GetMapping("/notificationMessage")
+    public ResponseEntity<?> getNotificationMessage(@RequestParam String authToken) {
+        NotificationMessage[] notificationMessages = idmasterService.getAllNotificationMessage(authToken);
+        return new ResponseEntity<>(notificationMessages, HttpStatus.OK);
+    }
+
+    // Find NotificationMessage
+    @ApiOperation(response = NotificationMessage.class, value = "Search NotificationMessage") // label for swagger
+    @PostMapping("/notificationMessage/findNotificationMessage")
+    public NotificationMessage[] findNotification(@RequestBody FindNotificationMessage findNotificationMessage,
+                                                  @RequestParam String authToken) throws Exception {
+        return idmasterService.findNotificationMessage(findNotificationMessage, authToken);
+    }
+
+    //Update Notification
+    @ApiOperation(response = NotificationMessage.class, value = "Update Notification Message")
+    @PatchMapping("/notificationMessage/update")
+    public ResponseEntity<?> updateNotification(@RequestBody List<NotificationMessage> updateNotification,
+                                                @RequestParam String loginUserID, @RequestParam String authToken){
+        NotificationMessage[] dbNotification = idmasterService.updateNotificationMessage(updateNotification, loginUserID, authToken);
+        return new ResponseEntity<>(dbNotification, HttpStatus.OK);
+    }
+
+    //Delete NotificationMessage
+    @ApiOperation(response = NotificationMessage.class, value = "Delete Notification Message")
+    @DeleteMapping("/notificationMessage/delete")
+    public ResponseEntity<?> deleteNotificationMessage(@RequestParam(required = false) Long notificationId, @RequestParam(required = false) String companyId,
+                                                       @RequestParam(required = false) String languageId, @RequestParam(required = false) String houseAirwayBill,
+                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteNotificationMessage(notificationId, companyId, languageId, houseAirwayBill, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 }

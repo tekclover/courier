@@ -37,14 +37,16 @@
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Service Provider ID</p>
+                                <p class="formControlLabel f600 textBlack mb-0 required">Service Provider ID</p>
                                 <input maxlength="50" pInputText pKeyFilter="alphanum"
+                                [ngClass]="form.get('serviceProvidersId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     formControlName="serviceProvidersId" class="w-100" pInputText placeholder="Enter" />
+                                    <mat-error *ngIf="errorHandling('serviceProvidersId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
                                 <p class="formControlLabel f600 textBlack mb-0 ">Service Provider Text</p>
                                 <input maxlength="100" pInputText formControlName="serviceProvidersText"
-                                    [ngClass]="form.get('serviceProvidersText')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
                                     class="w-100" pInputText placeholder="Enter" />
                                 <mat-error *ngIf="errorHandling('serviceProvidersText')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
@@ -71,19 +73,9 @@
                                 <p-dropdown [options]="cityIdList" placeholder="Select" filter="true"
                                 formControlName="cityId"
                                 [ngClass]="form.get('cityId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                appendTo="body" [style]="{'width': '100%'}" (onChange)="provinceChanged()"[disabled]="true"
+                                appendTo="body" [style]="{'width': '100%'}" (onChange)="cityChanged()" 
                                 [panelStyle]="{'width':'100%'}" />
                                 <mat-error *ngIf="errorHandling('cityId')"
-                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
-                            </div>
-                            <div class="col-6 marginFieldNew borderRadius12">
-                                <p class="formControlLabel f600 textBlack mb-0">Province ID</p>
-                                <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
-                                    formControlName="provinceId"
-                                    [ngClass]="form.get('provinceId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                    appendTo="body" [style]="{'width': '100%'}" (onChange)="districtChanged()" [disabled]="true"
-                                    [panelStyle]="{'width':'100%'}" />
-                                <mat-error *ngIf="errorHandling('provinceId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">
@@ -91,7 +83,17 @@
                                 <p-dropdown [options]="districtIdList" placeholder="Select" filter="true"
                                 formControlName="districtId" appendTo="body"
                                 [ngClass]="form.get('districtId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
-                                [style]="{'width': '100%'}" [disabled]="true" [panelStyle]="{'width':'100%'}" />                                <mat-error *ngIf="errorHandling('districtId')"
+                                [style]="{'width': '100%'}" [panelStyle]="{'width':'100%'}" (onChange)="districtChanged()" />                                <mat-error *ngIf="errorHandling('districtId')"
+                                    class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
+                            </div>
+                            <div class="col-6 marginFieldNew borderRadius12">
+                                <p class="formControlLabel f600 textBlack mb-0">Province ID</p>
+                                <p-dropdown [options]="provinceIdList" placeholder="Select" filter="true"
+                                    formControlName="provinceId"
+                                    [ngClass]="form.get('provinceId')?.invalid && submitted ? 'ng-invalid ng-dirty' : ''"
+                                    appendTo="body" [style]="{'width': '100%'}"  [disabled]="true"
+                                    [panelStyle]="{'width':'100%'}" />
+                                <mat-error *ngIf="errorHandling('provinceId')"
                                     class="text-danger"><small>{{getErrorMessage()}}</small></mat-error>
                             </div>
                             <div class="col-6 marginFieldNew borderRadius12">

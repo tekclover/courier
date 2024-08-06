@@ -2,6 +2,7 @@ package com.courier.overc360.api.midmile.primary.model.prealert;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -88,6 +89,10 @@ public class UpdatePreAlert {
     private String incoTerm;
 
     private String consignmentLocalId;
+
+    private String hubCode;
+
+    private String hubName;
 
     private String referenceField1;
 
