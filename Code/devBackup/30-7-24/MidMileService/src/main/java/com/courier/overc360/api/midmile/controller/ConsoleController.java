@@ -177,4 +177,13 @@ public class ConsoleController {
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
 
+    // Send Notification
+    @ApiOperation(response = Console.class, value = "Send notification")
+    @PostMapping("/send/notification")
+    public ResponseEntity<?> sendNotification(@RequestParam String companyId, @RequestParam String languageId,
+                                              @RequestParam String consoleId, @RequestParam String houseAirwayBill ){
+        consoleService.sendNotificationForConsoleCreate(companyId, languageId, consoleId, houseAirwayBill);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
+
 }

@@ -7,6 +7,7 @@ import com.courier.overc360.api.midmile.primary.model.console.*;
 import com.courier.overc360.api.midmile.primary.model.console.unconsolidation.AddUnconsolidation;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
+import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
 import com.courier.overc360.api.midmile.primary.repository.ConsignmentEntityRepository;
 import com.courier.overc360.api.midmile.primary.repository.ConsoleRepository;
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
@@ -33,12 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,7 +45,7 @@ public class ConsoleService {
     private ConsoleRepository consoleRepository;
 
     @Autowired
-    private ReplicaCcrRepository ccrRepository;
+    private CcrRepository ccrRepository;
 
     @Autowired
     private ReplicaConsoleRepository replicaConsoleRepository;
@@ -89,6 +85,8 @@ public class ConsoleService {
 
     @Autowired
     PushNotificationService pushNotificationService;
+
+    private Set<String> processedConsoleCreate = new HashSet<>();
     /*---------------------------------------------------PRIMARY-----------------------------------------------------*/
 
     /**
@@ -1144,6 +1142,7 @@ public class ConsoleService {
 
         for (Map.Entry<String, List<Console>> entry : groupByConsoleId.entrySet()) {
             List<Console> listConsole = entry.getValue();
+
             String currentConsoleName = "ConsoleName - " + consoleName;
             for (Console console : listConsole) {
                 console.setConsoleName(currentConsoleName);
@@ -1152,7 +1151,8 @@ public class ConsoleService {
                 Console createdConsole = consoleRepository.save(console);
 
                 // Send Notification
-//                sendNotificationForConsoleCreate(createdConsole.getCompanyId(), createdConsole.getLanguageId(), createdConsole.getConsoleId());
+                sendNotificationForConsoleCreate(createdConsole.getCompanyId(), createdConsole.getLanguageId(),
+                        createdConsole.getConsoleId(), createdConsole.getHouseAirwayBill());
 
                 if (createdConsole != null) {
                     // Save ConsignmentStatus
@@ -2474,31 +2474,55 @@ public class ConsoleService {
 
 
     // Send Notification
+    /**
+     *
+     * @param companyId
+     * @param languageId
+     * @param consoleId
+     * @param houseAirwayBill
+     */
     public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill) {
+
+        // Check if consoleId has already been processed
+        if (processedConsoleCreate.contains(consoleId)) {
+            log.warn("Console ID {} has already been processed. Skipping notification.", consoleId);
+            return;
+        }
 
         try {
             // Get NotificationId
             IKeyValuePair notifyId = replicaCcrRepository.getNotificationId(companyId, languageId, "2");
 
-            if (notifyId != null && notifyId.getUserRole() != null) {
+            if (notifyId == null || notifyId.getUserRole() == null) {
+                log.warn("Notification ID or User Role not found for companyId: {}, languageId: {}", companyId, languageId);
+                return;
+            }
 
-                List<String> getUser = replicaCcrRepository.getUserId(companyId, languageId, notifyId.getUserRole());
+            List<String> userIds = replicaCcrRepository.getUserId(companyId, languageId, notifyId.getUserRole());
+            if (userIds.isEmpty()) {
+                log.warn("No Users found for the specified role: {}, companyId: {}", notifyId.getUserRole(), companyId);
+                return;
+            }
 
-                List<String> deviceToken = replicaCcrRepository.getToken(companyId, getUser);
+            List<String> deviceToken = replicaCcrRepository.getToken(companyId, userIds);
+            if (deviceToken == null || deviceToken.isEmpty()) {
+                log.warn("No device token found for users : {}", userIds);
+                return;
+            }
 
-                if (!deviceToken.isEmpty() && deviceToken != null) {
-                    String title = "Console Create";
-                    String message = notifyId.getNotificationText();
-                    String response = pushNotificationService.sendPushNotification(
-                            deviceToken, title, message, companyId, languageId, houseAirwayBill, consoleId);
-                    log.info("status update successfully");
-                    if (response.equals("OK")) {
-                        ccrRepository.updateNotificationInConsoleTable(companyId, languageId, consoleId);
-                    }
-                }
+            String title = "Console";
+            String message = notifyId.getNotificationText() + " Console Id - " + consoleId;
+            String response = pushNotificationService.sendPushNotification(
+                    deviceToken, title, message, companyId, languageId, houseAirwayBill, consoleId);
+
+            if (response.equalsIgnoreCase("OK")) {
+                log.info("Notification sent successfully. Updating console table. ");
+                ccrRepository.updateNotificationInConsoleTable(companyId, languageId, consoleId);
+            } else {
+                log.warn("Failed to send notification. Response: {}", response);
             }
         } catch (Exception e) {
-        log.info("Throw exception for send notification when Console Create");
+            log.error("Exception occurred while sending notification for Console Create", e);
         }
     }
 }

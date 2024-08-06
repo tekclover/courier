@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcr;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -95,7 +96,7 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
 
 
         @Query(value = "select token_id as tokenId from tblhhtnotification where " +
-                " company_id = :companyId and usr_id = :userId and is_deleted = 0 ", nativeQuery = true)
+                " c_id = :companyId and usr_id in :userId and is_deleted = 0 ", nativeQuery = true)
     public List<String> getToken(@Param("companyId") String companyId,
                                  @Param("userId") List<String> userId);
 
@@ -105,15 +106,11 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
                                                @Param("languageId") String languageId,
                                                @Param("notificationId") String notificationId);
 
-        @Query(value = "update tblconsole set noti_status = 1 where console_id = :consoleId and " +
-                " c_id = :companyId and lang_id = :languageId and is_deleted =0 ", nativeQuery = true)
-        public void updateNotificationInConsoleTable(@Param("companyId") String companyId,
-                                                     @Param("languageId") String languageId,
-                                                     @Param("consoleId") String consoleId);
 
         @Query(value = "select user_id userId from tblusermanagement where user_role_id = :roleId " +
-                " and company_id = :companyId and lang_id = :languageId and is_deleted = 0", nativeQuery = true)
+                " and c_id = :companyId and lang_id = :languageId and is_deleted = 0 ", nativeQuery = true)
         public List<String> getUserId(@Param("companyId") String companyId,
                                       @Param("languageId") String languageId,
                                       @Param("roleId") String roleId);
+
 }

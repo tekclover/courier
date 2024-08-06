@@ -1,7 +1,9 @@
 package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.primary.model.notificationmessage.NotificationMessage;
+import com.courier.overc360.api.midmile.primary.repository.CcrRepository;
 import com.courier.overc360.api.midmile.primary.repository.NotificationMessageRepository;
+import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -23,6 +25,9 @@ public class PushNotificationService {
 
     @Autowired
     private NotificationMessageRepository notificationMessageRepository;
+
+    @Autowired
+    CcrRepository ccrRepository;
 
     /*=================================================================================================================*/
 
@@ -54,17 +59,19 @@ public class PushNotificationService {
                                 .build())
                         .build();
                 firebaseMessaging.send(pushMessage);
+
+                List<NotificationMessage> existingMessage =
+                        notificationMessageRepository.findByCompanyIdAndLanguageIdAndConsoleIdAndHouseAirwayBillAndDeletionIndicator(
+                                companyId, languageId, consoleId, houseAirwayBill, 0L);
+
+                if (existingMessage.isEmpty()) {
+                    saveNotificationMessage(companyId, languageId, consoleId, houseAirwayBill, title, message);
+                }
             } catch (FirebaseMessagingException e) {
                 iterator.remove();
+                ccrRepository.deleteNotAccessToken(token);
                 e.printStackTrace();
             }
-        }
-        List<NotificationMessage> existingMessage =
-                notificationMessageRepository.findByCompanyIdAndLanguageIdAndConsoleIdAndHouseAirwayBillAndDeletionIndicator(
-                        companyId, languageId, consoleId, houseAirwayBill, 0L);
-
-        if (existingMessage.isEmpty()) {
-            saveNotificationMessage(companyId, languageId, consoleId, houseAirwayBill, title, message);
         }
         return "OK";
     }
