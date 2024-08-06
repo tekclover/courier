@@ -1387,6 +1387,7 @@ public class ConsoleService {
                         updateConsole.getPartnerMasterAirwayBill(), updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId());
 
                 BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
+                log.info("Console HawbTypeId: {} ", updateConsole.getHawbTypeId());
 
                 Optional<String> statusID5DescOpt = consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), "5");
                 if (statusID5DescOpt.isPresent()) {
@@ -1591,6 +1592,7 @@ public class ConsoleService {
             if (dbConsole == null) {
                 throw new BadRequestException("Given Values Doesn't exist");
             }
+            log.info("Console Update HwbTypeId: {} ", updateConsole.getHawbTypeId());
             BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
 
             Optional<IKeyValuePair> getStatusOpt =
