@@ -49,9 +49,9 @@ export class InventoryScanningComponent {
       this.path.setData(dataToSend);
       this.pageFlow = 'Pending Customs';
     } else {
-      const dataToSend = ['Mid-Mile', 'Inventory Scanning'];
+      const dataToSend = ['Mid-Mile', 'Inventory Scan'];
       this.path.setData(dataToSend);
-      this.pageFlow = 'Inventory Scanning';
+      this.pageFlow = 'Inventory Scan';
     }
 
 
@@ -156,7 +156,7 @@ export class InventoryScanningComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Inventory Scanning Report');
+    this.cs.exportAsExcel(exportData, 'Inventory Scan Report');
   }
 
   searchform = this.fb.group({

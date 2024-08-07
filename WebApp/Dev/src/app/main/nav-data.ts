@@ -376,7 +376,7 @@ export const navbarData: INavbarData[] = [
             {
                 routerId: 5106,
                 routerLink: '/main/reports/inventoryScanning',
-                label: 'Inventory Scanning'
+                label: 'Inventory Scan'
             },
 
             // {
