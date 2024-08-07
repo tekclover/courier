@@ -1460,7 +1460,7 @@ export class ConsignmentLabelComponent {
   docurl: any;
   async download(array: any, result: any) {
     this.spin.show();
-    const Path = '/' + result.houseAirwayBill + '/mergedFiles/' + result.houseAirwayBill + '_mergedFiles.zip';
+    const Path = '/' + result.houseAirwayBill + '/mergedFiles/' + result.houseAirwayBill + '_mergedFiles.pdf';
     const blob = await this.consginementService.pdfMerge([{filePaths: array, outputPath: Path}])
       .catch((err: HttpErrorResponse) => {
         this.cs.commonerrorNew(err);
@@ -1478,7 +1478,7 @@ export class ConsignmentLabelComponent {
       a.href = this.docurl;
   
       // Safely handle the file name extraction
-      const fileName = Path.split('/').pop() || 'merge.zip';
+      const fileName = result.houseAirwayBill + '_mergedFiles.zip' || 'merge.zip';
       a.download = fileName; // Ensures `fileName` is always a string
       a.click();
       
