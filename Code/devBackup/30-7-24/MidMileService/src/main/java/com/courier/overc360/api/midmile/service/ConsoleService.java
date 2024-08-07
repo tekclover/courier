@@ -1924,7 +1924,9 @@ public class ConsoleService {
                     languageId, companyId, partnerId, partnerMasterAirwayBill, partnerHouseAirwayBill, shippingLabelNo, unconsolidatedFlag, hawbTypeId);
         }
         if (consoleList == null || consoleList.isEmpty()) {
-            throw new BadRequestException("No console Data found for given params : shippingLabelNo - " + findConsole.getShippingLabelNo());
+//            throw new BadRequestException("No console Data found for given params : shippingLabelNo - " + findConsole.getShippingLabelNo());
+            log.warn("No console data found for given params: shippingLabelNo - {}", findConsole.getShippingLabelNo());
+            return Collections.emptyList();
         }
         return consoleList;
     }
