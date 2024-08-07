@@ -114,6 +114,9 @@ public class AppUserService {
                 newAppUser.setStatusDescription(statusDesc);
             }
 
+            //Save without spacing
+            newAppUser.setAppUserId(newAppUser.getAppUserId().replaceAll("\\s+",""));
+
             // Password encryption
             String encodedPwd = passwordEncoder.encodePassword(newAppUser.getPassword());
             newAppUser.setPassword(encodedPwd);

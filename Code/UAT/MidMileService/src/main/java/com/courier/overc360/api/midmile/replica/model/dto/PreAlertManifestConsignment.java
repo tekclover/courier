@@ -1,12 +1,10 @@
 package com.courier.overc360.api.midmile.replica.model.dto;
 
 
-import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
-import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaAddPieceDetails;
+import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaDestinationDetails;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaOriginDetails;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaReturnDetails;
-import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -281,7 +279,7 @@ public class PreAlertManifestConsignment {
 
     private String storageLocation;
 
-    private List<ReferenceImageList> referenceImageList;
+    private List<ImageReference> referenceImageList;
 
     private String isExchange;
 

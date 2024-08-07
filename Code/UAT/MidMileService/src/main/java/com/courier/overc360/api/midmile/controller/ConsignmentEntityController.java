@@ -4,15 +4,13 @@ package com.courier.overc360.api.midmile.controller;
 import com.courier.overc360.api.midmile.primary.model.UploadResponse;
 import com.courier.overc360.api.midmile.primary.model.consignment.*;
 import com.courier.overc360.api.midmile.primary.model.prealert.PreAlert;
-import com.courier.overc360.api.midmile.replica.model.consignment.*;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentInvoice;
+import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignmentMobileApp;
+import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
 import com.courier.overc360.api.midmile.replica.model.dto.FindIConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.IConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestConsignment;
-import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
-import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
-import com.courier.overc360.api.midmile.replica.model.prealert.FindPreAlert;
-import com.courier.overc360.api.midmile.replica.model.prealert.ReplicaPreAlert;
 import com.courier.overc360.api.midmile.service.CommonService;
 import com.courier.overc360.api.midmile.service.ConsignmentService;
 import com.courier.overc360.api.midmile.service.PreAlertService;
@@ -34,83 +32,38 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Slf4j
 @Validated
 @Api(tags = {"Consignment"}, value = "Consignment Operations related to ConsignmentController") // label for swagger
 @SwaggerDefinition(tags = {@Tag(name = "Consignment", description = "Operations related to Consignment")})
 @RequestMapping("/consignment")
 @RestController
-public class ConsignmentController {
+public class ConsignmentEntityController {
 
     @Autowired
-    ConsignmentService consignmentService;
+    private ConsignmentService consignmentService;
 
     @Autowired
-    CommonService commonService;
+    private CommonService commonService;
 
     @Autowired
-    PreAlertService preAlertService;
+    private PreAlertService preAlertService;
 
-    /*=====================================================================================================================*/
-
-    //GetAll
-    @ApiOperation(response = ConsignmentEntity.class, value = "Get ALl Consignment") // label for swagger
-    @GetMapping("")
-    public ResponseEntity<?> getAllConsignment() {
-        List<ReplicaConsignmentEntity> getAllConsignment = consignmentService.getAll();
-        return new ResponseEntity<>(getAllConsignment, HttpStatus.OK);
+    @ApiOperation(response = ConsignmentEntity.class, value = "Get ConsignmentEntity")
+    @GetMapping()
+    public ResponseEntity<?> getAll() {
+        List<ConsignmentEntity> find = consignmentService.findAll();
+        return new ResponseEntity<>(find, HttpStatus.OK);
     }
 
-    // Create Company
-    @ApiOperation(response = AddConsignment.class, value = "Create new Consignment") // label for swagger
+    // Create ConsignmentEntity
+    @ApiOperation(response = ConsignmentEntity.class, value = "Create Consignment Entity")
     @PostMapping("")
-    public ResponseEntity<?> postCompany(@Valid @RequestBody List<AddConsignment> addCompany, @RequestParam String loginUserID)
-            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        List<AddConsignment> createdCompany = consignmentService.createConsignment(addCompany, loginUserID);
-        return new ResponseEntity<>(createdCompany, HttpStatus.OK);
-    }
-
-    // Find ImageReference
-    @ApiOperation(response = ReplicaConsignmentEntity.class, value = "Find ConsignmentEntity") // label for swagger
-    @PostMapping("/find")
-    public ResponseEntity<?> findImageReference(@RequestBody FindConsignment findConsignment) throws Exception {
-        List<ReplicaAddConsignment> consignmentEntityList = consignmentService.findReplicaFindConsignment(findConsignment);
-        return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
-    }
-
-    @ApiOperation(response = UpdateConsignment.class, value = "Update ConsignmentEntity")
-    @PatchMapping("/updateConsignment")
-    public ResponseEntity<?> updateConsignmentEntity(@Valid @RequestBody List<UpdateConsignment> updateConsignment, @RequestParam String loginUserID)
-            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
-        List<UpdateConsignment> updateConsignments = consignmentService.updateConsignmentEntity(updateConsignment, loginUserID);
-        return new ResponseEntity<>(updateConsignments, HttpStatus.OK);
-    }
-
-    //DeleteConsignment
-    @ApiOperation(response = ConsignmentEntity.class, value = "Delete ConsignmentEntity")
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteConsignmentEntity(@RequestParam String companyId, @RequestParam String languageId, @RequestParam String partnerId,
-                                                     @RequestParam String houseAirwayBill, @RequestParam String masterAirwayBill,
-                                                     @RequestParam(required = false) String pieceId, @RequestParam(required = false) String pieceItemId,
-                                                     @RequestParam(required = false) String imageRefId, @RequestParam String loginUserID) {
-        consignmentService.deleteConsignmentEntity(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId,imageRefId, loginUserID );
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    //DeleteConsignment
-    @ApiOperation(response = ConsignmentEntity.class, value = "Delete ConsignmentEntity")
-    @PostMapping("/delete/list")
-    public ResponseEntity<?> deleteConsignmentEntity(@Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID) {
-        consignmentService.deleteConsignmentEntity(consignmentDeletes, loginUserID );
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/v2/download")
-    public ResponseEntity<?> downloadDocument(@RequestParam String sourceUrl, @RequestParam String destinationDir,
-                                   @RequestParam String documentName) {
-        String filePathWithName = commonService.downLoadDocument(sourceUrl, destinationDir, documentName);
-        return new ResponseEntity<>(filePathWithName, HttpStatus.OK);
+    public ResponseEntity<?> createConsignmentEntity(@Valid @RequestBody List<AddConsignment> consignmentEntityList,
+                                                     @RequestParam String loginUserID) throws IOException,
+            InvocationTargetException, IllegalAccessException, CsvException {
+        List<ConsignmentEntity> dbConsignment = consignmentService.createConsignmentEntity(consignmentEntityList, loginUserID);
+        return new ResponseEntity<>(dbConsignment, HttpStatus.OK);
     }
 
     //Consignment Upload
@@ -119,14 +72,55 @@ public class ConsignmentController {
     public ResponseEntity<?> consignmentUpload(@Valid @RequestBody List<AddConsignment> addConsignments, @RequestParam String loginUserID)
             throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
         List<UploadResponse> uploadResponseList = new ArrayList<>();
-        List<AddConsignment> addConsignment = consignmentService.createConsignment(addConsignments, loginUserID);
-        if(!addConsignment.isEmpty()){
+        List<ConsignmentEntity> addConsignment = consignmentService.createConsignmentEntity(addConsignments, loginUserID);
+        if (!addConsignment.isEmpty()) {
             UploadResponse uploadResponse = new UploadResponse();
             uploadResponse.setStatusCode("200");
             uploadResponse.setStatusCode("Consignment Upload Successfully");
             uploadResponseList.add(uploadResponse);
         }
         return new ResponseEntity<>(uploadResponseList, HttpStatus.OK);
+    }
+
+    // Update Consignment
+    @ApiOperation(response = ConsignmentEntity.class, value = "Update ConsignmentEntity")
+    @PatchMapping("/updateConsignment")
+    public ResponseEntity<?> updateConsignmentEntity(@Valid @RequestBody List<UpdateConsignment> updateConsignment,
+                                                     @RequestParam String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<ConsignmentEntity> updateConsignments = consignmentService.updateConsignmentEntity(updateConsignment, loginUserID);
+        return new ResponseEntity<>(updateConsignments, HttpStatus.OK);
+    }
+
+    // Find Consignment
+    @ApiOperation(response = ReplicaConsignmentEntity.class, value = "Find ConsignmentEntity") // label for swagger
+    @PostMapping("/find")
+    public ResponseEntity<?> findImageReference(@Valid @RequestBody FindConsignment findConsignment) throws Exception {
+        List<ReplicaConsignmentEntity> consignmentEntityList = consignmentService.findConsignmentEntity(findConsignment);
+        return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
+    }
+
+    // Find Consignment - MobileApp
+    @ApiOperation(response = ReplicaConsignmentEntity.class, value = "Find Consignment - MobileApp")
+    @PostMapping("/find/mobileApp")
+    public ResponseEntity<?> findConsignmentMobileApp(@Valid @RequestBody List<FindConsignmentMobileApp> findConsignments) throws Exception {
+        List<ReplicaConsignmentEntity> consignmentEntityList = consignmentService.findConsignmentMobileApp(findConsignments);
+        return new ResponseEntity<>(consignmentEntityList, HttpStatus.OK);
+    }
+
+    //DeleteConsignment
+    @ApiOperation(response = ConsignmentEntity.class, value = "Delete ConsignmentEntity")
+    @PostMapping("/delete/list")
+    public ResponseEntity<?> deleteConsignmentEntity(@Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID) {
+        consignmentService.deleteConsignmentEntity(consignmentDeletes, loginUserID);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/v2/download")
+    public ResponseEntity<?> downloadDocument(@RequestParam String sourceUrl, @RequestParam String destinationDir,
+                                              @RequestParam String documentName) {
+        String filePathWithName = commonService.downLoadDocument(sourceUrl, destinationDir, documentName);
+        return new ResponseEntity<>(filePathWithName, HttpStatus.OK);
     }
 
     //========================================================null validation column==================================================//
@@ -177,4 +171,16 @@ public class ConsignmentController {
 //        List<ReplicaPreAlert> dbPreAlert = preAlertService.findPreAlert(findPreAlert);
 //        return new ResponseEntity<>(dbPreAlert, HttpStatus.OK);
 //    }
+
+//    @ApiOperation(value = "PushNotification")
+//    @PostMapping("notification")
+//    public ResponseEntity<?> pushNotification(@RequestParam List<String> tokens) {
+//    String title = "PUSH_NOTIFICATION";
+//    String message = "TEST CHECKING";
+//    pushNotificationService.sendPushNotification(tokens, title, message);
+//    return new ResponseEntity<>("Success", HttpStatus.OK);
+//
+//    }
+
+
 }

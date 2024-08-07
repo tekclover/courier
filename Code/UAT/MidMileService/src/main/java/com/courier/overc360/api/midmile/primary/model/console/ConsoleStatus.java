@@ -20,8 +20,8 @@ public class ConsoleStatus {
     private String partnerMasterAirwayBill;
     @NotBlank(message = "PieceId is mandatory")
     private String pieceId;
-    @NotBlank(message = "HawbType is mandatory")
-    private String hawbType;
+//    @NotBlank(message = "HawbType is mandatory")
+//    private String hawbType;
     @NotBlank(message = "HawbId is mandatory")
     private String hawbTypeId;
     @NotBlank(message = "ConsoleId is mandatory")

@@ -2,8 +2,6 @@ package com.courier.overc360.api.midmile.primary.model.bondedmanifest;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 

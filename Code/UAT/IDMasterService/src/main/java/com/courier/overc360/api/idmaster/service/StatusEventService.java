@@ -101,7 +101,7 @@ public class StatusEventService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Optional<StatusEvent> duplicateStatusEvent = statusEventRepository.findByCompanyIdAndLanguageIdAndTypeIdAndDeletionIndicator
-                    (addStatusEvent.getCompanyId(), addStatusEvent.getLanguageId(), addStatusEvent.getTypeId(), 0l);
+                    (addStatusEvent.getCompanyId(), addStatusEvent.getLanguageId(), addStatusEvent.getTypeId(), 0L);
             if (duplicateStatusEvent.isPresent()) {
                 throw new BadRequestException("Record is getting duplicated with typeId - " + addStatusEvent.getTypeId());
             }
@@ -165,6 +165,12 @@ public class StatusEventService {
         try{
             StatusEvent dbStatusEvent=getStatusEvent(companyId,languageId,typeId);
             BeanUtils.copyProperties(updateStatusEvent, dbStatusEvent,CommonUtils.getNullPropertyNames(updateStatusEvent));
+            if (updateStatusEvent.getStatusId() != null && !updateStatusEvent.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateStatusEvent.getStatusId());
+                if (statusDesc != null) {
+                    dbStatusEvent.setStatusDescription(statusDesc);
+                }
+            }
             dbStatusEvent.setUpdatedBy(loginUserID);
             dbStatusEvent.setUpdatedOn(new Date());
             return statusEventRepository.save(dbStatusEvent);

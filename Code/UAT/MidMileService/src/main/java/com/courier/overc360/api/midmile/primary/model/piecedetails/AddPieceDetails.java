@@ -1,17 +1,24 @@
 package com.courier.overc360.api.midmile.primary.model.piecedetails;
 
-import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
+import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
+import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class AddPieceDetails {
+
+    private Long pieceDetailsId;
+
+    private List<AddItemDetails> itemDetails;
+
+    private Set<AddImageReference> referenceImageList;
 
     private String languageId;
 
@@ -25,12 +32,6 @@ public class AddPieceDetails {
 
     private String pieceId;
 
-    private String partnerType;
-
-    private String partnerName;
-
-    private String hsCode;
-
     private String pieceType;
 
     private String pieceTypeId;
@@ -39,13 +40,17 @@ public class AddPieceDetails {
 
     private Date pieceTimeStamp = new Date();
 
-    private String pieceValue;
-
-    private String pieceCurrency;
-
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;
+
+    private String languageDescription;
+
+    private String companyName;
+
+    private String partnerType;
+
+    private String partnerName;
 
     private String pieceProductCode;
 
@@ -59,6 +64,8 @@ public class AddPieceDetails {
 
     private String dimensionUnit;
 
+    private String hsCode;
+
     private String width;
 
     private String height;
@@ -71,16 +78,6 @@ public class AddPieceDetails {
 
     private String volumeUnit;
 
-//    private String pieceStatusId;
-//    private Date pieceStatusTimestamp;
-
-    private List<ReferenceImageList> referenceImageList;
-    private String imageReferenceId;
-
-    private String packReferenceNumber;
-
-    private String tags;
-
     private String consignmentValueLocal;
 
     private String addIata;
@@ -90,6 +87,28 @@ public class AddPieceDetails {
     private String customsValue;
 
     private String calculatedTotalDuty;
+
+    private String packReferenceNumber;
+
+    private String tags;
+
+    private String pieceStatusId;
+
+    private Date pieceStatusTimestamp;
+
+    private String pieceStatusText;
+
+    private String pieceEventCode;
+
+    private String pieceEventText;
+
+    private Date pieceEventTimestamp;
+
+    private String pieceValue;
+
+    private String pieceCurrency;
+
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -111,28 +130,13 @@ public class AddPieceDetails {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String createdBy;
 
-    private String referenceField12;
+    private Date createdOn = new Date();
 
-    private String referenceField13;
+    private String updatedBy;
 
-    private String referenceField14;
+    private Date updatedOn = new Date();
 
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
-
-    private Long deletionIndicator = 0L;
-
-    private List<AddItemDetails> itemDetails = new ArrayList<>();
 
 }

@@ -1,11 +1,6 @@
 package com.courier.overc360.api.midmile.controller;
 
-import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportInput;
-import com.courier.overc360.api.midmile.primary.model.reports.ConsoleTrackingReportOutput;
-import com.courier.overc360.api.midmile.primary.model.reports.LocationSheetInput;
-import com.courier.overc360.api.midmile.primary.model.reports.LocationSheetOutput;
-import com.courier.overc360.api.midmile.primary.model.reports.MobileDashboard;
-import com.courier.overc360.api.midmile.primary.model.reports.MobileDashboardRequest;
+import com.courier.overc360.api.midmile.primary.model.reports.*;
 import com.courier.overc360.api.midmile.service.ReportsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -60,8 +51,17 @@ public class ReportsController {
     @PostMapping("/consoleTrackingReport")
     public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody ConsoleTrackingReportInput reportInputs,
                                                        @RequestParam String loginUserID) throws ParseException {
-        List<ConsoleTrackingReportOutput> reportOutputs = reportsService.generateConsoleTrackingReport(reportInputs, loginUserID);
+        List<ConsoleTrackingReportOutput> reportOutputs = reportsService.generateConsoleTracking(reportInputs, loginUserID);
         return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
+
+//    // Generate Console Tracking Report - list Screen
+//    @ApiOperation(response = ConsoleTrackingReportOutput.class, value = "Generate Console Tracking Report - list page")
+//    @PostMapping("/consoleTrackingReport/listScreen")
+//    public ResponseEntity<?> postConsoleTrackingListPage(@Valid @RequestBody ConsoleTrackingReportInput reportInputs,
+//                                                               @RequestParam String loginUserID) throws ParseException {
+//        List<ConsoleTrackingReportOutput> reportOutputs = reportsService.postConsoleTrackingListPage(reportInputs, loginUserID);
+//        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
+//    }
 
 }

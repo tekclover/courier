@@ -2,7 +2,6 @@ package com.courier.overc360.api.midmile.primary.model.consignmentstatus;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 

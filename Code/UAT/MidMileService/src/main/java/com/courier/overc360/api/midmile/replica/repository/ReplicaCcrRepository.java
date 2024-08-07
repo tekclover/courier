@@ -4,6 +4,7 @@ import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.replica.model.ccr.ReplicaCcr;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -93,5 +94,23 @@ public interface ReplicaCcrRepository extends JpaRepository<ReplicaCcr, String>,
             @Param("ccrId") List<String> ccrId,
             @Param("consoleId") List<String> consoleId);
 
+
+        @Query(value = "select token_id as tokenId from tblhhtnotification where " +
+                " c_id = :companyId and usr_id in :userId and is_deleted = 0 ", nativeQuery = true)
+    public List<String> getToken(@Param("companyId") String companyId,
+                                 @Param("userId") List<String> userId);
+
+        @Query(value = "select notification_text notificationText, USER_ROLE userRole from tblnotification where " +
+                "c_id = :companyId and lang_id = :languageId and notification_id = :notificationId and is_deleted = 0 ", nativeQuery = true)
+        public IKeyValuePair getNotificationId(@Param("companyId") String companyId,
+                                               @Param("languageId") String languageId,
+                                               @Param("notificationId") String notificationId);
+
+
+        @Query(value = "select user_id userId from tblusermanagement where user_role_id = :roleId " +
+                " and c_id = :companyId and lang_id = :languageId and is_deleted = 0 ", nativeQuery = true)
+        public List<String> getUserId(@Param("companyId") String companyId,
+                                      @Param("languageId") String languageId,
+                                      @Param("roleId") String roleId);
 
 }

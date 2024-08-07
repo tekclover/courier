@@ -38,15 +38,33 @@ public interface ConsignmentImpl {
 //    private Date createdOn;
 
     Long getConsignmentId();
+
     String getNoOfPieceHawb();
+
     String getPartnerHouseAirwayBill();
+
     String getNoOfPackageHawb();
+
     String getDeclaredValue();
+
     String getConsignmentCurrency();
+
     String getIncoTerms();
+
     String getCountryOfOrigin();
+
     String getGrossWeight();
+
     String getPaymentType();
+
     Date getCreatedOn();
+
+    String getPartnerMasterAirwayBill();
+
+    Long getPMawbCount();
+
+    String getLanguageId();
+
+    String getCompanyId();
 
 }

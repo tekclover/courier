@@ -111,6 +111,24 @@ public class MidMileService {
         }
     }
 
+    // Find Consignments - MobileApp
+    public ConsignmentEntity[] findConsignmentMobileApp(List<FindConsignmentMobileApp> findConsignments, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/mobileApp");
+            HttpEntity<?> entity = new HttpEntity<>(findConsignments, headers);
+            ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     // Find IConsignmentEntity - preAlertValidationIndicator
     public IConsignment[] findIConsignmentEntity(FindIConsignment findConsignment, String authToken) throws Exception {
         try {
@@ -1058,6 +1076,24 @@ public class MidMileService {
         }
     }
 
+    // Find Consoles - MobileApp
+    public Console[] findConsoleMobileApp(FindConsole findConsole, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole/mobileApp");
+            HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     // Find Consoles By Pagination
     public PaginatedResponse<Console> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize,
                                                                String sortBy, String authToken) throws Exception {
@@ -1720,6 +1756,25 @@ public class MidMileService {
             throw e;
         }
     }
+
+//    // Generate Console Tracking Report - list screen
+//    public ConsoleTrackingReportOutput[] generateConsoleTrackingReportListPage(ConsoleTrackingReportInput sheetInputs, String loginUserID, String authToken) {
+//        try {
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//            headers.add("User-Agent", "RestTemplate");
+//            headers.add("Authorization", "Bearer " + authToken);
+//            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/consoleTrackingReport/listScreen")
+//                    .queryParam("loginUserID", loginUserID);
+//            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+//            ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
+//            log.info("result : " + result.getStatusCode());
+//            return result.getBody();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
 
 
 }
