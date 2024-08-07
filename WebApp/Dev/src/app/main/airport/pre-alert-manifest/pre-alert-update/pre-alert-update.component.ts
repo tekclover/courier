@@ -55,13 +55,25 @@ export class PreAlertUpdateComponent {
   })
 
   submitted = false;
+  pageFlow: any;
 
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
-    this.path.setData(dataToSend);
+    if (this.pageToken.report == true) {
+      this.pageFlow = 'Total Shipments - Edit';
+      const dataToSend = ['Mid-Mile', 'Total Shipments Tracking'];
+      this.path.setData(dataToSend);
+      this.reportTableHeader();
+    }
+    else {
+      this.pageFlow = 'Pre Alert Manifest ' + this.pageFlow.pageFlow
+      const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
+      this.path.setData(dataToSend);
+      this.callTableHeader();
+    }
+    
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
