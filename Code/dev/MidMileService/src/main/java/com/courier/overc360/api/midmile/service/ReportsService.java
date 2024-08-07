@@ -115,10 +115,11 @@ public class ReportsService {
                 sheetOutput.setPartnerType(locationSheetValues.getPartnerType());
 
                 sheetOutput.setOrigin(locationSheetValues.getOrigin());
-                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
+//                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
             }
 
             sheetOutput.setNatureOfGoods("COURIER MATERIALS");
+            sheetOutput.setConsigneeName("IW EXPRESS");
             sheetOutput.setLocationSheetTimeStamp(new Date());
 
             createdLocationSheetOutputList.add(sheetOutput);
@@ -167,7 +168,6 @@ public class ReportsService {
             reportInput.setFromDate(dates[0]);
             reportInput.setToDate(dates[1]);
         }
-
         log.info("given Inputs to generate ConsoleTracking --> {}", reportInput);
 
         if ((reportInput.getLanguageId() != null && reportInput.getCompanyId() != null) &&
@@ -182,15 +182,6 @@ public class ReportsService {
 //                    for (String pId : pIdList) {
                     for (String pMawb : pMawbList) {
                         for (String pHawb : pHawbList) {
-
-//                            if (pMawbList != null && pHawbList != null) {
-//                                boolean isPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
-//                                        langId, cId, pMawb, pHawb, 0L);
-//                                if (!isPresent) {
-//                                    log.info("No data found for given partnerMasterAirwayBill : {}, partnerHouseAirwayBill : {}", pMawb, pHawb);
-//                                    continue;
-//                                }
-//                            }
 
                             long noOfShipments = replicaPreAlertRepository.getNoOfShipmentsScanned(
                                     langId, cId, pMawb, pHawb,
@@ -305,9 +296,10 @@ public class ReportsService {
         return results
                 .stream()
                 .collect(Collectors.toMap(
-                        result -> result[0] + "_" + result[1] + "_" + result[2],
-                        result -> ((Number) result[3]).longValue()
-                ));
+                                result -> result[0] + "_" + result[1] + "_" + result[2],
+                                result -> ((Number) result[3]).longValue()
+                        )
+                );
     }
 
     //============================================Reports_ErrorLog=====================================================
