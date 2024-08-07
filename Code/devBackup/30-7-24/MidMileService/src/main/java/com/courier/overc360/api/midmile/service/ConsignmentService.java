@@ -908,17 +908,71 @@ public class ConsignmentService {
         return consignmentList;
     }
 
+//    /**
+//     * Find Consignment - MobileApp
+//     *
+//     * @param findConsignmentList
+//     * @return
+//     */
+//    public List<ReplicaConsignmentEntity> findConsignmentMobileApp(List<FindConsignmentMobileApp> findConsignmentList) {
+//
+////        List<ReplicaConsignmentEntity> fetchedConsignmentList = new ArrayList<>();
+//
+//        List<ReplicaConsignmentEntity> consignment = null;
+//        if (findConsignmentList != null && !findConsignmentList.isEmpty()) {
+//            for (FindConsignmentMobileApp findConsignment : findConsignmentList) {
+//
+//                if (findConsignment.getShippingLabelNo() == null) {
+//                    throw new BadRequestException("ShippingLabelNo cannot be null");
+//                }
+//                log.info("given Params to fetch Consignments for Mobile App --> {}", findConsignment);
+//
+//                if(findConsignment.getHawbTypeId() != null && !findConsignment.getHawbTypeId().isEmpty() ) {
+//                    // Initially pass shippingLabelNo to partnerHouseAirwayBill
+//                    consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
+//                            findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), findConsignment.getHawbTypeId(), 0L);
+//
+//                    if (consignment.isEmpty()) {
+//                        String hawb = replicaPieceDetailsRepository.getHawbWithPieceId(findConsignment.getLanguageId(),
+//                                findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
+//                        if (hawb != null) {
+//                            consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
+//                                    findConsignment.getLanguageId(), findConsignment.getCompanyId(), hawb, findConsignment.getHawbTypeId(), 0L);
+//                        }
+//                    }
+//                } else {
+//                    // Initially pass shippingLabelNo to partnerHouseAirwayBill
+//                    consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+//                            findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), 0L);
+//
+//                    if (consignment.isEmpty()) {
+//                        String hawb = replicaPieceDetailsRepository.getHawbWithPieceId(findConsignment.getLanguageId(),
+//                                findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
+//                        if (hawb != null) {
+//                            consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+//                                    findConsignment.getLanguageId(), findConsignment.getCompanyId(), hawb, 0L);
+//                        }
+//                    }
+//                }
+//                if (consignment.isEmpty()) {
+//                    throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
+//                }
+////                fetchedConsignmentList.set(consignment);
+//            }
+//        }
+//        return consignment;
+//    }
+
     /**
-     * Find Consignment - MobileApp
+     * Find Consignment MobileApp
      *
      * @param findConsignmentList
      * @return
      */
+
     public List<ReplicaConsignmentEntity> findConsignmentMobileApp(List<FindConsignmentMobileApp> findConsignmentList) {
 
-//        List<ReplicaConsignmentEntity> fetchedConsignmentList = new ArrayList<>();
-
-        List<ReplicaConsignmentEntity> consignment = null;
+        List<ReplicaConsignmentEntity> consignment = new ArrayList<>();
         if (findConsignmentList != null && !findConsignmentList.isEmpty()) {
             for (FindConsignmentMobileApp findConsignment : findConsignmentList) {
 
@@ -927,40 +981,56 @@ public class ConsignmentService {
                 }
                 log.info("given Params to fetch Consignments for Mobile App --> {}", findConsignment);
 
-                if(findConsignment.getHawbTypeId() != null && !findConsignment.getHawbTypeId().isEmpty() ) {
+                List<ReplicaConsignmentEntity> fetchedConsignments = null;
+
+                if (findConsignment.getHawbTypeId() != null && !findConsignment.getHawbTypeId().isEmpty()) {
                     // Initially pass shippingLabelNo to partnerHouseAirwayBill
-                    consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
+                    fetchedConsignments = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
                             findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), findConsignment.getHawbTypeId(), 0L);
 
-                    if (consignment.isEmpty()) {
+                    if (fetchedConsignments.isEmpty()) {
                         String hawb = replicaPieceDetailsRepository.getHawbWithPieceId(findConsignment.getLanguageId(),
                                 findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
                         if (hawb != null) {
-                            consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
+                            fetchedConsignments = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
                                     findConsignment.getLanguageId(), findConsignment.getCompanyId(), hawb, findConsignment.getHawbTypeId(), 0L);
                         }
                     }
                 } else {
                     // Initially pass shippingLabelNo to partnerHouseAirwayBill
-                    consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+                    fetchedConsignments = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
                             findConsignment.getLanguageId(), findConsignment.getCompanyId(), findConsignment.getShippingLabelNo(), 0L);
 
-                    if (consignment.isEmpty()) {
+                    if (fetchedConsignments.isEmpty()) {
                         String hawb = replicaPieceDetailsRepository.getHawbWithPieceId(findConsignment.getLanguageId(),
                                 findConsignment.getCompanyId(), findConsignment.getShippingLabelNo());
                         if (hawb != null) {
-                            consignment = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+                            fetchedConsignments = replicaConsignmentEntityRepository.findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
                                     findConsignment.getLanguageId(), findConsignment.getCompanyId(), hawb, 0L);
                         }
                     }
                 }
-                if (consignment.isEmpty()) {
-                    throw new BadRequestException("No Consignment Data found for given params : shippingLabelNo - " + findConsignment.getShippingLabelNo());
+
+                if (fetchedConsignments == null || fetchedConsignments.isEmpty()) {
+                    log.warn("No Consignment Data found for given params: shippingLabelNo - {}", findConsignment.getShippingLabelNo());
+                    continue;
                 }
-//                fetchedConsignmentList.set(consignment);
+
+                // Update pieceId for each consignment
+                for (ReplicaConsignmentEntity consignmentEntity : fetchedConsignments) {
+                    List<ReplicaPieceDetails> pieceDetailsList = consignmentEntity.getPieceDetails();
+                    if (pieceDetailsList != null && !pieceDetailsList.isEmpty()) {
+                        // Get a specific pieceId
+                        String pieceId = pieceDetailsList.get(0).getPieceId();
+                        consignmentEntity.setPieceId(pieceId);
+                    }
+                    consignment.add(consignmentEntity);
+                }
             }
         }
         return consignment;
     }
+
+
 
 }

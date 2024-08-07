@@ -124,7 +124,7 @@ public class PDFMergeService {
 
         List<String> outputPaths = new ArrayList<>();
         int totalFiles = request.getFilePaths().size();
-        int numBatches = (int) Math.ceil((double) totalFiles / 10);  // Adjust the batch size as needed
+        int numBatches = (int) Math.ceil((double) totalFiles / 50);  // Adjust the batch size as needed
 
         for (int i = 0; i < numBatches; i++) {
             outputPaths.add(fileOutputStoragePath.replace(".pdf", "_batch" + (i + 1) + ".pdf"));
@@ -153,7 +153,7 @@ public class PDFMergeService {
      * @throws InterruptedException
      */
     private void processInBatches(List<String> inputFilePaths, List<String> outputPaths) throws IOException, InterruptedException {
-        int batchSize = 10;  // Adjust the batch size as needed
+        int batchSize = 50;  // Adjust the batch size as needed
         List<List<String>> batches = createBatches(inputFilePaths, batchSize);
 
         for (int i = 0; i < batches.size(); i++) {
