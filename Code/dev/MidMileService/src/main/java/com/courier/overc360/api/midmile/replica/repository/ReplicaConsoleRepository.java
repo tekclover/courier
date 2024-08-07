@@ -64,7 +64,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
             "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
             "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))\n" +
-            "AND (COALESCE(:unconsolidatedIndicator, NULL) IS NULL OR tc.UNCONSOLIDATED IN (:unconsolidatedIndicator))", nativeQuery = true)
+            "AND (COALESCE(:unconsolidatedIndicator, NULL) IS NULL OR tc.UNCONSOLIDATED IN (:unconsolidatedIndicator)) \n " +
+            "AND (COALESCE(:hawbTypeId, NULL) IS NULL OR tc.HAWB_TYP_ID IN (:hawbTypeId)) ", nativeQuery = true)
     List<ReplicaConsole> findConsolesWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
@@ -72,7 +73,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
             @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
             @Param("consoleId") List<String> consoleId,
-            @Param("unconsolidatedIndicator") List<Long> unconsolidatedIndicator);
+            @Param("unconsolidatedIndicator") List<Long> unconsolidatedIndicator,
+            @Param("hawbTypeId") List<String> hawbTypeId);
 
 
     @Query(value = "SELECT t.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, " +

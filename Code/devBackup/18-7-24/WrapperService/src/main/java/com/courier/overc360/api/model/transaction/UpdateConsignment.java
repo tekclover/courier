@@ -40,6 +40,8 @@ public class UpdateConsignment {
 
     private String shipperName;
 
+    private String customsInsurance;
+
     private String partnerMasterAirwayBill;
 
     private String partnerHouseAirwayBill;

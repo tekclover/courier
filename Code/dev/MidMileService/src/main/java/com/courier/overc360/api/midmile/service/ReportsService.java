@@ -62,7 +62,7 @@ public class ReportsService {
 
         MobileDashboard mobileDashboard = new MobileDashboard();
         long consoleCount = replicaConsoleRepository.getMobileDashboardCount(
-                mobileDashboardRequest.getLanguageId(), mobileDashboardRequest.getCompanyId(), "5");
+                mobileDashboardRequest.getLanguageId(), mobileDashboardRequest.getCompanyId(), "45");
         log.info("consoleCount --> {}", consoleCount);
         mobileDashboard.setConsoleCount(consoleCount);
         return mobileDashboard;
@@ -192,7 +192,7 @@ public class ReportsService {
                                     reportInput.getFromDate(), reportInput.getToDate());
 
                             long noOfUnconsolidatedShipments = replicaUnconsolidationRepository.getNoOfUnconsolidatedShipments(
-                                    langId, cId, pMawb, pHawb, 1L,
+                                    langId, cId, pMawb, pHawb,
                                     reportInput.getFromDate(), reportInput.getToDate());
 
                             ConsoleImpl scanValues = replicaConsoleRepository.getScanValues(langId, cId, pMawb, pHawb);
@@ -247,28 +247,6 @@ public class ReportsService {
             Map<String, Long> consoleCountMap = convertToMap(consoleCountResults);
             Map<String, Long> unconsolidatedCountMap = convertToMap(unconsolidatedCountResults);
 
-//            for (ConsignmentImpl pMawbValues : allPMawbValuesList) {
-////                boolean isLAndCPresent = replicaPreAlertRepository.existsByLanguageIdAndCompanyIdAndDeletionIndicator(
-////                        pMawbValues.getLanguageId(), pMawbValues.getCompanyId(), 0L);
-////                if (isLAndCPresent) {
-//                String pMawb = pMawbValues.getPartnerMasterAirwayBill();
-//                String key = pMawb + "_" + pMawbValues.getLanguageId() + "_" + pMawbValues.getCompanyId();
-//
-//                long consolesCount = consoleCountMap.getOrDefault(key, 0L);
-//                long unconsolidatedCount = unconsolidatedCountMap.getOrDefault(key, 0L);
-//
-//                ConsoleTrackingReportOutput reportOutput = new ConsoleTrackingReportOutput();
-//                reportOutput.setLanguageId(pMawbValues.getLanguageId());
-//                reportOutput.setCompanyId(pMawbValues.getCompanyId());
-//                reportOutput.setPartnerMasterAirwayBill(pMawb);
-//                reportOutput.setNoOfShipmentsScanned(pMawbValues.getPMawbCount());
-//                reportOutput.setNoOfConsoles(consolesCount);
-//                reportOutput.setNoOfUnconsolidatedShipments(unconsolidatedCount);
-//
-//                createdConsoleTrackingOutputList.add(reportOutput);
-////                }
-//            }
-//        }
             createdConsoleTrackingOutputList = allPMawbValuesList
                     .stream()
                     .map(pMawbValues -> {

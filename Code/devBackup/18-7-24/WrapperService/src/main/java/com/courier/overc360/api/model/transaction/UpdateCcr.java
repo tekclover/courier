@@ -15,9 +15,9 @@ public class UpdateCcr {
 
     private String partnerId;
 
-    private String houseAirwayBill;
+//    private String houseAirwayBill;
 
-    private String masterAirwayBill;
+//    private String masterAirwayBill;
 
     private String customsCcrNo;
 
@@ -59,23 +59,27 @@ public class UpdateCcr {
 
     private String partnerName;
 
-    private String statusId;
+//    private String statusId;
 
     private String primaryDo;
 
-    private String statusText;
+//    private String statusText;
 
     private String secondaryDo;
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private String partnerHouseAirwayBill;
 
@@ -90,6 +94,10 @@ public class UpdateCcr {
     private String netWeight;
 
     private String manifestedQuantity;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
 
     private String landedQuantity;
 
@@ -194,6 +202,8 @@ public class UpdateCcr {
     private String dduCharge;
 
     private String specialApprovalCharge;
+
+    private String consignmentLocalId;
 
     private Long deletionIndicator = 0L;
 

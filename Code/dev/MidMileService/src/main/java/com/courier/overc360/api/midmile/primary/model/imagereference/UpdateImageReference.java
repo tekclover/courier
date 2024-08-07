@@ -2,12 +2,37 @@ package com.courier.overc360.api.midmile.primary.model.imagereference;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UpdateImageReference {
+    private Long imageId;
 
-    private String partnerName;
+    private String imageRefId;
+
+    private String languageId;
+
+    private String companyId;
+
+    private String partnerId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
+    private Long consignmentId;
+
+    private String pieceId;
+
+    private String pieceItemId;
+
+    private String languageDescription;
+
+    private String companyName;
 
     private String partnerType;
+
+    private String partnerName;
 
     private String imageRef;
 
@@ -15,7 +40,9 @@ public class UpdateImageReference {
 
     private String partnerHouseAirwayBill;
 
-    private Long deletionIndicator;
+    private String referenceImageUrl;
+
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -37,24 +64,9 @@ public class UpdateImageReference {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String updatedBy;
 
-    private String referenceField12;
+    private Date updatedOn = new Date();
 
-    private String referenceField13;
-
-    private String referenceField14;
-
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
 
 }

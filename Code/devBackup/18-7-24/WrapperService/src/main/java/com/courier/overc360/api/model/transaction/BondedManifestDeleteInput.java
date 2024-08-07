@@ -11,11 +11,11 @@ public class BondedManifestDeleteInput {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerMasterAirwayBill;
 
     private String bondedId;
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
 
 //    private String pieceId;
 //

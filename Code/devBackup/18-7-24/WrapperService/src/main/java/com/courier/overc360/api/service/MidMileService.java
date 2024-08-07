@@ -1,12 +1,12 @@
 package com.courier.overc360.api.service;
 
 import com.courier.overc360.api.config.PropertiesConfig;
-import com.courier.overc360.api.model.idmaster.CustomerDeleteInput;
 import com.courier.overc360.api.model.transaction.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,12 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -74,7 +72,7 @@ public class MidMileService {
     }
 
     // Update Consignment
-    public ConsignmentEntity[] updateConsignment( List<UpdateConsignment> updateConsignment, String loginUserID, String authToken) {
+    public ConsignmentEntity[] updateConsignment(List<UpdateConsignment> updateConsignment, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -113,6 +111,24 @@ public class MidMileService {
         }
     }
 
+    // Find Consignments - MobileApp
+    public ConsignmentEntity[] findConsignmentMobileApp(FindConsignment findConsignment, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/mobileApp");
+            HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
+            ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     // Find IConsignmentEntity - preAlertValidationIndicator
     public IConsignment[] findIConsignmentEntity(FindIConsignment findConsignment, String authToken) throws Exception {
         try {
@@ -132,7 +148,7 @@ public class MidMileService {
     }
 
     // Find PreAlertManifest - based on consignment details
-    public ConsignmentEntity[]  findPreAlertManifest(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
+    public ConsignmentEntity[] findPreAlertManifest(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -150,7 +166,7 @@ public class MidMileService {
     }
 
     // Find PreAlertManifest - based on Item details
-    public PreAlertManifest[]  findPreAlertManifestV2(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
+    public PreAlertManifest[] findPreAlertManifestV2(FindPreAlertManifest findPreAlertManifest, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -209,7 +225,6 @@ public class MidMileService {
     }
 
     /**
-     *
      * @param consignmentDeletes
      * @param loginUserID
      * @param authToken
@@ -649,7 +664,7 @@ public class MidMileService {
 
     // Get BondedManifest
     public BondedManifest getBondedManifest(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                                  String houseAirwayBill, String bondedId, String authToken) {
+                                            String houseAirwayBill, String bondedId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -684,18 +699,18 @@ public class MidMileService {
         return result.getBody();
     }
 
-    // Create new BondedManifest
-    public BondedManifest[] createBondedManifestBasedOnConsignment(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("User-Agent", "RestTemplate");
-        headers.add("Authorization", "Bearer " + authToken);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/bondedmanifest/create")
-                .queryParam("loginUserID", loginUserID);
-        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
-        ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
-        return result.getBody();
-    }
+//    // Create new BondedManifest
+//    public BondedManifest[] createBondedManifestBasedOnConsignment(List<ConsignmentEntity> addConsignments, String loginUserID, String authToken) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//        headers.add("User-Agent", "RestTemplate");
+//        headers.add("Authorization", "Bearer " + authToken);
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "bondedManifest/bondedmanifest/create")
+//                .queryParam("loginUserID", loginUserID);
+//        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+//        ResponseEntity<BondedManifest[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BondedManifest[].class);
+//        return result.getBody();
+//    }
 
     // Create new BondedManifests based on PreAlert Input
     public BondedManifest[] createBondedManifestListsOnPreAlertInput(List<PreAlert> preAlertList, String loginUserID, String authToken) {
@@ -775,7 +790,6 @@ public class MidMileService {
     }
 
 
-
     //===============================================Ccr====================================================
     // Get All Ccr Details
     public Ccr[] getAllCcr(String authToken) {
@@ -797,8 +811,8 @@ public class MidMileService {
 
 
     // Get Ccr
-    public Ccr getCcr(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                      String houseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String authToken) {
+    public Ccr getCcr(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill,
+                      String partnerHouseAirwayBill, String consoleId, String ccrId, String pieceId, String pieceItemId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -808,8 +822,8 @@ public class MidMileService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("partnerId", partnerId)
-                    .queryParam("masterAirwayBill", masterAirwayBill)
-                    .queryParam("houseAirwayBill", houseAirwayBill)
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill)
+                    .queryParam("partnerHouseAirwayBill", partnerHouseAirwayBill)
                     .queryParam("pieceId", pieceId)
                     .queryParam("pieceItemId", pieceItemId)
                     .queryParam("consoleId", consoleId);
@@ -916,8 +930,8 @@ public class MidMileService {
     }
 
     // Get Console
-    public Console getConsole(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                              String houseAirwayBill, String consoleId, String authToken) {
+    public Console getConsole(String languageId, String companyId, String partnerId, String partnerMasterAirwayBill,
+                              String partnerHouseAirwayBill, String consoleId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -927,8 +941,8 @@ public class MidMileService {
                     .queryParam("languageId", languageId)
                     .queryParam("companyId", companyId)
                     .queryParam("partnerId", partnerId)
-                    .queryParam("masterAirwayBill", masterAirwayBill)
-                    .queryParam("houseAirwayBill", houseAirwayBill);
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill)
+                    .queryParam("partnerHouseAirwayBill", partnerHouseAirwayBill);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<Console> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Console.class);
             log.info("result : " + result.getStatusCode());
@@ -974,15 +988,36 @@ public class MidMileService {
         }
     }
 
+    // Update Console for Mobile App
+    public Console[] updateConsoleForMobileApp(List<UpdateConsole> updateConsole, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Classic WMS's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateConsole, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/update/list/mobile")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Console[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     /**
-     *
      * @param updateConsoleList
      * @param loginUserID
      * @param authToken
      * @return
      */
     public Console[] updateConsoleNormal(List<UpdateConsole> updateConsoleList, String loginUserID, String authToken) {
-        try{
+        try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "Classic WMS's RestTemplate");
@@ -1023,7 +1058,7 @@ public class MidMileService {
         }
     }
 
-    // Find Console
+    // Find Consoles - normal
     public Console[] findConsole(FindConsole findConsole, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -1033,6 +1068,48 @@ public class MidMileService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole");
             HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
             ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Consoles - MobileApp
+    public Console[] findConsoleMobileApp(FindConsole findConsole, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole/mobileApp");
+            HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Consoles By Pagination
+    public PaginatedResponse<Console> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize,
+                                                               String sortBy, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/findConsole/pagination")
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("pageSize", pageSize)
+                    .queryParam("sortBy", sortBy);
+            HttpEntity<?> entity = new HttpEntity<>(findConsole, headers);
+            ParameterizedTypeReference<PaginatedResponse<Console>> responseType = new ParameterizedTypeReference<PaginatedResponse<Console>>() {
+            };
+            ResponseEntity<PaginatedResponse<Console>> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, responseType);
             log.info("result : " + result.getStatusCode());
             return result.getBody();
         } catch (Exception e) {
@@ -1061,26 +1138,24 @@ public class MidMileService {
 //    }
 
     /**
-     *
-     * @param addConsignments
+     * @param addPreAlert
      * @param loginUserID
      * @param authToken
      * @return
      */
-    public Console[] createConsoleBasedOnPreAlertResponse(List<PreAlert> addConsignments, String loginUserID, String authToken){
+    public Console[] createConsoleBasedOnPreAlertResponse(List<PreAlert> addPreAlert, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
         headers.add("Authorization", " Bearer " + authToken);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/create/list/con")
                 .queryParam("loginUserID", loginUserID);
-        HttpEntity<?> entity = new HttpEntity<>(addConsignments, headers);
+        HttpEntity<?> entity = new HttpEntity<>(addPreAlert, headers);
         ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
         return result.getBody();
     }
 
     /**
-     *
      * @param transferConsole
      * @param loginUserID
      * @param authToken
@@ -1104,10 +1179,8 @@ public class MidMileService {
         }
     }
 
-    //==================================================ConsignmentStatus====================================================
-
-    //Get All ConsignmentStatus
-
+    //==================================================ConsignmentStatus==============================================
+    // Get All ConsignmentStatus Details
     public ConsignmentStatus[] getAllConsignmentStatus(String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -1127,17 +1200,16 @@ public class MidMileService {
 
     // Get ConsignmentStatus
     public ConsignmentStatus getConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                                  String pieceId, String statusId, String eventCode, String authToken) {
+                                                  String pieceId, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/get")
                     .queryParam("companyId", companyId)
                     .queryParam("languageId", languageId)
                     .queryParam("pieceId", pieceId)
-                    .queryParam("eventCode", eventCode)
                     .queryParam("houseAirwayBill", houseAirwayBill);
             HttpEntity<?> entity = new HttpEntity<>(headers);
             ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ConsignmentStatus.class);
@@ -1149,24 +1221,27 @@ public class MidMileService {
         }
     }
 
-
-
     // Create ConsignmentStatus
     public ConsignmentStatus createConsignmentStatus(AddConsignmentStatus addConsignmentStatus, String loginUserID, String authToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("User-Agent", "RestTemplate");
-        headers.add("Authorization", "Bearer " + authToken);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus")
-                .queryParam("loginUserID", loginUserID);
-        HttpEntity<?> entity = new HttpEntity<>(addConsignmentStatus, headers);
-        ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentStatus.class);
-        return result.getBody();
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addConsignmentStatus, headers);
+            ResponseEntity<ConsignmentStatus> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentStatus.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     // Update ConsignmentStatus
-    public ConsignmentStatus updateConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                                     String pieceId, String statusId, String eventCode, UpdateConsignmentStatus updateConsignmentStatus, String loginUserID, String authToken) {
+    public ConsignmentStatus updateConsignmentStatus(String languageId, String companyId, String houseAirwayBill, String pieceId,
+                                                     UpdateConsignmentStatus updateConsignmentStatus, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -1176,12 +1251,11 @@ public class MidMileService {
             HttpClient client = HttpClients.createDefault();
             RestTemplate restTemplate = getRestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/update")
                     .queryParam("companyId", companyId)
                     .queryParam("languageId", languageId)
                     .queryParam("houseAirwayBill", houseAirwayBill)
                     .queryParam("pieceId", pieceId)
-                    .queryParam("eventCode", eventCode)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<ConsignmentStatus> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ConsignmentStatus.class);
             log.info("result : " + result.getStatusCode());
@@ -1194,19 +1268,18 @@ public class MidMileService {
 
     // Delete ConsignmentStatus
     public boolean deleteConsignmentStatus(String languageId, String companyId, String houseAirwayBill,
-                                           String pieceId, String statusId, String eventCode, String loginUserID, String authToken) {
+                                           String pieceId, String loginUserID, String authToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "MNRClara's RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
             HttpEntity<?> entity = new HttpEntity<>(headers);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/" + statusId)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignmentStatus/delete")
                     .queryParam("companyId", companyId)
                     .queryParam("languageId", languageId)
                     .queryParam("houseAirwayBill", houseAirwayBill)
                     .queryParam("pieceId", pieceId)
-                    .queryParam("eventCode", eventCode)
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
             log.info("result : " + result);
@@ -1308,8 +1381,8 @@ public class MidMileService {
     }
 
     // Create New PreAlert
+
     /**
-     *
      * @param preAlerts
      * @param loginUserID
      * @param authToken
@@ -1368,6 +1441,7 @@ public class MidMileService {
             throw e;
         }
     }
+
     //Get PreAlert
     public PreAlert getPreAlert(String languageId, String companyId, String partnerId, String partnerHouseAirwayBill,
                                 String partnerMasterAirwayBill, String authToken) {
@@ -1392,18 +1466,17 @@ public class MidMileService {
     }
 
     //Create PreAlert
-    public PreAlert[] createPreAlerts(List<PreAlert> addPreAlert, String loginUserID, String authToken){
+    public PreAlert[] createPreAlerts(List<PreAlert> addPreAlert, String loginUserID, String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("User-Agent", "RestTemplate");
         headers.add("Authorization", " Bearer " + authToken);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() +  "prealert/post/list")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "prealert/post/list")
                 .queryParam("loginUserID", loginUserID);
         HttpEntity<?> entity = new HttpEntity<>(addPreAlert, headers);
         ResponseEntity<PreAlert[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, PreAlert[].class);
         return result.getBody();
     }
-
 
     // Update PreAlert
     public PreAlert[] updatePreAlert(List<UpdatePreAlert> updatePreAlert, String loginUserID, String authToken) {
@@ -1416,7 +1489,7 @@ public class MidMileService {
             HttpClient client = HttpClients.createDefault();
             RestTemplate restTemplate = getRestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() +  "prealert/update/list")
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "prealert/update/list")
                     .queryParam("loginUserID", loginUserID);
             ResponseEntity<PreAlert[]> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, PreAlert[].class);
             log.info("result : " + result.getStatusCode());
@@ -1463,4 +1536,245 @@ public class MidMileService {
             throw e;
         }
     }
+
+    /**
+     * Mobile-App
+     *
+     * @param authToken
+     * @return
+     */
+    public MobileApp[] getAllMobileApp(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/find/mobileapp");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<MobileApp[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, MobileApp[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find PreAlert
+    public Console[] updateConsoleStatus(ConsoleStatus[] consoleStatus, String loginUserID, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "console/update/status")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(consoleStatus, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //===============================================Unconsolidation===================================================
+    // Get All Unconsolidation Details
+    public Unconsolidation[] getAllUnconsolidations(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Unconsolidation[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Unconsolidation[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get Unconsolidation
+    public Unconsolidation getUnconsolidation(String languageId, String companyId, String partnerId, String partnerHouseAirwayBill,
+                                              String partnerMasterAirwayBill, String pieceId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/get")
+                    .queryParam("languageId", languageId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("partnerId", partnerId)
+                    .queryParam("pieceId", pieceId)
+                    .queryParam("partnerHouseAirwayBill", partnerHouseAirwayBill)
+                    .queryParam("partnerMasterAirwayBill", partnerMasterAirwayBill);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Unconsolidation> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Unconsolidation.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create Unconsolidation
+    public Unconsolidation createUnconsolidation(AddUnconsolidation addUnconsolidation, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", " Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/create")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addUnconsolidation, headers);
+            ResponseEntity<Unconsolidation> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Unconsolidation.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Update Unconsolidation
+    public Unconsolidation updateUnconsolidation(UpdateUnconsolidation updateUnconsolidation, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Classic WMS's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateUnconsolidation, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/update")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Unconsolidation> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Unconsolidation.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete Unconsolidations - list
+    public boolean deleteUnconsolidations(List<UnconsolidationDeleteInput> deleteInputList, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(deleteInputList, headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/delete/list")
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Unconsolidations
+    public Unconsolidation[] findUnconsolidations(FindUnconsolidation findUnconsolidation, String authToken) throws Exception {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "unconsolidation/find");
+            HttpEntity<?> entity = new HttpEntity<>(findUnconsolidation, headers);
+            ResponseEntity<Unconsolidation[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Unconsolidation[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //=====================================================Reports=====================================================
+    // Get MobileDashboard - Console count
+    public MobileDashboard getMobileDashboard(MobileDashboardRequest mobileDashboardRequest, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "ClassicWMS RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/mobileDashboard");
+            HttpEntity<?> entity = new HttpEntity<>(mobileDashboardRequest, headers);
+            ResponseEntity<MobileDashboard> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, MobileDashboard.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Generate Location Sheet
+    public LocationSheetOutput[] generateLocationSheet(List<LocationSheetInput> sheetInputs, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/locationSheet")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+            ResponseEntity<LocationSheetOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, LocationSheetOutput[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Generate Console Tracking Report
+    public ConsoleTrackingReportOutput[] generateConsoleTrackingReport(ConsoleTrackingReportInput sheetInputs, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/consoleTrackingReport")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+            ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+//    // Generate Console Tracking Report - list screen
+//    public ConsoleTrackingReportOutput[] generateConsoleTrackingReportListPage(ConsoleTrackingReportInput sheetInputs, String loginUserID, String authToken) {
+//        try {
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//            headers.add("User-Agent", "RestTemplate");
+//            headers.add("Authorization", "Bearer " + authToken);
+//            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "reports/consoleTrackingReport/listScreen")
+//                    .queryParam("loginUserID", loginUserID);
+//            HttpEntity<?> entity = new HttpEntity<>(sheetInputs, headers);
+//            ResponseEntity<ConsoleTrackingReportOutput[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsoleTrackingReportOutput[].class);
+//            log.info("result : " + result.getStatusCode());
+//            return result.getBody();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
+
+
 }

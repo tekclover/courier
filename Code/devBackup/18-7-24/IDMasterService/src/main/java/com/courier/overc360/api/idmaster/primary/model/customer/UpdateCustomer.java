@@ -2,6 +2,7 @@ package com.courier.overc360.api.idmaster.primary.model.customer;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -27,6 +28,8 @@ public class UpdateCustomer {
 
     @NotBlank(message = "Customer Name is mandatory")
     private String customerName;
+
+    private String agingCount;
 
     private String statusId;
 

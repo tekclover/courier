@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 
 @Slf4j
 public class CommonUtils {
@@ -61,19 +60,6 @@ public class CommonUtils {
         return toBean;
     }
 
-    /**
-     * Set non-null values
-     *
-     * @param value
-     * @param setter
-     * @param <T>
-     */
-    public static <T> void setIfNotNull(T value, Consumer<T> setter) {
-        if (value != null) {
-            setter.accept(value);
-        }
-    }
-
     public static void main(String[] args) {
         LocalDate localDate = LocalDate.now();
         System.out.println(localDate);
@@ -83,5 +69,4 @@ public class CommonUtils {
         String currentDatetime = datetime.format(newPattern);
         System.out.println(currentDatetime);
     }
-
 }

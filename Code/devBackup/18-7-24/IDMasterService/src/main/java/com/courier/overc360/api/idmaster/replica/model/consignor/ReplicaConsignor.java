@@ -79,6 +79,9 @@ public class ReplicaConsignor {
     @Column(name = "CONSIGNOR_NAME", columnDefinition = "nvarchar(100)")
     private String consignorName;
 
+    @Column(name = "AGING_COUNT", columnDefinition = "nvarchar(50)")
+    private String agingCount;
+
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 

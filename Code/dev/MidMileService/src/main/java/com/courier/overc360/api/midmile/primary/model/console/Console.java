@@ -458,6 +458,10 @@ public class Console {
     @Column(name = "UNCONSOLIDATED")
     private Long unconsolidatedFlag = 0L;
 
+    // Notification
+    @Column(name = "NOTI_STATUS")
+    private Long notificationStatus = 0L;
+
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "CONSOLE_HEADER_ID")

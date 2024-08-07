@@ -44,11 +44,19 @@ public class UpdatePieceDetails {
 
         private String volumeUnit;
 
-        private String pieceStatusId;
+//        private String pieceStatusId;
 
         private String hsCode;
 
-        private Date pieceStatusTimestamp;
+        private String pieceType;
+
+        private String pieceTypeId;
+
+        private String pieceTypeDescription;
+
+        private Date pieceTimeStamp = new Date();
+
+//        private Date pieceStatusTimestamp;
 
         private List<ReferenceImageList> referenceImageList;
 

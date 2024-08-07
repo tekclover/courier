@@ -18,16 +18,20 @@ public class AddCcr {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
-    private String masterAirwayBill;
+    @NotBlank(message = "Partner Master Airway Bill is mandatory")
+    private String partnerHouseAirwayBill;
 
-    @NotBlank(message = "House Airway Bill is mandatory")
-    private String houseAirwayBill;
+    @NotBlank(message = "Partner House Airway Bill is mandatory")
+    private String partnerMasterAirwayBill;
 
     @NotBlank(message = "ConsoleId is mandatory")
     private String consoleId;
 
     private String ccrId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
 
     private String customsCcrNo;
 
@@ -65,7 +69,7 @@ public class AddCcr {
 
     private String calculatedTotalDuty;
 
-    private String statusId;
+//    private String statusId;
 
     private String primaryDo;
 
@@ -73,17 +77,13 @@ public class AddCcr {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
-
-    private String partnerHouseAirwayBill;
-
-    private String partnerMasterAirwayBill;
+//    private Date statusTimestamp;
 
     private String noOfPackageMawb;
 
@@ -171,7 +171,7 @@ public class AddCcr {
 
     private String hsCode;
 
-    private String statusText;
+//    private String statusText;
 
     private String goodsDescription;
 
@@ -200,6 +200,12 @@ public class AddCcr {
     private String dduCharge;
 
     private String specialApprovalCharge;
+
+    private String consignmentLocalId;
+
+    private String consoleName;
+
+    private String consoleGroupName;
 
     private Long deletionIndicator = 0L;
 

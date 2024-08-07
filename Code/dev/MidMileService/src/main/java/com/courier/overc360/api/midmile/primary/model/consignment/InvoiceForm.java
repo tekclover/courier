@@ -18,7 +18,6 @@ public class InvoiceForm {
     private String destCity;
     private String destCountry;
     private String destPhone;
-
     private Long consignmentId;
     private String houseAirwayBill;
     private String quantity;

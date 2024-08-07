@@ -7,12 +7,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Repository
@@ -139,7 +137,7 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
             "AND PARTNER_ID = :partnerId \n" +
             "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
             "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
-    void updateConsignmentOnConsoleCreate(@Param("languageId") String languageId,
+    void updateConsignmentOnConsoleUpdate(@Param("languageId") String languageId,
                                           @Param("companyId") String companyId,
                                           @Param("partnerId") String partnerId,
                                           @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
@@ -148,6 +146,33 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                                           @Param("hawbTypeId") String hawbTypeId,
                                           @Param("hawbType") String hawbType,
                                           @Param("hubCode") String hubCode);
+
+    @Transactional
+    @Modifying
+    @Query(value = "Update tblconsignment_entity\n" +
+            "Set \n" +
+            "HAWB_TYP = :hawbType, \n" +
+            "HAWB_TYP_ID = :hawbTypeId, \n" +
+            "HAWB_TYP_TXT = :hawbTypeDescription, \n" +
+            "HAWB_TIMESTAMP = GETDATE(), \n" +
+            "HUB_CODE = :hubCode, \n " +
+            "HUB_NAME = :hubName \n " +
+            "Where IS_DELETED = 0 \n" +
+            "AND LANG_ID = :languageId \n" +
+            "And C_ID = :companyId \n" +
+            "AND PARTNER_ID = :partnerId \n" +
+            "AND PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
+            "AND PARTNER_HOUSE_AB = :partnerHouseAirwayBill", nativeQuery = true)
+    void updateConsignmentOnConsoleUpdate(@Param("languageId") String languageId,
+                                          @Param("companyId") String companyId,
+                                          @Param("partnerId") String partnerId,
+                                          @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
+                                          @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
+                                          @Param("hawbTypeDescription") String hawbTypeDescription,
+                                          @Param("hawbTypeId") String hawbTypeId,
+                                          @Param("hawbType") String hawbType,
+                                          @Param("hubCode") String hubCode,
+                                          @Param("hubName") String hubName);
 
     // Update Consignment Table On Console Create
     @Transactional
@@ -283,15 +308,15 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
 
     @Modifying
     @Transactional
-    @Query(value = "update tblconsole set ccr_id = :ccrId where " +
-            " console_id = :consoleId " +
-            " and c_id = :companyId " +
-            " and lang_id = :languageId " +
-            " and partner_id = :partnerId " +
-            " and partner_house_airway_bill = :partnerHouseAB " +
-            " and partner_master_airway_bill = :partnerMasterAB " +
-            " and piece_id = :pieceId " +
-            " and is_deleted = 0 ", nativeQuery = true)
+    @Query(value = "UPDATE tblconsole SET ccr_id = :ccrId WHERE\n" +
+            " console_id = :consoleId\n" +
+            " and c_id = :companyId\n" +
+            " and lang_id = :languageId\n" +
+            " and partner_id = :partnerId\n" +
+            " and partner_house_airway_bill = :partnerHouseAB\n" +
+            " and partner_master_airway_bill = :partnerMasterAB\n" +
+            " and piece_id = :pieceId\n" +
+            " and is_deleted=0", nativeQuery = true)
     void updateCCRID(@Param("consoleId") String consoleId,
                      @Param("ccrId") String ccrId,
                      @Param("partnerId") String partnerId,
@@ -300,6 +325,19 @@ public interface ConsoleRepository extends JpaRepository<Console, String>,
                      @Param("partnerHouseAB") String partnerHouseAB,
                      @Param("partnerMasterAB") String partnerMasterAB,
                      @Param("pieceId") String pieceId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE tblconsole\n" +
+            "SET CCR_ID = :ccrId\n" +
+            "WHERE IS_DELETED=0\n" +
+            "And LANG_ID = :languageId\n" +
+            "And C_ID = :companyId\n" +
+            "And CONSOLE_ID = :consoleId", nativeQuery = true)
+    int updateCCRIdInConsoleTbl(@Param("consoleId") String consoleId,
+                                @Param("ccrId") String ccrId,
+                                @Param("languageId") String languageId,
+                                @Param("companyId") String companyId);
 
 
 }

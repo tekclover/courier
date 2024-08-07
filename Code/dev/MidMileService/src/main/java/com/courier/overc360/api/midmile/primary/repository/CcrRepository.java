@@ -83,5 +83,19 @@ public interface CcrRepository extends JpaRepository<Ccr, String>,
     Optional<Ccr> findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndPieceIdAndConsoleIdAndDeletionIndicator(
             String companyId, String languageId, String partnerId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, String pieceId,
             String consoleId, Long deletionIndicator);
+
+    @Modifying
+    @Query(value = "update tblconsole set noti_status = 1 where console_id = :consoleId and " +
+            " c_id = :companyId and lang_id = :languageId and is_deleted =0 ", nativeQuery = true)
+    public void updateNotificationInConsoleTable(@Param("companyId") String companyId,
+                                                 @Param("languageId") String languageId,
+                                                 @Param("consoleId") String consoleId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update tblhhtnotification set is_deleted = 1 WHERE token_id = :tokenId", nativeQuery = true)
+    void deleteNotAccessToken(@Param("tokenId") String tokenId);
+
+
 }
 

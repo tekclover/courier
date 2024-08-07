@@ -21,6 +21,8 @@ public class UpdateCustomer {
 
     private String statusId;
 
+    private String agingCount;
+
     private String remark;
 
     private Long deletionIndicator;

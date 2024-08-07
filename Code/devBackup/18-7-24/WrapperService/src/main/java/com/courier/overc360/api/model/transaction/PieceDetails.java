@@ -73,13 +73,21 @@ public class PieceDetails {
 
     private String tags;
 
-    private String pieceStatusId;
+//    private String pieceStatusId;
 
     private String pieceValue;
 
     private String pieceCurrency;
 
-    private Date pieceStatusTimestamp;
+//    private Date pieceStatusTimestamp;
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
 
     private String referenceField1;
 

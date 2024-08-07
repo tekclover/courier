@@ -2,6 +2,8 @@ package com.courier.overc360.api.model.idmaster;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+
 @Data
 public class AddConsignor {
 
@@ -20,6 +22,8 @@ public class AddConsignor {
     private String consignorId;
 
     private String consignorName;
+
+    private String agingCount;
 
     private String statusId;
 

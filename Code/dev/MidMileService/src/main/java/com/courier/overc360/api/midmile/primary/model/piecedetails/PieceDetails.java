@@ -1,60 +1,77 @@
 package com.courier.overc360.api.midmile.primary.model.piecedetails;
 
 
+import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-/*
- * `LANG_ID`, `C_ID`, `PARTNER_ID`, `MAWB`, `HAWB`, `PIECE_ID`
- */
-@Table(
-        name = "tblpiecedetails",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "unique_key_piecedetails",
-                        columnNames = {"LANG_ID","C_ID","PARTNER_ID", "MASTER_AIRWAY_BILL", "HOUSE_AIRWAY_BILL" ,"PIECE_ID"})
-        }
-)
-@IdClass(PieceDetailsCompositeKey.class)
-public class PieceDetails {
+@Table(name = "tblpiecedetails")
+public class PieceDetails implements Serializable {
 
     @Id
-    @Column(name = "LANG_ID" , columnDefinition = "nvarchar(50)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PIECE_DETAILS_ID")
+    private Long pieceDetailsId;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
+    private List<ItemDetails> itemDetails;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "PIECE_DETAILS_ID", referencedColumnName = "PIECE_DETAILS_ID")
+    private Set<ImageReference> referenceImageList = new HashSet<>();
+
+    @Column(name = "LANG_ID", columnDefinition = "nvarchar(50)")
     private String languageId;
 
-    @Id
-    @Column(name = "C_ID" , columnDefinition = "nvarchar(50)")
+    @Column(name = "C_ID", columnDefinition = "nvarchar(50)")
     private String companyId;
 
-    @Id
-    @Column(name = "PARTNER_ID" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
 
-    @Id
-    @Column(name = "MASTER_AIRWAY_BILL" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String masterAirwayBill;
 
-    @Id
-    @Column(name = "HOUSE_AIRWAY_BILL" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String houseAirwayBill;
 
-    @Id
-    @Column(name = "PIECE_ID" ,columnDefinition = "nvarchar(50)")
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
     private String pieceId;
+
+    @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
+    private String pieceType;
+
+    @Column(name = "PIECE_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String pieceTypeId;
+
+    @Column(name = "PIECE_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String pieceTypeDescription;
+
+    @Column(name = "PIECE_TIMESTAMP")
+    private Date pieceTimeStamp = new Date();
 
     @Column(name = "PARTNER_MASTER_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerMasterAirwayBill;
 
     @Column(name = "PARTNER_HOUSE_AIRWAY_BILL", columnDefinition = "nvarchar(50)")
     private String partnerHouseAirwayBill;
+
+//    @Column(name = "CONSIGNMENT_ID")
+//    private Long consignmentId;
 
     @Column(name = "LANG_TEXT", columnDefinition = "nvarchar(100)")
     private String languageDescription;
@@ -107,9 +124,6 @@ public class PieceDetails {
     @Column(name = "VOLUME_UNIT", columnDefinition = "nvarchar(50)")
     private String volumeUnit;
 
-    @Column(name = "REFERENCE_IMAGE_LIST")
-    private String referenceImageList;
-
     @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
     private String consignmentValueLocal;
 
@@ -131,38 +145,23 @@ public class PieceDetails {
     @Column(name = "TAGS", columnDefinition = "nvarchar(50)")
     private String tags;
 
-    @Column(name = "CONSIGNMENT_ID")
-    private Long consignmentId;
+    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String pieceStatusId;
 
-    @Column(name = "PIECE_TYP", columnDefinition = "nvarchar(50)")
-    private String pieceType;
+    @Column(name = "PIECE_STATUS_TIMESTAMP")
+    private Date pieceStatusTimestamp;
 
-    @Column(name = "PIECE_TYP_ID", columnDefinition = "nvarchar(50)")
-    private String pieceTypeId;
+    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
+    private String pieceStatusText;
 
-    @Column(name = "PIECE_TYP_TXT", columnDefinition = "nvarchar(100)")
-    private String pieceTypeDescription;
+    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String pieceEventCode;
 
-    @Column(name = "PIECE_TIMESTAMP")
-    private Date pieceTimeStamp = new Date();
-//    @Column(name = "PIECE_STATUS_ID", columnDefinition = "nvarchar(50)")
-//    private String pieceStatusId;
+    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String pieceEventText;
 
-//    @Column(name = "PIECE_STATUS_TIMESTAMP")
-//    private Date pieceStatusTimestamp;
-
-//    @Column(name = "PIECE_STATUS_TEXT", columnDefinition = "nvarchar(50)")
-//    private String pieceStatusText;
-
-//    @Column(name = "PIECE_EVENT_CODE", columnDefinition = "nvarchar(50)")
-//    private String pieceEventCode;
-
-//    @Column(name = "PIECE_EVENT_TEXT", columnDefinition = "nvarchar(50)")
-//    private String pieceEventText;
-
-//    @Column(name = "PIECE_EVENT_TIMESTAMP")
-//    private Date pieceEventTimestamp;
-
+    @Column(name = "PIECE_EVENT_TIMESTAMP")
+    private Date pieceEventTimestamp;
 
     @Column(name = "PIECE_VALUE", columnDefinition = "nvarchar(50)")
     private String pieceValue;
@@ -203,36 +202,6 @@ public class PieceDetails {
     @Column(name = "REF_FIELD_10", columnDefinition = "nvarchar(500)")
     private String referenceField10;
 
-    @Column(name = "REF_FIELD_11", columnDefinition = "nvarchar(500)")
-    private String referenceField11;
-
-    @Column(name = "REF_FIELD_12", columnDefinition = "nvarchar(500)")
-    private String referenceField12;
-
-    @Column(name = "REF_FIELD_13", columnDefinition = "nvarchar(500)")
-    private String referenceField13;
-
-    @Column(name = "REF_FIELD_14", columnDefinition = "nvarchar(500)")
-    private String referenceField14;
-
-    @Column(name = "REF_FIELD_15", columnDefinition = "nvarchar(500)")
-    private String referenceField15;
-
-    @Column(name = "REF_FIELD_16", columnDefinition = "nvarchar(500)")
-    private String referenceField16;
-
-    @Column(name = "REF_FIELD_17", columnDefinition = "nvarchar(500)")
-    private String referenceField17;
-
-    @Column(name = "REF_FIELD_18", columnDefinition = "nvarchar(500)")
-    private String referenceField18;
-
-    @Column(name = "REF_FIELD_19", columnDefinition = "nvarchar(500)")
-    private String referenceField19;
-
-    @Column(name = "REF_FIELD_20", columnDefinition = "nvarchar(500)")
-    private String referenceField20;
-
     @Column(name = "CTD_BY", columnDefinition = "nvarchar(50)")
     private String createdBy;
 
@@ -246,21 +215,3 @@ public class PieceDetails {
     private Date updatedOn = new Date();
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

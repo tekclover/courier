@@ -2,8 +2,6 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -275,11 +273,17 @@ public class Console {
 
     private String createdBy;
 
-    private Date createdOn ;
+    private Date createdOn;
 
     private String updatedBy;
 
-    private Date updatedOn ;
+    private Date updatedOn;
+
+    // consolidation check
+    private Long unconsolidatedFlag;
+
+    // Notification
+    private Long notificationStatus = 0L;
 
 
 }

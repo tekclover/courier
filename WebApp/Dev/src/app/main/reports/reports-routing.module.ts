@@ -5,7 +5,7 @@ import { InventoryScanningComponent } from './inventory-scanning/inventory-scann
 
 const routes: Routes = [
   { path: 'consoleTracking', component: ConsoleTrackingComponent, data: { title: 'Reports', module: 'Console Tracking Report' } },
-  { path: 'inventoryScanning', component: InventoryScanningComponent, data: { title: 'Reports', module: 'Inventory Scanning' } },
+  { path: 'inventoryScanning', component: InventoryScanningComponent, data: { title: 'Reports', module: 'Inventory Scan' } },
   { path: 'pendingCustoms', component: InventoryScanningComponent, data: { title: 'Reports', module: 'Pending Customs' } },
 ];
 

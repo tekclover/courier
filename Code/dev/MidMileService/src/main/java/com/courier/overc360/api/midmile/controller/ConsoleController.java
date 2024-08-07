@@ -84,7 +84,7 @@ public class ConsoleController {
     public ResponseEntity<?> patchConsoleForMobileApp(@Valid @RequestBody List<UpdateConsole> updateConsoleList,
                                                       @RequestParam String loginUserID)
             throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
-        List<Console> console = consoleService.updateConsoleForMobileApp(updateConsoleList, loginUserID);
+        List<Console> console = consoleService.updateConsoleStatusOrForMobileApp(updateConsoleList, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
@@ -175,6 +175,16 @@ public class ConsoleController {
                                                  @RequestParam String loginUserID) {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
+    }
+
+    // Send Notification
+    @ApiOperation(response = Console.class, value = "Send notification")
+    @PostMapping("/send/notification")
+    public ResponseEntity<?> sendNotification(@RequestParam String companyId, @RequestParam String languageId,
+                                              @RequestParam String consoleId, @RequestParam String houseAirwayBill,
+                                              @RequestParam String consoleGroupName, @RequestParam String consoleName){
+        consoleService.sendNotificationForConsoleCreate(companyId, languageId, consoleId, houseAirwayBill, consoleGroupName, consoleName);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
 }

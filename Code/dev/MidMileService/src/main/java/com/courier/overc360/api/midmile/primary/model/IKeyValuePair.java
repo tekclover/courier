@@ -50,5 +50,14 @@ public interface IKeyValuePair {
 
     String getInvoiceDate();
 
+    String getType();
+
+    String getTypeText();
+
+    String getNotificationText();
+
+    String getUserName();
+
+    String getUserRole();
 
 }
