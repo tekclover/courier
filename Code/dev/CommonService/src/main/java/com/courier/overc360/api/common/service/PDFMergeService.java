@@ -15,11 +15,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,28 +33,33 @@ public class PDFMergeService {
     private static final String GHOSTSCRIPT_PATH = "/snap/bin/gs";  // Update with your Ghostscript path
 
     public byte[] mergePdfs(List<InputStream> pdfs, String outputPath) throws IOException, InterruptedException {
-        PDFMergerUtility mergerUtility = new PDFMergerUtility();
-        for (InputStream pdf : pdfs) {
-            mergerUtility.addSource(pdf);
-        }
-        try (ByteArrayOutputStream mergedOutput = new ByteArrayOutputStream()) {
-            mergerUtility.setDestinationStream(mergedOutput);
-            mergerUtility.mergeDocuments(null);
-            byte[] mergedBytes = mergedOutput.toByteArray();
-            // Try saving merged pdf in local
-            try (FileOutputStream fos = new FileOutputStream(outputPath)) {
-                fos.write(mergedBytes);
+        try {
+            PDFMergerUtility mergerUtility = new PDFMergerUtility();
+            for (InputStream pdf : pdfs) {
+                mergerUtility.addSource(pdf);
             }
+            try (ByteArrayOutputStream mergedOutput = new ByteArrayOutputStream()) {
+                mergerUtility.setDestinationStream(mergedOutput);
+                mergerUtility.mergeDocuments(null);
+                byte[] mergedBytes = mergedOutput.toByteArray();
+                // Try saving merged pdf in local
+                try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+                    fos.write(mergedBytes);
+                }
 
-            // Compress the merged PDF
-            String compressedOutputPath = outputPath.replace(".pdf", "_compressed.pdf");
-            compressPdf(outputPath, compressedOutputPath);
+                // Compress the merged PDF
+                String compressedOutputPath = outputPath.replace(".pdf", "_compressed.pdf");
+                compressPdf(outputPath, compressedOutputPath);
 
-            // Read the compressed file back into a byte array
-            byte[] compressedBytes = Files.readAllBytes(Paths.get(compressedOutputPath));
+                // Read the compressed file back into a byte array
+                byte[] compressedBytes = Files.readAllBytes(Paths.get(compressedOutputPath));
 
-            // Return the compressed PDF bytes
-            return compressedBytes;
+                // Return the compressed PDF bytes
+                return compressedBytes;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
     }
     /**
@@ -100,49 +103,54 @@ public class PDFMergeService {
      * @throws InterruptedException
      */
     public List<byte[]> pdfMerge(PDFMerger request) throws IOException, InterruptedException {
-        List<InputStream> pdfStreams = new ArrayList<>();
-        for (String path : request.getFilePaths()) {
-            try {
-                String filePath = getQualifiedFilePath(path);
-                pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new BadRequestException("Failed to Read the PDF: " + e);
+        try {
+            List<InputStream> pdfStreams = new ArrayList<>();
+            for (String path : request.getFilePaths()) {
+                try {
+                    String filePath = getQualifiedFilePath(path);
+                    pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new BadRequestException("Failed to Read the PDF: " + e);
+                }
             }
-        }
-        String fileOutputStoragePath = getQualifiedFilePath(request.getOutputPath());
-        int location = fileOutputStoragePath.lastIndexOf("/");
-        String directoryCreate = fileOutputStoragePath.substring(0, location);
-        this.fileStorageLocation = Paths.get(directoryCreate).toAbsolutePath().normalize();
-        if (!Files.exists(fileStorageLocation)) {
-            try {
-                Files.createDirectories(this.fileStorageLocation);
-            } catch (Exception ex) {
-                throw new BadRequestException("Could not create the directory where the merged files will be stored.");
+            String fileOutputStoragePath = getQualifiedFilePath(request.getOutputPath());
+            int location = fileOutputStoragePath.lastIndexOf("/");
+            String directoryCreate = fileOutputStoragePath.substring(0, location);
+            this.fileStorageLocation = Paths.get(directoryCreate).toAbsolutePath().normalize();
+            if (!Files.exists(fileStorageLocation)) {
+                try {
+                    Files.createDirectories(this.fileStorageLocation);
+                } catch (Exception ex) {
+                    throw new BadRequestException("Could not create the directory where the merged files will be stored.");
+                }
             }
+
+            List<String> outputPaths = new ArrayList<>();
+            int totalFiles = request.getFilePaths().size();
+            int numBatches = (int) Math.ceil((double) totalFiles / 50);  // Adjust the batch size as needed
+
+            for (int i = 0; i < numBatches; i++) {
+                outputPaths.add(fileOutputStoragePath.replace(".pdf", "_batch" + (i + 1) + ".pdf"));
+            }
+
+            processInBatches(request.getFilePaths(), outputPaths);
+
+            List<byte[]> mergedPdfs = new ArrayList<>();
+            for (String outputPath : outputPaths) {
+                // Compress the merged PDF
+                String compressedOutputPath = outputPath.replace(".pdf", "_compressed.pdf");
+                compressPdf(outputPath, compressedOutputPath);
+
+                byte[] mergedPdf = Files.readAllBytes(Paths.get(compressedOutputPath));
+                mergedPdfs.add(mergedPdf);
+            }
+
+            return mergedPdfs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
-
-        List<String> outputPaths = new ArrayList<>();
-        int totalFiles = request.getFilePaths().size();
-        int numBatches = (int) Math.ceil((double) totalFiles / 50);  // Adjust the batch size as needed
-
-        for (int i = 0; i < numBatches; i++) {
-            outputPaths.add(fileOutputStoragePath.replace(".pdf", "_batch" + (i + 1) + ".pdf"));
-        }
-
-        processInBatches(request.getFilePaths(), outputPaths);
-
-        List<byte[]> mergedPdfs = new ArrayList<>();
-        for (String outputPath : outputPaths) {
-            // Compress the merged PDF
-            String compressedOutputPath = outputPath.replace(".pdf", "_compressed.pdf");
-            compressPdf(outputPath, compressedOutputPath);
-
-            byte[] mergedPdf = Files.readAllBytes(Paths.get(compressedOutputPath));
-            mergedPdfs.add(mergedPdf);
-        }
-
-        return mergedPdfs;
     }
 
     /**
@@ -153,25 +161,31 @@ public class PDFMergeService {
      * @throws InterruptedException
      */
     private void processInBatches(List<String> inputFilePaths, List<String> outputPaths) throws IOException, InterruptedException {
-        int batchSize = 50;  // Adjust the batch size as needed
-        List<List<String>> batches = createBatches(inputFilePaths, batchSize);
+        try {
+            int batchSize = 50;  // Adjust the batch size as needed
+            List<List<String>> batches = createBatches(inputFilePaths, batchSize);
+            log.info("batches : {}" , batches.size());
+            for (int i = 0; i < batches.size(); i++) {
+                List<String> batch = batches.get(i);
+                log.info("batch, i : {}, {}" , batch , i );
+                List<InputStream> pdfStreams = new ArrayList<>();
+                for (String path : batch) {
+                    String filePath = getQualifiedFilePath(path);
+                    pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
+                }
 
-        for (int i = 0; i < batches.size(); i++) {
-            List<String> batch = batches.get(i);
-            List<InputStream> pdfStreams = new ArrayList<>();
-            for (String path : batch) {
-                String filePath = getQualifiedFilePath(path);
-                pdfStreams.add(Files.newInputStream(Paths.get(filePath)));
+                String batchOutputPath = outputPaths.get(i);
+                byte[] mergePdf = mergePdfs(pdfStreams, batchOutputPath);
+                log.info(" BatchOutputPath ---------------> {} ", batchOutputPath);
+
+                // Clean up streams
+                for (InputStream stream : pdfStreams) {
+                    stream.close();
+                }
             }
-
-            String batchOutputPath = outputPaths.get(i);
-            byte[] mergePdf = mergePdfs(pdfStreams, batchOutputPath);
-            log.info(" BatchOutputPath ---------------> {} ", batchOutputPath);
-
-            // Clean up streams
-            for (InputStream stream : pdfStreams) {
-                stream.close();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
     }
 
@@ -184,18 +198,18 @@ public class PDFMergeService {
     private List<List<String>> createBatches(List<String> filePaths, int batchSize) {
         List<List<String>> batches = new ArrayList<>();
         List<String> currentBatch = new ArrayList<>();
-
+        log.info("FilePath size : {}" , filePaths.size() );
         for (int i = 0; i < filePaths.size(); i++) {
             String filePath = filePaths.get(i);
             currentBatch.add(filePath);
 
             if (currentBatch.size() == batchSize) {
-
+                log.info("crnt batch size, batch size : {},{} " , currentBatch.size(),batchSize );
                 if (i + 1 < filePaths.size()) {
                     String currentNumber = extractNumber(filePath);
                     String nextNumber = extractNumber(filePaths.get(i + 1));
 
-                    if (currentNumber == nextNumber) {
+                    if (Objects.equals(currentNumber, nextNumber)) {
                         // Move the current file to the next batch
                         currentBatch.remove(currentBatch.size() - 1);
                     } else {
