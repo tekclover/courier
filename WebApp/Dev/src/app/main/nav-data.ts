@@ -370,12 +370,12 @@ export const navbarData: INavbarData[] = [
 
             {
                 routerId: 5105,
-                routerLink: '/main/reports/inventoryScanning',
-                label: 'Inventory Scanning'
+                routerLink: '/main/reports/pendingCustoms',
+                label: 'Pending Customs'
             },
             {
                 routerId: 5106,
-                routerLink: '/main/reports/inventoryScanning1',
+                routerLink: '/main/reports/inventoryScanning',
                 label: 'Inventory Scanning'
             },
 

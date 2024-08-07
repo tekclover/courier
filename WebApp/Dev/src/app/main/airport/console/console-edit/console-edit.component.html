@@ -108,7 +108,7 @@
                         scrollHeight="calc(100vh - 23rem)" sortField="createdOn" [sortOrder]="-1" [paginator]="true"
                         [rows]="100" [showCurrentPageReport]="true"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [tableStyle]="{'width': '290rem'}" styleClass="p-datatable-sm">
+                        [tableStyle]="tableStyle" styleClass="p-datatable-sm">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th style="width: 5rem;" pFrozenColumn>
