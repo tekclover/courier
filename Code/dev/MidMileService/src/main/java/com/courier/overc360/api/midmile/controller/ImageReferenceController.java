@@ -3,7 +3,6 @@ package com.courier.overc360.api.midmile.controller;
 import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.imagereference.UpdateImageReference;
-import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.service.ImageReferenceService;
 import com.opencsv.exceptions.CsvException;

@@ -2,16 +2,51 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
 @Data
 public class UpdateItemDetails {
 
+    private Long itemDetailsId;
+
+    private Set<UpdateImageReference> referenceImageList;
+
+    private String languageId;
+
+    private String companyId;
+
+    private String partnerId;
+
+    private String pieceId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
     private String pieceItemId;
+
+    private String imageRefId;
 
     private String quantity;
 
     private String unitValue;
+
+    private String currency;
+
+    private String languageDescription;
+
+    private String companyName;
+
+    private String partnerType;
+
+    private String partnerName;
+
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
+
+    private String description;
 
     private String consignmentCurrency;
 
@@ -35,18 +70,6 @@ public class UpdateItemDetails {
 
     private String calculatedTotalDuty;
 
-    private String length;
-
-    private String currency;
-
-    private String partnerType;
-
-    private String partnerName;
-
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
-
     private String itemCode;
 
     private String hsCode;
@@ -55,9 +78,9 @@ public class UpdateItemDetails {
 
     private String codAmount;
 
-    private String dimensionUnit;
+    private String length;
 
-    private String description;
+    private String dimensionUnit;
 
     private String width;
 
@@ -71,9 +94,7 @@ public class UpdateItemDetails {
 
     private String volumeUnit;
 
-    private List<ReferenceImageList> referenceImageList;
-
-    private Long deletionIndicator;
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -95,25 +116,9 @@ public class UpdateItemDetails {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String updatedBy;
 
-    private String referenceField12;
-
-    private String referenceField13;
-
-    private String referenceField14;
-
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
+    private Date updatedOn;
 
 
 }

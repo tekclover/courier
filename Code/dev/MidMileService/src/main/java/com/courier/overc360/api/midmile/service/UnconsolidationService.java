@@ -146,7 +146,7 @@ public class UnconsolidationService {
             unconsolidationRepository.save(newUnconsolidation);
 
             // Update unconsolidated flag in Consignment table
-            unconsolidationRepository.updateUnconsolidatedFlag(addUnconsolidation.getLanguageId(), addUnconsolidation.getCompanyId(),
+            unconsolidationRepository.updateUnconsolidatedFlagInConsignmentTbl(addUnconsolidation.getLanguageId(), addUnconsolidation.getCompanyId(),
                     addUnconsolidation.getPartnerId(), addUnconsolidation.getPartnerHouseAirwayBill(), addUnconsolidation.getPartnerMasterAirwayBill());
         } catch (Exception e) {
             // Error Log

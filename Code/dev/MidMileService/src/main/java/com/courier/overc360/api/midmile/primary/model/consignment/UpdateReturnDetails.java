@@ -3,8 +3,12 @@ package com.courier.overc360.api.midmile.primary.model.consignment;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UpdateReturnDetails {
+
+    private Long returnId;
 
     private String addressHubCode;
 
@@ -37,4 +41,10 @@ public class UpdateReturnDetails {
     private String latitude;
 
     private String longitude;
+
+    private String updatedBy;
+
+    private Date updatedOn = new Date();
+
+
 }

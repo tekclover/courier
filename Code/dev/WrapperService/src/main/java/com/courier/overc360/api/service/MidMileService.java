@@ -112,14 +112,14 @@ public class MidMileService {
     }
 
     // Find Consignments - MobileApp
-    public ConsignmentEntity[] findConsignmentMobileApp(FindConsignment findConsignment, String authToken) throws Exception {
+    public ConsignmentEntity[] findConsignmentMobileApp(List<FindConsignmentMobileApp> findConsignments, String authToken) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.add("User-Agent", "RestTemplate");
             headers.add("Authorization", "Bearer " + authToken);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "consignment/find/mobileApp");
-            HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
+            HttpEntity<?> entity = new HttpEntity<>(findConsignments, headers);
             ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
             log.info("result : " + result.getStatusCode());
             return result.getBody();

@@ -2,6 +2,7 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 @Data
@@ -15,31 +16,55 @@ public class UpdateConsignmentStatus {
 
     private String houseAirwayBill;
 
-    private String statusId;
+//    private String statusId;
 
     private String bagId;
 
-    private String eventCode;
+//    private String eventCode;
 
     private String masterAirwayBill;
 
-    private String statusText;
+//    private String statusText;
+//
+//    private String pieceStatusId;
+//
+//    private String pieceStatusText;
+//
+//    private String eventText;
+//
+//    private String pieceEventCode;
+//
+//    private String pieceEventText;
+//
+//    private Date pieceEventTimestamp;
+//
+//    private Date eventTimestamp;
+//
+//    private Date statusTimestamp;
 
-    private String pieceStatusId;
+    private String partnerHouseAirwayBill;
 
-    private String pieceStatusText;
+    private String partnerMasterAirwayBill;
 
-    private String eventText;
+    private String hawbType;
 
-    private String pieceEventCode;
+    private String hawbTypeId;
 
-    private String pieceEventText;
+    private String hawbTypeDescription;
 
-    private Date pieceEventTimestamp;
+    private Date hawbTimeStamp;
 
-    private Date eventTimestamp;
+    private String pieceType;
 
-    private Date statusTimestamp;
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp;
+
+    private String hubCode;
+
+    private String hubName;
 
     private String referenceField1;
 
@@ -60,4 +85,5 @@ public class UpdateConsignmentStatus {
     private String referenceField9;
 
     private String referenceField10;
+
 }

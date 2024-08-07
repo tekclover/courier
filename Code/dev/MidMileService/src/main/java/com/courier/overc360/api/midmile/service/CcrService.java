@@ -124,7 +124,17 @@ public class CcrService {
     }
 
 
-    //Create ConsoleCcr
+    /**
+     * Create ConsoleCcr
+     *
+     * @param addCcrList
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws IOException
+     * @throws CsvException
+     */
     @Transactional
     public List<Ccr> createConsoleCcr(List<Console> addCcrList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
@@ -133,7 +143,7 @@ public class CcrService {
 
             String NUM_RAN_OBJ = "CCRID";
             String CCR_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-            log.info("next Value from NumberRange for CCR_ID : " + CCR_ID);
+            log.info("next Value from NumberRange for CCR_ID : {}", CCR_ID);
 
             for (Console addCcr : addCcrList) {
 
@@ -153,13 +163,20 @@ public class CcrService {
 
                     Ccr createdCcr = ccrRepository.save(newCcr);
 
-                    // Update CCR_ID
-                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId(),
-                            createdCcr.getPartnerId(), createdCcr.getCompanyId(), createdCcr.getLanguageId(),
-                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill(),
-                            createdCcr.getPieceId());
+//                    consoleRepository.updateCCRID(createdCcr.getConsoleId(), createdCcr.getCcrId(),
+//                            createdCcr.getPartnerId(), createdCcr.getCompanyId(), createdCcr.getLanguageId(),
+//                            createdCcr.getPartnerHouseAirwayBill(), createdCcr.getPartnerMasterAirwayBill(),
+//                            createdCcr.getPieceId());
 
                     createdCcrList.add(createdCcr);
+                }
+                // Update CCR_ID in Console Table - equivalent records
+                try {
+                    int noOfRecordsUpdated = consoleRepository.updateCCRIdInConsoleTbl(addCcr.getConsoleId(),
+                            CCR_ID, addCcr.getLanguageId(), addCcr.getCompanyId());
+                    log.info("Consoles -- consoleId-{} updated with ccrId-{} : count --> {}", addCcr.getConsoleId(), CCR_ID, noOfRecordsUpdated);
+                } catch (Exception e) {
+                    log.error("Error in updating CCR_ID - {} for consoleId - {} : {}", CCR_ID, addCcr.getConsoleId(), e.getMessage());
                 }
             }
             return createdCcrList;

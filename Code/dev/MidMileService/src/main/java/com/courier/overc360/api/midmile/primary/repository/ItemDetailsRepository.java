@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+
+@Repository
+@Transactional
 public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String>, JpaSpecificationExecutor<ItemDetails> {
 
     Optional<ItemDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
@@ -35,8 +39,8 @@ public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String
     IKeyValuePair getDescription(@Param(value = "languageId") String languageId,
                                  @Param(value = "companyId") String companyId);
 
-    List<ItemDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
+//    List<ItemDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+//            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 
     @Transactional
     @Modifying
@@ -61,5 +65,8 @@ public interface ItemDetailsRepository extends JpaRepository<ItemDetails, String
                             @Param("totalHeight") String totalHeight,
                             @Param("totalWeight") String totalWeight,
                             @Param("totalVolume") String totalVolume);
+
+    List<ItemDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, Long deletionIndicator);
 
 }

@@ -98,6 +98,10 @@ public class PreAlert {
 
     private String houseAirwayBill;
 
+    private String hubCode;
+
+    private String hubName;
+
     private String referenceField1;
 
     private String referenceField2;

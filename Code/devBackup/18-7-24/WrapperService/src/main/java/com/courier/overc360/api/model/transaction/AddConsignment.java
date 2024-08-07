@@ -139,6 +139,8 @@ public class AddConsignment {
 
     private String hubCode;
 
+    private String customsInsurance;
+
     private String consignmentType;
 
     private String actionType;
@@ -264,6 +266,14 @@ public class AddConsignment {
     private String packDetails;
 
     private String storageLocation;
+
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
 
     private List<ReferenceImageList> referenceImageList;
 

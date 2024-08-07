@@ -27,6 +27,10 @@ public class BondedManifest {
 
     private String languageDescription;
 
+    private Date estimatedTimeOfArrival;
+
+    private String consigneeFreeText;
+
     private String companyName;
 
     private String partnerType;

@@ -9,9 +9,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tblorigindetails")
 public class ReplicaOriginDetails {
 
@@ -19,6 +19,9 @@ public class ReplicaOriginDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORIGIN_ID")
     private Long originId;
+
+//    @Column(name = "CONSIGNMENT_ID")
+//    private Long consignmentId = 0L;
 
     @Column(name = "ADDRESS_HUB_CODE", columnDefinition = "nvarchar(50)")
     private String addressHubCode;

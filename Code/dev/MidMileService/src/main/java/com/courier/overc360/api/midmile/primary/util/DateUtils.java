@@ -146,13 +146,12 @@ public class DateUtils {
     public static Date[] addTimeToDatesForSearch(Date startDate, Date endDate) throws ParseException {
         LocalDate sLocalDate = LocalDate.ofInstant(startDate.toInstant(), ZoneId.systemDefault());
         LocalDate eLocalDate = LocalDate.ofInstant(endDate.toInstant(), ZoneId.systemDefault());
-//        log.info("startDate------->  {}", sLocalDate.atTime(0, 0, 0));
-//        log.info("endDate------->  {}", eLocalDate.atTime(23, 59, 0));
+        log.info("LocalDate1------->  " + sLocalDate.atTime(0, 0, 0));
+        log.info("LocalDate2------->  " + eLocalDate.atTime(23, 59, 0));
 
         LocalDateTime sLocalDateTime = sLocalDate.atTime(0, 0, 0);
-        LocalDateTime eLocalDateTime = eLocalDate.atTime(23, 59, 59);
-        log.info("startDate--##--> {}", sLocalDateTime);
-        log.info("endDate--##--> {}", eLocalDateTime);
+        LocalDateTime eLocalDateTime = eLocalDate.atTime(23, 59, 0);
+        log.info("LocalDate1---##----> " + sLocalDateTime);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
@@ -163,29 +162,7 @@ public class DateUtils {
         Date sDate = dateFormatter.parse(sConvertedDateTime);
         Date eDate = dateFormatter.parse(eConvertedDateTime);
 
-        Date[] dates = new Date[]{
-                sDate,
-                eDate
-        };
-        return dates;
-    }
-
-    /**
-     * @param strDate
-     * @param endDate
-     * @return
-     * @throws ParseException
-     */
-    public static Date[] convertStringsToDates(String strDate, String endDate) throws ParseException {
-        strDate = strDate + " 00:00:00";
-        endDate = endDate + " 23:59:59";
-        Date sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
-        Date eDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate);
-        log.info("converted String To Date --> {}, {}", sDate, eDate);
-        Date[] dates = new Date[]{
-                sDate,
-                eDate
-        };
+        Date[] dates = new Date[]{sDate, eDate};
         return dates;
     }
 

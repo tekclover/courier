@@ -55,6 +55,10 @@ public class ConsoleSpecification implements Specification<ReplicaConsole> {
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("unconsolidatedFlag");
             predicates.add(group.in(findConsole.getUnconsolidatedFlag()));
         }
+        if (findConsole.getHawbTypeId() != null && !findConsole.getHawbTypeId().isEmpty()) {
+            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("hawbTypeId");
+            predicates.add(group.in(findConsole.getHawbTypeId()));
+        }
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
     }
