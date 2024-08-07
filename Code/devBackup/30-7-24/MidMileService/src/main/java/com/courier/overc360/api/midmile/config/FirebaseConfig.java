@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Configuration
 public class FirebaseConfig {
@@ -22,8 +23,12 @@ public class FirebaseConfig {
     public FirebaseApp firebaseApp() throws IOException {
         InputStream serviceAccountStream = serviceAccountKeyResource.getInputStream();
 
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
+//                .build();
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
+                .setCredentials(GoogleCredentials.fromStream(serviceAccountStream)
+                        .createScoped(List.of("https://www.googleapis.com/auth/firebase.messaging")))
                 .build();
 
         return FirebaseApp.initializeApp(options);
