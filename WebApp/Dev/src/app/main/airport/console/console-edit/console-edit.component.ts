@@ -215,13 +215,13 @@ export class ConsoleEditComponent {
 
     if (this.pageToken.report == true) {
       if (this.pageToken.module == 'unconsolidated') {
-        this.pageFlow = 'Unconsolidated';
+        this.pageFlow = 'Unconsolidated - Edit';
         const dataToSend = ['Mid-Mile', 'UnConsolidated Tracking'];
         this.path.setData(dataToSend);
         this.unconsolidatedReportTableHeader();
       }
       if (this.pageToken.module == 'consolidated') {
-        this.pageFlow = 'Consolidated';
+        this.pageFlow = 'Consolidated - Edit';
         const dataToSend = ['Mid-Mile', 'Consolidated Tracking'];
         this.path.setData(dataToSend);
         this.consolidatedReportTableHeader();
