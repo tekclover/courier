@@ -251,7 +251,8 @@ public class PreAlertService {
                                     savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getMasterAirwayBill(),
                                     savedPreAlert.getHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
                                     savedPreAlert.getHawbTimeStamp(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
-                                    savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
+                                    savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
+                                    null, savedPreAlert.getHubCode(), savedPreAlert.getHubName());
                         }
                     }
                 }

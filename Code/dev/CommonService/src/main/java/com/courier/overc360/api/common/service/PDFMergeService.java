@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -122,7 +124,7 @@ public class PDFMergeService {
 
         List<String> outputPaths = new ArrayList<>();
         int totalFiles = request.getFilePaths().size();
-        int numBatches = (int) Math.ceil((double) totalFiles / 5);  // Adjust the batch size as needed
+        int numBatches = (int) Math.ceil((double) totalFiles / 10);  // Adjust the batch size as needed
 
         for (int i = 0; i < numBatches; i++) {
             outputPaths.add(fileOutputStoragePath.replace(".pdf", "_batch" + (i + 1) + ".pdf"));
@@ -132,7 +134,11 @@ public class PDFMergeService {
 
         List<byte[]> mergedPdfs = new ArrayList<>();
         for (String outputPath : outputPaths) {
-            byte[] mergedPdf = Files.readAllBytes(Paths.get(outputPath));
+            // Compress the merged PDF
+            String compressedOutputPath = outputPath.replace(".pdf", "_compressed.pdf");
+            compressPdf(outputPath, compressedOutputPath);
+
+            byte[] mergedPdf = Files.readAllBytes(Paths.get(compressedOutputPath));
             mergedPdfs.add(mergedPdf);
         }
 
@@ -140,69 +146,15 @@ public class PDFMergeService {
     }
 
     /**
-     *
-     * @param filePaths
-     * @return
-     */
-    private List<List<String>> groupFilesByNumber(List<String> filePaths) {
-        Map<String, List<String>> groupedFiles = new TreeMap<>();
-
-        for (String filePath : filePaths) {
-            String number = extractNumber(filePath);
-            groupedFiles.computeIfAbsent(number, k -> new ArrayList<>()).add(filePath);
-        }
-
-        return new ArrayList<>(groupedFiles.values());
-    }
-
-    /**
-     *
-     * @param groupedFiles
-     * @return
-     */
-    private List<List<String>> createBatches(List<List<String>> groupedFiles) {
-        List<List<String>> batches = new ArrayList<>();
-        List<String> currentBatch = new ArrayList<>();
-        int batchSize = 5;  // Adjust the batch size as needed
-
-        for (List<String> group : groupedFiles) {
-            if (currentBatch.size() + group.size() > batchSize) {
-                batches.add(new ArrayList<>(currentBatch));
-                currentBatch.clear();
-            }
-            currentBatch.addAll(group);
-        }
-
-        if (!currentBatch.isEmpty()) {
-            batches.add(currentBatch);
-        }
-
-        return batches;
-    }
-
-    /**
-     *
-     * @param fileName
-     * @return
-     */
-    private String extractNumber(String fileName) {
-        int underscoreIndex = fileName.lastIndexOf('_');
-        if (underscoreIndex != -1) {
-            return fileName.substring(0, underscoreIndex);
-        }
-        return fileName;
-    }
-
-    /**
-     *
+     *Process in Batches
      * @param inputFilePaths
      * @param outputPaths
      * @throws IOException
      * @throws InterruptedException
      */
     private void processInBatches(List<String> inputFilePaths, List<String> outputPaths) throws IOException, InterruptedException {
-        List<List<String>> groupedFiles = groupFilesByNumber(inputFilePaths);
-        List<List<String>> batches = createBatches(groupedFiles);
+        int batchSize = 10;  // Adjust the batch size as needed
+        List<List<String>> batches = createBatches(inputFilePaths, batchSize);
 
         for (int i = 0; i < batches.size(); i++) {
             List<String> batch = batches.get(i);
@@ -220,6 +172,73 @@ public class PDFMergeService {
                 stream.close();
             }
         }
+    }
+
+    /**
+     *Create Batch
+     * @param filePaths
+     * @param batchSize
+     * @return
+     */
+    private List<List<String>> createBatches(List<String> filePaths, int batchSize) {
+        List<List<String>> batches = new ArrayList<>();
+        List<String> currentBatch = new ArrayList<>();
+
+        for (int i = 0; i < filePaths.size(); i++) {
+            String filePath = filePaths.get(i);
+            currentBatch.add(filePath);
+
+            if (currentBatch.size() == batchSize) {
+
+                if (i + 1 < filePaths.size()) {
+                    String currentNumber = extractNumber(filePath);
+                    String nextNumber = extractNumber(filePaths.get(i + 1));
+
+                    if (currentNumber == nextNumber) {
+                        // Move the current file to the next batch
+                        currentBatch.remove(currentBatch.size() - 1);
+                    } else {
+                        // Check the previous file
+                        String prevNumber = extractNumber(filePaths.get(i - batchSize + 1));
+                        if (currentNumber.equals(prevNumber)) {
+                            // Include the current file in the current batch
+                            batches.add(new ArrayList<>(currentBatch));
+                            currentBatch.clear();
+                        } else {
+                            // Move the current file to the next batch
+                            currentBatch.remove(currentBatch.size() - 1);
+                            batches.add(new ArrayList<>(currentBatch));
+                            currentBatch.clear();
+                            currentBatch.add(filePath);
+                        }
+                    }
+                } else {
+                    batches.add(new ArrayList<>(currentBatch));
+                    currentBatch.clear();
+                }
+            }
+        }
+
+        if (!currentBatch.isEmpty()) {
+            batches.add(currentBatch);
+        }
+
+        return batches;
+    }
+
+    /**
+     * Extract File Number
+     * @param fileName
+     * @return
+     */
+    private String extractNumber(String fileName) {
+        // Regular expression to extract digits from the filename
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(fileName);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return fileName; // Return the original filename if no digits are found
     }
 
     /**

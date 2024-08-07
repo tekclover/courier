@@ -1152,7 +1152,8 @@ public class ConsoleService {
 
                 // Send Notification
                 sendNotificationForConsoleCreate(createdConsole.getCompanyId(), createdConsole.getLanguageId(),
-                        createdConsole.getConsoleId(), createdConsole.getHouseAirwayBill());
+                        createdConsole.getConsoleId(), createdConsole.getHouseAirwayBill(), createdConsole.getConsoleGroupName(),
+                        createdConsole.getConsoleName());
 
                 if (createdConsole != null) {
                     // Save ConsignmentStatus
@@ -1161,8 +1162,8 @@ public class ConsoleService {
                             createdConsole.getHouseAirwayBill(), createdConsole.getHawbType(), createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
                             createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
                             createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
-                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill()
-                    );
+                            createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(), null,
+                            createdConsole.getHubCode(), createdConsole.getHubName());
 
                     // Update ConsignmentEntity Table
                     consoleRepository.updateConsignmentOnConsoleCreate(
@@ -1259,7 +1260,8 @@ public class ConsoleService {
                                 createdConsole.getHawbTypeId(), createdConsole.getHawbTypeDescription(),
                                 createdConsole.getHawbTimeStamp(), createdConsole.getPieceType(), createdConsole.getPieceTypeId(),
                                 createdConsole.getPieceTypeDescription(), createdConsole.getPieceTimeStamp(), loginUserID,
-                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getMasterAirwayBill());
+                                createdConsole.getPartnerHouseAirwayBill(), createdConsole.getPartnerMasterAirwayBill(), null,
+                                createdConsole.getHubCode(), createdConsole.getHubName());
 
                         // Update ConsignmentEntity Table
                         consoleRepository.updateConsignmentOnConsoleCreate(
@@ -1561,8 +1563,8 @@ public class ConsoleService {
                         updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
                         updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
                         updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
-                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill());
-
+                        updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), null,
+                        updatedConsole.getHubCode(), updatedConsole.getHubName() );
 
                 consoleList.add(updatedConsole);
             }
@@ -2501,7 +2503,8 @@ public class ConsoleService {
      * @param consoleId
      * @param houseAirwayBill
      */
-    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill) {
+    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill,
+                                                 String consoleGroupName, String consoleName) {
 
         // Check if consoleId has already been processed
         if (processedConsoleCreate.contains(consoleId)) {
@@ -2531,7 +2534,7 @@ public class ConsoleService {
             }
 
             String title = "Console";
-            String message = notifyId.getNotificationText() + " Console Id - " + consoleId;
+            String message = notifyId.getNotificationText() + "(Console Id / " + consoleId + " Console GroupName / " + consoleGroupName + " Console Name / " + consoleName + " )";
             String response = pushNotificationService.sendPushNotification(
                     deviceToken, title, message, companyId, languageId, houseAirwayBill, consoleId);
 

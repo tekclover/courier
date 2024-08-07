@@ -181,8 +181,9 @@ public class ConsoleController {
     @ApiOperation(response = Console.class, value = "Send notification")
     @PostMapping("/send/notification")
     public ResponseEntity<?> sendNotification(@RequestParam String companyId, @RequestParam String languageId,
-                                              @RequestParam String consoleId, @RequestParam String houseAirwayBill ){
-        consoleService.sendNotificationForConsoleCreate(companyId, languageId, consoleId, houseAirwayBill);
+                                              @RequestParam String consoleId, @RequestParam String houseAirwayBill,
+                                              @RequestParam String consoleGroupName, @RequestParam String consoleName){
+        consoleService.sendNotificationForConsoleCreate(companyId, languageId, consoleId, houseAirwayBill, consoleGroupName, consoleName);
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 

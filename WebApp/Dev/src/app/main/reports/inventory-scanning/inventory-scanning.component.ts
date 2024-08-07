@@ -48,19 +48,19 @@ export class InventoryScanningComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'hawbTypeId', header: 'HAWB Type ID' },
-      { field: 'hawbType', header: 'HAWB Type' },
-      { field: 'hawbTypeDescription', header: 'HAWB Type Description' },
-      { field: 'hawbTimeStamp', header: 'Scanned Time', format: 'date' },
-      { field: 'houseAirwayBill', header: 'Consignment No' },
-      { field: 'masterAirwayBill', header: 'Master Airway Bill' },
+      // { field: 'hawbTypeId', header: 'HAWB Type ID' },
+      // { field: 'hawbType', header: 'HAWB Type' },
+      // { field: 'hawbTypeDescription', header: 'HAWB Type Description' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'pieceTypeId', header: 'Piece Type ID' },
-      { field: 'pieceType', header: 'Piece Type' },
-      { field: 'pieceTypeDescription', header: 'Piece Type Description' },
-      { field: 'pieceTimeStamp', header: 'Scanned Time', format: 'date' },
-      
+      { field: 'houseAirwayBill', header: 'Consignment No' },
+      { field: 'pieceId', header: 'Piece ID' },
+      // { field: 'masterAirwayBill', header: 'Master Airway Bill' },
+      // { field: 'pieceTypeId', header: 'Piece Type ID' },
+      // { field: 'pieceType', header: 'Piece Type' },
+      // { field: 'pieceTypeDescription', header: 'Piece Type Description' },
+      { field: 'hawbTimeStamp', header: 'Scanned Time', format: 'date' },
+      // { field: 'pieceTimeStamp', header: 'Scanned Time', format: 'date' },
       { field: 'updatedBy', header: 'Scanned Officer' },
       // { field: 'createdOn', header: 'Created On', format: 'date' },
     ];

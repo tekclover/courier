@@ -368,7 +368,8 @@ public class ConsignmentService {
             List<PieceDetails> pieceDetails = pieceDetailsService.createPieceDetailsList(companyId, languageId, partnerId, masterAirwayBill, houseAirwayBill,
                     newConsignment.getCompanyName(), newConsignment.getLanguageDescription(), newConsignment.getPartnerName(),
                     partnerHawBill, partnerMawBill, consignmentEntity.getPieceDetails(), newConsignment.getHsCode(), length, width, height, volume, weightUnit, codAmount,
-                    newConsignment.getHawbTypeId(), newConsignment.getHawbType(), newConsignment.getHawbTypeDescription(), country, loginUserID);
+                    newConsignment.getHawbTypeId(), newConsignment.getHawbType(), newConsignment.getHawbTypeDescription(), country, loginUserID,
+                    newConsignment.getHubCode(), newConsignment.getHubName());
 
             newConsignment.setPieceDetails(pieceDetails);
 

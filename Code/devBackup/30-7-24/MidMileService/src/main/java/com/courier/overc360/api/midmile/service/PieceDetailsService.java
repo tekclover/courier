@@ -204,7 +204,7 @@ public class PieceDetailsService {
                                                      String companyName, String languageName, String partnerName, String partnerHawBill,
                                                      String partnerMawBill, List<AddPieceDetails> addPieceDetailsList, String hsCode, String length, String width, String height,
                                                      String volume, String weightUnit, String codAmount, String hawbTypeId, String hawbType, String hawbDescription,
-                                                     String country, String loginUserID)
+                                                     String country, String loginUserID, String hubCode, String hubName)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         List<PieceDetails> pieceDetailsList = new ArrayList<>();
         try {
@@ -333,7 +333,8 @@ public class PieceDetailsService {
                                 savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
                                 savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                                 savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill());
+                                savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill(),
+                                null, hubCode, hubName);
 
                         pieceDetailsList.add(savePieceDetails);
                     }
@@ -398,7 +399,8 @@ public class PieceDetailsService {
                         savePieceDetails.getCompanyId(), savePieceDetails.getCompanyName(), savePieceDetails.getPieceId(), savePieceDetails.getMasterAirwayBill(),
                         savePieceDetails.getHouseAirwayBill(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
                         savePieceDetails.getPieceTimeStamp(), savePieceDetails.getPieceType(), savePieceDetails.getPieceTypeId(), savePieceDetails.getPieceTypeDescription(),
-                        savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill());
+                        savePieceDetails.getPieceTimeStamp(), loginUserID, savePieceDetails.getPartnerHouseAirwayBill(), savePieceDetails.getPartnerMasterAirwayBill(),
+                        null, hubCode, hubName);
             }
 
         } catch (Exception e) {
