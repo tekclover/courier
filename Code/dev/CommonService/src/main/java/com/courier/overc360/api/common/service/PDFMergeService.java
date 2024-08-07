@@ -166,6 +166,7 @@ public class PDFMergeService {
 
             String batchOutputPath = outputPaths.get(i);
             byte[] mergePdf = mergePdfs(pdfStreams, batchOutputPath);
+            log.info(" BatchOutputPath ---------------> {} ", batchOutputPath);
 
             // Clean up streams
             for (InputStream stream : pdfStreams) {
