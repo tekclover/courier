@@ -40,7 +40,7 @@ export class ConsoleTrackingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport', 'Report', 'Console Tracking'];
+    const dataToSend = ['Mid-Mile', 'Console Tracking'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();

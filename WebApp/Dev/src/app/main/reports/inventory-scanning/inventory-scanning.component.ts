@@ -37,9 +37,24 @@ export class InventoryScanningComponent {
 
   fullData: any;
   today: any;
+  activeLink: any;
+  pageFlow:any;
+
   ngOnInit(): void {
-    const dataToSend = ['Airport', 'Report', 'Inventory Scanning'];
-    this.path.setData(dataToSend);
+    const link = this.router.url;
+    this.activeLink = link.split('/')[3];
+
+    if (this.activeLink == 'pendingCustoms') {
+      const dataToSend = ['Mid-Mile', 'Pending Customs'];
+      this.path.setData(dataToSend);
+      this.pageFlow = 'Pending Customs';
+    } else {
+      const dataToSend = ['Mid-Mile', 'Inventory Scanning'];
+      this.path.setData(dataToSend);
+      this.pageFlow = 'Inventory Scanning';
+    }
+
+
 
     this.callTableHeader();
     this.initialCall();
@@ -64,7 +79,7 @@ export class InventoryScanningComponent {
       { field: 'updatedBy', header: 'Scanned Officer' },
       // { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
-    
+
     this.target = [
       { field: 'pieceId', header: 'Piece ID' },
       { field: 'companyName', header: 'Company' },
@@ -81,7 +96,7 @@ export class InventoryScanningComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
-      obj.hawbTypeId = ["6", "47"];
+      if (this.activeLink == 'pendingCustoms') { obj.hawbTypeId = ["6",]; } else { obj.hawbTypeId = ["47"] }
       this.service.searchStatus(obj).subscribe({
         next: (res: any) => {
           this.inventoryScanningTable = res;
@@ -127,7 +142,7 @@ export class InventoryScanningComponent {
       { field: 'companyId', header: ' Company ID' },
       { field: 'languageId', header: 'Language ID' },
       { field: 'bagId', header: 'Bag ID' },
-      
+
       { field: 'createdBy', header: 'Created By' },
       { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -181,7 +196,7 @@ export class InventoryScanningComponent {
         this.statusDropdown = [{ value: 6, label: '6 - Pending Customs' }, { value: 47, label: '47 - Gateway Inventory' }]
       }
       if (res.hawbTimeStamp != null) {
-        const formattedDate = this.datePipe.transform(res.hawbTimeStamp, 'MMM d, y, h:mm a'); 
+        const formattedDate = this.datePipe.transform(res.hawbTimeStamp, 'MMM d, y, h:mm a');
         this.timeStampDropdown.push({ value: res.hawbTimeStamp, label: formattedDate });
         this.timeStampDropdown = this.cs.removeDuplicatesFromArrayList(this.timeStampDropdown, 'value');
       }

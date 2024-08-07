@@ -621,6 +621,7 @@ export class ConsignmentLabelComponent {
         this.generateSingleInvoice(res);
       }, error: (err: any) => {
         this.cs.commonerrorNew(err);
+        this.spin.hide()
       }
     })
   }
@@ -906,6 +907,7 @@ export class ConsignmentLabelComponent {
                 })
               }, error: (err: any) => {
                 this.cs.commonerrorNew(err);
+                this.spin.hide()
               }
             })
           }

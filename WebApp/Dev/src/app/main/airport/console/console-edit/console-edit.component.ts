@@ -205,6 +205,7 @@ export class ConsoleEditComponent {
   }
   nextNumber: any;
   pageFlow: any;
+  tableStyle:any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
@@ -215,22 +216,25 @@ export class ConsoleEditComponent {
 
     if (this.pageToken.report == true) {
       if (this.pageToken.module == 'unconsolidated') {
-        this.pageFlow = 'Unconsolidated - Edit';
-        const dataToSend = ['Mid-Mile', 'UnConsolidated Tracking'];
+        this.pageFlow = 'Unconsolidated Shipments';
+        const dataToSend = ['Mid-Mile', 'UnConsolidated Shipments Tracking'];
         this.path.setData(dataToSend);
         this.unconsolidatedReportTableHeader();
+        this.tableStyle = {'width': '100rem'};
       }
       if (this.pageToken.module == 'consolidated') {
-        this.pageFlow = 'Consolidated - Edit';
-        const dataToSend = ['Mid-Mile', 'Consolidated Tracking'];
+        this.pageFlow = 'Consolidated Shipments';
+        const dataToSend = ['Mid-Mile', 'Consolidated Shipments Tracking'];
         this.path.setData(dataToSend);
         this.consolidatedReportTableHeader();
+        this.tableStyle = {'width': '290rem'};
       }
     } else {
-      this.pageFlow = 'Console ' + this.pageFlow.pageFlow
+      this.pageFlow = 'Console - ' + this.pageToken.pageflow;
       const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
       this.path.setData(dataToSend);
       this.callTableHeader();
+      this.tableStyle = {'width': '290rem'};
     }
 
     this.form.controls.languageId.disable();

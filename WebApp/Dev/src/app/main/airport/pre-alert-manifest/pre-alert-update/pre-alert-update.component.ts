@@ -62,13 +62,13 @@ export class PreAlertUpdateComponent {
     this.pageToken = this.cs.decrypt(code);
 
     if (this.pageToken.report == true) {
-      this.pageFlow = 'Total Shipments - Edit';
+      this.pageFlow = 'Total Shipments';
       const dataToSend = ['Mid-Mile', 'Total Shipments Tracking'];
       this.path.setData(dataToSend);
       this.reportTableHeader();
     }
     else {
-      this.pageFlow = 'Pre Alert Manifest ' + this.pageFlow.pageFlow
+      this.pageFlow = 'Pre Alert Manifest - ' + this.pageToken.pageFlow
       const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
       this.path.setData(dataToSend);
       this.callTableHeader();
