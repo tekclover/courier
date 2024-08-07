@@ -116,13 +116,23 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                                          @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
                                                          @Param("companyId") List<String> companyId);
 
+//    @Query(value = "Select \n" +
+//            "ti.HS_CODE hsCode, ti.DESCRIPTION goodsDescription, ti.WEIGHT itemWeight, ti.DECLARED_VALUE unitValue, ti.DECLARED_VALUE totalValue \n" +
+//            "From tblitemdetails ti \n" +
+//            "Where \n" +
+//            "ti.CONSIGNMENT_ID IN (:consignmentId) and \n" +
+//            "ti.is_deleted = 0", nativeQuery = true)
+//    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("consignmentId") Long consignmentId);
+
     @Query(value = "Select \n" +
             "ti.HS_CODE hsCode, ti.DESCRIPTION goodsDescription, ti.WEIGHT itemWeight, ti.DECLARED_VALUE unitValue, ti.DECLARED_VALUE totalValue \n" +
             "From tblitemdetails ti \n" +
             "Where \n" +
-            "ti.CONSIGNMENT_ID IN (:consignmentId) and \n" +
+            "(COALESCE(:masterAirwayBill, null) IS NULL OR ti.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) and \n" +
+            "(COALESCE(:houseAirwayBill, null) IS NULL OR ti.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) and \n" +
             "ti.is_deleted = 0", nativeQuery = true)
-    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("consignmentId") Long consignmentId);
+    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("masterAirwayBill") String masterAirwayBill,
+                                                       @Param("houseAirwayBill") String houseAirwayBill);
 
 
     @Query(value = "select MASTER_AIRWAY_BILL as masterAirwayBill from tblconsignment_entity " +

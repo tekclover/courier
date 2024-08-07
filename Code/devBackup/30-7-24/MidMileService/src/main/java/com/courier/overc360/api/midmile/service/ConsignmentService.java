@@ -814,7 +814,7 @@ public class ConsignmentService {
             results.forEach(n -> {
                 InvoiceForm dbInvoiceHeader = new InvoiceForm();
                 BeanUtils.copyProperties(n, dbInvoiceHeader, CommonUtils.getNullPropertyNames(n));
-                List<ConsignmentInvoice> lineResults = replicaConsignmentEntityRepository.getConsignmentInvoiceLine(n.getConsignmentId());
+                List<ConsignmentInvoice> lineResults = replicaConsignmentEntityRepository.getConsignmentInvoiceLine(n.getMasterAirwayBill(),n.getHouseAirwayBill());
                 if (lineResults != null && !lineResults.isEmpty()) {
                     dbInvoiceHeader.setInvoiceFormLines(lineResults);
                 }
