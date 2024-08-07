@@ -15,13 +15,17 @@ public class UpdateBondedManifest {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerMasterAirwayBill;
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
 
     private String bondedId;
 
     private String pieceId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
 
     private String pieceItemId;
 
@@ -39,13 +43,15 @@ public class UpdateBondedManifest {
 
     private String noOfPackageMawb;
 
-    private String partnerMasterAirwayBill;
+//    private String partnerMasterAirwayBill;
 
-    private String partnerHouseAirwayBill;
+//    private String partnerHouseAirwayBill;
 
     private String primaryDo;
 
     private String secondaryDo;
+
+    private Date estimatedTimeOfArrival;
 
     private String description;
 
@@ -66,6 +72,8 @@ public class UpdateBondedManifest {
     private String volume;
 
     private String finalDestination;
+
+    private String consigneeFreeText;
 
     private String notifyParty;
 

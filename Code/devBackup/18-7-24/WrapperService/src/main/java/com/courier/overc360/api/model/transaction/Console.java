@@ -21,6 +21,8 @@ public class Console {
 
     private String consoleId;
 
+    private String ccrId;
+
     private String partnerType;
 
     private String expectedDuty;
@@ -52,6 +54,8 @@ public class Console {
     private String iata;
 
     private String customsInsurance;
+
+    private String noOfPieces;
 
     private String duty;
 
@@ -99,13 +103,13 @@ public class Console {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
     private String isConsolidatedShipment;
 
@@ -133,9 +137,9 @@ public class Console {
 
     private String languageDescription;
 
-    private String statusId;
+//    private String statusId;
 
-    private String statusText;
+//    private String statusText;
 
     private String bondedId;
 
@@ -185,7 +189,49 @@ public class Console {
 
     private String currency;
 
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
+    private String isExempted;
+
+    private String exemptionFor;
+
+    private String exemptionBeneficiary;
+
+    private String exemptionReference;
+
+    private String consoleName;
+
+    private String consoleGroupName;
+
+    private String hubCode;
+
+    private String customsCcrNo;
+
     private Long deletionIndicator;
+
+    private String consignmentLocalId;
+
+    private String totalDuty;
+
+    private String hubName;
+
+    private String flightName;
+
+    private String flightNo;
 
     private String referenceField1;
 

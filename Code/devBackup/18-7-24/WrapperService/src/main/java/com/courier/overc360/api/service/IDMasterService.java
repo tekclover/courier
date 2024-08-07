@@ -4955,5 +4955,1197 @@ public class IDMasterService {
             throw e;
         }
     }
+
+    //==================================================StatusEvent===================================================
+    //Get All StatusEvent
+    public StatusEvent[] getAllStatusEvent(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "statusevent");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<StatusEvent[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, StatusEvent[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get StatusEvent
+    public StatusEvent getStatusEvent(String companyId, String languageId, String typeId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "statusevent/" + typeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<StatusEvent> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, StatusEvent.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create StatusEvent
+    public StatusEvent createStatusEvent(AddStatusEvent addStatusEvent, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "statusevent")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addStatusEvent, headers);
+            ResponseEntity<StatusEvent> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, StatusEvent.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update StatusEvent
+    public StatusEvent updateStatusEvent(String companyId, String languageId, String typeId,
+                                         UpdateStatusEvent updateStatusEvent, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateStatusEvent, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "statusevent/" + typeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<StatusEvent> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, StatusEvent.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete StatusEvent
+    public boolean deleteStatusEvent(String companyId, String languageId, String typeId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "statusevent/" + typeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find StatusEvent
+    public StatusEvent[] findStatusEvent(FindStatusEvent findStatusEvent, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "statusevent/find");
+            HttpEntity<?> entity = new HttpEntity<>(findStatusEvent, headers);
+            ResponseEntity<StatusEvent[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, StatusEvent[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+    //==================================================UOM===================================================
+    //Get All UOM
+    public Uom[] getAllUom(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "uom");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Uom[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Uom[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get UOM
+    public Uom getUom(String companyId, String languageId, String uomId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "uom/" + uomId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Uom> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Uom.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create UOM
+    public Uom createUom(AddUom addUom, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "uom")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addUom, headers);
+            ResponseEntity<Uom> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Uom.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update UOM
+    public Uom updateUom(String companyId, String languageId, String uomId,
+                         UpdateUom updateUom, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateUom, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "uom/" + uomId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Uom> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Uom.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete UOM
+    public boolean deleteUom(String companyId, String languageId, String uomId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "uom/" + uomId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find UOM
+    public Uom[] findUom(FindUom findUom, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "uom/find");
+            HttpEntity<?> entity = new HttpEntity<>(findUom, headers);
+            ResponseEntity<Uom[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Uom[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+    //=================================================AppUser=================================================
+    // Get All AppUser Details
+    public AppUser[] getAppUsers(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "appUser");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<AppUser[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, AppUser[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get AppUser
+    public AppUser getAppUser(String companyId, String languageId, String appUserId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "appUser/" + appUserId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<AppUser> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, AppUser.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create AppUser
+    public AppUser createAppUser(AddAppUser newAppUser, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "appUser")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(newAppUser, headers);
+            ResponseEntity<AppUser> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, AppUser.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update AppUser
+    public AppUser updateAppUser(String companyId, String languageId, String appUserId, String loginUserID,
+                                 UpdateAppUser updateAppUser, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateAppUser, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "appUser/" + appUserId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<AppUser> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, AppUser.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete AppUser
+    public boolean deleteAppUser(String companyId, String languageId, String appUserId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "appUser/" + appUserId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find AppUser
+    public AppUser[] findAppUser(FindAppUser findAppUser, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "appUser/find");
+            HttpEntity<?> entity = new HttpEntity<>(findAppUser, headers);
+            ResponseEntity<AppUser[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, AppUser[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    // GET - /login/mobile AppUser
+    public AppUser validateMobileUserID(String appUserId, String password, String authToken, String version) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Classic WMS's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "login/mobile")
+                    .queryParam("appUserId", appUserId)
+                    .queryParam("password", password)
+                    .queryParam("version", version);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<AppUser> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, AppUser.class);
+            return result.getBody();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * @param newHhtNotification
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public HhtNotification createHhtNotification(HhtNotification newHhtNotification, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(newHhtNotification, headers);
+            ResponseEntity<HhtNotification> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, HhtNotification.class);
+//			log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    /**
+     * @param languageId
+     * @param deviceId
+     * @param userId
+     * @param tokenId
+     * @param authToken
+     * @return
+     */
+    public HhtNotification getHhtNotification(String companyId, String languageId,
+                                              String deviceId, String userId, String tokenId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "hhtnotification")
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("deviceId", deviceId)
+                    .queryParam("userId", userId)
+                    .queryParam("tokenId", tokenId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<HhtNotification> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, HhtNotification.class);
+//			log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+
+    //==================================================Route===================================================
+    //Get All Route
+    public Route[] getAllRoute(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Route[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Route[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get Route
+    public Route getRoute(String companyId, String languageId, String routeId, String legId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/" + routeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("legId", legId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Route> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Route.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create Route
+    public Route createRoute(AddRoute addRoute, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addRoute, headers);
+            ResponseEntity<Route> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Route.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update Route
+    public Route updateRoute(String companyId, String languageId, String routeId, String legId,
+                             UpdateRoute updateRoute, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateRoute, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/" + routeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("legId", legId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Route> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Route.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete Route
+    public boolean deleteRoute(String companyId, String languageId, String routeId, String legId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/" + routeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("legId", legId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Route
+    public Route[] findRoute(FindRoute findRoute, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "route/find");
+            HttpEntity<?> entity = new HttpEntity<>(findRoute, headers);
+            ResponseEntity<Route[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Route[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //==================================================BillMode===================================================
+    //Get All BillMode
+    public BillMode[] getAllBillMode(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<BillMode[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BillMode[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get BillMode
+    public BillMode getBillMode(String companyId, String languageId, String billModeId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/" + billModeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<BillMode> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, BillMode.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create BillMode
+    public BillMode createBillMode(AddBillMode addBillMode, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addBillMode, headers);
+            ResponseEntity<BillMode> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BillMode.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update BillMode
+    public BillMode updateBillMode(String companyId, String languageId, String billModeId,
+                                   UpdateBillMode updateBillMode, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateBillMode, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/" + billModeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<BillMode> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, BillMode.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete BillMode
+    public boolean deleteBillMode(String companyId, String languageId, String billModeId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/" + billModeId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find BillMode
+    public BillMode[] findBillMode(FindBillMode findBillMode, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "billmode/find");
+            HttpEntity<?> entity = new HttpEntity<>(findBillMode, headers);
+            ResponseEntity<BillMode[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, BillMode[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //==================================================Vehicle====================================================
+    // Get All Vehicle Details
+    public Vehicle[] getAllVehicles(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "vehicle");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Vehicle[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Vehicle[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get Vehicle
+    public Vehicle getVehicle(String companyId, String languageId, String vehicleRegNumber, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "vehicle/" + vehicleRegNumber)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<Vehicle> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, Vehicle.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create Vehicle
+    public Vehicle createVehicle(AddVehicle newVehicle, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "vehicle")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(newVehicle, headers);
+            ResponseEntity<Vehicle> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Vehicle.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update Vehicle
+    public Vehicle updateVehicle(String companyId, String languageId, String vehicleRegNumber, String loginUserID,
+                                 UpdateVehicle updateVehicle, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateVehicle, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "vehicle/" + vehicleRegNumber)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<Vehicle> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, Vehicle.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete Vehicle
+    public boolean deleteVehicle(String companyId, String languageId, String vehicleRegNumber, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "vehicle/" + vehicleRegNumber)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find Vehicle
+    public Vehicle[] findVehicle(FindVehicle findVehicle, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "vehicle/find");
+            HttpEntity<?> entity = new HttpEntity<>(findVehicle, headers);
+            ResponseEntity<Vehicle[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Vehicle[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //==================================================DriverRouteAssignment====================================================
+    // Get All DriverRouteAssignment Details
+    public DriverRouteAssignment[] getAllDriverRouteAssignments(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "driverRouteAssignment");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<DriverRouteAssignment[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, DriverRouteAssignment[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get DriverRouteAssignment
+    public DriverRouteAssignment getDriverRouteAssignment(String companyId, String languageId, String courierId, String routeId, String vehicleRegNumber, String assignedHubCode, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "driverRouteAssignment/" + courierId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("routeId", routeId)
+                    .queryParam("vehicleRegNumber", vehicleRegNumber)
+                    .queryParam("assignedHubCode", assignedHubCode);
+
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<DriverRouteAssignment> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, DriverRouteAssignment.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create DriverRouteAssignment
+    public DriverRouteAssignment createDriverRouteAssignment(AddDriverRouteAssignment newDriverRouteAssignment, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "driverRouteAssignment")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(newDriverRouteAssignment, headers);
+            ResponseEntity<DriverRouteAssignment> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, DriverRouteAssignment.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update DriverRouteAssignment
+    public DriverRouteAssignment updateDriverRouteAssignment(String companyId, String languageId, String courierId, String routeId, String vehicleRegNumber, String assignedHubCode, String loginUserID,
+                                                             UpdateDriverRouteAssignment updateDriverRouteAssignment, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateDriverRouteAssignment, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "driverRouteAssignment/" + courierId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("routeId", routeId)
+                    .queryParam("vehicleRegNumber", vehicleRegNumber)
+                    .queryParam("assignedHubCode", assignedHubCode)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<DriverRouteAssignment> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, DriverRouteAssignment.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete DriverRouteAssignment
+    public boolean deleteDriverRouteAssignment(String companyId, String languageId, String courierId, String routeId, String vehicleRegNumber, String assignedHubCode, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "driverRouteAssignment/" + courierId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("routeId", routeId)
+                    .queryParam("vehicleRegNumber", vehicleRegNumber)
+                    .queryParam("assignedHubCode", assignedHubCode)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find DriverRouteAssignment
+    public DriverRouteAssignment[] findDriverRouteAssignment(FindDriverRouteAssignment findDriverRouteAssignment, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "driverRouteAssignment/find");
+            HttpEntity<?> entity = new HttpEntity<>(findDriverRouteAssignment, headers);
+            ResponseEntity<DriverRouteAssignment[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, DriverRouteAssignment[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //==================================================ZoneMaster===================================================
+    //Get All ZoneMaster
+    public ZoneMaster[] getAllZoneMaster(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "zonemaster");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<ZoneMaster[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ZoneMaster[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get ZoneMaster
+    public ZoneMaster getZoneMaster(String companyId, String languageId, String zoneId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "zonemaster/" + zoneId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<ZoneMaster> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ZoneMaster.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create ZoneMaster
+    public ZoneMaster createZoneMaster(AddZoneMaster addZoneMaster, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "zonemaster")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addZoneMaster, headers);
+            ResponseEntity<ZoneMaster> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ZoneMaster.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update ZoneMaster
+    public ZoneMaster updateZoneMaster(String companyId, String languageId, String zoneId,
+                                       UpdateZoneMaster updateZoneMaster, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateZoneMaster, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "zonemaster/" + zoneId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<ZoneMaster> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ZoneMaster.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete ZoneMaster
+    public boolean deleteZoneMaster(String companyId, String languageId, String zoneId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "zonemaster/" + zoneId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find ZoneMaster
+    public ZoneMaster[] findZoneMaster(FindZoneMaster findZoneMaster, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "zonemaster/find");
+            HttpEntity<?> entity = new HttpEntity<>(findZoneMaster, headers);
+            ResponseEntity<ZoneMaster[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ZoneMaster[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    //==================================================ServiceProvider===================================================
+    //Get All ServiceProvider
+    public ServiceProvider[] getAllServiceProvider(String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "Rest Template");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "serviceprovider");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<ServiceProvider[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ServiceProvider[].class);
+            log.info("result: " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Get ServiceProvider
+    public ServiceProvider getServiceProvider(String companyId, String languageId, String serviceProvidersId, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "serviceprovider/" + serviceProvidersId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<ServiceProvider> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.GET, entity, ServiceProvider.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Create ServiceProvider
+    public ServiceProvider createServiceProvider(AddServiceProvider addServiceProvider, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "serviceprovider")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(addServiceProvider, headers);
+            ResponseEntity<ServiceProvider> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ServiceProvider.class);
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Update ServiceProvider
+    public ServiceProvider updateServiceProvider(String companyId, String languageId, String serviceProvidersId,
+                                                 UpdateServiceProvider updateServiceProvider, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(updateServiceProvider, headers);
+            HttpClient client = HttpClients.createDefault();
+            RestTemplate restTemplate = getRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "serviceprovider/" + serviceProvidersId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<ServiceProvider> result = restTemplate.exchange(builder.toUriString(), HttpMethod.PATCH, entity, ServiceProvider.class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete ServiceProvider
+    public boolean deleteServiceProvider(String companyId, String languageId, String serviceProvidersId, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "MNRClara's RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "serviceprovider/" + serviceProvidersId)
+                    .queryParam("companyId", companyId)
+                    .queryParam("languageId", languageId)
+                    .queryParam("loginUserID", loginUserID);
+            ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.DELETE, entity, String.class);
+            log.info("result : " + result);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Find ServiceProvider
+    public ServiceProvider[] findServiceProvider(FindServiceProvider findServiceProvider, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getIDMasterServiceApiUrl() + "serviceprovider/find");
+            HttpEntity<?> entity = new HttpEntity<>(findServiceProvider, headers);
+            ResponseEntity<ServiceProvider[]> result =
+                    getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ServiceProvider[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 }
 

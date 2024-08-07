@@ -2,8 +2,15 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ReturnDetails {
+
+    private Long returnId;
+
+//    private Long consignmentId = 0L;
+
     private String addressHubCode;
 
     private String accountId;
@@ -35,5 +42,13 @@ public class ReturnDetails {
     private String latitude;
 
     private String longitude;
+
+    private String createdBy;
+
+    private Date createdOn = new Date();
+
+    private String updatedBy;
+
+    private Date updatedOn = new Date();
 
 }

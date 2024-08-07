@@ -1,18 +1,25 @@
 package com.courier.overc360.api.midmile.primary.model.consignment;
 
+import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "tblconsignment_entity")
-public class ConsignmentEntity {
+public class ConsignmentEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CONSIGNMENT_ID")
@@ -30,11 +37,11 @@ public class ConsignmentEntity {
     @Column(name = "C_NAME", columnDefinition = "nvarchar(50)")
     private String companyName;
 
-//    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
-//    private String statusId;
+    @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
+    private String statusId;
 
-//    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
-//    private String statusDescription;
+    @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
+    private String statusDescription;
 
     @Column(name = "PARTNER_ID", columnDefinition = "nvarchar(50)")
     private String partnerId;
@@ -87,7 +94,6 @@ public class ConsignmentEntity {
     @Column(name = "NO_OF_PACKAGE_MAWB", columnDefinition = "nvarchar(50)")
     private String noOfPackageMawb;
 
-
     @Column(name = "NO_OF_PACKAGE_HAWB", columnDefinition = "nvarchar(50)")
     private String noOfPackageHawb;
 
@@ -102,21 +108,6 @@ public class ConsignmentEntity {
 
     @Column(name = "FLIGHT_ARRIVAL_TIME")
     private Date flightArrivalTime;
-
-    @Column(name = "CONSIGNEE_NAME", columnDefinition = "nvarchar(50)")
-    private String consigneeName;
-
-    @Column(name = "CONSIGNEE_CIVIL_ID", columnDefinition = "nvarchar(50)")
-    private String consigneeCivilId;
-
-    @Column(name = "INVOICE_SUPPLIER_NAME", columnDefinition = "nvarchar(50)")
-    private String invoiceSupplierName;
-
-    @Column(name = "FREIGHT_CURRENCY", columnDefinition = "nvarchar(50)")
-    private String freightCurrency;
-
-    @Column(name = "FREIGHT_CHARGES", columnDefinition = "nvarchar(50)")
-    private String freightCharges;
 
     @Column(name = "COUNTRY_OF_SUPPLY", columnDefinition = "nvarchar(50)")
     private String countryOfSupply;
@@ -148,6 +139,9 @@ public class ConsignmentEntity {
     @Column(name = "CONS_BAG_ID")
     private Long consignmentBagId;
 
+    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
+    private String customsInsurance;
+
     @Column(name = "CONSIGNMENT_VALUE_LOCAL", columnDefinition = "nvarchar(50)")
     private String consignmentValueLocal;
 
@@ -160,29 +154,14 @@ public class ConsignmentEntity {
     @Column(name = "CUSTOMS_VALUE", columnDefinition = "nvarchar(50)")
     private String customsValue;
 
-    @Column(name = "CUSTOMS_INSURANCE", columnDefinition = "nvarchar(50)")
-    private String customsInsurance;
-
     @Column(name = "CALCULATED_TOTAL_DUTY", columnDefinition = "nvarchar(50)")
     private String calculatedTotalDuty;
 
     @Column(name = "COUNTRY_OF_DESTINATION", columnDefinition = "nvarchar(50)")
     private String countryOfDestination;
 
-    @Column(name = "NO_OF_CRT", columnDefinition = "nvarchar(50)")
-    private String noOfCrt;
-
-    @Column(name = "TOTAL_SHIPMENT_WEIGHT", columnDefinition = "nvarchar(50)")
-    private String totalShipmentWeight;
-
-    @Column(name = "TOTAL_WEIGHT_HAWB", columnDefinition = "nvarchar(50)")
-    private String totalWeightHawb;
-
     @Column(name = "ESTIMATED_DEPARTURE_TIME")
     private Date estimatedDepartureTime;
-
-    @Column(name = "SPECIAL_APPROVAL_VALUE", columnDefinition = "nvarchar(50)")
-    private String specialApprovalValue;
 
     @Column(name = "AIRPORT_ORIGIN_CODE", columnDefinition = "nvarchar(50)")
     private String airportOriginCode;
@@ -196,7 +175,7 @@ public class ConsignmentEntity {
     @Column(name = "INVOICE_DATE", columnDefinition = "nvarchar(50)")
     private String invoiceDate;
 
-    @Column(name = "INVOICE_TYPE", columnDefinition = "nvarchar(50)")
+    @Column(name = "INVOICE_Type", columnDefinition = "nvarchar(50)")
     private String invoiceType;
 
     @Column(name = "INVOICE_URL", columnDefinition = "nvarchar(500)")
@@ -223,15 +202,6 @@ public class ConsignmentEntity {
     @Column(name = "NO_OF_Packages", columnDefinition = "nvarchar(50)")
     private String noOfPackages;
 
-    @Column(name = "NOTIFY_PARTY", columnDefinition = "nvarchar(50)")
-    private String notifyParty;
-
-    @Column(name = "ITEM_TOTAL_PRICE", columnDefinition = "nvarchar(50)")
-    private String itemTotalPrice;
-
-    @Column(name = "PackageType", columnDefinition = "nvarchar(50)")
-    private String packageType;
-
     @Column(name = "QUANTITY", columnDefinition = "nvarchar(50)")
     private String quantity;
 
@@ -244,9 +214,6 @@ public class ConsignmentEntity {
     @Column(name = "IS_EXEMPTED", columnDefinition = "nvarchar(50)")
     private String isExempted;
 
-    @Column(name = "REFERENCE_NUMBER", columnDefinition = "nvarchar(50)")
-    private String referenceNumber;
-
     @Column(name = "CUSTOMER_CODE", columnDefinition = "nvarchar(50)")
     private String customerCode;
 
@@ -255,6 +222,12 @@ public class ConsignmentEntity {
 
     @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
     private String hubCode;
+
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
+
+    @Column(name = "PIECE_ID", columnDefinition = "nvarchar(50)")
+    private String pieceId;
 
     @Column(name = "CONSIGNMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String consignmentType;
@@ -268,35 +241,20 @@ public class ConsignmentEntity {
     @Column(name = "FORWARD_REFERENCE_NUMBER", columnDefinition = "nvarchar(50)")
     private String forwardReferenceNumber;
 
-    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
-    private String hawbType;
-
-    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
-    private String hawbTypeId;
-
-    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
-    private String hawbTypeDescription;
-
-    @Column(name = "HAWB_TIMESTAMP")
-    private Date hawbTimeStamp = new Date();
-
-    @Column(name = "WORKER_CODE", columnDefinition = "nvarchar(50)")
-    private String workerCode;
-
     @Column(name = "PAYMENT_TYPE", columnDefinition = "nvarchar(50)")
     private String paymentType;
 
-//    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
-//    private String eventCode;
+    @Column(name = "EVENT_CODE", columnDefinition = "nvarchar(50)")
+    private String eventCode;
 
-//    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
-//    private String eventText;
+    @Column(name = "EVENT_TEXT", columnDefinition = "nvarchar(50)")
+    private String eventText;
 
-//    @Column(name = "EVENT_TIMESTAMP")
-//    private Date eventTimestamp;
+    @Column(name = "EVENT_TIMESTAMP")
+    private Date eventTimestamp;
 
-//    @Column(name = "STATUS_TIMESTAMP")
-//    private Date statusTimestamp;
+    @Column(name = "STATUS_TIMESTAMP")
+    private Date statusTimestamp;
 
     @Column(name = "PRIMARY_DO", columnDefinition = "nvarchar(50)")
     private String primaryDo;
@@ -334,6 +292,168 @@ public class ConsignmentEntity {
     @Column(name = "INSURANCE", columnDefinition = "nvarchar(50)")
     private String insurance;
 
+    @Column(name = "LOAD_TYPE_ID", columnDefinition = "nvarchar(50)")
+    private String loadTypeId;
+
+    @Column(name = "LOAD_TYPE", columnDefinition = "nvarchar(50)")
+    private String loadType;
+
+    @Column(name = "DESCRIPTION", columnDefinition = "nvarchar(500)")
+    private String description;
+
+    @Column(name = "NOTES", columnDefinition = "nvarchar(500)")
+    private String notes;
+
+    @Column(name = "COD_AMOUNT", columnDefinition = "nvarchar(50)")
+    private String codAmount;
+
+    @Column(name = "COD_FAVOR_OF", columnDefinition = "nvarchar(50)")
+    private String codFavorOf;
+
+    @Column(name = "COD_COLLECTION_MODE", columnDefinition = "nvarchar(50)")
+    private String codCollectionMode;
+
+    @Column(name = "DECLARED_VALUE_WITHOUT_TAX", columnDefinition = "nvarchar(50)")
+    private String declaredValueWithoutTax;
+
+    @Column(name = "LENGTH", columnDefinition = "nvarchar(50)")
+    private String length;
+
+    @Column(name = "DIMENSION_UNIT", columnDefinition = "nvarchar(50)")
+    private String dimensionUnit;
+
+    @Column(name = "WIDTH", columnDefinition = "nvarchar(50)")
+    private String width;
+
+    @Column(name = "HEIGHT", columnDefinition = "nvarchar(50)")
+    private String height;
+
+    @Column(name = "WEIGHT", columnDefinition = "nvarchar(50)")
+    private String weight;
+
+    @Column(name = "WEIGHT_UNIT", columnDefinition = "nvarchar(50)")
+    private String weightUnit;
+
+    @Column(name = "VOLUME_UNIT", columnDefinition = "nvarchar(50)")
+    private String volumeUnit;
+
+    @Column(name = "PRIORITY", columnDefinition = "nvarchar(50)")
+    private String priority;
+
+    @Column(name = "COURIER_PARTNER", columnDefinition = "nvarchar(50)")
+    private String courierPartner;
+
+    @Column(name = "COURIER_ACCOUNT", columnDefinition = "nvarchar(50)")
+    private String courierAccount;
+
+    @Column(name = "COURIER_PARTNER_REFERENCE_NUMBER", columnDefinition = "nvarchar(50)")
+    private String courierPartnerReferenceNumber;
+
+    @Column(name = "PICKUP_OTP", columnDefinition = "nvarchar(50)")
+    private String pickupOtp;
+
+    @Column(name = "DELIVERY_OTP", columnDefinition = "nvarchar(50)")
+    private String deliveryOtp;
+
+    @Column(name = "RTO_OTP", columnDefinition = "nvarchar(50)")
+    private String rtoOtp;
+
+    @Column(name = "TAGS", columnDefinition = "nvarchar(500)")
+    private String tags;
+
+    @Column(name = "SERVICE_TIME", columnDefinition = "nvarchar(50)")
+    private String serviceTime;
+
+    @Column(name = "PICKUP_SERVICE_TIME", columnDefinition = "nvarchar(50)")
+    private String pickupServiceTime;
+
+    @Column(name = "DELIVERY_SERVICE_TIME", columnDefinition = "nvarchar(50)")
+    private String deliveryServiceTime;
+
+    @Column(name = "PICKUP_TIME_SLOT_START", columnDefinition = "nvarchar(50)")
+    private String pickupTimeSlotStart;
+
+    @Column(name = "PICKUP_TIME_SLOT_END", columnDefinition = "nvarchar(50)")
+    private String pickupTimeSlotEnd;
+
+    @Column(name = "SCHEDULED_AT", columnDefinition = "nvarchar(50)")
+    private String scheduledAt;
+
+    @Column(name = "EWAY_BILL", columnDefinition = "nvarchar(50)")
+    private String ewayBill;
+
+    @Column(name = "PRODUCT_CODE", columnDefinition = "nvarchar(50)")
+    private String productCode;
+
+    @Column(name = "AMOUNT", columnDefinition = "nvarchar(50)")
+    private String amount;
+
+    @Column(name = "IS_CUSTOMS_DECLARABLE", columnDefinition = "nvarchar(50)")
+    private String isCustomsDeclarable;
+
+    @Column(name = "EXEMPTION_FOR", columnDefinition = "nvarchar(50)")
+    private String exemptionFor;
+
+    @Column(name = "EXEMPTION_BENEFICIARY", columnDefinition = "nvarchar(50)")
+    private String exemptionBeneficiary;
+
+    @Column(name = "EXEMPTION_REFERENCE", columnDefinition = "nvarchar(50)")
+    private String exemptionReference;
+
+    @Column(name = "PACK_DETAILS", columnDefinition = "nvarchar(50)")
+    private String packDetails;
+
+    @Column(name = "STORAGE_LOCATION", columnDefinition = "nvarchar(50)")
+    private String storageLocation;
+
+    @Column(name = "IS_EXCHANGE", columnDefinition = "nvarchar(50)")
+    private String isExchange;
+
+    @Column(name = "REVERSE_REASON")
+    private String reverseReason;
+
+    @Column(name = "HAWB_TYP", columnDefinition = "nvarchar(50)")
+    private String hawbType;
+
+    @Column(name = "HAWB_TYP_ID", columnDefinition = "nvarchar(50)")
+    private String hawbTypeId;
+
+    @Column(name = "HAWB_TYP_TXT", columnDefinition = "nvarchar(100)")
+    private String hawbTypeDescription;
+
+    @Column(name = "HAWB_TIMESTAMP")
+    private Date hawbTimeStamp = new Date();
+
+    @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(200)")
+    private String referenceField1;
+
+    @Column(name = "REF_FIELD_2", columnDefinition = "nvarchar(200)")
+    private String referenceField2;
+
+    @Column(name = "REF_FIELD_3", columnDefinition = "nvarchar(200)")
+    private String referenceField3;
+
+    @Column(name = "REF_FIELD_4", columnDefinition = "nvarchar(200)")
+    private String referenceField4;
+
+    @Column(name = "REF_FIELD_5", columnDefinition = "nvarchar(200)")
+    private String referenceField5;
+
+    @Column(name = "REF_FIELD_6", columnDefinition = "nvarchar(200)")
+    private String referenceField6;
+
+    @Column(name = "REF_FIELD_7", columnDefinition = "nvarchar(200)")
+    private String referenceField7;
+
+    @Column(name = "REF_FIELD_8", columnDefinition = "nvarchar(200)")
+    private String referenceField8;
+
+    @Column(name = "REF_FIELD_9", columnDefinition = "nvarchar(200)")
+    private String referenceField9;
+
+    @Column(name = "REF_FIELD_10", columnDefinition = "nvarchar(200)")
+    private String referenceField10;
+
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;
 
@@ -349,32 +469,28 @@ public class ConsignmentEntity {
     @Column(name = "UTD_ON")
     private Date updatedOn = new Date();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CON_INFO_ID")
-    private ConsignmentInfo consignmentInfo;
+    // unconsolidation
+    @Column(name = "UNCONSOLIDATED")
+    private Long unconsolidatedFlag = 0L;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CON_REF_ID")
-    private ConsignmentRef consignmentRefs;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "DEST_DETAIL_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private DestinationDetails destinationDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "ORIGIN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private OriginDetails originDetails;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "RETURN_ID")
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
     private ReturnDetails returnDetails;
 
-    //Nullvalidation column
-    @Column(name = "PRE_ALERT_VALIDATION_INDIACATOR")
-    private Long preAlertValidationIndicator;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "CONSIGNMENT_ID")
+    private List<PieceDetails> pieceDetails;
 
-    // unconsolidation
-    @Column(name = "UNCONSOLIDATED")
-    private Long unconsolidatedFlag;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "CONSIGNMENT_ID", referencedColumnName = "CONSIGNMENT_ID")
+    private Set<ImageReference> referenceImageList = new HashSet<>();
 
 }

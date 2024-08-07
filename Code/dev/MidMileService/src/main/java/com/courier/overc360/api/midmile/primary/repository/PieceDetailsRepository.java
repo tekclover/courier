@@ -21,6 +21,9 @@ public interface PieceDetailsRepository extends JpaRepository<PieceDetails,Strin
     Optional<PieceDetails> findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator
             (String languageId, String companyId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
 
+    PieceDetails findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndDeletionIndicator
+            (String companyId, String languageId, String partnerId, String masterAirwayBill, String houseAirwayBill, String pieceId, Long deletionIndicator);
+
     // Get Description
     @Query(value = "Select \n" +
             "tl.lang_text langDesc, \n" +

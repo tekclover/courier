@@ -2,8 +2,9 @@ package com.courier.overc360.api.midmile.service;
 
 import com.courier.overc360.api.midmile.controller.exception.BadRequestException;
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
-import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
+import com.courier.overc360.api.midmile.primary.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.primary.model.errorlog.ErrorLog;
+import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
 import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
@@ -12,13 +13,12 @@ import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
 import com.courier.overc360.api.midmile.primary.repository.ItemDetailsRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
-import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestImpl;
-import com.courier.overc360.api.midmile.replica.model.itemdetails.FindItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaBondedManifestRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaCcrRepository;
+//import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaItemDetailsRepository;
 import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaItemDetailsSpecification;
 import com.opencsv.exceptions.CsvException;
@@ -42,9 +42,6 @@ public class ItemDetailsService {
     private ItemDetailsRepository itemDetailsRepository;
 
     @Autowired
-    private ReplicaItemDetailsRepository replicaItemDetailsRepository;
-
-    @Autowired
     private NumberRangeService numberRangeService;
 
     @Autowired
@@ -57,7 +54,7 @@ public class ItemDetailsService {
     private ImageReferenceService imageReferenceService;
 
     @Autowired
-    private ImageReferenceRepository imageReferenceRepository;
+    ImageReferenceRepository imageReferenceRepository;
 
     @Autowired
     CommonService commonService;
@@ -68,9 +65,13 @@ public class ItemDetailsService {
     @Autowired
     ReplicaCcrRepository replicaCcrRepository;
 
+    @Autowired
+    ReplicaItemDetailsRepository replicaItemDetailsRepository;
+
     //Decimal Format
     DecimalFormat decimalFormat = new DecimalFormat("#.###");
     /*--------------------------------------------------------PRIMARY------------------------------------------------------------------------*/
+
 
     /**
      * Get ItemDetails
@@ -102,55 +103,40 @@ public class ItemDetailsService {
         return dbItemDetails.get();
     }
 
-//    /**
-//     * Create ItemDetails
-//     *
-//     * @param addItemDetails
-//     * @param loginUserID
-//     * @return
-//     * @throws IllegalAccessException
-//     * @throws InvocationTargetException
-//     */
-//    @Transactional
-//    public ItemDetails createItemDetails(AddItemDetails addItemDetails, String loginUserID)
-//            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-//        try {
-//            Optional<ItemDetails> duplicateItemDetails = itemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-//                    addItemDetails.getLanguageId(), addItemDetails.getCompanyId(), addItemDetails.getPartnerId(),
-//                    addItemDetails.getMasterAirwayBill(), addItemDetails.getHouseAirwayBill(), addItemDetails.getPieceId(),
-//                    addItemDetails.getPieceItemId(), 0L);
-//
-//            if (duplicateItemDetails.isPresent()) {
-//                throw new BadRequestException("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
-//            } else {
-//                log.info("new ItemDetails --> " + addItemDetails);
-//                IKeyValuePair iKeyValuePair = itemDetailsRepository.getDescription(addItemDetails.getLanguageId(), addItemDetails.getCompanyId());
-//                ItemDetails newItemDetails = new ItemDetails();
-//                BeanUtils.copyProperties(addItemDetails, newItemDetails, CommonUtils.getNullPropertyNames(addItemDetails));
-//                if (addItemDetails.getPieceItemId() == null || addItemDetails.getPieceItemId().isBlank()) {
-//                    String NUM_RAN_OBJ = "ITEMDETAILS";
-//                    String PIECE_ITEM_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-//                    log.info("next Value from NumberRange for PIECE_ITEM_ID : " + PIECE_ITEM_ID);
-//                    newItemDetails.setPieceItemId(PIECE_ITEM_ID);
-//                }
-//                if (iKeyValuePair != null) {
-//                    newItemDetails.setLanguageDescription(iKeyValuePair.getLangDesc());
-//                    newItemDetails.setCompanyName(iKeyValuePair.getCompanyDesc());
-//                }
-//                newItemDetails.setDeletionIndicator(0L);
-//                newItemDetails.setCreatedBy(loginUserID);
-//                newItemDetails.setCreatedOn(new Date());
-//                newItemDetails.setUpdatedBy(loginUserID);
-//                newItemDetails.setUpdatedOn(new Date());
-//                return itemDetailsRepository.save(newItemDetails);
-//            }
-//        } catch (Exception e) {
-//            // Error Log
-//            createItemDetailsLog2(addItemDetails, e.toString());
-//            e.printStackTrace();
-//            throw new RuntimeException(e);
-//        }
-//    }
+    /**
+     * @param getItemDetails
+     * @param updateItemDetails
+     * @param loginUserID
+     * @return
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws IOException
+     * @throws CsvException
+     */
+    @Transactional
+    public List<ItemDetails> updateItemDetails(List<ItemDetails> getItemDetails, List<ItemDetails> updateItemDetails, String loginUserID)
+            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
+        try {
+            List<ItemDetails> itemDetailsList = new ArrayList<>();
+            for (ItemDetails itemDetails : updateItemDetails) {
+                for (ItemDetails dbItem : getItemDetails) {
+                    if (Objects.equals(itemDetails.getPieceItemId(), dbItem.getPieceItemId())) {
+                        BeanUtils.copyProperties(itemDetails, dbItem, CommonUtils.getNullPropertyNames(itemDetails));
+                        dbItem.setUpdatedBy(loginUserID);
+                        dbItem.setUpdatedOn(new Date());
+                        itemDetailsList.add(itemDetailsRepository.save(dbItem));
+//                        itemDetailsList.add(dbItem);
+                    }
+                }
+            }
+            return itemDetailsList;
+        } catch (Exception e) {
+            // Error Log
+//            createItemDetailsLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, e.toString());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Update ItemDetails
@@ -187,72 +173,6 @@ public class ItemDetailsService {
         }
     }
 
-
-    /**
-     * @param languageId
-     * @param companyId
-     * @param partnerId
-     * @param masterAirwayBill
-     * @param houseAirwayBill
-     * @param pieceId
-     * @param loginUserID
-     * @param updateItemDetails
-     * @return
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws IOException
-     * @throws CsvException
-     */
-    @Transactional
-    public List<UpdateItemDetails> updateItemDetails(String languageId, String companyId, String partnerId, String masterAirwayBill,
-                                                     String houseAirwayBill, String pieceId, String loginUserID, List<UpdateItemDetails> updateItemDetails)
-            throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        List<UpdateItemDetails> itemDetailsList = new ArrayList<>();
-        try {
-            for (UpdateItemDetails itemDetails : updateItemDetails) {
-                UpdateItemDetails newItemDetails = new UpdateItemDetails();
-                ItemDetails dbItemDetails = getItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, itemDetails.getPieceItemId());
-                BeanUtils.copyProperties(updateItemDetails, dbItemDetails, CommonUtils.getNullPropertyNames(updateItemDetails));
-                dbItemDetails.setUpdatedBy(loginUserID);
-                dbItemDetails.setUpdatedOn(new Date());
-                ItemDetails savedItemDetails = itemDetailsRepository.save(dbItemDetails);
-
-                //Update ReferenceImage
-                List<ReferenceImageList> referenceImageLists = new ArrayList<>();
-                if (itemDetails.getReferenceImageList() != null && !itemDetails.getReferenceImageList().isEmpty()) {
-                    for (ReferenceImageList image : itemDetails.getReferenceImageList()) {
-
-                        ReferenceImageList newRefImageList = new ReferenceImageList();
-                        String downloadDocument = commonService.downLoadDocument(image.getReferenceImageUrl(), "document", "image");
-                        ImageReference imageReferenceRecord = imageReferenceRepository.findByImageRefIdAndDeletionIndicator(image.getImageRefId(), 0L);
-                        if (imageReferenceRecord == null) {
-                            throw new BadRequestException(" ImageReferenceId doesn't exist" + image.getImageRefId());
-                        }
-
-                        imageReferenceRecord.setReferenceImageUrl(image.getReferenceImageUrl());
-                        imageReferenceRecord.setReferenceField2(downloadDocument);
-                        imageReferenceRecord.setDeletionIndicator(0L);
-                        imageReferenceRecord.setUpdatedBy(loginUserID);
-                        imageReferenceRecord.setUpdatedOn(new Date());
-                        ImageReference imageRef = imageReferenceRepository.save(imageReferenceRecord);
-                        BeanUtils.copyProperties(imageRef, newRefImageList);
-                        referenceImageLists.add(newRefImageList);
-                    }
-                }
-                newItemDetails.setReferenceImageList(referenceImageLists);
-
-                BeanUtils.copyProperties(savedItemDetails, newItemDetails);
-                itemDetailsList.add(newItemDetails);
-            }
-        } catch (Exception e) {
-            // Error Log
-            createItemDetailsLog(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceId, e.toString());
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        return itemDetailsList;
-    }
-
     /**
      * Delete ItemDetails
      *
@@ -281,6 +201,7 @@ public class ItemDetailsService {
             throw new BadRequestException("Error in deleting PieceItemId - " + pieceItemId);
         }
     }
+
 
     /**
      * Delete ItemDetails
@@ -349,7 +270,6 @@ public class ItemDetailsService {
 
 
     }
-    /*======================================================REPLICA=====================================================*/
 
     /**
      * Get All ItemDetails
@@ -361,123 +281,6 @@ public class ItemDetailsService {
         itemDetailsList = itemDetailsList.stream().filter(i -> i.getDeletionIndicator() == 0).collect(Collectors.toList());
         return itemDetailsList;
     }
-
-    /**
-     * Get Item Details
-     *
-     * @param languageId
-     * @param companyId
-     * @param partnerId
-     * @param masterAirwayBill
-     * @param houseAirwayBill
-     * @param pieceId
-     * @param pieceItemId
-     * @return
-     */
-    public ReplicaItemDetails replicaGetItemDetails(String languageId, String companyId, String partnerId, String
-            masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId) {
-        Optional<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
-                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, 0L);
-        if (dbItemDetails.isEmpty()) {
-            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PartnerId: "
-                    + partnerId + ", MasterAirwayBill: " + masterAirwayBill + ", HouseAirwayBill: " + houseAirwayBill + ", PieceId: " + pieceId + "and PieceItemId: " + pieceItemId + " doesn't exists");
-        }
-        return dbItemDetails.get();
-    }
-
-    /**
-     * for PreAlertManifest
-     *
-     * @param languageId
-     * @param companyId
-     * @param pieceId
-     * @return
-     */
-    public List<ReplicaItemDetails> replicaGetItemDetails(String languageId, String companyId, String pieceId) {
-        List<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
-                languageId, companyId, pieceId, 0L);
-        if (dbItemDetails.isEmpty()) {
-            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PieceId: " + pieceId + " doesn't exists");
-        }
-        return dbItemDetails;
-    }
-
-    /**
-     * Find ItemDetails
-     *
-     * @param findItemDetails
-     * @return
-     */
-    public List<ReplicaItemDetails> findItemDetails(FindConsignment findItemDetails) {
-
-        ReplicaItemDetailsSpecification spec = new ReplicaItemDetailsSpecification(findItemDetails);
-        List<ReplicaItemDetails> results = replicaItemDetailsRepository.findAll(spec);
-        log.info("found Cities --> " + results);
-        return results;
-    }
-
-    /**
-     * @param findPreAlertManifest
-     * @return
-     */
-    public List<PreAlertManifestImpl> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
-        if (findPreAlertManifest.getConsignmentId() != null && findPreAlertManifest.getConsignmentId().isEmpty()) {
-            findPreAlertManifest.setConsignmentId(null);
-        }
-        if (findPreAlertManifest.getLanguageId() != null && findPreAlertManifest.getLanguageId().isEmpty()) {
-            findPreAlertManifest.setLanguageId(null);
-        }
-        if (findPreAlertManifest.getCompanyId() != null && findPreAlertManifest.getCompanyId().isEmpty()) {
-            findPreAlertManifest.setCompanyId(null);
-        }
-        if (findPreAlertManifest.getPartnerId() != null && findPreAlertManifest.getPartnerId().isEmpty()) {
-            findPreAlertManifest.setPartnerId(null);
-        }
-        if (findPreAlertManifest.getStatusId() != null && findPreAlertManifest.getStatusId().isEmpty()) {
-            findPreAlertManifest.setStatusId(null);
-        }
-        if (findPreAlertManifest.getConsoleIndicator() != null && findPreAlertManifest.getConsoleIndicator().isEmpty()) {
-            findPreAlertManifest.setConsoleIndicator(null);
-        }
-        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getManifestIndicator().isEmpty()) {
-            findPreAlertManifest.setManifestIndicator(null);
-        }
-        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
-        List<PreAlertManifestImpl> results = null;
-        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() == null) {
-            results = replicaItemDetailsRepository.getPreAlertManifest(
-                    findPreAlertManifest.getConsignmentId(),
-                    findPreAlertManifest.getLanguageId(),
-                    findPreAlertManifest.getCompanyId(),
-                    findPreAlertManifest.getPartnerId(),
-                    findPreAlertManifest.getStatusId());
-            log.info("PreAlert Manifest result: " + results.size());
-            return results;
-        }
-
-        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() != null && !findPreAlertManifest.getConsoleIndicator().isEmpty()) {
-            findPreAlertManifest.setManifestIndicator(Collections.singletonList(0L));
-        }
-        if (findPreAlertManifest.getConsoleIndicator() == null && findPreAlertManifest.getManifestIndicator() != null && !findPreAlertManifest.getManifestIndicator().isEmpty()) {
-            findPreAlertManifest.setConsoleIndicator(Collections.singletonList(0L));
-        }
-
-        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
-        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getConsoleIndicator() != null) {
-            results = replicaItemDetailsRepository.getPreAlertManifest(
-                    findPreAlertManifest.getConsignmentId(),
-                    findPreAlertManifest.getLanguageId(),
-                    findPreAlertManifest.getCompanyId(),
-                    findPreAlertManifest.getPartnerId(),
-                    findPreAlertManifest.getStatusId(),
-                    findPreAlertManifest.getConsoleIndicator(),
-                    findPreAlertManifest.getManifestIndicator());
-            log.info("PreAlert Manifest Output : " + results.size());
-            return results;
-        }
-        return null;
-    }
-
 
     //=============================================ItemDetails_ErrorLog=======================================================
     private void createItemDetailsLog(String languageId, String companyId, String partnerId, String
@@ -597,13 +400,13 @@ public class ItemDetailsService {
      * @throws CsvException
      */
     @Transactional
-    public List<AddItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName, String partnerName,
-                                                      String houseAirwayBill, String masterAirwayBill, String pieceId, String partnerId,
-                                                      List<AddItemDetails> addItemDetailsList, Long consignmentId, String partnerHawBill, String hsCode,
-                                                      String partnerMawBill, String length, String width, String height, String weightUnit, String volume,
-                                                      String codAmount, String country, String loginUserID)
+    public List<ItemDetails> createItemDetailsList(String companyId, String languageId, String companyName, String languageName, String partnerName,
+                                                   String houseAirwayBill, String masterAirwayBill, String pieceId, String partnerId,
+                                                   List<AddItemDetails> addItemDetailsList, String partnerHawBill, String hsCode,
+                                                   String partnerMawBill, String length, String width, String height, String weightUnit, String volume,
+                                                   String codAmount, String country, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        List<AddItemDetails> itemDetailsList = new ArrayList<>();
+        List<ItemDetails> itemDetailsList = new ArrayList<>();
         try {
             Long itemDetails = 1L;
             Double totalLength = 0.0;
@@ -617,8 +420,7 @@ public class ItemDetailsService {
                                     languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, addItemDetails.getPieceItemId(), 0L);
 
                     if (duplicateItemDetails.isPresent()) {
-//                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
-                        log.info("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
+                        throw new BadRequestException("Record is getting Duplicated with the given values : pieceItemId -" + addItemDetails.getPieceItemId());
                     } else {
 
                         String PIECE_ITEM_ID = pieceId + String.format("%03d", itemDetails++);
@@ -729,7 +531,7 @@ public class ItemDetailsService {
                             }
                         }
                         //volume calculation
-                        if((newItemDetails.getLength() != null && !newItemDetails.getLength().isBlank()) &&
+                        if ((newItemDetails.getLength() != null && !newItemDetails.getLength().isBlank()) &&
                                 (newItemDetails.getWidth() != null && !newItemDetails.getWidth().isBlank()) &&
                                 (newItemDetails.getHeight() != null && !newItemDetails.getHeight().isBlank())) {
                             Double itemVolumeCalculation = Double.valueOf(newItemDetails.getLength()) * Double.valueOf(newItemDetails.getWidth()) * Double.valueOf(newItemDetails.getHeight());
@@ -749,29 +551,22 @@ public class ItemDetailsService {
                         newItemDetails.setPartnerName(partnerName);
                         newItemDetails.setPartnerHouseAirwayBill(partnerHawBill);
                         newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
-                        newItemDetails.setConsignmentId(consignmentId);
-
                         if (addItemDetails.getHsCode() == null && hsCode != null) {
                             newItemDetails.setHsCode(hsCode);
                         }
                         //ImageReference Created
-                        List<ReferenceImageList> imageReferenceList = new ArrayList<>();
+                        Set<ImageReference> imageReferenceList = new HashSet<>();
                         if (addItemDetails.getReferenceImageList() != null) {
-                            for (ReferenceImageList imageReference : addItemDetails.getReferenceImageList()) {
+                            for (AddImageReference imageReference : addItemDetails.getReferenceImageList()) {
                                 //CommonService
                                 String downloadDocument = commonService.downLoadDocument(imageReference.getReferenceImageUrl(), "document", "image");
                                 if (downloadDocument != null) {
                                     ImageReference dbImage = imageReferenceService.createImageReference(languageId, companyId, partnerId,
-                                            partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, null, pieceId,
+                                            partnerName, houseAirwayBill, masterAirwayBill, partnerHawBill, partnerMawBill, pieceId,
                                             PIECE_ITEM_ID, imageReference.getReferenceImageUrl(), "PI_ID", downloadDocument, loginUserID);
 
-                                    //ReferenceImage Set
-                                    ReferenceImageList newImage = new ReferenceImageList();
-                                    newImage.setImageRefId(dbImage.getImageRefId());
-                                    newImage.setReferenceImageUrl(dbImage.getReferenceImageUrl());
-                                    newImage.setPdfUrl(dbImage.getReferenceField2());
 
-                                    imageReferenceList.add(newImage);
+                                    imageReferenceList.add(dbImage);
                                 }
                             }
                         }
@@ -781,11 +576,9 @@ public class ItemDetailsService {
                         newItemDetails.setCreatedOn(new Date());
                         newItemDetails.setUpdatedBy(null);
                         newItemDetails.setUpdatedOn(null);
-                        AddItemDetails newAddItemDetails = new AddItemDetails();
+                        newItemDetails.setReferenceImageList(imageReferenceList);
                         ItemDetails savedItemDetails = itemDetailsRepository.save(newItemDetails);
-                        BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
-                        newAddItemDetails.setReferenceImageList(imageReferenceList);
-                        itemDetailsList.add(newAddItemDetails);
+                        itemDetailsList.add(savedItemDetails);
                     }
                 }
             } else {
@@ -803,16 +596,15 @@ public class ItemDetailsService {
                 newItemDetails.setPartnerName(partnerName);
                 newItemDetails.setPartnerHouseAirwayBill(partnerHawBill);
                 newItemDetails.setPartnerMasterAirwayBill(partnerMawBill);
-                newItemDetails.setConsignmentId(consignmentId);
                 newItemDetails.setHsCode(hsCode);
                 newItemDetails.setLength(length);
                 newItemDetails.setHeight(height);
                 newItemDetails.setWidth(width);
-                if(volume != null && !volume.isBlank()) {
-                newItemDetails.setVolume(volume);
+                if (volume != null && !volume.isBlank()) {
+                    newItemDetails.setVolume(volume);
                 } else {
                     //volume calculation
-                    if((length != null && !length.isBlank()) && (width != null && !width.isBlank()) && (height != null && !height.isBlank())) {
+                    if ((length != null && !length.isBlank()) && (width != null && !width.isBlank()) && (height != null && !height.isBlank())) {
                         Double itemVolumeCalculation = Double.valueOf(length) * Double.valueOf(width) * Double.valueOf(height);
                         newItemDetails.setVolume(String.valueOf(itemVolumeCalculation));
                     }
@@ -825,10 +617,8 @@ public class ItemDetailsService {
                 newItemDetails.setUpdatedBy(null);
                 newItemDetails.setUpdatedOn(null);
 
-                AddItemDetails newAddItemDetails = new AddItemDetails();
                 ItemDetails savedItemDetails = itemDetailsRepository.save(newItemDetails);
-                BeanUtils.copyProperties(savedItemDetails, newAddItemDetails);
-                itemDetailsList.add(newAddItemDetails);
+                itemDetailsList.add(savedItemDetails);
             }
             itemDetailsRepository.updatePiece(companyId, languageId, pieceId, houseAirwayBill, masterAirwayBill, String.valueOf(totalLength), String.valueOf(totalHeight), String.valueOf(totalWeight), String.valueOf(totalVolume));
         } catch (Exception e) {
@@ -841,6 +631,124 @@ public class ItemDetailsService {
         }
         return itemDetailsList;
     }
+
+
+    /**
+     * Get Item Details
+     *
+     * @param languageId
+     * @param companyId
+     * @param partnerId
+     * @param masterAirwayBill
+     * @param houseAirwayBill
+     * @param pieceId
+     * @param pieceItemId
+     * @return
+     */
+    public ReplicaItemDetails replicaGetItemDetails(String languageId, String companyId, String partnerId, String
+            masterAirwayBill, String houseAirwayBill, String pieceId, String pieceItemId) {
+        Optional<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndPieceIdAndPieceItemIdAndDeletionIndicator(
+                languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId, 0L);
+        if (dbItemDetails.isEmpty()) {
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PartnerId: "
+                    + partnerId + ", MasterAirwayBill: " + masterAirwayBill + ", HouseAirwayBill: " + houseAirwayBill + ", PieceId: " + pieceId + "and PieceItemId: " + pieceItemId + " doesn't exists");
+        }
+        return dbItemDetails.get();
+    }
+
+    /**
+     * for PreAlertManifest
+     *
+     * @param languageId
+     * @param companyId
+     * @param pieceId
+     * @return
+     */
+    public List<ReplicaItemDetails> replicaGetItemDetails(String languageId, String companyId, String pieceId) {
+        List<ReplicaItemDetails> dbItemDetails = replicaItemDetailsRepository.findByLanguageIdAndCompanyIdAndPieceIdAndDeletionIndicator(
+                languageId, companyId, pieceId, 0L);
+        if (dbItemDetails.isEmpty()) {
+            throw new BadRequestException("The given values - LanguageId: " + languageId + ", CompanyId: " + companyId + ", PieceId: " + pieceId + " doesn't exists");
+        }
+        return dbItemDetails;
+    }
+
+    /**
+     * Find ItemDetails
+     *
+     * @param findItemDetails
+     * @return
+     */
+    public List<ReplicaItemDetails> findItemDetails(FindConsignment findItemDetails) {
+
+        ReplicaItemDetailsSpecification spec = new ReplicaItemDetailsSpecification(findItemDetails);
+        List<ReplicaItemDetails> results = replicaItemDetailsRepository.findAll(spec);
+        log.info("found Cities --> " + results);
+        return results;
+    }
+
+    /**
+     * @param findPreAlertManifest
+     * @return
+     */
+    public List<PreAlertManifestImpl> findPreAlertManifest(FindPreAlertManifest findPreAlertManifest) {
+        if (findPreAlertManifest.getConsignmentId() != null && findPreAlertManifest.getConsignmentId().isEmpty()) {
+            findPreAlertManifest.setConsignmentId(null);
+        }
+        if (findPreAlertManifest.getLanguageId() != null && findPreAlertManifest.getLanguageId().isEmpty()) {
+            findPreAlertManifest.setLanguageId(null);
+        }
+        if (findPreAlertManifest.getCompanyId() != null && findPreAlertManifest.getCompanyId().isEmpty()) {
+            findPreAlertManifest.setCompanyId(null);
+        }
+        if (findPreAlertManifest.getPartnerId() != null && findPreAlertManifest.getPartnerId().isEmpty()) {
+            findPreAlertManifest.setPartnerId(null);
+        }
+        if (findPreAlertManifest.getStatusId() != null && findPreAlertManifest.getStatusId().isEmpty()) {
+            findPreAlertManifest.setStatusId(null);
+        }
+        if (findPreAlertManifest.getConsoleIndicator() != null && findPreAlertManifest.getConsoleIndicator().isEmpty()) {
+            findPreAlertManifest.setConsoleIndicator(null);
+        }
+        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getManifestIndicator().isEmpty()) {
+            findPreAlertManifest.setManifestIndicator(null);
+        }
+        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
+        List<PreAlertManifestImpl> results = null;
+        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() == null) {
+            results = replicaItemDetailsRepository.getPreAlertManifest(
+                    findPreAlertManifest.getConsignmentId(),
+                    findPreAlertManifest.getLanguageId(),
+                    findPreAlertManifest.getCompanyId(),
+                    findPreAlertManifest.getPartnerId(),
+                    findPreAlertManifest.getStatusId());
+            log.info("PreAlert Manifest result: " + results.size());
+            return results;
+        }
+
+        if (findPreAlertManifest.getManifestIndicator() == null && findPreAlertManifest.getConsoleIndicator() != null && !findPreAlertManifest.getConsoleIndicator().isEmpty()) {
+            findPreAlertManifest.setManifestIndicator(Collections.singletonList(0L));
+        }
+        if (findPreAlertManifest.getConsoleIndicator() == null && findPreAlertManifest.getManifestIndicator() != null && !findPreAlertManifest.getManifestIndicator().isEmpty()) {
+            findPreAlertManifest.setConsoleIndicator(Collections.singletonList(0L));
+        }
+
+        log.info("PreAlert Manifest Input : " + findPreAlertManifest);
+        if (findPreAlertManifest.getManifestIndicator() != null && findPreAlertManifest.getConsoleIndicator() != null) {
+            results = replicaItemDetailsRepository.getPreAlertManifest(
+                    findPreAlertManifest.getConsignmentId(),
+                    findPreAlertManifest.getLanguageId(),
+                    findPreAlertManifest.getCompanyId(),
+                    findPreAlertManifest.getPartnerId(),
+                    findPreAlertManifest.getStatusId(),
+                    findPreAlertManifest.getConsoleIndicator(),
+                    findPreAlertManifest.getManifestIndicator());
+            log.info("PreAlert Manifest Output : " + results.size());
+            return results;
+        }
+        return null;
+    }
+
 
 }
 

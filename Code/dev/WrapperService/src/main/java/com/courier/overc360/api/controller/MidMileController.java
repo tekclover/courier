@@ -74,9 +74,9 @@ public class MidMileController {
     // Find Consignments - MobileApp
     @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignments - Mobile App") //label for swagger
     @PostMapping("/consignment/find/mobileApp")
-    public ConsignmentEntity[] findConsignmentMobileApp(@Valid @RequestBody FindConsignment findConsignment,
+    public ConsignmentEntity[] findConsignmentMobileApp(@Valid @RequestBody List<FindConsignmentMobileApp> findConsignments,
                                                         @RequestParam String authToken) throws Exception {
-        return midMileService.findConsignmentMobileApp(findConsignment, authToken);
+        return midMileService.findConsignmentMobileApp(findConsignments, authToken);
     }
 
     // Find IConsignmentEntity - null validation column preAlertValidationIndicator

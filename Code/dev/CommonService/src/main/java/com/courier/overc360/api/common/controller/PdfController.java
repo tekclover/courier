@@ -179,6 +179,7 @@ public class PdfController {
             }
         }
 
+        log.info("BatchOutputPaths ----------------------> {}", batchOutputPaths);
         // Return the file paths of all created batches
         return ResponseEntity.ok(String.join(",", batchOutputPaths));
     }

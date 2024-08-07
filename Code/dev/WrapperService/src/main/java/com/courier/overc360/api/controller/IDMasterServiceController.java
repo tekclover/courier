@@ -2480,6 +2480,32 @@ public class IDMasterServiceController {
         return new ResponseEntity<>(dbHhtNotification, HttpStatus.OK);
     }
 
+    // Update HHtNotification
+    @ApiOperation(response = HhtNotification.class, value = "Update HhtNotification") // label for swagger
+    @PatchMapping("/hhtnotification/update")
+    public ResponseEntity<?> patchHhtNotification(@Valid @RequestBody HhtNotification updateHhtNotification, @RequestParam String loginUserID,
+                                                  @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
+        HhtNotification updatedHhtNotification = idmasterService.updateHhtNotification(updateHhtNotification, loginUserID, authToken);
+        return new ResponseEntity<>(updatedHhtNotification, HttpStatus.OK);
+    }
+
+    // Find HHtNotifications
+    @ApiOperation(response = HhtNotification[].class, value = "Find HhtNotifications") // label for swagger
+    @PostMapping("/hhtnotification/find")
+    public ResponseEntity<?> findHhtNotification(@Valid @RequestBody FindHhtNotification findHhtNotification, @RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        HhtNotification[] hhtNotifications = idmasterService.findHhtNotifications(findHhtNotification, authToken);
+        return new ResponseEntity<>(hhtNotifications, HttpStatus.OK);
+    }
+
+    // Get All HHtNotifications
+    @ApiOperation(response = HhtNotification[].class, value = "Get All HhtNotifications") // label for swagger
+    @PostMapping("/hhtnotification/getAll")
+    public ResponseEntity<?> getAllHhtNotifications(@RequestParam String authToken)
+            throws IllegalAccessException, InvocationTargetException {
+        HhtNotification[] hhtNotifications = idmasterService.getAllHhtNotifications(authToken);
+        return new ResponseEntity<>(hhtNotifications, HttpStatus.OK);
+    }
 
     //==================================================Route===================================================
     // Get All Route Details
@@ -2817,5 +2843,42 @@ public class IDMasterServiceController {
         ServiceProvider[] serviceProvidersList = idmasterService.findServiceProvider(findServiceProvider, authToken);
         return new ResponseEntity<>(serviceProvidersList, HttpStatus.OK);
     }
+
+    // GetAll NotificationMessage
+    @ApiOperation(response = NotificationMessage.class, value = "Get all NotificationMessage details")
+    // label for swagger
+    @GetMapping("/notificationMessage")
+    public ResponseEntity<?> getNotificationMessage(@RequestParam String authToken) {
+        NotificationMessage[] notificationMessages = idmasterService.getAllNotificationMessage(authToken);
+        return new ResponseEntity<>(notificationMessages, HttpStatus.OK);
+    }
+
+    // Find NotificationMessage
+    @ApiOperation(response = NotificationMessage.class, value = "Search NotificationMessage") // label for swagger
+    @PostMapping("/notificationMessage/findNotificationMessage")
+    public NotificationMessage[] findNotification(@RequestBody FindNotificationMessage findNotificationMessage,
+                                                  @RequestParam String authToken) throws Exception {
+        return idmasterService.findNotificationMessage(findNotificationMessage, authToken);
+    }
+
+    //Update Notification
+    @ApiOperation(response = NotificationMessage.class, value = "Update Notification Message")
+    @PatchMapping("/notificationMessage/update")
+    public ResponseEntity<?> updateNotification(@RequestBody List<NotificationMessage> updateNotification,
+                                                @RequestParam String loginUserID, @RequestParam String authToken){
+        NotificationMessage[] dbNotification = idmasterService.updateNotificationMessage(updateNotification, loginUserID, authToken);
+        return new ResponseEntity<>(dbNotification, HttpStatus.OK);
+    }
+
+    //Delete NotificationMessage
+    @ApiOperation(response = NotificationMessage.class, value = "Delete Notification Message")
+    @DeleteMapping("/notificationMessage/delete")
+    public ResponseEntity<?> deleteNotificationMessage(@RequestParam(required = false) Long notificationId, @RequestParam(required = false) String companyId,
+                                                       @RequestParam(required = false) String languageId, @RequestParam(required = false) String houseAirwayBill,
+                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+        idmasterService.deleteNotificationMessage(notificationId, companyId, languageId, houseAirwayBill, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 }

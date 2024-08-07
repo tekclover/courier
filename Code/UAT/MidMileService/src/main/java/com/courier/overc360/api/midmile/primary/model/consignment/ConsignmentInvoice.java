@@ -63,5 +63,6 @@ public interface ConsignmentInvoice {
      String getHouseAirwayBill();
      String getOriginAddress();
      String getDestinationAddress();
+     String getMasterAirwayBill();
 
 }

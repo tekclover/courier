@@ -129,9 +129,11 @@ public class CommonService {
 				ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
 
 				String[] batchPaths = result.getBody().split(",");
+				log.info("Wrapper Service BatchPath <---------------------------------------> {}", batchPaths);
 				for (String batchPath : batchPaths) {
 					// Assuming you have a method to read file content from the path
 					byte[] batchBytes = readBytesFromPath(batchPath);
+					log.info("Wrapper Service BatchBytes <------------------------------------> {}", batchBytes);
 					ZipEntry zipEntry = new ZipEntry("batch_" + batchCounter + ".pdf");
 					zos.putNextEntry(zipEntry);
 					zos.write(batchBytes);

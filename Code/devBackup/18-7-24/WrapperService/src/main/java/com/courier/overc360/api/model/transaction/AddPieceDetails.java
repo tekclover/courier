@@ -71,15 +71,23 @@ public class AddPieceDetails {
 
         private String tags;
 
-        private String pieceStatusId;
+//        private String pieceStatusId;
 
-        private Date pieceStatusTimestamp;
+//        private Date pieceStatusTimestamp;
 
         private String pieceValue;
 
         private String pieceCurrency;
 
         private String consignmentValueLocal;
+
+        private String pieceType;
+
+        private String pieceTypeId;
+
+        private String pieceTypeDescription;
+
+        private Date pieceTimeStamp = new Date();
 
         private String referenceField1;
 

@@ -15,16 +15,21 @@ public class Ccr {
 
     private String partnerId;
 
-    private String masterAirwayBill;
+    private String partnerMasterAirwayBill;
 
-    private String houseAirwayBill;
+    private String partnerHouseAirwayBill;
 
     private String consoleId;
 
     private String ccrId;
 
     private String customsCcrNo;
-    private String statusText;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
+
+//    private String statusText;
 
     private String pieceId;
 
@@ -60,7 +65,7 @@ public class Ccr {
 
     private String partnerName;
 
-    private String statusId;
+//    private String statusId;
 
     private String primaryDo;
 
@@ -68,17 +73,17 @@ public class Ccr {
 
     private String paymentType;
 
-    private String eventCode;
+//    private String eventCode;
 
-    private String eventText;
+//    private String eventText;
 
-    private Date eventTimestamp;
+//    private Date eventTimestamp;
 
-    private Date statusTimestamp;
+//    private Date statusTimestamp;
 
-    private String partnerHouseAirwayBill;
+//    private String partnerHouseAirwayBill;
 
-    private String partnerMasterAirwayBill;
+//    private String partnerMasterAirwayBill;
 
     private String noOfPackageMawb;
 
@@ -194,7 +199,13 @@ public class Ccr {
 
     private String specialApprovalCharge;
 
+    private String consoleName;
+
+    private String consoleGroupName;
+
     private Long deletionIndicator = 0L;
+
+    private String consignmentLocalId;
 
     private String referenceField1;
 

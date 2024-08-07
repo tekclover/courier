@@ -298,6 +298,7 @@ public class WrapperServiceController {
             byte[] mergedZipBytes = commonService.mergePdfs(pdfMergerList);
 
             if (mergedZipBytes != null && mergedZipBytes.length > 0) {
+                log.info("MergedZipBytes <-----------------------------> {} ", mergedZipBytes);
                 response.setContentType("application/zip");
                 response.setHeader("Content-Disposition", "attachment;filename=mergedFiles.zip");
                 response.setStatus(HttpServletResponse.SC_OK);

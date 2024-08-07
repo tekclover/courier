@@ -3,13 +3,13 @@ package com.courier.overc360.api.controller;
 import com.courier.overc360.api.model.transaction.*;
 import com.courier.overc360.api.service.CommonService;
 import com.courier.overc360.api.service.MidMileService;
-import com.google.api.Http;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,19 +59,29 @@ public class MidMileController {
     @PatchMapping("/consignment")
     public ResponseEntity<?> updateConsignment(@RequestParam String loginUserID, @Valid @RequestBody List<UpdateConsignment> updateConsignment,
                                                @RequestParam String authToken) {
-        ConsignmentEntity[] consignment = midMileService.updateConsignment( updateConsignment, loginUserID, authToken);
+        ConsignmentEntity[] consignment = midMileService.updateConsignment(updateConsignment, loginUserID, authToken);
         return new ResponseEntity<>(consignment, HttpStatus.OK);
     }
 
     // Find Consignment
     @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignment") //label for swagger
     @PostMapping("/consignment/find")
-    public ConsignmentEntity[] findConsignment(@Valid @RequestBody FindConsignment findConsignment, @RequestParam String authToken) throws Exception {
+    public ConsignmentEntity[] findConsignment(@Valid @RequestBody FindConsignment findConsignment,
+                                               @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentEntity(findConsignment, authToken);
     }
 
+    // Find Consignments - MobileApp
+    @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignments - Mobile App") //label for swagger
+    @PostMapping("/consignment/find/mobileApp")
+    public ConsignmentEntity[] findConsignmentMobileApp(@Valid @RequestBody FindConsignment findConsignment,
+                                                        @RequestParam String authToken) throws Exception {
+        return midMileService.findConsignmentMobileApp(findConsignment, authToken);
+    }
+
     // Find IConsignmentEntity - null validation column preAlertValidationIndicator
-    @ApiOperation(response = IConsignment[].class, value = "Find Consignment preAlertValidationIndicator") //label for swagger
+    @ApiOperation(response = IConsignment[].class, value = "Find Consignment preAlertValidationIndicator")
+    //label for swagger
     @PostMapping("/consignment/find/v2")
     public IConsignment[] findIConsignment(@Valid @RequestBody FindIConsignment findConsignment, @RequestParam String authToken) throws Exception {
         return midMileService.findIConsignmentEntity(findConsignment, authToken);
@@ -85,14 +95,16 @@ public class MidMileController {
     }
 
     // Find PreAlert Manifest - based on consignment details
-    @ApiOperation(response = ConsignmentEntity[].class, value = "Find PreAlert Manifest - consignment details based") //label for swagger
+    @ApiOperation(response = ConsignmentEntity[].class, value = "Find PreAlert Manifest - consignment details based")
+    //label for swagger
     @PostMapping("/consignment/findPreAlertManifest")
     public ConsignmentEntity[] findPreAlertManifest(@Valid @RequestBody FindPreAlertManifest findPreAlertManifest, @RequestParam String authToken) throws Exception {
         return midMileService.findPreAlertManifest(findPreAlertManifest, authToken);
     }
 
     // Find PreAlert Manifest - based on Item details
-    @ApiOperation(response = PreAlertManifest[].class, value = "Find PreAlert Manifest - Item Details Based") //label for swagger
+    @ApiOperation(response = PreAlertManifest[].class, value = "Find PreAlert Manifest - Item Details Based")
+    //label for swagger
     @PostMapping("/itemDetails/findPreAlertManifest")
     public PreAlertManifest[] findPreAlertManifestV2(@Valid @RequestBody FindPreAlertManifest findPreAlertManifest, @RequestParam String authToken) throws Exception {
         return midMileService.findPreAlertManifestV2(findPreAlertManifest, authToken);
@@ -112,8 +124,8 @@ public class MidMileController {
     //Delete Consignment
     @ApiOperation(response = ConsignmentEntity.class, value = "Delete Consignment")
     @PostMapping("/consignment/delete/list")
-    public ResponseEntity<?> deleteConsignment( @Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID,
-                                                @RequestParam String authToken) {
+    public ResponseEntity<?> deleteConsignment(@Valid @RequestBody List<ConsignmentDelete> consignmentDeletes, @RequestParam String loginUserID,
+                                               @RequestParam String authToken) {
         midMileService.deleteConsignmentMultiple(consignmentDeletes, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -309,9 +321,9 @@ public class MidMileController {
     @ApiOperation(response = BondedManifest.class, value = "Get BondedManifest") // label for swagger
     @GetMapping("/bondedManifest/{bondedId}")
     public ResponseEntity<?> getBondedManifest(@PathVariable String bondedId, @RequestParam String languageId,
-                                                     @RequestParam String companyId, @RequestParam String partnerId,
-                                                     @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
-                                                     @RequestParam String authToken) {
+                                               @RequestParam String companyId, @RequestParam String partnerId,
+                                               @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                               @RequestParam String authToken) {
         BondedManifest bondedManifest = midMileService.getBondedManifest(languageId, companyId, partnerId,
                 masterAirwayBill, houseAirwayBill, bondedId, authToken);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
@@ -321,19 +333,20 @@ public class MidMileController {
     @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest") // label for swagger
     @PostMapping("/bondedManifest/create/list")
     public ResponseEntity<?> postBondedManifest(@Valid @RequestBody List<AddBondedManifest> addBondedManifest,
-                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+                                                @RequestParam String loginUserID, @RequestParam String authToken) {
         BondedManifest[] bondedManifest = midMileService.createBondedManifest(addBondedManifest, loginUserID, authToken);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
 
-    // Create new BondedManifest Based on ConsignmentInput
-    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest Based On ConsignmentInput") // label for swagger
-    @PostMapping("/bondedManifest/create")
-    public ResponseEntity<?> postBondedManifestPost(@Valid @RequestBody List<ConsignmentEntity> addConsignments,
-                                                @RequestParam String loginUserID, @RequestParam String authToken) {
-        BondedManifest[] bondedManifest = midMileService.createBondedManifestBasedOnConsignment(addConsignments, loginUserID, authToken);
-        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
-    }
+//    // Create new BondedManifest Based on ConsignmentInput
+//    @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifest Based On ConsignmentInput")
+//    // label for swagger
+//    @PostMapping("/bondedManifest/create")
+//    public ResponseEntity<?> postBondedManifestPost(@Valid @RequestBody List<ConsignmentEntity> addConsignments,
+//                                                    @RequestParam String loginUserID, @RequestParam String authToken) {
+//        BondedManifest[] bondedManifest = midMileService.createBondedManifestBasedOnConsignment(addConsignments, loginUserID, authToken);
+//        return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
+//    }
 
     // Create new BondedManifests based on PreAlert Input
     @ApiOperation(response = BondedManifest.class, value = "Create new BondedManifests based On PreAlert Input")
@@ -348,7 +361,7 @@ public class MidMileController {
     @ApiOperation(response = BondedManifest.class, value = "Update BondedManifest") // label for swagger
     @PatchMapping("/bondedManifest/update/list")
     public ResponseEntity<?> patchBondedManifest(@Valid @RequestBody List<UpdateBondedManifest> updateBondedManifest,
-                                                        @RequestParam String loginUserID, @RequestParam String authToken) {
+                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
         BondedManifest[] bondedManifest = midMileService.updateBondedManifest(updateBondedManifest, loginUserID, authToken);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
@@ -357,7 +370,7 @@ public class MidMileController {
     @ApiOperation(response = BondedManifest.class, value = "Delete BondedManifest") // label for Swagger
     @PostMapping("/bondedManifest/delete/list")
     public ResponseEntity<?> deleteBondedManifest(@Valid @RequestBody List<BondedManifestDeleteInput> deleteInputList,
-                                                         @RequestParam String loginUserID, @RequestParam String authToken) {
+                                                  @RequestParam String loginUserID, @RequestParam String authToken) {
         midMileService.deleteBondedManifest(deleteInputList, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -366,7 +379,7 @@ public class MidMileController {
     @ApiOperation(response = BondedManifest[].class, value = "Find BondedManifest") // label for swagger
     @PostMapping("/bondedManifest/findBondedManifest")
     public ResponseEntity<?> findBondedManifest(@RequestBody FindBondedManifest findBondedManifest,
-                                                       @RequestParam String authToken) throws Exception {
+                                                @RequestParam String authToken) throws Exception {
         BondedManifest[] bondedManifest = midMileService.findBondedManifest(findBondedManifest, authToken);
         return new ResponseEntity<>(bondedManifest, HttpStatus.OK);
     }
@@ -385,11 +398,11 @@ public class MidMileController {
     @GetMapping("/ccr/{ccrId}")
     public ResponseEntity<?> getCcr(@PathVariable String ccrId, @RequestParam String languageId,
                                     @RequestParam String companyId, @RequestParam String partnerId,
-                                    @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                    @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill,
                                     @RequestParam String pieceId, @RequestParam String pieceItemId,
                                     @RequestParam String consoleId, @RequestParam String authToken) {
         Ccr ccr = midMileService.getCcr(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, authToken);
+                partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, ccrId, pieceId, pieceItemId, authToken);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 
@@ -425,7 +438,7 @@ public class MidMileController {
     @PostMapping("/ccr/findCcr")
     public ResponseEntity<?> findCcrHeaders(@RequestBody FindCcr findCcr,
                                             @RequestParam String authToken) throws Exception {
-        Ccr[] ccr= midMileService.findCcr(findCcr, authToken);
+        Ccr[] ccr = midMileService.findCcr(findCcr, authToken);
         return new ResponseEntity<>(ccr, HttpStatus.OK);
     }
 
@@ -444,10 +457,10 @@ public class MidMileController {
     @GetMapping("/Console/{consoleId}")
     public ResponseEntity<?> getConsole(@PathVariable String consoleId, @RequestParam String languageId,
                                         @RequestParam String companyId, @RequestParam String partnerId,
-                                        @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill,
+                                        @RequestParam String partnerMasterAirwayBill, @RequestParam String partnerHouseAirwayBill,
                                         @RequestParam String authToken) {
         Console console = midMileService.getConsole(languageId, companyId, partnerId,
-                masterAirwayBill, houseAirwayBill, consoleId, authToken);
+                partnerMasterAirwayBill, partnerHouseAirwayBill, consoleId, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
@@ -461,17 +474,27 @@ public class MidMileController {
     }
 
     // Update Console
-    @ApiOperation(response = Console.class, value = "Update Console") // label for swagger
-    @PatchMapping("/console/update/list")
-    public ResponseEntity<?> patchConsole(@RequestBody List<UpdateConsole> updateConsole,
+    @ApiOperation(response = Console.class, value = "Update Console For CCR Create") // label for swagger
+    @PatchMapping("/console/update/ccr/create")
+    public ResponseEntity<?> patchConsole(@Valid @RequestBody List<UpdateConsole> updateConsole,
                                           @RequestParam String loginUserID, @RequestParam String authToken) {
         Console[] console = midMileService.updateConsole(updateConsole, loginUserID, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
+
+    // Update Console
+    @ApiOperation(response = Console.class, value = "Update Console For Mobile App") // label for swagger
+    @PatchMapping("/console/update/mobileApp")
+    public ResponseEntity<?> patchConsoleForMobileApp(@Valid @RequestBody List<UpdateConsole> updateConsole,
+                                                      @RequestParam String loginUserID, @RequestParam String authToken) {
+        Console[] console = midMileService.updateConsoleForMobileApp(updateConsole, loginUserID, authToken);
+        return new ResponseEntity<>(console, HttpStatus.OK);
+    }
+
     // Update Console Normal
     @ApiOperation(response = Console.class, value = "Update Console Normal")
-    @PatchMapping("/console/update/list/normal")
+    @PatchMapping("/console/update")
     public ResponseEntity<?> patchConsoleNormal(@Valid @RequestBody List<UpdateConsole> updateConsoleList, @RequestParam String loginUserID,
                                                 @RequestParam String authToken) {
         Console[] dbConsole = midMileService.updateConsoleNormal(updateConsoleList, loginUserID, authToken);
@@ -487,18 +510,38 @@ public class MidMileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find Console
+    // Find Consoles - normal
     @ApiOperation(response = Console[].class, value = "Find Console") // label for swagger
     @PostMapping("/console/findConsole")
-    public ResponseEntity<?> findConsole(@RequestBody FindConsole findConsole,
+    public ResponseEntity<?> findConsole(@Valid @RequestBody FindConsole findConsole,
                                          @RequestParam String authToken) throws Exception {
         Console[] console = midMileService.findConsole(findConsole, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
-    // Console Create consignmentResponse
-    @ApiOperation(response = Console[].class, value = "Create Console based on Consignment Input")
-    @PostMapping("/console/consignment")
+    // Find Consoles - MobileApp
+    @ApiOperation(response = Console[].class, value = "Find Consoles - Mobile App") // label for swagger
+    @PostMapping("/console/findConsole/mobileApp")
+    public ResponseEntity<?> findConsolesMobileApp(@Valid @RequestBody FindConsole findConsole,
+                                                   @RequestParam String authToken) throws Exception {
+        Console[] console = midMileService.findConsoleMobileApp(findConsole, authToken);
+        return new ResponseEntity<>(console, HttpStatus.OK);
+    }
+
+    // Find Consoles by Pagination
+    @ApiOperation(response = Console.class, value = "Find Consoles By Pagination") // label for swagger
+    @PostMapping("/console/findConsole/pagination")
+    public Page<Console> findConsolesByPagination(@RequestBody FindConsole findConsole,
+                                                  @RequestParam(defaultValue = "0") Integer pageNo,
+                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                  @RequestParam(defaultValue = "consoleId") String sortBy,
+                                                  @RequestParam String authToken) throws Exception {
+        return midMileService.findConsolesByPagination(findConsole, pageNo, pageSize, sortBy, authToken);
+    }
+
+    // Console Create preAlertResponse
+    @ApiOperation(response = Console[].class, value = "Create Console based on PreAlert Input")
+    @PostMapping("/console/prealert")
     public ResponseEntity<?> createConsoleBasedOnConInput(@Valid @RequestBody List<PreAlert> preAlerts, @RequestParam String loginUserID,
                                                           @RequestParam String authToken) {
         Console[] createConsole = midMileService.createConsoleBasedOnPreAlertResponse(preAlerts, loginUserID, authToken);
@@ -508,8 +551,8 @@ public class MidMileController {
     //Console Transfer
     @ApiOperation(response = Console[].class, value = "Console Transfer")
     @PostMapping("/console/transfer")
-    public ResponseEntity<?>consoleTransfer(@Valid @RequestBody List<TransferConsole> transferConsole, @RequestParam String loginUserID,
-                                            @RequestParam String authToken) {
+    public ResponseEntity<?> consoleTransfer(@Valid @RequestBody List<TransferConsole> transferConsole, @RequestParam String loginUserID,
+                                             @RequestParam String authToken) {
         Console[] dbtransferConsole = midMileService.transferConsole(transferConsole, loginUserID, authToken);
         return new ResponseEntity<>(dbtransferConsole, HttpStatus.OK);
     }
@@ -527,10 +570,10 @@ public class MidMileController {
 
     // Get ConsignmentStatus
     @ApiOperation(response = ConsignmentStatus.class, value = "Get ConsignmentStatus") // label for swagger
-    @GetMapping("/consignmentStatus/{statusId}")
-    public ResponseEntity<?> getConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
-                                                  @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String eventCode, @RequestParam String authToken) {
-        ConsignmentStatus dbConsignmentStatus = midMileService.getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, authToken);
+    @GetMapping("/consignmentStatus/get")
+    public ResponseEntity<?> getConsignmentStatus(@RequestParam String languageId, @RequestParam String companyId,
+                                                  @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String authToken) {
+        ConsignmentStatus dbConsignmentStatus = midMileService.getConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, authToken);
         return new ResponseEntity<>(dbConsignmentStatus, HttpStatus.OK);
     }
 
@@ -546,21 +589,22 @@ public class MidMileController {
 
     // Update ConsignmentStatus
     @ApiOperation(response = ConsignmentStatus.class, value = "Update ConsignmentStatus") // label for swagger
-    @PatchMapping("/consignmentStatus/{statusId}")
-    public ResponseEntity<?> patchConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
-                                                    @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String eventCode, @RequestBody UpdateConsignmentStatus updateConsignmentStatus, @RequestParam String loginUserID,
+    @PatchMapping("/consignmentStatus/update")
+    public ResponseEntity<?> patchConsignmentStatus(@RequestParam String languageId, @RequestParam String companyId,
+                                                    @RequestParam String houseAirwayBill, @RequestParam String pieceId,
+                                                    @RequestBody UpdateConsignmentStatus updateConsignmentStatus, @RequestParam String loginUserID,
                                                     @RequestParam String authToken) throws IllegalAccessException, InvocationTargetException {
-        ConsignmentStatus updatedConsignmentStatus = midMileService.updateConsignmentStatus
-                (languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, updateConsignmentStatus, loginUserID, authToken);
+        ConsignmentStatus updatedConsignmentStatus = midMileService.updateConsignmentStatus(
+                languageId, companyId, houseAirwayBill, pieceId, updateConsignmentStatus, loginUserID, authToken);
         return new ResponseEntity<>(updatedConsignmentStatus, HttpStatus.OK);
     }
 
     // Delete ConsignmentStatus
     @ApiOperation(response = ConsignmentStatus.class, value = "Delete ConsignmentStatus") // label for swagger
-    @DeleteMapping("/consignmentStatus/{statusId}")
-    public ResponseEntity<?> deleteConsignmentStatus(@PathVariable String statusId, @RequestParam String languageId, @RequestParam String companyId,
-                                                     @RequestParam String houseAirwayBill, @RequestParam String pieceId, @RequestParam String eventCode, @RequestParam String loginUserID, @RequestParam String authToken) {
-        midMileService.deleteConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, statusId, eventCode, loginUserID, authToken);
+    @DeleteMapping("/consignmentStatus/delete")
+    public ResponseEntity<?> deleteConsignmentStatus(@RequestParam String languageId, @RequestParam String companyId, @RequestParam String houseAirwayBill,
+                                                     @RequestParam String pieceId, @RequestParam String loginUserID, @RequestParam String authToken) {
+        midMileService.deleteConsignmentStatus(languageId, companyId, houseAirwayBill, pieceId, loginUserID, authToken);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -591,7 +635,8 @@ public class MidMileController {
     // Find ConsignmentInvoice
     @ApiOperation(response = InvoiceForm[].class, value = "Find ConsignmentInvoice") //label for swagger
     @PostMapping("/consignment/findConsignmentInvoice")
-    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice, @RequestParam String authToken) throws Exception {
+    public InvoiceForm[] findConsignmentInvoice(@Valid @RequestBody FindConsignmentInvoice findConsignmentInvoice,
+                                                @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentInvoice(findConsignmentInvoice, authToken);
     }
 
@@ -602,6 +647,7 @@ public class MidMileController {
         PreAlert[] preAlert = midMileService.getAllPreAlert(authToken);
         return new ResponseEntity<>(preAlert, HttpStatus.OK);
     }
+
     // Get PreAlert
     @ApiOperation(response = PreAlert.class, value = "Get PreAlert") // label for swagger
     @GetMapping("/prealert/{partnerId}")
@@ -609,8 +655,8 @@ public class MidMileController {
                                          @RequestParam String companyId, @RequestParam String partnerMasterAirwayBill,
                                          @RequestParam String partnerHouseAirwayBill,
                                          @RequestParam String authToken) {
-        PreAlert preAlert = midMileService.getPreAlert(languageId,companyId,partnerId,
-                partnerHouseAirwayBill,partnerMasterAirwayBill,authToken);
+        PreAlert preAlert = midMileService.getPreAlert(languageId, companyId, partnerId,
+                partnerHouseAirwayBill, partnerMasterAirwayBill, authToken);
         return new ResponseEntity<>(preAlert, HttpStatus.OK);
     }
 
@@ -622,6 +668,7 @@ public class MidMileController {
         PreAlert[] preAlert = midMileService.createPreAlerts(addPreAlert, loginUserID, authToken);
         return new ResponseEntity<>(preAlert, HttpStatus.OK);
     }
+
     // Update PreAlert
     @ApiOperation(response = PreAlert.class, value = "Update PreAlert") // label for swagger
     @PatchMapping("/prealert/update/list")
@@ -648,4 +695,116 @@ public class MidMileController {
         PreAlert[] preAlert = midMileService.findPreAlerts(findPreAlerts, authToken);
         return new ResponseEntity<>(preAlert, HttpStatus.OK);
     }
+
+    // Find MobileApp
+    @ApiOperation(response = MobileApp[].class, value = "Get Console for Mobile App")
+    @GetMapping("/console/find/mobileapp")
+    public ResponseEntity<?> getAllMobileApp(@RequestParam String authToken) {
+        MobileApp[] consoles = midMileService.getAllMobileApp(authToken);
+        return new ResponseEntity<>(consoles, HttpStatus.OK);
+    }
+
+    @ApiOperation(response = ConsoleStatus[].class, value = "Console Status Update ")
+    @PostMapping("/console/status-event/update")
+    public ResponseEntity<?> updateHawbType(@Valid @RequestBody ConsoleStatus[] consoleStatuses,
+                                            @RequestParam String loginUserID,
+                                            @RequestParam String authToken) throws Exception {
+        Console[] consoles = midMileService.updateConsoleStatus(consoleStatuses, loginUserID, authToken);
+        return new ResponseEntity<>(consoles, HttpStatus.OK);
+    }
+
+    //===============================================Unconsolidation===================================================
+    // Get All Unconsolidation Details
+    @ApiOperation(response = Unconsolidation[].class, value = "Get all Unconsolidation Details")
+    @GetMapping("/unconsolidation")
+    public ResponseEntity<?> getAllUnconsolidationDetails(@RequestParam String authToken) {
+        Unconsolidation[] unconsolidations = midMileService.getAllUnconsolidations(authToken);
+        return new ResponseEntity<>(unconsolidations, HttpStatus.OK);
+    }
+
+    // Get Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Get Unconsolidation") // label for swagger
+    @GetMapping("/unconsolidation/get")
+    public ResponseEntity<?> getUnconsolidation(@RequestParam String partnerId, @RequestParam String languageId,
+                                                @RequestParam String companyId, @RequestParam String partnerMasterAirwayBill,
+                                                @RequestParam String partnerHouseAirwayBill, @RequestParam String pieceId,
+                                                @RequestParam String authToken) {
+        Unconsolidation unconsolidation = midMileService.getUnconsolidation(languageId, companyId, partnerId,
+                partnerHouseAirwayBill, partnerMasterAirwayBill, pieceId, authToken);
+        return new ResponseEntity<>(unconsolidation, HttpStatus.OK);
+    }
+
+    // Create new Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Create new Unconsolidation") // label for swagger
+    @PostMapping("/unconsolidation/create")
+    public ResponseEntity<?> postUnconsolidation(@RequestBody AddUnconsolidation addUnconsolidation,
+                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
+        Unconsolidation unconsolidation = midMileService.createUnconsolidation(addUnconsolidation, loginUserID, authToken);
+        return new ResponseEntity<>(unconsolidation, HttpStatus.OK);
+    }
+
+    // Update Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Update Unconsolidation") // label for swagger
+    @PatchMapping("/unconsolidation/update")
+    public ResponseEntity<?> patchUnconsolidation(@Valid @RequestBody UpdateUnconsolidation updateUnconsolidation,
+                                                  @RequestParam String loginUserID, @RequestParam String authToken) {
+        Unconsolidation unconsolidation = midMileService.updateUnconsolidation(updateUnconsolidation, loginUserID, authToken);
+        return new ResponseEntity<>(unconsolidation, HttpStatus.OK);
+    }
+
+    // Delete Unconsolidation
+    @ApiOperation(response = Unconsolidation.class, value = "Delete Unconsolidations - list") // label for Swagger
+    @PostMapping("/unconsolidation/delete/list")
+    public ResponseEntity<?> deleteUnconsolidation(@RequestBody List<UnconsolidationDeleteInput> deleteInputList,
+                                                   @RequestParam String loginUserID, @RequestParam String authToken) {
+        midMileService.deleteUnconsolidations(deleteInputList, loginUserID, authToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Find Unconsolidated Shipments
+    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidated Shipments") // label for swagger
+    @PostMapping("/unconsolidation/find")
+    public ResponseEntity<?> findUnconsolidations(@RequestBody FindUnconsolidation findUnconsolidation,
+                                                  @RequestParam String authToken) throws Exception {
+        Unconsolidation[] unconsolidations = midMileService.findUnconsolidations(findUnconsolidation, authToken);
+        return new ResponseEntity<>(unconsolidations, HttpStatus.OK);
+    }
+
+    //=====================================================Reports=====================================================
+    // GET MobileDashboard - Console count
+    @ApiOperation(response = MobileDashboard.class, value = "Get MobileDashboard") // label for swagger
+    @PostMapping("/reports/mobileDashboard/get")
+    public ResponseEntity<?> postMobileDashboard(@Valid @RequestBody MobileDashboardRequest mobileDashboardRequest,
+                                                 @RequestParam String authToken) {
+        MobileDashboard dashboard = midMileService.getMobileDashboard(mobileDashboardRequest, authToken);
+        return new ResponseEntity<>(dashboard, HttpStatus.OK);
+    }
+
+    // Generate Location Sheet
+    @ApiOperation(response = LocationSheetOutput.class, value = "Generate Location Sheet") // label for swagger
+    @PostMapping("/reports/locationSheet")
+    public ResponseEntity<?> postLocationSheet(@Valid @RequestBody List<LocationSheetInput> sheetInputs,
+                                               @RequestParam String loginUserID, @RequestParam String authToken) {
+        LocationSheetOutput[] sheetOutputs = midMileService.generateLocationSheet(sheetInputs, loginUserID, authToken);
+        return new ResponseEntity<>(sheetOutputs, HttpStatus.OK);
+    }
+
+    // Generate Console Tracking Report
+    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report")
+    @PostMapping("/reports/consoleTrackingReport")
+    public ResponseEntity<?> postConsoleTrackingReport(@Valid @RequestBody ConsoleTrackingReportInput reportInputList,
+                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+        ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReport(reportInputList, loginUserID, authToken);
+        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
+    }
+
+//    // Generate Console Tracking Report - list Screen
+//    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report - list Screen")
+//    @PostMapping("/reports/consoleTrackingReport/listScreen")
+//    public ResponseEntity<?> postConsoleTrackingReportListScreen(@Valid @RequestBody ConsoleTrackingReportInput reportInputList,
+//                                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
+//        ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReportListPage(reportInputList, loginUserID, authToken);
+//        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
+//    }
+
 }

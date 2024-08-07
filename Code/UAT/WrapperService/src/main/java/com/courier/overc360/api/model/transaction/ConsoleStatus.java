@@ -11,7 +11,7 @@ public class ConsoleStatus {
     private String partnerHouseAirwayBill;
     private String partnerMasterAirwayBill;
     private String pieceId;
-    private String hawbType;
+//    private String hawbType;
     private String hawbTypeId;
     private String consoleId;
     private String hubCode;

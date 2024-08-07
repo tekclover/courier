@@ -2,14 +2,19 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 
 public class PieceDetails {
+
+    private Long pieceDetailsId;
+
+    private List<ItemDetails> itemDetails;
+
+    private Set<ImageReference> referenceImageList;
 
     private String languageId;
 
@@ -23,6 +28,22 @@ public class PieceDetails {
 
     private String pieceId;
 
+    private String pieceType;
+
+    private String pieceTypeId;
+
+    private String pieceTypeDescription;
+
+    private Date pieceTimeStamp = new Date();
+
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
+
+    private String languageDescription;
+
+    private String companyName;
+
     private String partnerType;
 
     private String partnerName;
@@ -31,19 +52,15 @@ public class PieceDetails {
 
     private String description;
 
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
-
     private String declaredValue;
 
     private String codAmount;
 
-    private String hsCode;
-
     private String length;
 
     private String dimensionUnit;
+
+    private String hsCode;
 
     private String width;
 
@@ -56,8 +73,6 @@ public class PieceDetails {
     private String volume;
 
     private String volumeUnit;
-
-    private List<ReferenceImageList> referenceImageList;
 
     private String consignmentValueLocal;
 
@@ -73,21 +88,23 @@ public class PieceDetails {
 
     private String tags;
 
-//    private String pieceStatusId;
+    private String pieceStatusId;
+
+    private Date pieceStatusTimestamp;
+
+    private String pieceStatusText;
+
+    private String pieceEventCode;
+
+    private String pieceEventText;
+
+    private Date pieceEventTimestamp;
 
     private String pieceValue;
 
     private String pieceCurrency;
 
-//    private Date pieceStatusTimestamp;
-
-    private String pieceType;
-
-    private String pieceTypeId;
-
-    private String pieceTypeDescription;
-
-    private Date pieceTimeStamp = new Date();
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -109,45 +126,11 @@ public class PieceDetails {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String createdBy;
 
-    private String referenceField12;
+    private Date createdOn = new Date();
 
-    private String referenceField13;
+    private String updatedBy;
 
-    private String referenceField14;
-
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
-
-    private List<ItemDetails> itemDetails = new ArrayList<>();
+    private Date updatedOn = new Date();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

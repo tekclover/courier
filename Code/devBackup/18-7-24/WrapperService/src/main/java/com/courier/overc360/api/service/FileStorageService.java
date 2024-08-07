@@ -24,7 +24,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -220,7 +224,7 @@ public class FileStorageService {
     }
 
     // ProcessConsignmentOrder - V1
-    public Map<String, String> processConsignmentOrders(MultipartFile file) {
+    public Map<String, String> processConsignmentOrders(MultipartFile file, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
             try {
@@ -252,7 +256,7 @@ public class FileStorageService {
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Uploaded", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, loginUserID, authToken.getAccess_token());
 
             if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
@@ -351,7 +355,7 @@ public class FileStorageService {
 
 
     //ProcessConsignmentOrders-V2
-    public Map<String, String> processConsignmentOrdersV2(MultipartFile file, String companyId) {
+    public Map<String, String> processConsignmentOrdersV2(MultipartFile file, String companyId, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
             try {
@@ -377,7 +381,7 @@ public class FileStorageService {
             log.info("Copied : " + targetLocation);
 
             List<AddConsignment> consignmentOrders = null;
-            List<List<String>> allRowsList = readExcelConsignmentData(targetLocation.toFile());
+            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
 
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
@@ -398,7 +402,7 @@ public class FileStorageService {
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, "Upload", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.postConsignmentUpload(consignmentOrders, loginUserID, authToken.getAccess_token());
 
             if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
@@ -415,9 +419,9 @@ public class FileStorageService {
     }
 
     //ProcessConsignmentOrders-V2
-    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType,
-                                                     String partnerId, String partnerMasterAirwayBill, String flightNo, String flightName,
-                                                     Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel) {
+    public Map<String, String> processPreAlertUpload(MultipartFile file, String companyId, String partnerType, String partnerId,
+                                                     String partnerMasterAirwayBill, String flightNo, String flightName,
+                                                     Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel, String loginUserID) {
         this.fileStorageLocation = Paths.get(propertiesConfig.getFileUploadDir()).toAbsolutePath().normalize();
         if (!Files.exists(fileStorageLocation)) {
             try {
@@ -442,18 +446,18 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             log.info("Copied : " + targetLocation);
 
-            List<List<String>> allRowsList = readExcelConsignmentData(targetLocation.toFile());
+            List<List<String>> allRowsList = readExcelData(targetLocation.toFile());
 
             fileName = fileName.trim(); // Remove any leading or trailing whitespace
             log.info("filename after trim: " + fileName);
 
-            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId, partnerMasterAirwayBill, flightNo, flightName,
-                    estimatedTimeOfDeparture, estimatedTimeOfTravel);
+            List<PreAlert> consignmentOrders = prepPreAlert(allRowsList, companyId, partnerType, partnerId,
+                    partnerMasterAirwayBill, flightNo, flightName, estimatedTimeOfDeparture, estimatedTimeOfTravel);
 
             // Uploading Orders
             UploadApiResponse[] dbUploadApiResponse = new UploadApiResponse[0];
             AuthToken authToken = authTokenService.getMidMileServiceAuthToken();
-            dbUploadApiResponse = midMileService.createPreAlert(consignmentOrders, "Upload", authToken.getAccess_token());
+            dbUploadApiResponse = midMileService.createPreAlert(consignmentOrders, loginUserID, authToken.getAccess_token());
 
             if (dbUploadApiResponse != null) {
                 Map<String, String> mapFileProps = new HashMap<>();
@@ -466,7 +470,6 @@ public class FileStorageService {
             throw new BadRequestException("Could not store file " + fileName + ". Please try again!");
         }
         return null;
-
     }
 
 
@@ -1951,7 +1954,6 @@ public class FileStorageService {
 
 
     /**
-     *
      * @param allRowList
      * @param companyId
      * @param partnerType
@@ -1960,11 +1962,12 @@ public class FileStorageService {
      * @param flightNo
      * @param flightName
      * @param estimatedTimeOfDeparture
-     * @param estimatedTimeTravel
+     * @param estimatedTimeOfTravel
      * @return
      */
-    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId, String partnerMasterAirwayBill,
-                                       String flightNo, String flightName, Date estimatedTimeOfDeparture, Date estimatedTimeOfTravel) {
+    public List<PreAlert> prepPreAlert(List<List<String>> allRowList, String companyId, String partnerType, String partnerId,
+                                       String partnerMasterAirwayBill, String flightNo, String flightName, Date estimatedTimeOfDeparture,
+                                       Date estimatedTimeOfTravel) {
 
         List<PreAlert> preAlertMap = new ArrayList<>();
 

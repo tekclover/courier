@@ -1,12 +1,10 @@
 package com.courier.overc360.api.midmile.controller;
 
-import com.courier.overc360.api.midmile.primary.model.itemdetails.AddItemDetails;
+import com.courier.overc360.api.midmile.primary.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.ItemDetails;
 import com.courier.overc360.api.midmile.primary.model.itemdetails.UpdateItemDetails;
-import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.replica.model.dto.FindPreAlertManifest;
 import com.courier.overc360.api.midmile.replica.model.dto.PreAlertManifestImpl;
-import com.courier.overc360.api.midmile.replica.model.itemdetails.FindItemDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import com.courier.overc360.api.midmile.service.ItemDetailsService;
 import com.opencsv.exceptions.CsvException;
@@ -21,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -33,7 +30,7 @@ import java.util.List;
 @RequestMapping("/itemDetails")
 @RestController
 public class ItemDetailsController {
-@Autowired
+    @Autowired
     ItemDetailsService itemDetailsService;
     /*-------------------------------------------PRIMARY-------------------------------------------------------------------*/
 
@@ -81,7 +78,7 @@ public class ItemDetailsController {
     @ApiOperation(response = ReplicaItemDetails.class, value = "Get a ReplicaItemDetails") // label for swagger
     @GetMapping("/{pieceItemId}")
     public ResponseEntity<?> getItemDetails(@PathVariable String pieceItemId, @RequestParam String languageId, @RequestParam String companyId,
-                                     @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill, @RequestParam String pieceId) {
+                                            @RequestParam String partnerId, @RequestParam String masterAirwayBill, @RequestParam String houseAirwayBill, @RequestParam String pieceId) {
 
         ReplicaItemDetails itemDetails = itemDetailsService.replicaGetItemDetails(languageId, companyId, partnerId, masterAirwayBill, houseAirwayBill, pieceId, pieceItemId);
         return new ResponseEntity<>(itemDetails, HttpStatus.OK);

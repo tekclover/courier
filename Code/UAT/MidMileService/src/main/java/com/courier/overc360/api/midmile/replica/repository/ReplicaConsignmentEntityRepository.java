@@ -1,6 +1,5 @@
 package com.courier.overc360.api.midmile.replica.repository;
 
-
 import com.courier.overc360.api.midmile.primary.model.IKeyValuePair;
 import com.courier.overc360.api.midmile.primary.model.consignment.ConsignmentInvoice;
 import com.courier.overc360.api.midmile.replica.model.consignment.ReplicaConsignmentEntity;
@@ -12,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -118,13 +116,23 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                                          @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
                                                          @Param("companyId") List<String> companyId);
 
+//    @Query(value = "Select \n" +
+//            "ti.HS_CODE hsCode, ti.DESCRIPTION goodsDescription, ti.WEIGHT itemWeight, ti.DECLARED_VALUE unitValue, ti.DECLARED_VALUE totalValue \n" +
+//            "From tblitemdetails ti \n" +
+//            "Where \n" +
+//            "ti.CONSIGNMENT_ID IN (:consignmentId) and \n" +
+//            "ti.is_deleted = 0", nativeQuery = true)
+//    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("consignmentId") Long consignmentId);
+
     @Query(value = "Select \n" +
             "ti.HS_CODE hsCode, ti.DESCRIPTION goodsDescription, ti.WEIGHT itemWeight, ti.DECLARED_VALUE unitValue, ti.DECLARED_VALUE totalValue \n" +
             "From tblitemdetails ti \n" +
             "Where \n" +
-            "ti.CONSIGNMENT_ID IN (:consignmentId) and \n" +
+            "(COALESCE(:masterAirwayBill, null) IS NULL OR ti.MASTER_AIRWAY_BILL IN (:masterAirwayBill)) and \n" +
+            "(COALESCE(:houseAirwayBill, null) IS NULL OR ti.HOUSE_AIRWAY_BILL IN (:houseAirwayBill)) and \n" +
             "ti.is_deleted = 0", nativeQuery = true)
-    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("consignmentId") Long consignmentId);
+    List<ConsignmentInvoice> getConsignmentInvoiceLine(@Param("masterAirwayBill") String masterAirwayBill,
+                                                       @Param("houseAirwayBill") String houseAirwayBill);
 
 
     @Query(value = "select MASTER_AIRWAY_BILL as masterAirwayBill from tblconsignment_entity " +
@@ -136,65 +144,31 @@ public interface ReplicaConsignmentEntityRepository extends JpaRepository<Replic
                                       @Param("partnerHouseAB") String partnerHouseAB);
 
 
-    ReplicaConsignmentEntity findByConsignmentIdAndDeletionIndicator(Long consignmentId, Long deletionIndicator);
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
+            String languageId, String companyId, String houseAirwayBill, String hawbTypeId, Long deletionIndicator);
 
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndHawbTypeIdAndDeletionIndicator(
+            String languageId, String companyId, String partnerHouseAirwayBill, String hawbTypeId, Long deletionIndicator);
 
-    // Get No of Shipments Scanned
-    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String houseAirwayBill, Long deletionIndicator);
+
+    List<ReplicaConsignmentEntity> findByLanguageIdAndCompanyIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerHouseAirwayBill, Long deletionIndicator);
+
+    // Fetch Consignments with given Params Only
+    @Query(value = "Select * From tblconsignment_entity tc\n" +
             "Where tc.IS_DELETED=0\n" +
             "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
             "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
             "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
-            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill))\n" +
-            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
-            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
-            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
-    long getNoOfShipmentsScanned(
-            @Param("languageId") List<String> languageId,
-            @Param("companyId") List<String> companyId,
-            @Param("partnerId") List<String> partnerId,
-            @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
-            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
-            @Param("consoleIndicator") Long consoleIndicator,
-            @Param("fromDate") Date fromDate,
-            @Param("toDate") Date toDate);
+            "AND (COALESCE(:masterAirwayBill, NULL) IS NULL OR tc.MASTER_AIRWAY_BILL IN (:masterAirwayBill))\n" +
+            "AND (COALESCE(:houseAirwayBill, NULL) IS NULL OR tc.HOUSE_AIRWAY_BILL IN (:houseAirwayBill))", nativeQuery = true)
+    List<ReplicaConsignmentEntity> fetchConsignmentsWithQry(@Param(value = "languageId") List<String> languageId,
+                                                            @Param(value = "companyId") List<String> companyId,
+                                                            @Param(value = "partnerId") List<String> partnerId,
+                                                            @Param(value = "masterAirwayBill") List<String> masterAirwayBill,
+                                                            @Param(value = "houseAirwayBill") List<String> houseAirwayBill);
 
-    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
-            "Where tc.IS_DELETED=0\n" +
-            "AND tc.LANG_ID = :languageId\n" +
-            "AND tc.C_ID = :companyId\n" +
-            "AND tc.PARTNER_ID = :partnerId\n" +
-            "AND tc.PARTNER_MASTER_AB = :partnerMasterAirwayBill\n" +
-            "AND tc.PARTNER_HOUSE_AB = :partnerHouseAirwayBill\n" +
-            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
-            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
-    long getNoOfShipmentsScanned1(
-            @Param("languageId") String languageId,
-            @Param("companyId") String companyId,
-            @Param("partnerId") String partnerId,
-            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
-            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
-            @Param("consoleIndicator") Long consoleIndicator,
-            @Param("fromDate") Date fromDate,
-            @Param("toDate") Date toDate);
-
-    @Query(value = "Select COUNT(*) From tblconsignment_entity tc\n" +
-            "Where tc.IS_DELETED=0\n" +
-            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
-            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
-            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AB IN (:partnerMasterAirwayBill))\n" +
-            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AB IN (:partnerHouseAirwayBill))\n" +
-            "And tc.CONSOLE_INDICATOR = :consoleIndicator\n" +
-            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
-    Long getNoOfShipmentsScanned2(
-            @Param("languageId") String languageId,
-            @Param("companyId") String companyId,
-            @Param("partnerId") String partnerId,
-            @Param("partnerMasterAirwayBill") String partnerMasterAirwayBill,
-            @Param("partnerHouseAirwayBill") String partnerHouseAirwayBill,
-            @Param("consoleIndicator") Long consoleIndicator,
-            @Param("fromDate") Date fromDate,
-            @Param("toDate") Date toDate);
 
 }

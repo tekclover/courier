@@ -2,10 +2,7 @@ package com.courier.overc360.api.midmile.primary.model.console;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 @Data
 public class AddConsole {
@@ -216,6 +213,10 @@ public class AddConsole {
     private String exemptionReference;
 
     private String consignmentLocalId;
+
+    private String flightName;
+
+    private String flightNo;
 
     private String referenceField1;
 

@@ -10,4 +10,5 @@ public class FindUom {
     private List<String> languageId;
     private List<String> companyId;
     private List<String> uomId;
+    private List<String> statusId;
 }

@@ -2,6 +2,8 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -14,15 +16,23 @@ public class PreAlert {
 
     private String partnerId;
 
-    private String partnerType;
-
     private String masterAirwayBill;
 
     private String partnerHouseAirwayBill;
 
     private String partnerMasterAirwayBill;
 
+    private String partnerName;
+
+    private String totalWeight;
+
     private String flightNo;
+
+    private Long consoleIndicator;
+
+    private String consignmentValueLocal;
+
+    private Long manifestIndicator;
 
     private String flightName;
 
@@ -30,11 +40,25 @@ public class PreAlert {
 
     private Date estimatedTimeOfArrival;
 
-    private String totalWeight;
-
     private String noOfPieces;
 
     private String consignmentValue;
+
+    private String exchangeRate;
+
+    private String iata;
+
+    private String customsInsurance;
+
+    private String duty;
+
+    private String addIata;
+
+    private String addInsurance;
+
+    private String customsValue;
+
+    private String calculatedTotalDuty;
 
     private String bayanHv;
 
@@ -48,21 +72,31 @@ public class PreAlert {
 
     private String origin;
 
-    private Long consoleIndicator;
+    private String originCode;
 
-    private Long manifestIndicator;
-
-    private String  originCode;
-
-    private String consignmentValueLocal;
-
-    private String iata;
+//    private String consignmentValueKd;
 
     private String hsCode;
 
+    private String partnerType;
+
     private String incoTerm;
 
-    private Long deletionIndicator = 0L;
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private String companyName;
+
+    private String languageDescription;
+
+    private Date hawbTimeStamp = new Date();
+
+    private String consignmentLocalId;
+
+    private String houseAirwayBill;
 
     private String referenceField1;
 

@@ -2,7 +2,6 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -182,6 +181,8 @@ public class ConsignmentEntity {
 
     private String consignmentValue;
 
+    private String customsInsurance;
+
     private String actualCurrency;
 
     private String totalDuty;
@@ -310,6 +311,14 @@ public class ConsignmentEntity {
 
     private Date estimatedDepartureTime;
 
+    private String hawbType;
+
+    private String hawbTypeId;
+
+    private String hawbTypeDescription;
+
+    private Date hawbTimeStamp = new Date();
+
     private String referenceField1;
     private String referenceField2;
     private String referenceField3;
@@ -369,4 +378,8 @@ public class ConsignmentEntity {
     private OriginationDetails originDetails;
     private ReturnDetails returnDetails;
     private List<PieceDetails> pieceDetails = new ArrayList<>();
+
+    // unconsolidation
+    private Long unconsolidatedFlag;
+
 }

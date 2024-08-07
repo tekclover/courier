@@ -2,132 +2,136 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Set;
 
 @Data
 public class AddPieceDetails {
 
-//        private String languageId;
+    private Long pieceDetailsId;
 
-//        private String companyId;
+    private List<AddItemDetails> itemDetails;
 
-//        private String partnerId;
+    private Set<AddImageReference> referenceImageList;
 
-//        private String masterAirwayBill;
+    private String languageId;
 
-//        private String houseAirwayBill;
+    private String companyId;
 
-//        private String pieceId;
+    private String partnerId;
 
-        private String partnerType;
+    private String masterAirwayBill;
 
-//        private String partnerName;
+    private String houseAirwayBill;
 
-//        private String pieceProductCode;
+    private String pieceId;
 
-        private String description;
+    private String pieceType;
 
-//        private String partnerMasterAirwayBill;
-//
-//        private String partnerHouseAirwayBill;
+    private String pieceTypeId;
 
-        private String declaredValue;
+    private String pieceTypeDescription;
 
-        private String codAmount;
+    private Date pieceTimeStamp = new Date();
 
-        private String hsCode;
+    private String partnerMasterAirwayBill;
 
-        private String length;
+    private String partnerHouseAirwayBill;
 
-        private String dimensionUnit;
+    private String languageDescription;
 
-        private String width;
+    private String companyName;
 
-        private String height;
+    private String partnerType;
 
-        private String weight;
+    private String partnerName;
 
-        private String weight_unit;
+    private String pieceProductCode;
 
-        private String volume;
+    private String description;
 
-        private String volumeUnit;
+    private String declaredValue;
 
-        private String addIata;
+    private String codAmount;
 
-        private String addInsurance;
+    private String length;
 
-        private String customsValue;
+    private String dimensionUnit;
 
-        private String calculatedTotalDuty;
+    private String hsCode;
 
-        private List<ReferenceImageList> referenceImageList;
+    private String width;
 
-        private String packReferenceNumber;
+    private String height;
 
-        private String tags;
+    private String weight;
 
-//        private String pieceStatusId;
+    private String weight_unit;
 
-//        private Date pieceStatusTimestamp;
+    private String volume;
 
-        private String pieceValue;
+    private String volumeUnit;
 
-        private String pieceCurrency;
+    private String consignmentValueLocal;
 
-        private String consignmentValueLocal;
+    private String addIata;
 
-        private String pieceType;
+    private String addInsurance;
 
-        private String pieceTypeId;
+    private String customsValue;
 
-        private String pieceTypeDescription;
+    private String calculatedTotalDuty;
 
-        private Date pieceTimeStamp = new Date();
+    private String packReferenceNumber;
 
-        private String referenceField1;
+    private String tags;
 
-        private String referenceField2;
+    private String pieceStatusId;
 
-        private String referenceField3;
+    private Date pieceStatusTimestamp;
 
-        private String referenceField4;
+    private String pieceStatusText;
 
-        private String referenceField5;
+    private String pieceEventCode;
 
-        private String referenceField6;
+    private String pieceEventText;
 
-        private String referenceField7;
+    private Date pieceEventTimestamp;
 
-        private String referenceField8;
+    private String pieceValue;
 
-        private String referenceField9;
+    private String pieceCurrency;
 
-        private String referenceField10;
+    private Long deletionIndicator = 0L;
 
-        private String referenceField11;
+    private String referenceField1;
 
-        private String referenceField12;
+    private String referenceField2;
 
-        private String referenceField13;
+    private String referenceField3;
 
-        private String referenceField14;
+    private String referenceField4;
 
-        private String referenceField15;
+    private String referenceField5;
 
-        private String referenceField16;
+    private String referenceField6;
 
-        private String referenceField17;
+    private String referenceField7;
 
-        private String referenceField18;
+    private String referenceField8;
 
-        private String referenceField19;
+    private String referenceField9;
 
-        private String referenceField20;
+    private String referenceField10;
 
-        private List<AddItemDetails> itemDetails = new ArrayList<>();
+    private String createdBy;
+
+    private Date createdOn = new Date();
+
+    private String updatedBy;
+
+    private Date updatedOn = new Date();
+
+
 }

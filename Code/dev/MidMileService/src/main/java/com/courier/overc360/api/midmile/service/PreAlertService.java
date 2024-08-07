@@ -222,6 +222,8 @@ public class PreAlertService {
                 newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
                 partnerNm.ifPresent(newPreAlert::setPartnerName);
                 newPreAlert.setCreatedBy(loginUserID);
+                newPreAlert.setHubCode("2");
+                newPreAlert.setHubName("Airport");
                 newPreAlert.setUpdatedBy(null);
                 newPreAlert.setCreatedOn(new Date());
                 newPreAlert.setUpdatedOn(null);
@@ -249,7 +251,8 @@ public class PreAlertService {
                                     savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getMasterAirwayBill(),
                                     savedPreAlert.getHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
                                     savedPreAlert.getHawbTimeStamp(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
-                                    savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill());
+                                    savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
+                                    null, savedPreAlert.getHubCode(), savedPreAlert.getHubName());
                         }
                     }
                 }

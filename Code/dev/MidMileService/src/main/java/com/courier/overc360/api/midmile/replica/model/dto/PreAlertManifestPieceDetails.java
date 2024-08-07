@@ -1,14 +1,21 @@
 package com.courier.overc360.api.midmile.replica.model.dto;
 
 
-import com.courier.overc360.api.midmile.primary.model.consignment.ReferenceImageList;
-import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaAddItemDetails;
+import com.courier.overc360.api.midmile.primary.model.consignment.DestinationDetails;
+import com.courier.overc360.api.midmile.primary.model.consignment.OriginDetails;
+import com.courier.overc360.api.midmile.primary.model.consignment.ReturnDetails;
+import com.courier.overc360.api.midmile.primary.model.imagereference.AddImageReference;
+import com.courier.overc360.api.midmile.primary.model.imagereference.ImageReference;
+//import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.AddPieceDetails;
+import com.courier.overc360.api.midmile.primary.model.piecedetails.PieceDetails;
 import com.courier.overc360.api.midmile.replica.model.itemdetails.ReplicaItemDetails;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class PreAlertManifestPieceDetails {
@@ -66,7 +73,7 @@ public class PreAlertManifestPieceDetails {
     private String pieceStatusId;
     private Date pieceStatusTimestamp;
 
-    private List<ReferenceImageList> referenceImageList;
+    private Set<ImageReference> referenceImageList;
 
     private String packReferenceNumber;
 
