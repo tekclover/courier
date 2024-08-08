@@ -68,6 +68,85 @@ public class ReportsService {
         return mobileDashboard;
     }
 
+//    /**
+//     * Generate Location Sheet
+//     *
+//     * @param locationSheetInputList
+//     * @param loginUserID
+//     * @return
+//     */
+//    public List<LocationSheetOutput> generateLocationSheet(List<LocationSheetInput> locationSheetInputList, String loginUserID) {
+//
+//        Set<String> processedKeys = new HashSet<>();
+//        List<LocationSheetOutput> createdLocationSheetOutputList = new ArrayList<>();
+//
+//        for (LocationSheetInput sheetInput : locationSheetInputList) {
+//            String uniqueKey = generateUniqueKey(sheetInput);
+//            if (processedKeys.contains(uniqueKey)) {
+//                continue; // Skip this sheetInput if it has already been processed
+//            }
+//
+//            if(sheetInput.getConsoleId() != null && !sheetInput.getConsoleId().isEmpty()) {
+//                boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
+//                        sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
+//                        sheetInput.getConsoleId(), 0L);
+//                if (!consolesPresent) {
+//                    throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+//                }
+//            } else {
+//                boolean consolePresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndDeletionIndicator(
+//                        sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(), 0L);
+//                if (!consolePresent) {
+//                    throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+//                }
+//            }
+//
+//            log.info("given Inputs to generate locationSheet --> {}", sheetInput);
+//
+////            LocationSheetOutput sheetOutput = new LocationSheetOutput();
+////            BeanUtils.copyProperties(sheetInput, sheetOutput, CommonUtils.getNullPropertyNames(sheetInput));
+//
+//            // Get total Sum of NetWeight and TotalQuantity
+//            List<ConsoleImpl> sumValues = replicaConsoleRepository.getSumValuesGroupedByConsoleId(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
+//                    sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
+//
+//            sumValues.stream().forEach(sumValue -> {
+//                LocationSheetOutput sheetOutput = new LocationSheetOutput();
+//                sheetOutput.setTotalNoOfPieces(sumValue.getTotalQuantity());
+//                sheetOutput.setTotalSumOfWeights(sumValue.getTotalQuantity());
+//            });
+//
+////            if (sumValues != null) {
+////                sheetOutput.setTotalNoOfPieces(sumValues.getTotalQuantity());
+////                sheetOutput.setTotalSumOfWeights(sumValues.getTotalWeight());
+////            }
+//
+//            // Get Location Sheet values
+//            ConsoleImpl locationSheetValues = replicaConsoleRepository.getLocationSheetValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
+//                    sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
+//            if (locationSheetValues != null) {
+//                sheetOutput.setLanguageDescription(locationSheetValues.getLangDesc());
+//                sheetOutput.setCompanyName(locationSheetValues.getCompanyDesc());
+//                sheetOutput.setPartnerName(locationSheetValues.getPartnerName());
+//                sheetOutput.setPartnerType(locationSheetValues.getPartnerType());
+//
+//                sheetOutput.setOrigin(locationSheetValues.getOrigin());
+////                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
+//            }
+//
+//            sheetOutput.setNatureOfGoods("COURIER MATERIALS");
+//            sheetOutput.setConsigneeName("IW EXPRESS");
+//            sheetOutput.setLocationSheetTimeStamp(new Date());
+//
+//            createdLocationSheetOutputList.add(sheetOutput);
+//            processedKeys.add(uniqueKey); // Mark this uniqueKey as processed
+//            log.info("uniqueKey - {}", uniqueKey);
+//        }
+//
+//        return createdLocationSheetOutputList;
+//    }
+
+
     /**
      * Generate Location Sheet
      *
@@ -103,35 +182,32 @@ public class ReportsService {
 
             log.info("given Inputs to generate locationSheet --> {}", sheetInput);
 
-            LocationSheetOutput sheetOutput = new LocationSheetOutput();
-            BeanUtils.copyProperties(sheetInput, sheetOutput, CommonUtils.getNullPropertyNames(sheetInput));
-
             // Get total Sum of NetWeight and TotalQuantity
-            ConsoleImpl sumValues = replicaConsoleRepository.getSumValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
+            List<ConsoleImpl> sumValues = replicaConsoleRepository.getSumValuesGroupedByConsoleId(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
                     sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
-            if (sumValues != null) {
-                sheetOutput.setTotalNoOfPieces(sumValues.getTotalQuantity());
-                sheetOutput.setTotalSumOfWeights(sumValues.getTotalWeight());
-            }
 
-            // Get Location Sheet values
-            ConsoleImpl locationSheetValues = replicaConsoleRepository.getLocationSheetValues(sheetInput.getLanguageId(), sheetInput.getCompanyId(),
-                    sheetInput.getPartnerId(), sheetInput.getConsoleId(), sheetInput.getPartnerMasterAirwayBill());
-            if (locationSheetValues != null) {
-                sheetOutput.setLanguageDescription(locationSheetValues.getLangDesc());
-                sheetOutput.setCompanyName(locationSheetValues.getCompanyDesc());
-                sheetOutput.setPartnerName(locationSheetValues.getPartnerName());
-                sheetOutput.setPartnerType(locationSheetValues.getPartnerType());
+            sumValues.stream().forEach(sumValue -> {
+                LocationSheetOutput sheetOutput = new LocationSheetOutput();
+                sheetOutput.setLanguageId(sheetInput.getLanguageId());
+                sheetOutput.setCompanyId(sheetInput.getCompanyId());
+                sheetOutput.setPartnerMasterAirwayBill(sheetInput.getPartnerMasterAirwayBill());
+                sheetOutput.setLocation(sheetInput.getLocation());
+                sheetOutput.setPartnerId(sumValue.getPartnerId());
+                sheetOutput.setConsoleId(sumValue.getConsoleId());
+                sheetOutput.setMasterAirwayBill(sumValue.getMasterAirwayBill());
+                sheetOutput.setTotalNoOfPieces(sumValue.getTotalQuantity());
+                sheetOutput.setTotalSumOfWeights(sumValue.getTotalQuantity());
+                sheetOutput.setLanguageDescription(sumValue.getLangDesc());
+                sheetOutput.setCompanyName(sumValue.getCompanyDesc());
+                sheetOutput.setPartnerName(sumValue.getPartnerName());
+                sheetOutput.setPartnerType(sumValue.getPartnerType());
+                sheetOutput.setOrigin(sumValue.getOrigin());
+                sheetOutput.setNatureOfGoods("COURIER MATERIALS");
+                sheetOutput.setConsigneeName("IW EXPRESS");
+                sheetOutput.setLocationSheetTimeStamp(new Date());
+                createdLocationSheetOutputList.add(sheetOutput);
+            });
 
-                sheetOutput.setOrigin(locationSheetValues.getOrigin());
-//                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
-            }
-
-            sheetOutput.setNatureOfGoods("COURIER MATERIALS");
-            sheetOutput.setConsigneeName("IW EXPRESS");
-            sheetOutput.setLocationSheetTimeStamp(new Date());
-
-            createdLocationSheetOutputList.add(sheetOutput);
             processedKeys.add(uniqueKey); // Mark this uniqueKey as processed
             log.info("uniqueKey - {}", uniqueKey);
         }
@@ -139,6 +215,7 @@ public class ReportsService {
         return createdLocationSheetOutputList;
     }
 
+    // GenerateUniqueKey
     private String generateUniqueKey(LocationSheetInput sheetInput) {
         String uniqueKey = "languageId-" + sheetInput.getLanguageId() + "-" + "companyId-" + sheetInput.getCompanyId()
                 + "-" + "partnerId-" + sheetInput.getPartnerId() + "-" + "consoleId-" + sheetInput.getConsoleId()

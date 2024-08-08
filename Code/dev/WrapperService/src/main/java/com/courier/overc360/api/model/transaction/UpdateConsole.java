@@ -18,7 +18,7 @@ public class UpdateConsole {
     @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
+//    @NotBlank(message = "PartnerMasterAirwayBill is mandatory")
     private String partnerMasterAirwayBill;
 
     @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
