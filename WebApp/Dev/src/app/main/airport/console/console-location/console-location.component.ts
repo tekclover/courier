@@ -62,8 +62,9 @@ export class ConsoleLocationComponent {
     this.cols = [
       
       { field: 'consoleId', header: 'Console ID' ,format:'hyperLink' },
-      { field: 'noOfPieces', header: 'No Of Pieces'},
-      { field: 'grossWeight', header: 'Gross Weight' },
+      { field: 'totalNoOfPieces', header: 'No Of Pieces'},
+      { field: 'totalSumOfWeights', header: 'Gross Weight' },
+      { field: 'natureOfGoods', header: 'Nature of Goods' },
       { field: 'masterAirwayBill', header: 'MAWB' },
     ];
     this.target = [
@@ -75,11 +76,11 @@ export class ConsoleLocationComponent {
   
   fill(line: any) {
   let obj: any = {};
-  obj.languageId = [this.auth.languageId];
-  obj.companyId = [this.auth.companyId];
-  obj.partnerMasterAirwayBill = [this.pageToken.line.partnerMasterAirwayBill];
+  obj.languageId = this.auth.languageId;
+  obj.companyId = this.auth.companyId;
+  obj.partnerMasterAirwayBill = this.pageToken.line.partnerMasterAirwayBill;
 
-  this.service.searchLocation(obj).subscribe({
+  this.service.searchLocation([obj]).subscribe({
     next: (res: any) => {
       this.consoleTable = res;
       this.spin.hide();
