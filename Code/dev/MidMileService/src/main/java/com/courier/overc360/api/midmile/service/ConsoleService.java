@@ -1385,16 +1385,16 @@ public class ConsoleService {
 
             for (UpdateConsole updateConsole : updateConsoleList) {
                 log.info("Console Id <-------------------------------> {}", updateConsole);
-                // UnConsolidation Create
-                if (updateConsole.getUnconsolidatedFlag() == 1L ||
-                        updateConsole.getConsoleId() == null ||
-                        updateConsole.getConsoleId().isEmpty()) {
 
+                // UnConsolidation Create
+                if (updateConsole.getUnconsolidatedFlag() == 1L) {
                     AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
                     BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
                     unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
-
+                    return Collections.emptyList();
                 } else {
+
+                    log.info("UnConsolidatedFlag <---------------------------------------------> {} ", updateConsole.getUnconsolidatedFlag());
                     Console dbConsole = getConsole(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(),
                             updateConsole.getPartnerMasterAirwayBill(), updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId());
 
@@ -1653,11 +1653,14 @@ public class ConsoleService {
         for (ConsoleStatus updateConsole : updateConsoleList) {
 
             // UnConsolidation Create
-            if ( updateConsole.getUnconsolidatedFlag() == 1L || updateConsole.getConsoleId() == null || updateConsole.getConsoleId().isEmpty()) {
+            if (updateConsole.getUnconsolidatedFlag() == 1L) {
                 AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
                 BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
                 unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
+                return Collections.emptyList();
             } else {
+                log.info("UnConsolidatedFlag <---------------------------------------------> {} ", updateConsole.getUnconsolidatedFlag());
+
                 Console dbConsole =
                         consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
                                 updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(), updateConsole.getPartnerMasterAirwayBill(),
@@ -1875,7 +1878,8 @@ public class ConsoleService {
      * @return
      * @throws Exception
      */
-    public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
+    public Page<ReplicaConsole> findConsolesByPagination(FindConsole findConsole, Integer pageNo, Integer
+            pageSize, String sortBy) throws Exception {
 
         log.info("given Params to fetch Consoles by Pagination --> {}", findConsole);
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
@@ -1967,7 +1971,8 @@ public class ConsoleService {
         errorLogRepository.save(errorLog);
     }
 
-    private void createConsoleLog2(List<AddConsole> addConsoleList, String error) throws IOException, CsvException {
+    private void createConsoleLog2(List<AddConsole> addConsoleList, String error) throws
+            IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (AddConsole addConsole : addConsoleList) {
@@ -1988,7 +1993,8 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createConsoleLog3(List<UpdateConsole> updateConsoleList, String error) throws IOException, CsvException {
+    private void createConsoleLog3(List<UpdateConsole> updateConsoleList, String error) throws
+            IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (UpdateConsole updateConsole : updateConsoleList) {
@@ -2010,7 +2016,8 @@ public class ConsoleService {
         errorLogService.writeLog(errorLogList);
     }
 
-    private void createConsoleLog4(List<ConsoleDeleteInput> deleteInputList, String error) throws IOException, CsvException {
+    private void createConsoleLog4(List<ConsoleDeleteInput> deleteInputList, String error) throws
+            IOException, CsvException {
 
         List<ErrorLog> errorLogList = new ArrayList<>();
         for (ConsoleDeleteInput deleteInput : deleteInputList) {
@@ -2523,7 +2530,8 @@ public class ConsoleService {
      * @param consoleId
      * @param houseAirwayBill
      */
-    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String houseAirwayBill,
+    public void sendNotificationForConsoleCreate(String companyId, String languageId, String consoleId, String
+            houseAirwayBill,
                                                  String consoleGroupName, String consoleName) {
 
         // Check if consoleId has already been processed
