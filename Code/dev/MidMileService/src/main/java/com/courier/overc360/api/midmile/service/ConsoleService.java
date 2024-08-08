@@ -781,7 +781,6 @@ public class ConsoleService {
 
 
     /**
-     *
      * @param addConsoleList
      * @param loginUserID
      * @return
@@ -2532,8 +2531,38 @@ public class ConsoleService {
     //    }
 
 
-    // Send Notification
+    /**
+     * ManualCreateConsole
+     *
+     * @param consoles
+     * @param loginUserId
+     * @return
+     * @throws IOException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws CsvException
+     */
+    public List<Console> manualCreateConsole(List<Console> consoles, String loginUserId) throws IOException,
+            InvocationTargetException, IllegalAccessException, CsvException {
+        List<AddConsole> consoleList = new ArrayList<>();
 
+        consoles.stream().forEach(exConsole -> {
+            AddConsole addConsole = new AddConsole();
+            Console dbConsole = getConsole(exConsole.getLanguageId(), exConsole.getCompanyId(), exConsole.getPartnerId(),
+                    exConsole.getPartnerMasterAirwayBill(), exConsole.getPartnerHouseAirwayBill(), exConsole.getConsoleId(),
+                    exConsole.getPieceId());
+            dbConsole.setDeletionIndicator(1L);
+            dbConsole.setUpdatedBy(loginUserId);
+            dbConsole.setUpdatedOn(new Date());
+            Console saveConsole = consoleRepository.save(dbConsole);
+            BeanUtils.copyProperties(saveConsole, addConsole);
+            consoleList.add(addConsole);
+        });
+        return createConsoleList(consoleList, loginUserId);
+    }
+
+
+    // Send Notification
     /**
      * @param companyId
      * @param languageId

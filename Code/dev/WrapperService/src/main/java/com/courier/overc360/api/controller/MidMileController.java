@@ -798,6 +798,15 @@ public class MidMileController {
         return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
 
+    // Manual Console Create
+    @ApiOperation(response = Console[].class, value = "Manual Console Create")
+    @PostMapping("/manual/console/create")
+    public ResponseEntity<?> manualConsoleCreate(@Valid @RequestBody List<Console> consoles,
+                                                       @RequestParam String loginUserID, @RequestParam String authToken) {
+        Console[] consoleCreate = midMileService.manualConsoleCreate(consoles, loginUserID, authToken);
+        return new ResponseEntity<>(consoleCreate, HttpStatus.OK);
+    }
+
 //    // Generate Console Tracking Report - list Screen
 //    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report - list Screen")
 //    @PostMapping("/reports/consoleTrackingReport/listScreen")

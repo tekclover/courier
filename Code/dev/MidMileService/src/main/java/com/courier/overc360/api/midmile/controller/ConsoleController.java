@@ -188,4 +188,13 @@ public class ConsoleController {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
+    // Manual Console Create
+    @ApiOperation(response = Console.class, value = "Manual Console Create")
+    @PostMapping("/manual/create")
+    public ResponseEntity<?> manualConsoleCreate(@Valid @RequestBody List<Console> consoles, @RequestParam String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<Console> consoleCreate = consoleService.manualCreateConsole(consoles, loginUserID);
+        return new ResponseEntity<>(consoleCreate, HttpStatus.OK);
+    }
+
 }
