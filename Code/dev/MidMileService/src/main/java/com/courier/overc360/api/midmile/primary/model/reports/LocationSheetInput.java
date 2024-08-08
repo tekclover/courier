@@ -10,7 +10,7 @@ public class LocationSheetInput {
     @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "ConsoleID is mandatory")
+//    @NotBlank(message = "ConsoleID is mandatory")
     private String consoleId;
 
     private String location;

@@ -126,6 +126,9 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
     boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
             String languageId, String companyId, String partnerMasterAirwayBill, String consoleId, Long deletionIndicator);
 
+    boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerMasterAirwayBill, Long deletionIndicator);
+
 
     // Get total Sum of NetWeight and TotalQuantity
     @Query(value = "SELECT\n" +
@@ -136,7 +139,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "AND tc.LANG_ID = :languageId\n" +
             "AND tc.C_ID = :companyId\n" +
             "AND tc.PARTNER_ID = :partnerId\n" +
-            "AND tc.CONSOLE_ID = :consoleId\n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId)\n" +
+//            "AND tc.CONSOLE_ID = :consoleId\n" +
             "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
     ConsoleImpl getSumValues(@Param("languageId") String languageId,
                              @Param("companyId") String companyId,
@@ -159,7 +163,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "AND tc.LANG_ID = :languageId\n" +
             "AND tc.C_ID = :companyId\n" +
             "AND tc.PARTNER_ID = :partnerId\n" +
-            "AND tc.CONSOLE_ID = :consoleId\n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId)\n" +
+//            "AND tc.CONSOLE_ID = :consoleId\n" +
             "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
     ConsoleImpl getLocationSheetValues(@Param("languageId") String languageId,
                                        @Param("companyId") String companyId,

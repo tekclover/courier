@@ -86,12 +86,21 @@ public class ReportsService {
                 continue; // Skip this sheetInput if it has already been processed
             }
 
-            boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
-                    sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
-                    sheetInput.getConsoleId(), 0L);
-            if (!consolesPresent) {
-                throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+            if(sheetInput.getConsoleId() != null && !sheetInput.getConsoleId().isEmpty()) {
+                boolean consolesPresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndConsoleIdAndDeletionIndicator(
+                        sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(),
+                        sheetInput.getConsoleId(), 0L);
+                if (!consolesPresent) {
+                    throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+                }
+            } else {
+                boolean consolePresent = replicaConsoleRepository.existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndDeletionIndicator(
+                        sheetInput.getLanguageId(), sheetInput.getCompanyId(), sheetInput.getPartnerMasterAirwayBill(), 0L);
+                if (!consolePresent) {
+                    throw new BadRequestException("No console Data found for given inputs : " + sheetInput);
+                }
             }
+
             log.info("given Inputs to generate locationSheet --> {}", sheetInput);
 
             LocationSheetOutput sheetOutput = new LocationSheetOutput();
