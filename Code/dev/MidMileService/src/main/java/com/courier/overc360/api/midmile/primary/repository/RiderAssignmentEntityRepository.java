@@ -11,7 +11,7 @@ import java.util.Optional;
 @Transactional
 public interface RiderAssignmentEntityRepository extends JpaRepository<RiderAssignmentEntity, Long> {
 
-//    Optional<RiderAssignmentEntity> findByCompanyIdAndLanguageIdAndPartnerIdAndHouseAirwayBillAndPickUpIdAndDeletionIndicator(
-//            String companyId, String languageId, String partnerId, String houseAirwayBill, String pickUpId, Long deletionIndicator);
+    Optional<RiderAssignmentEntity> findByCompanyIdAndLanguageIdAndPartnerIdAndHouseAirwayBillAndPickUpIdAndDeletionIndicator(
+            String companyId, String languageId, String partnerId, String houseAirwayBill, String pickUpId, Long deletionIndicator);
 
 }

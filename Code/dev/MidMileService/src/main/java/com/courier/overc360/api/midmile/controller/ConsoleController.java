@@ -172,7 +172,8 @@ public class ConsoleController {
     @ApiOperation(response = Console.class, value = "Console Status Event Update")
     @PostMapping("/update/status")
     public ResponseEntity<?> updateConsoleStatus(@Valid @RequestBody List<ConsoleStatus> consoleStatuses,
-                                                 @RequestParam String loginUserID) {
+                                                 @RequestParam String loginUserID) throws IOException,
+            InvocationTargetException, IllegalAccessException, CsvException {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
