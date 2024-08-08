@@ -13,7 +13,7 @@ import { NumberrangeService } from '../../../master/numberrange/numberrange.serv
 import { ConsoleService } from '../console.service';
 import { ConsoleEditpopupComponent } from '../console-editpopup/console-editpopup.component';
 import { ConsoleTransferComponent } from '../console-transfer/console-transfer.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ConsoleBulkComponent } from '../console-bulk/console-bulk.component';
 import { DynamicFieldSelectionComponent } from './dynamic-field-selection/dynamic-field-selection.component';
@@ -46,7 +46,8 @@ export class ConsoleEditComponent {
     private auth: AuthService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
-    private label: ConsignmentLabelComponent
+    private label: ConsignmentLabelComponent,
+    private location: Location
   ) {
     this.status = [
       { value: '17', label: 'Inactive' },
@@ -203,19 +204,37 @@ export class ConsoleEditComponent {
     this.selectedConsole.push(choosen);
   }
   nextNumber: any;
+  pageFlow: any;
+  tableStyle:any;
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
-    const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
-    this.path.setData(dataToSend);
+
 
     this.dropdownlist();
 
     if (this.pageToken.report == true) {
-      this.reportTableHeader();
+      if (this.pageToken.module == 'unconsolidated') {
+        this.pageFlow = 'Unconsolidated Shipments';
+        const dataToSend = ['Mid-Mile', 'UnConsolidated Shipments Tracking'];
+        this.path.setData(dataToSend);
+        this.unconsolidatedReportTableHeader();
+        this.tableStyle = {'width': '100rem'};
+      }
+      if (this.pageToken.module == 'consolidated') {
+        this.pageFlow = 'Consolidated Shipments';
+        const dataToSend = ['Mid-Mile', 'Consolidated Shipments Tracking'];
+        this.path.setData(dataToSend);
+        this.consolidatedReportTableHeader();
+        this.tableStyle = {'width': '290rem'};
+      }
     } else {
+      this.pageFlow = 'Console - ' + this.pageToken.pageflow;
+      const dataToSend = ['Mid-Mile', 'Console', this.pageToken.pageflow];
+      this.path.setData(dataToSend);
       this.callTableHeader();
+      this.tableStyle = {'width': '290rem'};
     }
 
     this.form.controls.languageId.disable();
@@ -238,7 +257,23 @@ export class ConsoleEditComponent {
 
   cols: any[] = [];
   target: any[] = [];
-  reportTableHeader() {
+  unconsolidatedReportTableHeader() {
+    this.cols = [
+      { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
+      { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
+      { field: 'houseAirwayBill', header: 'Consignment ID' },
+      { field: 'pieceId', header: 'Piece ID' },
+      { field: 'shipperName', header: 'Shipper' },
+      { field: 'consigneeName', header: 'Consignee Name' },
+      { field: 'hawbTypeId', header: 'Action' },
+      { field: 'hawbTypeDescription', header: 'Action Name' },
+      { field: 'hawbTimeStamp', header: 'Scanned On', format: 'date' },
+      { field: 'createdBy', header: 'Scanned Officer' },
+    ];
+    this.target = [
+    ];
+  }
+  consolidatedReportTableHeader() {
     this.cols = [
       { field: 'consoleId', header: 'Console No' },
       { field: 'consoleName', header: 'Console Name' },
@@ -887,6 +922,12 @@ updateGateway(data:any){
       }
     });
   }
+
+  panelOpenState = false;
+  back() {
+    this.location.back();
+  }
+
 
   updateBulk() {
     if (this.selectedConsole.length == 0) {

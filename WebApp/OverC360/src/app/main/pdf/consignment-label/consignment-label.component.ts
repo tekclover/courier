@@ -621,6 +621,7 @@ export class ConsignmentLabelComponent {
         this.generateSingleInvoice(res);
       }, error: (err: any) => {
         this.cs.commonerrorNew(err);
+        this.spin.hide()
       }
     })
   }
@@ -906,6 +907,7 @@ export class ConsignmentLabelComponent {
                 })
               }, error: (err: any) => {
                 this.cs.commonerrorNew(err);
+                this.spin.hide()
               }
             })
           }
@@ -1457,28 +1459,36 @@ export class ConsignmentLabelComponent {
   fileUrldownload: any;
   docurl: any;
   async download(array:any, result:any) {
-    this.spin.show()
-    let Path =  '/' + result.houseAirwayBill + '/mergedFiles/' + result.houseAirwayBill + '_mergedFiles.pdf'
-    const blob = await this.consginementService.pdfMerge({filePaths: array, outputPath: Path})
+    this.spin.show();
+    const Path = '/' + result.houseAirwayBill + '/mergedFiles/' + result.houseAirwayBill + '_mergedFiles.pdf';
+    const blob = await this.consginementService.pdfMerge([{filePaths: array, outputPath: Path}])
       .catch((err: HttpErrorResponse) => {
         this.cs.commonerrorNew(err);
       });
+    
     this.spin.hide();
+    
     if (blob) {
-      const blobOb = new Blob([blob], {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
+      // Change MIME type to application/zip
+      const blobOb = new Blob([blob], { type: "application/zip" });
       this.fileUrldownload = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blobOb));
-      this.docurl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a')
-      a.href = this.docurl
-      a.download = Path;
+      this.docurl = window.URL.createObjectURL(blobOb); // Use blobOb here
+      
+      const a = document.createElement('a');
+      a.href = this.docurl;
+  
+      // Safely handle the file name extraction
+      const fileName = result.houseAirwayBill + '_mergedFiles.zip' || 'merge.zip';
+      a.download = fileName; // Ensures `fileName` is always a string
       a.click();
+      
       URL.revokeObjectURL(this.docurl);
-
     }
+
     this.spin.hide();
   }
+  
+  
 
 
 
