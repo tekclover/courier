@@ -386,6 +386,7 @@ export class ConsoleEditComponent {
     obj.languageId = [this.auth.languageId];
     obj.companyId = [this.auth.companyId];
     obj.partnerMasterAirwayBill = [line.partnerMasterAirwayBill];
+    obj.consoleId = [line.consoleId];
     obj.unconsolidatedFlag = this.pageToken.module == 'consolidated' ? [0] : this.pageToken.module == 'unconsolidated' ? [1] : null;
 
     if (this.pageToken.report == true && this.pageToken.module == 'unconsolidated') {
