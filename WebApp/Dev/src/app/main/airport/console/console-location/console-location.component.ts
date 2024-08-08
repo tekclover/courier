@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { ConsoleService } from '../console.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
@@ -37,6 +37,8 @@ export class ConsoleLocationComponent {
     private datePipe: DatePipe,
     private auth: AuthService,
     private fb: FormBuilder,
+    private location: Location,
+    private route: ActivatedRoute,
     private spin: NgxSpinnerService,
   ) { }
 
@@ -44,12 +46,16 @@ export class ConsoleLocationComponent {
   today: any;
   pageToken: any;
   ngOnInit() {
+    
+    let code = this.route.snapshot.params['code'];
+    this.pageToken = this.cs.decrypt(code);
+
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Master', 'Bill Mode'];
+    const dataToSend = ['Mid Mile', 'Console'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
-    this.initialCall();
+    this.fill(this.pageToken.line);
   }
 
   callTableHeader() {
@@ -107,10 +113,6 @@ export class ConsoleLocationComponent {
     this.selectedConsole.length = 0;
     this.selectedConsole.push(choosen);
   }
-
-
-
-
   openEdit(type: any = 'New', linedata: any = null): void {
     if(linedata){
       this.selectedConsole = linedata;
@@ -123,9 +125,10 @@ export class ConsoleLocationComponent {
     }
   }
 
-  
-
-
+  panelOpenState = false;
+  back() {
+    this.location.back();
+  }
   downloadExcel() {
     const exportData = this.selectedConsole.map(item => {
       const exportItem: any = {};
