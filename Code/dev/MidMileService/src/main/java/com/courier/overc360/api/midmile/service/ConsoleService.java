@@ -1384,103 +1384,108 @@ public class ConsoleService {
             List<Console> updatedConsoleList = new ArrayList<>();
 
             for (UpdateConsole updateConsole : updateConsoleList) {
-
-                Console dbConsole = getConsole(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(),
-                        updateConsole.getPartnerMasterAirwayBill(), updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId());
-
-                BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
-                log.info("Console HawbTypeId: {} ", updateConsole.getHawbTypeId());
-
-                Optional<String> statusID5DescOpt = consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), "5");
-                if (statusID5DescOpt.isPresent()) {
-                    String ikey = statusID5DescOpt.get();
-
-                    dbConsole.setHawbType("STATUS");
-                    dbConsole.setHawbTypeId("5");
-                    dbConsole.setHawbTypeDescription(ikey);
-                    dbConsole.setHawbTimeStamp(new Date());
-
-                    dbConsole.setPieceType("STATUS");
-                    dbConsole.setPieceTypeId("5");
-                    dbConsole.setPieceTypeDescription(ikey);
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
-
-                if (updateConsole.getUnconsolidatedFlag() != null) {
-                    if (updateConsole.getUnconsolidatedFlag() == 1L) {
-                        AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
-                        BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
-                        // Create Unconsolidation record
-                        unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
-                    }
-                }
-
-//                dbConsole.setReferenceField10("SCAN");
-                dbConsole.setScannedBy(loginUserID);
-                dbConsole.setScannedOn(new Date());
-
-                dbConsole.setUpdatedBy(loginUserID);
-                dbConsole.setUpdatedOn(new Date());
-                Console updatedConsole = consoleRepository.save(dbConsole);
-
-                // BagId
-                Long BAG_ID = 0L;
-                ConsignmentEntity dbConsignment = consignmentEntityRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
-                        updatedConsole.getCompanyId(), updatedConsole.getLanguageId(), updatedConsole.getPartnerId(), updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), 0L);
-
-                if (dbConsignment.getConsignmentBagId() == null) {
-                    BAG_ID = Long.valueOf(numberRangeService.getNextNumberRange("BAGID"));
+                // UnConsolidation Create
+                if (updateConsole.getConsoleId() == null || updateConsole.getConsoleId().isEmpty()) {
+                    AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
+                    BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
+                    unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
                 } else {
-                    BAG_ID = dbConsignment.getConsignmentBagId();
-                }
+                    Console dbConsole = getConsole(updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(),
+                            updateConsole.getPartnerMasterAirwayBill(), updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId());
 
-                if (updatedConsole != null) {
+                    BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
+                    log.info("Console HawbTypeId: {} ", updateConsole.getHawbTypeId());
 
-                    Optional<String> statusID4DescOpt = consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), "4");
-                    if (statusID4DescOpt.isPresent()) {
-                        String ikey = statusID4DescOpt.get();
+                    Optional<String> statusID5DescOpt = consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), "5");
+                    if (statusID5DescOpt.isPresent()) {
+                        String ikey = statusID5DescOpt.get();
 
-                        // Create Consignment Status Table record with StatusID - 4
+                        dbConsole.setHawbType("STATUS");
+                        dbConsole.setHawbTypeId("5");
+                        dbConsole.setHawbTypeDescription(ikey);
+                        dbConsole.setHawbTimeStamp(new Date());
+
+                        dbConsole.setPieceType("STATUS");
+                        dbConsole.setPieceTypeId("5");
+                        dbConsole.setPieceTypeDescription(ikey);
+                        dbConsole.setPieceTimeStamp(new Date());
+                    }
+
+                    if (updateConsole.getUnconsolidatedFlag() != null) {
+                        if (updateConsole.getUnconsolidatedFlag() == 1L) {
+                            AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
+                            BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
+                            // Create Unconsolidation record
+                            unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
+                        }
+                    }
+
+                    dbConsole.setScannedBy(loginUserID);
+                    dbConsole.setScannedOn(new Date());
+
+                    dbConsole.setUpdatedBy(loginUserID);
+                    dbConsole.setUpdatedOn(new Date());
+                    Console updatedConsole = consoleRepository.save(dbConsole);
+
+                    // BagId
+                    Long BAG_ID = 0L;
+                    ConsignmentEntity dbConsignment = consignmentEntityRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndMasterAirwayBillAndHouseAirwayBillAndDeletionIndicator(
+                            updatedConsole.getCompanyId(), updatedConsole.getLanguageId(), updatedConsole.getPartnerId(), updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), 0L);
+
+                    if (dbConsignment.getConsignmentBagId() == null) {
+                        BAG_ID = Long.valueOf(numberRangeService.getNextNumberRange("BAGID"));
+                    } else {
+                        BAG_ID = dbConsignment.getConsignmentBagId();
+                    }
+
+                    if (updatedConsole != null) {
+
+                        Optional<String> statusID4DescOpt = consignmentEntityRepository.statusEventText(updateConsole.getCompanyId(), updateConsole.getLanguageId(), "4");
+                        if (statusID4DescOpt.isPresent()) {
+                            String ikey = statusID4DescOpt.get();
+
+                            // Create Consignment Status Table record with StatusID - 4
+                            consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
+                                    updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
+                                    updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
+                                    "4", ikey, updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(),
+                                    "4", ikey, updatedConsole.getPieceTimeStamp(), loginUserID,
+                                    updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), BAG_ID,
+                                    updateConsole.getHubCode(), updateConsole.getHubName());
+                        }
+
+                        // Create Consignment Status Table record with StatusID - 5
                         consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
                                 updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
                                 updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
-                                "4", ikey, updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(),
-                                "4", ikey, updatedConsole.getPieceTimeStamp(), loginUserID,
+                                updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
+                                updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
+                                updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
                                 updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), BAG_ID,
                                 updateConsole.getHubCode(), updateConsole.getHubName());
+
+                        // Update ConsignmentEntity Table
+                        consoleRepository.updateConsignmentOnConsoleCreate(
+                                updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                                updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                                updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
+                                updateConsole.getHubCode(), BAG_ID);
+
+                        // Update PreAlert Table
+                        consoleRepository.updatePreAlertOnConsoleCreate(
+                                updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                                updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                                updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType());
+
+                        // Update PieceDetails Table
+                        consoleRepository.updatePieceDetailsOnConsoleCreate(
+                                updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                                updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                                updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
+                                updatedConsole.getPieceId());
+
+                        updatedConsoleList.add(updatedConsole);
                     }
-
-                    // Create Consignment Status Table record with StatusID - 5
-                    consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
-                            updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
-                            updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
-                            updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
-                            updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
-                            updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), BAG_ID,
-                            updateConsole.getHubCode(), updateConsole.getHubName());
-
-                    // Update ConsignmentEntity Table
-                    consoleRepository.updateConsignmentOnConsoleCreate(
-                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
-                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
-                            updateConsole.getHubCode(), BAG_ID);
-
-                    // Update PreAlert Table
-                    consoleRepository.updatePreAlertOnConsoleCreate(
-                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
-                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType());
-
-                    // Update PieceDetails Table
-                    consoleRepository.updatePieceDetailsOnConsoleCreate(
-                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
-                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
-                            updatedConsole.getPieceId());
-
-                    updatedConsoleList.add(updatedConsole);
                 }
             }
             return updatedConsoleList;

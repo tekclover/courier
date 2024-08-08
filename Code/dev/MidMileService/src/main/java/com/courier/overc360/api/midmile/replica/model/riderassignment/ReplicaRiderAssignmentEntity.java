@@ -374,7 +374,7 @@ public class ReplicaRiderAssignmentEntity implements Serializable {
     private String pickupTimeSlotEnd;
 
     @Column(name = "PICKUP_ID", columnDefinition = "nvarchar(50)")
-    private String pickupId;
+    private String pickUpId;
 
     @Column(name = "RIDER_ID", columnDefinition = "nvarchar(50)")
     private String riderId;
