@@ -30,5 +30,8 @@ public class ConsoleStatus {
     private String hubCode;
     private Long bagId;
 
+    private Long unconsolidatedFlag;
+
+
 
 }
