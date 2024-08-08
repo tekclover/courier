@@ -1384,7 +1384,7 @@ public class ConsoleService {
             List<Console> updatedConsoleList = new ArrayList<>();
 
             for (UpdateConsole updateConsole : updateConsoleList) {
-                log.info("Console Id <-------------------------------> {}", updateConsole.getConsoleId());
+                log.info("Console Id <-------------------------------> {}", updateConsole);
                 // UnConsolidation Create
                 if (updateConsole.getConsoleId() == null || updateConsole.getConsoleId().isEmpty()) {
                     AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
