@@ -138,8 +138,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "WHERE tc.IS_DELETED = 0\n" +
             "AND tc.LANG_ID = :languageId\n" +
             "AND tc.C_ID = :companyId\n" +
-            "AND tc.PARTNER_ID = :partnerId\n" +
-            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId)\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID = :partnerId) \n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId) \n" +
 //            "AND tc.CONSOLE_ID = :consoleId\n" +
             "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
     ConsoleImpl getSumValues(@Param("languageId") String languageId,
@@ -162,8 +162,8 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "Where tc.IS_DELETED=0\n" +
             "AND tc.LANG_ID = :languageId\n" +
             "AND tc.C_ID = :companyId\n" +
-            "AND tc.PARTNER_ID = :partnerId\n" +
-            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId)\n" +
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID = :partnerId) \n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId) \n" +
 //            "AND tc.CONSOLE_ID = :consoleId\n" +
             "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
     ConsoleImpl getLocationSheetValues(@Param("languageId") String languageId,
