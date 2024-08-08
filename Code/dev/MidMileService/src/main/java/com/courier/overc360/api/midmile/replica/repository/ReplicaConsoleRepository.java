@@ -131,22 +131,49 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
 
 
     // Get total Sum of NetWeight and TotalQuantity
-    @Query(value = "SELECT\n" +
+//    @Query(value = "SELECT\n" +
+//            "COALESCE(SUM(TRY_CONVERT(float, tc.NET_WEIGHT)), 0) AS totalWeight,\n" +
+//            "COALESCE(SUM(TRY_CONVERT(bigint, tc.TOTAL_QUANTITY)), 0) AS totalQuantity\n" +
+//            "FROM tblconsole tc\n" +
+//            "WHERE tc.IS_DELETED = 0\n" +
+//            "AND tc.LANG_ID = :languageId\n" +
+//            "AND tc.C_ID = :companyId\n" +
+//            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID = :partnerId) \n" +
+//            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId) \n" +
+////            "AND tc.CONSOLE_ID = :consoleId\n" +
+//            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
+//    ConsoleImpl getSumValues(@Param("languageId") String languageId,
+//                             @Param("companyId") String companyId,
+//                             @Param("partnerId") String partnerId,
+//                             @Param("consoleId") String consoleId,
+//                             @Param("partnerMasterAB") String partnerMasterAB);
+
+
+    @Query(value = "SELECT \n" +
+            "tc.CONSOLE_ID As consoleId,\n" +
+            "MAX(tc.LANG_TEXT) As langDesc, \n" +
+            "MAX(tc.C_NAME) As companyDesc,\n" +
+            "MAC(tc.PARTNER_ID) As partnerId,\n" +
+            "MAX(tc.PARTNER_NAME) As partnerName,\n" +
+            "MAX(tc.PARTNER_TYPE) As partnerType,\n" +
+            "MAX(tc.CONSIGNEE_NAME) As consigneeName,\n" +
+            "MAX(tc.MASTER_AIRWAY_BILL) As masterAirwayBill,\n" +
+            "MAX(tc.COUNTRY_OF_ORIGIN) As origin,\n" +
             "COALESCE(SUM(TRY_CONVERT(float, tc.NET_WEIGHT)), 0) AS totalWeight,\n" +
             "COALESCE(SUM(TRY_CONVERT(bigint, tc.TOTAL_QUANTITY)), 0) AS totalQuantity\n" +
             "FROM tblconsole tc\n" +
             "WHERE tc.IS_DELETED = 0\n" +
             "AND tc.LANG_ID = :languageId\n" +
             "AND tc.C_ID = :companyId\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID = :partnerId) \n" +
-            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId) \n" +
-//            "AND tc.CONSOLE_ID = :consoleId\n" +
-            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB", nativeQuery = true)
-    ConsoleImpl getSumValues(@Param("languageId") String languageId,
-                             @Param("companyId") String companyId,
-                             @Param("partnerId") String partnerId,
-                             @Param("consoleId") String consoleId,
-                             @Param("partnerMasterAB") String partnerMasterAB);
+            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID = :partnerId)\n" +
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID = :consoleId)\n" +
+            "AND tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
+            "GROUP BY tc.CONSOLE_ID", nativeQuery = true)
+    List<ConsoleImpl> getSumValuesGroupedByConsoleId(@Param("languageId") String languageId,
+                                                     @Param("companyId") String companyId,
+                                                     @Param("partnerId") String partnerId,
+                                                     @Param("consoleId") String consoleId,
+                                                     @Param("partnerMasterAB") String partnerMasterAB);
 
 
     // Get Location Sheet values

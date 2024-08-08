@@ -26,4 +26,8 @@ public interface ConsoleImpl {
 
     Date getScannedOn();
 
+    String getConsoleId();
+
+    String getPartnerId();
+
 }
