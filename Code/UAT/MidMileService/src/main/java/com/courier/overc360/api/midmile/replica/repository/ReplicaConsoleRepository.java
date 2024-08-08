@@ -9,11 +9,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
+@Repository
+@Transactional
 public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, String>,
         JpaSpecificationExecutor<ReplicaConsole> {
 
@@ -58,37 +63,18 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
             "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
-            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))", nativeQuery = true)
+            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))\n" +
+            "AND (COALESCE(:unconsolidatedIndicator, NULL) IS NULL OR tc.UNCONSOLIDATED IN (:unconsolidatedIndicator)) \n " +
+            "AND (COALESCE(:hawbTypeId, NULL) IS NULL OR tc.HAWB_TYP_ID IN (:hawbTypeId)) ", nativeQuery = true)
     List<ReplicaConsole> findConsolesWithQry(
             @Param("languageId") List<String> languageId,
             @Param("companyId") List<String> companyId,
             @Param("partnerId") List<String> partnerId,
             @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
             @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
-            @Param("consoleId") List<String> consoleId);
-
-
-    // Find Consoles By Automatic Pagination - SQL Qry
-    @Query(value = "SELECT * FROM tblconsole tc\n" +
-            "WHERE tc.IS_DELETED = 0\n" +
-            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
-            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
-            "AND (COALESCE(:partnerMasterAirwayBill, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAirwayBill))\n" +
-            "AND (COALESCE(:partnerHouseAirwayBill, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAirwayBill))\n" +
-            "AND (COALESCE(:consoleId, NULL) IS NULL OR tc.CONSOLE_ID IN (:consoleId))\n" +
-//            "ORDER BY CTD_ON DESC\n" +
-            "ORDER BY (SELECT NULL) \n" +
-            "OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY", nativeQuery = true)
-    List<ReplicaConsole> findConsolesByPagination(
-            @Param("languageId") List<String> languageId,
-            @Param("companyId") List<String> companyId,
-            @Param("partnerId") List<String> partnerId,
-            @Param("partnerMasterAirwayBill") List<String> partnerMasterAirwayBill,
-            @Param("partnerHouseAirwayBill") List<String> partnerHouseAirwayBill,
             @Param("consoleId") List<String> consoleId,
-            @Param("limit") int limit,
-            @Param("offset") int offset);
+            @Param("unconsolidatedIndicator") List<Long> unconsolidatedIndicator,
+            @Param("hawbTypeId") List<String> hawbTypeId);
 
 
     @Query(value = "SELECT t.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, " +
@@ -144,7 +130,7 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
     // Get total Sum of NetWeight and TotalQuantity
     @Query(value = "SELECT\n" +
             "COALESCE(SUM(TRY_CONVERT(float, tc.NET_WEIGHT)), 0) AS totalWeight,\n" +
-            "COALESCE(SUM(TRY_CONVERT(int, tc.TOTAL_QUANTITY)), 0) AS totalQuantity\n" +
+            "COALESCE(SUM(TRY_CONVERT(bigint, tc.TOTAL_QUANTITY)), 0) AS totalQuantity\n" +
             "FROM tblconsole tc\n" +
             "WHERE tc.IS_DELETED = 0\n" +
             "AND tc.LANG_ID = :languageId\n" +
@@ -187,16 +173,16 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "Where tc.IS_DELETED=0\n" +
             "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
             "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
-            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+//            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
             "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))\n" +
             "AND (COALESCE(:partnerHouseAB, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAB))\n" +
             "And tc.UNCONSOLIDATED = :unconsolidatedIndicator\n" +
-            "And tc.CTD_ON between COALESCE(:fromDate, NULL) And COALESCE(:toDate, NULL)", nativeQuery = true)
-    long getNoOfConsoles(@Param("languageId") List<String> languageId,
-                         @Param("companyId") List<String> companyId,
-                         @Param("partnerId") List<String> partnerId,
-                         @Param("partnerMasterAB") List<String> partnerMasterAB,
-                         @Param("partnerHouseAB") List<String> partnerHouseAB,
+            "And (COALESCE(CONVERT(VARCHAR(255), :fromDate), NULL) IS NULL OR (tc.CTD_ON between COALESCE(CONVERT(VARCHAR(255), :fromDate), NULL) And COALESCE(CONVERT(VARCHAR(255), :toDate), NULL)))", nativeQuery = true)
+    long getNoOfConsoles(@Param("languageId") String languageId,
+                         @Param("companyId") String companyId,
+//                         @Param("partnerId") String partnerId,
+                         @Param("partnerMasterAB") String partnerMasterAB,
+                         @Param("partnerHouseAB") String partnerHouseAB,
                          @Param("unconsolidatedIndicator") Long unconsolidatedIndicator,
                          @Param("fromDate") Date fromDate,
                          @Param("toDate") Date toDate);
@@ -208,15 +194,52 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "tc.SCANNED_ON As scannedOn\n" +
             "From tblconsole tc\n" +
             "Where tc.IS_DELETED=0\n" +
-            "And tc.LANG_ID = :languageId\n" +
-            "And tc.C_ID = :companyId\n" +
-            "And tc.PARTNER_ID = :partnerId\n" +
-            "And tc.PARTNER_MASTER_AIRWAY_BILL = :partnerMasterAB\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+//            "AND (COALESCE(:partnerId, NULL) IS NULL OR tc.PARTNER_ID IN (:partnerId))\n" +
+            "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))\n" +
+            "AND (COALESCE(:partnerHouseAB, NULL) IS NULL OR tc.PARTNER_HOUSE_AIRWAY_BILL IN (:partnerHouseAB))\n" +
 //            "And tc.REF_FIELD_10 = 'SCAN'\n" +
             "ORDER BY tc.SCANNED_ON DESC", nativeQuery = true)
     ConsoleImpl getScanValues(@Param("languageId") String languageId,
                               @Param("companyId") String companyId,
-                              @Param("partnerId") String partnerId,
-                              @Param("partnerMasterAB") String partnerMasterAB);
+//                              @Param("partnerId") String partnerId,
+                              @Param("partnerMasterAB") String partnerMasterAB,
+                              @Param("partnerHouseAB") String partnerHouseAB);
+
+    boolean existsByLanguageIdAndCompanyIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator(
+            String languageId, String companyId, String partnerMasterAirwayBill, String partnerHouseAirwayBill, Long deletionIndicator);
+
+
+    // Get Consoles Count by P-MAWB
+    @Query(value = "SELECT COUNT(*) FROM tblconsole tc\n" +
+            "WHERE tc.IS_DELETED = 0\n" +
+            "And tc.UNCONSOLIDATED = 0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "AND (COALESCE(:partnerMasterAB, NULL) IS NULL OR tc.PARTNER_MASTER_AIRWAY_BILL IN (:partnerMasterAB))", nativeQuery = true)
+    long getConsoleCountByPMawb(@Param("languageId") String languageId,
+                                @Param("companyId") String companyId,
+                                @Param("partnerMasterAB") String partnerMasterAB);
+
+//    @Query(value = "SELECT tc.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, tc.LANG_ID AS languageId, tc.C_ID AS companyId, COUNT(*) AS count\n" +
+//            "FROM tblconsole tc\n" +
+//            "WHERE tc.IS_DELETED = 0\n" +
+//            "AND tc.UNCONSOLIDATED = 0\n" +
+//            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+//            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+//            "GROUP BY tc.PARTNER_MASTER_AIRWAY_BILL, tc.LANG_ID, tc.C_ID", nativeQuery = true)
+//    Map<String, Long> getConsoleCountByPMawb(@Param("languageId") List<String> languageId,
+//                                             @Param("companyId") List<String> companyId);
+
+    @Query(value = "SELECT tc.PARTNER_MASTER_AIRWAY_BILL AS partnerMasterAirwayBill, tc.LANG_ID AS languageId, tc.C_ID AS companyId, COUNT(*) AS count\n" +
+            "FROM tblconsole tc\n" +
+            "WHERE tc.IS_DELETED = 0\n" +
+            "AND tc.UNCONSOLIDATED = 0\n" +
+            "AND (COALESCE(:languageId, NULL) IS NULL OR tc.LANG_ID IN (:languageId))\n" +
+            "AND (COALESCE(:companyId, NULL) IS NULL OR tc.C_ID IN (:companyId))\n" +
+            "GROUP BY tc.PARTNER_MASTER_AIRWAY_BILL, tc.LANG_ID, tc.C_ID", nativeQuery = true)
+    List<Object[]> getConsoleCountByPMawb(@Param("languageId") List<String> languageId,
+                                          @Param("companyId") List<String> companyId);
 
 }

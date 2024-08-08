@@ -10,7 +10,7 @@ public class ConsoleTrackingReportInput {
 
     private List<String> languageId;
     private List<String> companyId;
-    private List<String> partnerId;
+    //    private List<String> partnerId;
     private List<String> partnerMasterAirwayBill;
     private List<String> partnerHouseAirwayBill;
 

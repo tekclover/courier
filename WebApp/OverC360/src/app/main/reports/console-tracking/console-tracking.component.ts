@@ -40,7 +40,7 @@ export class ConsoleTrackingComponent {
   today: any;
   ngOnInit() {
     //to pass the breadcrumbs value to the main component
-    const dataToSend = ['Airport', 'Report', 'Console Tracking'];
+    const dataToSend = ['Mid-Mile', 'Console Tracking'];
     this.path.setData(dataToSend);
 
     this.callTableHeader();
@@ -50,15 +50,13 @@ export class ConsoleTrackingComponent {
   callTableHeader() {
     this.cols = [
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'noOfShipmentsScanned', header: 'No of Shipments', format: 'hyperLink' },
-      { field: 'noOfConsoles', header: 'No of Consoles', format: 'hyperLink' },
-      { field: 'noOfUnconsolidatedShipments', header: 'No of Unconsolidated Shipments', format: 'hyperLink' },
+      { field: 'noOfShipmentsScanned', header: 'Total Shipments', format: 'hyperLink' },
+      { field: 'noOfConsoles', header: 'Consolidated Shipments', format: 'hyperLink' },
+      { field: 'noOfUnconsolidatedShipments', header: 'Unconsolidated Shipments', format: 'hyperLink' },
     ];
     this.target = [
       { field: 'languageId', header: 'Language ID' },
-      // { field: 'languageDescription', header: 'Language' },
       { field: 'companyId', header: 'Company ID' },
-      // { field: 'companyName', header: 'Company' },
     ];
   }
 

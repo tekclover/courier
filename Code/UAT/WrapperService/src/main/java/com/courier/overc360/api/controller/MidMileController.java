@@ -66,8 +66,17 @@ public class MidMileController {
     // Find Consignment
     @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignment") //label for swagger
     @PostMapping("/consignment/find")
-    public ConsignmentEntity[] findConsignment(@Valid @RequestBody FindConsignment findConsignment, @RequestParam String authToken) throws Exception {
+    public ConsignmentEntity[] findConsignment(@Valid @RequestBody FindConsignment findConsignment,
+                                               @RequestParam String authToken) throws Exception {
         return midMileService.findConsignmentEntity(findConsignment, authToken);
+    }
+
+    // Find Consignments - MobileApp
+    @ApiOperation(response = ConsignmentEntity[].class, value = "Find Consignments - Mobile App") //label for swagger
+    @PostMapping("/consignment/find/mobileApp")
+    public ConsignmentEntity[] findConsignmentMobileApp(@Valid @RequestBody List<FindConsignmentMobileApp> findConsignments,
+                                                        @RequestParam String authToken) throws Exception {
+        return midMileService.findConsignmentMobileApp(findConsignments, authToken);
     }
 
     // Find IConsignmentEntity - null validation column preAlertValidationIndicator
@@ -504,13 +513,22 @@ public class MidMileController {
     // Find Consoles - normal
     @ApiOperation(response = Console[].class, value = "Find Console") // label for swagger
     @PostMapping("/console/findConsole")
-    public ResponseEntity<?> findConsole(@RequestBody FindConsole findConsole,
+    public ResponseEntity<?> findConsole(@Valid @RequestBody FindConsole findConsole,
                                          @RequestParam String authToken) throws Exception {
         Console[] console = midMileService.findConsole(findConsole, authToken);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
-    // Find Consoles - normal
+    // Find Consoles - MobileApp
+    @ApiOperation(response = Console[].class, value = "Find Consoles - Mobile App") // label for swagger
+    @PostMapping("/console/findConsole/mobileApp")
+    public ResponseEntity<?> findConsolesMobileApp(@Valid @RequestBody FindConsole findConsole,
+                                                   @RequestParam String authToken) throws Exception {
+        Console[] console = midMileService.findConsoleMobileApp(findConsole, authToken);
+        return new ResponseEntity<>(console, HttpStatus.OK);
+    }
+
+    // Find Consoles by Pagination
     @ApiOperation(response = Console.class, value = "Find Consoles By Pagination") // label for swagger
     @PostMapping("/console/findConsole/pagination")
     public Page<Console> findConsolesByPagination(@RequestBody FindConsole findConsole,
@@ -743,8 +761,8 @@ public class MidMileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Find Unconsolidations
-    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidation") // label for swagger
+    // Find Unconsolidated Shipments
+    @ApiOperation(response = Unconsolidation[].class, value = "Find Unconsolidated Shipments") // label for swagger
     @PostMapping("/unconsolidation/find")
     public ResponseEntity<?> findUnconsolidations(@RequestBody FindUnconsolidation findUnconsolidation,
                                                   @RequestParam String authToken) throws Exception {
@@ -779,5 +797,14 @@ public class MidMileController {
         ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReport(reportInputList, loginUserID, authToken);
         return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
     }
+
+//    // Generate Console Tracking Report - list Screen
+//    @ApiOperation(response = ConsoleTrackingReportOutput[].class, value = "Generate Console Tracking Report - list Screen")
+//    @PostMapping("/reports/consoleTrackingReport/listScreen")
+//    public ResponseEntity<?> postConsoleTrackingReportListScreen(@Valid @RequestBody ConsoleTrackingReportInput reportInputList,
+//                                                                 @RequestParam String loginUserID, @RequestParam String authToken) {
+//        ConsoleTrackingReportOutput[] reportOutputs = midMileService.generateConsoleTrackingReportListPage(reportInputList, loginUserID, authToken);
+//        return new ResponseEntity<>(reportOutputs, HttpStatus.OK);
+//    }
 
 }

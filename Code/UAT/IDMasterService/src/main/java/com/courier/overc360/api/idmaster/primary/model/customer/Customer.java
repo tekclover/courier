@@ -76,6 +76,9 @@ public class Customer {
     @Column(name = "STATUS_ID", columnDefinition = "nvarchar(50)")
     private String statusId;
 
+    @Column(name = "AGING_COUNT", columnDefinition = "nvarchar(50)")
+    private String agingCount;
+
     @Column(name = "STATUS_TEXT", columnDefinition = "nvarchar(100)")
     private String statusDescription;
 

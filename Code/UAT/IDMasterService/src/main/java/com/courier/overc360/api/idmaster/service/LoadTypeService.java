@@ -1,7 +1,6 @@
 package com.courier.overc360.api.idmaster.service;
 
 import com.courier.overc360.api.idmaster.controller.exception.BadRequestException;
-import com.courier.overc360.api.idmaster.primary.model.company.Company;
 import com.courier.overc360.api.idmaster.primary.model.errorlog.ErrorLog;
 import com.courier.overc360.api.idmaster.primary.model.loadtype.AddLoadType;
 import com.courier.overc360.api.idmaster.primary.model.loadtype.LoadType;
@@ -85,7 +84,7 @@ public class LoadTypeService {
     }
 
     /**
-     * Create
+     * Create LoadType
      *
      * @param addLoadType
      * @param loginUserID
@@ -95,48 +94,70 @@ public class LoadTypeService {
     public LoadType createLoadType(AddLoadType addLoadType, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
-            Optional<LoadType> duplicateLoadType = loadTypeRepository.findByLoadTypeIdAndLanguageIdAndCompanyIdAndDeletionIndicator
-                    (addLoadType.getLoadTypeId(), addLoadType.getLanguageId(), addLoadType.getCompanyId(), 0l);
-            Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator(
+            boolean dbCompanyPresent = replicaCompanyRepository.existsByCompanyIdAndLanguageIdAndDeletionIndicator(
                     addLoadType.getCompanyId(), addLoadType.getLanguageId(), 0L);
-            if (dbCompany.isEmpty()) {
+            if (!dbCompanyPresent) {
                 throw new BadRequestException("CompanyId - " + addLoadType.getCompanyId() + " and LanguageId - " + addLoadType.getLanguageId() + " doesn't exists");
-            } else if (duplicateLoadType.isPresent()) {
-                throw new BadRequestException("Record is getting duplicated with loadTypeId - " + addLoadType.getLoadTypeId());
-            } else {
-                log.info("new LoadType --> " + addLoadType);
-                LoadType newLoadType = new LoadType();
-                IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addLoadType.getLanguageId(), addLoadType.getCompanyId());
-                BeanUtils.copyProperties(addLoadType, newLoadType, CommonUtils.getNullPropertyNames(addLoadType));
-                if ((addLoadType.getLoadTypeId() != null &&
-                        (addLoadType.getReferenceField10() != null && addLoadType.getReferenceField10().equalsIgnoreCase("true"))) ||
-                        addLoadType.getLoadTypeId() == null || addLoadType.getLoadTypeId().isBlank()) {
-                    String NUM_RAN_OBJ = "LOADTYPE";
-                    String LOAD_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
-                    log.info("next Value from NumberRange for LOAD_TYPE_ID : " + LOAD_TYPE_ID);
-                    newLoadType.setLoadTypeId(LOAD_TYPE_ID);
-                }
-                if (iKeyValuePair != null) {
-                    newLoadType.setLanguageDescription(iKeyValuePair.getLangDesc());
-                    newLoadType.setCompanyName(iKeyValuePair.getCompanyDesc());
-                }
-                String statusDesc = replicaStatusRepository.getStatusDescription(addLoadType.getStatusId());
-                if (statusDesc != null) {
-                    newLoadType.setStatusDescription(statusDesc);
-                }
-                newLoadType.setDeletionIndicator(0L);
-                newLoadType.setCreatedBy(loginUserID);
-                newLoadType.setCreatedOn(new Date());
-                newLoadType.setUpdatedBy(loginUserID);
-                newLoadType.setUpdatedOn(new Date());
-                return loadTypeRepository.save(newLoadType);
             }
+
+            boolean duplicateLoadType = replicaLoadTypeRepository.existsByLoadTypeIdAndLanguageIdAndCompanyIdAndDeletionIndicator(
+                    addLoadType.getLoadTypeId(), addLoadType.getLanguageId(), addLoadType.getCompanyId(), 0L);
+            if (duplicateLoadType) {
+                throw new BadRequestException("Record is getting duplicated with loadTypeId - " + addLoadType.getLoadTypeId());
+            }
+
+//            String normalInput = normalizeString(addLoadType.getLoadTypeText());
+//            List<String> loadTypeNames = replicaLoadTypeRepository.getLoadTypeNames();
+//            for (String loadTypeNm : loadTypeNames) {
+//                if (normalizeString(loadTypeNm).equalsIgnoreCase(normalInput)) {
+//                    log.info("db loadType --> {}, new record's Input --> {}", loadTypeNm, normalInput);
+//                    throw new BadRequestException("There is already a record with loadType - " + addLoadType.getLoadTypeText());
+//                }
+//            }
+
+//            if (loadTypeNames.contains(addLoadType.getLoadTypeText())) {
+//                throw new BadRequestException("There is already a record with loadType - " + addLoadType.getLoadTypeText());
+//            }
+
+            log.debug("new LoadType --> {}", addLoadType);
+            LoadType newLoadType = new LoadType();
+            IKeyValuePair iKeyValuePair = replicaCompanyRepository.getDescription(addLoadType.getLanguageId(), addLoadType.getCompanyId());
+            BeanUtils.copyProperties(addLoadType, newLoadType, CommonUtils.getNullPropertyNames(addLoadType));
+            if ((addLoadType.getLoadTypeId() != null &&
+                    (addLoadType.getReferenceField10() != null && addLoadType.getReferenceField10().equalsIgnoreCase("true"))) ||
+                    addLoadType.getLoadTypeId() == null || addLoadType.getLoadTypeId().isBlank()) {
+                String NUM_RAN_OBJ = "LOADTYPE";
+                String LOAD_TYPE_ID = numberRangeService.getNextNumberRange(NUM_RAN_OBJ);
+                log.info("next Value from NumberRange for LOAD_TYPE_ID : {}", LOAD_TYPE_ID);
+                newLoadType.setLoadTypeId(LOAD_TYPE_ID);
+            }
+            if (iKeyValuePair != null) {
+                newLoadType.setLanguageDescription(iKeyValuePair.getLangDesc());
+                newLoadType.setCompanyName(iKeyValuePair.getCompanyDesc());
+            }
+            String statusDesc = replicaStatusRepository.getStatusDescription(addLoadType.getStatusId());
+            if (statusDesc != null) {
+                newLoadType.setStatusDescription(statusDesc);
+            }
+            newLoadType.setDeletionIndicator(0L);
+            newLoadType.setCreatedBy(loginUserID);
+            newLoadType.setCreatedOn(new Date());
+            newLoadType.setUpdatedBy(loginUserID);
+            newLoadType.setUpdatedOn(new Date());
+            return loadTypeRepository.save(newLoadType);
         } catch (Exception e) {
             // Error Log
             createLoadTypeLog2(addLoadType, e.toString());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    private String normalizeString(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.toLowerCase().replaceAll("\\s+", "").replaceAll("[^a-zA-Z0-9]", "");
     }
 
     /**

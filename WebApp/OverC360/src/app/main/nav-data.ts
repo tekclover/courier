@@ -343,22 +343,20 @@ export const navbarData: INavbarData[] = [
                 label: 'Console'
             },
              {
+                routerId: 5104,
+                routerLink: '/main/reports/consoleTracking',
+                label: 'Console Tracking'
+            },
 
-                routerId: 5103,
-                label: 'Report',
-                items: [
                     {
                         routerId: 5105,
-                        routerLink: '/main/reports/consoleTracking',
-                        label: 'Console Tracking'
+                routerLink: '/main/reports/pendingCustoms',
+                label: 'Pending Customs'
                     },
-
                     {
-                        routerId: 5103,
+                routerId: 5106,
                         routerLink: '/main/reports/inventoryScanning',
-                        label: 'Inventory Scanning'
-                    },
-                ]
+                label: 'Inventory Scan'
             },
 
             // {

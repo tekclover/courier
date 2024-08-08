@@ -1,21 +1,31 @@
 package com.courier.overc360.api.midmile.primary.model.consignment;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tbldestdetails")
 public class DestinationDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DEST_DETAIL_ID")
     private Long destinationDetailId;
-    @Column(name = "DESTINATION_DETAILS")
-    private String destinationDetails;
+
+//    @Column(name = "CONSIGNMENT_ID")
+//    private Long consignmentId = 0L;
 
     @Column(name = "ADDRESS_HUB_CODE", columnDefinition = "nvarchar(50)")
     private String addressHubCode;

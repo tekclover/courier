@@ -4,12 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -164,6 +159,12 @@ public class ReplicaPreAlert {
 
     @Column(name = "CON_LOCAL_ID", columnDefinition = "nvarchar(50)")
     private String consignmentLocalId;
+
+    @Column(name = "HUB_CODE", columnDefinition = "nvarchar(50)")
+    private String hubCode;
+
+    @Column(name = "HUB_NAME", columnDefinition = "nvarchar(50)")
+    private String hubName;
 
     @Column(name = "IS_DELETED")
     private Long deletionIndicator = 0L;

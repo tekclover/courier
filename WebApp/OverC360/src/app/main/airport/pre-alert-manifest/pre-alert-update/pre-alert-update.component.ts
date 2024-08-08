@@ -12,7 +12,7 @@ import { ConsignorService } from '../../../master/consignor/consignor.service';
 import { CustomerService } from '../../../master/customer/customer.service';
 import { ConsignmentService } from '../../../operation/consignment/consignment.service';
 import { PreAlertEditpopupComponent } from '../pre-alert-editpopup/pre-alert-editpopup.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { PreAlertBulkComponent } from '../pre-alert-bulk/pre-alert-bulk.component';
 
 @Component({
@@ -40,6 +40,7 @@ export class PreAlertUpdateComponent {
     private el: ElementRef,
     public dialog: MatDialog,
     private datePipe: DatePipe,
+    private location: Location,
   ) {
   }
 
@@ -54,13 +55,25 @@ export class PreAlertUpdateComponent {
   })
 
   submitted = false;
+  pageFlow: any;
 
   ngOnInit() {
     let code = this.route.snapshot.params['code'];
     this.pageToken = this.cs.decrypt(code);
 
+    if (this.pageToken.report == true) {
+      this.pageFlow = 'Total Shipments';
+      const dataToSend = ['Mid-Mile', 'Total Shipments Tracking'];
+      this.path.setData(dataToSend);
+      this.reportTableHeader();
+    }
+    else {
+      this.pageFlow = 'Pre Alert Manifest - ' + this.pageToken.pageFlow
     const dataToSend = ['Mid-Mile', 'Pre Alert Manifest', this.pageToken.pageflow];
     this.path.setData(dataToSend);
+      this.callTableHeader();
+    }
+    
 
     if (this.pageToken.pageflow != 'New') {
       this.fill(this.pageToken.line);
@@ -156,6 +169,11 @@ export class PreAlertUpdateComponent {
         this.cs.commonerrorNew(err);
       }
     })
+  }
+
+  panelOpenState = false;
+  back() {
+    this.location.back();
   }
 
 

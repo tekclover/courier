@@ -2,23 +2,27 @@ package com.courier.overc360.api.model.transaction;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
 @Data
 public class AddItemDetails {
 
-//    private String languageId;
+    private Long itemDetailsId;
 
-//    private String companyId;
+    private Set<AddImageReference> referenceImageList;
 
-//    private String partnerId;
+    private String languageId;
 
-//    private String masterAirwayBill;
+    private String companyId;
 
-//    private String houseAirwayBill;
+    private String partnerId;
 
-//    private String pieceId;
+    private String pieceId;
+
+    private String masterAirwayBill;
+
+    private String houseAirwayBill;
 
     private String pieceItemId;
 
@@ -30,9 +34,19 @@ public class AddItemDetails {
 
     private String currency;
 
+    private String languageDescription;
+
+    private String companyName;
+
     private String partnerType;
 
     private String partnerName;
+
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
+
+    private String description;
 
     private String consignmentCurrency;
 
@@ -56,6 +70,14 @@ public class AddItemDetails {
 
     private String calculatedTotalDuty;
 
+    private String itemCode;
+
+    private String hsCode;
+
+    private String declaredValue;
+
+    private String codAmount;
+
     private String length;
 
     private String dimensionUnit;
@@ -72,21 +94,7 @@ public class AddItemDetails {
 
     private String volumeUnit;
 
-//    private String partnerMasterAirwayBill;
-//
-//    private String partnerHouseAirwayBill;
-
-    private List<ReferenceImageList> referenceImageList;
-
-    private String itemCode;
-
-    private String hsCode;
-
-    private String description;
-
-    private String declaredValue;
-
-    private String codAmount;
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -108,24 +116,16 @@ public class AddItemDetails {
 
     private String referenceField10;
 
-    private String referenceField11;
+    private String createdBy;
 
-    private String referenceField12;
+    private Date createdOn = new Date();
 
-    private String referenceField13;
+    private String updatedBy;
 
-    private String referenceField14;
+    private Date updatedOn = new Date();
 
-    private String referenceField15;
 
-    private String referenceField16;
 
-    private String referenceField17;
 
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
 
 }

@@ -11,4 +11,5 @@ public class LabelFormInput {
     private List<String> companyId;
     private List<String> pieceId;
     private List<String> houseAirwayBill;
+
 }

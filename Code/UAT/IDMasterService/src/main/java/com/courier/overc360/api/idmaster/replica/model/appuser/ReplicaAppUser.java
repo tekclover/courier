@@ -45,6 +45,9 @@ public class ReplicaAppUser {
     @Column(name = "APP_USER_TYPE", columnDefinition = "nvarchar(50)")
     private String appUserType;
 
+    @Column(name = "PASSWORD", columnDefinition = "nvarchar(300)")
+    private String password;
+
     @Column(name = "MOBILE_NUMBER", columnDefinition = "nvarchar(50)")
     private String mobileNumber;
 

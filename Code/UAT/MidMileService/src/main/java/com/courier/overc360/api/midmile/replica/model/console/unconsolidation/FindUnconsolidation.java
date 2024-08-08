@@ -12,5 +12,8 @@ public class FindUnconsolidation {
     private List<String> partnerId;
     private List<String> partnerMasterAirwayBill;
     private List<String> partnerHouseAirwayBill;
+    private List<Long> unconsolidatedFlag;
+
 //    private List<String> consoleId;
+
 }

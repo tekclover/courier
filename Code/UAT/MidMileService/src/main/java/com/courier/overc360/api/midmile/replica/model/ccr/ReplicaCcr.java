@@ -1,6 +1,5 @@
 package com.courier.overc360.api.midmile.replica.model.ccr;
 
-import com.courier.overc360.api.midmile.primary.model.ccr.CcrCompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

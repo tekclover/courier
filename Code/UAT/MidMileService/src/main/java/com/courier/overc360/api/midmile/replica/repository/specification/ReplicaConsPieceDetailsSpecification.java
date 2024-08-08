@@ -1,7 +1,6 @@
 package com.courier.overc360.api.midmile.replica.repository.specification;
 
-import com.courier.overc360.api.midmile.replica.model.consignment.FindConsignment;
-import com.courier.overc360.api.midmile.replica.model.piecedetails.FindPieceDetails;
+import com.courier.overc360.api.midmile.primary.model.consignment.FindConsignment;
 import com.courier.overc360.api.midmile.replica.model.piecedetails.ReplicaPieceDetails;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.data.jpa.domain.Specification;

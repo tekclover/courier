@@ -2,6 +2,7 @@ package com.courier.overc360.api.idmaster.primary.model.consignor;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -30,6 +31,8 @@ public class UpdateConsignor {
 
     @NotBlank(message = "Consignor Name is mandatory")
     private String consignorName;
+
+    private String agingCount;
 
     private String statusId;
 

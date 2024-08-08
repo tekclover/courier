@@ -721,6 +721,7 @@ export class ConsignmentNewComponent {
       { field: 'hawbType', header: 'Type' },
       // { field: 'bagId', header: 'Bag ID' },
       { field: 'hawbTypeDescription', header: 'Description' },
+      { field: 'hubName', header: 'Hub Name' },
       { field: 'hawbTimeStamp', header: 'Time', format: 'date' },
       { field: 'updatedBy', header: 'User' },
     ];
