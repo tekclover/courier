@@ -51,10 +51,6 @@ public class ReplicaConsignmentStatusSpecification implements Specification<Repl
             final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("hawbTypeId");
             predicates.add(group.in(findConsignmentStatus.getHawbTypeId()));
         }
-        if (findConsignmentStatus.getHawbType() != null && !findConsignmentStatus.getHawbType().isEmpty()) {
-            final Path<DeferredImportSelector.Group> group = root.<DeferredImportSelector.Group>get("hawbType");
-            predicates.add(group.in(findConsignmentStatus.getHawbType()));
-        }
 
         predicates.add(cb.equal(root.get("deletionIndicator"), 0L));
         return cb.and(predicates.toArray(new Predicate[]{}));
