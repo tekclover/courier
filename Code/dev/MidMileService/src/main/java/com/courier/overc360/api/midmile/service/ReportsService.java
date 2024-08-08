@@ -191,6 +191,7 @@ public class ReportsService {
                 sheetOutput.setLanguageId(sheetInput.getLanguageId());
                 sheetOutput.setCompanyId(sheetInput.getCompanyId());
                 sheetOutput.setPartnerMasterAirwayBill(sheetInput.getPartnerMasterAirwayBill());
+                sheetOutput.setLocation(sheetInput.getLocation());
                 sheetOutput.setPartnerId(sumValue.getPartnerId());
                 sheetOutput.setConsoleId(sumValue.getConsoleId());
                 sheetOutput.setMasterAirwayBill(sumValue.getMasterAirwayBill());
