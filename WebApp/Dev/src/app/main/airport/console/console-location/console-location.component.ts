@@ -79,7 +79,7 @@ export class ConsoleLocationComponent {
   obj.companyId = [this.auth.companyId];
   obj.partnerMasterAirwayBill = [this.pageToken.line.partnerMasterAirwayBill];
 
-  this.service.search(obj).subscribe({
+  this.service.searchLocation(obj).subscribe({
     next: (res: any) => {
       this.consoleTable = res;
       this.spin.hide();
