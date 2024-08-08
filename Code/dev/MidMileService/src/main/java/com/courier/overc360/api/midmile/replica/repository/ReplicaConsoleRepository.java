@@ -153,7 +153,7 @@ public interface ReplicaConsoleRepository extends JpaRepository<ReplicaConsole, 
             "tc.CONSOLE_ID As consoleId,\n" +
             "MAX(tc.LANG_TEXT) As langDesc, \n" +
             "MAX(tc.C_NAME) As companyDesc,\n" +
-            "MAC(tc.PARTNER_ID) As partnerId,\n" +
+            "MAX(tc.PARTNER_ID) As partnerId,\n" +
             "MAX(tc.PARTNER_NAME) As partnerName,\n" +
             "MAX(tc.PARTNER_TYPE) As partnerType,\n" +
             "MAX(tc.CONSIGNEE_NAME) As consigneeName,\n" +
