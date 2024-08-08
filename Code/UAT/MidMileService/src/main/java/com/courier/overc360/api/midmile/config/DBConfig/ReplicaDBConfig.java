@@ -34,7 +34,7 @@ public class ReplicaDBConfig {
 																		   @Qualifier("replicaDataSource") DataSource dataSource) {
 		HashMap<String, Object> properties = new HashMap<>();
 		properties.put("hibernate.hbm2ddl.auto", "update");
-		properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
+		properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
 		return builder.dataSource(dataSource).properties(properties)
 				.packages("com.courier.overc360.api.midmile.replica.model")
 				.persistenceUnit("Replica").build();

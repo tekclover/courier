@@ -1,7 +1,10 @@
 package com.courier.overc360.api.idmaster.replica.model.appuser;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class ReplicaAppUserCompositeKey implements Serializable {
     private static final long serialVersionUID = -7617672247680004647L;
     /*

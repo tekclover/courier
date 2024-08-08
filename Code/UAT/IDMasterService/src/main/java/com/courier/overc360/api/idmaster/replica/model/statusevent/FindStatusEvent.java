@@ -10,4 +10,5 @@ public class FindStatusEvent {
     private List<String> languageId;
     private List<String> companyId;
     private List<String> typeId;
+    private List<String> statusId;
 }

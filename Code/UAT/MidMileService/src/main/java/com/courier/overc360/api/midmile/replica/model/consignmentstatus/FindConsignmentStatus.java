@@ -14,7 +14,6 @@ public class FindConsignmentStatus {
     private List<String> eventCode;
     private List<String> houseAirwayBill;
     private List<String> hawbTypeId;
-    private String hawbType;
 
 
 }

@@ -20,6 +20,9 @@ public class ReplicaReturnDetails {
     @Column(name = "RETURN_ID")
     private Long returnId;
 
+//    @Column(name = "CONSIGNMENT_ID")
+//    private Long consignmentId = 0L;
+
     @Column(name = "ADDRESS_HUB_CODE", columnDefinition = "nvarchar(50)")
     private String addressHubCode;
 

@@ -7,6 +7,10 @@ import java.util.Date;
 @Data
 public class ImageReference {
 
+    private Long imageId;
+
+    private String imageRefId;
+
     private String languageId;
 
     private String companyId;
@@ -17,15 +21,11 @@ public class ImageReference {
 
     private String houseAirwayBill;
 
+//    private Long consignmentId;
+
     private String pieceId;
 
     private String pieceItemId;
-
-    private String imageRefId;
-
-    private String partnerMasterAirwayBill;
-
-    private String partnerHouseAirwayBill;
 
     private String languageDescription;
 
@@ -35,9 +35,15 @@ public class ImageReference {
 
     private String partnerName;
 
-   private String imageRef;
+    private String imageRef;
 
-    private Long deletionIndicator ;
+    private String partnerMasterAirwayBill;
+
+    private String partnerHouseAirwayBill;
+
+    private String referenceImageUrl;
+
+    private Long deletionIndicator = 0L;
 
     private String referenceField1;
 
@@ -59,31 +65,8 @@ public class ImageReference {
 
     private String referenceField10;
 
-    private String referenceField11;
-
-    private String referenceField12;
-
-    private String referenceField13;
-
-    private String referenceField14;
-
-    private String referenceField15;
-
-    private String referenceField16;
-
-    private String referenceField17;
-
-    private String referenceField18;
-
-    private String referenceField19;
-
-    private String referenceField20;
-
     private String createdBy;
 
-    private Date createdOn ;
+    private Date createdOn = new Date();
 
-    private String updatedBy;
-
-    private Date updatedOn ;
 }

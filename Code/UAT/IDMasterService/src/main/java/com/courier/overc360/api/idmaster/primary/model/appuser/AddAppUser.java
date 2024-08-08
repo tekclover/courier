@@ -14,6 +14,7 @@ public class AddAppUser {
     @NotBlank(message = "languageId is mandatory")
     private String languageId;
 
+    @NotBlank(message = "AppUser Id is mandatory")
     private String appUserId;
 
     @NotBlank(message = "appUserName is mandatory")
@@ -32,6 +33,8 @@ public class AddAppUser {
     private String vehicleRegNumber;
 
     private String routeId;
+
+    private String assignedHubCode;
 
     private String remark;
 

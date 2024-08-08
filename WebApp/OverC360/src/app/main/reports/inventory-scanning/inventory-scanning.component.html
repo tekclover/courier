@@ -1,6 +1,6 @@
 <div class="componentBody">
     <div class="d-flex justify-content-between align-items-center">
-        <p class="componentHeader f600 mb-0">Inventory Scanning</p>
+        <p class="componentHeader f600 mb-0">{{pageFlow}}</p>
         <div class="d-flex justify-content-between align-items-center">
             <img type="button" src="./assets/common/edit.png" alt="" srcset=""
                 style="margin: 0 17px; height: 1.5rem;">
@@ -74,7 +74,6 @@
             [scrollable]="true" selectionMode="multiple" sortField="createdOn" [sortOrder]="-1"
             [(selection)]="selectedInventoryScanning" scrollHeight="calc(100vh - 20.8rem)" [paginator]="true"
             [rows]="100" [showCurrentPageReport]="true" sortField="createdOn" [sortOrder]="-1"
-            [tableStyle]="{'width': '200rem'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" styleClass="p-datatable-sm">
             <ng-template pTemplate="header" let-columns>
                 <tr>

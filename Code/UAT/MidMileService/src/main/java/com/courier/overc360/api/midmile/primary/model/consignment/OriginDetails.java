@@ -5,7 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Data
@@ -19,6 +24,9 @@ public class OriginDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORIGIN_ID")
     private Long originId;
+
+//    @Column(name = "CONSIGNMENT_ID")
+//    private Long consignmentId = 0L;
 
     @Column(name = "ADDRESS_HUB_CODE", columnDefinition = "nvarchar(50)")
     private String addressHubCode;

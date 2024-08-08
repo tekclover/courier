@@ -14,8 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @Service
@@ -103,6 +109,48 @@ public class CommonService {
 		HttpEntity<?> entity = new HttpEntity<>(findConsignment, headers);
 		ResponseEntity<ConsignmentEntity[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, ConsignmentEntity[].class);
 		return result.getBody();
+	}
+
+	// Batch pdf merge
+	public byte[] mergePdfs(List<PDFMerger> pdfMergerList) {
+		HttpHeaders headers = new HttpHeaders();
+		AuthToken authTokenForCommonService = authTokenService.getCommonServiceAuthToken();
+		String authToken = authTokenForCommonService.getAccess_token();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("User-Agent", "RestTemplate");
+		headers.add("Authorization", "Bearer " + authToken);
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+			int batchCounter = 1;
+			for (PDFMerger pdfMerger : pdfMergerList) {
+				UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getCommonServiceUrl() + "pdf/merge/v3");
+				HttpEntity<?> entity = new HttpEntity<>(pdfMerger, headers);
+				ResponseEntity<String> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+
+				String[] batchPaths = result.getBody().split(",");
+				log.info("Wrapper Service BatchPath <---------------------------------------> {}", batchPaths);
+				for (String batchPath : batchPaths) {
+					// Assuming you have a method to read file content from the path
+					byte[] batchBytes = readBytesFromPath(batchPath);
+					log.info("Wrapper Service BatchBytes <------------------------------------> {}", batchBytes);
+					ZipEntry zipEntry = new ZipEntry("batch_" + batchCounter + ".pdf");
+					zos.putNextEntry(zipEntry);
+					zos.write(batchBytes);
+					zos.closeEntry();
+					batchCounter++;
+				}
+			}
+			zos.finish();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return baos.toByteArray();
+	}
+
+	// Method to read bytes from a file path
+	private byte[] readBytesFromPath(String path) throws IOException {
+		return Files.readAllBytes(Paths.get(path));
 	}
 
 }

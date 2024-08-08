@@ -84,7 +84,7 @@ public class ConsoleController {
     public ResponseEntity<?> patchConsoleForMobileApp(@Valid @RequestBody List<UpdateConsole> updateConsoleList,
                                                       @RequestParam String loginUserID)
             throws InvocationTargetException, IllegalAccessException, IOException, CsvException {
-        List<Console> console = consoleService.updateConsoleForMobileApp(updateConsoleList, loginUserID);
+        List<Console> console = consoleService.updateConsoleStatusOrForMobileApp(updateConsoleList, loginUserID);
         return new ResponseEntity<>(console, HttpStatus.OK);
     }
 
@@ -135,11 +135,19 @@ public class ConsoleController {
     }
 
 
-    // Find Console - normal
-    @ApiOperation(response = ReplicaConsole.class, value = "Find Console") // label for swagger
+    // Find Consoles - normal
+    @ApiOperation(response = ReplicaConsole.class, value = "Find Consoles") // label for swagger
     @PostMapping("/findConsole")
     public ResponseEntity<?> fetchConsoles(@Valid @RequestBody FindConsole findConsole) throws Exception {
         List<ReplicaConsole> consoleList = consoleService.findConsoles(findConsole);
+        return new ResponseEntity<>(consoleList, HttpStatus.OK);
+    }
+
+    // Find Consoles - MobileApp
+    @ApiOperation(response = ReplicaConsole.class, value = "Find Consoles - MobileApp") // label for swagger
+    @PostMapping("/findConsole/mobileApp")
+    public ResponseEntity<?> findConsoleMobileApp(@Valid @RequestBody FindConsole findConsole) throws Exception {
+        List<ReplicaConsole> consoleList = consoleService.findConsolesMobileApp(findConsole);
         return new ResponseEntity<>(consoleList, HttpStatus.OK);
     }
 
@@ -167,6 +175,16 @@ public class ConsoleController {
                                                  @RequestParam String loginUserID) {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
+    }
+
+    // Send Notification
+    @ApiOperation(response = Console.class, value = "Send notification")
+    @PostMapping("/send/notification")
+    public ResponseEntity<?> sendNotification(@RequestParam String companyId, @RequestParam String languageId,
+                                              @RequestParam String consoleId, @RequestParam String houseAirwayBill,
+                                              @RequestParam String consoleGroupName, @RequestParam String consoleName){
+        consoleService.sendNotificationForConsoleCreate(companyId, languageId, consoleId, houseAirwayBill, consoleGroupName, consoleName);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
 }

@@ -9,10 +9,8 @@ import com.courier.overc360.api.midmile.primary.model.imagereference.UpdateImage
 import com.courier.overc360.api.midmile.primary.repository.ErrorLogRepository;
 import com.courier.overc360.api.midmile.primary.repository.ImageReferenceRepository;
 import com.courier.overc360.api.midmile.primary.util.CommonUtils;
-import com.courier.overc360.api.midmile.replica.model.imagereference.FindImageReference;
 import com.courier.overc360.api.midmile.replica.model.imagereference.ReplicaImageReference;
 import com.courier.overc360.api.midmile.replica.repository.ReplicaImageReferenceRepository;
-import com.courier.overc360.api.midmile.replica.repository.specification.ReplicaImageReferenceSpecification;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -141,7 +138,6 @@ public class ImageReferenceService {
      * @param masterAirwayBillNo
      * @param partnerHouseAirwayBill
      * @param partnerMasterAirwayBill
-     * @param consignmentId
      * @param pieceId
      * @param pieceItemId
      * @param url
@@ -156,7 +152,7 @@ public class ImageReferenceService {
      */
     @Transactional
     public ImageReference createImageReference(String languageId, String companyId, String partnerId, String partnerName, String houseAirwayBill,
-                                               String masterAirwayBillNo, String partnerHouseAirwayBill, String partnerMasterAirwayBill, Long consignmentId,
+                                               String masterAirwayBillNo, String partnerHouseAirwayBill, String partnerMasterAirwayBill,
                                                String pieceId, String pieceItemId, String url, String tableName, String downloadUrl, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
@@ -172,7 +168,6 @@ public class ImageReferenceService {
             newImageReference.setMasterAirwayBill(masterAirwayBillNo);
             newImageReference.setPartnerHouseAirwayBill(partnerHouseAirwayBill);
             newImageReference.setPartnerMasterAirwayBill(partnerMasterAirwayBill);
-            newImageReference.setConsignmentId(consignmentId);
             newImageReference.setPieceId(pieceId);
             newImageReference.setPieceItemId(pieceItemId);
             newImageReference.setReferenceImageUrl(url);

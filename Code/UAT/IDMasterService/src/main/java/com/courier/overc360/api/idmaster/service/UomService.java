@@ -100,12 +100,12 @@ public class UomService {
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
         try {
             Optional<Company> dbCompany = companyRepository.findByCompanyIdAndLanguageIdAndDeletionIndicator
-                    (addUom.getCompanyId(), addUom.getLanguageId(), 0l);
+                    (addUom.getCompanyId(), addUom.getLanguageId(), 0L);
             if (dbCompany.isEmpty()) {
                 throw new BadRequestException("CompanyId - " + addUom.getCompanyId() + " and LanguageId - " + addUom.getLanguageId() + " doesn't exists");
             }
             Optional<Uom> duplicateUom = uomRepository.findByCompanyIdAndLanguageIdAndUomIdAndDeletionIndicator
-                    (addUom.getCompanyId(), addUom.getLanguageId(), addUom.getUomId(), 0l);
+                    (addUom.getCompanyId(), addUom.getLanguageId(), addUom.getUomId(), 0L);
             if (duplicateUom.isPresent()) {
                 throw new BadRequestException("Record is getting duplicated with uomId - " + addUom.getUomId());
             } else {
@@ -156,6 +156,12 @@ public class UomService {
         try {
             Uom dbuom = getUom(companyId, languageId, uomId);
             BeanUtils.copyProperties(updateUom, dbuom, CommonUtils.getNullPropertyNames(updateUom));
+            if (updateUom.getStatusId() != null && !updateUom.getStatusId().isEmpty()) {
+                String statusDesc = replicaStatusRepository.getStatusDescription(updateUom.getStatusId());
+                if (statusDesc != null) {
+                    dbuom.setStatusDescription(statusDesc);
+                }
+            }
             dbuom.setUpdatedBy(loginUserID);
             dbuom.setUpdatedOn(new Date());
             return uomRepository.save(dbuom);

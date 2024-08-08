@@ -239,6 +239,10 @@ public class AddConsole {
 
     private String totalDuty;
 
+    private String flightName;
+
+    private String flightNo;
+
     private Long deletionIndicator;
 
     private String referenceField1;

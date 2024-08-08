@@ -37,9 +37,24 @@ export class InventoryScanningComponent {
 
   fullData: any;
   today: any;
+  activeLink: any;
+  pageFlow:any;
+
   ngOnInit(): void {
-    const dataToSend = ['Airport', 'Report', 'Inventory Scanning'];
+    const link = this.router.url;
+    this.activeLink = link.split('/')[3];
+
+    if (this.activeLink == 'pendingCustoms') {
+      const dataToSend = ['Mid-Mile', 'Pending Customs'];
+      this.path.setData(dataToSend);
+      this.pageFlow = 'Pending Customs';
+    } else {
+      const dataToSend = ['Mid-Mile', 'Inventory Scan'];
     this.path.setData(dataToSend);
+      this.pageFlow = 'Inventory Scan';
+    }
+
+
 
     this.callTableHeader();
     this.initialCall();
@@ -48,19 +63,19 @@ export class InventoryScanningComponent {
 
   callTableHeader() {
     this.cols = [
-      { field: 'hawbTypeId', header: 'HAWB Type ID' },
-      { field: 'hawbType', header: 'HAWB Type' },
-      { field: 'hawbTypeDescription', header: 'HAWB Type Description' },
-      { field: 'hawbTimeStamp', header: 'Scanned Time', format: 'date' },
-      { field: 'houseAirwayBill', header: 'Consignment No' },
-      { field: 'masterAirwayBill', header: 'Master Airway Bill' },
+      // { field: 'hawbTypeId', header: 'HAWB Type ID' },
+      // { field: 'hawbType', header: 'HAWB Type' },
+      // { field: 'hawbTypeDescription', header: 'HAWB Type Description' },
       { field: 'partnerHouseAirwayBill', header: 'Partner HAWB' },
       { field: 'partnerMasterAirwayBill', header: 'Partner MAWB' },
-      { field: 'pieceTypeId', header: 'Piece Type ID' },
-      { field: 'pieceType', header: 'Piece Type' },
-      { field: 'pieceTypeDescription', header: 'Piece Type Description' },
-      { field: 'pieceTimeStamp', header: 'Scanned Time', format: 'date' },
-      
+      { field: 'houseAirwayBill', header: 'Consignment No' },
+      { field: 'pieceId', header: 'Piece ID' },
+      // { field: 'masterAirwayBill', header: 'Master Airway Bill' },
+      // { field: 'pieceTypeId', header: 'Piece Type ID' },
+      // { field: 'pieceType', header: 'Piece Type' },
+      // { field: 'pieceTypeDescription', header: 'Piece Type Description' },
+      { field: 'hawbTimeStamp', header: 'Scanned Time', format: 'date' },
+      // { field: 'pieceTimeStamp', header: 'Scanned Time', format: 'date' },
       { field: 'updatedBy', header: 'Scanned Officer' },
       // { field: 'createdOn', header: 'Created On', format: 'date' },
     ];
@@ -81,7 +96,7 @@ export class InventoryScanningComponent {
       let obj: any = {};
       obj.languageId = [this.auth.languageId];
       obj.companyId = [this.auth.companyId];
-      obj.hawbTypeId = ["6", "47"];
+      if (this.activeLink == 'pendingCustoms') { obj.hawbTypeId = ["6",]; } else { obj.hawbTypeId = ["47"] }
       this.service.searchStatus(obj).subscribe({
         next: (res: any) => {
           this.inventoryScanningTable = res;
@@ -141,7 +156,7 @@ export class InventoryScanningComponent {
     });
 
     // Call ExcelService to export data to Excel
-    this.cs.exportAsExcel(exportData, 'Inventory Scanning Report');
+    this.cs.exportAsExcel(exportData, 'Inventory Scan Report');
   }
 
   searchform = this.fb.group({

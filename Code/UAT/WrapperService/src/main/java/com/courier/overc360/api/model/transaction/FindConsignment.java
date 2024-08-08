@@ -1,6 +1,5 @@
 package com.courier.overc360.api.model.transaction;
 
-
 import lombok.Data;
 
 import java.util.List;
@@ -19,4 +18,8 @@ public class FindConsignment {
     private List<String> shipperId;
     private List<String> partnerHouseAirwayBill;
     private List<String> partnerMasterAirwayBill;
+
+    // for mobile App
+    private List<String> shippingLabelNo;
+
 }

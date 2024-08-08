@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,7 +128,7 @@ public class PDFMergeService {
 
             List<String> outputPaths = new ArrayList<>();
             int totalFiles = request.getFilePaths().size();
-            int numBatches = (int) Math.ceil((double) totalFiles / 50);  // Adjust the batch size as needed
+            int numBatches = (int) Math.ceil((double) totalFiles / 30);  // Adjust the batch size as needed
 
             for (int i = 0; i < numBatches; i++) {
                 outputPaths.add(fileOutputStoragePath.replace(".pdf", "_batch" + (i + 1) + ".pdf"));
@@ -161,11 +162,12 @@ public class PDFMergeService {
      */
     private void processInBatches(List<String> inputFilePaths, List<String> outputPaths) throws IOException, InterruptedException {
         try {
-            int batchSize = 50;  // Adjust the batch size as needed
+            int batchSize = 30;  // Adjust the batch size as needed
             List<List<String>> batches = createBatches(inputFilePaths, batchSize);
-
+            log.info("batches : {}" , batches.size());
             for (int i = 0; i < batches.size(); i++) {
                 List<String> batch = batches.get(i);
+                log.info("batch, i : {}, {}" , batch , i );
                 List<InputStream> pdfStreams = new ArrayList<>();
                 for (String path : batch) {
                     String filePath = getQualifiedFilePath(path);
@@ -196,18 +198,18 @@ public class PDFMergeService {
     private List<List<String>> createBatches(List<String> filePaths, int batchSize) {
         List<List<String>> batches = new ArrayList<>();
         List<String> currentBatch = new ArrayList<>();
-
+        log.info("FilePath size : {}" , filePaths.size() );
         for (int i = 0; i < filePaths.size(); i++) {
             String filePath = filePaths.get(i);
             currentBatch.add(filePath);
 
             if (currentBatch.size() == batchSize) {
-
+                log.info("crnt batch size, batch size : {},{} " , currentBatch.size(),batchSize );
                 if (i + 1 < filePaths.size()) {
                     String currentNumber = extractNumber(filePath);
                     String nextNumber = extractNumber(filePaths.get(i + 1));
 
-                    if (currentNumber == nextNumber) {
+                    if (Objects.equals(currentNumber, nextNumber)) {
                         // Move the current file to the next batch
                         currentBatch.remove(currentBatch.size() - 1);
                     } else {

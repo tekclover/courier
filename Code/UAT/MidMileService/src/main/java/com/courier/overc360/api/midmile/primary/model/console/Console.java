@@ -370,6 +370,12 @@ public class Console {
     @Column(name = "CUSTOMS_CCR_NO", columnDefinition = "nvarchar(500)")
     private String customsCcrNo;
 
+    @Column(name = "FLIGHT_NAME", columnDefinition = "nvarchar(50)")
+    private String flightName;
+
+    @Column(name = "FLIGHT_NO", columnDefinition = "nvarchar(50)")
+    private String flightNo;
+
     @Column(name = "REF_FIELD_1", columnDefinition = "nvarchar(500)")
     private String referenceField1;
 
@@ -451,6 +457,10 @@ public class Console {
     // unconsolidation
     @Column(name = "UNCONSOLIDATED")
     private Long unconsolidatedFlag = 0L;
+
+    // Notification
+    @Column(name = "NOTI_STATUS")
+    private Long notificationStatus = 0L;
 
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

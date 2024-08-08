@@ -2,8 +2,6 @@ package com.courier.overc360.api.midmile.primary.model.ccr;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
