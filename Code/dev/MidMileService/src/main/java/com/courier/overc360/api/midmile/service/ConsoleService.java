@@ -24,6 +24,7 @@ import com.courier.overc360.api.midmile.replica.repository.specification.Console
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -1613,7 +1614,7 @@ public class ConsoleService {
             // Separate consoles based on hawbTypeId
             for (UpdateConsole updateConsole : updateConsoleList) {
                 log.info(" HAWB_TYPE " + updateConsole.getHawbTypeId());
-                log.info(" Update Console: " + updateConsole);
+                log.info(" Update Console: {}" , updateConsole);
                 if ("45".equals(updateConsole.getHawbTypeId()) || updateConsole.getHawbTypeId() == null) {
                     mobileAppUpdateList.add(updateConsole);
                 } else {
@@ -1639,6 +1640,9 @@ public class ConsoleService {
                 consoleStatus.setPieceId(updateConsole.getPieceId());
                 consoleStatus.setHawbTypeId(updateConsole.getHawbTypeId());
                 consoleStatus.setHubCode(updateConsole.getHubCode());
+                if(updateConsole.getUnconsolidatedFlag() == 1) {
+                    consoleStatus.setUnconsolidatedFlag(1L);
+                }
                 consoleStatuses.add(consoleStatus);
             }
 
@@ -1646,7 +1650,7 @@ public class ConsoleService {
             if (!consoleStatuses.isEmpty()) {
                 result.addAll(updateConsoleStatus(consoleStatuses, loginUserID));
             }
-            log.info(" Updated Console: " + result);
+            log.info(" Updated Console: {}", result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -1664,112 +1668,117 @@ public class ConsoleService {
     public List<Console> updateConsoleStatus(List<ConsoleStatus> updateConsoleList, String loginUserID) throws IOException, InvocationTargetException,
             IllegalAccessException, CsvException {
 
-        List<Console> consoleList = new ArrayList<>();
+        try {
+            List<Console> consoleList = new ArrayList<>();
 
-        for (ConsoleStatus updateConsole : updateConsoleList) {
+            for (ConsoleStatus updateConsole : updateConsoleList) {
+                log.info("UpdateConsole : {}" , updateConsole );
+                // UnConsolidation Create
+                if (updateConsole.getUnconsolidatedFlag() == 1L) {
+                    AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
+                    BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
+                    unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
+                    return Collections.emptyList();
+                } else {
+                    log.info("UnConsolidatedFlag <---------------------------------------------> {} ", updateConsole.getUnconsolidatedFlag());
 
-            // UnConsolidation Create
-            if (updateConsole.getUnconsolidatedFlag() == 1L) {
-                AddUnconsolidation addUnconsolidation = new AddUnconsolidation();
-                BeanUtils.copyProperties(updateConsole, addUnconsolidation, CommonUtils.getNullPropertyNames(updateConsole));
-                unconsolidationService.generateUnconsolidation(addUnconsolidation, loginUserID);
-                return Collections.emptyList();
-            } else {
-                log.info("UnConsolidatedFlag <---------------------------------------------> {} ", updateConsole.getUnconsolidatedFlag());
+                    Console dbConsole =
+                            consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
+                                    updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(), updateConsole.getPartnerMasterAirwayBill(),
+                                    updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId(), 0L);
 
-                Console dbConsole =
-                        consoleRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndConsoleIdAndPieceIdAndDeletionIndicator(
-                                updateConsole.getLanguageId(), updateConsole.getCompanyId(), updateConsole.getPartnerId(), updateConsole.getPartnerMasterAirwayBill(),
-                                updateConsole.getPartnerHouseAirwayBill(), updateConsole.getConsoleId(), updateConsole.getPieceId(), 0L);
-
-                if (dbConsole == null) {
-                    throw new BadRequestException("Given Values Doesn't exist");
-                }
-                log.info("Console Update HwbTypeId: {} ", updateConsole.getHawbTypeId());
-                BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
-
-                Optional<IKeyValuePair> getStatusOpt =
-                        consignmentEntityRepository.statusText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
-
-                if (getStatusOpt.isPresent()) {
-                    IKeyValuePair ikey = getStatusOpt.get();
-
-                    dbConsole.setHawbType(ikey.getType());
-                    dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
-                    dbConsole.setHawbTypeDescription(ikey.getTypeText());
-                    dbConsole.setHawbTimeStamp(new Date());
-
-                    dbConsole.setPieceType(ikey.getType());
-                    dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
-                    dbConsole.setPieceTypeDescription(ikey.getTypeText());
-                    dbConsole.setPieceTimeStamp(new Date());
-                }
-
-                // HubName
-                if (dbConsole.getHubCode() != null) {
-                    String hubCodeDesc = consoleRepository.getHubName(
-                            dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHubCode());
-                    if (hubCodeDesc != null) {
-                        dbConsole.setHubName(hubCodeDesc);
+                    if (dbConsole == null) {
+                        throw new BadRequestException("Given Values Doesn't exist");
                     }
-                }
-                dbConsole.setUpdatedBy(loginUserID);
-                dbConsole.setUpdatedOn(new Date());
+                    log.info("Console Update HwbTypeId: {} ", updateConsole.getHawbTypeId());
+                    BeanUtils.copyProperties(updateConsole, dbConsole, CommonUtils.getNullPropertyNames(updateConsole));
 
-                if (dbConsole.getHawbTypeId().equalsIgnoreCase("6") || dbConsole.getHawbTypeId().equalsIgnoreCase("7")
-                        || dbConsole.getHawbTypeId().equalsIgnoreCase("8")) {
+                    Optional<IKeyValuePair> getStatusOpt =
+                            consignmentEntityRepository.statusText(dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHawbTypeId());
 
-                    List<ReplicaConsignmentStatus> dbConsignment = replicaConsignmentStatusRepository.findByCompanyIdAndLanguageIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
-                            dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHouseAirwayBill(), dbConsole.getPieceId(), 0L);
+                    if (getStatusOpt.isPresent()) {
+                        IKeyValuePair ikey = getStatusOpt.get();
 
-                    boolean hawbTypeIdFound = dbConsignment.stream()
-                            .anyMatch(status -> status.getHawbTypeId() != null && status.getHawbTypeId()
-                                    .equalsIgnoreCase("5"));
-                    if (!hawbTypeIdFound) {
-                        throw new BadRequestException("No Record Found with TypeId 5 And TypeText " + dbConsole.getHawbType());
+                        dbConsole.setHawbType(ikey.getType());
+                        dbConsole.setHawbTypeId(updateConsole.getHawbTypeId());
+                        dbConsole.setHawbTypeDescription(ikey.getTypeText());
+                        dbConsole.setHawbTimeStamp(new Date());
+
+                        dbConsole.setPieceType(ikey.getType());
+                        dbConsole.setPieceTypeId(updateConsole.getHawbTypeId());
+                        dbConsole.setPieceTypeDescription(ikey.getTypeText());
+                        dbConsole.setPieceTimeStamp(new Date());
                     }
-                }
 
-                Console updatedConsole = consoleRepository.save(dbConsole);
+                    // HubName
+                    if (dbConsole.getHubCode() != null) {
+                        String hubCodeDesc = consoleRepository.getHubName(
+                                dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHubCode());
+                        if (hubCodeDesc != null) {
+                            dbConsole.setHubName(hubCodeDesc);
+                        }
+                    }
+                    dbConsole.setUpdatedBy(loginUserID);
+                    dbConsole.setUpdatedOn(new Date());
 
-                if (updatedConsole != null) {
-                    // Update ConsignmentEntity Table
-                    if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
-                        consoleRepository.updateConsignmentOnConsoleUpdate(
+                    if (dbConsole.getHawbTypeId().equalsIgnoreCase("6") || dbConsole.getHawbTypeId().equalsIgnoreCase("7")
+                            || dbConsole.getHawbTypeId().equalsIgnoreCase("8")) {
+
+                        List<ReplicaConsignmentStatus> dbConsignment = replicaConsignmentStatusRepository.findByCompanyIdAndLanguageIdAndHouseAirwayBillAndPieceIdAndDeletionIndicator(
+                                dbConsole.getCompanyId(), dbConsole.getLanguageId(), dbConsole.getHouseAirwayBill(), dbConsole.getPieceId(), 0L);
+
+                        boolean hawbTypeIdFound = dbConsignment.stream()
+                                .anyMatch(status -> status.getHawbTypeId() != null && status.getHawbTypeId()
+                                        .equalsIgnoreCase("5"));
+                        if (!hawbTypeIdFound) {
+                            throw new BadRequestException("No Record Found with TypeId 5 And TypeText " + dbConsole.getHawbType());
+                        }
+                    }
+
+                    Console updatedConsole = consoleRepository.save(dbConsole);
+
+                    if (updatedConsole != null) {
+                        // Update ConsignmentEntity Table
+                        if (updatedConsole.getHawbType().equalsIgnoreCase("STATUS")) {
+                            consoleRepository.updateConsignmentOnConsoleUpdate(
+                                    updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                                    updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                                    updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
+                                    updatedConsole.getHubCode(), updatedConsole.getHubName());
+                        }
+
+                        // Update PreAlert Table
+                        consoleRepository.updatePreAlertOnConsoleCreate(
+                                updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
+                                updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
+                                updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType());
+
+                        // Update PieceDetails Table
+                        consoleRepository.updatePieceDetailsOnConsoleCreate(
                                 updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
                                 updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
                                 updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
-                                updatedConsole.getHubCode(), updatedConsole.getHubName());
+                                updatedConsole.getPieceId());
+
+                        // Create Consignment Status Table record with StatusID - 5
+                        consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
+                                updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
+                                updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
+                                updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
+                                updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
+                                updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
+                                updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), updateConsole.getBagId(),
+                                updateConsole.getHubCode(), updatedConsole.getHubName());
+
+                        consoleList.add(updatedConsole);
                     }
-
-                    // Update PreAlert Table
-                    consoleRepository.updatePreAlertOnConsoleCreate(
-                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
-                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType());
-
-                    // Update PieceDetails Table
-                    consoleRepository.updatePieceDetailsOnConsoleCreate(
-                            updatedConsole.getLanguageId(), updatedConsole.getCompanyId(), updatedConsole.getPartnerId(),
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(),
-                            updatedConsole.getHawbTypeDescription(), updatedConsole.getHawbTypeId(), updatedConsole.getHawbType(),
-                            updatedConsole.getPieceId());
-
-                    // Create Consignment Status Table record with StatusID - 5
-                    consignmentStatusService.insertConsignmentStatusRecord(updatedConsole.getLanguageId(), updatedConsole.getLanguageDescription(),
-                            updatedConsole.getCompanyId(), updatedConsole.getCompanyName(), updatedConsole.getPieceId(),
-                            updatedConsole.getMasterAirwayBill(), updatedConsole.getHouseAirwayBill(), updatedConsole.getHawbType(),
-                            updatedConsole.getHawbTypeId(), updatedConsole.getHawbTypeDescription(),
-                            updatedConsole.getHawbTimeStamp(), updatedConsole.getPieceType(), updatedConsole.getPieceTypeId(),
-                            updatedConsole.getPieceTypeDescription(), updatedConsole.getPieceTimeStamp(), loginUserID,
-                            updatedConsole.getPartnerHouseAirwayBill(), updatedConsole.getPartnerMasterAirwayBill(), updateConsole.getBagId(),
-                            updateConsole.getHubCode(), updatedConsole.getHubName());
-
-                    consoleList.add(updatedConsole);
                 }
             }
+            return consoleList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
-        return consoleList;
     }
 
 
