@@ -1640,9 +1640,8 @@ public class ConsoleService {
                 consoleStatus.setPieceId(updateConsole.getPieceId());
                 consoleStatus.setHawbTypeId(updateConsole.getHawbTypeId());
                 consoleStatus.setHubCode(updateConsole.getHubCode());
-                if(updateConsole.getUnconsolidatedFlag() == 1) {
-                    consoleStatus.setUnconsolidatedFlag(1L);
-                }
+                consoleStatus.setUnconsolidatedFlag(updateConsole.getUnconsolidatedFlag());
+
                 consoleStatuses.add(consoleStatus);
             }
 
