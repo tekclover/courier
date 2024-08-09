@@ -22,7 +22,7 @@
       </div>
       <div class="Menu" style="padding: 5px;">
         <mat-nav-list>
-          <ul class="sidenav-nav" style="overflow-y: scroll;height: calc(100vh - 9rem);width: 160%;">
+          <ul class="sidenav-nav">
             <li class="sidenav-nav-item" *ngFor="let data of navData; let i = index">
               <a class="sidenav-nav-link" (click)="handleClick(data, i)" (click)="setActiveLink(i)"
                 [ngClass]="{'active': activeLinkIndex === i}" *ngIf="data.items && data.items.length > 0">
