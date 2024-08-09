@@ -1605,46 +1605,53 @@ public class ConsoleService {
      */
     public List<Console> updateConsoleStatusOrForMobileApp(List<UpdateConsole> updateConsoleList, String loginUserID)
             throws IllegalAccessException, InvocationTargetException, IOException, CsvException {
-        List<Console> result = new ArrayList<>();
-        List<UpdateConsole> statusUpdateList = new ArrayList<>();
-        List<UpdateConsole> mobileAppUpdateList = new ArrayList<>();
+        try {
+            List<Console> result = new ArrayList<>();
+            List<UpdateConsole> statusUpdateList = new ArrayList<>();
+            List<UpdateConsole> mobileAppUpdateList = new ArrayList<>();
 
-        // Separate consoles based on hawbTypeId
-        for (UpdateConsole updateConsole : updateConsoleList) {
-            log.info(" HAWB_TYPE " + updateConsole.getHawbTypeId());
-            if ("45".equals(updateConsole.getHawbTypeId()) || updateConsole.getHawbTypeId() == null) {
-                mobileAppUpdateList.add(updateConsole);
-            } else {
-                statusUpdateList.add(updateConsole);
+            // Separate consoles based on hawbTypeId
+            for (UpdateConsole updateConsole : updateConsoleList) {
+                log.info(" HAWB_TYPE " + updateConsole.getHawbTypeId());
+                log.info(" Update Console: " + updateConsole);
+                if ("45".equals(updateConsole.getHawbTypeId()) || updateConsole.getHawbTypeId() == null) {
+                    mobileAppUpdateList.add(updateConsole);
+                } else {
+                    statusUpdateList.add(updateConsole);
+                }
             }
-        }
 
-        // Call updateConsoleForMobileApp for consoles with hawbTypeId 45 or null
-        if (!mobileAppUpdateList.isEmpty()) {
-            result.addAll(updateConsoleForMobileApp(mobileAppUpdateList, loginUserID));
-        }
+            // Call updateConsoleForMobileApp for consoles with hawbTypeId 45 or null
+            if (!mobileAppUpdateList.isEmpty()) {
+                result.addAll(updateConsoleForMobileApp(mobileAppUpdateList, loginUserID));
+            }
 
-        // Manually map UpdateConsole to ConsoleStatus
-        List<ConsoleStatus> consoleStatuses = new ArrayList<>();
-        for (UpdateConsole updateConsole : statusUpdateList) {
-            ConsoleStatus consoleStatus = new ConsoleStatus();
-            consoleStatus.setLanguageId(updateConsole.getLanguageId());
-            consoleStatus.setCompanyId(updateConsole.getCompanyId());
-            consoleStatus.setPartnerId(updateConsole.getPartnerId());
-            consoleStatus.setPartnerMasterAirwayBill(updateConsole.getPartnerMasterAirwayBill());
-            consoleStatus.setPartnerHouseAirwayBill(updateConsole.getPartnerHouseAirwayBill());
-            consoleStatus.setConsoleId(updateConsole.getConsoleId());
-            consoleStatus.setPieceId(updateConsole.getPieceId());
-            consoleStatus.setHawbTypeId(updateConsole.getHawbTypeId());
-            consoleStatus.setHubCode(updateConsole.getHubCode());
-            consoleStatuses.add(consoleStatus);
-        }
+            // Manually map UpdateConsole to ConsoleStatus
+            List<ConsoleStatus> consoleStatuses = new ArrayList<>();
+            for (UpdateConsole updateConsole : statusUpdateList) {
+                ConsoleStatus consoleStatus = new ConsoleStatus();
+                consoleStatus.setLanguageId(updateConsole.getLanguageId());
+                consoleStatus.setCompanyId(updateConsole.getCompanyId());
+                consoleStatus.setPartnerId(updateConsole.getPartnerId());
+                consoleStatus.setPartnerMasterAirwayBill(updateConsole.getPartnerMasterAirwayBill());
+                consoleStatus.setPartnerHouseAirwayBill(updateConsole.getPartnerHouseAirwayBill());
+                consoleStatus.setConsoleId(updateConsole.getConsoleId());
+                consoleStatus.setPieceId(updateConsole.getPieceId());
+                consoleStatus.setHawbTypeId(updateConsole.getHawbTypeId());
+                consoleStatus.setHubCode(updateConsole.getHubCode());
+                consoleStatuses.add(consoleStatus);
+            }
 
-        // Call updateConsoleStatus for other consoles
-        if (!consoleStatuses.isEmpty()) {
-            result.addAll(updateConsoleStatus(consoleStatuses, loginUserID));
+            // Call updateConsoleStatus for other consoles
+            if (!consoleStatuses.isEmpty()) {
+                result.addAll(updateConsoleStatus(consoleStatuses, loginUserID));
+            }
+            log.info(" Updated Console: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
-        return result;
     }
 
     /**
@@ -2616,8 +2623,3 @@ public class ConsoleService {
         }
     }
 }
-
-
-
-
-
