@@ -38,6 +38,7 @@ export class ConsignmentNewComponent {
 
 
   activeIndex: number = 0;
+
   status: any[] = [];
   partnerType: any[] = [];
   paymentType: any[] = [];
@@ -737,6 +738,7 @@ export class ConsignmentNewComponent {
   }
 
 
+  groupByHouseAirway:any;
   groupByPieceId:any;
   callCNTable(){
     let obj: any = {};
@@ -746,8 +748,11 @@ export class ConsignmentNewComponent {
 
     this.service.searchStatus(obj).subscribe({next: res=> {
       this.cnTable =  res;
-      // this.groupByPieceId = this.cs.groupData(res);
-      // console.log(this.groupByPieceId)
+      this.groupByHouseAirway = this.cs.groupByDynamicField(res, 'houseAirwayBill');
+      this.groupByPieceId = this.cs.groupByDynamicField(this.groupByHouseAirway[0].lines, 'pieceId')
+    
+      console.log(this.groupByHouseAirway)
+      console.log(this.groupByPieceId)
     },error: err => {
       this.spin.hide();
       this.cs.commonerrorNew(err);
