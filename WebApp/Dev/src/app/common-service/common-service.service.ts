@@ -220,23 +220,23 @@ pCalendar(date: any): Date{
     }, {});
   }
 
-  groupedData: any = {};
-  groupData(array: any[]) {
-    this.groupedData = array.reduce((acc, item) => {
-      const houseAirwayBill = item.houseAirwayBill;
-      const pieceId = item.pieceId;
 
-      if (!acc[houseAirwayBill]) {
-        acc[houseAirwayBill] = {};
+  groupByDynamicField(data: any[], field: string): any[] {
+    const groupedData: { [key: string]: any } = {};
+
+    data.forEach(record => {
+      const key = record[field]; // Access the field dynamically
+      if (!groupedData[key]) {
+        groupedData[key] = {
+          [field]: key,
+          lines: []
+        };
       }
+      // Add the record to the appropriate array
+      groupedData[key].lines.push(record);
+    });
 
-      if (!acc[houseAirwayBill][pieceId]) {
-        acc[houseAirwayBill][pieceId] = [];
-      }
-
-      acc[houseAirwayBill][pieceId].push(item);
-
-      return acc;
-    }, {});
+    // Convert the groupedData object into an array of grouped records
+    return Object.values(groupedData);
   }
 }

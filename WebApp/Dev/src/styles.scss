@@ -83,6 +83,9 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
    padding-top: 0.4rem  !important; padding-bottom: 0.5rem  !important;
   }
 
+.customTabPanel .p-accordion .p-accordion-content{padding: 0rem 1.25rem !important;}
+.customTabPanel1 .p-accordion .p-accordion-content{padding: 0rem !important;}
+.customTabPanel .p-accordion .p-accordion-header .p-accordion-header-link{padding: 1rem !important;}
 
 
 .p-column-filter{padding: 0.3rem 0.4rem !important;font-size: 0.7rem !important;}
@@ -109,8 +112,8 @@ body { position: relative; font-family: 'Nunito', sans-serif !important; overflo
 dl, ol, ul{margin-bottom: 0rem !important;}
 .p-chips .p-inputtext { border: none !important; }
 .custom-overlay-panel {top: 200px !important; left: 13% !important; border-radius: 12px !important;}
-.p-accordion .p-accordion-header-link{text-decoration: none !important;}
-.p-accordion .p-accordion-header-link:hover{text-decoration: none !important;}
+.p-accordion .p-accordion-header-link{text-decoration: none !important; color: var(--black) !important; font-weight: 500;}
+.p-accordion .p-accordion-header-link:hover{text-decoration: none !important; font-weight: 500;}
 //angular material
 
 
