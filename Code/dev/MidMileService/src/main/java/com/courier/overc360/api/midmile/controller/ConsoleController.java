@@ -172,7 +172,8 @@ public class ConsoleController {
     @ApiOperation(response = Console.class, value = "Console Status Event Update")
     @PostMapping("/update/status")
     public ResponseEntity<?> updateConsoleStatus(@Valid @RequestBody List<ConsoleStatus> consoleStatuses,
-                                                 @RequestParam String loginUserID) {
+                                                 @RequestParam String loginUserID) throws IOException,
+            InvocationTargetException, IllegalAccessException, CsvException {
         List<Console> dbConsoleStatus = consoleService.updateConsoleStatus(consoleStatuses, loginUserID);
         return new ResponseEntity<>(dbConsoleStatus, HttpStatus.OK);
     }
@@ -185,6 +186,15 @@ public class ConsoleController {
                                               @RequestParam String consoleGroupName, @RequestParam String consoleName){
         consoleService.sendNotificationForConsoleCreate(companyId, languageId, consoleId, houseAirwayBill, consoleGroupName, consoleName);
         return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
+
+    // Manual Console Create
+    @ApiOperation(response = Console.class, value = "Manual Console Create")
+    @PostMapping("/manual/create")
+    public ResponseEntity<?> manualConsoleCreate(@Valid @RequestBody List<Console> consoles, @RequestParam String loginUserID)
+            throws IOException, InvocationTargetException, IllegalAccessException, CsvException {
+        List<Console> consoleCreate = consoleService.manualCreateConsole(consoles, loginUserID);
+        return new ResponseEntity<>(consoleCreate, HttpStatus.OK);
     }
 
 }

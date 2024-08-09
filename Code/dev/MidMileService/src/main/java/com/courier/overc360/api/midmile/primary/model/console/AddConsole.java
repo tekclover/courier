@@ -22,6 +22,8 @@ public class AddConsole {
     @NotBlank(message = "PartnerHouseAirwayBill is mandatory")
     private String partnerHouseAirwayBill;
 
+//    private String consoleId;
+
     private String masterAirwayBill;
 
     private String houseAirwayBill;

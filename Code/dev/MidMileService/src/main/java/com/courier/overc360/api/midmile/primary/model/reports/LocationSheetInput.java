@@ -10,7 +10,7 @@ public class LocationSheetInput {
     @NotBlank(message = "Partner Master Airway Bill is mandatory")
     private String partnerMasterAirwayBill;
 
-    @NotBlank(message = "ConsoleID is mandatory")
+//    @NotBlank(message = "ConsoleID is mandatory")
     private String consoleId;
 
     private String location;
@@ -22,10 +22,10 @@ public class LocationSheetInput {
     @NotBlank(message = "CompanyId is mandatory")
     private String companyId;
 
-    @NotBlank(message = "PartnerId is mandatory")
+//    @NotBlank(message = "PartnerId is mandatory")
     private String partnerId;
 
-    @NotBlank(message = "Master Airway Bill is mandatory")
+//    @NotBlank(message = "Master Airway Bill is mandatory")
     private String masterAirwayBill;
 
 }

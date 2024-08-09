@@ -70,5 +70,9 @@ export class ConsoleService {
   createLocation(obj: any) {
     return this.http.post<any>('/overc-midmile-service/reports/locationSheet', obj);
   }
+
+  searchLocation(obj: any){
+    return this.http.post<any>('/overc-midmile-service/reports/locationSheet', obj);
+  }
 }
 

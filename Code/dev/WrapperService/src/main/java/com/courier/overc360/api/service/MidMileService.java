@@ -1757,6 +1757,33 @@ public class MidMileService {
         }
     }
 
+    /**
+     * Manual Console Create
+     *
+     * @param consoles
+     * @param loginUserID
+     * @param authToken
+     * @return
+     */
+    public Console[] manualConsoleCreate(List<Console> consoles, String loginUserID, String authToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.add("User-Agent", "RestTemplate");
+            headers.add("Authorization", "Bearer " + authToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getMidMileServiceUrl() + "/console/manual/create")
+                    .queryParam("loginUserID", loginUserID);
+            HttpEntity<?> entity = new HttpEntity<>(consoles, headers);
+            ResponseEntity<Console[]> result = getRestTemplate().exchange(builder.toUriString(), HttpMethod.POST, entity, Console[].class);
+            log.info("result : " + result.getStatusCode());
+            return result.getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 //    // Generate Console Tracking Report - list screen
 //    public ConsoleTrackingReportOutput[] generateConsoleTrackingReportListPage(ConsoleTrackingReportInput sheetInputs, String loginUserID, String authToken) {
 //        try {

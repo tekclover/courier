@@ -23,6 +23,7 @@ import com.courier.overc360.api.midmile.replica.repository.specification.PreAler
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,162 +108,168 @@ public class PreAlertService {
      */
     public List<PreAlert> createPreAlertService(List<PreAlert> preAlert, String loginUserID) {
 
-        List<PreAlert> preAlertList = new ArrayList<>();
-        for (PreAlert dbPreAlert : preAlert) {
+        try {
+            List<PreAlert> preAlertList = new ArrayList<>();
+            for (PreAlert dbPreAlert : preAlert) {
+                log.info("PreAlert input : {}" , dbPreAlert);
+                // Fetching the description for a company
+                IKeyValuePair iKeyValuePair = replicaConsignmentEntityRepository.getDescription(dbPreAlert.getCompanyId());
 
-            // Fetching the description for a company
-            IKeyValuePair iKeyValuePair = replicaConsignmentEntityRepository.getDescription(dbPreAlert.getCompanyId());
+                Optional<PreAlert> preAlertOptional =
+                        preAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator
+                                (dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(),
+                                        dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-            Optional<PreAlert> preAlertOptional =
-                    preAlertRepository.findByCompanyIdAndLanguageIdAndPartnerIdAndPartnerMasterAirwayBillAndPartnerHouseAirwayBillAndDeletionIndicator
-                            (dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), dbPreAlert.getPartnerId(),
-                                    dbPreAlert.getPartnerMasterAirwayBill(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
+                if (preAlertOptional.isEmpty()) {
 
-            if (preAlertOptional.isEmpty()) {
+                    ConsignmentEntity consignment =
+                            consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
+                                    iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
 
-                ConsignmentEntity consignment =
-                        consignmentEntityRepository.findByLanguageIdAndCompanyIdAndPartnerIdAndPartnerHouseAirwayBillAndDeletionIndicator(
-                                iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(), dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill(), 0L);
-
-                log.info("companyId" + dbPreAlert.getCompanyId() + "languageId" + iKeyValuePair.getLangId() + "partner" + dbPreAlert.getPartnerId());
-                if (consignment == null) {
-                    throw new BadRequestException("Consignment Doesn't exist PartnerHouseAirwayBill - " + dbPreAlert.getPartnerHouseAirwayBill() + " CompanyId - " + dbPreAlert.getCompanyId() +
-                            " LanguageId - " + iKeyValuePair.getLangId() + " PartnerId - " + dbPreAlert.getPartnerId());
-                }
-
-
-                // Get Iatakd
-                IKeyValuePair optionalIKeyValuePair =
-                        replicaBondedManifestRepository.getToCurrencyValue(dbPreAlert.getCompanyId(), dbPreAlert.getCurrency());
-                IKeyValuePair ikeyIata = replicaCcrRepository.getIataKd(dbPreAlert.getOriginCode(), iKeyValuePair.getLangId(), dbPreAlert.getCompanyId());
-
-                //ExchangeCurrencyRate
-                if (optionalIKeyValuePair != null && optionalIKeyValuePair.getCurrencyValue() != null) {
-
-                    dbPreAlert.setExchangeRate(optionalIKeyValuePair.getCurrencyValue());
-                    dbPreAlert.setConsignmentLocalId(optionalIKeyValuePair.getCurrencyId());
-                    if (dbPreAlert.getIata().isEmpty() && ikeyIata != null && ikeyIata.getIataKd() != null) {
-                        dbPreAlert.setIata(ikeyIata.getIataKd());
+                    log.info("companyId -" + dbPreAlert.getCompanyId() + " languageId - " + iKeyValuePair.getLangId() + " partner - " + dbPreAlert.getPartnerId());
+                    if (consignment == null) {
+                        throw new BadRequestException("Consignment Doesn't exist PartnerHouseAirwayBill - " + dbPreAlert.getPartnerHouseAirwayBill() + " CompanyId - " + dbPreAlert.getCompanyId() +
+                                " LanguageId - " + iKeyValuePair.getLangId() + " PartnerId - " + dbPreAlert.getPartnerId());
                     }
-                }
 
-                //Hardcode CustomsCurrency
-                if (dbPreAlert.getCustomsInsurance() == null) {
-                    dbPreAlert.setCustomsInsurance("1");
-                }
-                //HardCode Duty
-                if (dbPreAlert.getDuty() == null) {
-                    dbPreAlert.setDuty("5");
-                }
 
-                Double declaredValue = 0.0;
-                Double exchangeRate = 0.0;
-                Double consignmentValue = 0.0;
+                    // Get Iatakd
+                    IKeyValuePair optionalIKeyValuePair =
+                            replicaBondedManifestRepository.getToCurrencyValue(dbPreAlert.getCompanyId(), dbPreAlert.getCurrency());
+                    IKeyValuePair ikeyIata = replicaCcrRepository.getIataKd(dbPreAlert.getOriginCode(), iKeyValuePair.getLangId(), dbPreAlert.getCompanyId());
 
-                //Consignment Value
-                if (dbPreAlert.getExchangeRate() != null && dbPreAlert.getConsignmentValueLocal().isEmpty()) {
-                    declaredValue = Double.valueOf(dbPreAlert.getConsignmentValue());
-                    exchangeRate = Double.valueOf(dbPreAlert.getExchangeRate());
-                    consignmentValue = declaredValue * exchangeRate;
+                    //ExchangeCurrencyRate
+                    if (optionalIKeyValuePair != null && optionalIKeyValuePair.getCurrencyValue() != null) {
 
-                    String formatConsignmentValue = decimalFormat.format(consignmentValue);
-                    dbPreAlert.setConsignmentValueLocal(formatConsignmentValue);
-                }
-                if (!dbPreAlert.getIata().isEmpty() && dbPreAlert.getIata() != null) {
-                    Double iata = Double.valueOf(dbPreAlert.getIata());
-                    dbPreAlert.setAddIata(String.valueOf(iata + consignmentValue));
-                }
-                if (dbPreAlert.getAddIata() != null && dbPreAlert.getCustomsInsurance() != null) {
-                    Double addIata = Double.valueOf(dbPreAlert.getAddIata());
+                        dbPreAlert.setExchangeRate(optionalIKeyValuePair.getCurrencyValue());
+                        dbPreAlert.setConsignmentLocalId(optionalIKeyValuePair.getCurrencyId());
+                        if (dbPreAlert.getIata().isEmpty() && ikeyIata != null && ikeyIata.getIataKd() != null) {
+                            dbPreAlert.setIata(ikeyIata.getIataKd());
+                        }
+                    }
 
-                    Double addInsure = addIata * 0.01;
-                    //Decimal Format
-                    String formatInsurance = decimalFormat.format(addInsure);
-                    dbPreAlert.setAddInsurance(formatInsurance);
+                    //Hardcode CustomsCurrency
+                    if (dbPreAlert.getCustomsInsurance() == null) {
+                        dbPreAlert.setCustomsInsurance("1");
+                    }
+                    //HardCode Duty
+                    if (dbPreAlert.getDuty() == null) {
+                        dbPreAlert.setDuty("5");
+                    }
 
-                    if (dbPreAlert.getAddInsurance() != null) {
+                    Double declaredValue = 0.0;
+                    Double exchangeRate = 0.0;
+                    Double consignmentValue = 0.0;
 
-                        Double addInsurance = Double.valueOf(dbPreAlert.getAddInsurance());
-                        Double customs = addIata + addInsurance;
+                    //Consignment Value
+                    if (dbPreAlert.getExchangeRate() != null && dbPreAlert.getConsignmentValueLocal().isEmpty()) {
+                        declaredValue = Double.valueOf(dbPreAlert.getConsignmentValue());
+                        exchangeRate = Double.valueOf(dbPreAlert.getExchangeRate());
+                        consignmentValue = declaredValue * exchangeRate;
+
+                        String formatConsignmentValue = decimalFormat.format(consignmentValue);
+                        dbPreAlert.setConsignmentValueLocal(formatConsignmentValue);
+                    }
+                    if (!dbPreAlert.getIata().isEmpty() && dbPreAlert.getIata() != null) {
+                        Double iata = Double.valueOf(dbPreAlert.getIata());
+                        dbPreAlert.setAddIata(String.valueOf(iata + consignmentValue));
+                    }
+                    if (dbPreAlert.getAddIata() != null && dbPreAlert.getCustomsInsurance() != null) {
+                        Double addIata = Double.valueOf(dbPreAlert.getAddIata());
+
+                        Double addInsure = addIata * 0.01;
                         //Decimal Format
-                        String formatCustomsValue = decimalFormat.format(customs);
-                        dbPreAlert.setCustomsValue(formatCustomsValue);
+                        String formatInsurance = decimalFormat.format(addInsure);
+                        dbPreAlert.setAddInsurance(formatInsurance);
 
-                        if (dbPreAlert.getDuty() != null) {
-                            Double customsValue = Double.valueOf(dbPreAlert.getCustomsValue());
+                        if (dbPreAlert.getAddInsurance() != null) {
 
-                            Double totalDuty = customsValue + (customsValue * 0.05);
+                            Double addInsurance = Double.valueOf(dbPreAlert.getAddInsurance());
+                            Double customs = addIata + addInsurance;
                             //Decimal Format
-                            String formatTotalDuty = decimalFormat.format(totalDuty);
-                            dbPreAlert.setCalculatedTotalDuty(formatTotalDuty);
+                            String formatCustomsValue = decimalFormat.format(customs);
+                            dbPreAlert.setCustomsValue(formatCustomsValue);
+
+                            if (dbPreAlert.getDuty() != null) {
+                                Double customsValue = Double.valueOf(dbPreAlert.getCustomsValue());
+
+                                Double totalDuty = customsValue + (customsValue * 0.05);
+                                //Decimal Format
+                                String formatTotalDuty = decimalFormat.format(totalDuty);
+                                dbPreAlert.setCalculatedTotalDuty(formatTotalDuty);
+                            }
                         }
                     }
-                }
 
-                //HAWB_TYPE
-                dbPreAlert.setHawbType("EVENT");
-                dbPreAlert.setHawbTypeId("3");
-                Optional<String> statusText = consignmentEntityRepository.statusEventText(dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), "44");
-                if (statusText.isPresent()) {
-                    String ikey = statusText.get();
-                    dbPreAlert.setHawbTypeDescription(ikey);
-                    dbPreAlert.setHawbTimeStamp(new Date());
-                }
+                    //HAWB_TYPE
+                    dbPreAlert.setHawbType("EVENT");
+                    dbPreAlert.setHawbTypeId("3");
+                    Optional<String> statusText = consignmentEntityRepository.statusEventText(dbPreAlert.getCompanyId(), iKeyValuePair.getLangId(), "44");
+                    if (statusText.isPresent()) {
+                        String ikey = statusText.get();
+                        dbPreAlert.setHawbTypeDescription(ikey);
+                        dbPreAlert.setHawbTimeStamp(new Date());
+                    }
 
-                // Get Partner Name from Consignment table
-                Optional<String> partnerNm = replicaPreAlertRepository.getPartnerName(iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(),
-                        dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
+                    // Get Partner Name from Consignment table
+                    Optional<String> partnerNm = replicaPreAlertRepository.getPartnerName(iKeyValuePair.getLangId(), dbPreAlert.getCompanyId(),
+                            dbPreAlert.getPartnerId(), dbPreAlert.getPartnerHouseAirwayBill());
 
-                PreAlert newPreAlert = new PreAlert();
-                BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
-                newPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
-                newPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
-                newPreAlert.setLanguageId(iKeyValuePair.getLangId());
-                newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
-                newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
-                partnerNm.ifPresent(newPreAlert::setPartnerName);
-                newPreAlert.setCreatedBy(loginUserID);
-                newPreAlert.setHubCode("2");
-                newPreAlert.setHubName("Airport");
-                newPreAlert.setUpdatedBy(null);
-                newPreAlert.setCreatedOn(new Date());
-                newPreAlert.setUpdatedOn(null);
-                PreAlert savedPreAlert = preAlertRepository.save(newPreAlert);
+                    PreAlert newPreAlert = new PreAlert();
+                    BeanUtils.copyProperties(dbPreAlert, newPreAlert, CommonUtils.getNullPropertyNames(dbPreAlert));
+                    newPreAlert.setHouseAirwayBill(consignment.getHouseAirwayBill());
+                    newPreAlert.setMasterAirwayBill(consignment.getMasterAirwayBill());
+                    newPreAlert.setLanguageId(iKeyValuePair.getLangId());
+                    newPreAlert.setLanguageDescription(iKeyValuePair.getLangDesc());
+                    newPreAlert.setCompanyName(iKeyValuePair.getCompanyDesc());
+                    partnerNm.ifPresent(newPreAlert::setPartnerName);
+                    newPreAlert.setCreatedBy(loginUserID);
+                    newPreAlert.setHubCode("2");
+                    newPreAlert.setHubName("Airport");
+                    newPreAlert.setUpdatedBy(null);
+                    newPreAlert.setCreatedOn(new Date());
+                    newPreAlert.setUpdatedOn(null);
+                    PreAlert savedPreAlert = preAlertRepository.save(newPreAlert);
 
-                if (savedPreAlert != null) {
-                    //Update Consignment-entity
-                    consignmentEntityRepository.updateConsignment(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
-                            savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
-                            savedPreAlert.getConsignmentValue(), savedPreAlert.getExchangeRate(), savedPreAlert.getIata(),
-                            savedPreAlert.getConsignmentValueLocal(), savedPreAlert.getAddIata(), savedPreAlert.getAddInsurance(),
-                            savedPreAlert.getCustomsValue(), savedPreAlert.getCalculatedTotalDuty(), savedPreAlert.getCustomsInsurance());
-                    log.info("consignment updated");
+                    if (savedPreAlert != null) {
+                        //Update Consignment-entity
+                        consignmentEntityRepository.updateConsignment(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
+                                savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
+                                savedPreAlert.getConsignmentValue(), savedPreAlert.getExchangeRate(), savedPreAlert.getIata(),
+                                savedPreAlert.getConsignmentValueLocal(), savedPreAlert.getAddIata(), savedPreAlert.getAddInsurance(),
+                                savedPreAlert.getCustomsValue(), savedPreAlert.getCalculatedTotalDuty(), savedPreAlert.getCustomsInsurance());
+                        log.info("consignment updated");
 
-                    consignmentEntityRepository.updatePieceId(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
-                            savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(),
-                            savedPreAlert.getPartnerMasterAirwayBill());
-                    log.info("Piece updated");
+                        consignmentEntityRepository.updatePieceId(savedPreAlert.getCompanyId(), savedPreAlert.getLanguageId(),
+                                savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill(),
+                                savedPreAlert.getPartnerMasterAirwayBill());
+                        log.info("Piece updated");
 
-                    List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getLanguageId(), savedPreAlert.getCompanyId(),
-                            savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill());
-                    if (piece != null) {
-                        for (String pieceId : piece) {
-                            consignmentStatusService.insertConsignmentStatusRecord(savedPreAlert.getLanguageId(), savedPreAlert.getLanguageDescription(),
-                                    savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getMasterAirwayBill(),
-                                    savedPreAlert.getHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
-                                    savedPreAlert.getHawbTimeStamp(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
-                                    savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
-                                    null, savedPreAlert.getHubCode(), savedPreAlert.getHubName());
+                        List<String> piece = replicaPieceDetailsRepository.getPieceId(savedPreAlert.getLanguageId(), savedPreAlert.getCompanyId(),
+                                savedPreAlert.getPartnerId(), savedPreAlert.getPartnerHouseAirwayBill());
+                        if (piece != null) {
+                            for (String pieceId : piece) {
+                                consignmentStatusService.insertConsignmentStatusRecord(savedPreAlert.getLanguageId(), savedPreAlert.getLanguageDescription(),
+                                        savedPreAlert.getCompanyId(), savedPreAlert.getCompanyName(), pieceId, savedPreAlert.getMasterAirwayBill(),
+                                        savedPreAlert.getHouseAirwayBill(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
+                                        savedPreAlert.getHawbTimeStamp(), savedPreAlert.getHawbType(), savedPreAlert.getHawbTypeId(), savedPreAlert.getHawbTypeDescription(),
+                                        savedPreAlert.getHawbTimeStamp(), loginUserID, savedPreAlert.getPartnerHouseAirwayBill(), savedPreAlert.getPartnerMasterAirwayBill(),
+                                        null, savedPreAlert.getHubCode(), savedPreAlert.getHubName());
+                            }
                         }
                     }
+                    preAlertList.add(savedPreAlert);
+                } else {
+                    log.info("PreAlert Record is Getting Duplicate CompanyId - " + dbPreAlert.getCompanyId() + " PartnerId " + dbPreAlert.getPartnerId() +
+                            " PartnerHouseAirwayBill " + dbPreAlert.getPartnerHouseAirwayBill() + " PartnerMasterAirwayBill " + dbPreAlert.getPartnerMasterAirwayBill());
                 }
-                preAlertList.add(savedPreAlert);
-            } else {
-                log.info("PreAlert Record is Getting Duplicate CompanyId - " + dbPreAlert.getCompanyId() + " PartnerId " + dbPreAlert.getPartnerId() +
-                        " PartnerHouseAirwayBill " + dbPreAlert.getPartnerHouseAirwayBill() + " PartnerMasterAirwayBill " + dbPreAlert.getPartnerMasterAirwayBill());
             }
+            log.info("prealert : " + preAlertList.size());
+            return preAlertList;
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            throw new BadRequestException("Exception : " + e);
         }
-        return preAlertList;
     }
 
     /**
@@ -438,5 +445,3 @@ public class PreAlertService {
         errorLogService.writeLog(errorLogList);
     }
 }
-
-

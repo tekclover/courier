@@ -115,10 +115,11 @@ public class ReportsService {
                 sheetOutput.setPartnerType(locationSheetValues.getPartnerType());
 
                 sheetOutput.setOrigin(locationSheetValues.getOrigin());
-                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
+//                sheetOutput.setConsigneeName(locationSheetValues.getConsigneeName());
             }
 
             sheetOutput.setNatureOfGoods("COURIER MATERIALS");
+            sheetOutput.setConsigneeName("IW EXPRESS");
             sheetOutput.setLocationSheetTimeStamp(new Date());
 
             createdLocationSheetOutputList.add(sheetOutput);
